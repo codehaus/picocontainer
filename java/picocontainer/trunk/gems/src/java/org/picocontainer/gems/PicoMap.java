@@ -1,5 +1,3 @@
-package org.picocontainer.gems;
-
 /*****************************************************************************
  * Copyright (c) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
@@ -8,18 +6,24 @@ package org.picocontainer.gems;
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
+package org.picocontainer.gems;
 
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.InstanceComponentAdapter;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
 
 public class PicoMap implements Map {
 
     private final MutablePicoContainer mutablePicoContainer;
-
 
     public PicoMap(MutablePicoContainer mutablePicoContainer) {
         this.mutablePicoContainer = mutablePicoContainer;
@@ -29,18 +33,17 @@ public class PicoMap implements Map {
         mutablePicoContainer = new DefaultPicoContainer();
     }
 
-
     public int size() {
-        return mutablePicoContainer.getComponentInstances().size();
+        return mutablePicoContainer.getComponentAdapters().size();
     }
 
     public boolean isEmpty() {
-        return mutablePicoContainer.getComponentInstances().size() == 0;
+        return mutablePicoContainer.getComponentAdapters().size() == 0;
     }
 
     public boolean containsKey(Object o) {
         if (o instanceof Class) {
-            return mutablePicoContainer.getComponentInstanceOfType((Class) o) != null;
+            return mutablePicoContainer.getComponentInstanceOfType((Class)o) != null;
         } else {
             return mutablePicoContainer.getComponentInstance(o) != null;
         }
@@ -52,47 +55,82 @@ public class PicoMap implements Map {
 
     public Object get(Object o) {
         if (o instanceof Class) {
-            return mutablePicoContainer.getComponentInstanceOfType((Class) o);
+            return mutablePicoContainer.getComponentInstanceOfType((Class)o);
         } else {
             return mutablePicoContainer.getComponentInstance(o);
         }
     }
 
     public Object put(Object o, Object o1) {
-        if (o instanceof Class) {
-            Class key = (Class) o;
-            if (o1 instanceof Class) {
-                return mutablePicoContainer.registerComponentImplementation(key, (Class) o1);
-            } else {
-                return mutablePicoContainer.registerComponentInstance(key, o1);
-            }
-
+        Object object = remove(o);
+        if (o1 instanceof Class) {
+            mutablePicoContainer.registerComponentImplementation(o, (Class)o1);
         } else {
-            return mutablePicoContainer.registerComponentImplementation(o, (Class) o1);
+            mutablePicoContainer.registerComponentInstance(o, o1);
         }
+        return object;
     }
 
     public Object remove(Object o) {
-        return null;
+        ComponentAdapter adapter = mutablePicoContainer.unregisterComponent(o);
+        if (adapter != null) {
+            // if previously an instance was registered, return it, otherwise return the type
+            return adapter instanceof InstanceComponentAdapter ? adapter
+                    .getComponentInstance(mutablePicoContainer) : adapter
+                    .getComponentImplementation();
+        } else {
+            return null;
+        }
     }
 
     public void putAll(Map map) {
-        // consume in another Pico's Adapters ?
+        for (final Iterator iter = map.entrySet().iterator(); iter.hasNext();) {
+            final Map.Entry entry = (Map.Entry)iter.next();
+            put(entry.getKey(), entry.getValue());
+        }
     }
 
     public void clear() {
-
+        Set adapters = keySet();
+        for (final Iterator iter = adapters.iterator(); iter.hasNext();) {
+            mutablePicoContainer.unregisterComponent(iter.next());
+        }
     }
 
     public Set keySet() {
-        return null;
+        Set set = new HashSet();
+        Collection adapters = mutablePicoContainer.getComponentAdapters();
+        for (final Iterator iter = adapters.iterator(); iter.hasNext();) {
+            final ComponentAdapter adapter = (ComponentAdapter)iter.next();
+            set.add(adapter.getComponentKey());
+        }
+        return Collections.unmodifiableSet(set);
     }
 
     public Collection values() {
-        return null;
+        return Collections.unmodifiableCollection(mutablePicoContainer.getComponentInstances());
     }
 
     public Set entrySet() {
-        return null;
+        Set set = new HashSet();
+        Collection adapters = mutablePicoContainer.getComponentAdapters();
+        for (final Iterator iter = adapters.iterator(); iter.hasNext();) {
+            final Object key = ((ComponentAdapter)iter.next()).getComponentKey();
+            final Object component = mutablePicoContainer.getComponentInstance(key);
+            set.add(new Map.Entry() {
+                public Object getKey() {
+                    return key;
+                }
+
+                public Object getValue() {
+                    return component;
+                }
+
+                public Object setValue(Object value) {
+                    throw new UnsupportedOperationException("Cannot set component");
+                }
+            });
+        }
+        return Collections.unmodifiableSet(set);
     }
 }

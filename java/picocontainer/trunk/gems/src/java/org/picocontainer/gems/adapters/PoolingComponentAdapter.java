@@ -36,31 +36,35 @@ import com.thoughtworks.proxy.toys.pool.Pool;
 /**
  * {@link ComponentAdapter} implementation that pools components.
  * <p>
- * The implementation utilizes a delegated ComponentAdapter to create the instances of the pool. The pool can be
- * configured to grow unlimited or to a maximum size. If a component is requested from this adapter, the implementation
- * returns an availailabe instance from the pool or will create a new one, if the maximum pool size is not reached yet.
- * If none is available, the implementation can wait a defined time for a returned object before it throws a
- * {@link PoolException}.
+ * The implementation utilizes a delegated ComponentAdapter to create the instances of the pool. The
+ * pool can be configured to grow unlimited or to a maximum size. If a component is requested from
+ * this adapter, the implementation returns an availailabe instance from the pool or will create a
+ * new one, if the maximum pool size is not reached yet. If none is available, the implementation
+ * can wait a defined time for a returned object before it throws a {@link PoolException}.
  * </p>
  * <p>
- * This implementation uses the {@link Pool} toy from the <a href="http://proxytoys.codehaus.org">ProxyToys</a>
- * project. This ensures, that any component, that is out of scope will be automatically returned to the pool by the
- * garbage collector. Additionally will every component instance also implement
- * {@link com.thoughtworks.proxy.toys.pool.Poolable}, that can be used to return the instance manually. After returning
- * an instance it should not be used in client code anymore.
+ * This implementation uses the {@link Pool} toy from the <a
+ * href="http://proxytoys.codehaus.org">ProxyToys</a> project. This ensures, that any component,
+ * that is out of scope will be automatically returned to the pool by the garbage collector.
+ * Additionally will every component instance also implement
+ * {@link com.thoughtworks.proxy.toys.pool.Poolable}, that can be used to return the instance
+ * manually. After returning an instance it should not be used in client code anymore.
  * </p>
  * <p>
- * Before a returning object is added to the available instances of the pool again, it should be reinitialized to a
- * normalized state. By providing a proper Resetter implementation this can be done automatically. If the object cannot
- * be reused anymore it can also be dropped and the pool may request a new instance.
+ * Before a returning object is added to the available instances of the pool again, it should be
+ * reinitialized to a normalized state. By providing a proper Resetter implementation this can be
+ * done automatically. If the object cannot be reused anymore it can also be dropped and the pool
+ * may request a new instance.
  * </p>
  * <p>
- * The pool supports components with a lifecylce. If the delegated {@link ComponentAdapter} implements a
- * {@link LifecycleStrategy}, any component retrieved form the pool will be started before and stopped again, when it
- * returns back into the pool. Also if a component cannot be resetted it will automatically be disposed. If the
- * container of the pool is disposed, that any returning object is also disposed and will not return to the pool
- * anymore. Note, that current implementation cannot dispose pooled objects.
+ * The pool supports components with a lifecylce. If the delegated {@link ComponentAdapter}
+ * implements a {@link LifecycleStrategy}, any component retrieved form the pool will be started
+ * before and stopped again, when it returns back into the pool. Also if a component cannot be
+ * resetted it will automatically be disposed. If the container of the pool is disposed, that any
+ * returning object is also disposed and will not return to the pool anymore. Note, that current
+ * implementation cannot dispose pooled objects.
  * </p>
+ * 
  * @author J&ouml;rg Schaible
  * @author Aslak Helles&oslash;y
  * @since 1.2
@@ -71,6 +75,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
 
     /**
      * Context of the PoolingComponentAdapter used to initialize it.
+     * 
      * @author J&ouml;rg Schaible
      * @since 1.2
      */
@@ -78,21 +83,26 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
         /**
          * Retrieve the maximum size of the pool. An implementation may return the maximum value or
          * {@link PoolingComponentAdapter#UNLIMITED_SIZE} for <em>unlimited</em> growth.
+         * 
          * @return the maximum pool size
          * @since 1.2
          */
         int getMaxSize();
 
         /**
-         * Retrieve the maximum number of milliseconds to wait for a returned element. An implementation may return
-         * alternatively {@link PoolingComponentAdapter#BLOCK_ON_WAIT} or {@link PoolingComponentAdapter#FAIL_ON_WAIT}.
+         * Retrieve the maximum number of milliseconds to wait for a returned element. An
+         * implementation may return alternatively {@link PoolingComponentAdapter#BLOCK_ON_WAIT} or
+         * {@link PoolingComponentAdapter#FAIL_ON_WAIT}.
+         * 
          * @return the maximum number of milliseconds to wait
          * @since 1.2
          */
         int getMaxWaitInMilliseconds();
 
         /**
-         * Allow the implementation to invoke the garbace collector manually if the pool is exhausted.
+         * Allow the implementation to invoke the garbace collector manually if the pool is
+         * exhausted.
+         * 
          * @return <code>true</code> for an internal call to {@link System#gc()}
          * @since 1.2
          */
@@ -100,6 +110,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
 
         /**
          * Retrieve the ProxyFactory to use to create the pooling proxies.
+         * 
          * @return the {@link ProxyFactory}
          * @since 1.2
          */
@@ -107,6 +118,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
 
         /**
          * Retrieve the {@link Resetter} of the objects returning to the pool.
+         * 
          * @return the Resetter instance
          * @since 1.2
          */
@@ -119,6 +131,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
          * <li>{@link Pool#SERIALIZATION_NONE}</li>
          * <li>{@link Pool#SERIALIZATION_FORCE}</li>
          * </ul>
+         * 
          * @return the serialization mode
          * @since 1.2
          */
@@ -127,6 +140,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
 
     /**
      * The default context for a PoolingComponentAdapter.
+     * 
      * @author J&ouml;rg Schaible
      * @since 1.2
      */
@@ -186,8 +200,8 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
      */
     public static final int DEFAULT_MAX_SIZE = 8;
     /**
-     * <code>BLOCK_ON_WAIT</code> forces the pool to wait until an object of the pool is returning in case none is
-     * immediately available.
+     * <code>BLOCK_ON_WAIT</code> forces the pool to wait until an object of the pool is returning
+     * in case none is immediately available.
      */
     public static final int BLOCK_ON_WAIT = 0;
     /**
@@ -206,10 +220,12 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
     private boolean autostartGC;
     private boolean started;
     private boolean disposed;
+    private boolean delegateHasLifecylce;
     private transient List components;
 
     /**
      * Construct a PoolingComponentAdapter with default settings.
+     * 
      * @param delegate the delegated ComponentAdapter
      * @since 1.2
      */
@@ -218,13 +234,15 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
     }
 
     /**
-     * Construct a PoolingComponentAdapter. Remember, that the implementation will request new components from the
-     * delegate as long as no component instance is available in the pool and the maximum pool size is not reached.
-     * Therefore the delegate may not return the same component instance twice. Ensure, that the used
-     * {@link ComponentAdapter} does not cache.
+     * Construct a PoolingComponentAdapter. Remember, that the implementation will request new
+     * components from the delegate as long as no component instance is available in the pool and
+     * the maximum pool size is not reached. Therefore the delegate may not return the same
+     * component instance twice. Ensure, that the used {@link ComponentAdapter} does not cache.
+     * 
      * @param delegate the delegated ComponentAdapter
      * @param context the {@link Context} of the pool
-     * @throws IllegalArgumentException if the maximum pool size or the serialization mode is invalid
+     * @throws IllegalArgumentException if the maximum pool size or the serialization mode is
+     *             invalid
      * @since 1.2
      */
     public PoolingComponentAdapter(ComponentAdapter delegate, Context context) {
@@ -238,36 +256,42 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
         }
         started = false;
         disposed = false;
+        delegateHasLifecylce = delegate instanceof LifecycleStrategy
+                && ((LifecycleStrategy)delegate)
+                        .hasLifecycle(delegate.getComponentImplementation());
         components = new ArrayList();
-        final Class type = delegate.getComponentKey() instanceof Class ? (Class)delegate.getComponentKey() : delegate
-                .getComponentImplementation();
+
+        final Class type = delegate.getComponentKey() instanceof Class ? (Class)delegate
+                .getComponentKey() : delegate.getComponentImplementation();
         final Resetter resetter = context.getResetter();
-        this.pool = new Pool(
-                type, delegateSupportsLifecycle() ? new LifecycleResetter(this, resetter) : resetter, context
-                        .getProxyFactory(), serializationMode);
+        this.pool = new Pool(type, delegateHasLifecylce ? new LifecycleResetter(
+                this, resetter) : resetter, context.getProxyFactory(), serializationMode);
     }
 
     /**
      * Construct an empty ComponentAdapter, used for serialization with reflection only.
+     * 
      * @since 1.2
      */
     protected PoolingComponentAdapter() {
-        //@todo super class should support standard ctor
+        // @todo super class should support standard ctor
         super((ComponentAdapter)Null.object(ComponentAdapter.class));
     }
 
     /**
      * {@inheritDoc}
      * <p>
-     * As long as the maximum size of the pool is not reached and the pool is exhausted, the implementation will request
-     * its delegate for a new instance, that will be managed by the pool. Only if the maximum size of the pool is
-     * reached, the implementation may wait (depends on the initializing {@link Context}) for a returning object.
+     * As long as the maximum size of the pool is not reached and the pool is exhausted, the
+     * implementation will request its delegate for a new instance, that will be managed by the
+     * pool. Only if the maximum size of the pool is reached, the implementation may wait (depends
+     * on the initializing {@link Context}) for a returning object.
      * </p>
-     * @throws PoolException if the pool is exhausted or waiting for a returning object timed out or was interrupted
+     * 
+     * @throws PoolException if the pool is exhausted or waiting for a returning object timed out or
+     *             was interrupted
      */
     public Object getComponentInstance(PicoContainer container) {
-        final boolean hasLifecycleSupport = delegateSupportsLifecycle();
-        if (hasLifecycleSupport) {
+        if (delegateHasLifecylce) {
             if (disposed) throw new IllegalStateException("Already disposed");
         }
         Object componentInstance = null;
@@ -281,7 +305,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
                 }
                 if (maxPoolSize > pool.size()) {
                     final Object component = super.getComponentInstance(container);
-                    if (hasLifecycleSupport) {
+                    if (delegateHasLifecylce) {
                         components.add(component);
                         if (started) {
                             start(component);
@@ -297,11 +321,13 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
                         throw new PoolException("Time out wating for returning object into pool");
                     }
                     try {
-                        pool.wait(waitMilliSeconds); // Note, the pool notifies after an object was returned
+                        pool.wait(waitMilliSeconds); // Note, the pool notifies after an object
+                                                        // was returned
                     } catch (InterruptedException e) {
                         // give the client code of the current thread a chance to abort also
                         Thread.currentThread().interrupt();
-                        throw new PoolException("Interrupted waiting for returning object into the pool", e);
+                        throw new PoolException(
+                                "Interrupted waiting for returning object into the pool", e);
                     }
                 } else {
                     System.gc();
@@ -313,16 +339,14 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
     }
 
     /**
-     * Retrieve the current size of the pool. The returned value reflects the number of all managed components.
+     * Retrieve the current size of the pool. The returned value reflects the number of all managed
+     * components.
+     * 
      * @return the number of components.
      * @since 1.2
      */
     public int size() {
         return pool.size();
-    }
-
-    private boolean delegateSupportsLifecycle() {
-        return getDelegate() instanceof LifecycleStrategy;
     }
 
     static class LifecycleResetter implements Resetter, Serializable {
@@ -352,12 +376,14 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
     }
 
     /**
-     * Start of the container ensures that at least one pooled component has been started. Applies only if the delegated
-     * {@link ComponentAdapter} supports a lifecylce by implementing {@link LifecycleStrategy}.
+     * Start of the container ensures that at least one pooled component has been started. Applies
+     * only if the delegated {@link ComponentAdapter} supports a lifecylce by implementing
+     * {@link LifecycleStrategy}.
+     * 
      * @throws IllegalStateException if pool was already disposed
      */
     public void start(final PicoContainer container) {
-        if (delegateSupportsLifecycle()) {
+        if (delegateHasLifecylce) {
             if (started) throw new IllegalStateException("Already started");
             if (disposed) throw new IllegalStateException("Already disposed");
             for (final Iterator iter = components.iterator(); iter.hasNext();) {
@@ -371,28 +397,31 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
     }
 
     /**
-     * Stop of the container has no effect for the pool. Applies only if the delegated {@link ComponentAdapter} supports
-     * a lifecylce by implementing {@link LifecycleStrategy}.
+     * Stop of the container has no effect for the pool. Applies only if the delegated
+     * {@link ComponentAdapter} supports a lifecylce by implementing {@link LifecycleStrategy}.
+     * 
      * @throws IllegalStateException if pool was already disposed
      */
     public void stop(final PicoContainer container) {
-        if (delegateSupportsLifecycle()) {
+        if (delegateHasLifecylce) {
             if (!started) throw new IllegalStateException("Not started yet");
             if (disposed) throw new IllegalStateException("Already disposed");
-            started = false;
             for (final Iterator iter = components.iterator(); iter.hasNext();) {
                 stop(iter.next());
             }
+            started = false;
         }
     }
 
     /**
-     * Dispose of the container will dispose all returning objects. They will not be added to the pool anymore. Applies
-     * only if the delegated {@link ComponentAdapter} supports a lifecylce by implementing {@link LifecycleStrategy}.
+     * Dispose of the container will dispose all returning objects. They will not be added to the
+     * pool anymore. Applies only if the delegated {@link ComponentAdapter} supports a lifecylce by
+     * implementing {@link LifecycleStrategy}.
+     * 
      * @throws IllegalStateException if pool was already disposed
      */
     public void dispose(final PicoContainer container) {
-        if (delegateSupportsLifecycle()) {
+        if (delegateHasLifecylce) {
             if (started) throw new IllegalStateException("Not stopped yet");
             if (disposed) throw new IllegalStateException("Already disposed");
             disposed = true;

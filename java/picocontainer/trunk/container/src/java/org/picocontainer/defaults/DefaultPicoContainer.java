@@ -386,19 +386,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         final boolean isLocal = componentAdapters.contains(componentAdapter);
 
         if (isLocal) {
+            PicoException firstLevelException = null;
             Object instance = null;
             try {
                 instance = componentAdapter.getComponentInstance(this);
             } catch (PicoInitializationException e) {
-                if (parent != null) {
-                    instance = parent.getComponentInstance(componentAdapter.getComponentKey());
-                    if( instance != null ) {
-                        return instance;
-                    }
-                }
-
-                throw e;
+                firstLevelException = e;
             } catch (PicoIntrospectionException e) {
+                firstLevelException = e;
+            }
+            if (firstLevelException != null) {
                 if (parent != null) {
                     instance = parent.getComponentInstance(componentAdapter.getComponentKey());
                     if( instance != null ) {
@@ -406,7 +403,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                     }
                 }
 
-                throw e;
+                throw firstLevelException;
             }
             addOrderedComponentAdapter(componentAdapter);
 

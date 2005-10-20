@@ -12,6 +12,8 @@ import org.picocontainer.defaults.AbstractMonitoringLifecylceStrategy;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -32,7 +34,7 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecylceStra
     private final static int STOP = 1;
     private final static int DISPOSE = 2;
     private String[] methodNames;
-    private transient Method[] methods;
+    private final transient Map methodMap = new HashMap();
 
     /**
      * Construct a ReflectionLifecycleStrategy.
@@ -62,17 +64,17 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecylceStra
     }
 
     public void start(Object component) {
-        init(component.getClass());
+        Method[] methods = init(component.getClass());
         invokeMethod(component, methods[START]);
     }
 
     public void stop(Object component) {
-        init(component.getClass());
+        Method[] methods = init(component.getClass());
         invokeMethod(component, methods[STOP]);
     }
 
     public void dispose(Object component) {
-        init(component.getClass());
+        Method[] methods = init(component.getClass());
         invokeMethod(component, methods[DISPOSE]);
     }
 
@@ -95,7 +97,7 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecylceStra
      * {@inheritDoc} The component has a lifecylce if at least one of the three methods is present.
      */
     public boolean hasLifecycle(Class type) {
-        init(type);
+        Method[] methods = init(type);
         for (int i = 0; i < methods.length; i++) {
             if (methods[i] != null) {
                 return true;
@@ -104,16 +106,22 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecylceStra
         return false;
     }
 
-    private void init(Class type) {
-        if (methods == null) {
-            methods = new Method[methodNames.length];
-            for (int i = 0; i < methods.length; i++) {
-                try {
-                    methods[i] = type.getMethod(methodNames[i], new Class[0]);
-                } catch (NoSuchMethodException e) {
-                    continue;
+    private Method[] init(Class type) {
+        Method[] methods;
+        synchronized (methodMap) {
+            methods = (Method[])methodMap.get(type);
+            if (methods == null) {
+                methods = new Method[methodNames.length];
+                for (int i = 0; i < methods.length; i++) {
+                    try {
+                        methods[i] = type.getMethod(methodNames[i], new Class[0]);
+                    } catch (NoSuchMethodException e) {
+                        continue;
+                    }
                 }
+                methodMap.put(type, methods);
             }
         }
+        return methods;
     }
 }

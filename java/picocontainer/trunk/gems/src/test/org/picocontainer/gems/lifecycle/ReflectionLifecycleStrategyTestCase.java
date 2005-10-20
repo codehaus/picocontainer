@@ -70,6 +70,34 @@ public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
         strategy.dispose(disposable);
     }
     
+    static interface MyLifecylce {
+        void start();
+        void stop();
+        void dispose();
+    }
+    
+    public void testWithDifferentTypes() {
+        Mock anotherStartableMock = mock(MyLifecylce.class);
+        anotherStartableMock.expects(once()).method("start");
+        anotherStartableMock.expects(once()).method("stop");
+        anotherStartableMock.expects(once()).method("dispose");
+        componentMonitorMock.expects(once()).method("invoking").with(method("start"), same(anotherStartableMock.proxy()));
+        componentMonitorMock.expects(once()).method("invoked").with(method("start"), same(anotherStartableMock.proxy()), ANYTHING);
+        componentMonitorMock.expects(once()).method("invoking").with(method("stop"), same(anotherStartableMock.proxy()));
+        componentMonitorMock.expects(once()).method("invoked").with(method("stop"), same(anotherStartableMock.proxy()), ANYTHING);
+        componentMonitorMock.expects(once()).method("invoking").with(method("dispose"), same(anotherStartableMock.proxy()));
+        componentMonitorMock.expects(once()).method("invoked").with(method("dispose"), same(anotherStartableMock.proxy()), ANYTHING);
+
+        Object startable = mockComponent(true, false);
+        strategy.start(startable);
+        strategy.stop(startable);
+        strategy.dispose(startable);
+        startable = anotherStartableMock.proxy();
+        strategy.start(startable);
+        strategy.stop(startable);
+        strategy.dispose(startable);
+    }
+    
     private Object mockComponent(boolean startable, boolean disposable) {
         Mock mock = mock(Serializable.class);
         if ( startable ) {

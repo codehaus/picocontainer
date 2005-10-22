@@ -17,6 +17,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.gems.adapters.ThreadLocalReference;
 
 /**
@@ -57,8 +58,14 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
                 returnValue(container));
         requestMock.expects(atLeastOnce()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
                 isA(MutablePicoContainer.class));
-        TestAction action = (TestAction) factory
-                .buildBean("org.nanocontainer.nanowar.webwork.TestAction");
+        TestAction action = null;
+        try {
+            action = (TestAction) factory
+                            .buildBean("org.nanocontainer.nanowar.webwork.TestAction");
+            fail("should have barfed");
+        } catch (UnsatisfiableDependenciesException e) {
+            // expected
+        }
         assertNull(action);
     }
 

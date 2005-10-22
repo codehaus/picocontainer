@@ -268,12 +268,12 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
     }
 
     //NANOWAR-23:  the node builder syntax is failing
-    public void FIXME_testGroovyContainerBuilderCanBeScopedWithInlineScriptsUsingBuilderSyntax() throws Exception{    
+    public void testGroovyContainerBuilderCanBeScopedWithInlineScriptsUsingBuilderSyntax() throws Exception{
       String builderScript =
           "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
           "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
           "      System.out.println('Application scope parent '+parent)\n "+
-          "      component(key:'testFoo', class:org.nanocontainer.nanowar.Foo)\n " +
+          "      component(key:org.nanocontainer.nanowar.Foo, class:org.nanocontainer.nanowar.Foo)\n " +
           "   } else if ( assemblyScope instanceof javax.servlet.http.HttpSession ){ \n" +
           "      System.out.println('Session scope parent '+parent)\n "+
           "      System.out.println('isEmpty? '+parent.getComponentInstances())\n "+
@@ -281,7 +281,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
           "      component(key:'testFooHierarchy', class:org.nanocontainer.nanowar.FooHierarchy)\n"+
           "   }\n "+
           "}";
-      assertGroovyContainerBuilderCanBeScopedWithInlinedScript(builderScript);      
+      assertGroovyContainerBuilderCanBeScopedWithInlinedScript(builderScript);
     }
     
     public void assertGroovyContainerBuilderCanBeScopedWithInlinedScript(String script) throws Exception {

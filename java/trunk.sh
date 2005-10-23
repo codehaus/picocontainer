@@ -1,36 +1,24 @@
-echo ** Pico
-cd picocontainer/trunk/container/
-maven jar:install
+echo ** PicoContainer
+cd picocontainer/trunk
+maven multiproject:install
 cd -
-echo ** TCK
-cd picocontainer/trunk/tck
-maven -o jar:install
+echo ** NanoContainer
+cd nanocontainer/trunk
+maven -o multiproject:install
 cd -
-echo ** Gems
-cd picocontainer/trunk/gems/ 
-maven -o jar:install
+echo ** NanoContainer - NanoWar
+cd nanocontainer-nanowar/trunk
+maven -o multiproject:install
 cd -
-echo ** nano testmodel
-cd nanocontainer/trunk/testmodel/ 
-maven -o jar:install
+echo ** NanoContainer - NanoPersistence
+cd nanocontainer-persistence/trunk
+maven -o multiproject:install
 cd -
-echo ** nanocontainer
-cd nanocontainer/trunk/container/ 
-maven -o jar:install
+echo ** NanoContainer - NanoRemoting
+cd nanocontainer-remoting/trunk
+maven -o multiproject:install
 cd -
-echo ** booter
-cd nanocontainer/trunk/booter/ 
-maven -o jar:install
-cd -
-echo ** deployer
-cd nanocontainer/trunk/deployer/ 
-maven -o jar:install
-cd -
-echo ** nanowar
-cd nanocontainer-nanowar/trunk/nanowar
-maven -o jar:install
-cd -
-echo ** nanowar-sample
-cd nanocontainer-nanowar/trunk/nanowar-sample
-maven -o jar:install
+echo ** NanoContainer - NanoIoC
+cd nanocontainer-ioc/trunk
+maven -o multiproject:install
 cd -

@@ -6,20 +6,20 @@
     <context-param>
         <param-name>nanocontainer.groovy</param-name>
         <param-value><![CDATA[
-        	   caf = new org.picocontainer.defaults.DefaultComponentAdapterFactory() 	
-            pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)
-            if(assemblyScope instanceof javax.servlet.ServletContext) {
-                println("**** Application-level pico components registered by Groovy")
-                println("java.util.Random")
-                pico.registerComponentImplementation(java.util.Random)
-            } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
-                println("**** Session-level pico components registered by Groovy")
-            } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
-                println("**** Request-level pico components registered by Groovy")
-                println("org.nanocontainer.nanowar.sample.nanoweb.NumberToGuess")
-                pico.registerComponentImplementation(org.nanocontainer.nanowar.sample.nanoweb.NumberToGuess)
-            }
+            pico = builder.container(parent, scope:assemblyScope) {
+                if(assemblyScope instanceof javax.servlet.ServletContext) {
+                    println("**** Application-level pico components registered by Groovy")
 
+                    // registerComponentImplementation(java.util.RandomNumberMaker)
+                } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
+                    println("**** Session-level pico components registered by Groovy")
+
+                } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
+                    println("**** Request-level pico components registered by Groovy")
+                    component(class:java.util.Random)
+                    component(class:org.nanocontainer.nanowar.sample.nanoweb.NumberToGuess)
+                }
+            }
         ]]></param-value>
     </context-param>
 

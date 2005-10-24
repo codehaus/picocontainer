@@ -10,7 +10,11 @@
       <sourceFolder url="file://$MODULE_DIR$/trunk/gems/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/trunk/gems/src/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/tags" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
       <excludeFolder url="file://$MODULE_DIR$/trunk/container/target" />
+      <excludeFolder url="file://$MODULE_DIR$/trunk/gems/target" />
+      <excludeFolder url="file://$MODULE_DIR$/trunk/target" />
+      <excludeFolder url="file://$MODULE_DIR$/trunk/tck/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

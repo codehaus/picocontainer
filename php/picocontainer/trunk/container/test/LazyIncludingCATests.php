@@ -7,7 +7,9 @@ class LazyIncludingCATests extends UnitTestCase
 	{
 		
 		$pico = new DefaultPicoContainer();		
-		$pico->registerComponent(new LazyIncludingComponentAdapter(new ConstructorInjectionComponentAdapter('LazyIncludeModel'),'lazyincludemodel.inc.php'));
+		$pico->registerComponent(new LazyIncludingComponentAdapter(
+			new ConstructorInjectionComponentAdapter('LazyIncludeModel'),
+			PICOCONTAINER_TEST_PATH . '/lazyincludemodel.inc.php'));
 		$pico->registerComponentImplementation('SimpleTouchable');
 				
 		$this->assertFalse(class_exists('LazyIncludeModel'));
@@ -22,8 +24,12 @@ class LazyIncludingCATests extends UnitTestCase
 	function testLIWithoutIncludedDependencies()
 	{
 		$pico = new DefaultPicoContainer();		
-		$pico->registerComponent(new LazyIncludingComponentAdapter(new ConstructorInjectionComponentAdapter('LazyIncludeModelWithDpendencies'),'lazyincludemodelwithdpendencies.inc.php'));
-		$pico->registerComponent(new LazyIncludingComponentAdapter(new ConstructorInjectionComponentAdapter('LazyIncludeModelDependend'),'lazyincludemodeldependend.inc.php'));
+		$pico->registerComponent(new LazyIncludingComponentAdapter(
+			new ConstructorInjectionComponentAdapter('LazyIncludeModelWithDpendencies'),
+			PICOCONTAINER_TEST_PATH . '/lazyincludemodelwithdpendencies.inc.php'));
+		$pico->registerComponent(new LazyIncludingComponentAdapter(
+			new ConstructorInjectionComponentAdapter('LazyIncludeModelDependend'),
+			PICOCONTAINER_TEST_PATH . '/lazyincludemodeldependend.inc.php'));
 		
 		$this->assertFalse(class_exists('LazyIncludeModelWithDpendencies'));
 		$this->assertFalse(class_exists('LazyIncludeModelDependend'));

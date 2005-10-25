@@ -5,9 +5,10 @@ interface Touchable
     public function touch();
 }
 
+
 class SimpleTouchable implements Touchable
 {
-    public $wasTouched = false;
+    public $wasTouched = false;   
     
     public function touch() 
     {

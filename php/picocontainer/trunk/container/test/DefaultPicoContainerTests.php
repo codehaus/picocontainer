@@ -146,6 +146,37 @@ class DefaultPicoContainerTests extends UnitTestCase {
     }
     
     
+    function testInvalidParameterForConstructOfDefaultPicoContainer() {
+        assert_options(ASSERT_ACTIVE, 1);
+        new DefaultPicoContainer('string');
+        $this->assertError();
+        
+        new DefaultPicoContainer(12345);
+        $this->assertError();
+        
+        new DefaultPicoContainer(2.51);
+        $this->assertError();
+        
+        new DefaultPicoContainer(array());
+        $this->assertError();
+        
+        new DefaultPicoContainer(true);
+        $this->assertError();
+    }
+    
+    function testNonObjectRegisterInstance() {
+        $pico = new DefaultPicoContainer();
+        $pass = false;
+        
+        try {
+            $pico->registerComponentInstance('string');
+        }
+        catch (PicoRegistrationException $e) {
+            $pass = true;
+        }
+        $this->assertTrue($pass, 'Caught exception');
+    }
+    
     //TODO:
 	/*
     function testUnambiguouSelfDependency() {

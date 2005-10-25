@@ -14,23 +14,34 @@ interface ComponentAdapter
 	/**
      * Retrieve the key associated with the component.
      * 
-     * @return the component's key.
+     * @return string 
+     *    The component's key.
      */
     public function getComponentKey();
+    
+    
     /**
      * Retrieve the class name of the component.
      * 
-     * @return the component's implementation class. Should normally be a concrete class (ie, a class that can be
-     *         instantiated).
+     * @return object
+     *    The component's implementation class. Should normally be a concrete
+     *    class (ie, a class that can be instantiated).
      */    
     public function getComponentImplementation();
+    
+    
     /**
-     * Retrieve the component instance. This method will usually create a new instance each time it is called, but that
-     * is not required. For example, {@link CachingComponentAdapter} will always return the
-     * same instance.
+     * Retrieve the component instance. 
+     *
+     * This method will usually create a new instance each time it is called,
+     * but that is not required. For example, {@link CachingComponentAdapter} 
+     * will always return the same instance.
      * 
-     * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.
-     * @return the component instance.
+     * @param PicoContainer 
+     *    The {@link PicoContainer} that is used to resolve any possible 
+     *    dependencies of the instance.
+     * @return object
+     *    The component instance.
      */
     public function getComponentInstance(PicoContainer $container);    
 }
@@ -145,12 +156,24 @@ abstract class InstantiatingComponentAdapter extends AbstractComponentAdapter
         }
     }
          
+    /**
+     * getComponentParams()
+     *
+     * @return ??
+     */
     public function getComponentParams()
     {
         return $this->_componentParams;
     }
     
     
+    /**
+     * getArgumentsParameters
+     *
+     * @param PicoContainer
+     * @param ReflectionMethod
+     * @return ??
+     */
     protected function getArgumentsParameters(PicoContainer $container, ReflectionMethod $rm) 
     {
     	
@@ -216,7 +239,13 @@ abstract class InstantiatingComponentAdapter extends AbstractComponentAdapter
         
         return $instances_to_pass_to_constr;
     }
-        
+    
+    
+    /**
+     * newInstance()
+     *
+     * @todo Document
+     */
     protected function newInstance($args_to_pass_to_constr = array())
     {
     	$to_eval_args = array();

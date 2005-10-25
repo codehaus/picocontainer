@@ -36,18 +36,14 @@ interface MutablePicoContainer extends PicoContainer
 
 
 /**
- * <p/>
  * The Standard {@link PicoContainer}/{@link MutablePicoContainer} implementation.
- * </p>
- * <p/>
- * Using Class name as keys to the registerComponentImplementation method makes
- * a subtle semantic difference:
- * </p>
- * <p/>
+ *
+ * Using Class name as keys to the {@link registerComponentImplementation()}
+ * method makes a subtle semantic difference:
+ *
  * If there are more than one registered components of the same type and one of them are
  * registered with a Class name key of the corresponding type, this component
  * will take precedence over other components during type resolution.
- * </p>
  * 
  * @author Java version authors
  * @author Pawel Kozlowski
@@ -58,72 +54,101 @@ class DefaultPicoContainer implements MutablePicoContainer
     private $_componentAdapters = array();
     private $_componentAdapterFactory;
     
+    
+    /**
+     * Handle instantiation
+     *
+     * @param null|ComponentAdapterFactory
+     *    The {@link ComponentAdapterFactory} to utilize while loading 
+     *    components.
+     */
     public function __construct($componentAdapterFactory = null)
     {
-        if ($componentAdapterFactory == null)
+        assert('is_null($componentAdapterFactory) || 
+            $componentAdapterFactory instanceof ComponentAdapterFactory');
+        if (is_null($componentAdapterFactory))
         {                
-            $componentAdapterFactory = new CachingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()); 
+            $componentAdapterFactory = new CachingComponentAdapterFactory(
+                new ConstructorInjectionComponentAdapterFactory()); 
         }
                 
         $this->_componentAdapterFactory = $componentAdapterFactory; 
     }
        
     
+    /**
+     * Returns an instance of a given component based on the provided
+     * <i>$componentKey</i>.
+     *
+     * Returns <i>null</i> if unable to find component.
+     *
+     * @see getComponentAdapter()
+     * @param string
+     * @return object|null
+     */
     public function getComponentInstance($componentKey)
     {
-        $componentAdapter = $this->getComponentAdapter($componentKey);        
-        if ($componentAdapter != null) 
-        {          
+        $componentAdapter = $this->getComponentAdapter($componentKey);
+        if (!is_null($componentAdapter)) {
             return $componentAdapter->getComponentInstance($this);
-        } 
-        else 
-        {
-            return null;
-        }        
+        }
     }
     
+    
+    /**
+     * Returns an instance of a given component based on the provided
+     * <i>$componentType</i>.
+     *
+     * Returns <i>null</i> if unable to find component.
+     *
+     * @see getComponentAdapterOfType()
+     * @param string
+     * @return object|null
+     */
     public function getComponentInstanceOfType($componentType)
     {
-    	$componentAdapter = $this->getComponentAdapterOfType($componentType);    	    	 
-    	if ($componentAdapter != null)
-    	{
-    		return $componentAdapter->getComponentInstance($this);
-    	}
-    	else
-    	{
-    		return null;
-    	}
-    	
+        $componentAdapter = $this->getComponentAdapterOfType($componentType);
+        if (!is_null($componentAdapter)) {
+            return $componentAdapter->getComponentInstance($this);
+        }
     }
-            
+    
+    
+    /**
+     * Returns a component adapater based on the provide <i>$componentKey</i>.
+     *
+     * @param string
+     * @return string|null
+     */
     public function getComponentAdapter($componentKey)
     {
-    	if (array_key_exists($componentKey,$this->_componentAdapters))
-    	{
-        	return $this->_componentAdapters[$componentKey];
-    	}
-    	else
-    	{
-    		return null;
-    	}
+        if (array_key_exists($componentKey, $this->_componentAdapters))
+        {
+            return $this->_componentAdapters[$componentKey];
+        }
     }
     
     
+    /**
+     * Returns an array of component adapters based on the provided 
+     * <i>$componentType</i>.
+     *
+     * @param array
+     */
     public function getComponentAdaptersOfType($componentType) 
     {
         $result = array();
-        
         $ctReflectionClass = new ReflectionClass($componentType);                                        
                 
         foreach($this->_componentAdapters as $cadapter)
         {
             if ($ctReflectionClass->isInterface()&&class_exists($cadapter->getComponentImplementation()))
             {              
-	        	$catReflectionClass = new ReflectionClass($cadapter->getComponentImplementation());        
-	            if ($catReflectionClass->implementsInterface($ctReflectionClass->getName()))
-	            {
-	            	$result[] = $cadapter;
-	            }                                
+           	   $catReflectionClass = new ReflectionClass($cadapter->getComponentImplementation());        
+                if ($catReflectionClass->implementsInterface($ctReflectionClass->getName()))
+                {
+                   $result[] = $cadapter;
+                }                                
             }
             else
             {                                    
@@ -133,14 +158,14 @@ class DefaultPicoContainer implements MutablePicoContainer
                 }
                 else
                 {   
-                	if (class_exists($cadapter->getComponentImplementation()))
-                	{             
-	                    $catReflectionClass = new ReflectionClass($cadapter->getComponentImplementation());
-	                    if($catReflectionClass->isSubclassOf($ctReflectionClass))
-	                    {
-	                        $result[] = $cadapter;    
-	                    }
-                	} 
+                    if (class_exists($cadapter->getComponentImplementation()))
+                	   {             
+                        $catReflectionClass = new ReflectionClass($cadapter->getComponentImplementation());
+                        if($catReflectionClass->isSubclassOf($ctReflectionClass))
+                        {
+                            $result[] = $cadapter;    
+                        }
+                    }
                 }
             }
         }
@@ -148,10 +173,20 @@ class DefaultPicoContainer implements MutablePicoContainer
         return $result;
     }
     
+    
+    /**
+     * Returns a specific component adapter based on the type
+     *
+     * If multiple component adapters are found, this will throw an
+     * {@link AmbiguousComponentResolutionException}.
+     *
+     * @param string
+     * @param object|null
+     */
     public function getComponentAdapterOfType($expectedType)
     {
-    	$adapterByKey = $this->getComponentAdapter($expectedType);
-        if ($adapterByKey != null) {
+    	   $adapterByKey = $this->getComponentAdapter($expectedType);
+        if (!is_null($adapterByKey)) {
             return $adapterByKey;
         }
     	
@@ -176,49 +211,99 @@ class DefaultPicoContainer implements MutablePicoContainer
         }        
     }                
     
+    
+    /**
+     * Register a new component adapter
+     *
+     * @see ComponentAdapter
+     * @param ComponentAdapter
+     */
     public function registerComponent(ComponentAdapter $componentAdapter)
     {                        
-        if (!array_key_exists($componentAdapter->getComponentKey(),$this->_componentAdapters))
-        {                       
-            $this->_componentAdapters[$componentAdapter->getComponentKey()] = $componentAdapter;
-        }
-        else
+        if (array_key_exists($componentAdapter->getComponentKey(),$this->_componentAdapters))
         {
             throw new DuplicateComponentKeyRegistrationException($componentAdapter->getComponentKey());
-        }                  
+        }
+        $this->_componentAdapters[$componentAdapter->getComponentKey()] = $componentAdapter;
     }
     
+    
+    /**
+     * Register a new component implementation
+     *
+     * @see registerComponent()
+     * @param string
+     * @param string
+     * @param array
+     */
     public function registerComponentImplementation($componentKey, $componentImplementation = '', $componentParams = array())
     {                
-        $ca = $this->_componentAdapterFactory->createComponentAdapter($componentKey, $componentImplementation, $componentParams);
+        $ca = $this->_createComponentAdapter($componentKey, $componentImplementation, $componentParams);
         $this->registerComponent($ca);        
     }
     
+    
+    /**
+     * Register a new component implementation for lazy loading
+     *
+     * @see registerComponent()
+     * @param string
+     * @param string
+     * @param string
+     * @param array
+     */
     public function registerComponentImplementationWithIncFileName($includeFileName, $componentKey, $componentImplementation = '', $componentParams = array())
     {
-    	if ($includeFileName!='')
-    	{
-    		$ca = $this->_componentAdapterFactory->createComponentAdapter($componentKey, $componentImplementation, $componentParams);
+        if (empty($includeFileName)) {
+            throw new IncludeFileNameNotDefinedRegistrationException();
+        }
+        
+    		$ca = $this->_createComponentAdapter($componentKey, $componentImplementation, $componentParams);
         	$this->registerComponent(new LazyIncludingComponentAdapter($ca,$includeFileName));
-    	}
-    	else
-    	{
-    		throw new IncludeFileNameNotDefinedRegistrationException();
-    	}
     }
     
+    /**
+     * Register a specific instance of a class
+     *
+     * @param object
+     * @param string|null
+     */
     public function registerComponentInstance($componentInstance, $componentKey = null)
     {
+        if (!is_object($componentInstance)) {
+            throw new PicoRegistrationException('$componentInstance is not an object');
+        }
         $this->registerComponent(new InstanceComponentAdapter($componentInstance, $componentKey));    
     }
     
+    
+    /**
+     * Removes a registered component based on the provided 
+     * <i>$componentKey</i>.
+     *
+     * @param string
+     */
     public function unregisterComponent($componentKey)
     {
-        if ($componentKey != '')
-        {                        
-            $this->_componentAdapters = array_diff ($this->_componentAdapters, array($componentKey => $this->getComponentAdapter($componentKey)));            
+        if (isset($this->_componentAdapters[$componentKey]))
+        {
+            unset($this->_componentAdapters[$componentKey]);
         }
-    }                    
+    }
+    
+    
+    /**
+     * Used to create a component adapter using the internal 
+     * {@link $_componentAdapterFactory}.
+     *
+     * @param string
+     * @param string
+     * @param array
+     * @return ComponentAdapter
+     */
+    private function _createComponentAdapter($key, $implementation, $params) {
+        return $this->_componentAdapterFactory->createComponentAdapter($key, $implementation, $params);
+    }
 }   
 
 ?>

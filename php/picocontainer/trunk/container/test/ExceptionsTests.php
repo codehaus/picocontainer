@@ -25,7 +25,9 @@ class ExceptionsTests extends UnitTestCase
     {
     	
     	$pico = new DefaultPicoContainer();
-    	$ca = new LazyIncludingComponentAdapter(new ConstructorInjectionComponentAdapter('NotDefinedInIncludeFile'),'lazyinclude.empty.inc.php');
+    	$ca = new LazyIncludingComponentAdapter(
+			new ConstructorInjectionComponentAdapter('NotDefinedInIncludeFile'),
+			PICOCONTAINER_TEST_PATH . '/lazyinclude.empty.inc.php');
     	
     	try
     	{

@@ -1,6 +1,11 @@
 <?php
 
-class PicoException extends Exception {}
+if (!class_exists('RuntimeException')) {
+    // ServerStub for RuntimeException that is available in PHP 5.1
+    class RuntimeException extends Exception { }
+}
+
+class PicoException extends RuntimeException {}
 
 class PicoRegistrationException extends PicoException {}
 

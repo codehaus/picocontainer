@@ -23,7 +23,7 @@
     <!-- issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=TODO</issueTrackingUrl -->
 
     <siteAddress>beaver.codehaus.org</siteAddress>
-    <siteDirectory>/home/projects/picocontainer/public_html/reports/${pom.artifactId}</siteDirectory>
+    <siteDirectory>/home/projects/microcontainer/public_html/${pom.groupId}/${pom.currentVersion}/${pom.artifactId}</siteDirectory>
 
     <distributionSite>beaver.codehaus.org</distributionSite>
     <distributionDirectory>/dist</distributionDirectory>

@@ -6,6 +6,6 @@
     <name>PicoDocs Maven Plugin</name>
     <description>PicoDocs Maven Plugin</description>
     <shortDescription>PicoDocs Maven Plugin</shortDescription>
-    <currentVersion>1.0</currentVersion>
+    <currentVersion>1.1-SNAPSHOT</currentVersion>
     <siteDirectory>/home/projects/picocontainer/public_html/plugins/picodocs-maven-plugin</siteDirectory>
 </project>

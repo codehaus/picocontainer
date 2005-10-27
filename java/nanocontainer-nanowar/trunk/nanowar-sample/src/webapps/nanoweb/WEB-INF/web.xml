@@ -6,17 +6,16 @@
     <context-param>
         <param-name>nanocontainer.groovy</param-name>
         <param-value><![CDATA[
-            pico = builder.container(parent, scope:assemblyScope) {
+
+            pico = builder.container(parent:parent, scope:assemblyScope) {
                 if(assemblyScope instanceof javax.servlet.ServletContext) {
                     println("**** Application-level pico components registered by Groovy")
-
                     // registerComponentImplementation(java.util.RandomNumberMaker)
                 } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
                     println("**** Session-level pico components registered by Groovy")
-
+                    component(class:java.util.Random)
                 } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
                     println("**** Request-level pico components registered by Groovy")
-                    component(class:java.util.Random)
                     component(class:org.nanocontainer.nanowar.sample.nanoweb.NumberToGuess)
                 }
             }

@@ -29,7 +29,11 @@ public class ForTestSakeAppender implements Appender {
 
 	public void addFilter(Filter filter) {
 	}
-
+	
+	public ForTestSakeAppender() {
+		CONTENT = "";
+	}
+	
 	/**
 	 * @see org.apache.log4j.Appender#getFilter()
 	 */
@@ -47,6 +51,7 @@ public class ForTestSakeAppender implements Appender {
 	 * @see org.apache.log4j.Appender#close()
 	 */
 	public void close() {
+		CONTENT = "";
 	}
 
 	/**

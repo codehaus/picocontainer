@@ -48,6 +48,7 @@ public abstract class AbstractComponentMonitorTestCase extends TestCase {
     protected abstract String getLogPrefix();
 
     protected void tearDown() throws Exception {
+    	ForTestSakeAppender.CONTENT = "";
     }
 
     public void testShouldTraceInstantiating() throws Exception {

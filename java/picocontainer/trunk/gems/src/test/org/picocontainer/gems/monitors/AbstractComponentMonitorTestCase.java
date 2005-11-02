@@ -8,10 +8,9 @@
 package org.picocontainer.gems.monitors;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -26,19 +25,18 @@ import org.picocontainer.monitors.AbstractComponentMonitor;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
+ * @author Juze Peleteiro
  * @version $Revision: 2024 $
  */
 public abstract class AbstractComponentMonitorTestCase extends TestCase {
     private ComponentMonitor componentMonitor;
     private Constructor constructor;
     private Method method;
-    private File logFile;
     
     protected void setUp() throws Exception {
         constructor = getConstructor();
         method = getMethod();
         componentMonitor = makeComponentMonitor();
-        logFile = new File("target/monitor.log");
     }
 
     protected abstract ComponentMonitor makeComponentMonitor();
@@ -83,7 +81,7 @@ public abstract class AbstractComponentMonitorTestCase extends TestCase {
     }
 
     protected void assertFileContent(String line) throws IOException{        
-        List lines = toLines( new FileReader( logFile ) );
+        List lines = toLines( new StringReader( ForTestSakeAppender.CONTENT ) );
         assertTrue("Line '" + line + "' not found", lines.toString().indexOf(line) > 0);
     }
     

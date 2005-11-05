@@ -10,7 +10,7 @@
 	<name>PicoContainer Gems</name>
 	<scm>
 		<connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/gems</connection>
-		<developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/gems</developerConnection>
+		<developerConnection>svn+ssh://svn.picocontainer.codehaus.org/scm/picocontainer/java/picocontainer/trunk/gems</developerConnection>
 		<url>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/gems</url>
 	</scm>
 	<dependencies>

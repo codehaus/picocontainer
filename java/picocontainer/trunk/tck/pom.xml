@@ -10,7 +10,7 @@
 	<name>PicoContainer TCK</name>
 	<scm>
 		<connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/tck</connection>
-		<developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/tck</developerConnection>
+		<developerConnection>svn+ssh://svn.picocontainer.codehaus.org/scm/picocontainer/java/picocontainer/trunk/tck</developerConnection>
 		<url>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/tck</url>
 	</scm>
 	<dependencies>

@@ -12,10 +12,10 @@
         
         <action name="cheese" class="org.nanocontainer.nanowar.sample.webwork.CheeseXWorkAction">
 	        <result name="input" type="dispatcher">
-		        <param name="location">/cheese.jsp</param>
+		        <param name="location">/index.vm</param>
 	        </result>
             <result name="success" type="dispatcher">
-                <param name="location">/cheese.jsp</param>
+                <param name="location">/index.vm</param>
             </result>
 	        <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="validation"/>

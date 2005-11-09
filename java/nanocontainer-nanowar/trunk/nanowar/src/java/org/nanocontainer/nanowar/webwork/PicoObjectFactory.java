@@ -28,7 +28,7 @@ import com.opensymphony.xwork.ObjectFactory;
 public class PicoObjectFactory extends ObjectFactory {
 
     private ActionsContainerFactory actionsContainerFactory = new ActionsContainerFactory();
-	private HttpServletRequest request;
+    private final ObjectReference objectReference;
 
     /**
      * Creates a PicoObjectFactory with given object reference, 
@@ -37,7 +37,7 @@ public class PicoObjectFactory extends ObjectFactory {
      * @param objectReference the ObjectReference 
      */
 	public PicoObjectFactory(ObjectReference objectReference) {
-		this.request = (HttpServletRequest)objectReference.get();
+        this.objectReference = objectReference;
 	}
 
     /**
@@ -46,7 +46,7 @@ public class PicoObjectFactory extends ObjectFactory {
      * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.Class)
      */
 	public Object buildBean(Class actionClass) throws Exception {
-        MutablePicoContainer actionsContainer = actionsContainerFactory.getActionsContainer(request);
+        MutablePicoContainer actionsContainer = actionsContainerFactory.getActionsContainer((HttpServletRequest)objectReference.get());
         Object action = actionsContainer.getComponentInstance(actionClass);
         
         if (action == null) {

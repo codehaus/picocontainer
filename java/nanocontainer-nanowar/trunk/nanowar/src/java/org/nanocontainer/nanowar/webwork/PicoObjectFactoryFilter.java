@@ -37,6 +37,7 @@ public class PicoObjectFactoryFilter implements Filter {
 
 	public void init(FilterConfig config) throws ServletException {
 		objectReference = new ThreadLocalReference();
+		ObjectFactory.setObjectFactory(new PicoObjectFactory(objectReference));
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -44,9 +45,8 @@ public class PicoObjectFactoryFilter implements Filter {
 		if (httpServletRequest.getAttribute(ALREADY_FILTERED_KEY) == null) {
 			httpServletRequest.setAttribute(ALREADY_FILTERED_KEY, Boolean.TRUE);
 			objectReference.set(httpServletRequest);
-             ObjectFactory.setObjectFactory(new PicoObjectFactory(objectReference));
 			try {
- 				chain.doFilter(request, response);
+				chain.doFilter(request, response);
 			} finally {
 				objectReference.set(null);
 			}

@@ -18,10 +18,10 @@
             <form action="cheese!save.action">
                 <tr>
                     <td>
-                        <input value="<%= cheese.name %>" name="cheese/name">
+                        <input value="<ww:property value="cheese.name"/>" name="cheese/name">
                     </td>
                     <td>
-                        <input value="<%= cheese.country %>" name="cheese/country">
+                        <input value="<ww:property value="cheese.country"/>" name="cheese/country">
                      </td>
                      <td>
                           <input type="submit" value="Store"/>

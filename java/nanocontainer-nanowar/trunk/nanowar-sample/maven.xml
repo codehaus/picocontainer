@@ -49,7 +49,7 @@
         <ant:echo message="Tomcat Home is '${env.TOMCAT_HOME}'"/>
         <ant:copy todir="${env.TOMCAT_HOME}/webapps">
             <ant:fileset dir="${maven.build.dir}">
-                <ant:include name="${pom.artifactId}*nanoweb*war"/>
+                <ant:include name="${pom.artifactId}-*.war"/>
             </ant:fileset>
         </ant:copy>
         <ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}-nanoweb" failonerror="false"/>

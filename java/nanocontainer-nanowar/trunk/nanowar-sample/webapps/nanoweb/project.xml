@@ -32,13 +32,17 @@
      </dependencies>
      
 	<build>
-        <sourceDirectory>${basedir}/../src/java</sourceDirectory>
+        <sourceDirectory>${basedir}/../../src/java</sourceDirectory>
 		<sourceModifications>
 			<sourceModification>
 				<className>org.nanocontainer.NonExistent</className>
 		      	<includes>
 		        		<include>org/nanocontainer/nanowar/sample/**</include>
 		      	</includes>
+		      	<excludes>
+		        		<exclude>org/nanocontainer/nanowar/sample/struts/**</exclude>
+		        		<exclude>org/nanocontainer/nanowar/sample/webwork/**</exclude>
+		      	</excludes>
 			</sourceModification>
 		</sourceModifications>
     </build>

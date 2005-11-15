@@ -27,6 +27,15 @@
 
         <dependency>
             <groupId>opensymphony</groupId>
+            <artifactId>webwork1</artifactId>
+            <jar>webwork-1.4.jar</jar>
+            <properties>
+                <war.bundle>false</war.bundle>
+            </properties>
+        </dependency>
+        
+        <dependency>
+            <groupId>opensymphony</groupId>
             <artifactId>oscore</artifactId>
             <version>2.2.4</version>
             <properties>
@@ -34,31 +43,19 @@
             </properties>
         </dependency>
 
-        <dependency>
-            <id>commons-logging</id>
-            <version>1.0.4</version>
-            <properties>
-                <war.bundle>true</war.bundle>
-            </properties>
-        </dependency>
-        
-        <dependency>
-            <id>log4j</id>
-            <version>1.2.8</version>
-            <properties>
-                <war.bundle>true</war.bundle>
-            </properties>
-        </dependency>
     </dependencies>
     
 	<build>
-        <sourceDirectory>${basedir}/../src/java</sourceDirectory>
+        <sourceDirectory>${basedir}/../../src/java</sourceDirectory>
 		<sourceModifications>
 			<sourceModification>
 				<className>org.nanocontainer.NonExistent</className>
 		      	<includes>
 		        		<include>org/nanocontainer/nanowar/sample/**</include>
 		      	</includes>
+		      	<excludes>
+		        		<exclude>org/nanocontainer/nanowar/sample/struts/**</exclude>
+		      	</excludes>
 			</sourceModification>
 		</sourceModifications>
     </build>

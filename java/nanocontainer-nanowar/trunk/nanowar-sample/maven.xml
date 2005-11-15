@@ -5,6 +5,7 @@
     xmlns:define="jelly:define"
     xmlns:sample="sample">
 
+<!--
     <j:set var="webapp" value="${maven.build.dir}/${pom.artifactId}"/>
     <j:set var="maven.war.src" value="${webapp}"/>
     <define:taglib uri="sample">
@@ -18,15 +19,6 @@
 		   <jar jarfile="${maven.build.dir}/${pom.artifactId}-${framework}.war">
             	   <fileset dir="${pom.getPluginContext('maven-war-plugin').getVariable('maven.war.webapp.dir')}"/>
 	       </jar>
-        </define:tag>
-        <define:tag name="deployWar">
-            <j:set var="framework" value="${framework}"/>
-            <!-- Need to defined a different pom for each framework
-            <artifact:deploy
-                artifact="${maven.build.dir}/${pom.artifactId}-${framework}.war"
-                type="war"
-                project="${pom}"/>
-            -->
         </define:tag>
     </define:taglib>
 
@@ -75,5 +67,23 @@
             </j:if>
         </j:forEach>
     </preGoal>
+-->
+
+	<postGoal name="war:webapp">
+		<ant:copy todir="${maven.war.webapp.dir}" overwrite="true">
+			<ant:fileset dir="webapp" />
+  		</ant:copy>                 		
+    </postGoal>
+
+    <goal name="deploy:tomcat" prereqs="war:install">
+        <ant:property environment="env"/>
+        <ant:echo message="Tomcat Home is '${env.TOMCAT_HOME}'"/>
+        <ant:copy todir="${env.TOMCAT_HOME}/webapps">
+            <ant:fileset dir="${maven.build.dir}">
+                <ant:include name="${pom.artifactId}.war"/>
+            </ant:fileset>
+        </ant:copy>
+        <ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}" failonerror="false"/>
+    </goal>
 
 </project>

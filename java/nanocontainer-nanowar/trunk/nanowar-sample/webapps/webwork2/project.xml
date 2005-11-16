@@ -43,6 +43,15 @@
             </properties>
         </dependency>
 
+        <dependency>
+            <id>ognl</id>
+            <version>2.6.7</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+
     </dependencies>
     
 	<build>

@@ -6,13 +6,15 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.webwork;
+package org.nanocontainer.nanowar.webwork2;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.nanocontainer.nanowar.KeyConstants;
+import org.nanocontainer.nanowar.webwork.TestAction;
+import org.nanocontainer.nanowar.webwork2.PicoObjectFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.DefaultPicoContainer;

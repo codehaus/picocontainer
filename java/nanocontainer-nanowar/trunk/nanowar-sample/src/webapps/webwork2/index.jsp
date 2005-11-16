@@ -28,16 +28,16 @@
                      </td>
                  </tr>
              </form>
-             <ww:iterator value="cheeseStore.cheeses">
+             <ww:iterator value="cheeses">
                 <tr>
                     <td style="vertical-align: top;">
-                        <ww:property value="name"/>"
+                        <ww:property value="cheese.name"/>"
                     </td>
                     <td style="vertical-align: top;">
-                        <ww:property value="country"/>"
+                        <ww:property value="cheese.country"/>"
                     </td>
                     <td style="vertical-align: top;"><br>
-                        <a href="cheese!remove.action?cheese/name=$cheese.name">Dispose</a>
+                        <a href="cheese!remove.action?cheese/name=<ww:property value="cheese.name"/>">Dispose</a>
                     </td>
                 </tr>
             </ww:iterator>

@@ -8,7 +8,6 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork2;
 
-import org.nanocontainer.nanowar.webwork.PicoWebWork2ServletDispatcher;
 
 /**
  * @deprecated Use PicoWebWork2ServletDispatcher

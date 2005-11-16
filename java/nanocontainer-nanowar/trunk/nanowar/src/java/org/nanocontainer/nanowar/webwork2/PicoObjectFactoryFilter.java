@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.webwork;
+package org.nanocontainer.nanowar.webwork2;
 
 import java.io.IOException;
 

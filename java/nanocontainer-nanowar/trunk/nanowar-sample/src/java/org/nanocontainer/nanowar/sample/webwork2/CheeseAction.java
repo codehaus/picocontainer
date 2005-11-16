@@ -26,9 +26,11 @@ public class CheeseAction extends ActionSupport {
 
     public CheeseAction(CheeseService cheeseService) {
         this.cheeseService = cheeseService;
+        System.err.println("--> new CheeseAction()");
     }
     
     public Cheese getCheese() {
+        System.err.println("--> getCheese()");
         return cheese;
     }
     
@@ -37,6 +39,7 @@ public class CheeseAction extends ActionSupport {
     }
     
     public String doSave() {
+        System.err.println("--> saving " + cheese);
         try {
             cheeseService.save(cheese);
             return SUCCESS;

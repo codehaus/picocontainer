@@ -19,9 +19,9 @@ public class Cheese implements Serializable {
     private String name;
     private String country;
 
-
     public Cheese() {
         // default constructor used by some frameworks
+        System.err.println("--> new Cheese()1");
     }
 
     public Cheese(String name, String country) {
@@ -33,22 +33,29 @@ public class Cheese implements Serializable {
         if (country == null) {
             throw new NullPointerException("country");
         }
+        System.err.println("--> new Cheese()2");
     }
 
     public String getName() {
+        System.err.println("--> getName() " + name);
         return name;
+
     }
 
     public void setName( String name ) {
         this.name = name;
+        System.err.println("--> setName() " + name);
     }
     
     public String getCountry() {
+        System.err.println("--> getCountry() " + country);
         return country;
+
     }
     
     public void setCountry( String country ) {
         this.country = country;
+        System.err.println("--> setCountry() " + country);
     }
 
     public String toString() {

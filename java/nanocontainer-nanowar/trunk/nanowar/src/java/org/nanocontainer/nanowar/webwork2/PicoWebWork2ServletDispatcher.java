@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.webwork;
+package org.nanocontainer.nanowar.webwork2;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +31,7 @@ public class PicoWebWork2ServletDispatcher extends ServletDispatcher {
 
     public PicoWebWork2ServletDispatcher() {
         super();
-       ActionProxyFactory.setFactory(new DefaultActionProxyFactory());
+        ActionProxyFactory.setFactory(new PicoActionProxyFactory());
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {

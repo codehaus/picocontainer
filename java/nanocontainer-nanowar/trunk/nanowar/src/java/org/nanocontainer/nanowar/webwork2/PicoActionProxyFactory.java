@@ -6,13 +6,15 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.webwork;
+package org.nanocontainer.nanowar.webwork2;
 
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.ActionProxy;
 import com.opensymphony.xwork.DefaultActionProxyFactory;
 
 import java.util.Map;
+
+import org.nanocontainer.nanowar.webwork2.PicoActionInvocation;
 
 /**
  * Extension of XWork's {@link com.opensymphony.xwork.ActionProxyFactory ActionProxyFactory}

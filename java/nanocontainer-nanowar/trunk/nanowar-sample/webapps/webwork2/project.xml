@@ -24,15 +24,6 @@
                 <war.bundle>true</war.bundle>
             </properties>
         </dependency>
-
-        <dependency>
-            <groupId>opensymphony</groupId>
-            <artifactId>webwork1</artifactId>
-            <jar>webwork-1.4.jar</jar>
-            <properties>
-                <war.bundle>false</war.bundle>
-            </properties>
-        </dependency>
         
         <dependency>
             <groupId>opensymphony</groupId>

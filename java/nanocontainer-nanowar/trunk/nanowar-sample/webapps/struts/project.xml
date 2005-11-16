@@ -24,7 +24,9 @@
 		        		<include>org/nanocontainer/nanowar/sample/**</include>
 		      	</includes>
 		      	<excludes>
-		        		<exclude>org/nanocontainer/nanowar/sample/webwork/**</exclude>
+		        		<exclude>org/nanocontainer/nanowar/sample/nanoweb/**</exclude>
+		        		<exclude>org/nanocontainer/nanowar/sample/webwork1/**</exclude>
+		        		<exclude>org/nanocontainer/nanowar/sample/webwork2/**</exclude>
 		      	</excludes>
 			</sourceModification>
 		</sourceModifications>

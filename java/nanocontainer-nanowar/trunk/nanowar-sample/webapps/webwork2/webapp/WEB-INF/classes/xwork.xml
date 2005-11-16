@@ -10,7 +10,7 @@
 
         <default-interceptor-ref name="defaultStack"/>
         
-        <action name="cheese" class="org.nanocontainer.nanowar.sample.webwork.CheeseXWorkAction">
+        <action name="cheese" class="org.nanocontainer.nanowar.sample.webwork2.CheeseAction">
 	        <result name="input" type="dispatcher">
 		        <param name="location">/index.jsp</param>
 	        </result>

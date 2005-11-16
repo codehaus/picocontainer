@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.sample.webwork;
+package org.nanocontainer.nanowar.sample.webwork2;
 
 import org.nanocontainer.nanowar.sample.model.Cheese;
 import org.nanocontainer.nanowar.sample.service.CheeseService;
@@ -19,12 +19,12 @@ import com.opensymphony.xwork.ActionSupport;
  * @author Mauro Talevi
  * @version $Revision: 2099 $
  */
-public class CheeseXWorkAction extends ActionSupport {
+public class CheeseAction extends ActionSupport {
 
     private final CheeseService cheeseService;
     private Cheese cheese = new Cheese();
 
-    public CheeseXWorkAction(CheeseService cheeseService) {
+    public CheeseAction(CheeseService cheeseService) {
         this.cheeseService = cheeseService;
     }
     

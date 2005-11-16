@@ -10,9 +10,9 @@
             pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)
             if(assemblyScope instanceof javax.servlet.ServletContext) {
                 println("**** Webapp-level pico components registered by Groovy")
+                pico.registerComponentImplementation(org.nanocontainer.nanowar.sample.dao.simple.MemoryCheeseDao)
             } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
                 println("**** Session-level pico components registered by Groovy")
-                pico.registerComponentImplementation(org.nanocontainer.nanowar.sample.dao.simple.MemoryCheeseDao)
                 pico.registerComponentImplementation("cheeseStore", org.nanocontainer.nanowar.sample.service.defaults.DefaultCheeseService)
             } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
                 println("**** Request-level pico components registered by Groovy")

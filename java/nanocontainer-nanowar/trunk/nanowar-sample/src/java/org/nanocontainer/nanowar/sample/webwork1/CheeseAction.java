@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.sample.webwork;
+package org.nanocontainer.nanowar.sample.webwork1;
 
 import org.nanocontainer.nanowar.sample.model.Cheese;
 import org.nanocontainer.nanowar.sample.service.CheeseService;
@@ -15,7 +15,7 @@ import webwork.action.ActionSupport;
 import webwork.action.CommandDriven;
 
 /**
- * Example of a WebWork action that relies on constructor injection.
+ * Example of a WebWork1 action that relies on constructor injection.
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */

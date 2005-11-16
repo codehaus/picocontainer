@@ -6,15 +6,15 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.sample.webwork;
+package org.nanocontainer.nanowar.sample.webwork1;
 
 import junit.framework.TestCase;
 
 import org.nanocontainer.nanowar.sample.dao.simple.MemoryCheeseDao;
 import org.nanocontainer.nanowar.sample.service.defaults.DefaultCheeseService;
-import org.nanocontainer.nanowar.sample.webwork.CheeseAction;
+import org.nanocontainer.nanowar.sample.webwork1.CheeseAction;
 /**
- * Simple test case to demonstrate webwork action testing
+ * Simple test case to demonstrate webwork1 action testing
  * @author Konstantin Pribluda
  *
  */

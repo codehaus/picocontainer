@@ -41,6 +41,9 @@ public class CheeseActionTest extends TestCase {
         assertEquals(0, service.getCheeses().size());
         
     }
+    public void testFoo() {
+
+    }
 }
 // SNIPPET END: testcase
 

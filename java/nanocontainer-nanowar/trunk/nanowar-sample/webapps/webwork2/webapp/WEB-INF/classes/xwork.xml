@@ -9,7 +9,17 @@
     <package name="default" extends="webwork-default">
 
         <default-interceptor-ref name="defaultStack"/>
-        
+
+        <action name="cheeses" class="org.nanocontainer.nanowar.sample.webwork2.CheeseInventory">
+            <result name="success">cheeses.jsp</result>
+        </action>
+
+        <action name="addcheese" class="org.nanocontainer.nanowar.sample.webwork2.AddCheese">
+            <result name="success">cheeses.action</result>
+            <result name="input">cheeses.action</result>
+        </action>
+
+        <!--
         <action name="cheese" class="org.nanocontainer.nanowar.sample.webwork2.CheeseAction">
 	        <result name="input" type="dispatcher">
 		        <param name="location">/index.jsp</param>
@@ -20,7 +30,8 @@
 	        <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="validation"/>
         </action>
-        
+        -->
+
     </package>
 
 </xwork>

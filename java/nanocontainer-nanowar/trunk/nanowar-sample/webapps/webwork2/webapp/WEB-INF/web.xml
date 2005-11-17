@@ -33,7 +33,7 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>cheeses.action</welcome-file>
     </welcome-file-list>
 
     <taglib>

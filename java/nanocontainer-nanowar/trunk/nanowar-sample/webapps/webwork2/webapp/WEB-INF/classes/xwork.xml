@@ -15,10 +15,15 @@
         </action>
 
         <action name="addcheese" class="org.nanocontainer.nanowar.sample.webwork2.AddCheese">
-            <result name="success">cheeses.action</result>
-            <result name="input">cheeses.action</result>
+            <result name="input">cheeses.jsp</result>
+            <result name="success" type="redirect">cheeses.action</result>
         </action>
 
+        <action name="removecheese" class="org.nanocontainer.nanowar.sample.webwork2.RemoveCheese">
+            <result name="input">cheeses.jsp</result>
+            <result name="success" type="redirect">cheeses.action</result>
+        </action>
+        
         <!--
         <action name="cheese" class="org.nanocontainer.nanowar.sample.webwork2.CheeseAction">
 	        <result name="input" type="dispatcher">

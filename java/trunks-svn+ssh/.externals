@@ -1,0 +1,12 @@
+picocontainer svn+ssh://svn.picocontainer.codehaus.org/home/projects/picocontainer/scm/java/picocontainer/trunk
+nanocontainer svn+ssh://svn.picocontainer.codehaus.org/home/projects/picocontainer/scm/java/nanocontainer/trunk
+microcontainer svn+ssh://svn.picocontainer.codehaus.org/home/projects/picocontainer/scm/java/microcontainer/trunk
+ioc svn+ssh://svn.picocontainer.codehaus.org/home/projects/picocontainer/scm/java/nanocontainer-ioc/trunk
+nanowar svn+ssh://svn.picocontainer.codehaus.org/home/projects/picocontainer/scm/java/nanocontainer-nanowar/trunk
+remoting svn+ssh://svn.picocontainer.codehaus.org/home/projects/picocontainer/scm/java/nanocontainer-remoting/trunk
+persistence svn+ssh://svn.picocontainer.codehaus.org/home/projects/picocontainer/scm/java/nanocontainer-persistence/trunk
+sandbox svn+ssh://svn.picocontainer.codehaus.org/home/projects/picocontainer/scm/java/nanocontainer-sandbox/trunk
+tools svn+ssh://svn.picocontainer.codehaus.org/home/projects/picocontainer/scm/java/nanocontainer-tools/trunk
+demos svn+ssh://svn.picocontainer.codehaus.org/home/projects/picocontainer/scm/java/demos/trunk
+maven-plugins svn+ssh://svn.picocontainer.codehaus.org/home/projects/picocontainer/scm/java/maven-plugins/trunk
+

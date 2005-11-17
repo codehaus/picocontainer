@@ -86,4 +86,15 @@
         <ant:delete dir="${env.TOMCAT_HOME}/webapps/${pom.artifactId}" failonerror="false"/>
     </goal>
 
+    <goal name="deploy:jetty" prereqs="war:install">
+        <ant:property environment="env"/>
+        <ant:echo message="Jetty Home is '${env.JETTY_HOME}'"/>
+        <ant:copy todir="${env.JETTY_HOME}/webapps">
+            <ant:fileset dir="${maven.build.dir}">
+                <ant:include name="${pom.artifactId}.war"/>
+            </ant:fileset>
+        </ant:copy>
+    </goal>
+
+
 </project>

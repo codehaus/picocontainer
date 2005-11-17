@@ -32,13 +32,15 @@ public class CheeseActionTest extends TestCase {
         action.getCheese().setCountry("Netherlands");
         action.setCommand("save");
         assertEquals(CheeseAction.SUCCESS,action.execute());
-        
-        assertEquals(1, service.getCheeses().size());
+
+        // Cheddar exists already -- count 1
+
+        assertEquals(2, service.getCheeses().size());
         
         action.setCommand("remove");
         assertEquals(CheeseAction.SUCCESS,action.execute());
         
-        assertEquals(0, service.getCheeses().size());
+        assertEquals(1, service.getCheeses().size());
         
     }
     public void testFoo() {

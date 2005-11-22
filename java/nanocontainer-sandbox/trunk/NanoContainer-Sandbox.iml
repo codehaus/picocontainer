@@ -142,7 +142,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/asm/jars/asm-util-2.0.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/asm/jars/asm-util-2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -151,7 +151,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/asm/jars/asm-2.0.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/asm/jars/asm-2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -187,7 +187,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/groovy/jars/groovy-1.0-jsr-03-SNAPSHOT.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/groovy/jars/groovy-1.0-jsr-04.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

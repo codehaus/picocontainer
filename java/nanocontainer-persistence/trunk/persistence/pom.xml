@@ -17,64 +17,34 @@
 		<dependency>
 			<groupId>org.picocontainer</groupId>
 			<artifactId>picocontainer</artifactId>
-			<version>1.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.picocontainer</groupId>
 			<artifactId>picocontainer-gems</artifactId>
-			<version>1.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nanocontainer</groupId>
 			<artifactId>nanocontainer</artifactId>
-			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
-			<version>1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate</artifactId>
-			<version>3.0.5</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.transaction</groupId>
-					<artifactId>jta</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.security</groupId>
-					<artifactId>jacc</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.hibernate</groupId>
 			<artifactId>hibernate</artifactId>
-			<version>2.1.8</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.transaction</groupId>
-					<artifactId>jta</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.security</groupId>
-					<artifactId>jacc</artifactId>
-				</exclusion>
-			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-full</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>geronimo-spec</groupId>
 			<artifactId>geronimo-spec-jta</artifactId>
-			<version>1.0.1B-rc4</version>
-		</dependency>
-		<!-- test scoped dependencies -->
-		<dependency>
-			<groupId>hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>1.7.3.0</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

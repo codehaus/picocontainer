@@ -19,7 +19,7 @@ import java.io.PrintWriter;
 
 /**
  * 
- * @author Grégory Joseph
+ * @author Gr√©gory Joseph
  */
 public class FooFilter implements Filter {
     private static int initCounter;

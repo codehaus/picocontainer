@@ -32,7 +32,7 @@ import com.meterware.servletunit.ServletUnitClient;
 
 /**
  * 
- * @author Grégory Joseph
+ * @author Gr√©gory Joseph
  */
 public class AbstractServletTestCase extends MockObjectTestCase {
     private ServletRunner sr;

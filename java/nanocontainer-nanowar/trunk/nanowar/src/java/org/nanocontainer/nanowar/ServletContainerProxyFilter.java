@@ -46,7 +46,7 @@ import org.picocontainer.PicoInitializationException;
 * might have been set up at request level in your composer!
 * </p>
 *
-* @author Grégory Joseph
+* @author Gr&eacute;gory Joseph
 * @author Mauro Talevi
 */
 public class ServletContainerProxyFilter implements Filter {

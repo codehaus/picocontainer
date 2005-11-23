@@ -9,7 +9,7 @@
 package org.nanocontainer.nanowar;
 /**
  * 
- * @author Grégory Joseph
+ * @author Gr&eacute;gory Joseph
  */
 public class Foo {
     public String peek() {

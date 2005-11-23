@@ -18,7 +18,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 
 
 /**
- * @author Grégory Joseph
+ * @author Gr&eacute;gory Joseph
  * @author Mauro Talevi
  */
 public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase {

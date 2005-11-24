@@ -1,5 +1,7 @@
 package org.picocontainer.defaults;
 
+import java.beans.PropertyEditor;
+import java.beans.PropertyEditorManager;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -152,6 +154,13 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
             }
         } else if (typeName.equals(Class.class.getName()) || typeName.equals("class")) {
             return classLoader.loadClass(value);
+        } else {
+            final Class clazz = classLoader.loadClass(typeName);
+            final PropertyEditor editor = PropertyEditorManager.findEditor(clazz);
+            if (editor != null) {
+                editor.setAsText(value);
+                return editor.getValue();
+            }
         }
         return null;
     }

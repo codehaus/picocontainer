@@ -23,7 +23,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Obie Fernandez
  * @version $Revision$
  */
-public class NullComponentMonitor implements ComponentMonitor, Serializable {
+public class NullComponentMonitor extends DefaultComponentMonitor implements ComponentMonitor, Serializable {
     private static NullComponentMonitor instance;
 
     public void instantiating(Constructor constructor) {

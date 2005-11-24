@@ -25,7 +25,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: 1882 $
  */
-public class WriterComponentMonitor extends AbstractComponentMonitor {
+public class WriterComponentMonitor extends AbstractLoggingComponentMonitor {
     private PrintWriter out;
 
     public WriterComponentMonitor(Writer out) {
@@ -54,6 +54,11 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
 
     public void invocationFailed(Method method, Object instance, Exception e) {
         out.println(format(INVOCATION_FAILED, new Object[]{method, instance, e.getMessage()}));
+    }
+
+    public void lifecycleFailure(Method method, Object instance, RuntimeException cause) {
+        out.println(format(LIFECYCLE_FAILURE, new Object[]{method, instance, cause.getMessage()}));
+        super.lifecycleFailure(method, instance, cause);
     }
 
 }

@@ -13,6 +13,7 @@ package org.picocontainer.defaults;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.lang.reflect.Method;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -20,11 +21,15 @@ import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.testmodel.RecordingLifecycle.FiveTriesToBeMalicious;
 import org.picocontainer.testmodel.RecordingLifecycle.Four;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
 import org.picocontainer.testmodel.RecordingLifecycle.Three;
 import org.picocontainer.testmodel.RecordingLifecycle.Two;
+import org.picocontainer.testmodel.Touchable;
+import org.jmock.MockObjectTestCase;
+import org.jmock.Mock;
 
 /**
  * This class tests the lifecycle aspects of DefaultPicoContainer.
@@ -34,7 +39,7 @@ import org.picocontainer.testmodel.RecordingLifecycle.Two;
  * @author Ward Cunningham
  * @version $Revision$
  */
-public class DefaultPicoContainerLifecycleTestCase extends TestCase {
+public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
 
     public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
@@ -347,6 +352,51 @@ public class DefaultPicoContainerLifecycleTestCase extends TestCase {
         pico.dispose();
 
         assertEquals("start>stop>dispose>", sb.toString());
+    }
+
+
+    public void testLifecycleDoesNotRecoverwithDefaultComponentMonitor() throws NoSuchMethodException {
+
+        Mock s1 = mock(Startable.class, "s1");
+        s1.expects(once()).method("start").will(throwException(new RuntimeException("I do not want to start myself")));
+
+        Mock s2 = mock(Startable.class, "s2");
+
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        dpc.registerComponentInstance("foo", s1.proxy());
+        dpc.registerComponentInstance("bar", s2.proxy());
+        try {
+            dpc.start();
+        } catch (RuntimeException e) {
+            assertEquals("I do not want to start myself", e.getMessage());
+        }
+        try {
+            dpc.stop();
+        } catch (Exception e) {
+            assertEquals("Not started",e.getMessage());
+        }
+    }
+
+    public void testLifecycleCanRecoverWithCustomComponentMonitor() throws NoSuchMethodException {
+
+        Mock s1 = mock(Startable.class, "s1");
+        s1.expects(once()).method("start").will(throwException(new RuntimeException("I do not want to start myself")));
+        s1.expects(once()).method("stop");
+
+        Mock s2 = mock(Startable.class, "s2");
+        s2.expects(once()).method("start");
+        s2.expects(once()).method("stop");
+
+        Mock cm = mock(ComponentMonitor.class);
+        cm.expects(once()).method("lifecycleFailure").with(isA(Method.class),same(s1.proxy()),isA(RuntimeException.class) );
+        cm.expects(atLeastOnce()).method("invoking");
+        cm.expects(atLeastOnce()).method("invoked");
+
+        DefaultPicoContainer dpc = new DefaultPicoContainer((ComponentMonitor) cm.proxy());
+        dpc.registerComponentInstance("foo", s1.proxy());
+        dpc.registerComponentInstance("bar", s2.proxy());
+        dpc.start();
+        dpc.stop();
     }
 
 }

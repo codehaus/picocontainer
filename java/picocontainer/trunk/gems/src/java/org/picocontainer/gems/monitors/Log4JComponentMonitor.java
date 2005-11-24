@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
-import org.picocontainer.monitors.AbstractComponentMonitor;
+import org.picocontainer.monitors.AbstractLoggingComponentMonitor;
 
 
 /**
@@ -30,7 +30,7 @@ import org.picocontainer.monitors.AbstractComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: $
  */
-public class Log4JComponentMonitor extends AbstractComponentMonitor implements Serializable {
+public class Log4JComponentMonitor extends AbstractLoggingComponentMonitor implements Serializable {
 
     private Logger logger;
 
@@ -44,7 +44,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     }
     
     /**
-     * Creates a Log4JComponentMonitor with a given Logger instance class. 
+     * Creates a Log4JComponentMonitor with a given Logger instance class.
      * The class name is used to retrieve the Logger instance.
      *
      * @param loggerClass the class of the Logger
@@ -112,6 +112,14 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
         if (logger.isEnabledFor(Priority.WARN)) {
             logger.warn(format(INVOCATION_FAILED, new Object[]{method, instance, e.getMessage()}),e);
         }
+    }
+
+    public void lifecycleFailure(Method method, Object instance, RuntimeException cause) {
+        Logger logger = getLogger(method);
+        if (logger.isEnabledFor(Priority.WARN)) {
+            logger.warn(format(LIFECYCLE_FAILURE, new Object[]{method, instance, cause.getMessage()}), cause);
+        }
+        super.lifecycleFailure(method, instance, cause);
     }
 
     protected Logger getLogger(Member member) {

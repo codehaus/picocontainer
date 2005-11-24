@@ -42,8 +42,12 @@ public class DefaultLifecycleStrategy extends AbstractMonitoringLifecylceStrateg
         if (component != null && component instanceof Startable) {
             long str = System.currentTimeMillis();
             currentMonitor().invoking(start, component);
-            ((Startable) component).start();
-            currentMonitor().invoked(start, component, System.currentTimeMillis() - str);
+            try {
+                ((Startable) component).start();
+                currentMonitor().invoked(start, component, System.currentTimeMillis() - str);
+            } catch (RuntimeException cause) {
+                currentMonitor().lifecycleFailure(start, component, cause); // may re-throw
+            }
         }
     }
 
@@ -51,8 +55,12 @@ public class DefaultLifecycleStrategy extends AbstractMonitoringLifecylceStrateg
         if (component != null && component instanceof Startable) {
             long str = System.currentTimeMillis();
             currentMonitor().invoking(stop, component);
-            ((Startable) component).stop();
-            currentMonitor().invoked(stop, component, System.currentTimeMillis() - str);
+            try {
+                ((Startable) component).stop();
+                currentMonitor().invoked(stop, component, System.currentTimeMillis() - str);
+            } catch (RuntimeException cause) {
+                currentMonitor().lifecycleFailure(stop, component, cause); // may re-throw
+            }
         }
     }
 
@@ -60,8 +68,12 @@ public class DefaultLifecycleStrategy extends AbstractMonitoringLifecylceStrateg
         if (component != null && component instanceof Disposable) {
             long str = System.currentTimeMillis();
             currentMonitor().invoking(dispose, component);
-            ((Disposable) component).dispose();
-            currentMonitor().invoked(dispose, component, System.currentTimeMillis() - str);
+            try {
+                ((Disposable) component).dispose();
+                currentMonitor().invoked(dispose, component, System.currentTimeMillis() - str);
+            } catch (RuntimeException cause) {
+                currentMonitor().lifecycleFailure(dispose, component, cause); // may re-throw
+            }
         }
     }
 

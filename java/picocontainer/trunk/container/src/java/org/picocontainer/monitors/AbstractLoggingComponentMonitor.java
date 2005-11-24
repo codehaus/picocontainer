@@ -20,7 +20,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: $
  */
-public abstract class AbstractComponentMonitor implements ComponentMonitor {
+public abstract class AbstractLoggingComponentMonitor extends DefaultComponentMonitor {
 
     public final static String INSTANTIATING = "PicoContainer: instantiating {0}";
     public final static String INSTANTIATED = "PicoContainer: instantiated {0} [{1} ms]";
@@ -28,6 +28,7 @@ public abstract class AbstractComponentMonitor implements ComponentMonitor {
     public final static String INVOKING = "PicoContainer: invoking {0} on {1}";
     public final static String INVOKED = "PicoContainer: invoked {0} on {1} [{2} ms]";
     public final static String INVOCATION_FAILED = "PicoContainer: invocation failed: {0} on {1}, reason: {2}";
+    public final static String LIFECYCLE_FAILURE = "PicoContainer: lifecycle failure: {0} on {1}, reason: {2}";
 
     public static String format(String template, Object[] arguments) {
         return MessageFormat.format(template, arguments);

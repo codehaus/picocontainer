@@ -77,6 +77,10 @@ public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMo
         delegate.invocationFailed(method, instance, e);
     }
 
+    public void lifecycleFailure(Method method, Object instance, RuntimeException cause) {
+        delegate.lifecycleFailure(method,instance, cause);
+    }
+
     /**
      * If the delegate supports a {@link ComponentMonitorStrategy monitor strategy},
      * this is used to changed the monitor while keeping the same delegate.
@@ -105,6 +109,5 @@ public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMo
             throw new NullPointerException("monitor");
         }
     }
-
 
 }

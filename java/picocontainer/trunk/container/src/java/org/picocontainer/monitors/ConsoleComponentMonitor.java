@@ -26,7 +26,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class ConsoleComponentMonitor extends AbstractComponentMonitor {
+public class ConsoleComponentMonitor extends AbstractLoggingComponentMonitor {
 
     private PrintStream out;
 
@@ -42,8 +42,8 @@ public class ConsoleComponentMonitor extends AbstractComponentMonitor {
         out.println(format(INSTANTIATED, new Object[]{constructor, new Long(duration)}));
     }
 
-    public void instantiationFailed(Constructor constructor, Exception e) {
-        out.println(format(INSTANTIATION_FAILED, new Object[]{constructor, e.getMessage()}));
+    public void instantiationFailed(Constructor constructor, Exception cause) {
+        out.println(format(INSTANTIATION_FAILED, new Object[]{constructor, cause.getMessage()}));
     }
 
     public void invoking(Method method, Object instance) {
@@ -54,8 +54,13 @@ public class ConsoleComponentMonitor extends AbstractComponentMonitor {
         out.println(format(INVOKED, new Object[]{method, instance, new Long(duration)}));
     }
 
-    public void invocationFailed(Method method, Object instance, Exception e) {
-        out.println(format(INVOCATION_FAILED, new Object[]{method, instance, e.getMessage()}));
+    public void invocationFailed(Method method, Object instance, Exception cause) {
+        out.println(format(INVOCATION_FAILED, new Object[]{method, instance, cause.getMessage()}));
+    }
+
+    public void lifecycleFailure(Method method, Object instance, RuntimeException cause) {
+        out.println(format(LIFECYCLE_FAILURE, new Object[]{method, instance, cause.getMessage()}));
+        super.lifecycleFailure(method, instance, cause);
     }
 
 

@@ -18,7 +18,7 @@ import java.lang.reflect.Member;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.monitors.AbstractComponentMonitor;
+import org.picocontainer.monitors.AbstractLoggingComponentMonitor;
 
 
 /**
@@ -30,7 +30,7 @@ import org.picocontainer.monitors.AbstractComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: $
  */
-public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor implements Serializable {
+public class CommonsLoggingComponentMonitor extends AbstractLoggingComponentMonitor implements Serializable {
 
     private Log log;
 
@@ -44,7 +44,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     }
 
     /**
-     * Creates a CommonsLoggingComponentMonitor with a given Log instance class. 
+     * Creates a CommonsLoggingComponentMonitor with a given Log instance class.
      * The class name is used to retrieve the Log instance.
      * 
      * @param logClass the class of the Log
@@ -112,6 +112,14 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
         if (log.isWarnEnabled()) {
             log.warn(format(INVOCATION_FAILED, new Object[]{method, instance, e.getMessage()}),e);
         }
+    }
+
+    public void lifecycleFailure(Method method, Object instance, RuntimeException cause) {
+        Log log = getLog(method);
+        if (log.isWarnEnabled()) {
+            log.warn(format(LIFECYCLE_FAILURE, new Object[]{method, instance, cause.getMessage()}), cause);
+        }
+        super.lifecycleFailure(method, instance, cause);
     }
 
     protected Log getLog(Member member) {

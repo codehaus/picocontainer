@@ -388,9 +388,20 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         s2.expects(once()).method("stop");
 
         Mock cm = mock(ComponentMonitor.class);
-        cm.expects(once()).method("lifecycleFailure").with(isA(Method.class),same(s1.proxy()),isA(RuntimeException.class) );
-        cm.expects(atLeastOnce()).method("invoking");
-        cm.expects(atLeastOnce()).method("invoked");
+
+        // s1 expectations
+
+        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("start", null)), same(s1.proxy()));
+        cm.expects(once()).method("lifecycleFailure").with(isA(Method.class),same(s1.proxy()), isA(RuntimeException.class) );
+        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("stop", null)), same(s1.proxy()));
+        cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("stop", null)), same(s1.proxy()), ANYTHING);
+
+        // s2 expectations
+
+        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("start", null)), same(s2.proxy()));
+        cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("start", null)), same(s2.proxy()), ANYTHING);
+        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("stop", null)), same(s2.proxy()));
+        cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("stop", null)), same(s2.proxy()), ANYTHING);
 
         DefaultPicoContainer dpc = new DefaultPicoContainer((ComponentMonitor) cm.proxy());
         dpc.registerComponentInstance("foo", s1.proxy());

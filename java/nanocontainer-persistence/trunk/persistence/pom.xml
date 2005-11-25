@@ -6,7 +6,7 @@
 		<artifactId>nanocontainer-persistence-all</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>nanocontainer-nanowar</artifactId>
+	<artifactId>nanocontainer-persistence</artifactId>
 	<name>NanoContainer Persistence</name>
 	<scm>
 		<connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-persistence/trunk/persistence</connection>

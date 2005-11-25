@@ -20,7 +20,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: $
  */
-public abstract class AbstractLoggingComponentMonitor extends DefaultComponentMonitor {
+public abstract class AbstractLoggingComponentMonitor implements ComponentMonitor {
 
     public final static String INSTANTIATING = "PicoContainer: instantiating {0}";
     public final static String INSTANTIATED = "PicoContainer: instantiated {0} [{1} ms]";

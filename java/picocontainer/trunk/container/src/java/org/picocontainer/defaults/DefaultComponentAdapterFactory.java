@@ -15,6 +15,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.monitors.DefaultComponentMonitor;
 
 /**
  * Creates instances of {@link ConstructorInjectionComponentAdapter} decorated by
@@ -39,7 +40,7 @@ public class DefaultComponentAdapterFactory extends MonitoringComponentAdapterFa
     }
 
     public DefaultComponentAdapterFactory() {
-        this.lifecycleStrategy = new DefaultLifecycleStrategy(new NullComponentMonitor());
+        this.lifecycleStrategy = new DefaultLifecycleStrategy(new DefaultComponentMonitor());
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {

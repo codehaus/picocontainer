@@ -22,6 +22,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.monitors.CollectingComponentMonitor;
 import org.picocontainer.testmodel.RecordingLifecycle.FiveTriesToBeMalicious;
 import org.picocontainer.testmodel.RecordingLifecycle.Four;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
@@ -409,5 +410,32 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         dpc.start();
         dpc.stop();
     }
+
+    public void testLifecycleFailureCanBePickedUpAfterTheEvent() throws NoSuchMethodException {
+
+        Mock s1 = mock(Startable.class, "s1");
+        s1.expects(once()).method("start").will(throwException(new RuntimeException("I do not want to start myself")));
+        s1.expects(once()).method("stop");
+
+        Mock s2 = mock(Startable.class, "s2");
+        s2.expects(once()).method("start");
+        s2.expects(once()).method("stop");
+
+        CollectingComponentMonitor cm = new CollectingComponentMonitor();
+
+        DefaultPicoContainer dpc = new DefaultPicoContainer(cm);
+        dpc.registerComponentInstance("foo", s1.proxy());
+        dpc.registerComponentInstance("bar", s2.proxy());
+
+        dpc.start();
+
+        try {
+            cm.reThrowLifecycleExceptions();
+        } catch (RuntimeException e) {
+            dpc.stop();
+        }
+
+    }
+
 
 }

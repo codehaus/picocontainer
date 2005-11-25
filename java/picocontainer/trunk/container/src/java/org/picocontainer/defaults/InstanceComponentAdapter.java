@@ -11,7 +11,7 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.monitors.DefaultComponentMonitor;
 
 /**
  * <p>
@@ -34,7 +34,7 @@ public class InstanceComponentAdapter extends AbstractComponentAdapter implement
     private LifecycleStrategy lifecycleStrategy;
 
     public InstanceComponentAdapter(Object componentKey, Object componentInstance) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        this(componentKey, componentInstance, new DefaultLifecycleStrategy(new NullComponentMonitor()));
+        this(componentKey, componentInstance, new DefaultLifecycleStrategy(new DefaultComponentMonitor()));
     }
 
     public InstanceComponentAdapter(Object componentKey, Object componentInstance, LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {

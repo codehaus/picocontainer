@@ -30,7 +30,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.monitors.DefaultComponentMonitor;
 
 /**
  * <p/>
@@ -93,7 +93,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent                  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-        this(componentAdapterFactory, new DefaultLifecycleStrategy(new NullComponentMonitor()), parent);
+        this(componentAdapterFactory, new DefaultLifecycleStrategy(new DefaultComponentMonitor()), parent);
     }
 
     /**
@@ -154,7 +154,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
       * @param parent the parent container (used for component dependency lookups).
       */
     public DefaultPicoContainer(LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new NullComponentMonitor(), lifecycleStrategy, parent);
+        this(new DefaultComponentMonitor(), lifecycleStrategy, parent);
     }
 
 

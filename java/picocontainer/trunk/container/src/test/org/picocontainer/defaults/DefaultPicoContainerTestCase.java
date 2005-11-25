@@ -20,7 +20,7 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.alternatives.EmptyPicoContainer;
 import org.picocontainer.monitors.WriterComponentMonitor;
-import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.monitors.DefaultComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -190,7 +190,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     
     public void testStartCapturedByMonitor() {
         final StringBuffer sb = new StringBuffer();
-        DefaultPicoContainer dpc = new DefaultPicoContainer(new NullComponentMonitor() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer(new DefaultComponentMonitor() {
             public void invoking(Method method, Object instance) {
                 sb.append(method.toString());
             }

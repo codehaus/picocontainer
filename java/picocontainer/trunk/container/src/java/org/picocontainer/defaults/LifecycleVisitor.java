@@ -12,6 +12,7 @@ import org.picocontainer.Disposable;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.Startable;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.monitors.DefaultComponentMonitor;
 
 import java.lang.reflect.Method;
 
@@ -65,17 +66,17 @@ public class LifecycleVisitor extends MethodCallingVisitor {
      * @param method the method to call
      * @param ofType the component type
      * @param visitInInstantiationOrder flag for the visiting order
-     * @deprecated since 1.2 in favour of {@link LifecycleManager}
+     * @deprecated since 1.2 in favour of {@link org.picocontainer.LifecycleManager}
      */
     public LifecycleVisitor(Method method, Class ofType, boolean visitInInstantiationOrder) {
-        this(method, ofType, visitInInstantiationOrder, new NullComponentMonitor());
+        this(method, ofType, visitInInstantiationOrder, new DefaultComponentMonitor());
     }
 
     /**
      * Invoke the standard PicoContainer lifecycle for {@link Startable#start()}.
      * 
      * @param node The node to start the traversal.
-     * @deprecated since 1.2 in favour of {@link LifecycleManager}
+     * @deprecated since 1.2 in favour of {@link org.picocontainer.LifecycleManager}
      */
     public static void start(Object node) {
         new LifecycleVisitor(START, Startable.class, true).traverse(node);

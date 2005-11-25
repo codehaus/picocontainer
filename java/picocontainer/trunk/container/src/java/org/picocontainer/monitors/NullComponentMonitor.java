@@ -23,7 +23,8 @@ import org.picocontainer.ComponentMonitor;
  * @author Obie Fernandez
  * @version $Revision$
  */
-public class NullComponentMonitor extends DefaultComponentMonitor implements ComponentMonitor, Serializable {
+public class NullComponentMonitor implements ComponentMonitor, Serializable {
+
     private static NullComponentMonitor instance;
 
     public void instantiating(Constructor constructor) {
@@ -42,6 +43,9 @@ public class NullComponentMonitor extends DefaultComponentMonitor implements Com
     }
 
     public void invocationFailed(Method method, Object instance, Exception e) {
+    }
+
+    public void lifecycleFailure(Method method, Object instance, RuntimeException cause) {
     }
 
     public static synchronized NullComponentMonitor getInstance() {

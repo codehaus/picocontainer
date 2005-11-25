@@ -13,10 +13,41 @@ package org.picocontainer.monitors;
 import org.picocontainer.ComponentMonitor;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
+import java.io.Serializable;
 
-public abstract class DefaultComponentMonitor implements ComponentMonitor {
+public class DefaultComponentMonitor implements ComponentMonitor, Serializable {
+
+    private static DefaultComponentMonitor instance;
+
+    public void instantiating(Constructor constructor) {
+    }
+
+    public void instantiated(Constructor constructor, long duration) {
+    }
+
+    public void instantiationFailed(Constructor constructor, Exception e) {
+    }
+
+    public void invoking(Method method, Object instance) {
+    }
+
+    public void invoked(Method method, Object instance, long duration) {
+    }
+
+    public void invocationFailed(Method method, Object instance, Exception e) {
+    }
 
     public void lifecycleFailure(Method method, Object instance, RuntimeException cause) {
         throw cause;
     }
+
+    public static synchronized DefaultComponentMonitor getInstance() {
+        if (instance == null) {
+            instance = new DefaultComponentMonitor();
+        }
+        return instance;
+    }
+
+
 }

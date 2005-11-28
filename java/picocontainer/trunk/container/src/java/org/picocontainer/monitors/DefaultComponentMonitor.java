@@ -11,6 +11,7 @@
 package org.picocontainer.monitors;
 
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.PicoLifecycleException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
@@ -39,7 +40,7 @@ public class DefaultComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     public void lifecycleFailure(Method method, Object instance, RuntimeException cause) {
-        throw cause;
+        throw new PicoLifecycleException(method, instance, cause);
     }
 
     public static synchronized DefaultComponentMonitor getInstance() {

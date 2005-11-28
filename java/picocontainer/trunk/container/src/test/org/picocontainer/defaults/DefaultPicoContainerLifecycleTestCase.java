@@ -369,7 +369,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         try {
             dpc.start();
         } catch (RuntimeException e) {
-            assertEquals("I do not want to start myself", e.getMessage());
+            assertEquals("I do not want to start myself", e.getCause().getMessage());
         }
         try {
             dpc.stop();

@@ -9,6 +9,9 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashMap;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -63,7 +66,7 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
     public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final Object componentInstance = super.getComponentInstance(container);
         if (setters == null) {
-            setters = new SetterIntrospector().getSetters(getComponentImplementation());
+            setters = getSetters(getComponentImplementation());
         }
 
         if (properties != null) {
@@ -89,6 +92,47 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
         }
         return componentInstance;
     }
+
+    private Map getSetters(Class clazz) {
+        Map result = new HashMap();
+        Method[] methods = getMethods(clazz);
+        for (int i = 0; i < methods.length; i++) {
+            Method method = methods[i];
+            if (isSetter(method)) {
+                result.put(getPropertyName(method), method);
+            }
+        }
+        return result;
+    }
+
+    private Method[] getMethods(final Class clazz) {
+        return (Method[]) AccessController.doPrivileged(new PrivilegedAction() {
+            public Object run() {
+                return clazz.getMethods();
+            }
+        });
+    }
+
+
+    private String getPropertyName(Method method) {
+        final String name = method.getName();
+        String result = name.substring(3);
+        if(result.length() > 1 && !Character.isUpperCase(result.charAt(1))) {
+            result = "" + Character.toLowerCase(result.charAt(0)) + result.substring(1);
+        } else if(result.length() == 1) {
+            result = result.toLowerCase();
+        }
+        return result;
+    }
+
+    private boolean isSetter(Method method) {
+        final String name = method.getName();
+        return name.length() > 3 &&
+                name.startsWith("set") &&
+                method.getParameterTypes().length == 1;
+    }
+
+
 
     private Object convertType(PicoContainer container, Method setter, String propertyValue) throws ClassNotFoundException {
         if (propertyValue == null) {

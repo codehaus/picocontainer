@@ -57,90 +57,87 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     }
 
     /**
-     * Creates a ConstructorInjectionComponentAdapter 
-     * 
-     * @param componentKey the search key for this implementation
+     * Creates a ConstructorInjectionComponentAdapter
+     *
+     * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
-     * @param parameters the parameters to use for the initialization
-     * @param allowNonPublicClasses flag to allow instantiation of non-public classes.
-     * @param monitor the component monitor used by this adapter
-     * @param lifecycleStrategy the component lifecycle strategy used by this adapter
-     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
-     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @param parameters              the parameters to use for the initialization
+     * @param allowNonPublicClasses   flag to allow instantiation of non-public classes.
+     * @param monitor                 the component monitor used by this adapter
+     * @param lifecycleStrategy       the component lifecycle strategy used by this adapter
+     * @throws AssignabilityRegistrationException
+     *                              if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException
+     *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionComponentAdapter(final Object componentKey,
-                                                final Class componentImplementation,
-                                                Parameter[] parameters,
-                                                boolean allowNonPublicClasses,
-                                                ComponentMonitor monitor,
-                                                LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ConstructorInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, allowNonPublicClasses, monitor, lifecycleStrategy);
     }
 
     /**
-     * Creates a ConstructorInjectionComponentAdapter 
-     * 
-     * @param componentKey the search key for this implementation
+     * Creates a ConstructorInjectionComponentAdapter
+     *
+     * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
-     * @param parameters the parameters to use for the initialization
-     * @param allowNonPublicClasses flag to allow instantiation of non-public classes.
-     * @param monitor the component monitor used by this adapter
-     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
-     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @param parameters              the parameters to use for the initialization
+     * @param allowNonPublicClasses   flag to allow instantiation of non-public classes.
+     * @param monitor                 the component monitor used by this adapter
+     * @throws AssignabilityRegistrationException
+     *                              if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException
+     *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionComponentAdapter(final Object componentKey,
-                                                final Class componentImplementation,
-                                                Parameter[] parameters,
-                                                boolean allowNonPublicClasses,
-                                                ComponentMonitor monitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ConstructorInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses, ComponentMonitor monitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, allowNonPublicClasses, monitor);
     }
 
     /**
      * Creates a ConstructorInjectionComponentAdapter
      *
-     * @param componentKey the search key for this implementation
+     * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
-     * @param parameters the parameters to use for the initialization
-     * @param allowNonPublicClasses flag to allow instantiation of non-public classes.
-     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
-     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @param parameters              the parameters to use for the initialization
+     * @param allowNonPublicClasses   flag to allow instantiation of non-public classes.
+     * @throws AssignabilityRegistrationException
+     *                              if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException
+     *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionComponentAdapter(final Object componentKey,
-                                                final Class componentImplementation,
-                                                Parameter[] parameters,
-                                                boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ConstructorInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
     }
 
     /**
      * Creates a ConstructorInjectionComponentAdapter with key, implementation and parameters
      *
-     * @param componentKey the search key for this implementation
+     * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
-     * @param parameters the parameters to use for the initialization
-     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
-     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @param parameters              the parameters to use for the initialization
+     * @throws AssignabilityRegistrationException
+     *                              if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException
+     *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public ConstructorInjectionComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
-        this(componentKey, componentImplementation, parameters, false );
+        this(componentKey, componentImplementation, parameters, false);
     }
 
     /**
      * Creates a ConstructorInjectionComponentAdapter with key and implementation
-     * 
-     * @param componentKey the search key for this implementation
+     *
+     * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
-     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
-     * @throws NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @throws AssignabilityRegistrationException
+     *                              if the key is a type and the implementation cannot be assigned to.
+     * @throws NotConcreteRegistrationException
+     *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionComponentAdapter(Object componentKey,
-                                                Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ConstructorInjectionComponentAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         this(componentKey, componentImplementation, null);
     }
 
@@ -195,7 +192,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         } else if (greediestConstructor == null) {
             // be nice to the user, show all constructors that were filtered out 
             final Set nonMatching = new HashSet();
-            final Constructor[] constructors = getComponentImplementation().getDeclaredConstructors();
+            final Constructor[] constructors = getConstructors();
             for (int i = 0; i < constructors.length; i++) {
                 nonMatching.add(constructors[i]);
             }
@@ -264,17 +261,11 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
 
     private List getSortedMatchingConstructors() {
         List matchingConstructors = new ArrayList();
-        Constructor[] allConstructors =
-                (Constructor[]) AccessController.doPrivileged(new PrivilegedAction() {
-                    public Object run() {
-                        return getComponentImplementation().getDeclaredConstructors();
-                    }
-                });
+        Constructor[] allConstructors = getConstructors();
         // filter out all constructors that will definately not match
         for (int i = 0; i < allConstructors.length; i++) {
             Constructor constructor = allConstructors[i];
-            if ((parameters == null || constructor.getParameterTypes().length == parameters.length)
-                    && (allowNonPublicClasses || (constructor.getModifiers() & Modifier.PUBLIC) != 0)) {
+            if ((parameters == null || constructor.getParameterTypes().length == parameters.length) && (allowNonPublicClasses || (constructor.getModifiers() & Modifier.PUBLIC) != 0)) {
                 matchingConstructors.add(constructor);
             }
         }
@@ -287,5 +278,13 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             });
         }
         return matchingConstructors;
+    }
+
+    private Constructor[] getConstructors() {
+        return (Constructor[]) AccessController.doPrivileged(new PrivilegedAction() {
+            public Object run() {
+                return getComponentImplementation().getDeclaredConstructors();
+            }
+        });
     }
 }

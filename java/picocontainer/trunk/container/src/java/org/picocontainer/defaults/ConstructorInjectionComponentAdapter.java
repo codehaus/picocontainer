@@ -154,7 +154,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             boolean failedDependency = false;
             Constructor constructor = (Constructor) sortedMatchingConstructors.get(i);
             Class[] parameterTypes = constructor.getParameterTypes();
-            Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+            Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(constructor, parameterTypes);
 
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
@@ -251,7 +251,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     protected Object[] getConstructorArguments(PicoContainer container, Constructor ctor) {
         Class[] parameterTypes = ctor.getParameterTypes();
         Object[] result = new Object[parameterTypes.length];
-        Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+        Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(ctor, parameterTypes);
 
         for (int i = 0; i < currentParameters.length; i++) {
             result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i]);

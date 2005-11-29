@@ -122,10 +122,11 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     /**
      * Create default parameters for the given types.
      * 
+     * @param constructor
      * @param parameters the parameter types
      * @return the array with the default parameters.
      */
-    protected Parameter[] createDefaultParameters(Class[] parameters) {
+    protected Parameter[] createDefaultParameters(Constructor constructor, Class[] parameters) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
             componentParameters[i] = ComponentParameter.DEFAULT;
@@ -139,7 +140,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
                 public Object run() {
                     final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
                     final Class[] parameterTypes = constructor.getParameterTypes();
-                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(constructor, parameterTypes);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, InstantiatingComponentAdapter.this, parameterTypes[i]);
                     }

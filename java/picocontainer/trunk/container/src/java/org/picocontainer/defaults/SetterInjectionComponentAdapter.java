@@ -152,7 +152,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
 
         final List matchingParameterList = new ArrayList(Collections.nCopies(setters.size(), null));
         final Set nonMatchingParameterPositions = new HashSet();
-        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(setterTypes);
+        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(null, setterTypes);
         for (int i = 0; i < currentParameters.length; i++) {
             final Parameter parameter = currentParameters[i];
             boolean failedDependency = true;

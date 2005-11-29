@@ -1,16 +1,17 @@
 package org.picocontainer.monitors;
 
-import org.picocontainer.ComponentMonitor;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import org.picocontainer.ComponentMonitor;
 
 public class CollectingComponentMonitor implements ComponentMonitor {
 
     private final ComponentMonitor delegate;
-    private final ArrayList lifecycleFailures = new ArrayList();
+    private final List lifecycleFailures = new ArrayList();
 
     public CollectingComponentMonitor(ComponentMonitor delegate) {
         this.delegate = delegate;
@@ -70,4 +71,5 @@ public class CollectingComponentMonitor implements ComponentMonitor {
             };
         }
     }
+
 }

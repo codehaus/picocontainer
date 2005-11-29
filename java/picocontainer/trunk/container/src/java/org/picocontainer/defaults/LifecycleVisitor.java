@@ -7,14 +7,14 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import java.lang.reflect.Method;
+
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
+import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.Startable;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.DefaultComponentMonitor;
-
-import java.lang.reflect.Method;
 
 
 /**

@@ -22,14 +22,14 @@ import java.lang.reflect.Method;
  * @see Startable
  * @see Disposable
  */
-public class DefaultLifecycleStrategy extends AbstractMonitoringLifecylceStrategy {
+public class DefaultLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 
     private static Method start, stop, dispose;
     {
         try {
-            start = Startable.class.getMethod("start", null);
-            stop = Startable.class.getMethod("stop", null);
-            dispose = Disposable.class.getMethod("dispose", null);
+            start = Startable.class.getMethod("start", (Class[])null);
+            stop = Startable.class.getMethod("stop", (Class[])null);
+            dispose = Disposable.class.getMethod("dispose", (Class[])null);
         } catch (NoSuchMethodException e) {
         }
     }

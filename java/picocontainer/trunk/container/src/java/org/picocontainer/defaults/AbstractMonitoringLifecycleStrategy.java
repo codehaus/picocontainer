@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @author J&ouml;rg Schaible
  * @since 1.2
  */
-public abstract class AbstractMonitoringLifecylceStrategy implements LifecycleStrategy, ComponentMonitorStrategy, Serializable {
+public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleStrategy, ComponentMonitorStrategy, Serializable {
 
     private ComponentMonitor componentMonitor;
 
@@ -27,7 +27,7 @@ public abstract class AbstractMonitoringLifecylceStrategy implements LifecycleSt
      * @param monitor the componentMonitor to use
      * @throws NullPointerException if the monitor is <code>null</code>
      */
-    public AbstractMonitoringLifecylceStrategy(ComponentMonitor monitor) {
+    public AbstractMonitoringLifecycleStrategy(ComponentMonitor monitor) {
         if (monitor == null) {
             throw new NullPointerException("Monitor is null");
         }

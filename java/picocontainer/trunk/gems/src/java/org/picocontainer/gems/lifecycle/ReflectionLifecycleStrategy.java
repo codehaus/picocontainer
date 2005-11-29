@@ -8,7 +8,7 @@
 package org.picocontainer.gems.lifecycle;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.defaults.AbstractMonitoringLifecylceStrategy;
+import org.picocontainer.defaults.AbstractMonitoringLifecycleStrategy;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -28,7 +28,7 @@ import java.util.Map;
  * @see org.picocontainer.defaults.DefaultLifecycleStrategy
  * @since 1.2
  */
-public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecylceStrategy {
+public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 
     private final static int START = 0;
     private final static int STOP = 1;

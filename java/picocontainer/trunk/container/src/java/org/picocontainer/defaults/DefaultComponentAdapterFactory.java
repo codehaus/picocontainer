@@ -14,7 +14,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.DefaultComponentMonitor;
 
 /**

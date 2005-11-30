@@ -190,7 +190,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         } else if (greediestConstructor == null && !unsatisfiableDependencyTypes.isEmpty()) {
             throw new UnsatisfiableDependenciesException(this, unsatisfiedDependencyType, unsatisfiableDependencyTypes, container);
         } else if (greediestConstructor == null) {
-            // be nice to the user, show all constructors that were filtered out 
+            // be nice to the user, show all constructors that were filtered out
             final Set nonMatching = new HashSet();
             final Constructor[] constructors = getConstructors();
             for (int i = 0; i < constructors.length; i++) {
@@ -286,5 +286,38 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                 return getComponentImplementation().getDeclaredConstructors();
             }
         });
+    }
+
+    /**
+     * Create default parameters for the given types.
+     *
+     * @param constructor Constructor that the parameters are for.
+     * @param parameters the parameter types
+     * @return the array with the default parameters.
+     */
+    protected Parameter[] createDefaultParameters(Constructor constructor, Class[] parameters) {
+        Parameter[] componentParameters = new Parameter[parameters.length];
+        for (int i = 0; i < parameters.length; i++) {
+            componentParameters[i] = ComponentParameter.DEFAULT;
+        }
+        return componentParameters;
+    }
+
+    public void verify(final PicoContainer container) throws PicoIntrospectionException {
+        if (verifyingGuard == null) {
+            verifyingGuard = new InstantiatingComponentAdapter.Guard() {
+                public Object run() {
+                    final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
+                    final Class[] parameterTypes = constructor.getParameterTypes();
+                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(constructor, parameterTypes);
+                    for (int i = 0; i < currentParameters.length; i++) {
+                        currentParameters[i].verify(container, ConstructorInjectionComponentAdapter.this, parameterTypes[i]);
+                    }
+                    return null;
+                }
+            };
+        }
+        verifyingGuard.setArguments(container);
+        verifyingGuard.observe(getComponentImplementation());
     }
 }

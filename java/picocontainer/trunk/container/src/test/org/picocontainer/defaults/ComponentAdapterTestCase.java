@@ -7,10 +7,7 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import java.lang.reflect.Constructor;
-
 import junit.framework.TestCase;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
@@ -19,6 +16,8 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
+
+import java.lang.reflect.Constructor;
 
 /**
  * Test AbstractComponentAdapter behaviour
@@ -61,7 +60,7 @@ public class ComponentAdapterTestCase
         }        
     }
     
-    private static class TestInstantiatingComponentAdapter extends InstantiatingComponentAdapter {
+    private static class TestInstantiatingComponentAdapter extends ConstructorInjectionComponentAdapter {
         TestInstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) {
             super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
         }

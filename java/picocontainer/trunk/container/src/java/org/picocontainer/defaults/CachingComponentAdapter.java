@@ -37,7 +37,7 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
     private boolean disposed;
     private boolean started;
     private boolean delegateHasLifecylce;
-        
+
     public CachingComponentAdapter(ComponentAdapter delegate) {
         this(delegate, new SimpleReference());
     }
@@ -47,10 +47,10 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
         this.instanceReference = instanceReference;
         this.disposed = false;
         this.started = false;
-        this.delegateHasLifecylce = delegate instanceof LifecycleStrategy 
+        this.delegateHasLifecylce = delegate instanceof LifecycleStrategy
                 && ((LifecycleStrategy) delegate).hasLifecycle(delegate.getComponentImplementation());
     }
-    
+
     public Object getComponentInstance(PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (instanceReference.get() == null) {
@@ -61,8 +61,8 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
     }
 
     /**
-     * Flushes the cache. 
-     * If the component instance is started is will stop and dispose it before 
+     * Flushes the cache.
+     * If the component instance is started is will stop and dispose it before
      * flushing the cache.
      */
     public void flush() {

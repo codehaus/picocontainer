@@ -9,15 +9,15 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
@@ -117,39 +117,6 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
         if (getComponentImplementation().isInterface() || isAbstract) {
             throw new NotConcreteRegistrationException(getComponentImplementation());
         }
-    }
-
-    /**
-     * Create default parameters for the given types.
-     * 
-     * @param constructor
-     * @param parameters the parameter types
-     * @return the array with the default parameters.
-     */
-    protected Parameter[] createDefaultParameters(Constructor constructor, Class[] parameters) {
-        Parameter[] componentParameters = new Parameter[parameters.length];
-        for (int i = 0; i < parameters.length; i++) {
-            componentParameters[i] = ComponentParameter.DEFAULT;
-        }
-        return componentParameters;
-    }
-
-    public void verify(final PicoContainer container) throws PicoIntrospectionException {
-        if (verifyingGuard == null) {
-            verifyingGuard = new Guard() {
-                public Object run() {
-                    final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
-                    final Class[] parameterTypes = constructor.getParameterTypes();
-                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(constructor, parameterTypes);
-                    for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, InstantiatingComponentAdapter.this, parameterTypes[i]);
-                    }
-                    return null;
-                }
-            };
-        }
-        verifyingGuard.setArguments(container);
-        verifyingGuard.observe(getComponentImplementation());
     }
 
     public void accept(PicoVisitor visitor) {

@@ -10,13 +10,7 @@
 
 package org.picocontainer.defaults;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import junit.framework.Assert;
-
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentMonitor;
@@ -29,6 +23,11 @@ import org.picocontainer.testmodel.RecordingLifecycle.Four;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
 import org.picocontainer.testmodel.RecordingLifecycle.Three;
 import org.picocontainer.testmodel.RecordingLifecycle.Two;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * This class tests the lifecycle aspects of DefaultPicoContainer.

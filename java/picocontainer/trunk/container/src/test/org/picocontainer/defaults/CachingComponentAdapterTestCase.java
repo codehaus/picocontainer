@@ -88,7 +88,7 @@ public class CachingComponentAdapterTestCase extends MockObjectTestCase {
         adapter.start(pico);
         adapter.stop(pico);
         try {
-            adapter.stop(pico);
+        adapter.stop(pico);
             fail("IllegalStateException expected");
         } catch (Exception e) {
             assertEquals("Not started", e.getMessage());

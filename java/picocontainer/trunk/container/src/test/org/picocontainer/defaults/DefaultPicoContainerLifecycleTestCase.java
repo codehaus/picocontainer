@@ -10,27 +10,25 @@
 
 package org.picocontainer.defaults;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.lang.reflect.Method;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.ComponentMonitor;
 import org.picocontainer.monitors.CollectingComponentMonitor;
 import org.picocontainer.testmodel.RecordingLifecycle.FiveTriesToBeMalicious;
 import org.picocontainer.testmodel.RecordingLifecycle.Four;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
 import org.picocontainer.testmodel.RecordingLifecycle.Three;
 import org.picocontainer.testmodel.RecordingLifecycle.Two;
-import org.picocontainer.testmodel.Touchable;
-import org.jmock.MockObjectTestCase;
-import org.jmock.Mock;
 
 /**
  * This class tests the lifecycle aspects of DefaultPicoContainer.
@@ -391,18 +389,16 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         Mock cm = mock(ComponentMonitor.class);
 
         // s1 expectations
-
-        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("start", null)), same(s1.proxy()));
+        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("start", (Class[])null)), same(s1.proxy()));
         cm.expects(once()).method("lifecycleFailure").with(isA(Method.class),same(s1.proxy()), isA(RuntimeException.class) );
-        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("stop", null)), same(s1.proxy()));
-        cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("stop", null)), same(s1.proxy()), ANYTHING);
+        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("stop", (Class[])null)), same(s1.proxy()));
+        cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("stop", (Class[])null)), same(s1.proxy()), ANYTHING);
 
         // s2 expectations
-
-        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("start", null)), same(s2.proxy()));
-        cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("start", null)), same(s2.proxy()), ANYTHING);
-        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("stop", null)), same(s2.proxy()));
-        cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("stop", null)), same(s2.proxy()), ANYTHING);
+        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("start", (Class[])null)), same(s2.proxy()));
+        cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("start", (Class[])null)), same(s2.proxy()), ANYTHING);
+        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("stop", (Class[])null)), same(s2.proxy()));
+        cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("stop", (Class[])null)), same(s2.proxy()), ANYTHING);
 
         DefaultPicoContainer dpc = new DefaultPicoContainer((ComponentMonitor) cm.proxy());
         dpc.registerComponentInstance("foo", s1.proxy());
@@ -437,5 +433,26 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
     }
 
+    public void testStartedComponentsCanBeStoppedIfSomeComponentsFailToStart() throws NoSuchMethodException {
+
+        Mock s1 = mock(Startable.class, "s1");
+        s1.expects(once()).method("start");
+        s1.expects(once()).method("stop");
+
+        Mock s2 = mock(Startable.class, "s2");
+        s2.expects(once()).method("start").will(throwException(new RuntimeException("I do not want to start myself")));
+        // s2 does not expect stop().
+
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        dpc.registerComponentInstance("foo", s1.proxy());
+        dpc.registerComponentInstance("bar", s2.proxy());
+
+        try {
+            dpc.start();
+        } catch (RuntimeException e) {
+            dpc.stop();
+        }
+
+    }
 
 }

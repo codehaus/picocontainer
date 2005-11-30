@@ -454,12 +454,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public void start() {
         if (disposed) throw new IllegalStateException("Already disposed");
         if (started) throw new IllegalStateException("Already started");
+        started = true;
         this.lifecycleManager.start(this);
         for (Iterator iterator = children.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
             child.start();
         }
-        started = true;
     }
 
     /**
@@ -602,6 +602,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     */
     private class OrderedComponentAdapterLifecycleManager implements LifecycleManager, Serializable {
 
+        /** List collecting the CAs which have been successfully started */
+        private List startedComponentAdapters = new ArrayList();
+        
         /**
          * {@inheritDoc}
          * Loops over all component adapters and invokes
@@ -621,22 +624,25 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 }
             }
             adapters = orderedComponentAdapters;
+            // clear list of started CAs
+            startedComponentAdapters.clear();
             for (final Iterator iter = adapters.iterator(); iter.hasNext();) {
                 final Object adapter = iter.next();
                 if ( adapter instanceof LifecycleManager ){
                     LifecycleManager manager = (LifecycleManager)adapter;
                     manager.start(node);
+                    startedComponentAdapters.add(adapter);
                 }
             }
         }
 
         /**
          * {@inheritDoc}
-         * Loops over all component adapters (in inverse order) and invokes
+         * Loops over started component adapters (in inverse order) and invokes
          * stop(PicoContainer) method on the ones which are LifecycleManagers
          */
         public void stop(PicoContainer node) {
-            List adapters = orderedComponentAdapters;
+            List adapters = startedComponentAdapters;
             for (int i = adapters.size() - 1; 0 <= i; i--) {
                 Object adapter = adapters.get(i);
                 if ( adapter instanceof LifecycleManager ){

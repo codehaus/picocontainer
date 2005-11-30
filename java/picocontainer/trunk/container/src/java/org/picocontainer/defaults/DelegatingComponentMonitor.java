@@ -77,8 +77,8 @@ public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMo
         delegate.invocationFailed(method, instance, e);
     }
 
-    public void lifecycleFailure(Method method, Object instance, RuntimeException cause) {
-        delegate.lifecycleFailure(method,instance, cause);
+    public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
+        delegate.lifecycleInvocationFailed(method,instance, cause);
     }
 
     /**

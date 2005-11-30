@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
-import org.picocontainer.monitors.AbstractLoggingComponentMonitor;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.DefaultComponentMonitor;
 import org.picocontainer.ComponentMonitor;
 
@@ -32,7 +32,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: $
  */
-public class Log4JComponentMonitor extends AbstractLoggingComponentMonitor implements Serializable {
+public class Log4JComponentMonitor extends AbstractComponentMonitor implements Serializable {
 
     private Logger logger;
     private final ComponentMonitor delegate;
@@ -158,12 +158,12 @@ public class Log4JComponentMonitor extends AbstractLoggingComponentMonitor imple
         delegate.invocationFailed(method, instance, cause);
     }
 
-    public void lifecycleFailure(Method method, Object instance, RuntimeException cause) {
+    public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
         Logger logger = getLogger(method);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(LIFECYCLE_FAILURE, new Object[]{method, instance, cause.getMessage()}), cause);
+            logger.warn(format(LIFECYCLE_INVOCATION_FAILED, new Object[]{method, instance, cause.getMessage()}), cause);
         }
-        delegate.lifecycleFailure(method, instance, cause);
+        delegate.lifecycleInvocationFailed(method, instance, cause);
     }
 
     protected Logger getLogger(Member member) {

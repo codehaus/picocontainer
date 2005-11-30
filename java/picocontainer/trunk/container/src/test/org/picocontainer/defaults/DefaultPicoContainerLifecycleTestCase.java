@@ -17,7 +17,8 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.monitors.CollectingComponentMonitor;
+import org.picocontainer.monitors.LifecycleComponentMonitor;
+import org.picocontainer.monitors.LifecycleComponentMonitor.LifecycleFailuresException;
 import org.picocontainer.testmodel.RecordingLifecycle.FiveTriesToBeMalicious;
 import org.picocontainer.testmodel.RecordingLifecycle.Four;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
@@ -389,7 +390,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
         // s1 expectations
         cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("start", (Class[])null)), same(s1.proxy()));
-        cm.expects(once()).method("lifecycleFailure").with(isA(Method.class),same(s1.proxy()), isA(RuntimeException.class) );
+        cm.expects(once()).method("lifecycleInvocationFailed").with(isA(Method.class),same(s1.proxy()), isA(RuntimeException.class) );
         cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("stop", (Class[])null)), same(s1.proxy()));
         cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("stop", (Class[])null)), same(s1.proxy()), ANYTHING);
 
@@ -406,7 +407,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         dpc.stop();
     }
 
-    public void testLifecycleFailureCanBePickedUpAfterTheEvent() throws NoSuchMethodException {
+    public void testLifecycleFailuresCanBePickedUpAfterTheEvent() throws NoSuchMethodException {
 
         Mock s1 = mock(Startable.class, "s1");
         s1.expects(once()).method("start").will(throwException(new RuntimeException("I do not want to start myself")));
@@ -416,18 +417,19 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         s2.expects(once()).method("start");
         s2.expects(once()).method("stop");
 
-        CollectingComponentMonitor cm = new CollectingComponentMonitor();
+        LifecycleComponentMonitor lifecycleComponentMonitor = new LifecycleComponentMonitor();
 
-        DefaultPicoContainer dpc = new DefaultPicoContainer(cm);
+        DefaultPicoContainer dpc = new DefaultPicoContainer(lifecycleComponentMonitor);
         dpc.registerComponentInstance("foo", s1.proxy());
         dpc.registerComponentInstance("bar", s2.proxy());
 
         dpc.start();
 
         try {
-            cm.reThrowLifecycleExceptions();
-        } catch (RuntimeException e) {
+            lifecycleComponentMonitor.rethrowLifecycleFailuresException();
+        } catch (LifecycleFailuresException e) {
             dpc.stop();
+            assertEquals(1, e.getFailures().size());
         }
 
     }

@@ -76,13 +76,14 @@ public interface ComponentMonitor {
     void invocationFailed(Method method, Object instance, Exception cause);
 
     /**
-     * Event thrown if start, stop or dispose failed for component  instance
+     * Event thrown if a lifecycle method invocation - start, stop or dispose - 
+     * failed on the given instance
      *
-     * @param method the Method invoked on the component instance
+     * @param method the lifecycle Method invoked on the component instance
      * @param instance the component instance
-     * @param cause the Exception detailing the cause of the failure
+     * @param cause the RuntimeException detailing the cause of the failure
      */
-    void lifecycleFailure(Method method, Object instance, RuntimeException cause);
+    void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause);
 
 
 }

@@ -25,7 +25,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: 1882 $
  */
-public class WriterComponentMonitor extends AbstractLoggingComponentMonitor {
+public class WriterComponentMonitor extends AbstractComponentMonitor {
 
     private PrintWriter out;
     private final ComponentMonitor delegate;
@@ -70,9 +70,9 @@ public class WriterComponentMonitor extends AbstractLoggingComponentMonitor {
         delegate.invocationFailed(method, instance, cause);
     }
 
-    public void lifecycleFailure(Method method, Object instance, RuntimeException cause) {
-        out.println(format(LIFECYCLE_FAILURE, new Object[]{method, instance, cause.getMessage()}));
-        delegate.lifecycleFailure(method, instance, cause);
+    public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
+        out.println(format(LIFECYCLE_INVOCATION_FAILED, new Object[]{method, instance, cause.getMessage()}));
+        delegate.lifecycleInvocationFailed(method, instance, cause);
     }
 
 }

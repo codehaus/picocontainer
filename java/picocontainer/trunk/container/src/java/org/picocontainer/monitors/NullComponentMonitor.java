@@ -45,7 +45,7 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
     public void invocationFailed(Method method, Object instance, Exception e) {
     }
 
-    public void lifecycleFailure(Method method, Object instance, RuntimeException cause) {
+    public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
     }
 
     public static synchronized NullComponentMonitor getInstance() {

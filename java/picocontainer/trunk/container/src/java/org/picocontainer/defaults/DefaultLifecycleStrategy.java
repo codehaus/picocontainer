@@ -46,7 +46,7 @@ public class DefaultLifecycleStrategy extends AbstractMonitoringLifecycleStrateg
                 ((Startable) component).start();
                 currentMonitor().invoked(start, component, System.currentTimeMillis() - str);
             } catch (RuntimeException cause) {
-                currentMonitor().lifecycleFailure(start, component, cause); // may re-throw
+                currentMonitor().lifecycleInvocationFailed(start, component, cause); // may re-throw
             }
         }
     }
@@ -59,7 +59,7 @@ public class DefaultLifecycleStrategy extends AbstractMonitoringLifecycleStrateg
                 ((Startable) component).stop();
                 currentMonitor().invoked(stop, component, System.currentTimeMillis() - str);
             } catch (RuntimeException cause) {
-                currentMonitor().lifecycleFailure(stop, component, cause); // may re-throw
+                currentMonitor().lifecycleInvocationFailed(stop, component, cause); // may re-throw
             }
         }
     }
@@ -72,7 +72,7 @@ public class DefaultLifecycleStrategy extends AbstractMonitoringLifecycleStrateg
                 ((Disposable) component).dispose();
                 currentMonitor().invoked(dispose, component, System.currentTimeMillis() - str);
             } catch (RuntimeException cause) {
-                currentMonitor().lifecycleFailure(dispose, component, cause); // may re-throw
+                currentMonitor().lifecycleInvocationFailed(dispose, component, cause); // may re-throw
             }
         }
     }

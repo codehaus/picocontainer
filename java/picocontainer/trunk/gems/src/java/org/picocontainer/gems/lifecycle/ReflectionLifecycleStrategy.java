@@ -86,9 +86,13 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
                 method.invoke(component, new Object[0]);
                 currentMonitor().invoked(method, component, System.currentTimeMillis() - str);
             } catch (IllegalAccessException e) {
-                throw new ReflectionLifecycleException(method.getName(), e);
+                RuntimeException re = new ReflectionLifecycleException(method.getName(), e);
+                currentMonitor().lifecycleInvocationFailed(method, component, re);
+                throw re;
             } catch (InvocationTargetException e) {
-                throw new ReflectionLifecycleException(method.getName(), e);
+                RuntimeException re = new ReflectionLifecycleException(method.getName(), e);
+                currentMonitor().lifecycleInvocationFailed(method, component, re);
+                throw re;
             }
         }
     }

@@ -67,14 +67,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private Map componentKeyToAdapterCache = new HashMap();
     private ComponentAdapterFactory componentAdapterFactory;
     private PicoContainer parent;
-    private List componentAdapters = new ArrayList();
+    private HashSet children = new HashSet();
 
+    private List componentAdapters = new ArrayList();
     // Keeps track of instantiation order.
     private List orderedComponentAdapters = new ArrayList();
 
+    // Keeps track of the container started status 
     private boolean started = false;
+    // Keeps track of the container disposed status
     private boolean disposed = false;
-    private HashSet children = new HashSet();
+    // Keeps track of child containers started status
+    private Map childrenStarted = new HashMap();
 
     private LifecycleManager lifecycleManager = new OrderedComponentAdapterLifecycleManager();
     private LifecycleStrategy lifecycleStrategyForInstanceRegistrations;
@@ -440,6 +444,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /**
      * Start the components of this PicoContainer and all its logical child containers.
+     * The starting of the child container is only attempted if the parent
+     * container start successfully.  The child container for which start is attempted
+     * is tracked so that upon stop, only those need to be stopped.
      * The lifecycle operation is delegated to the component adapter,
      * if it is an instance of {@link LifecycleManager lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
@@ -456,14 +463,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (started) throw new IllegalStateException("Already started");
         started = true;
         this.lifecycleManager.start(this);
+        childrenStarted.clear();
         for (Iterator iterator = children.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
+            childrenStarted.put(new Integer(child.hashCode()), new Boolean(true));
             child.start();
         }
     }
 
     /**
      * Stop the components of this PicoContainer and all its logical child containers.
+     * The stopping of the child containers is only attempted for those that have been 
+     * started, possibly not successfully.  
      * The lifecycle operation is delegated to the component adapter,
      * if it is an instance of {@link LifecycleManager lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
@@ -480,10 +491,26 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (!started) throw new IllegalStateException("Not started");
         for (Iterator iterator = children.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
-            child.stop();
+            if ( childStarted(child) ){
+                child.stop();
+            }
         }
         this.lifecycleManager.stop(this);
         started = false;
+    }
+
+    /**
+     * Checks the status of the child container to see if it's been started
+     * to prevent IllegalStateException upon stop
+     * @param child the child PicoContainer
+     * @return A boolean, <code>true</code> if the container is started
+     */
+    private boolean childStarted(PicoContainer child) {
+        Boolean childStarted = (Boolean)childrenStarted.get(new Integer(child.hashCode()));
+        if ( childStarted != null ){
+            return childStarted.booleanValue();
+        }
+        return false;
     }
 
     /**

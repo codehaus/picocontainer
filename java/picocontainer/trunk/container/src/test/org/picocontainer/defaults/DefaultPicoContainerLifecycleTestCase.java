@@ -456,7 +456,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
     }
 
-    public void TODOtestStartedComponentsCanBeStoppedIfSomeComponentsFailToStartEvenInAPicoHierarchy() {
+    public void testStartedComponentsCanBeStoppedIfSomeComponentsFailToStartEvenInAPicoHierarchy() {
 
         Mock s1 = mock(Startable.class, "s1");
         s1.expects(once()).method("start");

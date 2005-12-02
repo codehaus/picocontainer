@@ -354,7 +354,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
     }
 
 
-    public void testLifecycleDoesNotRecoverwithDefaultComponentMonitor() throws NoSuchMethodException {
+    public void testLifecycleDoesNotRecoverwithDefaultComponentMonitor() {
 
         Mock s1 = mock(Startable.class, "s1");
         s1.expects(once()).method("start").will(throwException(new RuntimeException("I do not want to start myself")));
@@ -407,7 +407,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         dpc.stop();
     }
 
-    public void testLifecycleFailuresCanBePickedUpAfterTheEvent() throws NoSuchMethodException {
+    public void testLifecycleFailuresCanBePickedUpAfterTheEvent() {
 
         Mock s1 = mock(Startable.class, "s1");
         s1.expects(once()).method("start").will(throwException(new RuntimeException("I do not want to start myself")));
@@ -434,7 +434,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
     }
 
-    public void testStartedComponentsCanBeStoppedIfSomeComponentsFailToStart() throws NoSuchMethodException {
+    public void testStartedComponentsCanBeStoppedIfSomeComponentsFailToStart() {
 
         Mock s1 = mock(Startable.class, "s1");
         s1.expects(once()).method("start");
@@ -447,6 +447,29 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         DefaultPicoContainer dpc = new DefaultPicoContainer();
         dpc.registerComponentInstance("foo", s1.proxy());
         dpc.registerComponentInstance("bar", s2.proxy());
+
+        try {
+            dpc.start();
+        } catch (RuntimeException e) {
+            dpc.stop();
+        }
+
+    }
+
+    public void TODOtestStartedComponentsCanBeStoppedIfSomeComponentsFailToStartEvenInAPicoHierarchy() {
+
+        Mock s1 = mock(Startable.class, "s1");
+        s1.expects(once()).method("start");
+        s1.expects(once()).method("stop");
+
+        Mock s2 = mock(Startable.class, "s2");
+        s2.expects(once()).method("start").will(throwException(new RuntimeException("I do not want to start myself")));
+        // s2 does not expect stop().
+
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        dpc.registerComponentInstance("foo", s1.proxy());
+        dpc.registerComponentInstance("bar", s2.proxy());
+        dpc.addChildContainer(new DefaultPicoContainer(dpc));
 
         try {
             dpc.start();

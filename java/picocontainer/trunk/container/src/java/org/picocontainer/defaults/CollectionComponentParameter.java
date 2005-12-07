@@ -44,6 +44,7 @@ import java.util.TreeSet;
  */
 public class CollectionComponentParameter
         implements Parameter, Serializable {
+    private static final MapFactory mapFactory = new MapFactory();
 
     /**
      * Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements.
@@ -185,7 +186,6 @@ public class CollectionComponentParameter
         } else {
             throw new PicoIntrospectionException(expectedType.getName() + " is not a collective type");
         }
-        return;
     }
 
     /**
@@ -216,7 +216,7 @@ public class CollectionComponentParameter
      * @return a {@link Map} with the ComponentAdapter instances and their component keys as map key.
      */
     protected Map getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter, Class keyType, Class valueType) {
-        final Map adapterMap = new HashMap();
+        final Map adapterMap = mapFactory.newInstance();
         final PicoContainer parent = container.getParent();
         if (parent != null) {
             adapterMap.putAll(getMatchingComponentAdapters(parent, adapter, keyType, valueType));

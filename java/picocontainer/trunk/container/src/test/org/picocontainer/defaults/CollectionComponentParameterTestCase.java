@@ -305,4 +305,35 @@ public class CollectionComponentParameterTestCase
         parameterEmpty.verify(pico, null, Fish[].class);
         parameterEmpty.verify(pico, null, Cod[].class);
     }
+
+    // PICO-243 : this test will fail if executed on jdk1.3 without commons-collections
+    public void testOrderOfElementsOfAnArrayDependencyIsPreserved() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.registerComponentInstance("first", "first");
+        pico.registerComponentInstance("second", "second");
+        pico.registerComponentInstance("third", "third");
+        pico.registerComponentInstance("fourth", "fourth");
+        pico.registerComponentInstance("fifth", "fifth");
+        pico.registerComponentImplementation(Truc.class);
+
+        final List strings = pico.getComponentInstancesOfType(String.class);
+        assertEquals("first", strings.get(0));
+        assertEquals("second", strings.get(1));
+        assertEquals("third", strings.get(2));
+        assertEquals("fourth", strings.get(3));
+        assertEquals("fifth", strings.get(4));
+
+        pico.getComponentInstanceOfType(Truc.class);
+    }
+
+    public static final class Truc {
+        public Truc(String[] s) {
+            assertEquals("first", s[0]);
+            assertEquals("second", s[1]);
+            assertEquals("third", s[2]);
+            assertEquals("fourth", s[3]);
+            assertEquals("fifth", s[4]);
+        }
+    }
+
 }

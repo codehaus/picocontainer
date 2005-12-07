@@ -26,7 +26,9 @@ import org.picocontainer.PicoIntrospectionException;
  * is therefore <em>not</em> the same as {@link SetterInjectionComponentAdapter},
  * which is a true Setter Injection adapter.
  * <p/>
- * This adapter is mostly handy for setting various primitive properties via setters.
+ * This adapter is mostly handy for setting various primitive properties via setters;
+ * it is also able to set javabean properties by discovering an appropriate
+ * {@link PropertyEditor} and using its <code>setAsText</code> method.
  * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
@@ -161,8 +163,10 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
     }
 
     /**
-     * Converts a type name to an object.
-     *
+     * Converts a String value of a named type to an object.
+     * Works with primitive wrappers, String, File, URL types, or any type that has
+     * an appropriate {@link PropertyEditor}.
+     *  
      * @param typeName    name of the type
      * @param value       its value
      * @param classLoader used to load a class if typeName is "class" or "java.lang.Class" (ignored otherwise)

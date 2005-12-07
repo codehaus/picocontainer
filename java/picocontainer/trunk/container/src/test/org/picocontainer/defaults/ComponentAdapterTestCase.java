@@ -60,7 +60,7 @@ public class ComponentAdapterTestCase
         }        
     }
     
-    private static class TestInstantiatingComponentAdapter extends ConstructorInjectionComponentAdapter {
+    private static class TestInstantiatingComponentAdapter extends InstantiatingComponentAdapter {
         TestInstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) {
             super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
         }

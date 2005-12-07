@@ -43,11 +43,8 @@ import java.util.Set;
  * @version $Revision$
  */
 public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapter {
-    private static final Class[] CLASS = new Class[0];
-    private static final Method[] METHOD = new Method[0];
-
     private transient Guard instantiationGuard;
-    private transient Method[] setters;
+    private transient List setters;
     private transient List setterNames;
     private transient Class[] setterTypes;
 
@@ -152,9 +149,9 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             initializeSetterAndTypeLists();
         }
 
-        final List matchingParameterList = new ArrayList(Collections.nCopies(setters.length, null));
+        final List matchingParameterList = new ArrayList(Collections.nCopies(setters.size(), null));
         final Set nonMatchingParameterPositions = new HashSet();
-        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(setters, setterTypes);
+        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(setterTypes);
         for (int i = 0; i < currentParameters.length; i++) {
             final Parameter parameter = currentParameters[i];
             boolean failedDependency = true;
@@ -182,14 +179,6 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             throw new PicoInitializationException("Following parameters do not match any of the setters for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
         }
         return (Parameter[]) matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
-    }
-
-    protected Parameter[] createDefaultParameters(Method[] setters, Class[] parameters) {
-        Parameter[] componentParameters = new Parameter[parameters.length];
-        for (int i = 0; i < parameters.length; i++) {
-            componentParameters[i] = ComponentParameter.DEFAULT;
-        }
-        return componentParameters;
     }
 
     public Object getComponentInstance(final PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
@@ -228,8 +217,8 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                     }
                     Method setter = null;
                     try {
-                        for (int i = 0; i < setters.length; i++) {
-                            setter = setters[i];
+                        for (int i = 0; i < setters.size(); i++) {
+                            setter = (Method) setters.get(i);
                             componentMonitor.invoking(setter, componentInstance);
                             long startTime = System.currentTimeMillis();
                             setter.invoke(componentInstance, new Object[]{matchingParameters[i].resolveInstance(guardedContainer, SetterInjectionComponentAdapter.this, setterTypes[i])});
@@ -272,8 +261,8 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
     }
 
     private void initializeSetterAndTypeLists() {
+        setters = new ArrayList();
         setterNames = new ArrayList();
-        final List setterList = new ArrayList();
         final List typeList = new ArrayList();
         final Method[] methods = getMethods();
         for (int i = 0; i < methods.length; i++) {
@@ -285,14 +274,13 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                 boolean isBeanStyle = methodName.length() >= 4 && methodName.startsWith("set") && Character.isUpperCase(methodName.charAt(3));
                 if (isBeanStyle) {
                     String attribute = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
-                    setterList.add(method);
+                    setters.add(method);
                     setterNames.add(attribute);
                     typeList.add(parameterTypes[0]);
                 }
             }
         }
-        setterTypes = (Class[]) typeList.toArray(CLASS);
-        setters = (Method[]) setterList.toArray(METHOD);
+        setterTypes = (Class[]) typeList.toArray(new Class[0]);
     }
 
     private Method[] getMethods() {

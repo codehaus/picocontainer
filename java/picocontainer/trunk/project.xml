@@ -27,6 +27,14 @@
     <distributionSite>beaver.codehaus.org</distributionSite>
     <distributionDirectory>/dist</distributionDirectory>
 
+	<versions>
+		<version>
+			<name>1.1</name>
+<!-- 			<tag></tag> -->
+			<id>1.1</id>
+		</version>
+	</versions>
+
     <repository>
         <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk</connection>
         <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk</developerConnection>

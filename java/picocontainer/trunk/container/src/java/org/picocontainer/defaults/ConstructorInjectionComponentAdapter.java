@@ -154,7 +154,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             boolean failedDependency = false;
             Constructor constructor = (Constructor) sortedMatchingConstructors.get(i);
             Class[] parameterTypes = constructor.getParameterTypes();
-            Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(constructor, parameterTypes);
+            Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
@@ -251,7 +251,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     protected Object[] getConstructorArguments(PicoContainer container, Constructor ctor) {
         Class[] parameterTypes = ctor.getParameterTypes();
         Object[] result = new Object[parameterTypes.length];
-        Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(ctor, parameterTypes);
+        Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
         for (int i = 0; i < currentParameters.length; i++) {
             result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i]);
@@ -286,38 +286,5 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
                 return getComponentImplementation().getDeclaredConstructors();
             }
         });
-    }
-
-    /**
-     * Create default parameters for the given types.
-     *
-     * @param constructor Constructor that the parameters are for.
-     * @param parameters the parameter types
-     * @return the array with the default parameters.
-     */
-    protected Parameter[] createDefaultParameters(Constructor constructor, Class[] parameters) {
-        Parameter[] componentParameters = new Parameter[parameters.length];
-        for (int i = 0; i < parameters.length; i++) {
-            componentParameters[i] = ComponentParameter.DEFAULT;
-        }
-        return componentParameters;
-    }
-
-    public void verify(final PicoContainer container) throws PicoIntrospectionException {
-        if (verifyingGuard == null) {
-            verifyingGuard = new InstantiatingComponentAdapter.Guard() {
-                public Object run() {
-                    final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
-                    final Class[] parameterTypes = constructor.getParameterTypes();
-                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(constructor, parameterTypes);
-                    for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, ConstructorInjectionComponentAdapter.this, parameterTypes[i]);
-                    }
-                    return null;
-                }
-            };
-        }
-        verifyingGuard.setArguments(container);
-        verifyingGuard.observe(getComponentImplementation());
     }
 }

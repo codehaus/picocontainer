@@ -119,6 +119,38 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
         }
     }
 
+    /**
+     * Create default parameters for the given types.
+     *
+     * @param parameters the parameter types
+     * @return the array with the default parameters.
+     */
+    protected Parameter[] createDefaultParameters(Class[] parameters) {
+        Parameter[] componentParameters = new Parameter[parameters.length];
+        for (int i = 0; i < parameters.length; i++) {
+            componentParameters[i] = ComponentParameter.DEFAULT;
+        }
+        return componentParameters;
+    }
+
+    public void verify(final PicoContainer container) throws PicoIntrospectionException {
+        if (verifyingGuard == null) {
+            verifyingGuard = new Guard() {
+                public Object run() {
+                    final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
+                    final Class[] parameterTypes = constructor.getParameterTypes();
+                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                    for (int i = 0; i < currentParameters.length; i++) {
+                        currentParameters[i].verify(container, InstantiatingComponentAdapter.this, parameterTypes[i]);
+                    }
+                    return null;
+                }
+            };
+        }
+        verifyingGuard.setArguments(container);
+        verifyingGuard.observe(getComponentImplementation());
+    }
+
     public void accept(PicoVisitor visitor) {
         super.accept(visitor);
         if (parameters != null) {

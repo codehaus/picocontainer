@@ -27,7 +27,7 @@ public class NanoNamingImpl extends UnicastRemoteObject implements NanoNaming {
             throw new IllegalArgumentException("'pico' should not be null");
         }
         if (proxyFactory == null) {
-            throw new IllegalArgumentException("'proxyfactory' should not be null");
+            throw new IllegalArgumentException("'proxyFactory' should not be null");
         }
         this.registry = registry;
         this.pico = pico;

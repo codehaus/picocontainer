@@ -16,7 +16,7 @@ public class ClientInvoker implements Invoker {
 
     {
         try {
-            getKey = KeyHolder.class.getMethod("getKey", null);
+            getKey = KeyHolder.class.getMethod("getKey", (Class[])null);
         } catch (NoSuchMethodException e) {
             throw new InternalError();
         }

@@ -16,6 +16,7 @@ import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoLifecycleException;
 import org.picocontainer.Startable;
 import org.picocontainer.monitors.LifecycleComponentMonitor;
 import org.picocontainer.monitors.LifecycleComponentMonitor.LifecycleFailuresException;
@@ -354,7 +355,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
     }
 
 
-    public void testLifecycleDoesNotRecoverwithDefaultComponentMonitor() {
+    public void testLifecycleDoesNotRecoverWithDefaultComponentMonitor() {
 
         Mock s1 = mock(Startable.class, "s1");
         s1.expects(once()).method("start").will(throwException(new RuntimeException("I do not want to start myself")));
@@ -366,14 +367,11 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         dpc.registerComponentInstance("bar", s2.proxy());
         try {
             dpc.start();
-        } catch (RuntimeException e) {
+            fail("PicoLifecylceException expected");
+        } catch (PicoLifecycleException e) {
             assertEquals("I do not want to start myself", e.getCause().getMessage());
         }
-        try {
-            dpc.stop();
-        } catch (Exception e) {
-            assertEquals("Not started",e.getMessage());
-        }
+        dpc.stop();
     }
 
     public void testLifecycleCanRecoverWithCustomComponentMonitor() throws NoSuchMethodException {
@@ -427,6 +425,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
         try {
             lifecycleComponentMonitor.rethrowLifecycleFailuresException();
+            fail("LifecycleFailuresException expected");
         } catch (LifecycleFailuresException e) {
             dpc.stop();
             assertEquals(1, e.getFailures().size());
@@ -450,6 +449,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
         try {
             dpc.start();
+            fail("PicoLifecylceException expected");
         } catch (RuntimeException e) {
             dpc.stop();
         }
@@ -473,6 +473,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
         try {
             dpc.start();
+            fail("PicoLifecylceException expected");
         } catch (RuntimeException e) {
             dpc.stop();
         }

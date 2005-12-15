@@ -9,17 +9,16 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * A BasicComponentParameter should be used to pass in a particular component as argument to a
@@ -84,7 +83,7 @@ public class BasicComponentParameter
         final ComponentAdapter componentAdapter = resolveAdapter(container, adapter, expectedType);
         if (componentAdapter == null) {
             final HashSet set = new HashSet();
-            set.add(Arrays.asList(new Class[] {expectedType}));
+            set.add(expectedType);
             throw new UnsatisfiableDependenciesException(adapter, set, container);
         }
         componentAdapter.verify(container);

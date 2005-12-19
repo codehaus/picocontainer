@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -67,7 +68,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private Map componentKeyToAdapterCache = new HashMap();
     private ComponentAdapterFactory componentAdapterFactory;
     private PicoContainer parent;
-    private HashSet children = new HashSet();
+    private Set children = new HashSet();
 
     private List componentAdapters = new ArrayList();
     // Keeps track of instantiation order.
@@ -78,7 +79,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     // Keeps track of the container disposed status
     private boolean disposed = false;
     // Keeps track of child containers started status
-    private Map childrenStarted = new HashMap();
+    private Set childrenStarted = new HashSet();
 
     private LifecycleManager lifecycleManager = new OrderedComponentAdapterLifecycleManager();
     private LifecycleStrategy lifecycleStrategyForInstanceRegistrations;
@@ -466,7 +467,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         childrenStarted.clear();
         for (Iterator iterator = children.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
-            childrenStarted.put(new Integer(child.hashCode()), new Boolean(true));
+            childrenStarted.add(new Integer(child.hashCode()));
             child.start();
         }
     }
@@ -506,11 +507,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @return A boolean, <code>true</code> if the container is started
      */
     private boolean childStarted(PicoContainer child) {
-        Boolean childStarted = (Boolean)childrenStarted.get(new Integer(child.hashCode()));
-        if ( childStarted != null ){
-            return childStarted.booleanValue();
-        }
-        return false;
+        return childrenStarted.contains(new Integer(child.hashCode()));
     }
 
     /**
@@ -545,7 +542,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public boolean addChildContainer(PicoContainer child) {
-        return children.add(child);
+        if (children.add(child)) {
+            // @todo Should only be added if child container has also be started
+            if (started) {
+                childrenStarted.add(new Integer(child.hashCode()));
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean removeChildContainer(PicoContainer child) {

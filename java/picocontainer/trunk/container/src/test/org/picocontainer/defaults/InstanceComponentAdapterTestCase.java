@@ -19,6 +19,8 @@ import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import java.util.Map;
+
 /**
  * Test the InstanceComponentAdapter.
  * 
@@ -36,7 +38,7 @@ public class InstanceComponentAdapterTestCase
 
     public void testDefaultLifecycleStrategy() {
         LifecycleComponent component = new LifecycleComponent();
-        InstanceComponentAdapter componentAdapter = 
+        InstanceComponentAdapter componentAdapter =
             new InstanceComponentAdapter(LifecycleComponent.class, component);
         PicoContainer pico = new DefaultPicoContainer();
         componentAdapter.start(pico);
@@ -51,7 +53,7 @@ public class InstanceComponentAdapterTestCase
 
     private static class LifecycleComponent implements Startable, Disposable {
         StringBuffer buffer = new StringBuffer();
-        
+
         public void start() {
             buffer.append("start>");
         }
@@ -62,9 +64,9 @@ public class InstanceComponentAdapterTestCase
 
         public void dispose() {
             buffer.append("dispose>");
-        }       
+        }
     }
-    
+
     public void testCustomLifecycleCanBeInjected() {
         NullLifecycle component = new NullLifecycle();
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
@@ -79,7 +81,7 @@ public class InstanceComponentAdapterTestCase
         componentAdapter.dispose(component);
         assertEquals("<start<stop<dispose<start<stop<dispose", strategy.recording());
     }
-    
+
     public void testComponentAdapterCanIgnoreLifecycle() {
         final Touchable touchable = new SimpleTouchable();
         InstanceComponentAdapter componentAdapter = new InstanceComponentAdapter(Touchable.class, touchable);
@@ -91,8 +93,17 @@ public class InstanceComponentAdapterTestCase
         componentAdapter.stop(touchable);
         componentAdapter.dispose(touchable);
     }
-        
-    
+
+    public void testGuardAgainstNullInstance() {
+        try {
+            new InstanceComponentAdapter(Map.class, null);
+            fail("should have barfed");
+        } catch (NullPointerException e) {
+            assertEquals("componentInstance cannot be null", e.getMessage());
+        }
+    }
+
+
     /**
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterType()
@@ -100,7 +111,7 @@ public class InstanceComponentAdapterTestCase
     protected Class getComponentAdapterType() {
         return InstanceComponentAdapter.class;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#getComponentAdapterNature()
@@ -108,7 +119,7 @@ public class InstanceComponentAdapterTestCase
     protected int getComponentAdapterNature() {
         return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING );
     }
-    
+
     /**
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyWithoutDependencyWorks(org.picocontainer.MutablePicoContainer)
@@ -116,7 +127,7 @@ public class InstanceComponentAdapterTestCase
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
         return new InstanceComponentAdapter("foo", "bar");
     }
-    
+
     /**
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_verifyDoesNotInstantiate(org.picocontainer.MutablePicoContainer)
@@ -125,7 +136,7 @@ public class InstanceComponentAdapterTestCase
             MutablePicoContainer picoContainer) {
         return new InstanceComponentAdapter("Key", new Integer(4711));
     }
-    
+
     /**
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_visitable()
@@ -133,7 +144,7 @@ public class InstanceComponentAdapterTestCase
     protected ComponentAdapter prepDEF_visitable() {
         return new InstanceComponentAdapter("Key", new Integer(4711));
     }
-    
+
     /**
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isSerializable(org.picocontainer.MutablePicoContainer)
@@ -141,7 +152,7 @@ public class InstanceComponentAdapterTestCase
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
         return new InstanceComponentAdapter("Key", new Integer(4711));
     }
-    
+
     /**
      * {@inheritDoc}
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isXStreamSerializable(org.picocontainer.MutablePicoContainer)

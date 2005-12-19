@@ -53,11 +53,12 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
 
     public Object getComponentInstance(PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        if (instanceReference.get() == null) {
-            Object instance = super.getComponentInstance(container);
+        Object instance = instanceReference.get();
+        if (instance == null) {
+            instance = super.getComponentInstance(container);
             instanceReference.set(instance);
         }
-        return instanceReference.get();
+        return instance;
     }
 
     /**

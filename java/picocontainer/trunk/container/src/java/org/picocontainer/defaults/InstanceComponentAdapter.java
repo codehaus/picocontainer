@@ -38,11 +38,18 @@ public class InstanceComponentAdapter extends AbstractComponentAdapter implement
     }
 
     public InstanceComponentAdapter(Object componentKey, Object componentInstance, LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentInstance.getClass());
+        super(componentKey, getInstanceClass(componentInstance));
         this.componentInstance = componentInstance;
         this.lifecycleStrategy = lifecycleStrategy;
     }
-    
+
+    private static Class getInstanceClass(Object componentInstance) {
+        if (componentInstance == null) {
+            throw new NullPointerException("componentInstance cannot be null");
+        }
+        return componentInstance.getClass();
+    }
+
     public Object getComponentInstance(PicoContainer container) {
         return componentInstance;
     }

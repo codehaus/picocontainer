@@ -480,4 +480,22 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
     }
 
+    public void testChildContainerIsStoppedWhenStartedIndependentlyOfParent() throws Exception {
+
+        DefaultPicoContainer parent = new DefaultPicoContainer();
+
+        parent.start();
+
+        MutablePicoContainer child = parent.makeChildContainer();
+
+        Mock s1 = mock(Startable.class, "s1");
+        s1.expects(once()).method("start");
+        s1.expects(once()).method("stop");
+
+        child.registerComponentInstance(s1.proxy());
+
+        child.start();
+        parent.stop();
+
+    }
 }

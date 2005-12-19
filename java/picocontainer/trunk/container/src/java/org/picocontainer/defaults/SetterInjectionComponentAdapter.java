@@ -129,7 +129,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
         Object retVal = AccessController.doPrivileged(new PrivilegedAction() {
             public Object run() {
                 try {
-                    return getComponentImplementation().getConstructor(null);
+                    return getComponentImplementation().getConstructor((Class[])null);
                 } catch (NoSuchMethodException e) {
                     return new PicoInvocationTargetInitializationException(e);
                 } catch (SecurityException e) {

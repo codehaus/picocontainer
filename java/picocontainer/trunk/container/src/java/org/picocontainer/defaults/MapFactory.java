@@ -6,8 +6,7 @@ import java.util.Map;
  * A simple factory for ordered maps: use JDK1.4's java.util.LinkedHashMap if available,
  * or commons-collection's LinkedMap, or defaults to unordered java.util.HashMap
  *
- * @author gjoseph
- * @author $Author: $ (last edit)
+ * @author Gregory Joseph
  * @version $Revision: $ 
  */
 public class MapFactory {
@@ -37,9 +36,9 @@ public class MapFactory {
         try {
             return (Map) clazz.newInstance();
         } catch (InstantiationException e) {
-            throw new RuntimeException("Could not instanciate " + clazz + " : " + e.getMessage());
+            throw new RuntimeException("Could not instantiate " + clazz + " : " + e.getMessage());
         } catch (IllegalAccessException e) {
-            throw new RuntimeException("Could not instanciate " + clazz + " : " + e.getMessage());
+            throw new RuntimeException("Could not instantiate " + clazz + " : " + e.getMessage());
         }
     }
 }

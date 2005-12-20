@@ -19,8 +19,8 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.alternatives.EmptyPicoContainer;
-import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.monitors.DefaultComponentMonitor;
+import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -29,12 +29,12 @@ import org.picocontainer.testmodel.Touchable;
 
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.lang.reflect.Method;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -424,5 +424,20 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         container.start();
 
         assertEquals(WrappingA.class, container.getComponentInstance(A.class).getClass());
+    }
+    
+    public static class MyPicoContainer extends DefaultPicoContainer {
+
+        public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) {
+            return super.registerComponent(new SynchronizedComponentAdapter(componentAdapter));
+        }
+        
+    }
+    
+    public void testDerivedPicoContainerCanOverloadRegisterComponentForAllCreatedComponentAdapters() {
+        MutablePicoContainer mpc = new MyPicoContainer();
+        assertEquals(SynchronizedComponentAdapter.class, mpc.registerComponent(new InstanceComponentAdapter("foo", "bar")).getClass());
+        assertEquals(SynchronizedComponentAdapter.class, mpc.registerComponentInstance("foobar").getClass());
+        assertEquals(SynchronizedComponentAdapter.class, mpc.registerComponentImplementation(SimpleA.class).getClass());
     }
 }

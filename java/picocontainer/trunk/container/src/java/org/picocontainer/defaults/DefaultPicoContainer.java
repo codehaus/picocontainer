@@ -289,8 +289,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      */
     public ComponentAdapter registerComponentInstance(Object componentKey, Object componentInstance) {
         ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance, lifecycleStrategyForInstanceRegistrations);
-        registerComponent(componentAdapter);
-        return componentAdapter;
+        return registerComponent(componentAdapter);
     }
 
     /**
@@ -318,8 +317,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      */
     public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters) {
         ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentKey, componentImplementation, parameters);
-        registerComponent(componentAdapter);
-        return componentAdapter;
+        return registerComponent(componentAdapter);
     }
 
     /**

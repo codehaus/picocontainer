@@ -8,13 +8,13 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork2;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.opensymphony.xwork.ObjectFactory;
 import org.nanocontainer.nanowar.ActionsContainerFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 
-import com.opensymphony.xwork.ObjectFactory;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * <p>
@@ -24,10 +24,11 @@ import com.opensymphony.xwork.ObjectFactory;
  * @author Cyrille Le Clerc
  * @author Jonas Engman
  * @author Mauro Talevi
+ * @author Gr&eacute;gory Joseph
  */
 public class PicoObjectFactory extends ObjectFactory {
 
-    private ActionsContainerFactory actionsContainerFactory = new ActionsContainerFactory();
+    private final ActionsContainerFactory actionsContainerFactory = new ActionsContainerFactory();
     private final ObjectReference objectReference;
 
     /**
@@ -36,37 +37,63 @@ public class PicoObjectFactory extends ObjectFactory {
      * 
      * @param objectReference the ObjectReference 
      */
-	public PicoObjectFactory(ObjectReference objectReference) {
+    public PicoObjectFactory(ObjectReference objectReference) {
         this.objectReference = objectReference;
-	}
+    }
+
+    public boolean isNoArgConstructorRequired() {
+        return false;
+    }
+
+    /**
+     * Webwork-2.2 / XWork-1.1 method. ExtraContext can be ignored.
+     */
+    public Object buildBean(Class clazz, Map extraContext) throws Exception {
+        return buildBean(clazz);
+    }
+
+    /**
+     * Webwork-2.2 / XWork-1.1 method. ExtraContext can be ignored.
+     */
+    public Object buildBean(String className, Map extraContext) throws Exception {
+        return buildBean(className);
+    }
+
+    /**
+     * Webwork-2.2 / XWork-1.1 method. Used to validate a class be loaded.
+     * Using actionsContainerFactory for consistency with build methods.
+     */
+    public Class getClassInstance(String className) throws ClassNotFoundException {
+        return actionsContainerFactory.getActionClass(className);
+    }
 
     /**
      * Instantiates an action using the PicoContainer found in the request scope.
      * 
      * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.Class)
      */
-	public Object buildBean(Class actionClass) throws Exception {
-        MutablePicoContainer actionsContainer = actionsContainerFactory.getActionsContainer((HttpServletRequest)objectReference.get());
+    public Object buildBean(Class actionClass) throws Exception {
+        MutablePicoContainer actionsContainer = actionsContainerFactory.getActionsContainer((HttpServletRequest) objectReference.get());
         Object action = actionsContainer.getComponentInstance(actionClass);
-        
+
         if (action == null) {
             // The action wasn't registered. Attempt to instantiate it.
             actionsContainer.registerComponentImplementation(actionClass);
             action = actionsContainer.getComponentInstance(actionClass);
         }
         return action;
-	}
-    
+    }
+
     /**
-	 * As {@link ObjectFactory#buildBean(java.lang.String)}does not delegate to
-	 * {@link ObjectFactory#buildBean(java.lang.Class)} but directly calls
-	 * <code>clazz.newInstance()</code>, overwrite this method to call
-	 * <code>buildBean()</code>
-	 * 
-	 * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.String)
-	 */
-	public Object buildBean(String className) throws Exception {
+     * As {@link ObjectFactory#buildBean(java.lang.String)}does not delegate to
+     * {@link ObjectFactory#buildBean(java.lang.Class)} but directly calls
+     * <code>clazz.newInstance()</code>, overwrite this method to call
+     * <code>buildBean()</code>
+     *
+     * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.String)
+     */
+    public Object buildBean(String className) throws Exception {
         Class actionClass = actionsContainerFactory.getActionClass(className);
         return buildBean(actionClass);
-	}
+    }
 }

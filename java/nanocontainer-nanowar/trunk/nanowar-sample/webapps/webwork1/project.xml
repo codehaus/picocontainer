@@ -35,33 +35,9 @@
         </dependency>
         
         <dependency>
-            <id>groovy</id>
+            <groupId>groovy</groupId>
+            <artifactId>groovy-all</artifactId>
             <version>1.0-jsr-04</version>
-            <properties>
-                <war.bundle>true</war.bundle>
-            </properties>
-        </dependency>
-
-        <dependency>
-            <id>antlr</id>
-            <version>2.7.5</version>
-            <properties>
-                <war.bundle>true</war.bundle>
-            </properties>
-        </dependency>
-        
-        <dependency>
-            <id>asm</id>
-            <version>2.0</version>
-            <properties>
-                <war.bundle>true</war.bundle>
-            </properties>
-        </dependency>
-
-        <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm-util</artifactId>
-            <version>2.0</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>

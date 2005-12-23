@@ -50,12 +50,12 @@ public abstract class SessionDelegator implements Session {
 	/**
 	 * Obtain hibernate session.
 	 */
-	protected abstract Session getDelegatedSession();
+	public abstract Session getDelegatedSession();
 
 	/**
 	 * Perform actions to dispose "burned" session properly.
 	 */
-	protected abstract void invalidateDelegatedSession() throws HibernateException;
+	public abstract void invalidateDelegatedSession() throws HibernateException;
 
 	/**
 	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using

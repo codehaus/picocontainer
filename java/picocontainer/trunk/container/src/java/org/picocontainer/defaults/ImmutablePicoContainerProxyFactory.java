@@ -88,7 +88,7 @@ public class ImmutablePicoContainerProxyFactory implements InvocationHandler, Se
      */
     public static PicoContainer newProxyInstance(final PicoContainer pico) {
         return (PicoContainer)Proxy.newProxyInstance(
-                Thread.currentThread().getContextClassLoader(), interfaces,
+                PicoContainer.class.getClassLoader(), interfaces,
                 new ImmutablePicoContainerProxyFactory(pico));
     }
 }

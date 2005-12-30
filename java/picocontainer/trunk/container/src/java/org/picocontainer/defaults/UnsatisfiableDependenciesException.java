@@ -45,7 +45,7 @@ public class UnsatisfiableDependenciesException extends PicoIntrospectionExcepti
                                               PicoContainer leafContainer) {
         super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfied dependency: " + unsatisfiedDependencyType
                 +" among unsatisfiable dependencies: "+unsatisfiableDependencies + " where " + leafContainer 
-                + " was the leaf container being asked for dependenciess.");
+                + " was the leaf container being asked for dependencies.");
         this.instantiatingComponentAdapter = instantiatingComponentAdapter;
         this.unsatisfiableDependencies = unsatisfiableDependencies;
         this.unsatisfiedDependencyType = unsatisfiedDependencyType;

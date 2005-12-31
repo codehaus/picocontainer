@@ -156,14 +156,12 @@
             <version>1.2.8</version>
         </dependency>
        <!-- those are for xdoclet 2 -->
-       <!--
         <dependency>
             <groupId>xdoclet</groupId>
             <artifactId>maven-xdoclet2-plugin</artifactId>
             <version>1.0.2</version>
             <type>plugin</type>
         </dependency>
-        -->
         <dependency>
             <groupId>xdoclet-plugins</groupId>
             <artifactId>xdoclet-plugin-hibernate</artifactId>

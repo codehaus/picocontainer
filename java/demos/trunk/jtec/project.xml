@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project  xmlns:j="jelly:core">
-    <pomVersion>3</pomVersion>
+<project xmlns:j="jelly:core">
+    <pomVersion>4</pomVersion>
     <groupId>nanocontainer</groupId>
     <id>jtec-jobdemo</id>
     <name>J Tec Team demo application</name>
@@ -50,7 +50,7 @@
             <properties>
                 <war.bundle>true</war.bundle>
                 <xdoclet.dependency>true</xdoclet.dependency>
-             </properties>
+            </properties>
         </dependency>
         <dependency>
             <id>servletapi</id>
@@ -126,13 +126,6 @@
                 <war.bundle>true</war.bundle>
             </properties>
         </dependency>
-        <!--dependency>
-            <id>jta</id>
-            <version>1.0.1B</version>
-            <properties>
-                <war.bundle>true</war.bundle>
-            </properties>
-        </dependency-->
         <dependency>
             <id>commons-collections</id>
             <version>3.1</version>
@@ -161,19 +154,38 @@
         <dependency>
             <id>log4j</id>
             <version>1.2.8</version>
-            <!--
-           <properties>
-                <war.bundle>true</war.bundle>
-            </properties>
-            -->
         </dependency>
-
-
+       <!-- those are for xdoclet 2 -->
+       <!--
+        <dependency>
+            <groupId>xdoclet</groupId>
+            <artifactId>maven-xdoclet2-plugin</artifactId>
+            <version>1.0.2</version>
+            <type>plugin</type>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>xdoclet-plugins</groupId>
+            <artifactId>xdoclet-plugin-hibernate</artifactId>
+            <version>1.0.2</version>
+            <properties>
+                <xdoclet.dependency>true</xdoclet.dependency>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>xdoclet-plugins</groupId>
+            <artifactId>xdoclet-plugin-webwork</artifactId>
+            <version>1.0.2</version>
+            <properties>
+                <xdoclet.dependency>true</xdoclet.dependency>
+            </properties>
+        </dependency>
        <!--
             pico nano dependecies
         -->
         <dependency>
-            <id>picocontainer</id>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer</artifactId>
             <version>1.2-beta-1</version>
             <properties>
                 <war.bundle>true</war.bundle>
@@ -189,7 +201,7 @@
         </dependency>
         <dependency>
             <id>nanocontainer</id>
-            <version>1.0-RC-1</version>
+            <version>1.0-RC-2</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -197,7 +209,7 @@
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-nanowar</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-RC-2</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -205,7 +217,7 @@
         <dependency>
             <groupId>nanocontainer</groupId>
             <artifactId>nanocontainer-persistence</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-RC-2</version>
             <properties>
                 <war.bundle>true</war.bundle>
             </properties>
@@ -217,40 +229,20 @@
                 <war.bundle>true</war.bundle>
             </properties>
         </dependency>
-       <!-- those are for xdoclet 2 -->
-        <dependency>
-          <groupId>xdoclet</groupId>
-          <artifactId>maven-xdoclet2-plugin</artifactId>
-          <version>1.0.2</version>
-          <type>plugin</type>
-        </dependency>
-        <dependency>
-          <groupId>xdoclet-plugins</groupId>
-          <artifactId>xdoclet-plugin-hibernate</artifactId>
-          <version>1.0.1</version>
-          <properties>
-            <xdoclet.dependency>true</xdoclet.dependency>
-          </properties>
-        </dependency>
-        <dependency>
-            <groupId>xdoclet-plugins</groupId>
-            <artifactId>xdoclet-plugin-webwork</artifactId>
-            <version>1.0.2</version>
-          <properties>
-            <xdoclet.dependency>true</xdoclet.dependency>
-          </properties>
-        </dependency>
-        </dependencies>
- <!-- build information for the project -->
+    </dependencies>
+
+
+
+        <!-- build information for the project -->
     <build>
         <sourceDirectory>src/java</sourceDirectory>
         <resources>
-               <resource>
-                    <directory>${pom.build.sourceDirectory}</directory>
-                    <includes>
-                        <include>**/*.vm</include>
-                    </includes>
-                </resource>
+            <resource>
+                <directory>${pom.build.sourceDirectory}</directory>
+                <includes>
+                    <include>**/*.vm</include>
+                </includes>
+            </resource>
             <resource>
                 <directory>${maven.build.dir}/xdoclet/hibernatedoclet</directory>
                 <includes>
@@ -300,5 +292,5 @@
         <report>maven-jcoverage-plugin</report>
         <report>maven-jdepend-plugin</report>
         <report>maven-jxr-plugin</report>
-    </reports> 
+    </reports>
 </project>

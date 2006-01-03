@@ -159,7 +159,7 @@
         <dependency>
             <groupId>xdoclet</groupId>
             <artifactId>maven-xdoclet2-plugin</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
             <type>plugin</type>
         </dependency>
         <dependency>

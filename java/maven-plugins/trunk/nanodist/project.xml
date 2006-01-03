@@ -6,7 +6,7 @@
     <name>NanoDist Maven Plugin</name>
     <description>Maven Plugin to create NanoContainer Distributions</description>
     <shortDescription>NanoContainer Distribution Maven Plugin</shortDescription>
-    <currentVersion>1.1-SNAPSHOT</currentVersion>
+    <currentVersion>1.0.1</currentVersion>
     
 </project>
 

@@ -24,7 +24,14 @@
 	<goal name="nanodist:build" prereqs="nanodist:prepare">
 
         <copy todir="${maven.nanodist.dir}" 
-        		file="${maven.nanodist.booter.script}"
+        		file="${maven.nanodist.booter.script.sh}"
+        		filtering="true">
+  			<filterset>
+                <filter token="booter-version" value="${maven.nanodist.booter.version}"/>
+		    </filterset>
+    		</copy>
+        <copy todir="${maven.nanodist.dir}" 
+        		file="${maven.nanodist.booter.script.bat}"
         		filtering="true">
   			<filterset>
                 <filter token="booter-version" value="${maven.nanodist.booter.version}"/>

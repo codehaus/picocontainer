@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<project xmlns:j="jelly:core" xmlns:ant="jelly:ant" xmlns:artifact="artifact" xmlns:license="license" xmlns:util="jelly:util">
+
+
+    <!--==================================================================-->
+    <!-- Default goal: Builds NanoContainer Distribution                  -->
+    <!--==================================================================-->
+    <goal name="nanodist" prereqs="nanodist:build"/>
+
+    <!--==================================================================-->
+    <!-- Prepares NanoDist											  -->
+    <!--==================================================================-->
+	<goal name="nanodist:prepare">
+        <mkdir dir="${maven.nanodist.dir}"/>
+        <mkdir dir="${maven.nanodist.dir}/lib"/>
+        <mkdir dir="${maven.nanodist.dir}/lib/common"/>
+        <mkdir dir="${maven.nanodist.dir}/lib/hidden"/>
+    </goal>
+
+    <!--==================================================================-->
+    <!-- Builds NanoContainer Distribution    							  -->
+    <!--==================================================================-->
+	<goal name="nanodist:build" prereqs="nanodist:prepare">
+
+        <copy todir="${maven.nanodist.dir}" 
+        		file="${maven.nanodist.booter.script.sh}"
+        		filtering="true">
+  			<filterset>
+                <filter token="booter-version" value="${maven.nanodist.booter.version}"/>
+		    </filterset>
+    		</copy>
+        <copy todir="${maven.nanodist.dir}" 
+        		file="${maven.nanodist.booter.script.bat}"
+        		filtering="true">
+  			<filterset>
+                <filter token="booter-version" value="${maven.nanodist.booter.version}"/>
+		    </filterset>
+    		</copy>
+		<chmod dir="${maven.nanodist.dir}" perm="ugo+rx"/>
+        
+        <copy todir="${maven.nanodist.dir}/lib" 
+        		file="${maven.nanodist.booter.policy}"
+        		filtering="true">
+  			<filterset>
+                <filter token="booter-version" value="${maven.nanodist.booter.version}"/>
+		    </filterset>
+    		</copy>
+
+        <j:forEach var="lib" items="${pom.artifacts}">
+   		    <j:set var="dep" value="${lib.dependency}"/>     
+		    <j:if test="${dep.artifactId=='nanocontainer-booter'}">
+		        <copy todir="${maven.nanodist.dir}/lib/"
+		            file="${lib.path}"/>
+		    	    <echo>copied ${lib.path} to lib</echo>
+		    </j:if>
+   		    <j:if test="${dep.getProperty('nanodist.booter.common')=='true'}">
+             	<copy todir="${maven.nanodist.dir}/lib/common"
+                		file="${lib.path}"/>
+		    	    <echo>Copied ${lib.path} to lib/common</echo>
+            </j:if>
+   		    <j:if test="${dep.getProperty('nanodist.booter.hidden')=='true'}">
+             	<copy todir="${maven.nanodist.dir}/lib/hidden"
+                		file="${lib.path}"/>
+		    	    <echo>Copied ${lib.path} to lib/hidden</echo>
+            </j:if>
+        </j:forEach>	
+	</goal>
+		
+</project>

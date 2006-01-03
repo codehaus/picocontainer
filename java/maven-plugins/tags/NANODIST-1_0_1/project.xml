@@ -1,0 +1,12 @@
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <pomVersion>3</pomVersion>
+    <id>nanodist-maven-plugin</id>
+    <groupId>nanocontainer</groupId>
+    <name>NanoDist Maven Plugin</name>
+    <description>Maven Plugin to create NanoContainer Distributions</description>
+    <shortDescription>NanoContainer Distribution Maven Plugin</shortDescription>
+    <currentVersion>1.0.1</currentVersion>
+    
+</project>
+

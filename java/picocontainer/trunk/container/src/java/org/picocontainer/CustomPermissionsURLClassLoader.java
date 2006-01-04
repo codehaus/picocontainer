@@ -7,7 +7,7 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer;
+package org.picocontainer;
 
 import java.net.URLClassLoader;
 import java.net.URL;

@@ -1,4 +1,4 @@
-import org.nanocontainer.script.groovy.GroovyNodeBuilder
+import org.nanocontainer.script.groovy.OldGroovyNodeBuilder
 import org.nanocontainer.testmodel.Wilma
 import org.microcontainer.jmx.JmxDecorationDelegate
 import javax.management.MBeanServerFactory

@@ -28,12 +28,12 @@ public class JmxDecorationDelegateTestCase extends TestCase {
     public void testScriptWithJmxNodeAndKeyAsManagementInterface() throws Exception {
 
         Reader script = new StringReader("" +
-                "import org.nanocontainer.script.groovy.GroovyNodeBuilder\n" +
+                "import org.nanocontainer.script.groovy.OldGroovyNodeBuilder\n" +
                 "import org.nanocontainer.testmodel.Wilma\n" +
                 "import org.nanocontainer.testmodel.WilmaImpl\n" +
                 "import org.microcontainer.jmx.JmxDecorationDelegate\n" +
                 "\n" +
-                "builder = new GroovyNodeBuilder(new JmxDecorationDelegate())\n" +
+                "builder = new OldGroovyNodeBuilder(new JmxDecorationDelegate())\n" +
                 "pico = builder.container() {\n" +
                 "   component(key:javax.management.MBeanServer, instance:javax.management.MBeanServerFactory.createMBeanServer())\n" +
                 "   component(key:Wilma, class:WilmaImpl) {\n" +
@@ -60,12 +60,12 @@ public class JmxDecorationDelegateTestCase extends TestCase {
     public void testScriptWithJmxNodeAndExplicitManagementInterface() throws Exception {
 
         Reader script = new StringReader("" +
-                "import org.nanocontainer.script.groovy.GroovyNodeBuilder\n" +
+                "import org.nanocontainer.script.groovy.OldGroovyNodeBuilder\n" +
                 "import org.nanocontainer.testmodel.Wilma\n" +
                 "import org.nanocontainer.testmodel.WilmaImpl\n" +
                 "import org.microcontainer.jmx.JmxDecorationDelegate\n" +
                 "\n" +
-                "builder = new GroovyNodeBuilder(new JmxDecorationDelegate())\n" +
+                "builder = new OldGroovyNodeBuilder(new JmxDecorationDelegate())\n" +
                 "pico = builder.container() {\n" +
                 "   component(key:javax.management.MBeanServer, instance:javax.management.MBeanServerFactory.createMBeanServer())\n" +
                 "   component(key:'wilma', class:WilmaImpl) {\n" +
@@ -92,13 +92,13 @@ public class JmxDecorationDelegateTestCase extends TestCase {
     public void testScriptWithJmxNodeAndImplicitManagementInterface() throws Exception {
 
         Reader script = new StringReader("" +
-                "import org.nanocontainer.script.groovy.GroovyNodeBuilder\n" +
+                "import org.nanocontainer.script.groovy.OldGroovyNodeBuilder\n" +
                 "import org.microcontainer.jmx.JmxDecorationDelegate\n" +
                 "import org.microcontainer.jmx.WilmaFlintstone\n" +
                 "import javax.management.MBeanServer\n" +
                 "import javax.management.MBeanServerFactory\n" +
                 "\n" +
-                "builder = new GroovyNodeBuilder(new JmxDecorationDelegate())\n" +
+                "builder = new OldGroovyNodeBuilder(new JmxDecorationDelegate())\n" +
                 "pico = builder.container() {\n" +
                 "   component(key:MBeanServer, instance:MBeanServerFactory.createMBeanServer())\n" +
                 "   component(key:'wilma', class:WilmaFlintstone) {\n" +
@@ -131,13 +131,13 @@ public class JmxDecorationDelegateTestCase extends TestCase {
             return;
         }
         Reader script = new StringReader("" +
-                "import org.nanocontainer.script.groovy.GroovyNodeBuilder\n" +
+                "import org.nanocontainer.script.groovy.OldGroovyNodeBuilder\n" +
                 "import org.nanocontainer.testmodel.WilmaImpl\n" +
                 "import org.nanocontainer.remoting.jmx.DynamicMBeanFactory\n" +
                 "import org.nanocontainer.remoting.jmx.mx4j.MX4JDynamicMBeanFactory\n" +
                 "import org.microcontainer.jmx.JmxDecorationDelegate\n" +
                 "\n" +
-                "builder = new GroovyNodeBuilder(new JmxDecorationDelegate())\n" +
+                "builder = new OldGroovyNodeBuilder(new JmxDecorationDelegate())\n" +
                 "pico = builder.container() {\n" +
                 "   component(key:javax.management.MBeanServer, instance:javax.management.MBeanServerFactory.createMBeanServer())\n" +
                 "   component(key:DynamicMBeanFactory, class:MX4JDynamicMBeanFactory)\n" +
@@ -165,11 +165,11 @@ public class JmxDecorationDelegateTestCase extends TestCase {
     public void testScriptWithJmxNodeAndWithoutManagementInterfaceUsingModelMBeans() throws Exception {
 
         Reader script = new StringReader("" +
-                "import org.nanocontainer.script.groovy.GroovyNodeBuilder\n" +
+                "import org.nanocontainer.script.groovy.OldGroovyNodeBuilder\n" +
                 "import org.nanocontainer.testmodel.WilmaImpl\n" +
                 "import org.microcontainer.jmx.JmxDecorationDelegate\n" +
                 "\n" +
-                "builder = new GroovyNodeBuilder(new JmxDecorationDelegate())\n" +
+                "builder = new OldGroovyNodeBuilder(new JmxDecorationDelegate())\n" +
                 "pico = builder.container() {\n" +
                 "   component(key:javax.management.MBeanServer, instance:javax.management.MBeanServerFactory.createMBeanServer())\n" +
                 "   component(key:'wilma', class:WilmaImpl) {\n" +

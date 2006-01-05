@@ -9,7 +9,7 @@ import org.microcontainer.ClassLoaderFactory;
 import org.microcontainer.jmx.JmxDecorationDelegate;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
-import org.nanocontainer.script.groovy.GroovyNodeBuilder;
+import org.nanocontainer.script.groovy.OldGroovyNodeBuilder;
 import org.picocontainer.PicoContainer;
 
 /**
@@ -42,7 +42,7 @@ public class GroovyDeploymentScriptHandler extends AbstractDeploymentScriptHandl
 		protected void handleBinding(Binding binding) {
      		super.handleBinding(binding);
 
-			GroovyNodeBuilder builder = new GroovyNodeBuilder(new JmxDecorationDelegate());
+			OldGroovyNodeBuilder builder = new OldGroovyNodeBuilder(new JmxDecorationDelegate());
 			binding.setVariable("builder", builder);
 		}
 

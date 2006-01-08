@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -14,6 +14,13 @@ import java.net.URL;
 import java.util.Map;
 import java.security.*;
 
+/**
+ * This classloader extends URLClassLoader, and adds the abilty to programatically add permissions easily.
+ * To be effective for permission management, it should be run in conjunction with a policy that restricts
+ * some of the classloaders, but not all.
+ * Its not ordinarily used by PicoContainer, but is here because PicoContainer is likely to be considered common
+ * in mant classloader trees.
+ */
 public class CustomPermissionsURLClassLoader extends URLClassLoader {
     private final Map permissionsMap;
 

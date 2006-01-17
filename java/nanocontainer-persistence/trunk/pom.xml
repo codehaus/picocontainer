@@ -4,7 +4,7 @@
 	<groupId>org.nanocontainer.persistence</groupId>
 	<artifactId>nanocontainer-persistence-all</artifactId>
 	<name>NanoContainer Persistence All</name>
-	<version>1.0</version>
+	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<url>http://www.nanocontainer.org/persistence</url>
 	<modules>

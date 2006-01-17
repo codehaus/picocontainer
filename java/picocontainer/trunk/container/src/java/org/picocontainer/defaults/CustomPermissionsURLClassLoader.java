@@ -7,19 +7,25 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.picocontainer;
+package org.picocontainer.defaults;
 
-import java.net.URLClassLoader;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.CodeSource;
+import java.security.PermissionCollection;
+import java.security.Permissions;
+import java.security.PrivilegedAction;
 import java.util.Map;
-import java.security.*;
 
 /**
- * This classloader extends URLClassLoader, and adds the abilty to programatically add permissions easily.
+ * CustomPermissionsURLClassLoader extends URLClassLoader, adding the abilty to programatically add permissions easily.
  * To be effective for permission management, it should be run in conjunction with a policy that restricts
  * some of the classloaders, but not all.
- * Its not ordinarily used by PicoContainer, but is here because PicoContainer is likely to be considered common
- * in mant classloader trees.
+ * It's not ordinarily used by PicoContainer, but is here because PicoContainer is common
+ * to most classloader trees.
+ * 
+ * @author Paul Hammant
  */
 public class CustomPermissionsURLClassLoader extends URLClassLoader {
     private final Map permissionsMap;

@@ -4,7 +4,7 @@
 	<groupId>org.picocontainer</groupId>
 	<artifactId>picocontainer-all</artifactId>
 	<name>PicoContainer Meta Project</name>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.2</version>
 	<packaging>pom</packaging>
 	<url>http://www.picocontainer.org</url>
 	<modules>

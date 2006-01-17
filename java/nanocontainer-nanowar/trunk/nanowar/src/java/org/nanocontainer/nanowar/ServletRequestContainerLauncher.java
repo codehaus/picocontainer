@@ -37,8 +37,21 @@ public class ServletRequestContainerLauncher {
             throw new ServletException(ServletContainerListener.class.getName()+" not deployed");
         }
         HttpSession session = request.getSession(true);
-        ObjectReference sessionContainerRef = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);
-        containerBuilder.buildContainer(containerRef, sessionContainerRef, request, false);
+
+        //
+        //Session container reference may or may not exist.  if it doesn't, get the
+        //application level container instead. However, it is designed to operate
+        //with null session. in which case we have old behavior instead.
+        //
+        ObjectReference containerReferenceToUse;
+        if (session != null && session.getAttribute(KeyConstants.SESSION_CONTAINER) == null) {
+            containerReferenceToUse = new ApplicationScopeObjectReference(session.getServletContext(), KeyConstants.APPLICATION_CONTAINER);
+        } else {
+            containerReferenceToUse = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);
+        }
+
+        containerBuilder.buildContainer(containerRef, containerReferenceToUse, request, false);
+
     }
 
     public void killContainer() {

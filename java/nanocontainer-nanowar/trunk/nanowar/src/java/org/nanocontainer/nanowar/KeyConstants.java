@@ -8,15 +8,24 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
+import org.nanocontainer.integrationkit.ContainerComposer;
+
 /**
  * Attribute keys used to store containers in various webapp scopes.
  * 
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
 public interface KeyConstants {
+    
     String BUILDER = "nanocontainer.builder";    
     String ACTIONS_CONTAINER = "nanocontainer.actions";
     String APPLICATION_CONTAINER = "nanocontainer.application";
     String SESSION_CONTAINER = "nanocontainer.session";
     String REQUEST_CONTAINER = "nanocontainer.request";
+
+    String NANOCONTAINER_PREFIX = "nanocontainer";
+    String CONTAINER_COMPOSER = ContainerComposer.class.getName();
+    String CONTAINER_COMPOSER_CONFIGURATION = CONTAINER_COMPOSER + ".configuration";
+    String KILLER_HELPER = "KILLER_HELPER";
+
 }

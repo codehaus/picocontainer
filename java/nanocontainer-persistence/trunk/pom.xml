@@ -4,7 +4,7 @@
 	<groupId>org.nanocontainer.persistence</groupId>
 	<artifactId>nanocontainer-persistence-all</artifactId>
 	<name>NanoContainer Persistence All</name>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>pom</packaging>
 	<url>http://www.nanocontainer.org/persistence</url>
 	<modules>
@@ -43,17 +43,17 @@
 			<dependency>
 				<groupId>org.picocontainer</groupId>
 				<artifactId>picocontainer</artifactId>
-				<version>1.2-SNAPSHOT</version>
+				<version>1.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.picocontainer</groupId>
 				<artifactId>picocontainer-gems</artifactId>
-				<version>1.2-SNAPSHOT</version>
+				<version>1.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.nanocontainer</groupId>
 				<artifactId>nanocontainer</artifactId>
-				<version>1.0-SNAPSHOT</version>
+				<version>1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-dbcp</groupId>

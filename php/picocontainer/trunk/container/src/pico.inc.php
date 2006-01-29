@@ -14,4 +14,5 @@ require_once('PicoContainer.php');
 //TODO: supply and generate API DOC on the codehouse site        
 //TODO: Refactor unit tests
 //TODO: write tutorial: componet registration and various types of CA 
+//TODO: UDException - add meanigfull exception message
 ?>

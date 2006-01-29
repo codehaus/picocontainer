@@ -13,15 +13,15 @@ define('PICOCONTAINER_PATH', PICOCONTAINER_TEST_PATH . '/../src');
 
 require_once(SIMPLETEST_PATH . '/unit_tester.php');
 require_once(SIMPLETEST_PATH . '/reporter.php');
-//require_once SIMPLETEST_PATH . '/ui/colortext_reporter.php';
 
 require_once(PICOCONTAINER_PATH . '/pico.inc.php');
 require_once('model.classes.inc.php');
 
 $test = new GroupTest('All Pico tests');
+$test->addTestFile(PICOCONTAINER_TEST_PATH . '/DefaultPicoContainerTests.php');
 $test->addTestFile(PICOCONTAINER_TEST_PATH . '/ComponentKeyTests.php');
 $test->addTestFile(PICOCONTAINER_TEST_PATH . '/ComponentAdapterTests.php');
-$test->addTestFile(PICOCONTAINER_TEST_PATH . '/DefaultPicoContainerTests.php');
+$test->addTestFile(PICOCONTAINER_TEST_PATH . '/ContainerHierarchiesTests.php');
 $test->addTestFile(PICOCONTAINER_TEST_PATH . '/ExceptionsTests.php');
 $test->addTestFile(PICOCONTAINER_TEST_PATH . '/SetterInjectionComponentAdapterTestCase.php');
 $test->addTestFile(PICOCONTAINER_TEST_PATH . '/LazyIncludingCATests.php');

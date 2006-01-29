@@ -12,7 +12,7 @@ class ExceptionsTests extends UnitTestCase
     	
     	try
     	{
-    		$pico->registerComponentImplementationWithIncFileName('','AnyNonIncludedClass');
+    		$pico->regComponentImplWithIncFileName('','AnyNonIncludedClass');
     		$this->fail();
     	}
     	catch(IncludeFileNameNotDefinedRegistrationException $e)
@@ -44,11 +44,11 @@ class ExceptionsTests extends UnitTestCase
     function testDuplicateComponentKeyRegistrationException()
     {
        $pico = new DefaultPicoContainer();
-       $pico->registerComponentImplementation('boykey','Boy');
+       $pico->regComponentImpl('boykey','Boy');
        
        try
        {
-            $pico->registerComponentImplementation('boykey','Boy');
+            $pico->regComponentImpl('boykey','Boy');
             $this->fail();
        }
        catch (DuplicateComponentKeyRegistrationException $e)
@@ -60,8 +60,8 @@ class ExceptionsTests extends UnitTestCase
     function testFailWithCyclicDependency()
     {        
         $pico = new DefaultPicoContainer();
-        $pico->registerComponentImplementation('C1');
-        $pico->registerComponentImplementation('C2');                
+        $pico->regComponentImpl('C1');
+        $pico->regComponentImpl('C2');                
        
         try
         {
@@ -77,9 +77,9 @@ class ExceptionsTests extends UnitTestCase
     function testFailWithAmbiguousComponentResolutionException()
     {
         $pico = new DefaultPicoContainer();
-        $pico->registerComponentImplementation('SimpleTouchable');
-        $pico->registerComponentImplementation('DerivedTouchable');
-        $pico->registerComponentImplementation('DependsOnTouchable');
+        $pico->regComponentImpl('SimpleTouchable');
+        $pico->regComponentImpl('DerivedTouchable');
+        $pico->regComponentImpl('DependsOnTouchable');
         try
         {
             $pico->getComponentInstance('DependsOnTouchable');                

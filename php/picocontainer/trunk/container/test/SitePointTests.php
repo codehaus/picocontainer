@@ -87,10 +87,10 @@ class SitePointTests extends UnitTestCase
     	$pico = new DefaultPicoContainer();
     	
     	
-    	$pico->registerComponentImplementation('SimpleTouchable');
-    	$pico->registerComponentImplementation('AlternativeTouchable');
+    	$pico->regComponentImpl('SimpleTouchable');
+    	$pico->regComponentImpl('AlternativeTouchable');
     	
-    	$pico->registerComponentImplementation('SeveralDependanciesWithConcencrateClasses','SeveralDependanciesWithConcencrateClasses',array('simpleTouchable' => new ConstantParameter(new SimpleTouchable()),'alternativeTouchable' => new ConstantParameter(new AlternativeTouchable())));
+    	$pico->regComponentImpl('SeveralDependanciesWithConcencrateClasses','SeveralDependanciesWithConcencrateClasses',array('simpleTouchable' => new ConstantParameter(new SimpleTouchable()),'alternativeTouchable' => new ConstantParameter(new AlternativeTouchable())));
     	
     	$ci = $pico->getComponentInstance('SeveralDependanciesWithConcencrateClasses');
     	$this->assertNotNull($ci);
@@ -103,9 +103,9 @@ class SitePointTests extends UnitTestCase
     function testDependsOnTwoDifferentWithtInterfaceWithoutParams()
     {
     	$pico = new DefaultPicoContainer();
-    	$pico->registerComponentImplementation('SimpleTouchable');
-    	$pico->registerComponentImplementation('AlternativeTouchable');
-    	$pico->registerComponentImplementation('SeveralDependanciesWithInterfaces');
+    	$pico->regComponentImpl('SimpleTouchable');
+    	$pico->regComponentImpl('AlternativeTouchable');
+    	$pico->regComponentImpl('SeveralDependanciesWithInterfaces');
     	
     	    	
     	
@@ -125,9 +125,9 @@ class SitePointTests extends UnitTestCase
     function testDependsOnTwoDifferentWithtParams()    
     {
     	$pico = new DefaultPicoContainer();
-    	$pico->registerComponentImplementation('SimpleTouchable');
-    	$pico->registerComponentImplementation('AlternativeTouchable');
-    	$pico->registerComponentImplementation(
+    	$pico->regComponentImpl('SimpleTouchable');
+    	$pico->regComponentImpl('AlternativeTouchable');
+    	$pico->regComponentImpl(
 			'SeveralDependanciesWithInterfaces', //key 
 			'SeveralDependanciesWithInterfaces', //class name
     		array('simpleTouchable' => new BasicComponentParameter('SimpleTouchable'),
@@ -141,9 +141,9 @@ class SitePointTests extends UnitTestCase
     function testDependsOnTwoDifferentWithtParamAndAutoWire()    
     {
     	$pico = new DefaultPicoContainer();
-    	$pico->registerComponentImplementation('SimpleTouchable');
-    	$pico->registerComponentImplementation('AlternativeTouchable');
-    	$pico->registerComponentImplementation('SeveralDependanciesWithInterfaceAndConcencrateClass',
+    	$pico->regComponentImpl('SimpleTouchable');
+    	$pico->regComponentImpl('AlternativeTouchable');
+    	$pico->regComponentImpl('SeveralDependanciesWithInterfaceAndConcencrateClass',
     										   'SeveralDependanciesWithInterfaceAndConcencrateClass',
     										   array('alternativeTouchable' => new BasicComponentParameter('AlternativeTouchable')));			
     			  
@@ -155,9 +155,9 @@ class SitePointTests extends UnitTestCase
     function testDependsOnTwoDifferentOnlyWithtAutoWire()
     {
     	$pico = new DefaultPicoContainer();
-    	$pico->registerComponentImplementation('SimpleTouchable');
-    	$pico->registerComponentImplementation('Touchable','AlternativeTouchable');
-    	$pico->registerComponentImplementation('SeveralDependanciesWithInterfaceAndConcencrateClass');
+    	$pico->regComponentImpl('SimpleTouchable');
+    	$pico->regComponentImpl('Touchable','AlternativeTouchable');
+    	$pico->regComponentImpl('SeveralDependanciesWithInterfaceAndConcencrateClass');
     	
     	$ci = $pico->getComponentInstance('SeveralDependanciesWithInterfaceAndConcencrateClass'); 		  
     	$this->assertNotNull($ci);
@@ -170,9 +170,9 @@ class SitePointTests extends UnitTestCase
     {
     	    	       
         $pico = new DefaultPicoContainer();
-        $pico->registerComponentImplementation('A');
-        $pico->registerComponentImplementation('B');
-        $pico->registerComponentImplementation('C');                              
+        $pico->regComponentImpl('A');
+        $pico->regComponentImpl('B');
+        $pico->regComponentImpl('C');                              
        
         try
         {
@@ -189,9 +189,9 @@ class SitePointTests extends UnitTestCase
     function testPSzarwasQ1()
     {
     	$pico = new DefaultPicoContainer();
-    	$pico->registerComponentImplementation('Touchable','SimpleTouchable');
-    	$pico->registerComponentImplementation('AlternativeTouchable');
-    	$pico->registerComponentImplementation('SeveralDependanciesWithInterfaces','SeveralDependanciesWithInterfaces',array('alternativeTouchable' => new BasicComponentParameter('AlternativeTouchable')));
+    	$pico->regComponentImpl('Touchable','SimpleTouchable');
+    	$pico->regComponentImpl('AlternativeTouchable');
+    	$pico->regComponentImpl('SeveralDependanciesWithInterfaces','SeveralDependanciesWithInterfaces',array('alternativeTouchable' => new BasicComponentParameter('AlternativeTouchable')));
     	
     	$ci = $pico->getComponentInstance('SeveralDependanciesWithInterfaces'); 		  
     	$this->assertNotNull($ci);
@@ -203,10 +203,10 @@ class SitePointTests extends UnitTestCase
     function testNotThrowingReflectionExceptionWhenIteratingThroughtAllTheCA()
     {
     	$pico = new DefaultPicoContainer();
-    	$pico->registerComponentImplementation('NotDefinedClass');
-    	$pico->registerComponentImplementation('st','SimpleTouchable');
-    	$pico->registerComponentImplementation('DependsOnTouchable');
-    	$pico->registerComponentImplementation('DependsOnSimpleTouchable');
+    	$pico->regComponentImpl('NotDefinedClass');
+    	$pico->regComponentImpl('st','SimpleTouchable');
+    	$pico->regComponentImpl('DependsOnTouchable');
+    	$pico->regComponentImpl('DependsOnSimpleTouchable');
     	
     	
     	$cObj1 = $pico->getComponentInstance('DependsOnTouchable'); 

@@ -1,4 +1,4 @@
-<?
+<?php
 
 interface Touchable 
 {
@@ -32,7 +32,6 @@ class DependsOnTouchable
 
     public function __construct(Touchable $touchable) 
     {
-        //Assert.assertNotNull("Touchable cannot be passed in as null", touchable);
         $touchable->touch();
         $this->touchable = $touchable;
     }

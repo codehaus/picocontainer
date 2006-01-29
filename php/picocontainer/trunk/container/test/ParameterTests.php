@@ -50,10 +50,10 @@ class CollectiveTypeParameterTest extends UnitTestCase {
 		
 			$container = new DefaultPicoContainer();
     	
-    		$container->registerComponentImplementation('TestClassForCollectiveTypeParameter1');
-    		$container->registerComponentImplementation('TestClassForCollectiveTypeParameter2');
+    		$container->regComponentImpl('TestClassForCollectiveTypeParameter1');
+    		$container->regComponentImpl('TestClassForCollectiveTypeParameter2');
     		
-    		$container->registerComponentImplementation(
+    		$container->regComponentImpl(
 						'AcceptsCollectiveTypeParameter',
 						'AcceptsCollectiveTypeParameter',
 						array('collectiveTypeParameter' => new CollectiveTypeParameter('TestInterfaceForCollectiveTypeParameter')));

@@ -1,4 +1,4 @@
-<?
+<?php
 
 class ClassWithoutConstructor
 {    
@@ -22,31 +22,52 @@ class ClassWithUntyppedConstructorAndNoDefaultValue
 
 class ComponentAdapterTests extends UnitTestCase 
 {
-    function __construct() {
-        $this->UnitTestCase();
-    }        
 
+	function testInstantiatingComponentAdapterAcceptsParamsByOrder() {
+		
+		$param_val = 'param test';
+		$ca = new ConstructorInjectionComponentAdapter('BoyWithConstantParam', 'BoyWithConstantParam', array ($param_val));
+		$boy = $ca->getComponentInstance(new DefaultPicoContainer());
+		
+		$this->assertNotNull($boy);
+        $this->assertEqual($boy->getParam(),$param_val);		
+	}
+
+
+   
     function testGetComponentInstanceWithConstructorWithDefaultValue()
     {
         $class_name = 'ClassWithUntyppedConstructorAndDefaultValue';
         $ca = new ConstructorInjectionComponentAdapter($class_name);
         $this->assertNotNull($ca->getComponentInstance(new DefaultPicoContainer()));        
     }
+   
 
     
     function testClassWithUntyppedConstructorAndNoDefaultValue()
     {
-        $class_name = 'ClassWithUntyppedConstructorAndNoDefaultValue';
-        $ca = new ConstructorInjectionComponentAdapter($class_name);
-        
-        try
+        $ca = new ConstructorInjectionComponentAdapter('ClassWithUntyppedConstructorAndNoDefaultValue');
+        $this->testHelperForUnsatisfiableDependenciesException($ca);                
+    }
+    
+
+   
+    function testFailsWithUnsatisfiableDependenciesExceptionWhenNoComponentForConstructorParam(){
+      
+      $ca = new ConstructorInjectionComponentAdapter('DependsOnTouchable');
+      $this->testHelperForUnsatisfiableDependenciesException($ca);
+    }
+    
+    
+    private function testHelperForUnsatisfiableDependenciesException(ConstructorInjectionComponentAdapter $ca){
+      try
         {
             $ca->getComponentInstance(new DefaultPicoContainer());
             $this->fail();
         } catch (UnsatisfiableDependenciesException $e)
         {
             $this->pass();
-        }        
+        }
     }
 
     function testGetComponentInstanceWithParamHint()
@@ -59,8 +80,8 @@ class ComponentAdapterTests extends UnitTestCase
     function testGetComponentInstanceWithoutParamHint()
     {                   
         $pc = new DefaultPicoContainer();
-        $pc->registerComponent(new InstanceComponentAdapter(new Boy()));
-        $pc->registerComponent(new ConstructorInjectionComponentAdapter('Girl'));
+        $pc->regComponent(new InstanceComponentAdapter(new Boy()));
+        $pc->regComponent(new ConstructorInjectionComponentAdapter('Girl'));
         
         $girl = $pc->getComponentInstance('Girl');                
         $this->assertNotNull($girl);
@@ -95,7 +116,7 @@ class ComponentAdapterTests extends UnitTestCase
     function testCachingComponentAdapter()
     {
         $pico = new DefaultPicoContainer();
-        $pico->registerComponent(new CachingComponentAdapter(new ConstructorInjectionComponentAdapter('Boy')));
+        $pico->regComponent(new CachingComponentAdapter(new ConstructorInjectionComponentAdapter('Boy')));
         
         $boy1 = $pico->getComponentInstance('Boy');
         $boy2 = $pico->getComponentInstance('Boy');

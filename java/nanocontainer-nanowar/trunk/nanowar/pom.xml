@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.nanocontainer.nanowar</groupId>
 		<artifactId>nanocontainer-nanowar-all</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>nanocontainer-nanowar</artifactId>
 	<name>NanoContainer Nanowar</name>

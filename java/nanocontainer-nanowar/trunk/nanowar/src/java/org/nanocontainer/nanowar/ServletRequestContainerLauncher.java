@@ -41,10 +41,10 @@ public class ServletRequestContainerLauncher {
         //
         //Session container reference may or may not exist.  if it doesn't, get the
         //application level container instead. However, it is designed to operate
-        //with null session. in which case we have old behavior instead.
+        //with null session container. in which case we have old behavior instead.
         //
         ObjectReference containerReferenceToUse;
-        if (session != null && session.getAttribute(KeyConstants.SESSION_CONTAINER) == null) {
+        if (session.getAttribute(KeyConstants.SESSION_CONTAINER) == null) {
             containerReferenceToUse = new ApplicationScopeObjectReference(session.getServletContext(), KeyConstants.APPLICATION_CONTAINER);
         } else {
             containerReferenceToUse = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);

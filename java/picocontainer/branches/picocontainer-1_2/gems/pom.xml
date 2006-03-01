@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.picocontainer</groupId>
+		<artifactId>picocontainer-all</artifactId>
+		<version>1.2-SNAPSHOT</version>
+	</parent>
+	<artifactId>picocontainer-gems</artifactId>
+	<name>PicoContainer Gems</name>
+	<scm>
+		<connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/gems</connection>
+		<developerConnection>svn+ssh://svn.picocontainer.codehaus.org/scm/picocontainer/java/picocontainer/trunk/gems</developerConnection>
+		<url>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/gems</url>
+	</scm>
+	<dependencies>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>picocontainer</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>picocontainer-tck</artifactId>
+		</dependency>
+		<!-- For proxy -->
+		<dependency>
+			<groupId>proxytoys</groupId>
+			<artifactId>proxytoys</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+		</dependency>
+		<!-- For monitors -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+	</dependencies>
+</project>

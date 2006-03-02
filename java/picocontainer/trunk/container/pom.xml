@@ -3,11 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.picocontainer</groupId>
-		<artifactId>picocontainer-all</artifactId>
+		<artifactId>picocontainer-parent</artifactId>
 		<version>1.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>picocontainer</artifactId>
-	<name>PicoContainer</name>
+	<name>PicoContainer Core</name>
+	<packaging>jar</packaging>
 	<scm>
 		<connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/container</connection>
 		<developerConnection>svn+ssh://svn.picocontainer.codehaus.org/scm/picocontainer/java/picocontainer/trunk/container</developerConnection>

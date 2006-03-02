@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.picocontainer</groupId>
-	<artifactId>picocontainer-all</artifactId>
-	<name>PicoContainer Meta Project</name>
+	<artifactId>picocontainer-parent</artifactId>
+	<name>PicoContainer Parent</name>
 	<version>1.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<url>http://www.picocontainer.org</url>
@@ -35,10 +35,15 @@
 	</scm>
 	<distributionManagement>
 		<repository>
-			<id>picocontainer-maven2-repo</id>
-			<name>Maven Repository</name>
-			<url>scp://beaver.codehaus.org/home/projects/picocontainer/public_html/maven2/repo</url>
+			<id>codehaus-picocontainer-repository</id>
+			<name>Codehaus PicoContainer Repository</name>
+			<url>scp://beaver.codehaus.org/home/projects/picocontainer/repository</url>
 		</repository>
+		<snapshotRepository>
+			<id>codehaus-picocontainer-snapshot-repository</id>
+			<name>Codehaus PicoContainer Snapshot Repository</name>
+			<url>scp://beaver.codehaus.org/home/projects/picocontainer/repository-snapshot</url>
+		</snapshotRepository>
 	</distributionManagement>
 	<dependencyManagement>
 		<dependencies>

@@ -10,14 +10,9 @@
 
 package org.nanocontainer.remoting.jmx;
 
-import javax.management.DynamicMBean;
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
-import javax.management.ObjectName;
-
+import junit.framework.TestCase;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
 import org.nanocontainer.remoting.jmx.testmodel.DynamicMBeanPerson;
 import org.nanocontainer.remoting.jmx.testmodel.Person;
 import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
@@ -25,10 +20,13 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.defaults.InstanceComponentAdapter;
 
-import junit.framework.TestCase;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import javax.management.DynamicMBean;
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.MBeanRegistrationException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectName;
 
 
 /**
@@ -51,6 +49,18 @@ public class JMXExposingComponentAdapterTest extends MockObjectTestCase {
         mockMBeanServer.expects(once()).method("registerMBean").with(same(person), isA(ObjectName.class));
 
         assertSame(person, componentAdapter.getComponentInstance(null));
+    }
+
+    public void testWillRegisterAndUnRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
+        final PersonMBean person = new DynamicMBeanPerson();
+        final JMXExposingComponentAdapter componentAdapter = new JMXExposingComponentAdapter(new InstanceComponentAdapter(
+                PersonMBean.class, person), (MBeanServer)mockMBeanServer.proxy());
+
+        mockMBeanServer.expects(once()).method("registerMBean").with(same(person), isA(ObjectName.class));
+        mockMBeanServer.expects(once()).method("unregisterMBean").with(isA(ObjectName.class));
+
+        assertSame(person, componentAdapter.getComponentInstance(null));
+        componentAdapter.dispose( person );
     }
 
     public void testWillTryAnyDynamicMBeanProvider() throws MalformedObjectNameException, NotCompliantMBeanException {

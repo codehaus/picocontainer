@@ -10,17 +10,22 @@
 
 package org.nanocontainer.remoting.jmx;
 
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.NotCompliantMBeanException;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.MBeanRegistrationException;
+import javax.management.MBeanServer;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectName;
+import javax.management.InstanceNotFoundException;
 
 
 /**
@@ -32,6 +37,7 @@ public class JMXExposingComponentAdapter extends DecoratingComponentAdapter {
 
     private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;
+    private List registeredObjectNames;
 
     /**
      * Construct a JMXExposingComponentAdapter.
@@ -97,6 +103,10 @@ public class JMXExposingComponentAdapter extends DecoratingComponentAdapter {
                 } catch (final NotCompliantMBeanException e) {
                     exception = e;
                 }
+                if (null == registeredObjectNames) {
+                    registeredObjectNames = new ArrayList();
+                }
+                registeredObjectNames.add(info.getObjectName());
                 if (exception != null) {
                     throw new PicoInitializationException("Registering MBean failed", exception);
                 }
@@ -104,4 +114,27 @@ public class JMXExposingComponentAdapter extends DecoratingComponentAdapter {
         }
         return componentInstance;
     }
+
+    public void dispose(Object component) {
+        if( null != registeredObjectNames ) {
+            Iterator i = registeredObjectNames.iterator();
+            while( i.hasNext()) {
+                try {
+                    mBeanServer.unregisterMBean((ObjectName) i.next());
+                } catch(InstanceNotFoundException e) {
+                    throw new JMXRegistrationException(e);
+                } catch(MBeanRegistrationException e) {
+                    throw new JMXRegistrationException(e);
+                }
+            }
+        }
+
+		if( super.hasLifecycle( getComponentImplementation( ) ) ) {
+			super.dispose(component);
+		}
+	}
+
+	public boolean hasLifecycle( Class type ) {
+		return true;
+	}
 }

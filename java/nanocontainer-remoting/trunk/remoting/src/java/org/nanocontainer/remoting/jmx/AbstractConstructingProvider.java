@@ -10,13 +10,13 @@
 
 package org.nanocontainer.remoting.jmx;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
+
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
 
 
 /**
@@ -46,24 +46,30 @@ public abstract class AbstractConstructingProvider implements DynamicMBeanProvid
             mBeanInfo = mBeanInfoProviders[i].provide(picoContainer, componentAdapter);
         }
 
-        // create MBean
-        try {
-            // throws ClassNotFoundException if not successful
-            final Class management = getManagementInterface(componentAdapter.getComponentImplementation(), mBeanInfo);
-            final DynamicMBean mBean = getMBeanFactory().create(
-                    componentAdapter.getComponentInstance(picoContainer), management, mBeanInfo);
-            final ObjectName objectName = getObjectNameFactory().create(componentAdapter.getComponentKey(), mBean);
-            if (objectName != null) {
-                return new JMXRegistrationInfo(objectName, mBean);
-            }
-        } catch (final MalformedObjectNameException e) {
-            throw new JMXRegistrationException("Cannot create ObjectName for component '"
-                    + componentAdapter.getComponentKey()
-                    + "'", e);
-        } catch (final ClassNotFoundException e) {
-            // No management interface available
-        }
-        return null;
+		Class management = null;
+		try {
+		// throws ClassNotFoundException if not successful
+			 management = getManagementInterface(componentAdapter.getComponentImplementation(), mBeanInfo);
+		} catch (final ClassNotFoundException e) {
+			// No management interface available
+		}
+
+		if( management != null || mBeanInfo != null ) {
+			try {
+				// create MBean
+				final DynamicMBean mBean = getMBeanFactory().create(
+						componentAdapter.getComponentInstance(picoContainer), management, mBeanInfo);
+				final ObjectName objectName = getObjectNameFactory().create(componentAdapter.getComponentKey(), mBean);
+				if (objectName != null) {
+					return new JMXRegistrationInfo(objectName, mBean);
+				}
+			} catch (final MalformedObjectNameException e) {
+				throw new JMXRegistrationException("Cannot create ObjectName for component '"
+						+ componentAdapter.getComponentKey()
+						+ "'", e);
+			}
+		}
+		return null;
     }
 
     /**

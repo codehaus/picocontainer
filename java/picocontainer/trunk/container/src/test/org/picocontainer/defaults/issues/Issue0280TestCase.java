@@ -10,7 +10,7 @@ import junit.framework.TestCase;
  */
 public class Issue0280TestCase extends TestCase
 {
-    public void TODOtestShouldFailIfInstantiationInChildContainerFails()
+    public void testShouldFailIfInstantiationInChildContainerFails()
     {
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = new DefaultPicoContainer(parent);
@@ -29,7 +29,7 @@ public class Issue0280TestCase extends TestCase
         }
         catch (Exception e)
         {
-            assertTrue(e.getClass() == RuntimeException.class);
+            assertTrue(e.getClass() == PicoInitializationException.class);
         }
 
     }

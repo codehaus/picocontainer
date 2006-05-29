@@ -399,7 +399,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 firstLevelException = e;
             }
             if (firstLevelException != null) {
-                if (parent != null) {
+                if (parent != null && firstLevelException instanceof CyclicDependencyException) {
                     instance = parent.getComponentInstance(componentAdapter.getComponentKey());
                     if( instance != null ) {
                         return instance;

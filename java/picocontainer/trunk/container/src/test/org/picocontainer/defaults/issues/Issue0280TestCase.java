@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 /**
  * Test case for issue http://jira.codehaus.org/browse/PICO-280
  */
-public class Issue0280Test extends TestCase
+public class Issue0280TestCase extends TestCase
 {
     public void TODOtestShouldFailIfInstantiationInChildContainerFails()
     {

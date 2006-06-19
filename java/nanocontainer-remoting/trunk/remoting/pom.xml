@@ -1,112 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.nanocontainer.remoting</groupId>
+	<parent>
+		<groupId>org.nanocontainer.remoting</groupId>
+		<artifactId>nanocontainer-remoting-parent</artifactId>
+		<version>1.1-SNAPSHOT</version>
+	</parent>
 	<artifactId>nanocontainer-remoting</artifactId>
 	<name>NanoContainer Remoting</name>
-	<version>1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<url>http://www.nanocontainer.org/remoting</url>
-	<organization>
-		<name>Codehaus</name>
-		<url>http://codehaus.org/</url>
-	</organization>
-	<inceptionYear>2003</inceptionYear>
-	<description><![CDATA[Please refer to the <a href="http://nanocontainer.org/">main website</a> for documentation.]]></description>
-	<issueManagement>
-		<system>JIRA</system>
-		<url>http://jira.codehaus.org/browse/NANOWAR</url>
-	</issueManagement>
-	<licenses>
-		<license>
-			<url>http://www.nanocontainer.org/License</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<scm>
-		<connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk</connection>
-		<developerConnection>https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk</developerConnection>
-		<url>https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk</url>
-	</scm>
-	<distributionManagement>
-		<repository>
-			<id>codehaus-nanocontainer-repository</id>
-			<name>Codehaus NanoContainer Repository</name>
-			<url>scp://beaver.codehaus.org/home/projects/nanocontainer/repository</url>
-		</repository>
-		<snapshotRepository>
-			<id>codehaus-nanocontainer-snapshot-repository</id>
-			<name>Codehaus NanoContainer Snapshot Repository</name>
-			<url>scp://beaver.codehaus.org/home/projects/nanocontainer/repository-snapshot</url>
-		</snapshotRepository>
-	</distributionManagement>
-	<dependencies>
-		<dependency>
-			<groupId>org.picocontainer</groupId>
-			<artifactId>picocontainer</artifactId>
-			<version>1.3-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.picocontainer</groupId>
-			<artifactId>picocontainer-gems</artifactId>
-			<version>1.3-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.nanocontainer</groupId>
-			<artifactId>nanocontainer</artifactId>
-			<version>1.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.picocontainer</groupId>
-			<artifactId>picocontainer-tck</artifactId>
-			<version>1.3-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>groovy</groupId>
-			<artifactId>groovy-all-1.0-jsr</artifactId>
-			<type>jar</type>
-			<version>04</version>
-		</dependency>
-		<dependency>
-			<groupId>mx4j</groupId>
-			<artifactId>mx4j-jmx</artifactId>
-			<version>2.1.1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>mx4j</groupId>
-			<artifactId>mx4j-impl</artifactId>
-			<version>2.1.1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-j2ee_1.4_spec</artifactId>
-			<version>1.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- Test scoped depedencies -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>jmock</groupId>
-			<artifactId>jmock</artifactId>
-			<version>1.0.1</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>jmock</groupId>
-			<artifactId>jmock-cglib</artifactId>
-			<version>1.0.1</version>
-			<scope>compile</scope>
-		</dependency>
-	</dependencies>
 	<build>
-		<defaultGoal>install</defaultGoal>
 		<sourceDirectory>src/java</sourceDirectory>
 		<testSourceDirectory>src/test</testSourceDirectory>
 		<resources>
@@ -185,6 +89,7 @@
 						<name>java.awt.headless</name>
 						<value>true</value>
 					</systemProperties>
+				  <childDelegation>true</childDelegation>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -217,27 +122,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<inherited>true</inherited>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>maven-license-plugin</report>
-							<report>maven-simian-plugin</report>
-							<report>maven-javadoc-plugin</report>
-							<report>maven-clover-plugin</report>
-							<report>maven-junit-report-plugin</report>
-							<report>javadoc</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-		</plugins>
-	</reporting>
 	<profiles>
 		<profile>
 			<id>release-profile</id>

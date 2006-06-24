@@ -185,6 +185,7 @@
       <module fileurl="file://$PROJECT_DIR$/nanocontainer-persistence/trunk/NanoContainer-Persistence.iml" filepath="$PROJECT_DIR$/nanocontainer-persistence/trunk/NanoContainer-Persistence.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanocontainer-remoting/trunk/NanoContainer-Remoting.iml" filepath="$PROJECT_DIR$/nanocontainer-remoting/trunk/NanoContainer-Remoting.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/NanoContainer-Sandbox.iml" filepath="$PROJECT_DIR$/nanocontainer-sandbox/trunk/NanoContainer-Sandbox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/picocontainer/trunk/PicoContainer.iml" filepath="$PROJECT_DIR$/picocontainer/trunk/PicoContainer.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="false" project-jdk-name="1.4" />

@@ -78,17 +78,17 @@ public abstract class AbstractComponentMonitorTestCase extends TestCase {
 
     public void testShouldTraceInvoking() throws Exception {
         componentMonitor.invoking(method, this);
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOKING, new Object[]{method, this}));
+        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOKING, new Object[]{AbstractComponentMonitor.toString(method), this}));
     }
 
     public void testShouldTraceInvoked() throws Exception {
         componentMonitor.invoked(method, this, 543);
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOKED, new Object[]{method, this, new Long(543)}));
+        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOKED, new Object[]{AbstractComponentMonitor.toString(method), this, new Long(543)}));
     }
 
     public void testShouldTraceInvocatiationFailed() throws Exception {
         componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOCATION_FAILED, new Object[]{method, this, "doh"}));
+        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOCATION_FAILED, new Object[]{AbstractComponentMonitor.toString(method), this, "doh"}));
     }
 
     protected void assertFileContent(String line) throws IOException{        

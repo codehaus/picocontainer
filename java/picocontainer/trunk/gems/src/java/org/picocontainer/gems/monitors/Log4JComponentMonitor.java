@@ -145,7 +145,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public void invoking(Method method, Object instance) {
         Logger logger = getLogger(method);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(INVOKING, new Object[]{method, instance}));
+            logger.debug(format(INVOKING, new Object[]{toString(method), instance}));
         }
         delegate.invoking(method, instance);
     }
@@ -153,7 +153,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public void invoked(Method method, Object instance, long duration) {
         Logger logger = getLogger(method);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(INVOKED, new Object[]{method, instance, new Long(duration)}));
+            logger.debug(format(INVOKED, new Object[]{toString(method), instance, new Long(duration)}));
         }
         delegate.invoked(method, instance, duration);
     }
@@ -161,7 +161,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public void invocationFailed(Method method, Object instance, Exception cause) {
         Logger logger = getLogger(method);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(INVOCATION_FAILED, new Object[]{method, instance, cause.getMessage()}), cause);
+            logger.warn(format(INVOCATION_FAILED, new Object[]{toString(method), instance, cause.getMessage()}), cause);
         }
         delegate.invocationFailed(method, instance, cause);
     }
@@ -169,7 +169,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
         Logger logger = getLogger(method);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(LIFECYCLE_INVOCATION_FAILED, new Object[]{method, instance, cause.getMessage()}), cause);
+            logger.warn(format(LIFECYCLE_INVOCATION_FAILED, new Object[]{toString(method), instance, cause.getMessage()}), cause);
         }
         delegate.lifecycleInvocationFailed(method, instance, cause);
     }

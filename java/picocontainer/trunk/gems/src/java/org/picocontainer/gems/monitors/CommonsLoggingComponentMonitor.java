@@ -141,7 +141,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void invoking(Method method, Object instance) {
         Log log = getLog(method);
         if (log.isDebugEnabled()) {
-            log.debug(format(INVOKING, new Object[]{method, instance}));
+            log.debug(format(INVOKING, new Object[]{toString(method), instance}));
         }
         delegate.invoking(method, instance);
     }
@@ -149,7 +149,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void invoked(Method method, Object instance, long duration) {
         Log log = getLog(method);
         if (log.isDebugEnabled()) {
-            log.debug(format(INVOKED, new Object[]{method, instance, new Long(duration)}));
+            log.debug(format(INVOKED, new Object[]{toString(method), instance, new Long(duration)}));
         }
         delegate.invoked(method, instance,  duration);
     }
@@ -157,7 +157,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void invocationFailed(Method method, Object instance, Exception cause) {
         Log log = getLog(method);
         if (log.isWarnEnabled()) {
-            log.warn(format(INVOCATION_FAILED, new Object[]{method, instance, cause.getMessage()}), cause);
+            log.warn(format(INVOCATION_FAILED, new Object[]{toString(method), instance, cause.getMessage()}), cause);
         }
         delegate.invocationFailed(method, instance, cause);
     }
@@ -165,7 +165,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
         Log log = getLog(method);
         if (log.isWarnEnabled()) {
-            log.warn(format(LIFECYCLE_INVOCATION_FAILED, new Object[]{method, instance, cause.getMessage()}), cause);
+            log.warn(format(LIFECYCLE_INVOCATION_FAILED, new Object[]{toString(method), instance, cause.getMessage()}), cause);
         }
         delegate.lifecycleInvocationFailed(method, instance, cause);
     }

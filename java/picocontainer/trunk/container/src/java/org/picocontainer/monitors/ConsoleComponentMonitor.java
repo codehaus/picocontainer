@@ -62,22 +62,22 @@ public class ConsoleComponentMonitor extends AbstractComponentMonitor {
     }
 
     public void invoking(Method method, Object instance) {
-        out.println(format(INVOKING, new Object[]{method, instance}));
+        out.println(format(INVOKING, new Object[]{toString(method), instance}));
         delegate.invoking(method, instance);
     }
 
     public void invoked(Method method, Object instance, long duration) {
-        out.println(format(INVOKED, new Object[]{method, instance, new Long(duration)}));
+        out.println(format(INVOKED, new Object[]{toString(method), instance, new Long(duration)}));
         delegate.invoked(method, instance, duration);
     }
 
     public void invocationFailed(Method method, Object instance, Exception cause) {
-        out.println(format(INVOCATION_FAILED, new Object[]{method, instance, cause.getMessage()}));
+        out.println(format(INVOCATION_FAILED, new Object[]{toString(method), instance, cause.getMessage()}));
         delegate.invocationFailed(method, instance, cause);
     }
 
     public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
-        out.println(format(LIFECYCLE_INVOCATION_FAILED, new Object[]{method, instance, cause.getMessage()}));
+        out.println(format(LIFECYCLE_INVOCATION_FAILED, new Object[]{toString(method), instance, cause.getMessage()}));
         delegate.lifecycleInvocationFailed(method, instance, cause);
     }
 

@@ -53,17 +53,17 @@ public class WriterComponentMonitorTestCase extends TestCase {
 
     public void testShouldTraceInvoking() {
         componentMonitor.invoking(method, this);
-        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOKING, new Object[]{method, this}) +NL,  out.toString());
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOKING, new Object[]{AbstractComponentMonitor.toString(method), this}) +NL,  out.toString());
     }
 
     public void testShouldTraceInvoked() {
         componentMonitor.invoked(method, this, 543);
-        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOKED, new Object[]{method, this, new Long(543)}) +NL,  out.toString());
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOKED, new Object[]{AbstractComponentMonitor.toString(method), this, new Long(543)}) +NL,  out.toString());
     }
 
     public void testShouldTraceInvocatiationFailed() {
         componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
-        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOCATION_FAILED, new Object[]{method, this, "doh"}) +NL,  out.toString());
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOCATION_FAILED, new Object[]{AbstractComponentMonitor.toString(method), this, "doh"}) +NL,  out.toString());
     }
 
 }

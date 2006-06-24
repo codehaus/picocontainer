@@ -53,26 +53,27 @@ public abstract class AbstractComponentMonitorTestCase extends TestCase {
 
     public void testShouldTraceInstantiating() throws Exception {
         componentMonitor.instantiating(constructor);        
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATING, new Object[]{constructor}));
+        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATING, new Object[]{AbstractComponentMonitor.toString(constructor)}));
     }
 
     public void testShouldTraceInstantiated() throws Exception {
         componentMonitor.instantiated(constructor, 543);
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATED, new Object[]{constructor, new Long(543)}));
+        String line = getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATED, new Object[]{AbstractComponentMonitor.toString(constructor), new Long(543)});
+        assertFileContent(line);
     }
 
     public void testShouldTraceInstantiatedWithInjected() throws Exception {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
         componentMonitor.instantiated(constructor, instantiated, injected, 543);
-        String s = AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATED2, new Object[]{constructor, new Long(543), instantiated.getClass().getName(), AbstractComponentMonitor.elements(injected)});
+        String s = AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATED2, new Object[]{AbstractComponentMonitor.toString(constructor), new Long(543), instantiated.getClass().getName(), AbstractComponentMonitor.toString(injected)});
         assertFileContent(getLogPrefix() + s);
     }
 
 
     public void testShouldTraceInstantiationFailed() throws Exception {
         componentMonitor.instantiationFailed(constructor, new RuntimeException("doh"));
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATION_FAILED, new Object[]{constructor, "doh"}));
+        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATION_FAILED, new Object[]{AbstractComponentMonitor.toString(constructor), "doh"}));
     }
 
     public void testShouldTraceInvoking() throws Exception {

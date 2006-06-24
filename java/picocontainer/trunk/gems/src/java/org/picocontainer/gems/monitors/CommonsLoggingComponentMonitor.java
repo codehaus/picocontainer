@@ -109,7 +109,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void instantiating(Constructor constructor) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
-            log.debug(format(INSTANTIATING, new Object[]{constructor}));
+            log.debug(format(INSTANTIATING, new Object[]{toString(constructor)}));
         }
         delegate.instantiating(constructor);
     }
@@ -117,7 +117,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void instantiated(Constructor constructor, long duration) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
-            log.debug(format(INSTANTIATED, new Object[]{constructor, new Long(duration)}));
+            log.debug(format(INSTANTIATED, new Object[]{toString(constructor), new Long(duration)}));
         }
         delegate.instantiated(constructor, duration);
     }
@@ -125,7 +125,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
-            log.debug(format(INSTANTIATED2, new Object[]{constructor, new Long(duration), instantiated.getClass().getName(), elements(parameters)}));
+            log.debug(format(INSTANTIATED2, new Object[]{toString(constructor), new Long(duration), instantiated.getClass().getName(), toString(parameters)}));
         }
         delegate.instantiated(constructor, instantiated, parameters, duration);
     }
@@ -133,7 +133,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void instantiationFailed(Constructor constructor, Exception cause) {
         Log log = getLog(constructor);
         if (log.isWarnEnabled()) {
-            log.warn(format(INSTANTIATION_FAILED, new Object[]{constructor, cause.getMessage()}), cause);
+            log.warn(format(INSTANTIATION_FAILED, new Object[]{toString(constructor), cause.getMessage()}), cause);
         }
         delegate.instantiationFailed(constructor, cause);
     }

@@ -11,6 +11,8 @@
 package org.picocontainer.monitors;
 
 import java.text.MessageFormat;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import org.picocontainer.ComponentMonitor;
 
@@ -35,7 +37,7 @@ public abstract class AbstractComponentMonitor implements ComponentMonitor {
         return MessageFormat.format(template, arguments);
     }
 
-    public static String elements(Object[] injected) {
+    public static String toString(Object[] injected) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < injected.length; i++) {
             String s = injected[i].getClass().getName();
@@ -47,6 +49,19 @@ public abstract class AbstractComponentMonitor implements ComponentMonitor {
         return sb.toString();
     }
 
-
+    public static String toString(Constructor constructor) {
+        Class[] params = constructor.getParameterTypes();
+        StringBuffer sb = new StringBuffer(constructor.getName());
+        sb.append("(");
+        for (int i = 0; i < params.length; i++) {
+            String s = params[i].getName();
+            sb.append(s);
+            if (i < params.length-1) {
+                sb.append(", ");
+            }
+        }
+        sb.append(")");
+        return sb.toString();
+    }
 
 }

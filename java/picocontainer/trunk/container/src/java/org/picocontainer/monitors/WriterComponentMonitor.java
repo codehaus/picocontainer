@@ -41,22 +41,22 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
     }
 
     public void instantiating(Constructor constructor) {
-        out.println(format(INSTANTIATING, new Object[]{constructor}));
+        out.println(format(INSTANTIATING, new Object[]{toString(constructor)}));
         delegate.instantiating(constructor);
     }
 
     public void instantiated(Constructor constructor, long duration) {
-        out.println(format(INSTANTIATED, new Object[]{constructor, new Long(duration)}));
+        out.println(format(INSTANTIATED, new Object[]{toString(constructor), new Long(duration)}));
         delegate.instantiated(constructor, duration);
     }
 
     public void instantiated(Constructor constructor, Object instantiated, Object[] injected, long duration) {
-        out.println(format(INSTANTIATED2, new Object[]{constructor, new Long(duration), instantiated.getClass().getName(), elements(injected)}));
+        out.println(format(INSTANTIATED2, new Object[]{toString(constructor), new Long(duration), instantiated.getClass().getName(), toString(injected)}));
         delegate.instantiated(constructor, instantiated, injected, duration);
     }
 
     public void instantiationFailed(Constructor constructor, Exception cause) {
-        out.println(format(INSTANTIATION_FAILED, new Object[]{constructor, cause.getMessage()}));
+        out.println(format(INSTANTIATION_FAILED, new Object[]{toString(constructor), cause.getMessage()}));
         delegate.instantiationFailed(constructor, cause);
     }
 

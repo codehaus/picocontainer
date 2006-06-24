@@ -38,8 +38,22 @@ public interface ComponentMonitor {
      * 
      * @param constructor the Constructor used to instantiate the component
      * @param duration the duration in millis of the instantiation
+     * @deprecated since 1.3
      */
     void instantiated(Constructor constructor, long duration);
+
+    /**
+     * Event thrown after the component has been instantiated using the given constructor.
+     * This should be called for both Constructor and Setter DI.
+     *
+     * @param constructor the Constructor used to instantiate the component
+     * @param instantiated the component that was instantiated by PicoContainer
+     * @param injected the components during instantiation.
+     * @param duration the duration in millis of the instantiation
+     * @since 1.3
+     */
+
+    void instantiated(Constructor constructor, Object instantiated, Object[] injected, long duration);
 
     /**
      * Event thrown if the component instantiation failed using the given constructor

@@ -36,6 +36,9 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
     public void instantiationFailed(Constructor constructor, Exception e) {
     }
 
+    public void instantiated(Constructor constructor, Object instantiated, Object[] injected, long duration) {
+    }
+
     public void invoking(Method method, Object instance) {
     }
 

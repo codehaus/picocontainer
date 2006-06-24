@@ -38,6 +38,10 @@ public class LifecycleComponentMonitor implements ComponentMonitor {
         delegate.instantiated(constructor, duration);
     }
 
+    public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {
+        delegate.instantiated(constructor, instantiated, parameters, duration);
+    }
+
     public void instantiationFailed(Constructor constructor, Exception cause) {
         delegate.instantiationFailed(constructor, cause);
     }

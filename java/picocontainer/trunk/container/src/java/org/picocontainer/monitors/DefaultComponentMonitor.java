@@ -27,6 +27,9 @@ public class DefaultComponentMonitor implements ComponentMonitor, Serializable {
     public void instantiated(Constructor constructor, long duration) {
     }
 
+    public void instantiated(Constructor constructor, Object instantiated, Object[] injected, long duration) {
+    }
+
     public void instantiationFailed(Constructor constructor, Exception e) {
     }
 

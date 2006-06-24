@@ -34,6 +34,10 @@ public class ConsoleComponentMonitorTestCase extends TestCase {
         componentMonitor.instantiated(constructor, 543);
     }
 
+    public void testShouldTraceInstantiatedWithInjected() {
+        componentMonitor.instantiated(constructor, new Object(), new Object[0], 543);
+    }
+
     public void testShouldTraceInstantiationFailed() {
         componentMonitor.instantiationFailed(constructor, new RuntimeException("doh"));
     }

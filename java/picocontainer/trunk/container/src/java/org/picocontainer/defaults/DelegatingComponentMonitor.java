@@ -61,6 +61,10 @@ public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMo
         delegate.instantiated(constructor, duration);
     }
 
+    public void instantiated(Constructor constructor, Object instantiated, Object[] injected, long duration) {
+        delegate.instantiated(constructor, instantiated, injected, duration);
+    }
+
     public void instantiationFailed(Constructor constructor, Exception e) {
         delegate.instantiationFailed(constructor, e);
     }

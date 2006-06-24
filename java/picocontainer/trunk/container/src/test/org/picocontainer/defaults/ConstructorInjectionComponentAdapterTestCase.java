@@ -274,7 +274,28 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
                 return stringBuffer.append("The endTime wasn't after the startTime");
             }
         };
-        monitor.expects(once()).method("instantiated").with(eq(emptyHashMapCtor), durationIsGreaterThanOrEqualToZero);
+        Constraint isAHashMapThatWozCreated = new Constraint() {
+            public boolean eval(Object o) {
+                return o instanceof HashMap;
+            }
+
+            public StringBuffer describeTo(StringBuffer stringBuffer) {
+                return stringBuffer.append("Should have been a hashmap");
+            }
+        };
+
+        Constraint injectedIsEmptyArray = new Constraint() {
+            public boolean eval(Object o) {
+                Object[] injected = (Object[])o;
+                return 0 == injected.length;
+            }
+
+            public StringBuffer describeTo(StringBuffer stringBuffer) {
+                return stringBuffer.append("Should have had nothing injected into it");
+            }
+        };
+
+        monitor.expects(once()).method("instantiated").with(eq(emptyHashMapCtor), isAHashMapThatWozCreated, injectedIsEmptyArray, durationIsGreaterThanOrEqualToZero);
         ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(
                 Map.class, HashMap.class, new Parameter[0], false, (ComponentMonitor)monitor.proxy());
         cica.getComponentInstance(null);

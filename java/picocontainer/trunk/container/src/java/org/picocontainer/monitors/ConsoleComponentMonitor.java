@@ -51,6 +51,11 @@ public class ConsoleComponentMonitor extends AbstractComponentMonitor {
         delegate.instantiated(constructor, duration);
     }
 
+    public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {
+        out.println(format(INSTANTIATED2, new Object[]{constructor, new Long(duration), instantiated.getClass().getName(), elements(parameters)}));
+        delegate.instantiated(constructor, instantiated, parameters, duration);
+    }
+
     public void instantiationFailed(Constructor constructor, Exception cause) {
         out.println(format(INSTANTIATION_FAILED, new Object[]{constructor, cause.getMessage()}));
         delegate.instantiationFailed(constructor, cause);

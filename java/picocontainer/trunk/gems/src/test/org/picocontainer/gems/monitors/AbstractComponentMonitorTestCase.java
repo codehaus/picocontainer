@@ -61,6 +61,15 @@ public abstract class AbstractComponentMonitorTestCase extends TestCase {
         assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATED, new Object[]{constructor, new Long(543)}));
     }
 
+    public void testShouldTraceInstantiatedWithInjected() throws Exception {
+        Object[] injected = new Object[0];
+        Object instantiated = new Object();
+        componentMonitor.instantiated(constructor, instantiated, injected, 543);
+        String s = AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATED2, new Object[]{constructor, new Long(543), instantiated.getClass().getName(), AbstractComponentMonitor.elements(injected)});
+        assertFileContent(getLogPrefix() + s);
+    }
+
+
     public void testShouldTraceInstantiationFailed() throws Exception {
         componentMonitor.instantiationFailed(constructor, new RuntimeException("doh"));
         assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATION_FAILED, new Object[]{constructor, "doh"}));
@@ -83,7 +92,8 @@ public abstract class AbstractComponentMonitorTestCase extends TestCase {
 
     protected void assertFileContent(String line) throws IOException{        
         List lines = toLines( new StringReader( ForTestSakeAppender.CONTENT ) );
-        assertTrue("Line '" + line + "' not found", lines.toString().indexOf(line) > 0);
+        String s = lines.toString();
+        assertTrue("Line '" + line + "' not found", s.indexOf(line) > 0);
     }
     
     protected List toLines(Reader resource) throws IOException {

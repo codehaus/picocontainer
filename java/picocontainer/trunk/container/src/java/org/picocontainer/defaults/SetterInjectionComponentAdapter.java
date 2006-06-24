@@ -189,11 +189,10 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
                     ComponentMonitor componentMonitor = currentMonitor();
                     Object componentInstance;
+                    long startTime = System.currentTimeMillis();
                     try {
-                        long startTime = System.currentTimeMillis();
                         componentMonitor.instantiating(constructor);
                         componentInstance = newInstance(constructor, null);
-                        componentMonitor.instantiated(constructor, System.currentTimeMillis() - startTime);
                     } catch (InvocationTargetException e) {
                         componentMonitor.instantiationFailed(constructor, e);
                         if (e.getTargetException() instanceof RuntimeException) {
@@ -216,17 +215,20 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                         ///CLOVER:ON
                     }
                     Method setter = null;
+                    Object injected[] = new Object[setters.size()];
                     try {
                         for (int i = 0; i < setters.size(); i++) {
                             setter = (Method) setters.get(i);
                             componentMonitor.invoking(setter, componentInstance);
-                            long startTime = System.currentTimeMillis();
-                            setter.invoke(componentInstance, new Object[]{matchingParameters[i].resolveInstance(guardedContainer, SetterInjectionComponentAdapter.this, setterTypes[i])});
-                            componentMonitor.invoked(setter, componentInstance, System.currentTimeMillis() - startTime);
+                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, SetterInjectionComponentAdapter.this, setterTypes[i]);
+                            setter.invoke(componentInstance, new Object[]{toInject});
+                            injected[i] = toInject;
+                            //componentMonitor.invoked(setter, componentInstance, System.currentTimeMillis() - startTime);
                         }
+                        componentMonitor.instantiated(constructor, componentInstance, injected, System.currentTimeMillis() - startTime);
                         return componentInstance;
                     } catch (InvocationTargetException e) {
-                        componentMonitor.invocationFailed(setter, componentInstance, e);
+                        //componentMonitor.invocationFailed(setter, componentInstance, e);
                         if (e.getTargetException() instanceof RuntimeException) {
                             throw (RuntimeException) e.getTargetException();
                         } else if (e.getTargetException() instanceof Error) {
@@ -234,9 +236,10 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                         }
                         throw new PicoInvocationTargetInitializationException(e.getTargetException());
                     } catch (IllegalAccessException e) {
-                        componentMonitor.invocationFailed(setter, componentInstance, e);
+                        //componentMonitor.invocationFailed(setter, componentInstance, e);
                         throw new PicoInvocationTargetInitializationException(e);
                     }
+
                 }
             };
         }

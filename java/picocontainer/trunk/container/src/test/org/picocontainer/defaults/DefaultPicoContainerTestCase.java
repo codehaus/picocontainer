@@ -241,7 +241,9 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         Touchable t2 = (Touchable) child.getComponentInstance("t2");
         assertNotNull(t2);
         assertTrue("writer not empty", writer2.toString().length() > 0);
-        assertTrue("writers of same length", writer1.toString().length() == writer2.toString().length());
+        String s1 = writer1.toString();
+        String s2 = writer2.toString();
+        assertTrue("writers of same length", s1.length() == s2.length());
         Touchable t3 = (Touchable) child.getComponentInstance("t3");
         assertNotNull(t3);
         assertTrue("old writer was used", writer1.toString().length() < writer2.toString().length());

@@ -21,7 +21,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/jmock/jars/jmock-1.0.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/jmock/jmock/1.0.1/jmock-1.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -30,7 +30,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/junit/jars/junit-3.8.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -39,7 +39,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/xstream/jars/xstream-1.0.2.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/xstream/xstream/1.1.2/xstream-1.1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -48,7 +48,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/commons-logging/jars/commons-logging-1.0.4.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -57,7 +57,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/proxytoys/jars/proxytoys-0.2.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/xpp3/xpp3/1.1.3.4-RC8/xpp3-1.1.3.4-RC8.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -66,7 +66,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/log4j/jars/log4j-1.2.8.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/proxytoys/proxytoys/0.2.1/proxytoys-0.2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -75,7 +75,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/xpp3/jars/xpp3-1.1.3.4-RC8_min.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/log4j/log4j/1.2.8/log4j-1.2.8.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

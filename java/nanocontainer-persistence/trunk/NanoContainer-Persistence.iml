@@ -5,10 +5,9 @@
     <output url="file://$MODULE_DIR$/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/trunk/persistence/src/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/trunk/persistence/src/test" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/tags" />
-      <excludeFolder url="file://$MODULE_DIR$/trunk/persistence/target" />
+      <sourceFolder url="file://$MODULE_DIR$/persistence/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/persistence/src/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/persistence/target" />
       <excludeFolder url="file://$MODULE_DIR$/trunk/target" />
     </content>
     <orderEntry type="inheritedJdk" />

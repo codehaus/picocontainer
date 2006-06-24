@@ -5,8 +5,8 @@
     <output url="file://$MODULE_DIR$/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/trunk/ioc/src/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/trunk/ioc/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/ioc/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ioc/src/test" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

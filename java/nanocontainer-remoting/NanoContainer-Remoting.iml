@@ -11,21 +11,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/mx4j/jars/mx4j-jmx-2.1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="module" module-name="PicoContainer" />
     <orderEntry type="module" module-name="NanoContainer" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/jmock/jars/jmock-cglib-1.0.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -34,7 +25,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/jmock/jars/jmock-1.0.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -43,7 +34,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/junit/jars/junit-3.8.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/proxytoys/proxytoys/0.2.1/proxytoys-0.2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -52,7 +43,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/geronimo-spec/jars/geronimo-spec-ejb-2.1-rc2.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/jmock/jmock/1.0.1/jmock-1.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -61,7 +52,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/proxytoys/jars/proxytoys-0.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/log4j/log4j/1.2.8/log4j-1.2.8.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -70,7 +61,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/mx4j/jars/mx4j-2.0.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/mx4j/mx4j/3.0.1/mx4j-3.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -79,7 +70,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/log4j/jars/log4j-1.2.8.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/mx4j/mx4j-jmx/2.1.1/mx4j-jmx-2.1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -88,7 +79,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/commons-logging/jars/commons-logging-1.0.4.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/ant/ant/1.6.5/ant-1.6.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -97,7 +88,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/bcel/jars/bcel-5.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/cglib/cglib-full/2.0/cglib-full-2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -106,16 +97,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/ant/jars/ant-1.6.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/commons-attributes/jars/commons-attributes-api-2.1.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/geronimo-spec/geronimo-spec-jta/1.0.1B-rc4/geronimo-spec-jta-1.0.1B-rc4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

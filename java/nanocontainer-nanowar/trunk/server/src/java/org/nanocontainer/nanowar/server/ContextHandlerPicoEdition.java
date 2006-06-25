@@ -31,9 +31,7 @@ public class ContextHandlerPicoEdition {
                                       DefaultPicoContainer parentContainer) {
         ServletHandlerPicoEdition handler = new ServletHandlerPicoEdition(parentContainer);
         handler.addServletWithMapping(servletClass, pathMapping);
-        context.setHandler(handler);
-
-        // this is a problem - need 'add' rather than 'set' here
+        context.addHandler(handler);
         handler.setServer(server);
         return handler;
     }

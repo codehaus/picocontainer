@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.nanocontainer.remoting</groupId>
+		<groupId>org.nanocontainer</groupId>
 		<artifactId>nanocontainer-remoting-parent</artifactId>
 		<version>1.1-SNAPSHOT</version>
 	</parent>
@@ -10,79 +10,58 @@
 	<name>NanoContainer Remoting</name>
 	<packaging>jar</packaging>
 	<url>http://www.nanocontainer.org/remoting</url>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.picocontainer</groupId>
+			<artifactId>picocontainer</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.picocontainer</groupId>
+			<artifactId>picocontainer-gems</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.nanocontainer</groupId>
+			<artifactId>nanocontainer</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.picocontainer</groupId>
+			<artifactId>picocontainer-tck</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>groovy</groupId>
+			<artifactId>groovy-all-1.0-jsr</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mx4j</groupId>
+			<artifactId>mx4j-jmx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mx4j</groupId>
+			<artifactId>mx4j-impl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-j2ee_1.4_spec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>proxytoys</groupId>
+			<artifactId>proxytoys</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+		</dependency>
+	</dependencies>
+
 	<build>
-		<sourceDirectory>src/java</sourceDirectory>
-		<testSourceDirectory>src/test</testSourceDirectory>
-		<resources>
-			<resource>
-				<directory>src/java</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</testResource>
-		</testResources>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.4</source>
-					<target>1.4</target>
-					<encoding>UTF-8</encoding>
-					<optimize>false</optimize>
-					<debug>true</debug>
-					<showDeprecation>true</showDeprecation>
-				</configuration>
-			</plugin>
-			<plugin>
-				<inherited>true</inherited>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<inherited>true</inherited>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<links>
-						<link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
-						<link>http://proxytoys.codehaus.org/apidocs/</link>
-						<link>http://jakarta.apache.org/commons/logging-1.0.4/apidocs/</link>
-					</links>
-					<stylesheetfile>${basedir}/../site/xdocs/style/maven-pico-javadoc.css</stylesheetfile>
-					<header><![CDATA[<img class="logo" src="http://www.nanocontainer.org/images/nano-logo.png"></img>]]></header>
-					<linksource>true</linksource>
-				</configuration>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
+					<skip>true</skip>
 					<forkMode>pertest</forkMode>
 					<excludes>
 						<!--  
@@ -116,7 +95,9 @@
 					</execution>
 				</executions>
 				<dependencies>
-					<!-- Required for RMIC to compile -->
+					<!-- Required for RMIC to compile 
+					NOTE:  commented as it fails to find dependency for maven 2.0.4 on Mac
+						   but it does seem to rmi-compile all the same.
 					<dependency>
 						<groupId>sun</groupId>
 						<artifactId>tools</artifactId>
@@ -124,30 +105,9 @@
 						<scope>system</scope>
 						<systemPath>${java.home}/../lib/tools.jar</systemPath>
 					</dependency>
+					-->
 				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>release-profile</id>
-			<activation>
-				<property>
-					<name>release-mode</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<configuration>
-							<optimize>true</optimize>
-							<debug>false</debug>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>

@@ -10,8 +10,8 @@
 	<name>PicoContainer Core</name>
 	<packaging>jar</packaging>
 	<scm>
-		<connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/container</connection>
-		<developerConnection>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/container</developerConnection>
-		<url>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/container</url>
+		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/trunk/container</connection>
+		<developerConnection>https://svn.codehaus.org/picocontainer/java/picocontainer/trunk/container</developerConnection>
+		<url>https://svn.codehaus.org/picocontainer/java/picocontainer/trunk/container</url>
 	</scm>
 </project>

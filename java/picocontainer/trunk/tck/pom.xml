@@ -10,9 +10,9 @@
 	<name>PicoContainer TCK</name>
 	<packaging>jar</packaging>
 	<scm>
-		<connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/tck</connection>
-		<developerConnection>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/tck</developerConnection>
-		<url>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/tck</url>
+		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/trunk/tck</connection>
+		<developerConnection>https://svn.codehaus.org/picocontainer/java/picocontainer/trunk/tck</developerConnection>
+		<url>https://svn.codehaus.org/picocontainer/java/picocontainer/trunk/tck</url>
 	</scm>
 	<dependencies>
 		<dependency>

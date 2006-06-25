@@ -10,9 +10,9 @@
 	<name>PicoContainer Gems</name>
 	<packaging>jar</packaging>
 	<scm>
-		<connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/gems</connection>
-		<developerConnection>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/gems</developerConnection>
-		<url>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/gems</url>
+		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/trunk/gems</connection>
+		<developerConnection>https://svn.codehaus.org/picocontainer/java/picocontainer/trunk/gems</developerConnection>
+		<url>https://svn.codehaus.org/picocontainer/java/picocontainer/trunk/gems</url>
 	</scm>
 	<dependencies>
 		<dependency>

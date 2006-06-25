@@ -11,7 +11,7 @@
 	<packaging>jar</packaging>
 	<scm>
 		<connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/tck</connection>
-		<developerConnection>svn+ssh://svn.picocontainer.codehaus.org/scm/picocontainer/java/picocontainer/trunk/tck</developerConnection>
+		<developerConnection>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/tck</developerConnection>
 		<url>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk/tck</url>
 	</scm>
 	<dependencies>

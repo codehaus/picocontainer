@@ -101,9 +101,9 @@
 					</execution>
 				</executions>
 				<dependencies>
-					<!-- Required for RMIC to compile 
-					NOTE:  commented as it fails to find dependency for maven 2.0.4 on Mac
-						   but it does seem to rmi-compile all the same.
+					<!-- Required for rmic to compile with Sun JDKs
+					NOTE:  It fails on Mac JDK - simply comment out as it seems the the tools.jar in the classpath
+					-->
 					<dependency>
 						<groupId>sun</groupId>
 						<artifactId>tools</artifactId>
@@ -111,7 +111,6 @@
 						<scope>system</scope>
 						<systemPath>${java.home}/../lib/tools.jar</systemPath>
 					</dependency>
-					-->
 				</dependencies>
 			</plugin>
 		</plugins>

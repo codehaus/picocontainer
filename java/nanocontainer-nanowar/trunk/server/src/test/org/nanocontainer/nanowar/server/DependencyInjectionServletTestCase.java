@@ -17,14 +17,14 @@ import java.net.URL;
 
 public class DependencyInjectionServletTestCase extends TestCase {
 
-    public void testSimpleCase() throws Exception {
+    public void testCanInstantiateWebContainerContextAndServlet() throws Exception {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         parentContainer.registerComponentInstance(String.class, "Fred");
 
         JettyServerPicoEdition server = new JettyServerPicoEdition("localhost", 8080);
         ContextHandlerPicoEdition barContext = server.createContext("/bar");
-        barContext.addServletWithMapping(DependencyInjectionServlet.class, "/foo", parentContainer);
+        barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo", parentContainer);
 
         server.start();
 

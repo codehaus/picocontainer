@@ -7,12 +7,12 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 
 
-public class DependencyInjectionServlet extends HttpServlet {
+public class DependencyInjectionTestServlet extends HttpServlet {
     String name;
-    public DependencyInjectionServlet(String name) {
+    public DependencyInjectionTestServlet(String name) {
         this.name = name;
     }
-    public DependencyInjectionServlet() {
+    public DependencyInjectionTestServlet() {
         this.name = "Wilma";
     }
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse response) throws ServletException, IOException {

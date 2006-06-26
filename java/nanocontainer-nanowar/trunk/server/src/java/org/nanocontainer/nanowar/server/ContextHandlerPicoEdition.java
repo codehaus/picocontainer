@@ -11,12 +11,11 @@ package org.nanocontainer.nanowar.server;
 
 import org.mortbay.jetty.handler.ContextHandler;
 import org.mortbay.jetty.Server;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
 
 /**
  * @deprecated - to be replaced by forthcoming 'Jervlet' release
  */
-
 public class ContextHandlerPicoEdition {
 
     private final ContextHandler context;
@@ -28,7 +27,7 @@ public class ContextHandlerPicoEdition {
     }
 
     public ServletHandlerPicoEdition addServletWithMapping(Class servletClass, String pathMapping,
-                                      DefaultPicoContainer parentContainer) {
+                                                           PicoContainer parentContainer) {
         ServletHandlerPicoEdition handler = new ServletHandlerPicoEdition(parentContainer);
         handler.addServletWithMapping(servletClass, pathMapping);
         context.addHandler(handler);

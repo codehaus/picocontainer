@@ -10,7 +10,7 @@
 	<name>NanoContainer Nanowar</name>
 	<scm>
 		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk/nanowar</connection>
-		<developerConnection>https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-nanowar/trunk/nanowar</developerConnection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-nanowar/trunk/nanowar</developerConnection>
 		<url>https://svn.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk/nanowar</url>
 	</scm>
 	<dependencies>

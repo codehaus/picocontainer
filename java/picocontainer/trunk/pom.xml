@@ -35,7 +35,7 @@
 
 	<scm>
 		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/trunk</connection>
-		<developerConnection>https://svn.codehaus.org/picocontainer/java/picocontainer/trunk</developerConnection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/trunk</developerConnection>
 		<url>https://svn.codehaus.org/picocontainer/java/picocontainer/trunk</url>
 	</scm>
 
@@ -90,7 +90,7 @@
 		</repository>
 		<snapshotRepository>
 			<id>codehaus-picocontainer-snapshot-repository</id>
-			<name>Codehaus PicoContainer Snapshots Repository</name>
+			<name>Codehaus PicoContainer Snapshot Repository</name>
 			<url>dav:https://dav.codehaus.org/snapshots.repository/picocontainer/</url>
 		</snapshotRepository>
 		<site>

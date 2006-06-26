@@ -11,19 +11,36 @@
 	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<url>http://www.nanocontainer.org/nanowar</url>
+
 	<modules>
 		<module>nanowar</module>
 	</modules>
+
 	<description><![CDATA[Please refer to the <a href="http://nanocontainer.org/nanowar">main website</a> for documentation.]]></description>
 	<issueManagement>
 		<system>JIRA</system>
 		<url>http://jira.codehaus.org/browse/NANOWAR</url>
 	</issueManagement>
+	
 	<scm>
 		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk</connection>
 		<developerConnection>scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-nanowar/trunk</developerConnection>
 		<url>https://svn.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk</url>
 	</scm>
+	
+	<repositories>
+		<repository>
+			<id>codehaus-repository</id>
+			<name>Codehaus Repository</name>
+			<url>http://repository.codehaus.org</url>
+		</repository>
+		<repository>
+			<id>codehaus-snapshots-repository</id>
+			<name>Codehaus Snapshots Repository</name>
+			<url>http://snapshots.repository.codehaus.org</url>
+		</repository>
+	</repositories>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -160,6 +177,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
 	<dependencies>
 		<!-- test time only -->
 		<dependency>

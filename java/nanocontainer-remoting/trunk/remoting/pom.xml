@@ -11,6 +11,12 @@
 	<packaging>jar</packaging>
 	<url>http://www.nanocontainer.org/remoting</url>
 
+	<scm>
+		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-remoting/trunk/remoting</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-remoting/trunk/remoting</developerConnection>
+		<url>https://svn.codehaus.org/picocontainer/java/nanocontainer-remoting/trunk/remoting</url>
+	</scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.picocontainer</groupId>

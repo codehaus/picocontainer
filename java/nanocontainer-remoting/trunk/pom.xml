@@ -21,7 +21,7 @@
 	</issueManagement>
 	<scm>
 		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-remoting/trunk</connection>
-		<developerConnection>https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-remoting/trunk</developerConnection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-remoting/trunk</developerConnection>
 		<url>https://svn.codehaus.org/picocontainer/java/nanocontainer-remoting/trunk</url>
 	</scm>
 	<dependencyManagement>

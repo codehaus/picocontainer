@@ -10,7 +10,7 @@
 	<name>NanoContainer Persistence</name>
 	<scm>
 		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-persistence/trunk/persistence</connection>
-		<developerConnection>https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-persistence/trunk/persistence</developerConnection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-persistence/trunk/persistence</developerConnection>
 		<url>https://svn.codehaus.org/picocontainer/java/nanocontainer-persistence/trunk/persistence</url>
 	</scm>
 	<dependencies>

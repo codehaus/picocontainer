@@ -5,7 +5,7 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by Aslak Hellesoy and Paul Hammant                          *
+ *                                                                           *
  *****************************************************************************/
 
 package org.nanocontainer.nanowar.server;

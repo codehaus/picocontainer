@@ -38,7 +38,7 @@ public class JettyServerPicoEdition {
         return new ContextHandlerPicoEdition(context, server);
     }
 
-    public void start() throws Exception {
+    public void start() {
         server.start();
     }
 }

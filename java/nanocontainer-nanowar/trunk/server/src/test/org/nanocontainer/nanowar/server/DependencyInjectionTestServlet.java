@@ -8,12 +8,9 @@ import java.io.IOException;
 
 
 public class DependencyInjectionTestServlet extends HttpServlet {
-    String name;
+    private final String name;
     public DependencyInjectionTestServlet(String name) {
         this.name = name;
-    }
-    public DependencyInjectionTestServlet() {
-        this.name = "Wilma";
     }
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");

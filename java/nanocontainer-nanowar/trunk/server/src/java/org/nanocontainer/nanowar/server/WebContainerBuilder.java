@@ -5,22 +5,19 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by Aslak Hellesoy and Paul Hammant                          *
+ *                                                                           *
  *****************************************************************************/
 
 package org.nanocontainer.nanowar.server;
 
-import groovy.util.BuilderSupport;
 import groovy.util.NodeBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.HashMap;
 
-public class WebContainerBuilder extends BuilderSupport {
+public class WebContainerBuilder extends NodeBuilder {
 
     private final MutablePicoContainer parentContainer;
 
@@ -28,23 +25,6 @@ public class WebContainerBuilder extends BuilderSupport {
         this.parentContainer = toOperateOn;
     }
 
-    protected void setParent(Object o, Object o1) {
-        System.out.println("o ->" + o);
-        System.out.println("o1 ->" + o1);
-    }
-
-    protected Object createNode(Object name) {
-        return createNode(name, Collections.EMPTY_MAP);
-    }
-
-    protected Object createNode(Object name, Object value) {
-        if (value instanceof Class) {
-            Map attributes = new HashMap();
-            attributes.put("class", value);
-            return createNode(name, attributes);
-        }
-        return createNode(name);
-    }
 
     protected Object createNode(Object name, Map map) {
         if (name.equals("webContainer")) {
@@ -55,10 +35,6 @@ public class WebContainerBuilder extends BuilderSupport {
             return null;
         }
         return null;
-    }
-
-    protected Object createNode(Object o, Map map, Object o1) {
-        return new Object();
     }
 
     static class ServerGroovyObject extends NodeBuilder {
@@ -87,11 +63,7 @@ public class WebContainerBuilder extends BuilderSupport {
                 ContextHandlerPicoEdition context = server.createContext((String) map.remove("path"));
                 return new ContextGroovyObject(context, parentContainer);
             } else if(name.equals("start")) {
-                try {
-                    server.start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                server.start();
             }
             return null;
         }

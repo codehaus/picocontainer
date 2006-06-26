@@ -14,10 +14,12 @@ import org.mortbay.io.IO;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.net.URL;
+import java.net.MalformedURLException;
+import java.io.IOException;
 
 public class DependencyInjectionServletTestCase extends TestCase {
 
-    public void testCanInstantiateWebContainerContextAndServlet() throws Exception {
+    public void testCanInstantiateWebContainerContextAndServlet() throws InterruptedException, IOException {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         parentContainer.registerComponentInstance(String.class, "Fred");

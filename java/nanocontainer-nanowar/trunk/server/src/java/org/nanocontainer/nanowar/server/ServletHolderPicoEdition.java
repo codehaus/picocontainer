@@ -27,7 +27,6 @@ public class ServletHolderPicoEdition extends ServletHolder {
     }
 
     public synchronized Object newInstance() throws InstantiationException, IllegalAccessException {
-        super.newInstance();
         DefaultPicoContainer child = new DefaultPicoContainer(parentContainer);
         child.registerComponentImplementation(Servlet.class, _class);
         return child.getComponentInstance(Servlet.class);

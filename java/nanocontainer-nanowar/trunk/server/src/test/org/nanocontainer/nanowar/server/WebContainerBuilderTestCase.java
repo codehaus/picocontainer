@@ -27,6 +27,12 @@ public class WebContainerBuilderTestCase extends TestCase {
     private ObjectReference containerRef = new SimpleReference();
     private ObjectReference parentContainerRef = new SimpleReference();
 
+    private PicoContainer pico;
+
+    protected void tearDown() throws Exception {
+        pico.stop();
+    }
+
     public void testCanComposeWebContainerContextAndServlet() throws InterruptedException, IOException {
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
@@ -44,14 +50,38 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "    }\n" +
                 "}\n");
 
-        PicoContainer pico = buildContainer(script, null, "SOME_SCOPE");
+        assertPageIsHostedWithHelloFredAsContents(script);
+    }
+
+    public void testCanComposeWebContainerContextAndServlet2() throws InterruptedException, IOException {
+        Reader script = new StringReader("" +
+                "package org.nanocontainer.script.groovy\n" +
+                "builder = new GroovyNodeBuilder()\n" +
+                "nano = builder.container {\n" +
+                "    component(instance:'Fred')\n" +
+                "    newBuilder(class:'org.nanocontainer.nanowar.server.WebContainerBuilder') {\n" +
+
+                "        webContainer() {\n" +
+                "            blockingChannelConnector(host:'localhost', port:8080)\n" +
+                "            context(path:'/bar') {\n" +
+                "                servlet(path:'/foo', class:org.nanocontainer.nanowar.server.DependencyInjectionTestServlet)\n" +
+                "            }\n" +
+                "        }\n" +
+
+                "    }\n" +
+                "}\n");
+
+        assertPageIsHostedWithHelloFredAsContents(script);
+    }
+
+
+    private void assertPageIsHostedWithHelloFredAsContents(Reader script) throws InterruptedException, IOException {
+        pico = buildContainer(script, null, "SOME_SCOPE");
 
         Thread.sleep(2 * 1000);
 
         URL url = new URL("http://localhost:8080/bar/foo");
         assertEquals("hello Fred", IO.toString(url.openStream()));
-
-
     }
 
     private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {

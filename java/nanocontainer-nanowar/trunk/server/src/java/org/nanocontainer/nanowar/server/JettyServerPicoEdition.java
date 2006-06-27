@@ -10,6 +10,10 @@
 package org.nanocontainer.nanowar.server;
 
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.Connector;
+import org.mortbay.jetty.security.SslSocketConnector;
+import org.mortbay.jetty.nio.BlockingChannelConnector;
+import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.bio.SocketConnector;
 import org.mortbay.jetty.handler.HandlerList;
 import org.mortbay.jetty.handler.ContextHandler;
@@ -22,13 +26,22 @@ public class JettyServerPicoEdition {
 
     private final Server server;
 
-    public JettyServerPicoEdition(String host, int port) {
+    public JettyServerPicoEdition() {
         server = new Server();
         server.setHandler(new HandlerList());
-        SocketConnector connector = new SocketConnector();
+    }
+
+    public JettyServerPicoEdition(String host, int port) {
+        this();
+        createBlockingChannelConnector(host, port);
+    }
+
+    public Connector createBlockingChannelConnector(String host, int port) {
+        BlockingChannelConnector connector = new BlockingChannelConnector();
         connector.setHost(host);
         connector.setPort(port);
         server.addConnector(connector);
+        return connector;
     }
 
     public ContextHandlerPicoEdition createContext(String contextPath) {
@@ -38,7 +51,13 @@ public class JettyServerPicoEdition {
         return new ContextHandlerPicoEdition(context, server);
     }
 
+
+
     public void start() {
         server.start();
+    }
+
+    public void stop() {
+        server.stop();
     }
 }

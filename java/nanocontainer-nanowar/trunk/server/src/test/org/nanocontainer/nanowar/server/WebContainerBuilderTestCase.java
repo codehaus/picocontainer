@@ -34,11 +34,13 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "nano = builder.container {\n" +
                 "    component(instance:'Fred')\n" +
                 "    newBuilder(class:'org.nanocontainer.nanowar.server.WebContainerBuilder') {\n" +
+
                 "        webContainer(port:8080) {\n" +
                 "            context(path:'/bar') {\n" +
                 "                servlet(path:'/foo', class:org.nanocontainer.nanowar.server.DependencyInjectionTestServlet)\n" +
                 "            }\n" +
                 "        }\n" +
+
                 "    }\n" +
                 "}\n");
 

@@ -21,6 +21,11 @@ public class ServletHolderPicoEdition extends ServletHolder {
 
     private final PicoContainer parentContainer;
 
+    public ServletHolderPicoEdition(PicoContainer parentContainer) {
+        this.parentContainer = parentContainer;
+    }
+
+
     public ServletHolderPicoEdition(Class clazz, PicoContainer parentContainer) {
         super(clazz);
         this.parentContainer = parentContainer;

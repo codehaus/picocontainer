@@ -14,7 +14,6 @@ import org.mortbay.io.IO;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.net.URL;
-import java.net.MalformedURLException;
 import java.io.IOException;
 
 public class DependencyInjectionServletTestCase extends TestCase {

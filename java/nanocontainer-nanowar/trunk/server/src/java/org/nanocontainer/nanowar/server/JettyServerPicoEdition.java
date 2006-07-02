@@ -9,19 +9,19 @@
 
 package org.nanocontainer.nanowar.server;
 
-import org.mortbay.jetty.Server;
 import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.security.SslSocketConnector;
-import org.mortbay.jetty.nio.BlockingChannelConnector;
-import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.bio.SocketConnector;
-import org.mortbay.jetty.handler.HandlerList;
+import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.ContextHandler;
+import org.mortbay.jetty.handler.HandlerList;
+import org.mortbay.jetty.nio.BlockingChannelConnector;
+import org.mortbay.jetty.webapp.WebAppContext;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoLifecycleException;
+import org.picocontainer.PicoContainer;
 
 /**
  * @deprecated - to be replaced by forthcoming 'Jervlet' release
  */
-
 public class JettyServerPicoEdition {
 
     private final Server server;
@@ -52,12 +52,30 @@ public class JettyServerPicoEdition {
     }
 
 
+    public WebAppContextPicoEdition addWebApplication(String contextPath, String warFile, PicoContainer parentContainer) {
+        WebAppContextPicoEdition wah = new WebAppContextPicoEdition(parentContainer);
+        wah.setContextPath(contextPath);
+        wah.setExtractWAR(true);
+        wah.setWar(warFile);
+        wah.setParentLoaderPriority(true);
+        server.addHandler(wah);
+        return wah;
+    }
+
 
     public void start() {
-        server.start();
+        try {
+            server.start();
+        } catch (Exception e) {
+            throw new JettyServerLifecycleException("Jetty could start", e);
+        }
     }
 
     public void stop() {
-        server.stop();
+        try {
+            server.stop();
+        } catch (Exception e) {
+            throw new JettyServerLifecycleException("Jetty could stop", e);
+        }
     }
 }

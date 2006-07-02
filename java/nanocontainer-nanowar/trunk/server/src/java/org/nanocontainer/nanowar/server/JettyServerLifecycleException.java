@@ -9,23 +9,11 @@
 
 package org.nanocontainer.nanowar.server;
 
-import org.mortbay.jetty.servlet.ServletHandler;
-import org.mortbay.jetty.servlet.ServletHolder;
-import org.picocontainer.PicoContainer;
-
 /**
  * @deprecated - to be replaced by forthcoming 'Jervlet' release
  */
-public class ServletHandlerPicoEdition extends ServletHandler {
-
-    private final PicoContainer parentContainer;
-
-    public ServletHandlerPicoEdition(PicoContainer parentContainer) {
-        this.parentContainer = parentContainer;
+public class JettyServerLifecycleException extends RuntimeException {
+    public JettyServerLifecycleException(String string, Throwable throwable) {
+        super(string, throwable);
     }
-
-    public ServletHolder newServletHolder(Class clazz) {
-        return new ServletHolderPicoEdition(clazz, parentContainer);
-    }
-
 }

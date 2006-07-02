@@ -9,23 +9,25 @@
 
 package org.nanocontainer.nanowar.server;
 
-import org.mortbay.jetty.servlet.ServletHandler;
+import org.mortbay.jetty.webapp.WebXmlConfiguration;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.picocontainer.PicoContainer;
 
 /**
  * @deprecated - to be replaced by forthcoming 'Jervlet' release
  */
-public class ServletHandlerPicoEdition extends ServletHandler {
+public class WebXmlConfigurationPicoEdition extends WebXmlConfiguration {
 
-    private final PicoContainer parentContainer;
+    private PicoContainer parentContainer;
 
-    public ServletHandlerPicoEdition(PicoContainer parentContainer) {
+    public WebXmlConfigurationPicoEdition(PicoContainer parentContainer) {
         this.parentContainer = parentContainer;
     }
 
-    public ServletHolder newServletHolder(Class clazz) {
-        return new ServletHolderPicoEdition(clazz, parentContainer);
+    /* ------------------------------------------------------------ */
+    protected ServletHolder newServletHolder() {
+
+        return new ServletHolderPicoEdition(parentContainer);
     }
 
 }

@@ -11,6 +11,7 @@ package org.nanocontainer.nanowar.server;
 
 import org.mortbay.jetty.webapp.WebXmlConfiguration;
 import org.mortbay.jetty.servlet.ServletHolder;
+import org.mortbay.jetty.servlet.FilterHolder;
 import org.picocontainer.PicoContainer;
 
 /**
@@ -28,6 +29,11 @@ public class WebXmlConfigurationPicoEdition extends WebXmlConfiguration {
     protected ServletHolder newServletHolder() {
 
         return new ServletHolderPicoEdition(parentContainer);
+    }
+
+    /* ------------------------------------------------------------ */
+    protected FilterHolder newFilterHolder() {
+        return new FilterHolderPicoEdition(parentContainer);
     }
 
 }

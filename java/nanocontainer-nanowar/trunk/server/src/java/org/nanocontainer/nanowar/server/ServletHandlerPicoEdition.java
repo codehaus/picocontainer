@@ -11,6 +11,7 @@ package org.nanocontainer.nanowar.server;
 
 import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.jetty.servlet.ServletHolder;
+import org.mortbay.jetty.servlet.FilterHolder;
 import org.picocontainer.PicoContainer;
 
 /**
@@ -24,8 +25,12 @@ public class ServletHandlerPicoEdition extends ServletHandler {
         this.parentContainer = parentContainer;
     }
 
-    public ServletHolder newServletHolder(Class clazz) {
-        return new ServletHolderPicoEdition(clazz, parentContainer);
+    public ServletHolder newServletHolder(Class servletClass) {
+        return new ServletHolderPicoEdition(servletClass, parentContainer);
+    }
+
+    public FilterHolder newFilterHolder(Class filterClass) {
+        return new FilterHolderPicoEdition(filterClass, parentContainer);
     }
 
 }

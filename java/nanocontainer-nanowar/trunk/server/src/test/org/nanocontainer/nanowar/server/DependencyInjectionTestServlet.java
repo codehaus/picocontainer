@@ -12,8 +12,12 @@ public class DependencyInjectionTestServlet extends HttpServlet {
     public DependencyInjectionTestServlet(String name) {
         this.name = name;
     }
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
-        response.getWriter().write("hello " + name);
+        String message = name;
+        if (request.getAttribute("foo2") != null) {
+            message = message + request.getAttribute("foo2");
+        }
+        response.getWriter().write("hello " + message);
     }
 }

@@ -3,23 +3,22 @@ package org.nanocontainer.nanowar.server;
 import junit.framework.TestCase;
 
 import java.io.IOException;
-import java.io.File;
 import java.net.URL;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.mortbay.io.IO;
 
-public class DependencyInjectionServletWarFileTestCase extends TestCase {
+public class DependencyInjectionFilterTestCase extends TestCase {
 
-    public void testCanInstantiateWebContainerContextAndServlet()
-            throws InterruptedException, IOException {
+    public void testCanInstantiateWebContainerContextAndServlet() throws InterruptedException, IOException {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         parentContainer.registerComponentInstance(String.class, "Fred");
 
-        System.out.println("<> " + new File(".").getAbsolutePath());
         JettyServerPicoEdition server = new JettyServerPicoEdition("localhost", 8080);
-        WebAppContextPicoEdition wah = server.addWebApplication("/bar", "/Users/paul/scm/oss/pico2/java/nanocontainer-nanowar/trunk/testwar.war", parentContainer);
+        ContextHandlerPicoEdition barContext = server.createContext("/bar");
+        //barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0, parentContainer);
+        barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo", parentContainer);
 
         server.start();
 

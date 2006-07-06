@@ -38,7 +38,7 @@ public class WebContainerBuilder extends NodeBuilder {
             if (port != 0) {
                 return new ServerGroovyObject(new JettyServerPicoEdition(host, port), parentContainer);
             } else {
-                return new ServerGroovyObject(new JettyServerPicoEdition(), parentContainer);                
+                return new ServerGroovyObject(new JettyServerPicoEdition(), parentContainer);
             }
         }
         return null;

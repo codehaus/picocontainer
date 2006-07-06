@@ -11,6 +11,7 @@ package org.nanocontainer.nanowar.server;
 
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.jetty.webapp.WebXmlConfiguration;
+import org.mortbay.jetty.webapp.Configuration;
 import org.picocontainer.PicoContainer;
 
 /**
@@ -25,15 +26,15 @@ public class WebAppContextPicoEdition extends WebAppContext {
 
     }
 
-    /* ------------------------------------------------------------ */
     protected void loadConfigurations() throws Exception {
         super.loadConfigurations();
-        for (int i = 0; i < _configurations.length; i++) {
-            if (_configurations[i] instanceof WebXmlConfiguration) {
-                _configurations[i] = new WebXmlConfigurationPicoEdition(parentContainer);
+        Configuration[]  configurations = getConfigurations();
+        for (int i = 0; i < configurations.length; i++) {
+            if (configurations[i] instanceof WebXmlConfiguration) {
+                configurations[i] = new WebXmlConfigurationPicoEdition(parentContainer);
             }
-
         }
+        setConfigurations(configurations);
     }
 
 

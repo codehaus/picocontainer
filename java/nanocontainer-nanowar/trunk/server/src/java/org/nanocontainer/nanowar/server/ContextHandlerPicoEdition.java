@@ -12,6 +12,7 @@ package org.nanocontainer.nanowar.server;
 import org.mortbay.jetty.handler.ContextHandler;
 import org.mortbay.jetty.Server;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @deprecated - to be replaced by forthcoming 'Jervlet' release
@@ -20,6 +21,13 @@ public class ContextHandlerPicoEdition {
 
     private final ContextHandler context;
     private final Server server;
+
+    public static final int DEFAULT=0;
+    public static final int REQUEST=1;
+    public static final int FORWARD=2;
+    public static final int INCLUDE=4;
+    public static final int ERROR=8;
+    public static final int ALL=15;    
 
     public ContextHandlerPicoEdition(ContextHandler context, Server server) {
         this.context = context;
@@ -33,5 +41,14 @@ public class ContextHandlerPicoEdition {
         context.addHandler(handler);
         handler.setServer(server);
         return handler;
+    }
+
+    public ServletHandlerPicoEdition addFilterWithMapping(Class filterClass, String pathMapping, int dispatchers, DefaultPicoContainer parentContainer) {
+        ServletHandlerPicoEdition handler = new ServletHandlerPicoEdition(parentContainer);
+        handler.addFilterWithMapping(filterClass, pathMapping, dispatchers);
+        context.addHandler(handler);
+        handler.setServer(server);
+        return handler;
+
     }
 }

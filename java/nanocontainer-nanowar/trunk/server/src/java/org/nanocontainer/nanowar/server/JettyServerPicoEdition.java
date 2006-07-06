@@ -25,14 +25,16 @@ import org.picocontainer.PicoContainer;
 public class JettyServerPicoEdition {
 
     private final Server server;
+    private final PicoContainer parentContainer;
 
-    public JettyServerPicoEdition() {
+    public JettyServerPicoEdition(PicoContainer parentContainer) {
+        this.parentContainer = parentContainer;
         server = new Server();
         server.setHandler(new HandlerList());
     }
 
-    public JettyServerPicoEdition(String host, int port) {
-        this();
+    public JettyServerPicoEdition(String host, int port, PicoContainer parentContainer) {
+        this(parentContainer);
         createBlockingChannelConnector(host, port);
     }
 
@@ -48,11 +50,11 @@ public class JettyServerPicoEdition {
         ContextHandler context = new ContextHandler();
         context.setContextPath(contextPath);
         server.addHandler(context);
-        return new ContextHandlerPicoEdition(context, server);
+        return new ContextHandlerPicoEdition(context, server, parentContainer);
     }
 
 
-    public WebAppContextPicoEdition addWebApplication(String contextPath, String warFile, PicoContainer parentContainer) {
+    public WebAppContextPicoEdition addWebApplication(String contextPath, String warFile) {
         WebAppContextPicoEdition wah = new WebAppContextPicoEdition(parentContainer);
         wah.setContextPath(contextPath);
         wah.setExtractWAR(true);

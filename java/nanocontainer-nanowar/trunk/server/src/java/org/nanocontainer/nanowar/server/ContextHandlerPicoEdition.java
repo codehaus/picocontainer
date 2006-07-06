@@ -12,7 +12,6 @@ package org.nanocontainer.nanowar.server;
 import org.mortbay.jetty.handler.ContextHandler;
 import org.mortbay.jetty.Server;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @deprecated - to be replaced by forthcoming 'Jervlet' release
@@ -21,6 +20,7 @@ public class ContextHandlerPicoEdition {
 
     private final ContextHandler context;
     private final Server server;
+    private final PicoContainer parentContainer;
 
     public static final int DEFAULT=0;
     public static final int REQUEST=1;
@@ -29,13 +29,13 @@ public class ContextHandlerPicoEdition {
     public static final int ERROR=8;
     public static final int ALL=15;    
 
-    public ContextHandlerPicoEdition(ContextHandler context, Server server) {
+    public ContextHandlerPicoEdition(ContextHandler context, Server server, PicoContainer parentContainer) {
         this.context = context;
         this.server = server;
+        this.parentContainer = parentContainer;
     }
 
-    public ServletHandlerPicoEdition addServletWithMapping(Class servletClass, String pathMapping,
-                                                           PicoContainer parentContainer) {
+    public ServletHandlerPicoEdition addServletWithMapping(Class servletClass, String pathMapping) {
         ServletHandlerPicoEdition handler = new ServletHandlerPicoEdition(parentContainer);
         handler.addServletWithMapping(servletClass, pathMapping);
         context.addHandler(handler);
@@ -43,7 +43,7 @@ public class ContextHandlerPicoEdition {
         return handler;
     }
 
-    public ServletHandlerPicoEdition addFilterWithMapping(Class filterClass, String pathMapping, int dispatchers, DefaultPicoContainer parentContainer) {
+    public ServletHandlerPicoEdition addFilterWithMapping(Class filterClass, String pathMapping, int dispatchers) {
         ServletHandlerPicoEdition handler = new ServletHandlerPicoEdition(parentContainer);
         handler.addFilterWithMapping(filterClass, pathMapping, dispatchers);
         context.addHandler(handler);

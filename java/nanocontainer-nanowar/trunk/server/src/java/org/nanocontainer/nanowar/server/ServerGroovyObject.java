@@ -18,11 +18,9 @@ import java.util.Map;
 
 public class ServerGroovyObject extends NodeBuilder {
     private final JettyServerPicoEdition server;
-    private final MutablePicoContainer parentContainer;
 
     public ServerGroovyObject(JettyServerPicoEdition server, MutablePicoContainer parentContainer) {
         this.server = server;
-        this.parentContainer = parentContainer;
         parentContainer.registerComponentInstance(new Startable() {
             public void start() {
                 ServerGroovyObject.this.server.start();
@@ -51,7 +49,7 @@ public class ServerGroovyObject extends NodeBuilder {
 
     private Object createContext(Map map) {
         ContextHandlerPicoEdition context = server.createContext((String) map.remove("path"));
-        return new ContextGroovyObject(context, parentContainer);
+        return new ContextGroovyObject(context);
     }
 
 

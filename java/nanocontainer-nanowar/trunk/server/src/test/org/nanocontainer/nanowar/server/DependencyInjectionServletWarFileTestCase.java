@@ -17,7 +17,6 @@ public class DependencyInjectionServletWarFileTestCase extends TestCase {
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         parentContainer.registerComponentInstance(String.class, "Fred");
 
-        System.out.println("<> " + new File(".").getAbsolutePath());
         JettyServerPicoEdition server = new JettyServerPicoEdition("localhost", 8080, parentContainer);
         WebAppContextPicoEdition wah = server.addWebApplication("/bar", "/Users/paul/scm/oss/pico2/java/nanocontainer-nanowar/trunk/testwar.war");
 

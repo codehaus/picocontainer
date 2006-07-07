@@ -25,7 +25,6 @@ public class ServerGroovyObject extends NodeBuilder {
             public void start() {
                 ServerGroovyObject.this.server.start();
             }
-
             public void stop() {
                 ServerGroovyObject.this.server.stop();
             }
@@ -37,9 +36,8 @@ public class ServerGroovyObject extends NodeBuilder {
             return createContext(map);
         } else if (name.equals("blockingChannelConnector")) {
             return createBlockingChannelConnector(map);
-        } else if(name.equals("webApplication")) {
-            return createWebApplication(map);
-
+        } else if(name.equals("xmlWebApplication")) {
+            return createXmlWebApplication(map);
         }
         return null;
     }
@@ -55,9 +53,9 @@ public class ServerGroovyObject extends NodeBuilder {
         return new ContextGroovyObject(context);
     }
 
-    protected Object createWebApplication(Map map) {
+    protected Object createXmlWebApplication(Map map) {
         WebAppContextPicoEdition context = server.addWebApplication((String) map.remove("path"), (String) map.remove("warfile") );
-        return new WebAppContextGroovyObject(context);
+        return new WarFileWebAppContextGroovyObject(context);
     }
 
 }

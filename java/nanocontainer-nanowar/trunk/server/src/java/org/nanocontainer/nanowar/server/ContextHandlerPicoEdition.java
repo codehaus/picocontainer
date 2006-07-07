@@ -21,6 +21,7 @@ public class ContextHandlerPicoEdition {
     private final ContextHandler context;
     private final Server server;
     private final PicoContainer parentContainer;
+    ServletHandlerPicoEdition handler;
 
     public static final int DEFAULT=0;
     public static final int REQUEST=1;
@@ -36,18 +37,23 @@ public class ContextHandlerPicoEdition {
     }
 
     public ServletHandlerPicoEdition addServletWithMapping(Class servletClass, String pathMapping) {
-        ServletHandlerPicoEdition handler = new ServletHandlerPicoEdition(parentContainer);
+        ServletHandlerPicoEdition handler = getHandler();
         handler.addServletWithMapping(servletClass, pathMapping);
-        context.addHandler(handler);
-        handler.setServer(server);
+        return handler;
+    }
+
+    private synchronized ServletHandlerPicoEdition getHandler() {
+        if (handler == null) {
+            handler = new ServletHandlerPicoEdition(parentContainer);
+            context.addHandler(handler);
+            handler.setServer(server);
+        }
         return handler;
     }
 
     public ServletHandlerPicoEdition addFilterWithMapping(Class filterClass, String pathMapping, int dispatchers) {
-        ServletHandlerPicoEdition handler = new ServletHandlerPicoEdition(parentContainer);
+        ServletHandlerPicoEdition handler = getHandler();
         handler.addFilterWithMapping(filterClass, pathMapping, dispatchers);
-        context.addHandler(handler);
-        handler.setServer(server);
         return handler;
 
     }

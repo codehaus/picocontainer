@@ -25,25 +25,28 @@ public class WebContainerBuilder extends NodeBuilder {
 
     protected Object createNode(Object name, Map map) {
         if (name.equals("webContainer")) {
-            int port =0;
-            if (map.containsKey("port")) {
-                port = ((Integer) map.remove("port")).intValue();
-            }
-            String host;
-            if (map.containsKey("host")) {
-                host = (String) map.remove("host");
-            } else {
-                host = "localhost";
-            }
-            if (port != 0) {
-                return new ServerGroovyObject(new JettyServerPicoEdition(host, port, parentContainer), parentContainer);
-            } else {
-                return new ServerGroovyObject(new JettyServerPicoEdition(parentContainer), parentContainer);
-            }
-        }
+            return makeWebContainer(map);
+        } 
         return null;
     }
 
+    private Object makeWebContainer(Map map) {
+        int port =0;
+        if (map.containsKey("port")) {
+            port = ((Integer) map.remove("port")).intValue();
+        }
+        String host;
+        if (map.containsKey("host")) {
+            host = (String) map.remove("host");
+        } else {
+            host = "localhost";
+        }
+        if (port != 0) {
+            return new ServerGroovyObject(new JettyServerPicoEdition(host, port, parentContainer), parentContainer);
+        } else {
+            return new ServerGroovyObject(new JettyServerPicoEdition(parentContainer), parentContainer);
+        }
+    }
 
 
 }

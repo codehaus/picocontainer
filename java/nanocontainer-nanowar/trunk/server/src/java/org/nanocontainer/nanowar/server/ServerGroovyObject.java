@@ -37,20 +37,27 @@ public class ServerGroovyObject extends NodeBuilder {
             return createContext(map);
         } else if (name.equals("blockingChannelConnector")) {
             return createBlockingChannelConnector(map);
+        } else if(name.equals("webApplication")) {
+            return createWebApplication(map);
+
         }
         return null;
     }
 
-    private Object createBlockingChannelConnector(Map map) {
+    protected Object createBlockingChannelConnector(Map map) {
         int port = ((Integer) map.remove("port")).intValue();
         Connector connector = server.createBlockingChannelConnector((String) map.remove("host"), port);
         return connector;
     }
 
-    private Object createContext(Map map) {
+    protected Object createContext(Map map) {
         ContextHandlerPicoEdition context = server.createContext((String) map.remove("path"));
         return new ContextGroovyObject(context);
     }
 
+    protected Object createWebApplication(Map map) {
+        WebAppContextPicoEdition context = server.addWebApplication((String) map.remove("path"), (String) map.remove("warfile") );
+        return new WebAppContextGroovyObject(context);
+    }
 
 }

@@ -53,7 +53,7 @@ public class WebContainerBuilderTestCase extends TestCase {
         assertPageIsHostedWithHelloFredAsContents(script);
     }
 
-    public void testCanComposeWebContainerContextAndServlet2() throws InterruptedException, IOException {
+    public void testCanComposeWebContainerContextWithExplicitConnector() throws InterruptedException, IOException {
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
@@ -74,6 +74,24 @@ public class WebContainerBuilderTestCase extends TestCase {
         assertPageIsHostedWithHelloFredAsContents(script);
     }
 
+    public void testCanComposeWebContainerAndWarFile() throws InterruptedException, IOException {
+        Reader script = new StringReader("" +
+                "package org.nanocontainer.script.groovy\n" +
+                "builder = new GroovyNodeBuilder()\n" +
+                "nano = builder.container {\n" +
+                "    component(instance:'Fred')\n" +
+                "    newBuilder(class:'org.nanocontainer.nanowar.server.WebContainerBuilder') {\n" +
+
+                "        webContainer() {\n" +
+                "            blockingChannelConnector(host:'localhost', port:8080)\n" +
+                "            webApplication(path:'/bar', warfile:'/Users/paul/scm/oss/pico2/java/nanocontainer-nanowar/trunk/testwar.war')" +
+                "        }\n" +
+
+                "    }\n" +
+                "}\n");
+
+        assertPageIsHostedWithHelloFredAsContents(script);
+    }
 
     private void assertPageIsHostedWithHelloFredAsContents(Reader script) throws InterruptedException, IOException {
         pico = buildContainer(script, null, "SOME_SCOPE");

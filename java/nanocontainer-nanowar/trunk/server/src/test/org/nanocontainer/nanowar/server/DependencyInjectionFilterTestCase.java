@@ -14,20 +14,20 @@ public class DependencyInjectionFilterTestCase extends TestCase {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         parentContainer.registerComponentInstance(String.class, "Fred");
+        parentContainer.registerComponentInstance(Integer.class, new Integer(5));
 
         JettyServerPicoEdition server = new JettyServerPicoEdition("localhost", 8080, parentContainer);
         ContextHandlerPicoEdition barContext = server.createContext("/bar");
-        //barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0, parentContainer);
-        barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo");
+        barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0);
+        barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
 
         server.start();
 
         Thread.sleep(2 * 1000);
 
-        URL url = new URL("http://localhost:8080/bar/foo");
-        assertEquals("hello Fred", IO.toString(url.openStream()));
+        URL url = new URL("http://localhost:8080/bar/foo2");
 
-        //Thread.sleep(50 * 1000);
+        assertEquals("hello Fred Filtered!(int= 5)", IO.toString(url.openStream()));
 
 
     }

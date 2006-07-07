@@ -6,17 +6,17 @@ import java.io.IOException;
 
 public class DependencyInjectionTestFilter implements Filter {
 
-    private String name;
+    private final Integer integer;
 
-    public DependencyInjectionTestFilter(String message) {
-        this.name = message;
+    public DependencyInjectionTestFilter(Integer integer) {
+        this.integer = integer;
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         String servletPath = req.getServletPath();
-        if (servletPath.equals("foo2")) {
-            request.setAttribute("foo2", name);
+        if (servletPath.equals("/foo2")) {
+            request.setAttribute("foo2", " Filtered!(int= " + integer.intValue() + ")");
 
         }
         chain.doFilter(request, response);

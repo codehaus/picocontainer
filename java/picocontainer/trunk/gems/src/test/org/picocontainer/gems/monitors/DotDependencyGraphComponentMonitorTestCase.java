@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by Paul Hammant                                             *
+ *****************************************************************************/
 package org.picocontainer.gems.monitors;
 
 import junit.framework.TestCase;
@@ -8,12 +17,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
-public class DotGraphComponentMonitorTestCase extends TestCase {
+public class DotDependencyGraphComponentMonitorTestCase extends TestCase {
 
 
     public void testSimpleClassDependencyGraphCanEliminateDupes() throws NoSuchMethodException {
 
-        DotGraphComponentMonitor monitor = new DotGraphComponentMonitor();
+        DotDependencyGraphComponentMonitor monitor = new DotDependencyGraphComponentMonitor();
 
         Vector vec = new Vector();
         List list = new ArrayList();
@@ -31,9 +40,9 @@ public class DotGraphComponentMonitorTestCase extends TestCase {
 
         String expected = "" +
                 "  java.util.ArrayList -> java.util.Vector;\n" +
+                "  org.picocontainer.gems.monitors.DotDependencyGraphComponentMonitorTestCase$DependsOnDependsOnListAndVector -> java.util.Vector;\n" +
+                "  org.picocontainer.gems.monitors.DotDependencyGraphComponentMonitorTestCase$DependsOnDependsOnListAndVector -> org.picocontainer.testmodel.DependsOnList;\n" +
                 "  org.picocontainer.testmodel.DependsOnList -> java.util.ArrayList;\n" +
-                "  org.picocontainer.gems.monitors.DotGraphComponentMonitorTestCase$DependsOnDependsOnListAndVector -> org.picocontainer.testmodel.DependsOnList;\n" +
-                "  org.picocontainer.gems.monitors.DotGraphComponentMonitorTestCase$DependsOnDependsOnListAndVector -> java.util.Vector;\n" +
                 "";
 
         assertEquals(expected, graph);

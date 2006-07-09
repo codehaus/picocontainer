@@ -11,6 +11,7 @@ package org.picocontainer.gems.monitors;
 
 import junit.framework.TestCase;
 import org.picocontainer.testmodel.DependsOnList;
+import org.picocontainer.testmodel.DependsOnDependsOnListAndVector;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,10 +20,10 @@ import java.util.Vector;
 
 public class DotDependencyGraphComponentMonitorTestCase extends TestCase {
 
+    DotDependencyGraphComponentMonitor monitor;
 
-    public void testSimpleClassDependencyGraphCanEliminateDupes() throws NoSuchMethodException {
-
-        DotDependencyGraphComponentMonitor monitor = new DotDependencyGraphComponentMonitor();
+    protected void setUp() throws Exception {
+        monitor = new DotDependencyGraphComponentMonitor();
 
         Vector vec = new Vector();
         List list = new ArrayList();
@@ -35,24 +36,18 @@ public class DotDependencyGraphComponentMonitorTestCase extends TestCase {
         monitor.instantiated(DependsOnDependsOnListAndVector.class.getConstructors()[0], dodolav, new Object[]{vec, dol}, 16);
         monitor.instantiated(DependsOnDependsOnListAndVector.class.getConstructors()[0], dodolav, new Object[]{vec, dol}, 12);
         monitor.instantiated(DependsOnDependsOnListAndVector.class.getConstructors()[0], dodolav, new Object[]{vec, dol}, 9);
+    }
 
-        String graph = monitor.getClassDependencyGraph();
-
+    public void testSimpleClassDependencyGraphCanEliminateDupes() throws NoSuchMethodException {
         String expected = "" +
                 "  java.util.ArrayList -> java.util.Vector;\n" +
-                "  org.picocontainer.gems.monitors.DotDependencyGraphComponentMonitorTestCase$DependsOnDependsOnListAndVector -> java.util.Vector;\n" +
-                "  org.picocontainer.gems.monitors.DotDependencyGraphComponentMonitorTestCase$DependsOnDependsOnListAndVector -> org.picocontainer.testmodel.DependsOnList;\n" +
+                "  org.picocontainer.testmodel.DependsOnDependsOnListAndVector -> java.util.Vector;\n" +
+                "  org.picocontainer.testmodel.DependsOnDependsOnListAndVector -> org.picocontainer.testmodel.DependsOnList;\n" +
                 "  org.picocontainer.testmodel.DependsOnList -> java.util.ArrayList;\n" +
                 "";
-
-        assertEquals(expected, graph);
-
+        assertEquals(expected, monitor.getClassDependencyGraph());
     }
 
-    public static class DependsOnDependsOnListAndVector {
-        public DependsOnDependsOnListAndVector(Vector vec, DependsOnList dol) {
-        }
-    }
 
 
 }

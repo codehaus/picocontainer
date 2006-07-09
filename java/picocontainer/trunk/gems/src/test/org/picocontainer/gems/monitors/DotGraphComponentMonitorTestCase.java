@@ -11,7 +11,7 @@ import java.util.Vector;
 public class DotGraphComponentMonitorTestCase extends TestCase {
 
 
-    public void testSimpleClassDependencyGraph() throws NoSuchMethodException {
+    public void testSimpleClassDependencyGraphCanEliminateDupes() throws NoSuchMethodException {
 
         DotGraphComponentMonitor monitor = new DotGraphComponentMonitor();
 
@@ -24,6 +24,8 @@ public class DotGraphComponentMonitorTestCase extends TestCase {
         monitor.instantiated(ArrayList.class.getConstructor(new Class[]{Collection.class}), list, new Object[]{vec}, 12);
         monitor.instantiated(DependsOnList.class.getConstructors()[0], dol, new Object[]{list}, 10);
         monitor.instantiated(DependsOnDependsOnListAndVector.class.getConstructors()[0], dodolav, new Object[]{vec, dol}, 16);
+        monitor.instantiated(DependsOnDependsOnListAndVector.class.getConstructors()[0], dodolav, new Object[]{vec, dol}, 12);
+        monitor.instantiated(DependsOnDependsOnListAndVector.class.getConstructors()[0], dodolav, new Object[]{vec, dol}, 9);
 
         String graph = monitor.getClassDependencyGraph();
 

@@ -18,7 +18,7 @@ import java.util.*;
 
 public class DotDependencyGraphComponentMonitor extends DelegatingComponentMonitor implements ComponentMonitor {
 
-    private HashSet deps = new HashSet();
+    ArrayList instantiated = new ArrayList();
 
     public DotDependencyGraphComponentMonitor(ComponentMonitor delegate) {
         super(delegate);
@@ -29,16 +29,23 @@ public class DotDependencyGraphComponentMonitor extends DelegatingComponentMonit
 
     public void instantiated(Constructor constructor, Object instantiated, Object[] injected, long duration) {
 
-        for (int i = 0; i < injected.length; i++) {
-            String entry = "  " + instantiated.getClass().getName() + " -> " + injected[i].getClass().getName() + ";\n";
-            deps.add(entry);
-        }
+        this.instantiated.add(new Instantiation(constructor, instantiated, injected, duration));
 
-        super.instantiated(constructor, instantiated, injected, duration);    //To change body of overridden methods use File | Settings | File Templates.
+        super.instantiated(constructor, instantiated, injected, duration);
     }
 
 
     public String getClassDependencyGraph() {
+
+        HashSet deps = new HashSet();
+
+        for (int i = 0; i < instantiated.size(); i++) {
+            Instantiation instantiation = (Instantiation) instantiated.get(i);
+            for (int j = 0; j < instantiation.getInjected().length; j++) {
+                String entry = "  " + instantiation.getInstantiated().getClass().getName() + " -> " + instantiation.getInjected()[j].getClass().getName() + ";\n";
+                deps.add(entry);
+            }
+        }
 
         ArrayList list = new ArrayList(deps);
         Collections.sort(list);
@@ -49,5 +56,24 @@ public class DotDependencyGraphComponentMonitor extends DelegatingComponentMonit
             dependencies = dependencies + dep;
         }
         return dependencies;
+    }
+
+    private static class Instantiation {
+        Constructor constructor;
+        Object instantiated;
+        Object[] injected;
+        long duration;
+        public Instantiation(Constructor constructor, Object instantiated, Object[] injected, long duration) {
+            this.constructor = constructor;
+            this.instantiated = instantiated;
+            this.injected = injected;
+            this.duration = duration;
+        }
+        public Object getInstantiated() {
+            return instantiated;
+        }
+        public Object[] getInjected() {
+            return injected;
+        }
     }
 }

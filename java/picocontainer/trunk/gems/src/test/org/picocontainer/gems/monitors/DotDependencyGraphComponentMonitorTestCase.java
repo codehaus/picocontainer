@@ -39,15 +39,32 @@ public class DotDependencyGraphComponentMonitorTestCase extends TestCase {
     }
 
     public void testSimpleClassDependencyGraphCanEliminateDupes() throws NoSuchMethodException {
-        String expected = "" +
-                "  java.util.ArrayList -> java.util.Vector;\n" +
-                "  org.picocontainer.testmodel.DependsOnDependsOnListAndVector -> java.util.Vector;\n" +
-                "  org.picocontainer.testmodel.DependsOnDependsOnListAndVector -> org.picocontainer.testmodel.DependsOnList;\n" +
-                "  org.picocontainer.testmodel.DependsOnList -> java.util.ArrayList;\n" +
-                "";
+        String expected = ("" +
+                "  'java.util.ArrayList' -> 'java.util.Vector';\n" +
+                "  'org.picocontainer.testmodel.DependsOnDependsOnListAndVector' -> 'java.util.Vector';\n" +
+                "  'org.picocontainer.testmodel.DependsOnDependsOnListAndVector' -> 'org.picocontainer.testmodel.DependsOnList';\n" +
+                "  'org.picocontainer.testmodel.DependsOnList' -> 'java.util.ArrayList';\n" +
+                "").replaceAll("'","\"");
         assertEquals(expected, monitor.getClassDependencyGraph());
     }
 
+    public void testSimpleInterfaceDependencyGraphCanEliminateDupes() throws NoSuchMethodException {
+        String expected = ("" +
+                "  'java.util.ArrayList' -> 'java.util.Collection' [style=dotted,label='needs'];\n" +
+                "  'java.util.ArrayList' -> 'java.util.List' [style=dotted, color=red,label='isA'];\n" +
+                "  'java.util.ArrayList' [label='ArrayList\\njava.util'];\n" +
+                "  'java.util.Collection' [shape=box, label='Collection\\njava.util'];\n" +
+                "  'java.util.List' [shape=box, label='List\\njava.util'];\n" +
+                "  'java.util.Vector' -> 'java.util.Collection' [style=dotted, color=red,label='isA'];\n" +
+                "  'org.picocontainer.testmodel.DependsOnDependsOnListAndVector' -> 'java.util.Vector' [label='needs'];\n" +
+                "  'org.picocontainer.testmodel.DependsOnDependsOnListAndVector' -> 'org.picocontainer.testmodel.DependsOnList' [label='needs'];\n" +
+                "  'org.picocontainer.testmodel.DependsOnDependsOnListAndVector' [label='DependsOnDependsOnListAndVector\\norg.picocontainer.testmodel'];\n" +
+                "  'org.picocontainer.testmodel.DependsOnList' -> 'java.util.List' [style=dotted,label='needs'];\n" +
+                "  'org.picocontainer.testmodel.DependsOnList' [label='DependsOnList\\norg.picocontainer.testmodel'];\n" +
+                "").replaceAll("'","\"");
+        String interfaceDependencyGraph = monitor.getInterfaceDependencyGraph();
+        assertEquals(expected, interfaceDependencyGraph);
+    }
 
 
 }

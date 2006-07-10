@@ -18,7 +18,7 @@ import java.util.*;
 
 public class DotDependencyGraphComponentMonitor extends DelegatingComponentMonitor implements ComponentMonitor {
 
-    ArrayList instantiated = new ArrayList();
+    ArrayList allInstantiated = new ArrayList();
 
     public DotDependencyGraphComponentMonitor(ComponentMonitor delegate) {
         super(delegate);
@@ -29,7 +29,7 @@ public class DotDependencyGraphComponentMonitor extends DelegatingComponentMonit
 
     public void instantiated(Constructor constructor, Object instantiated, Object[] injected, long duration) {
 
-        this.instantiated.add(new Instantiation(constructor, instantiated, injected, duration));
+        this.allInstantiated.add(new Instantiation(constructor, instantiated, injected, duration));
 
         super.instantiated(constructor, instantiated, injected, duration);
     }
@@ -37,17 +37,22 @@ public class DotDependencyGraphComponentMonitor extends DelegatingComponentMonit
 
     public String getClassDependencyGraph() {
 
-        HashSet deps = new HashSet();
+        HashSet lines = new HashSet();
 
-        for (int i = 0; i < instantiated.size(); i++) {
-            Instantiation instantiation = (Instantiation) instantiated.get(i);
+        for (int i = 0; i < allInstantiated.size(); i++) {
+            Instantiation instantiation = (Instantiation) allInstantiated.get(i);
             for (int j = 0; j < instantiation.getInjected().length; j++) {
-                String entry = "  " + instantiation.getInstantiated().getClass().getName() + " -> " + instantiation.getInjected()[j].getClass().getName() + ";\n";
-                deps.add(entry);
+                Object instantiated = instantiation.getInstantiated();
+                Object injected = instantiation.getInjected()[j];
+                lines.add("  '" + instantiated.getClass().getName() + "' -> '" + injected.getClass().getName() + "';\n");
             }
         }
 
-        ArrayList list = new ArrayList(deps);
+        return sortLines(lines);
+    }
+
+    private String sortLines(HashSet lines) {
+        ArrayList list = new ArrayList(lines);
         Collections.sort(list);
 
         String dependencies = "";
@@ -55,7 +60,37 @@ public class DotDependencyGraphComponentMonitor extends DelegatingComponentMonit
             String dep = (String) iterator.next();
             dependencies = dependencies + dep;
         }
-        return dependencies;
+        return dependencies.replaceAll("'","\"");
+    }
+
+    public String getInterfaceDependencyGraph() {
+        HashSet lines = new HashSet();
+
+        for (int i = 0; i < allInstantiated.size(); i++) {
+            Instantiation instantiation = (Instantiation) allInstantiated.get(i);
+            for (int j = 0; j < instantiation.getInjected().length; j++) {
+                Object injected = instantiation.getInjected()[j];
+                Class injectedType = instantiation.getConstructor().getParameterTypes()[j];
+                Object instantiated = instantiation.getInstantiated();
+                if (injected.getClass() != injectedType) {
+                    lines.add("  '" + instantiated.getClass().getName() + "' -> '" + injectedType.getName() + "' [style=dotted,label='needs'];\n");
+                    lines.add("  '" + injected.getClass().getName() + "' -> '" + injectedType.getName() + "' [style=dotted, color=red,label='isA'];\n");
+                    lines.add("  '" + injectedType.getName() + "' [shape=box, label=" + printClassName(injectedType) + "];\n");
+                } else {
+                    lines.add("  '" + instantiated.getClass().getName() + "' -> '" + injected.getClass().getName() + "' [label='needs'];\n");
+                }
+                lines.add("  '" + instantiated.getClass().getName() + "' [label=" + printClassName(instantiated.getClass()) + "];\n");
+
+            }
+        }
+
+        return sortLines(lines);
+    }
+
+    private String printClassName(Class clazz) {
+        String className = clazz.getName();
+        return "'" + className.substring(className.lastIndexOf(".")+1) + "\\n" + clazz.getPackage().getName() + "'";
+
     }
 
     private static class Instantiation {
@@ -69,6 +104,11 @@ public class DotDependencyGraphComponentMonitor extends DelegatingComponentMonit
             this.injected = injected;
             this.duration = duration;
         }
+
+        public Constructor getConstructor() {
+            return constructor;
+        }
+
         public Object getInstantiated() {
             return instantiated;
         }

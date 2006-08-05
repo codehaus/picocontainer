@@ -43,14 +43,16 @@ public class WebContainerBuilderTestCase extends TestCase {
                 // declare the web container
                 "        webContainer(port:8080) {\n" +
                 "            context(path:'/bar') {\n" +
-                "                servlet(path:'/foo', class:org.nanocontainer.nanowar.server.DependencyInjectionTestServlet)\n" +
+                "                servlet(path:'/foo', class:org.nanocontainer.nanowar.server.DependencyInjectionTestServlet){\n" +
+                "                   initParam(name:'foo', value:'bar')\n" +
+                "                }\n" +
                 "            }\n" +
                 "        }\n" +
                 // end declaration
                 "    }\n" +
                 "}\n");
 
-        assertPageIsHostedWithHelloFredAsContents(script);
+        assertPageIsHostedWithContents(script, "hello Fred bar");
     }
 
     public void testCanComposeWebContainerContextWithExplicitConnector() throws InterruptedException, IOException {
@@ -71,7 +73,7 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "    }\n" +
                 "}\n");
 
-        assertPageIsHostedWithHelloFredAsContents(script);
+        assertPageIsHostedWithContents(script, "hello Fred");
     }
 
     public void testCanComposeWebContainerAndWarFile() throws InterruptedException, IOException {
@@ -90,16 +92,16 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "    }\n" +
                 "}\n");
 
-        assertPageIsHostedWithHelloFredAsContents(script);
+        assertPageIsHostedWithContents(script, "hello Fred");
     }
 
-    private void assertPageIsHostedWithHelloFredAsContents(Reader script) throws InterruptedException, IOException {
+    private void assertPageIsHostedWithContents(Reader script, String message) throws InterruptedException, IOException {
         pico = buildContainer(script, null, "SOME_SCOPE");
 
         Thread.sleep(2 * 1000);
 
         URL url = new URL("http://localhost:8080/bar/foo");
-        assertEquals("hello Fred", IO.toString(url.openStream()));
+        assertEquals(message, IO.toString(url.openStream()));
     }
 
     private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {

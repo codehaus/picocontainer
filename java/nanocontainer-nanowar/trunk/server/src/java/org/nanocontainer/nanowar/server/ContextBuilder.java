@@ -26,7 +26,7 @@ public class ContextBuilder extends NodeBuilder {
                 ServletHolder servlet = context.addServletWithMapping(
                         (Class) map.remove("class"),
                         (String) map.remove("path"));
-                return servlet;
+                return new ServletHolderBuilder(servlet);
             }
             return null;
         }

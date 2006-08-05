@@ -18,14 +18,14 @@ public class PicoContextHandler {
     private final ContextHandler context;
     private final Server server;
     private final PicoContainer parentContainer;
-    PicoServletHandler handler;
+    private PicoServletHandler handler;
 
     public static final int DEFAULT=0;
     public static final int REQUEST=1;
     public static final int FORWARD=2;
     public static final int INCLUDE=4;
     public static final int ERROR=8;
-    public static final int ALL=15;    
+    public static final int ALL=15;
 
     public PicoContextHandler(ContextHandler context, Server server, PicoContainer parentContainer) {
         this.context = context;

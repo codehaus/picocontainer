@@ -84,7 +84,7 @@ public class WebContainerBuilderTestCase extends TestCase {
 
                 "        webContainer() {\n" +
                 "            blockingChannelConnector(host:'localhost', port:8080)\n" +
-                "            xmlWebApplication(path:'/bar', warfile:'/Users/paul/scm/oss/pico2/java/nanocontainer-nanowar/trunk/testwar.war')" +
+                "            xmlWebApplication(path:'/bar', warfile:'testwar.war')" +
                 "        }\n" +
 
                 "    }\n" +

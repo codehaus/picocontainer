@@ -18,7 +18,7 @@ public class DependencyInjectionServletWarFileTestCase extends TestCase {
         parentContainer.registerComponentInstance(String.class, "Fred");
 
         JettyServerPicoEdition server = new JettyServerPicoEdition("localhost", 8080, parentContainer);
-        WebAppContextPicoEdition wah = server.addWebApplication("/bar", "/Users/paul/scm/oss/pico2/java/nanocontainer-nanowar/trunk/testwar.war");
+        WebAppContextPicoEdition wah = server.addWebApplication("/bar", "testwar.war");
 
         server.start();
 

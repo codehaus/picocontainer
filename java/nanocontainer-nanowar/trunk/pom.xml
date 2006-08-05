@@ -14,6 +14,7 @@
 
 	<modules>
 		<module>nanowar</module>
+		<module>server</module>
 	</modules>
 
 	<description><![CDATA[Please refer to the <a href="http://nanocontainer.org/nanowar">main website</a> for documentation.]]></description>
@@ -68,6 +69,12 @@
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>
 				<version>2.3</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty</artifactId>
+				<version>6.0.0rc0</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>

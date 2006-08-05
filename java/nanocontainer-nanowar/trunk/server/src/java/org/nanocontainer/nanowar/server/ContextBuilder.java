@@ -13,10 +13,10 @@ import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
-public class ContextGroovyObject extends NodeBuilder {
+public class ContextBuilder extends NodeBuilder {
         private final PicoContextHandler context;
 
-        public ContextGroovyObject(PicoContextHandler context) {
+        public ContextBuilder(PicoContextHandler context) {
             this.context = context;
         }
         protected Object createNode(Object name, Map map) {

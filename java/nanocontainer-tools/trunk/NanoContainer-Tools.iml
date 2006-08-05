@@ -15,7 +15,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -24,7 +24,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/ant/ant/1.6.5/ant-1.6.5.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/ant/ant/1.6.5/ant-1.6.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -33,7 +33,16 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/jmock/jmock/1.0.1/jmock-1.0.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/jmock/jmock/1.0.1/jmock-1.0.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/xstream/xstream/1.1.2/xstream-1.1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

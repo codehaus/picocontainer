@@ -19,7 +19,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -28,7 +28,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/groovy/groovy-all-1.0-jsr/04/groovy-all-1.0-jsr-04.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/groovy/groovy-all-1.0-jsr/04/groovy-all-1.0-jsr-04.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -37,7 +37,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/bsh/bsh/1.3.0/bsh-1.3.0.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/bsh/bsh/1.3.0/bsh-1.3.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -46,7 +46,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/mx4j/mx4j-impl/2.1.1/mx4j-impl-2.1.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/mx4j/mx4j-impl/2.1.1/mx4j-impl-2.1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -55,7 +55,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/mx4j/mx4j-jmx/2.1.1/mx4j-jmx-2.1.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/mx4j/mx4j-jmx/2.1.1/mx4j-jmx-2.1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

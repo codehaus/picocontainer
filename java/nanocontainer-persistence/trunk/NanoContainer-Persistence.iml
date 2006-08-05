@@ -17,7 +17,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/hibernate/jars/hibernate-2.1.8.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/hibernate/jars/hibernate-2.1.8.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -26,7 +26,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/hibernate/jars/hibernate-3.0.5.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/hibernate/jars/hibernate-3.0.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -35,7 +35,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/commons-dbcp/jars/commons-dbcp-1.2.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/commons-dbcp/jars/commons-dbcp-1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -44,7 +44,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -53,7 +53,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/jmock/jmock/1.0.1/jmock-1.0.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/jmock/jmock/1.0.1/jmock-1.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -62,7 +62,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/jmock/jmock-cglib/1.0.1/jmock-cglib-1.0.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/jmock/jmock-cglib/1.0.1/jmock-cglib-1.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -71,7 +71,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/proxytoys/proxytoys/0.2.1/proxytoys-0.2.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/proxytoys/proxytoys/0.2.1/proxytoys-0.2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

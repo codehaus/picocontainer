@@ -24,7 +24,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/jmock/jars/jmock-cglib-1.0.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/jmock/jars/jmock-cglib-1.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -33,7 +33,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/jmock/jars/jmock-1.0.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/jmock/jars/jmock-1.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -42,7 +42,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/junit/jars/junit-3.8.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/junit/jars/junit-3.8.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -51,7 +51,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/swt/jars/osgi-3.0.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/swt/jars/osgi-3.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -60,7 +60,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/swt/jars/swt-linux-gtk-pi-3.0.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/swt/jars/swt-linux-gtk-pi-3.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -69,7 +69,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/swt/jars/jface-3.0.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/swt/jars/jface-3.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -78,7 +78,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/swt/jars/swt-linux-gtk-3.0.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/swt/jars/swt-linux-gtk-3.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -87,7 +87,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/swt/jars/runtime-3.0.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/swt/jars/runtime-3.0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -114,7 +114,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/nanning/jars/nanning-0.9.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/nanning/jars/nanning-0.9.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -123,7 +123,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/commons-vfs/jars/commons-vfs-20030518103800.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/commons-vfs/jars/commons-vfs-20030518103800.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -133,7 +133,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/asm/jars/asm-util-2.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/asm/jars/asm-util-2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -142,7 +142,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/asm/jars/asm-2.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/asm/jars/asm-2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -151,7 +151,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/proxytoys/jars/proxytoys-0.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/proxytoys/jars/proxytoys-0.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -160,7 +160,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/commons-logging/jars/commons-logging-1.0.4.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/commons-logging/jars/commons-logging-1.0.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -169,7 +169,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/log4j/jars/log4j-1.2.8.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/log4j/jars/log4j-1.2.8.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -178,7 +178,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/groovy/jars/groovy-1.0-jsr-04.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/groovy/jars/groovy-1.0-jsr-04.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -187,7 +187,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY_LOCAL$/antlr/jars/antlr-2.7.5.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/antlr/jars/antlr-2.7.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

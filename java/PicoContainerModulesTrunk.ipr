@@ -11,6 +11,26 @@
     <option name="DEFAULT_COMPILER" value="Javac" />
     <option name="CLEAR_OUTPUT_DIRECTORY" value="false" />
     <option name="DEPLOY_AFTER_MAKE" value="0" />
+    <excludeFromCompile>
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/swt/src/test/org/nanocontainer/swt/TreePanelDemo.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/swt/src/test/org/nanocontainer/swt/TreeDemo.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/swt/src/test/org/nanocontainer/swt/TreeDemo.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/nanning/src/test/org/nanocontainer/nanning/NanningNanoContainerTestCase.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/nanning/src/test/org/nanocontainer/nanning/NanningNanoContainerTestCase.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/nanning/src/test/org/nanocontainer/nanning/NanningNanoContainerTestCase.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/nanning/src/test/org/nanocontainer/nanning/NanningNanoContainerTestCase.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/nanning/src/test/org/nanocontainer/nanning/NanningNanoContainerTestCase.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/nanning/src/test/org/nanocontainer/nanning/NanningNanoContainerTestCase.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/nanning/src/test/org/nanocontainer/nanning/NanningNanoContainerTestCase.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/swt/src/java/org/nanocontainer/swt/ContainerTreeLabelProvider.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/swt/src/java/org/nanocontainer/swt/ContainerTreeLabelProvider.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/swt/src/java/org/nanocontainer/swt/ContainerTreeLabelProvider.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/swt/src/java/org/nanocontainer/swt/ContainerTreeLabelProvider.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/swt/src/java/org/nanocontainer/swt/ContainerTreeLabelProvider.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/swt/src/java/org/nanocontainer/swt/ContainerTreeLabelProvider.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/swt/src/java/org/nanocontainer/swt/ContainerTreeLabelProvider.java" />
+      <file url="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/swt/src/java/org/nanocontainer/swt/ContainerTreeLabelProvider.java" />
+    </excludeFromCompile>
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -25,6 +45,7 @@
       <entry name="?*.html" />
       <entry name="?*.dtd" />
       <entry name="?*.tld" />
+      <entry name="?*.rb" />
     </wildcardResourcePatterns>
   </component>
   <component name="DataSourceManagerImpl" />
@@ -185,6 +206,7 @@
       <module fileurl="file://$PROJECT_DIR$/nanocontainer-persistence/trunk/NanoContainer-Persistence.iml" filepath="$PROJECT_DIR$/nanocontainer-persistence/trunk/NanoContainer-Persistence.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanocontainer-remoting/trunk/NanoContainer-Remoting.iml" filepath="$PROJECT_DIR$/nanocontainer-remoting/trunk/NanoContainer-Remoting.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanocontainer-sandbox/trunk/NanoContainer-Sandbox.iml" filepath="$PROJECT_DIR$/nanocontainer-sandbox/trunk/NanoContainer-Sandbox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanocontainer-tools/trunk/NanoContainer-Tools.iml" filepath="$PROJECT_DIR$/nanocontainer-tools/trunk/NanoContainer-Tools.iml" />
       <module fileurl="file://$PROJECT_DIR$/picocontainer/trunk/PicoContainer.iml" filepath="$PROJECT_DIR$/picocontainer/trunk/PicoContainer.iml" />
     </modules>
   </component>
@@ -202,7 +224,7 @@
     <option name="COPY_FORMS_RUNTIME_TO_OUTPUT" value="true" />
   </component>
   <UsedPathMacros>
-    <macro name="MAVEN_REPOSITORY_LOCAL" />
+    <macro name="M2_REPOSITORY" />
   </UsedPathMacros>
 </project>
 

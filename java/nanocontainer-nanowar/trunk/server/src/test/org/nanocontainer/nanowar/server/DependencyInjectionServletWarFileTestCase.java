@@ -29,6 +29,7 @@ public class DependencyInjectionServletWarFileTestCase extends TestCase {
 
         //Thread.sleep(50 * 1000);
 
+        server.stop();
 
     }
 

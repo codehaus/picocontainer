@@ -69,7 +69,8 @@ public class JettyServerPicoEdition {
         try {
             server.start();
         } catch (Exception e) {
-            throw new JettyServerLifecycleException("Jetty could start", e);
+            e.printStackTrace();
+            throw new JettyServerLifecycleException("Jetty couldn't start", e);
         }
     }
 
@@ -77,7 +78,7 @@ public class JettyServerPicoEdition {
         try {
             server.stop();
         } catch (Exception e) {
-            throw new JettyServerLifecycleException("Jetty could stop", e);
+            throw new JettyServerLifecycleException("Jetty couldn't stop", e);
         }
     }
 }

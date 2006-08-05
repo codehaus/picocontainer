@@ -29,6 +29,7 @@ public class DependencyInjectionFilterTestCase extends TestCase {
 
         assertEquals("hello Fred Filtered!(int= 5)", IO.toString(url.openStream()));
 
+        server.stop();
 
     }
 

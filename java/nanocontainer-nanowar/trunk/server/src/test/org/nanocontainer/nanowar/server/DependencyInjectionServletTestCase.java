@@ -9,12 +9,13 @@
 
 package org.nanocontainer.nanowar.server;
 
+import java.io.IOException;
+import java.net.URL;
+
 import junit.framework.TestCase;
+
 import org.mortbay.io.IO;
 import org.picocontainer.defaults.DefaultPicoContainer;
-
-import java.net.URL;
-import java.io.IOException;
 
 public class DependencyInjectionServletTestCase extends TestCase {
 
@@ -25,14 +26,16 @@ public class DependencyInjectionServletTestCase extends TestCase {
 
         PicoJettyServer server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContextHandler barContext = server.createContext("/bar");
-        barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo");
-
+        Class servletClass = DependencyInjectionTestServlet.class;
+        PicoServletHolder holder = barContext.addServletWithMapping(servletClass, "/foo");
+        holder.setInitParameter("foo", "bar");
+       
         server.start();
 
         Thread.sleep(2 * 1000);
 
         URL url = new URL("http://localhost:8080/bar/foo");
-        assertEquals("hello Fred", IO.toString(url.openStream()));
+        assertEquals("hello Fred bar", IO.toString(url.openStream()));
 
         //Thread.sleep(50 * 1000);
 

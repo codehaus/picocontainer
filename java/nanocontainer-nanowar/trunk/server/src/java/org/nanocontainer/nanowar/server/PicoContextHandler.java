@@ -9,8 +9,8 @@
 
 package org.nanocontainer.nanowar.server;
 
-import org.mortbay.jetty.handler.ContextHandler;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.handler.ContextHandler;
 import org.picocontainer.PicoContainer;
 
 public class PicoContextHandler {
@@ -33,10 +33,9 @@ public class PicoContextHandler {
         this.parentContainer = parentContainer;
     }
 
-    public PicoServletHandler addServletWithMapping(Class servletClass, String pathMapping) {
+    public PicoServletHolder addServletWithMapping(Class servletClass, String pathMapping) {
         PicoServletHandler handler = getHandler();
-        handler.addServletWithMapping(servletClass, pathMapping);
-        return handler;
+        return (PicoServletHolder) handler.addServletWithMapping(servletClass, pathMapping);
     }
 
     private synchronized PicoServletHandler getHandler() {

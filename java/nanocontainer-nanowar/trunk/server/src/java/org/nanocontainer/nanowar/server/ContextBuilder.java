@@ -13,6 +13,8 @@ import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
+import org.mortbay.jetty.servlet.ServletHolder;
+
 public class ContextBuilder extends NodeBuilder {
         private final PicoContextHandler context;
 
@@ -21,7 +23,7 @@ public class ContextBuilder extends NodeBuilder {
         }
         protected Object createNode(Object name, Map map) {
             if (name.equals("servlet")) {
-                PicoServletHandler servlet = context.addServletWithMapping(
+                ServletHolder servlet = context.addServletWithMapping(
                         (Class) map.remove("class"),
                         (String) map.remove("path"));
                 return servlet;

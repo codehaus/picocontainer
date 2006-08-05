@@ -19,15 +19,15 @@ public class DependencyInjectionFilterTestCase extends TestCase {
         PicoJettyServer server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContextHandler barContext = server.createContext("/bar");
         barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0);
-        barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
-
+        PicoServletHolder holder = barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
+        holder.setInitParameter("foo", "bau");
         server.start();
 
         Thread.sleep(2 * 1000);
 
         URL url = new URL("http://localhost:8080/bar/foo2");
 
-        assertEquals("hello Fred Filtered!(int= 5)", IO.toString(url.openStream()));
+        assertEquals("hello Fred Filtered!(int= 5) bau", IO.toString(url.openStream()));
 
         server.stop();
 

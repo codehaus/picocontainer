@@ -9,15 +9,15 @@
 
 package org.nanocontainer.nanowar.server;
 
+import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.jetty.servlet.ServletHolder;
-import org.mortbay.jetty.servlet.FilterHolder;
 import org.picocontainer.PicoContainer;
 
 public class PicoServletHandler extends ServletHandler {
 
     private final PicoContainer parentContainer;
-
+    
     public PicoServletHandler(PicoContainer parentContainer) {
         this.parentContainer = parentContainer;
     }

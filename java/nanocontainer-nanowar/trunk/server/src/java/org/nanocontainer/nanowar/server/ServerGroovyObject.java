@@ -17,9 +17,9 @@ import org.picocontainer.Startable;
 import java.util.Map;
 
 public class ServerGroovyObject extends NodeBuilder {
-    private final JettyServerPicoEdition server;
+    private final PicoJettyServer server;
 
-    public ServerGroovyObject(JettyServerPicoEdition server, MutablePicoContainer parentContainer) {
+    public ServerGroovyObject(PicoJettyServer server, MutablePicoContainer parentContainer) {
         this.server = server;
         parentContainer.registerComponentInstance(new Startable() {
             public void start() {
@@ -49,12 +49,12 @@ public class ServerGroovyObject extends NodeBuilder {
     }
 
     protected Object createContext(Map map) {
-        ContextHandlerPicoEdition context = server.createContext((String) map.remove("path"));
+        PicoContextHandler context = server.createContext((String) map.remove("path"));
         return new ContextGroovyObject(context);
     }
 
     protected Object createXmlWebApplication(Map map) {
-        WebAppContextPicoEdition context = server.addWebApplication((String) map.remove("path"), (String) map.remove("warfile") );
+        PicoWebAppContext context = server.addWebApplication((String) map.remove("path"), (String) map.remove("warfile") );
         return new WarFileWebAppContextGroovyObject(context);
     }
 

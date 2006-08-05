@@ -6,34 +6,28 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
+
 package org.nanocontainer.nanowar.server;
 
+import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.jetty.servlet.ServletHolder;
+import org.mortbay.jetty.servlet.FilterHolder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
-import javax.servlet.Servlet;
-
-/**
- * @deprecated - to be replaced by forthcoming 'Jervlet' release
- */
-public class ServletHolderPicoEdition extends ServletHolder {
+public class PicoServletHandler extends ServletHandler {
 
     private final PicoContainer parentContainer;
 
-    public ServletHolderPicoEdition(PicoContainer parentContainer) {
+    public PicoServletHandler(PicoContainer parentContainer) {
         this.parentContainer = parentContainer;
     }
 
-
-    public ServletHolderPicoEdition(Class clazz, PicoContainer parentContainer) {
-        super(clazz);
-        this.parentContainer = parentContainer;
+    public ServletHolder newServletHolder(Class servletClass) {
+        return new PicoServletHolder(servletClass, parentContainer);
     }
 
-    public synchronized Object newInstance() throws InstantiationException, IllegalAccessException {
-        DefaultPicoContainer child = new DefaultPicoContainer(parentContainer);
-        child.registerComponentImplementation(Servlet.class, _class);
-        return child.getComponentInstance(Servlet.class);
+    public FilterHolder newFilterHolder(Class filterClass) {
+        return new PicoFilterHolder(filterClass, parentContainer);
     }
+
 }

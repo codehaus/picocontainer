@@ -1,13 +1,13 @@
 package org.nanocontainer.nanowar.server;
 
-import junit.framework.TestCase;
-
 import java.io.IOException;
-import java.io.File;
 import java.net.URL;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
+import junit.framework.TestCase;
+
 import org.mortbay.io.IO;
+import org.mortbay.jetty.webapp.WebAppContext;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class DependencyInjectionServletWarFileTestCase extends TestCase {
 
@@ -17,9 +17,10 @@ public class DependencyInjectionServletWarFileTestCase extends TestCase {
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         parentContainer.registerComponentInstance(String.class, "Fred");
 
-        JettyServerPicoEdition server = new JettyServerPicoEdition("localhost", 8080, parentContainer);
-        WebAppContextPicoEdition wah = server.addWebApplication("/bar", "testwar.war");
-
+        PicoJettyServer server = new PicoJettyServer("localhost", 8080, parentContainer);
+        WebAppContext wac = server.addWebApplication("/bar", "testwar.war");
+        assertNotNull(wac);
+        
         server.start();
 
         Thread.sleep(2 * 1000);

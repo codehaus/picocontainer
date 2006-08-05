@@ -14,26 +14,20 @@ import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.picocontainer.PicoContainer;
 
-/**
- * @deprecated - to be replaced by forthcoming 'Jervlet' release
- */
-public class WebXmlConfigurationPicoEdition extends WebXmlConfiguration {
+public class PicoWebXmlConfiguration extends WebXmlConfiguration {
 
     private PicoContainer parentContainer;
 
-    public WebXmlConfigurationPicoEdition(PicoContainer parentContainer) {
+    public PicoWebXmlConfiguration(PicoContainer parentContainer) {
         this.parentContainer = parentContainer;
     }
 
-    /* ------------------------------------------------------------ */
     protected ServletHolder newServletHolder() {
-
-        return new ServletHolderPicoEdition(parentContainer);
+        return new PicoServletHolder(parentContainer);
     }
 
-    /* ------------------------------------------------------------ */
     protected FilterHolder newFilterHolder() {
-        return new FilterHolderPicoEdition(parentContainer);
+        return new PicoFilterHolder(parentContainer);
     }
 
 }

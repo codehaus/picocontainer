@@ -13,15 +13,12 @@ import org.mortbay.jetty.handler.ContextHandler;
 import org.mortbay.jetty.Server;
 import org.picocontainer.PicoContainer;
 
-/**
- * @deprecated - to be replaced by forthcoming 'Jervlet' release
- */
-public class ContextHandlerPicoEdition {
+public class PicoContextHandler {
 
     private final ContextHandler context;
     private final Server server;
     private final PicoContainer parentContainer;
-    ServletHandlerPicoEdition handler;
+    PicoServletHandler handler;
 
     public static final int DEFAULT=0;
     public static final int REQUEST=1;
@@ -30,29 +27,29 @@ public class ContextHandlerPicoEdition {
     public static final int ERROR=8;
     public static final int ALL=15;    
 
-    public ContextHandlerPicoEdition(ContextHandler context, Server server, PicoContainer parentContainer) {
+    public PicoContextHandler(ContextHandler context, Server server, PicoContainer parentContainer) {
         this.context = context;
         this.server = server;
         this.parentContainer = parentContainer;
     }
 
-    public ServletHandlerPicoEdition addServletWithMapping(Class servletClass, String pathMapping) {
-        ServletHandlerPicoEdition handler = getHandler();
+    public PicoServletHandler addServletWithMapping(Class servletClass, String pathMapping) {
+        PicoServletHandler handler = getHandler();
         handler.addServletWithMapping(servletClass, pathMapping);
         return handler;
     }
 
-    private synchronized ServletHandlerPicoEdition getHandler() {
+    private synchronized PicoServletHandler getHandler() {
         if (handler == null) {
-            handler = new ServletHandlerPicoEdition(parentContainer);
+            handler = new PicoServletHandler(parentContainer);
             context.addHandler(handler);
             handler.setServer(server);
         }
         return handler;
     }
 
-    public ServletHandlerPicoEdition addFilterWithMapping(Class filterClass, String pathMapping, int dispatchers) {
-        ServletHandlerPicoEdition handler = getHandler();
+    public PicoServletHandler addFilterWithMapping(Class filterClass, String pathMapping, int dispatchers) {
+        PicoServletHandler handler = getHandler();
         handler.addFilterWithMapping(filterClass, pathMapping, dispatchers);
         return handler;
 

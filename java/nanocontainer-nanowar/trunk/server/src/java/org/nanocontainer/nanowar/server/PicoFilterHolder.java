@@ -1,23 +1,20 @@
 package org.nanocontainer.nanowar.server;
 
+import javax.servlet.Filter;
+
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import javax.servlet.Filter;
-
-/**
- * @deprecated - to be replaced by forthcoming 'Jervlet' release
- */
-public class FilterHolderPicoEdition extends FilterHolder {
+public class PicoFilterHolder extends FilterHolder {
 
     private final PicoContainer parentContainer;
 
-    public FilterHolderPicoEdition(PicoContainer parentContainer) {
+    public PicoFilterHolder(PicoContainer parentContainer) {
         this.parentContainer = parentContainer;
     }
 
-    public FilterHolderPicoEdition(Class filterClass, PicoContainer parentContainer) {
+    public PicoFilterHolder(Class filterClass, PicoContainer parentContainer) {
         super(filterClass);
         this.parentContainer = parentContainer;
     }

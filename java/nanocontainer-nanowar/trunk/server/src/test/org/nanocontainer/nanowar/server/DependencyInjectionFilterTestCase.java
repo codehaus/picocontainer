@@ -16,8 +16,8 @@ public class DependencyInjectionFilterTestCase extends TestCase {
         parentContainer.registerComponentInstance(String.class, "Fred");
         parentContainer.registerComponentInstance(Integer.class, new Integer(5));
 
-        JettyServerPicoEdition server = new JettyServerPicoEdition("localhost", 8080, parentContainer);
-        ContextHandlerPicoEdition barContext = server.createContext("/bar");
+        PicoJettyServer server = new PicoJettyServer("localhost", 8080, parentContainer);
+        PicoContextHandler barContext = server.createContext("/bar");
         barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0);
         barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
 

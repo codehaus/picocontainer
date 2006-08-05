@@ -10,19 +10,18 @@
 package org.nanocontainer.nanowar.server;
 
 import groovy.util.NodeBuilder;
-import org.picocontainer.PicoContainer;
 
 import java.util.Map;
 
 public class ContextGroovyObject extends NodeBuilder {
-        private final ContextHandlerPicoEdition context;
+        private final PicoContextHandler context;
 
-        public ContextGroovyObject(ContextHandlerPicoEdition context) {
+        public ContextGroovyObject(PicoContextHandler context) {
             this.context = context;
         }
         protected Object createNode(Object name, Map map) {
             if (name.equals("servlet")) {
-                ServletHandlerPicoEdition servlet = context.addServletWithMapping(
+                PicoServletHandler servlet = context.addServletWithMapping(
                         (Class) map.remove("class"),
                         (String) map.remove("path"));
                 return servlet;

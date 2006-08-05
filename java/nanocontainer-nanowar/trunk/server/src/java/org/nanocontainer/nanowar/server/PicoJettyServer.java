@@ -14,26 +14,20 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.ContextHandler;
 import org.mortbay.jetty.handler.HandlerList;
 import org.mortbay.jetty.nio.BlockingChannelConnector;
-import org.mortbay.jetty.webapp.WebAppContext;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoLifecycleException;
 import org.picocontainer.PicoContainer;
 
-/**
- * @deprecated - to be replaced by forthcoming 'Jervlet' release
- */
-public class JettyServerPicoEdition {
+public class PicoJettyServer {
 
     private final Server server;
     private final PicoContainer parentContainer;
 
-    public JettyServerPicoEdition(PicoContainer parentContainer) {
+    public PicoJettyServer(PicoContainer parentContainer) {
         this.parentContainer = parentContainer;
         server = new Server();
         server.setHandler(new HandlerList());
     }
 
-    public JettyServerPicoEdition(String host, int port, PicoContainer parentContainer) {
+    public PicoJettyServer(String host, int port, PicoContainer parentContainer) {
         this(parentContainer);
         createBlockingChannelConnector(host, port);
     }
@@ -46,16 +40,16 @@ public class JettyServerPicoEdition {
         return connector;
     }
 
-    public ContextHandlerPicoEdition createContext(String contextPath) {
+    public PicoContextHandler createContext(String contextPath) {
         ContextHandler context = new ContextHandler();
         context.setContextPath(contextPath);
         server.addHandler(context);
-        return new ContextHandlerPicoEdition(context, server, parentContainer);
+        return new PicoContextHandler(context, server, parentContainer);
     }
 
 
-    public WebAppContextPicoEdition addWebApplication(String contextPath, String warFile) {
-        WebAppContextPicoEdition wah = new WebAppContextPicoEdition(parentContainer);
+    public PicoWebAppContext addWebApplication(String contextPath, String warFile) {
+        PicoWebAppContext wah = new PicoWebAppContext(parentContainer);
         wah.setContextPath(contextPath);
         wah.setExtractWAR(true);
         wah.setWar(warFile);

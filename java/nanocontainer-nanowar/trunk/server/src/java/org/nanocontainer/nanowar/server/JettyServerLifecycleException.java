@@ -10,7 +10,6 @@
 package org.nanocontainer.nanowar.server;
 
 /**
- * @deprecated - to be replaced by forthcoming 'Jervlet' release
  */
 public class JettyServerLifecycleException extends RuntimeException {
     public JettyServerLifecycleException(String string, Throwable throwable) {

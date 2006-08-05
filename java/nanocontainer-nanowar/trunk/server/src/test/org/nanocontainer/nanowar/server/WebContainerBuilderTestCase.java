@@ -40,13 +40,13 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "nano = builder.container {\n" +
                 "    component(instance:'Fred')\n" +
                 "    newBuilder(class:'org.nanocontainer.nanowar.server.WebContainerBuilder') {\n" +
-
+                // declare the web container
                 "        webContainer(port:8080) {\n" +
                 "            context(path:'/bar') {\n" +
                 "                servlet(path:'/foo', class:org.nanocontainer.nanowar.server.DependencyInjectionTestServlet)\n" +
                 "            }\n" +
                 "        }\n" +
-
+                // end declaration
                 "    }\n" +
                 "}\n");
 
@@ -60,14 +60,14 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "nano = builder.container {\n" +
                 "    component(instance:'Fred')\n" +
                 "    newBuilder(class:'org.nanocontainer.nanowar.server.WebContainerBuilder') {\n" +
-
+                // declare the web container
                 "        webContainer() {\n" +
                 "            blockingChannelConnector(host:'localhost', port:8080)\n" +
                 "            context(path:'/bar') {\n" +
                 "                servlet(path:'/foo', class:org.nanocontainer.nanowar.server.DependencyInjectionTestServlet)\n" +
                 "            }\n" +
                 "        }\n" +
-
+                // end declaration
                 "    }\n" +
                 "}\n");
 
@@ -81,12 +81,12 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "nano = builder.container {\n" +
                 "    component(instance:'Fred')\n" +
                 "    newBuilder(class:'org.nanocontainer.nanowar.server.WebContainerBuilder') {\n" +
-
+                // declare the web container
                 "        webContainer() {\n" +
                 "            blockingChannelConnector(host:'localhost', port:8080)\n" +
                 "            xmlWebApplication(path:'/bar', warfile:'testwar.war')" +
                 "        }\n" +
-
+                // end declaration
                 "    }\n" +
                 "}\n");
 

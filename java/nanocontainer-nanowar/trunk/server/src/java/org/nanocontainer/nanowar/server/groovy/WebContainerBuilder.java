@@ -8,10 +8,12 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.nanowar.server;
+package org.nanocontainer.nanowar.server.groovy;
 
 import groovy.util.NodeBuilder;
 import org.picocontainer.MutablePicoContainer;
+import org.nanocontainer.nanowar.server.groovy.ServerBuilder;
+import org.nanocontainer.nanowar.server.PicoJettyServer;
 
 import java.util.Map;
 
@@ -31,7 +33,7 @@ public class WebContainerBuilder extends NodeBuilder {
     }
 
     private Object makeWebContainer(Map map) {
-        int port = 0;
+        int port =0;
         if (map.containsKey("port")) {
             port = ((Integer) map.remove("port")).intValue();
         }
@@ -41,14 +43,15 @@ public class WebContainerBuilder extends NodeBuilder {
         } else {
             host = "localhost";
         }
-        PicoJettyServer server;
         if (port != 0) {
-            server = new PicoJettyServer(host, port, parentContainer);
+            PicoJettyServer server = new PicoJettyServer(host, port, parentContainer);
+            parentContainer.addChildContainer(server);
+            return new ServerBuilder(server, parentContainer);
         } else {
-            server = new PicoJettyServer(parentContainer);
+            PicoJettyServer server = new PicoJettyServer(parentContainer);
+            parentContainer.addChildContainer(server);
+            return new ServerBuilder(server, parentContainer);
         }
-        parentContainer.addChildContainer(server);
-        return new ServerBuilder(server, parentContainer);
     }
 
 

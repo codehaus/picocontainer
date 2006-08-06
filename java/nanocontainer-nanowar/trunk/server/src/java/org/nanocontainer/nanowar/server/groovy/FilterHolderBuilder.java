@@ -1,4 +1,4 @@
-package org.nanocontainer.nanowar.server;
+package org.nanocontainer.nanowar.server.groovy;
 
 import java.util.Map;
 

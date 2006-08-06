@@ -8,7 +8,7 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.nanowar.server;
+package org.nanocontainer.nanowar.server.groovy;
 
 import junit.framework.TestCase;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
@@ -42,7 +42,7 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "nano = builder.container {\n" +
                 "    component(instance:'Fred')\n" +
                 "    component(instance:new Integer(5))\n" +
-                "    newBuilder(class:'org.nanocontainer.nanowar.server.WebContainerBuilder') {\n" +
+                "    newBuilder(class:'org.nanocontainer.nanowar.server.groovy.WebContainerBuilder') {\n" +
                 // declare the web container
                 "        webContainer(port:8080) {\n" +
                 "            context(path:'/bar') {\n" +
@@ -67,7 +67,7 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "builder = new GroovyNodeBuilder()\n" +
                 "nano = builder.container {\n" +
                 "    component(instance:'Fred')\n" +
-                "    newBuilder(class:'org.nanocontainer.nanowar.server.WebContainerBuilder') {\n" +
+                "    newBuilder(class:'org.nanocontainer.nanowar.server.groovy.WebContainerBuilder') {\n" +
                 // declare the web container
                 "        webContainer(port:8080) {\n" +
                 "            context(path:'/bar') {\n" +
@@ -89,7 +89,7 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "builder = new GroovyNodeBuilder()\n" +
                 "nano = builder.container {\n" +
                 "    component(instance:'Fred')\n" +
-                "    newBuilder(class:'org.nanocontainer.nanowar.server.WebContainerBuilder') {\n" +
+                "    newBuilder(class:'org.nanocontainer.nanowar.server.groovy.WebContainerBuilder') {\n" +
                 // declare the web container
                 "        webContainer() {\n" +
                 "            blockingChannelConnector(host:'localhost', port:8080)\n" +
@@ -110,7 +110,7 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "builder = new GroovyNodeBuilder()\n" +
                 "nano = builder.container {\n" +
                 "    component(instance:'Fred')\n" +
-                "    newBuilder(class:'org.nanocontainer.nanowar.server.WebContainerBuilder') {\n" +
+                "    newBuilder(class:'org.nanocontainer.nanowar.server.groovy.WebContainerBuilder') {\n" +
                 // declare the web container
                 "        webContainer() {\n" +
                 "            blockingChannelConnector(host:'localhost', port:8080)\n" +
@@ -129,7 +129,7 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "builder = new GroovyNodeBuilder()\n" +
                 "nano = builder.container {\n" +
                 "    component(class:StringBuffer.class)\n" +
-                "    newBuilder(class:'org.nanocontainer.nanowar.server.WebContainerBuilder') {\n" +
+                "    newBuilder(class:'org.nanocontainer.nanowar.server.groovy.WebContainerBuilder') {\n" +
                 // declare the web container
                 "        webContainer(port:8080) {\n" +
                 "            context(path:'/bar') {\n" +

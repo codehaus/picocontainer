@@ -7,11 +7,15 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.nanowar.server;
+package org.nanocontainer.nanowar.server.groovy;
 
 import groovy.util.NodeBuilder;
 import org.mortbay.jetty.Connector;
 import org.picocontainer.MutablePicoContainer;
+import org.nanocontainer.nanowar.server.groovy.ContextBuilder;
+import org.nanocontainer.nanowar.server.PicoJettyServer;
+import org.nanocontainer.nanowar.server.PicoContextHandler;
+import org.nanocontainer.nanowar.server.PicoWebAppContext;
 
 import java.util.Map;
 

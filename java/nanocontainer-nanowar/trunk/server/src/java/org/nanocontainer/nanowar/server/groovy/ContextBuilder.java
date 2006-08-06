@@ -7,15 +7,15 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.nanowar.server;
+package org.nanocontainer.nanowar.server.groovy;
 
 import groovy.util.NodeBuilder;
 
 import java.util.Map;
-import java.util.EventListener;
 
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.servlet.ServletHolder;
+import org.nanocontainer.nanowar.server.PicoContextHandler;
 
 public class ContextBuilder extends NodeBuilder {
         private final PicoContextHandler context;

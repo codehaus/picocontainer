@@ -42,9 +42,13 @@ public class WebContainerBuilder extends NodeBuilder {
             host = "localhost";
         }
         if (port != 0) {
-            return new ServerBuilder(new PicoJettyServer(host, port, parentContainer), parentContainer);
+            PicoJettyServer server = new PicoJettyServer(host, port, parentContainer);
+            parentContainer.addChildContainer(server);
+            return new ServerBuilder(server, parentContainer);
         } else {
-            return new ServerBuilder(new PicoJettyServer(parentContainer), parentContainer);
+            PicoJettyServer server = new PicoJettyServer(parentContainer);
+            parentContainer.addChildContainer(server);
+            return new ServerBuilder(server, parentContainer);
         }
     }
 

@@ -12,23 +12,16 @@ package org.nanocontainer.nanowar.server;
 import groovy.util.NodeBuilder;
 import org.mortbay.jetty.Connector;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Startable;
 
 import java.util.Map;
 
 public class ServerBuilder extends NodeBuilder {
     private final PicoJettyServer server;
+    private final MutablePicoContainer parentContainer;
 
     public ServerBuilder(PicoJettyServer server, MutablePicoContainer parentContainer) {
         this.server = server;
-        parentContainer.registerComponentInstance(new Startable() {
-            public void start() {
-                ServerBuilder.this.server.start();
-            }
-            public void stop() {
-                ServerBuilder.this.server.stop();
-            }
-        });
+        this.parentContainer = parentContainer;
     }
 
     protected Object createNode(Object name, Map map) {

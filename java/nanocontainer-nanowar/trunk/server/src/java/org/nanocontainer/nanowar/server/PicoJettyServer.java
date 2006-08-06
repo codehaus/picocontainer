@@ -15,8 +15,10 @@ import org.mortbay.jetty.handler.ContextHandler;
 import org.mortbay.jetty.handler.HandlerList;
 import org.mortbay.jetty.nio.BlockingChannelConnector;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.Startable;
+import org.picocontainer.alternatives.EmptyPicoContainer;
 
-public class PicoJettyServer {
+public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer {
 
     private final Server server;
     private final PicoContainer parentContainer;

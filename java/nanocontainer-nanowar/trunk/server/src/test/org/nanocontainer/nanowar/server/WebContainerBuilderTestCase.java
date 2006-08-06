@@ -35,7 +35,7 @@ public class WebContainerBuilderTestCase extends TestCase {
         }        
     }
 
-    public void FIXMEtestCanComposeWebContainerContextAndFilter() throws InterruptedException, IOException {
+    public void testCanComposeWebContainerContextAndFilter() throws InterruptedException, IOException {
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
@@ -48,8 +48,12 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "            context(path:'/bar') {\n" +
                 "                filter(path:'/*', class:org.nanocontainer.nanowar.server.DependencyInjectionTestFilter," +
                 "                       dispatchers: new Integer(0)){\n" +
-//                "                   initParam(name:'foo', value:'bar')\n" +
+                "                   initParam(name:'foo', value:'bar')\n" +
                 "                }\n" +
+                "                servlet(path:'/foo', class:org.nanocontainer.nanowar.server.DependencyInjectionTestServlet){\n" +
+                "                   initParam(name:'foo', value:'bar')\n" +
+                "                }\n" +
+
                 "            }\n" +
                 "        }\n" +
                 // end declaration

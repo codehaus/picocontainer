@@ -23,11 +23,11 @@ public class DependencyInjectionListenerTestCase extends TestCase {
 
         server.start();
 
-        assertEquals("-contextInitialized",sb.toString());
+        assertEquals("-contextInitialized", sb.toString());
 
         server.stop();
 
-        assertEquals("-contextInitialized-contextDestroyed",sb.toString());
+        assertEquals("-contextInitialized-contextDestroyed", sb.toString());
 
 
     }

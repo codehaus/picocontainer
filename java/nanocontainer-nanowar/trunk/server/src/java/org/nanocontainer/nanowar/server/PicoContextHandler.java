@@ -58,11 +58,11 @@ public class PicoContextHandler {
         return (PicoFilterHolder) handler.addFilterWithMapping(filterClass, pathMapping, dispatchers);
     }
 
-    public void addListener(Class listenerClass) {
+    public EventListener addListener(Class listenerClass) {
 
         DefaultPicoContainer child = new DefaultPicoContainer(parentContainer);
         child.registerComponentImplementation(EventListener.class, listenerClass);
-        Object instance = child.getComponentInstance(EventListener.class);
+        EventListener instance = (EventListener) child.getComponentInstance(EventListener.class);
 
         EventListener[] listeners=context.getEventListeners();
         EventListener[] newEventListeners;
@@ -75,6 +75,8 @@ public class PicoContextHandler {
         }
 
         context.setEventListeners(newEventListeners);
+
+        return instance;
 
     }
 }

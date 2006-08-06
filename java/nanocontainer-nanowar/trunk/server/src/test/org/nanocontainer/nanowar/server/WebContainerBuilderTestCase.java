@@ -123,6 +123,36 @@ public class WebContainerBuilderTestCase extends TestCase {
         assertPageIsHostedWithContents(script, "hello Fred", "http://localhost:8080/bar/foo");
     }
 
+    public void testCanComposeWebContainerContextAndListener() throws InterruptedException, IOException {
+        Reader script = new StringReader("" +
+                "package org.nanocontainer.script.groovy\n" +
+                "builder = new GroovyNodeBuilder()\n" +
+                "nano = builder.container {\n" +
+                "    component(class:StringBuffer.class)\n" +
+                "    newBuilder(class:'org.nanocontainer.nanowar.server.WebContainerBuilder') {\n" +
+                // declare the web container
+                "        webContainer(port:8080) {\n" +
+                "            context(path:'/bar') {\n" +
+                "                listener(class:org.nanocontainer.nanowar.server.DependencyInjectionTestListener)\n" +
+                "            }\n" +
+                "        }\n" +
+                // end declaration
+                "    }\n" +
+                "}\n");
+
+        assertPageIsHostedWithContents(script, "", "http://localhost:8080/bar/foo");
+
+        StringBuffer stringBuffer = (StringBuffer) pico.getComponentInstance(StringBuffer.class);
+
+        assertEquals("-contextInitialized", stringBuffer.toString());
+
+        pico.stop();
+        pico = null;
+
+        assertEquals("-contextInitialized-contextDestroyed", stringBuffer.toString());
+
+    }
+
     private void assertPageIsHostedWithContents(Reader script, String message, String url) throws InterruptedException, IOException {
         pico = buildContainer(script, null, "SOME_SCOPE");
         assertNotNull(pico);

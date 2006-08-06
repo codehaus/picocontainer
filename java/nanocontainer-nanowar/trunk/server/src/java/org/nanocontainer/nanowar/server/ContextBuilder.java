@@ -12,6 +12,7 @@ package org.nanocontainer.nanowar.server;
 import groovy.util.NodeBuilder;
 
 import java.util.Map;
+import java.util.EventListener;
 
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.servlet.ServletHolder;
@@ -24,28 +25,42 @@ public class ContextBuilder extends NodeBuilder {
         }
         protected Object createNode(Object name, Map map) {
             if (name.equals("filter")) {
-                FilterHolder filter = context.addFilterWithMapping(
-                        (Class) map.remove("class"),
-                        (String) map.remove("path"),
-                        extractDispatchers(map));
-                FilterHolderBuilder builder = new FilterHolderBuilder(filter);
-                return builder;
+                return makeFilter(map);
             } else if (name.equals("servlet")) {
-                ServletHolder servlet = context.addServletWithMapping(
-                        (Class) map.remove("class"),
-                        (String) map.remove("path"));
-                return new ServletHolderBuilder(servlet);
+                return makeServlet(map);
+            } else if (name.equals("listener")) {
+                return makeListener(map);
             }
             return null;
         }
-        
-        private int extractDispatchers(Map map) {
-            Object dispatchers = map.remove("dispatchers");
-            if ( dispatchers != null ){
-              return ((Integer) dispatchers).intValue();
-            }
-            // default value
-            return 0;
+
+    private Object makeListener(Map map) {
+        return context.addListener((Class) map.remove("class"));
+    }
+
+    private Object makeServlet(Map map) {
+        ServletHolder servlet = context.addServletWithMapping(
+                (Class) map.remove("class"),
+                (String) map.remove("path"));
+        return new ServletHolderBuilder(servlet);
+    }
+
+    private Object makeFilter(Map map) {
+        FilterHolder filter = context.addFilterWithMapping(
+                (Class) map.remove("class"),
+                (String) map.remove("path"),
+                extractDispatchers(map));
+        FilterHolderBuilder builder = new FilterHolderBuilder(filter);
+        return builder;
+    }
+
+    private int extractDispatchers(Map map) {
+        Object dispatchers = map.remove("dispatchers");
+        if ( dispatchers != null ){
+          return ((Integer) dispatchers).intValue();
         }
+        // default value
+        return 0;
+    }
 
     }

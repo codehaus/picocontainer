@@ -13,6 +13,7 @@ import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
+import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.servlet.ServletHolder;
 
 public class ContextBuilder extends NodeBuilder {
@@ -22,13 +23,29 @@ public class ContextBuilder extends NodeBuilder {
             this.context = context;
         }
         protected Object createNode(Object name, Map map) {
-            if (name.equals("servlet")) {
+            if (name.equals("filter")) {
+                FilterHolder filter = context.addFilterWithMapping(
+                        (Class) map.remove("class"),
+                        (String) map.remove("path"),
+                        extractDispatchers(map));
+                FilterHolderBuilder builder = new FilterHolderBuilder(filter);
+                return builder;
+            } else if (name.equals("servlet")) {
                 ServletHolder servlet = context.addServletWithMapping(
                         (Class) map.remove("class"),
                         (String) map.remove("path"));
                 return new ServletHolderBuilder(servlet);
             }
             return null;
+        }
+        
+        private int extractDispatchers(Map map) {
+            Object dispatchers = map.remove("dispatchers");
+            if ( dispatchers != null ){
+              return ((Integer) dispatchers).intValue();
+            }
+            // default value
+            return 0;
         }
 
     }

@@ -10,6 +10,29 @@ import org.mortbay.io.IO;
 
 public class DependencyInjectionFilterTestCase extends TestCase {
 
+    public void testCanInstantiateWebContainerContextAndFilter() throws InterruptedException, IOException {
+
+        final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
+        parentContainer.registerComponentInstance(String.class, "Fred");
+        parentContainer.registerComponentInstance(Integer.class, new Integer(5));
+
+        PicoJettyServer server = new PicoJettyServer("localhost", 8080, parentContainer);
+        PicoContextHandler barContext = server.createContext("/bar");
+        PicoFilterHolder filterHolder = barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0);
+        filterHolder.setInitParameter("foo", "bau");
+        barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
+        server.start();
+
+        Thread.sleep(2 * 1000);
+
+        URL url = new URL("http://localhost:8080/bar/foo2");
+
+        assertEquals("hello Fred Filtered!(int= 5 bau)", IO.toString(url.openStream()));
+
+        server.stop();
+
+    }
+    
     public void testCanInstantiateWebContainerContextAndServlet() throws InterruptedException, IOException {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();

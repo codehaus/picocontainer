@@ -47,10 +47,8 @@ public class PicoContextHandler {
         return handler;
     }
 
-    public PicoServletHandler addFilterWithMapping(Class filterClass, String pathMapping, int dispatchers) {
+    public PicoFilterHolder addFilterWithMapping(Class filterClass, String pathMapping, int dispatchers) {
         PicoServletHandler handler = getHandler();
-        handler.addFilterWithMapping(filterClass, pathMapping, dispatchers);
-        return handler;
-
+        return (PicoFilterHolder) handler.addFilterWithMapping(filterClass, pathMapping, dispatchers);
     }
 }

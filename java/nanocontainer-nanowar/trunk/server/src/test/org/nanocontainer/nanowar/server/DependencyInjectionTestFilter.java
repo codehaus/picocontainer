@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 public class DependencyInjectionTestFilter implements Filter {
 
     private final Integer integer;
+    private String foo;
 
     public DependencyInjectionTestFilter(Integer integer) {
         this.integer = integer;
@@ -22,13 +23,14 @@ public class DependencyInjectionTestFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         String servletPath = req.getServletPath();
         if (servletPath.equals("/foo2")) {
-            request.setAttribute("foo2", " Filtered!(int= " + integer.intValue() + ")");
+            request.setAttribute("foo2", " Filtered!(int= " + integer.intValue() + (foo != null? " " + foo : "" ) + ")");
 
         }
         chain.doFilter(request, response);
     }
 
     public void init(FilterConfig filterConfig) throws ServletException {
+        foo = filterConfig.getInitParameter("foo");
     }
 
     public void destroy() {

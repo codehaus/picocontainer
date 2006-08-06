@@ -19,8 +19,6 @@ public class DependencyInjectionTestServlet extends HttpServlet {
         
     public void init(ServletConfig servletConfig) throws ServletException {
         foo = servletConfig.getInitParameter("foo");
-        System.out.println(DependencyInjectionTestServlet.class +": init called");
-        System.out.println("got foo "+foo);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,16 +28,11 @@ public class DependencyInjectionTestServlet extends HttpServlet {
             message = message + request.getAttribute("foo2");
         }
         
-        String text = "hello " + message;
-        if ( foo != null ){
-            text = text +" "+ foo;
-        }
+        String text = "hello " + message + ( foo != null ? " "+  foo : "" );
         response.getWriter().write(text);
     }
 
     public void destroy() {
-        System.out.println(DependencyInjectionTestServlet.class +": destroy called");
-        
     }
     
 }

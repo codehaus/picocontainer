@@ -48,11 +48,9 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "            context(path:'/bar') {\n" +
                 "                filter(path:'/*', class:org.nanocontainer.nanowar.server.DependencyInjectionTestFilter," +
                 "                       dispatchers: new Integer(0)){\n" +
-                "                   initParam(name:'foo', value:'bar')\n" +
+                "                   initParam(name:'foo', value:'bau')\n" +
                 "                }\n" +
-                "                servlet(path:'/foo', class:org.nanocontainer.nanowar.server.DependencyInjectionTestServlet){\n" +
-                "                   initParam(name:'foo', value:'bar')\n" +
-                "                }\n" +
+                "                servlet(path:'/foo2', class:org.nanocontainer.nanowar.server.DependencyInjectionTestServlet)\n" +
 
                 "            }\n" +
                 "        }\n" +
@@ -60,7 +58,7 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "    }\n" +
                 "}\n");
 
-        assertPageIsHostedWithContents(script, "hello Fred bar");
+        assertPageIsHostedWithContents(script, "hello Fred Filtered!(int= 5 bau)", "http://localhost:8080/bar/foo2");
     }
 
     public void testCanComposeWebContainerContextAndServlet() throws InterruptedException, IOException {
@@ -82,7 +80,7 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "    }\n" +
                 "}\n");
 
-        assertPageIsHostedWithContents(script, "hello Fred bar");
+        assertPageIsHostedWithContents(script, "hello Fred bar", "http://localhost:8080/bar/foo");
     }
     
     public void testCanComposeWebContainerContextWithExplicitConnector() throws InterruptedException, IOException {
@@ -103,7 +101,7 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "    }\n" +
                 "}\n");
 
-        assertPageIsHostedWithContents(script, "hello Fred");
+        assertPageIsHostedWithContents(script, "hello Fred", "http://localhost:8080/bar/foo");
     }
 
     public void testCanComposeWebContainerAndWarFile() throws InterruptedException, IOException {
@@ -122,17 +120,16 @@ public class WebContainerBuilderTestCase extends TestCase {
                 "    }\n" +
                 "}\n");
 
-        assertPageIsHostedWithContents(script, "hello Fred");
+        assertPageIsHostedWithContents(script, "hello Fred", "http://localhost:8080/bar/foo");
     }
 
-    private void assertPageIsHostedWithContents(Reader script, String message) throws InterruptedException, IOException {
+    private void assertPageIsHostedWithContents(Reader script, String message, String url) throws InterruptedException, IOException {
         pico = buildContainer(script, null, "SOME_SCOPE");
         assertNotNull(pico);
         
         Thread.sleep(2 * 1000);
 
-        URL url = new URL("http://localhost:8080/bar/foo");
-        assertEquals(message, IO.toString(url.openStream()));
+        assertEquals(message, IO.toString(new URL(url).openStream()));
     }
 
     private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {

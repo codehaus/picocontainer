@@ -31,7 +31,7 @@ public class WebContainerBuilder extends NodeBuilder {
     }
 
     private Object makeWebContainer(Map map) {
-        int port =0;
+        int port = 0;
         if (map.containsKey("port")) {
             port = ((Integer) map.remove("port")).intValue();
         }
@@ -41,15 +41,14 @@ public class WebContainerBuilder extends NodeBuilder {
         } else {
             host = "localhost";
         }
+        PicoJettyServer server;
         if (port != 0) {
-            PicoJettyServer server = new PicoJettyServer(host, port, parentContainer);
-            parentContainer.addChildContainer(server);
-            return new ServerBuilder(server, parentContainer);
+            server = new PicoJettyServer(host, port, parentContainer);
         } else {
-            PicoJettyServer server = new PicoJettyServer(parentContainer);
-            parentContainer.addChildContainer(server);
-            return new ServerBuilder(server, parentContainer);
+            server = new PicoJettyServer(parentContainer);
         }
+        parentContainer.addChildContainer(server);
+        return new ServerBuilder(server, parentContainer);
     }
 
 

@@ -58,17 +58,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/mortbay/jetty/jetty/6.0-SNAPSHOT/jetty-6.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/../../../../jetty/trunk/modules/jetty/src/main/java" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/opensymphony/xwork/1.0.5/xwork-1.0.5.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -159,16 +148,29 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/mortbay/jetty/jetty-util/6.0-SNAPSHOT/jetty-util-6.0-SNAPSHOT.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/mortbay/jetty/jetty/6.0.0rc0/jetty-6.0.0rc0.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../../../jetty/modules/jetty/src/main/java" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/javax/servlet/servlet-api/2.3/servlet-api-2.3.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/mortbay/jetty/jetty-util/6.0.0rc0/jetty-util-6.0.0rc0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../../../jetty/modules/util/src/main/java" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/org/apache/geronimo/specs/geronimo-j2ee_1.4_spec/1.0/geronimo-j2ee_1.4_spec-1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

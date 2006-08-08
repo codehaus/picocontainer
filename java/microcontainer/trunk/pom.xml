@@ -78,7 +78,7 @@
             <dependency>
                 <groupId>groovy</groupId>
                 <artifactId>groovy-all-1.0-jsr</artifactId>
-                <version>04</version>
+                <version>06</version>
                 <exclusions>
                     <exclusion>
                         <groupId>servletapi</groupId>

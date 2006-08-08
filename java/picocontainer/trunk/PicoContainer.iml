@@ -9,6 +9,9 @@
       <sourceFolder url="file://$MODULE_DIR$/container/src/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/gems/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gems/src/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/container/target" />
+      <excludeFolder url="file://$MODULE_DIR$/gems/target" />
+      <excludeFolder url="file://$MODULE_DIR$/tck/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

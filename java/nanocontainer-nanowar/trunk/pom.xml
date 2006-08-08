@@ -14,7 +14,6 @@
 
 	<modules>
 		<module>nanowar</module>
-		<module>server</module>
 	</modules>
 
 	<description><![CDATA[Please refer to the <a href="http://nanocontainer.org/nanowar">main website</a> for documentation.]]></description>
@@ -130,7 +129,7 @@
 			<dependency>
 				<groupId>groovy</groupId>
 				<artifactId>groovy-all-1.0-jsr</artifactId>
-				<version>04</version>
+				<version>06</version>
 				<exclusions>
 					<exclusion>
 						<groupId>servletapi</groupId>

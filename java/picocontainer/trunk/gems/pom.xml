@@ -41,5 +41,9 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>prefuse</groupId>
+			<artifactId>prefuse</artifactId>
+		</dependency>
 	</dependencies>
 </project>

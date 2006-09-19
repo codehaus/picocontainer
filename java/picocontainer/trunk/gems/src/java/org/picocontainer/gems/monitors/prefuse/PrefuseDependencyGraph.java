@@ -22,8 +22,8 @@ public class PrefuseDependencyGraph implements ComponentDependencyListener {
     }
 
     public void addDependency(Dependency dependency) {
-        Node componentNode = addNode(dependency.getComponent());
-        Node dependencyNode = addNode(dependency.getDependency());
+        Node componentNode = addNode(dependency.getComponentType());
+        Node dependencyNode = addNode(dependency.getDependencyType());
         if (dependencyNode != null) {
             graph.addEdge(componentNode, dependencyNode);
         }

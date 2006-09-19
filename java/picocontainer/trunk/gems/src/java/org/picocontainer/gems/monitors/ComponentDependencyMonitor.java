@@ -6,7 +6,8 @@ import org.picocontainer.defaults.DelegatingComponentMonitor;
 import org.picocontainer.gems.monitors.prefuse.ComponentDependencyListener;
 
 /**
- * Understands how to capture component dependency information from picocontainer.
+ * Understands how to capture component dependency information from
+ * picocontainer.
  * 
  * @author Peter Barry
  * @author Kent R. Spillner
@@ -20,15 +21,16 @@ public class ComponentDependencyMonitor extends DelegatingComponentMonitor {
     }
 
     public void instantiated(Constructor constructor, Object instantiated, Object[] injected, long duration) {
+        Class componentType = instantiated.getClass();
         int count = injected.length;
 
         if (count == 0) {
-            listener.addDependency(new Dependency(instantiated.getClass(), null));
+            listener.addDependency(new Dependency(componentType, null));
         }
-        
+
         for (int i = 0; i < count; i++) {
             Object dependent = injected[i];
-            Dependency dependency = new Dependency(instantiated.getClass(), dependent.getClass());
+            Dependency dependency = new Dependency(componentType, dependent.getClass());
             listener.addDependency(dependency);
         }
     }
@@ -41,38 +43,38 @@ public class ComponentDependencyMonitor extends DelegatingComponentMonitor {
      */
     public static class Dependency {
 
-        private Class component;
+        private Class componentType;
 
-        private Class dependency;
+        private Class dependencyType;
 
         public Dependency(Class componentType, Class dependencyType) {
-            this.component = componentType;
-            this.dependency = dependencyType;
+            this.componentType = componentType;
+            this.dependencyType = dependencyType;
         }
 
-        public boolean dependsOn(Class dependencyType) {
-            return dependencyType == null ? false : dependency.equals(dependencyType);
+        public boolean dependsOn(Class type) {
+            return (type == null) ? false : type.equals(dependencyType);
         }
 
         public boolean equals(Object other) {
             if (other != null && other instanceof Dependency) {
                 Dependency otherDependency = (Dependency) other;
-                return areEqualOrNull(component, otherDependency.component)
-                        && areEqualOrNull(dependency, otherDependency.dependency);
+                return areEqualOrNull(componentType, otherDependency.componentType)
+                        && areEqualOrNull(dependencyType, otherDependency.dependencyType);
             }
             return false;
         }
 
-        public Class getComponent() {
-            return component;
+        public Class getComponentType() {
+            return componentType;
         }
 
-        public Class getDependency() {
-            return dependency;
+        public Class getDependencyType() {
+            return dependencyType;
         }
 
         public String toString() {
-            return component + " depends on " + dependency;
+            return componentType + " depends on " + dependencyType;
         }
 
         private static boolean areEqualOrNull(Class type, Class otherType) {

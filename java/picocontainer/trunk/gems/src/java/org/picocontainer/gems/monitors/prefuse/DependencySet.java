@@ -13,7 +13,7 @@ import org.picocontainer.gems.monitors.ComponentDependencyMonitor.Dependency;
  */
 public class DependencySet implements ComponentDependencyListener {
 
-    private Set dependencies = new HashSet();
+    private Set uniqueDependencies = new HashSet();
 
     private ComponentDependencyListener listener;
 
@@ -22,12 +22,12 @@ public class DependencySet implements ComponentDependencyListener {
     }
 
     public void addDependency(Dependency dependency) {
-        if (dependencies.add(dependency)) {
+        if (uniqueDependencies.add(dependency)) {
             listener.addDependency(dependency);
         }
     }
 
     public Dependency[] getDependencies() {
-        return (Dependency[]) dependencies.toArray(new Dependency[dependencies.size()]);
+        return (Dependency[]) uniqueDependencies.toArray(new Dependency[uniqueDependencies.size()]);
     }
 }

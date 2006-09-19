@@ -57,7 +57,7 @@ public class ComponentDependencyMonitor extends DelegatingComponentMonitor {
         }
 
         public boolean equals(Object other) {
-            if (other != null && other instanceof Dependency) {
+            if (other instanceof Dependency) {
                 Dependency otherDependency = (Dependency) other;
                 return areEqualOrNull(componentType, otherDependency.componentType)
                         && areEqualOrNull(dependencyType, otherDependency.dependencyType);

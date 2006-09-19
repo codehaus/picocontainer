@@ -5,17 +5,24 @@ import java.util.Set;
 
 import org.picocontainer.gems.monitors.ComponentDependencyMonitor.Dependency;
 
+/**
+ * Understands non-duplicated dependencies.
+ * 
+ * @author Peter Barry
+ * @author Kent R. Spillner
+ */
 public class DependencySet implements ComponentDependencyListener {
 
     private Set dependencies = new HashSet();
+
     private ComponentDependencyListener listener;
 
     public DependencySet(ComponentDependencyListener listener) {
         this.listener = listener;
     }
-    
+
     public void addDependency(Dependency dependency) {
-        if(dependencies.add(dependency)) {
+        if (dependencies.add(dependency)) {
             listener.addDependency(dependency);
         }
     }

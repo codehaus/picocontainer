@@ -5,6 +5,12 @@ import java.lang.reflect.Constructor;
 import org.picocontainer.defaults.DelegatingComponentMonitor;
 import org.picocontainer.gems.monitors.prefuse.ComponentDependencyListener;
 
+/**
+ * Understands how to capture component dependency information from picocontainer.
+ * 
+ * @author Peter Barry
+ * @author Kent R. Spillner
+ */
 public class ComponentDependencyMonitor extends DelegatingComponentMonitor {
 
     private final ComponentDependencyListener listener;
@@ -26,7 +32,13 @@ public class ComponentDependencyMonitor extends DelegatingComponentMonitor {
             listener.addDependency(dependency);
         }
     }
-    
+
+    /**
+     * Understands which other classes are required to instantiate a component.
+     * 
+     * @author Peter Barry
+     * @author Kent R. Spillner
+     */
     public static class Dependency {
 
         private Class component;

@@ -13,7 +13,7 @@ public class ComponentDependencyMonitorTestCase extends TestCase implements Comp
     private ComponentDependencyMonitor monitor;
 
     private Dependency dependency;
-    
+
     protected void setUp() throws Exception {
         super.setUp();
         monitor = new ComponentDependencyMonitor(this);
@@ -61,17 +61,17 @@ public class ComponentDependencyMonitorTestCase extends TestCase implements Comp
         assertEquals("not equal to different dependency", false, dependency.equals(new Dependency(String.class,
                 String.class)));
     }
-    
+
     public void testShouldNotEqualObjectsWhichArentDependencies() throws Exception {
         assertEquals("not equal to different type", false, dependency.equals(new Object()));
     }
-    
+
     public void testShouldNotThrowNullPointerExceptionsWhenComparingEmptyDependencies() throws Exception {
         Dependency emptyDependency = new Dependency(null, null);
         assertEquals("not equal to empty dependency", false, dependency.equals(emptyDependency));
         assertEquals("not equal to empty dependency", false, emptyDependency.equals(dependency));
     }
-    
+
     public void testShouldNotThrowNullPointerExceptionsWhenComparingPartialDependencies() throws Exception {
         Dependency partialDependency = new Dependency(Boolean.class, null);
         assertEquals("not equal to empty dependency", false, dependency.equals(partialDependency));

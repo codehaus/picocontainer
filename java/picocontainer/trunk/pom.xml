@@ -7,38 +7,32 @@
 	<version>1.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<url>http://www.picocontainer.org</url>
-
 	<modules>
 		<module>container</module>
 		<module>tck</module>
 		<module>gems</module>
 	</modules>
-
 	<organization>
 		<name>Codehaus</name>
 		<url>http://codehaus.org/</url>
 	</organization>
 	<inceptionYear>2003</inceptionYear>
 	<description><![CDATA[Please refer to the <a href="http://picocontainer.org/">main website</a> for documentation.]]></description>
-
 	<issueManagement>
 		<system>JIRA</system>
 		<url>http://jira.codehaus.org/browse/PICO</url>
 	</issueManagement>
-
 	<licenses>
 		<license>
 			<url>https://svn.codehaus.org/picocontainer/java/picocontainer/trunk/LICENSE.txt</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
 	<scm>
 		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/trunk</connection>
 		<developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/trunk</developerConnection>
 		<url>https://svn.codehaus.org/picocontainer/java/picocontainer/trunk</url>
 	</scm>
-
 	<repositories>
 		<repository>
 			<id>ibiblio-repository</id>
@@ -70,14 +64,12 @@
 			<url>http://people.apache.org/maven-snapshot-repository/</url>
 		</repository>
 		<repository>
-            <layout>legacy</layout>
-            <id>astrogrid.org-repository</id>
+			<layout>legacy</layout>
+			<id>astrogrid.org-repository</id>
 			<name>Astrogrid Repository</name>
 			<url>http://www.astrogrid.org/maven</url>
 		</repository>
-
-    </repositories>
-
+	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>codehaus-plugin-snapshots-repository</id>
@@ -88,7 +80,6 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-	
 	<distributionManagement>
 		<repository>
 			<id>codehaus-picocontainer-repository</id>
@@ -105,7 +96,6 @@
 			<url>dav:https://dav.codehaus.org/picocontainer/</url>
 		</site>
 	</distributionManagement>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -124,11 +114,13 @@
 				<groupId>proxytoys</groupId>
 				<artifactId>proxytoys</artifactId>
 				<version>0.2.1</version>
+				<optional>true</optional>				
 			</dependency>
 			<dependency>
 				<groupId>cglib</groupId>
 				<artifactId>cglib-nodep</artifactId>
 				<version>2.1_3</version>
+				<optional>true</optional>				
 			</dependency>
 			<!-- For monitors -->
 			<dependency>
@@ -148,6 +140,7 @@
 				<artifactId>log4j</artifactId>
 				<version>1.2.8</version>
 				<scope>provided</scope>
+				<optional>true</optional>
 			</dependency>
 			<!-- test time only -->
 			<dependency>
@@ -174,15 +167,15 @@
 				<version>1.1.3.4-RC8</version>
 				<scope>test</scope>
 			</dependency>
-            <dependency>
-                <groupId>prefuse</groupId>
-                <artifactId>prefuse</artifactId>
-                <version>2006.07.15</version>
-                <scope>provided</scope>
-            </dependency>
+			<dependency>
+				<groupId>prefuse</groupId>
+				<artifactId>prefuse</artifactId>
+				<version>2006.07.15</version>
+				<scope>provided</scope>
+				<optional>true</optional>
+			</dependency>
 		</dependencies>
-    </dependencyManagement>
-	
+	</dependencyManagement>
 	<dependencies>
 		<!-- test time only -->
 		<dependency>
@@ -202,7 +195,6 @@
 			<artifactId>xpp3</artifactId>
 		</dependency>
 	</dependencies>
-	
 	<build>
 		<sourceDirectory>src/java</sourceDirectory>
 		<testSourceDirectory>src/test</testSourceDirectory>
@@ -295,8 +287,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clover-plugin</artifactId>
 				<configuration>
-        				<licenseLocation>${user.home}/licenses/clover.license</licenseLocation>
-        				<jdk>1.5</jdk>
+					<licenseLocation>${user.home}/licenses/clover.license</licenseLocation>
+					<jdk>1.5</jdk>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -325,7 +317,6 @@
 			</extension>
 		</extensions>
 	</build>
-	
 	<reporting>
 		<plugins>
 			<plugin>
@@ -346,7 +337,6 @@
 			</plugin>
 		</plugins>
 	</reporting>
-	
 	<profiles>
 		<profile>
 			<id>release-profile</id>
@@ -369,5 +359,4 @@
 			</build>
 		</profile>
 	</profiles>
-	
 </project>

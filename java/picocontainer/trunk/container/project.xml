@@ -1,9 +1,0 @@
-<?xml version="1.0"  encoding="ISO-8859-1"?>
-
-<project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
-    <extend>${basedir}/../project.xml</extend>
-    <pomVersion>3</pomVersion>
-    <id>picocontainer</id>
-    <name>PicoContainer Core</name>
-
-</project>

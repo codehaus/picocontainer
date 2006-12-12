@@ -427,6 +427,19 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
         assertEquals(WrappingA.class, container.getComponentInstance(A.class).getClass());
     }
+
+    public void testCanRegisterTwoComponentsWithSameImplementionAndDifferentKey() throws Exception {
+        MutablePicoContainer container = createPicoContainer(null);
+
+        container.registerComponentImplementation(SimpleA.class);
+        container.registerComponentImplementation("A", SimpleA.class);
+
+        container.start();
+
+        assertNotNull(container.getComponentInstance("A"));
+        assertNotNull(container.getComponentInstance(SimpleA.class));
+        assertNotSame(container.getComponentInstance("A"), container.getComponentInstance(SimpleA.class));
+    }
     
     public static class MyPicoContainer extends DefaultPicoContainer {
 

@@ -31,8 +31,8 @@
 			<artifactId>servlet-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>fixme</groupId>
-			<artifactId>webwork1</artifactId>
+			<groupId>webwork</groupId>
+			<artifactId>webwork</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>opensymphony</groupId>

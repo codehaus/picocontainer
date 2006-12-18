@@ -77,8 +77,8 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>fixme</groupId>
-				<artifactId>webwork1</artifactId>
+				<groupId>webwork</groupId>
+				<artifactId>webwork</artifactId>
 				<version>1.4</version>
                 <optional>true</optional>
 			</dependency>

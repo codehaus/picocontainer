@@ -15,7 +15,6 @@ import org.apache.struts.action.ActionMapping;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.TestService;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 

@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.webwork.TestAction;
 import org.nanocontainer.nanowar.webwork2.PicoObjectFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
@@ -48,7 +47,7 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
                 isA(MutablePicoContainer.class));
 		container.registerComponentInstance("foo");
 		TestAction action = (TestAction) factory
-				.buildBean("org.nanocontainer.nanowar.webwork.TestAction");
+				.buildBean(TestAction.class.getName());
 		assertNotNull(action);
 		assertEquals("foo", action.getFoo());
 	}
@@ -63,7 +62,7 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
         TestAction action = null;
         try {
             action = (TestAction) factory
-                            .buildBean("org.nanocontainer.nanowar.webwork.TestAction");
+                            .buildBean(TestAction.class.getName());
             fail("should have barfed");
         } catch (UnsatisfiableDependenciesException e) {
             // expected
@@ -91,7 +90,7 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
         container.registerComponentImplementation(TestAction.class);
         TestAction action1 = (TestAction) container.getComponentInstance(TestAction.class);
         TestAction action2 = (TestAction) factory
-                .buildBean("org.nanocontainer.nanowar.webwork.TestAction");
+                .buildBean(TestAction.class.getName());
         assertSame(action1, action2);
     }
 
@@ -100,9 +99,9 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
                 returnValue(container));
         container.registerComponentInstance("foo");
         TestAction action1 = (TestAction) factory
-                .buildBean("org.nanocontainer.nanowar.webwork.TestAction");
+                .buildBean(TestAction.class.getName());
         TestAction action2 = (TestAction) factory
-                .buildBean("org.nanocontainer.nanowar.webwork.TestAction");
+                .buildBean(TestAction.class.getName());
         assertSame(action1, action2);
     }
     

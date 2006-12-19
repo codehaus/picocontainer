@@ -1,4 +1,4 @@
-package org.nanocontainer.nanowar;
+package org.nanocontainer.nanowar.struts;
 
 
 public interface TestAction {

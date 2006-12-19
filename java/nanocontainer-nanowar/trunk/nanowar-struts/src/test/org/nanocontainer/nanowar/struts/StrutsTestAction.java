@@ -6,10 +6,22 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar;
+package org.nanocontainer.nanowar.struts;
+
+import org.apache.struts.action.Action;
 
 /**
  * @author Stephen Molitor
  */
-public class TestService {
+public class StrutsTestAction extends Action implements TestAction {
+    private final TestService service;
+
+    public StrutsTestAction(TestService service) {
+        this.service = service;
+    }
+
+    public TestService getService() {
+        return service;
+    }
+
 }

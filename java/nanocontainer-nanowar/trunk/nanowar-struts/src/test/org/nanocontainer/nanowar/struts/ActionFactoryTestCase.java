@@ -17,8 +17,6 @@ import org.apache.struts.action.ActionServlet;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.TestAction;
-import org.nanocontainer.nanowar.TestService;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;

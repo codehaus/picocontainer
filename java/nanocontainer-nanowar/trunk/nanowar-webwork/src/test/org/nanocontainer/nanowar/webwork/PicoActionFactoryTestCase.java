@@ -36,14 +36,14 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
 	public void testActionInstantiationWithValidClassName() throws Exception {
 		container.registerComponentInstance("foo");
 		TestAction action = (TestAction) factory
-				.getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
+				.getActionImpl(TestAction.class.getName());
 		assertNotNull(action);
 		assertEquals("foo", action.getFoo());
 	}
     
     public void testActionInstantiationWhichFailsDueToFailedDependencies() throws Exception {
         TestAction action = (TestAction) factory
-                .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
+                .getActionImpl(TestAction.class.getName());
         assertNull(action);
     }
 
@@ -59,16 +59,16 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
         container.registerComponentImplementation(TestAction.class);
         TestAction action1 = (TestAction) container.getComponentInstance(TestAction.class);
         TestAction action2 = (TestAction) factory
-                .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
+                .getActionImpl(TestAction.class.getName());
         assertSame(action1, action2);
     }
 
     public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
         container.registerComponentInstance("foo");
         TestAction action1 = (TestAction) factory
-                .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
+                .getActionImpl(TestAction.class.getName());
         TestAction action2 = (TestAction) factory
-                .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
+                .getActionImpl(TestAction.class.getName());
         assertSame(action1, action2);
     }
     
@@ -84,7 +84,7 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
         ServletActionContext.setRequest(request);
         container.registerComponentInstance("foo");
         TestAction action = (TestAction) factory
-                .getActionImpl("org.nanocontainer.nanowar.webwork.TestAction");
+                .getActionImpl(TestAction.class.getName());
         assertNotNull(action);        
     }
 

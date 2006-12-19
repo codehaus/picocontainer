@@ -6,22 +6,22 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.struts;
+package org.nanocontainer.nanowar.webwork2;
 
-import java.io.IOException;
+import com.opensymphony.xwork.Action;
 
-import org.nanocontainer.nanowar.TestAction;
 
-/**
- * @author Stephen Molitor
- */
-public class PicoRequestProcessorTestCase extends AbstractActionTestCase {
-
-    public void testProcessActionCreate() throws IOException {
-        PicoRequestProcessor requestProcessor = new PicoRequestProcessor();
-        TestAction action = (TestAction) requestProcessor.processActionCreate(request, response, mapping);
-        assertNotNull(action);
-        assertSame(service, action.getService());
+public class TestAction implements Action {
+    String foo;
+    public TestAction(String foo) {
+        this.foo = foo;
     }
-
+    
+    public String getFoo() {
+        return foo;
+    }
+    
+    public String execute() {
+        return foo;
+    }
 }

@@ -8,22 +8,19 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.struts;
 
-import org.apache.struts.action.Action;
-import org.nanocontainer.nanowar.TestAction;
-import org.nanocontainer.nanowar.TestService;
+import java.io.IOException;
+
 
 /**
  * @author Stephen Molitor
  */
-public class StrutsTestAction extends Action implements TestAction {
-    private final TestService service;
+public class PicoTilesRequestProcessorTestCase extends AbstractActionTestCase {
 
-    public StrutsTestAction(TestService service) {
-        this.service = service;
-    }
-
-    public TestService getService() {
-        return service;
+    public void testProcessActionCreate() throws IOException {
+        PicoTilesRequestProcessor requestProcessor = new PicoTilesRequestProcessor();
+        TestAction action = (TestAction) requestProcessor.processActionCreate(request, response, mapping);
+        assertNotNull(action);
+        assertSame(service, action.getService());
     }
 
 }

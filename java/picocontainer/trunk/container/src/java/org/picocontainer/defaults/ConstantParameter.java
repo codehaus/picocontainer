@@ -25,7 +25,7 @@ import java.lang.reflect.Field;
  * A ConstantParameter should be used to pass in "constant" arguments to constructors. This
  * includes {@link String}s,{@link Integer}s or any other object that is not registered in
  * the container.
- * 
+ *
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
@@ -53,24 +53,25 @@ public class ConstantParameter
             return false;
         }
     }
-    
+
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see org.picocontainer.Parameter#verify(org.picocontainer.PicoContainer,
      *           org.picocontainer.ComponentAdapter, java.lang.Class)
      */
     public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoException {
         if (!checkPrimitive(expectedType) && !expectedType.isInstance(value)) {
-            throw new PicoIntrospectionException(expectedType.getClass().getName()
+            throw new PicoIntrospectionException(
+                    ((expectedType != null) ? expectedType.getClass().getName() : "null")
                     + " is not assignable from "
-                    + value.getClass().getName());
+                    + ((value != null) ? value.getClass().getName() : "null"));
         }
     }
 
     /**
      * Visit the current {@link Parameter}.
-     * 
+     *
      * @see org.picocontainer.Parameter#accept(org.picocontainer.PicoVisitor)
      */
     public void accept(final PicoVisitor visitor) {

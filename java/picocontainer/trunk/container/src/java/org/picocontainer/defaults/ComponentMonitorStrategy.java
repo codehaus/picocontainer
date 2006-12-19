@@ -9,19 +9,17 @@
 
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.PicoContainer;
 
 /**
  * <p>
  * Interface responsible for changing monitoring strategy.
  * It may be implemented by {@link PicoContainer containers} and
  * single {@link ComponentAdapter component adapters}.
- * The choice of supporting the monitor strategy is left to the 
+ * The choice of supporting the monitor strategy is left to the
  * implementers of the container and adapters.
  * </p>
- * 
+ *
  * @author Paul Hammant
  * @author Joerg Schaible
  * @author Mauro Talevi

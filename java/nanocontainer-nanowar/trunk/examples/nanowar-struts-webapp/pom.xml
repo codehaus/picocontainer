@@ -5,9 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.nanocontainer</groupId>
-        <artifactId>nanocontainer-nanowar-example</artifactId>
+        <artifactId>nanocontainer-nanowar-parent</artifactId>
         <version>1.1-SNAPSHOT</version>
     </parent>
+    <packaging>war</packaging>    
     <artifactId>nanowar-struts-webapp</artifactId>
     <name>Nanowar Struts Webapp</name>
     <dependencies>

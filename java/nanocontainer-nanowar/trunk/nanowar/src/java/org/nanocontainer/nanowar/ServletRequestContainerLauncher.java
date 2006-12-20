@@ -23,13 +23,15 @@ public class ServletRequestContainerLauncher {
 
     private ContainerBuilder containerBuilder;
     private ObjectReference containerRef;
-    private HttpServletRequest request;
+    private final HttpServletRequest request;
+    private final ServletContext context;
 
     public ServletRequestContainerLauncher(ServletContext context, HttpServletRequest request) {
         ObjectReference builderRef = new ApplicationScopeObjectReference(context, KeyConstants.BUILDER);
         containerRef = new RequestScopeObjectReference(request, KeyConstants.REQUEST_CONTAINER);
         containerBuilder = (ContainerBuilder) builderRef.get();
         this.request = request;
+        this.context = context;
     }
 
     public void startContainer() throws ServletException {
@@ -44,11 +46,11 @@ public class ServletRequestContainerLauncher {
         //with null session container. in which case we have old behavior instead.
         //
         ObjectReference containerReferenceToUse;
-        if (session.getAttribute(KeyConstants.SESSION_CONTAINER) == null) {
-            containerReferenceToUse = new ApplicationScopeObjectReference(session.getServletContext(), KeyConstants.APPLICATION_CONTAINER);
+        if (session == null || session.getAttribute(KeyConstants.SESSION_CONTAINER) == null) {
+            containerReferenceToUse = new ApplicationScopeObjectReference(context, KeyConstants.APPLICATION_CONTAINER);
         } else {
             containerReferenceToUse = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);
-        }
+        } 
 
         containerBuilder.buildContainer(containerRef, containerReferenceToUse, request, false);
 

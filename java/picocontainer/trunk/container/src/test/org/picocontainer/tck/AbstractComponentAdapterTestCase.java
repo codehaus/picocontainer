@@ -17,13 +17,11 @@ import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.Startable;
 import org.picocontainer.defaults.AbstractPicoVisitor;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstantParameter;

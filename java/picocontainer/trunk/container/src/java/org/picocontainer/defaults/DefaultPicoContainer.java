@@ -27,7 +27,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
@@ -74,7 +73,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     // Keeps track of instantiation order.
     private List orderedComponentAdapters = new ArrayList();
 
-    // Keeps track of the container started status 
+    // Keeps track of the container started status
     private boolean started = false;
     // Keeps track of the container disposed status
     private boolean disposed = false;
@@ -113,7 +112,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * </em>
      *
      * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
-     * @param lifecycleStrategyForInstanceRegistrations the lifecylce strategy chosen for regiered 
+     * @param lifecycleStrategyForInstanceRegistrations the lifecylce strategy chosen for regiered
      *          instance (not implementations!)
      * @param parent                  the parent container (used for component dependency lookups).
      */
@@ -465,8 +464,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /**
      * Stop the components of this PicoContainer and all its logical child containers.
-     * The stopping of the child containers is only attempted for those that have been 
-     * started, possibly not successfully.  
+     * The stopping of the child containers is only attempted for those that have been
+     * started, possibly not successfully.
      * The lifecycle operation is delegated to the component adapter,
      * if it is an instance of {@link LifecycleManager lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
@@ -546,6 +545,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     public boolean removeChildContainer(PicoContainer child) {
         final boolean result = children.remove(child);
+        childrenStarted.remove(new Integer(child.hashCode()));
         return result;
     }
 
@@ -627,7 +627,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
         /** List collecting the CAs which have been successfully started */
         private List startedComponentAdapters = new ArrayList();
-        
+
         /**
          * {@inheritDoc}
          * Loops over all component adapters and invokes

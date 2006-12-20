@@ -15,7 +15,6 @@ import java.util.List;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.PersonBean;

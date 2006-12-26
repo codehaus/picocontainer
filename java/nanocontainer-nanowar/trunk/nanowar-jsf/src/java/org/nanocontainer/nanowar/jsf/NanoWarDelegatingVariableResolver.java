@@ -10,11 +10,12 @@
 package org.nanocontainer.nanowar.jsf;
 
 import java.util.Map;
+
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.VariableResolver;
+
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.sample.service.CheeseService;
 import org.picocontainer.PicoContainer;
 
 /**

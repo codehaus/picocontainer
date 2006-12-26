@@ -17,6 +17,7 @@
     <modules>
         <module>nanowar</module>
         <module>nanowar-axis</module>
+        <module>nanowar-jsf</module>
         <module>nanowar-nanoweb</module>
         <module>nanowar-struts</module>
         <module>nanowar-webwork</module>

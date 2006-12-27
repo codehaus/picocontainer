@@ -24,7 +24,7 @@
 		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>nanocontainer-jsf-webapp</artifactId>
-	<name>NanoContainer Nanowar JSF webapp</name>
+	<name>Nanowar JSF Webapp</name>
 	<packaging>war</packaging>
 	<dependencies>
 		<dependency>
@@ -94,6 +94,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>jsf-webapp</finalName>
+		<finalName>nanowar-jsf-webapp</finalName>
 	</build>
 </project>

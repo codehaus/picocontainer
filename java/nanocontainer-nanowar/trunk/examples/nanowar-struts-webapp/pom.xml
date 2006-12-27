@@ -23,4 +23,7 @@
             <version>${pom.version}</version>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>nanowar-struts-webapp</finalName>
+    </build>
 </project>

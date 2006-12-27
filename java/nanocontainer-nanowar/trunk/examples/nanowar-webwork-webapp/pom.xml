@@ -23,4 +23,7 @@
             <version>${pom.version}</version>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>nanowar-webwork-webapp</finalName>
+    </build>
 </project>

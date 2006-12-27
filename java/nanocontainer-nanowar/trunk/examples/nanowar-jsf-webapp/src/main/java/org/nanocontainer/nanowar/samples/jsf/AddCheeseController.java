@@ -1,10 +1,10 @@
 /*****************************************************************************
- * Copyright (c) 2003-2006 Centerline Computers,  All rights reserved.       *
+ * Copyright (C) NanoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the          *
- * Centerline Binary Code License Agreement,  a copy of which has been       *
- * included with this distribution in the LICENSE.txt file.                  *
- *                                                                           *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           * 
  * Original code by Centerline Computers, Inc.                               *
  *****************************************************************************/
 package org.nanocontainer.nanowar.samples.jsf;
@@ -14,9 +14,8 @@ import org.nanocontainer.nanowar.sample.model.Cheese;
 import org.nanocontainer.nanowar.sample.service.CheeseService;
 
 /**
- * AddCheeseController
+ * Add Cheese Controller.
  * @author Michael Rimov
- * @owner Centerline Computers, Inc.
  */
 public class AddCheeseController implements Serializable {
     /**

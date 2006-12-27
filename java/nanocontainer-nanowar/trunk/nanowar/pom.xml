@@ -12,12 +12,12 @@
     <name>NanoContainer Nanowar Core</name>
     <dependencies>
         <dependency>
-            <groupId>org.nanocontainer</groupId>
+            <groupId>${pom.groupId}</groupId>
             <artifactId>nanocontainer</artifactId>
         </dependency>
         <dependency>
-            <groupId>groovy</groupId>
-            <artifactId>groovy-all</artifactId>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>nanocontainer-groovy</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

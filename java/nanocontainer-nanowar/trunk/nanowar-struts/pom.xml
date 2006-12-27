@@ -10,18 +10,18 @@
 	<name>NanoContainer Nanowar Struts</name>
 	<dependencies>
 		<dependency>
-			<groupId>org.nanocontainer</groupId>
+			<groupId>${pom.groupId}</groupId>
 			<artifactId>nanocontainer-nanowar</artifactId>
-			<version>1.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>struts</groupId>
 			<artifactId>struts</artifactId>
 			<version>1.2.7</version>
 		</dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 </project>

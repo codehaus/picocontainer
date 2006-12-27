@@ -13,14 +13,14 @@
     <name>Nanowar NanoWeb Webapp</name>
     <dependencies>
         <dependency>
-            <groupId>org.nanocontainer</groupId>
+			<groupId>${pom.groupId}</groupId>
             <artifactId>nanocontainer-nanowar-nanoweb</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>${pom.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.nanocontainer</groupId>
+			<groupId>${pom.groupId}</groupId>
             <artifactId>nanocontainer-nanowar-example</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>${pom.version}</version>
         </dependency>
     </dependencies>
 </project>

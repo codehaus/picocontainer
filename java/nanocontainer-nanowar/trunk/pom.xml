@@ -22,6 +22,12 @@
         <module>nanowar-struts</module>
         <module>nanowar-webwork</module>
         <module>nanowar-webwork2</module>
+        <module>examples/nanowar-sample</module>
+        <module>examples/nanowar-jsf-webapp</module>
+        <module>examples/nanowar-nanoweb-webapp</module>
+        <module>examples/nanowar-struts-webapp</module>
+        <module>examples/nanowar-webwork-webapp</module>
+        <module>examples/nanowar-webwork2-webapp</module>
     </modules>
 
     <description>
@@ -62,7 +68,17 @@
             <dependency>
                 <groupId>org.nanocontainer</groupId>
                 <artifactId>nanocontainer</artifactId>
-                <version>1.0</version>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanocontainer</groupId>
+                <artifactId>nanocontainer-groovy</artifactId>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>${pom.groupId}</groupId>
+                <artifactId>nanocontainer-nanowar</artifactId>
+                <version>${pom.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -74,22 +90,6 @@
                 <groupId>org.picocontainer</groupId>
                 <artifactId>picocontainer-gems</artifactId>
                 <version>1.2</version>
-                <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>groovy</groupId>
-                <artifactId>groovy-all</artifactId>
-                <version>1.0-RC-01</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>servletapi</groupId>
-                        <artifactId>servletapi</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>cglib</groupId>
-                        <artifactId>cglib</artifactId>
-                    </exclusion>
-                </exclusions>
                 <optional>true</optional>
             </dependency>
             <dependency>

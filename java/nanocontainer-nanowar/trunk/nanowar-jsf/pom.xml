@@ -12,25 +12,20 @@
     <name>NanoContainer Nanowar JSF</name>
     <description>NanoWAR-JSF integration for JSF API version 1.1</description>
     <dependencies>
-        <dependency>
-            <groupId>org.nanocontainer</groupId>
-            <artifactId>nanocontainer-nanowar</artifactId>
-            <version>1.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-        </dependency> 
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>nanocontainer-nanowar</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
 			<version>1.1_02</version>
-			<optional>true</optional>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>     
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
+            <scope>test</scope>
 		</dependency>		          
     </dependencies>
 </project>

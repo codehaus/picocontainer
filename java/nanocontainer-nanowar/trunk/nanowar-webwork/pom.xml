@@ -10,10 +10,9 @@
 	<name>NanoContainer Nanowar WebWork</name>
 	<dependencies>
 		<dependency>
-			<groupId>org.nanocontainer</groupId>
+			<groupId>${pom.groupId}</groupId>
 			<artifactId>nanocontainer-nanowar</artifactId>
-            <version>1.1-SNAPSHOT</version>            
-		</dependency>
+		</dependency> 
         <dependency>
             <groupId>velocity</groupId>
             <artifactId>velocity</artifactId>

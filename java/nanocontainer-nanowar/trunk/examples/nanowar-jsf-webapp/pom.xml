@@ -24,20 +24,18 @@
 		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>nanocontainer-jsf-webapp</artifactId>
-	<name>NanoContainer Nanowar Example</name>
+	<name>NanoContainer Nanowar JSF webapp</name>
 	<packaging>war</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>org.nanocontainer</groupId>
+			<groupId>${pom.groupId}</groupId>
 			<artifactId>nanocontainer-nanowar</artifactId>
-			<version>1.1-SNAPSHOT</version>
-			<scope>compile</scope>
+            <version>${pom.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.nanocontainer</groupId>
+			<groupId>${pom.groupId}</groupId>
 			<artifactId>nanocontainer-nanowar-example</artifactId>
-			<version>1.1-SNAPSHOT</version>
-			<scope>compile</scope>
+            <version>${pom.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.myfaces.core</groupId>
@@ -63,18 +61,6 @@
 			<version>1.2.13</version>
 			<scope>runtime</scope>
 		</dependency>
-		 <dependency>
-                <groupId>groovy</groupId>
-                <artifactId>groovy-all</artifactId>
-                <version>1.0-RC-01</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>servletapi</groupId>
-                        <artifactId>servletapi</artifactId>
-                    </exclusion>
-                </exclusions>
-                <scope>runtime</scope>
-            </dependency>		
 	</dependencies>
 	<build>
 		<plugins>

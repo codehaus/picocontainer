@@ -11,11 +11,10 @@
     <artifactId>nanocontainer-nanowar-axis</artifactId>
     <name>NanoContainer Nanowar Axis</name>
     <dependencies>
-        <dependency>
-            <groupId>org.nanocontainer</groupId>
-            <artifactId>nanocontainer-nanowar</artifactId>
-            <version>1.1-SNAPSHOT</version>
-        </dependency>
+   		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>nanocontainer-nanowar</artifactId>
+		</dependency>
         <dependency>
             <groupId>axis</groupId>
             <artifactId>axis</artifactId>

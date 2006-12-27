@@ -11,11 +11,10 @@
     <artifactId>nanocontainer-nanowar-webwork2</artifactId>
     <name>NanoContainer Nanowar WebWork2</name>
     <dependencies>
-        <dependency>
-            <groupId>org.nanocontainer</groupId>
-            <artifactId>nanocontainer-nanowar</artifactId>
-            <version>1.1-SNAPSHOT</version>            
-        </dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>nanocontainer-nanowar</artifactId>
+		</dependency> 
         <dependency>
             <groupId>org.picocontainer</groupId>
             <artifactId>picocontainer-gems</artifactId>

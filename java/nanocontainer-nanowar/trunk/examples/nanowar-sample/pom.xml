@@ -12,9 +12,9 @@
     <name>NanoContainer Nanowar Example</name>
     <dependencies>
         <dependency>
-            <groupId>org.nanocontainer</groupId>
+			<groupId>${pom.groupId}</groupId>
             <artifactId>nanocontainer-nanowar</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>${pom.version}</version>
         </dependency>
     </dependencies>
     <build>

@@ -25,10 +25,26 @@ import org.nanocontainer.nanowar.sample.service.CheeseService;
  */
 public class ListCheeseController implements Serializable {
     
+    /**
+     * Serialization UID so Eclipse stops whining.
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * The Cheese Service we handle.
+     */
     private final CheeseService service;
     
+    /**
+     * The list of cheeses last loaded.
+     */
     private List cheeses;
     
+    
+    /**
+     * Data grid item that works with the data table
+     * of cheeses.
+     */
     private UIData cheeseList;
     
     
@@ -62,13 +78,20 @@ public class ListCheeseController implements Serializable {
         this.cheeseList = cheeseList;
     }
     
+    /**
+     * Queries the UIData for the current row of data to get
+     * the current cheese.
+     * @return String for the cheese name.
+     * @throws NullPointerException if the rowdata returns a null
+     * Cheese.
+     */
     private String getSelectedCheeseName() {
-        Cheese project = (Cheese) cheeseList.getRowData(); //  make sure it still exists
-        if (project == null) {
-            throw new NullPointerException("Project");
+        Cheese cheese = (Cheese) cheeseList.getRowData(); //  make sure it still exists
+        if (cheese == null) {
+            throw new NullPointerException("cheese");
         }
         
-        return project.getName();
+        return cheese.getName();
     }
     
     public String removeCheese() {

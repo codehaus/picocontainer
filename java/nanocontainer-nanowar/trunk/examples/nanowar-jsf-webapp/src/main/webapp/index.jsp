@@ -9,6 +9,7 @@
 <title>Cheese Sample</title>
 </head>
 <body>
+<%-- Simply sends a redirect to the cheese jsf page --%>
     <%
         response.sendRedirect(request.getContextPath() + "/cheese.jsf");
     %>

@@ -23,19 +23,39 @@ public class AddCheeseController implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    
+    /**
+     * Name of the cheese to add.
+     */
     private String name;
     
+    
+    /**
+     * Country of the cheese to add.
+     */
     private String country;
 
+    
+    /**
+     * CDI injected Cheese Service.
+     */
     private final CheeseService service;
     
     
+    /**
+     * Constructor for the Cheese Controller that links it
+     * with the cheese service.
+     * @param service
+     */
     public AddCheeseController(CheeseService service) {
        this.service = service;
     }
     
     
+    /**
+     * Adds a cheese via the CDI injected cheese service.
+     * @return the next action to use when considering JSF
+     * mapping.
+     */
     public String addCheese() {
         Cheese cheese = new Cheese(name,country);
         service.save(cheese);

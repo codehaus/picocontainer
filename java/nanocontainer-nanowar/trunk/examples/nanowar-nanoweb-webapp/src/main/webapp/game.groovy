@@ -11,8 +11,8 @@ class Game {
     public String GUESS_NEW_HINT = "Guess a number between 1 and 20"
     public NumberToGuess numberToGuess
     
-    public @property int guess = Integer.MIN_VALUE
-    public @property String hint = GUESS_NEW_HINT
+    public int guess = Integer.MIN_VALUE
+    public String hint = GUESS_NEW_HINT
 
     public Game(NumberToGuess n) {
         numberToGuess = n

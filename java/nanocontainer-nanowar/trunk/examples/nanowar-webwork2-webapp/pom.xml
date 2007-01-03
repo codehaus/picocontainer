@@ -22,6 +22,16 @@
             <artifactId>nanocontainer-nanowar-example</artifactId>
             <version>${pom.version}</version>
         </dependency>
+        <dependency>
+            <groupId>opensymphony</groupId>
+            <artifactId>oscore</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>ognl</groupId>
+            <artifactId>ognl</artifactId>
+            <version>2.6.7</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>nanowar-webwork2-webapp</finalName>

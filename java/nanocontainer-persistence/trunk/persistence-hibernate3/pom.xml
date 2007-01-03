@@ -6,8 +6,8 @@
 		<artifactId>nanocontainer-persistence-parent</artifactId>
 		<version>1.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>nanocontainer-persistence</artifactId>
-	<name>NanoContainer Persistence</name>
+	<artifactId>nanocontainer-hibernate3</artifactId>
+	<name>Hibernate 3.0 Integration</name>
 	<scm>
 		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-persistence/trunk/persistence</connection>
 		<developerConnection>scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-persistence/trunk/persistence</developerConnection>
@@ -29,7 +29,27 @@
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
-		</dependency>		
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate</artifactId>
+			<version>3.0.5</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.transaction</groupId>
+					<artifactId>jta</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.security</groupId>
+					<artifactId>jacc</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>cglib</groupId>
+					<artifactId>cglib</artifactId>
+				</exclusion>
+			</exclusions>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jta_1.0.1B_spec</artifactId>
@@ -37,6 +57,18 @@
 		<dependency>
 				<groupId>cglib</groupId>
 				<artifactId>cglib-nodep</artifactId>
-		</dependency>
+		</dependency>		
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<fork>pertest</fork>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

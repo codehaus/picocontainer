@@ -16,6 +16,7 @@ import java.util.List;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -43,6 +44,12 @@ import org.picocontainer.defaults.ObjectReference;
  * container is established again.
  * </p>
  * 
+ * <p>You may specify divertor to provide URL to redirect in cause of failures. 
+ * it has to implement @see Divertor#divert(org.nanocontainer.nanowar.chain.Divertor)
+ * it will be looked up in container either based on divertorKey or directorClass parameters,
+ * or looked up by class name.  If no divertor can be found, servlet exception will be passed
+ * back. 
+ * 
  * <p>The filter requires the following mandatory init params:
  * <ul>
  *  <li>builderClassName:  specifies the name of the ContainerBuilder to use, eg XMLContainerBuilder</li>
@@ -54,7 +61,8 @@ import org.picocontainer.defaults.ObjectReference;
  * <p>The filter accepts the following optional init params:
  * <ul>
  *  <li>chainMonitor:  specifies the name of the ChainMonitor to use, eg ConsoleChainMonitorr</li>
- *  <li>failureUrl:  specifies the URL to redirect to in case of failure</li>
+ *  <li>divertorKey: string key to lookup URL divertor ( to use in case of failure) </li>
+ *  <li>divertorClass: class name of URL divertor ( use instead of string key to lookup from container)</li>
  * </ul>
  * </p>
  * 
@@ -73,22 +81,30 @@ public class ContainerChainFilter implements Filter {
     public static final String CONTAINER_SCRIPT_NAME_PARAM = "containerScriptName";
     /** The init param name for the empty container script */
     public static final String EMPTY_CONTAINER_SCRIPT_PARAM = "emptyContainerScript";
-
+    /** init param for specifiying divertor class name */
+    public final static String DIVERTOR_CLASS_PARAM = "divertorClass";
+    /** init param for specifiying key of divertor */
+    public final static String DIVERTOR_KEY_PARAM = "divertorKey";
+    
     /** Key used to prevent chain creation when already processing */
 	private final static String ALREADY_FILTERED_KEY = "nanocontainer_chain_filter_already_filtered";
     /** The path separator */
     private static final String PATH_SEPARATOR = "/";
     
-	private String failureUrl;
 	private ServletChainBuilder chainBuilder;
     private ChainMonitor monitor;
-
+   
+    String divertorKey;
+    Class divertorClass;
+    DivertorRetriever retriever;
+    
+    
     /**
      * @see Filter#init(javax.servlet.FilterConfig)
      */
 	public void init(FilterConfig config) throws ServletException {
         monitor = createMonitor(config.getInitParameter(CHAIN_MONITOR_PARAM));
-        failureUrl = config.getInitParameter(FAILURE_URL_PARAM);
+
         String builderClassName = config
                 .getInitParameter(BUILDER_CLASSNAME_PARAM);
         String containerScriptName = config
@@ -98,6 +114,37 @@ public class ContainerChainFilter implements Filter {
         checkParametersAreSet(builderClassName, containerScriptName, emptyContainerScript);
         chainBuilder = new ServletChainBuilder(config.getServletContext(),
                 builderClassName, containerScriptName, emptyContainerScript);
+        
+        
+        // divertor configuration take key
+        divertorKey = config.getInitParameter(DIVERTOR_KEY_PARAM);
+        String clazz  = config.getInitParameter(DIVERTOR_CLASS_PARAM);
+        if(divertorKey != null) {
+        	retriever = new DivertorRetriever() {
+
+				public Divertor getDivertor(PicoContainer container) {				
+					return (Divertor) container.getComponentInstance(divertorKey);
+				}
+        		
+        	};
+        } else if(clazz != null) {
+        	try {
+				divertorClass = Thread.currentThread().getContextClassLoader().loadClass(clazz);
+			} catch (ClassNotFoundException e) {
+				throw new ServletException("can not load divertor class",e);
+			}
+			retriever = new DivertorRetriever() {
+				public Divertor getDivertor(PicoContainer container) {
+					return (Divertor) container.getComponentInstanceOfType(divertorClass);
+				}
+			};
+        } else  {
+        	retriever = new DivertorRetriever() {
+				public Divertor getDivertor(PicoContainer container) {
+	        		return (Divertor) container.getComponentInstanceOfType(Divertor.class);
+				}
+        	};
+        }
     }
 
     /**
@@ -150,15 +197,15 @@ public class ContainerChainFilter implements Filter {
 			PicoContainer container = obtainContainer(httpRequest);
             try {
 				String originalUrl = httpRequest.getServletPath();
-                 monitor.filteringURL(originalUrl);
-                 List elements = extractPathElements(originalUrl);
+                monitor.filteringURL(originalUrl);
+                List elements = extractPathElements(originalUrl);
                  // build chain
 				ContainerChain chain = chainBuilder.buildChain(elements
 						.toArray(), container);
                  // start chain
 				chain.start();
 				// inject last container in chain
-                 injectLastContainerInChain(request, chain);
+                injectLastContainerInChain(request, chain);
                  // filter
 				filterChain.doFilter(request, response);
                  // stop chain
@@ -191,6 +238,7 @@ public class ContainerChainFilter implements Filter {
     
     private void handleException(Exception e, PicoContainer container, ServletRequest request, ServletResponse response) throws ServletException, IOException {
         monitor.exceptionOccurred(e);
+        String failureUrl = retriever.getDivertor(container).divert(e);
         if (failureUrl != null) {
             // if we got an exception, we create fake container
             DefaultPicoContainer dpc = new DefaultPicoContainer(
@@ -201,7 +249,8 @@ public class ContainerChainFilter implements Filter {
             // and transfer us to this url
             request.getRequestDispatcher(failureUrl).forward(request,
                     response);
-        } else {
+            
+         } else {
             // if there is no configured redirect url for failure, we just 
             // wrap in servlet exception and rethrow this. 
             throw new ServletException(e);
@@ -232,4 +281,12 @@ public class ContainerChainFilter implements Filter {
         // no-op
     }
 
+    /**
+     * poor man closure to 
+     * @author k.pribluda
+     *
+     */
+	interface  DivertorRetriever {
+		Divertor getDivertor(PicoContainer container);
+	}
 }

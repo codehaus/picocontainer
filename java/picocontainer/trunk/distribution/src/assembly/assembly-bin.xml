@@ -11,6 +11,10 @@
 				<include>LICENSE.txt</include>
 			</includes>
 		</fileSet>
+        <fileSet>
+            <directory>target/javadoc</directory>
+            <outputDirectory>/javadoc</outputDirectory>
+        </fileSet>
     </fileSets>
 	<dependencySets>
 		<dependencySet>

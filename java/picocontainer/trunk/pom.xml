@@ -13,6 +13,7 @@
         <module>container</module>
         <module>tck</module>
         <module>gems</module>
+        <module>distribution</module>
     </modules>
     <organization>
         <name>Codehaus</name>

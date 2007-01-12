@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<p>This package contains the default implementation of the {@link org.picocontainer.PicoContainer}
+API. The main class in this package is {@link org.picocontainer.defaults.DefaultPicoContainer},
+which satisfies both the {@link org.picocontainer.PicoContainer} and
+{@link org.picocontainer.MutablePicoContainer} contracts. In addition, it allows passing in of a
+{@link org.picocontainer.defaults.ComponentAdapterFactory}, which can be used to customize the type
+of {@link org.picocontainer.ComponentAdapter} that is used for components that are added to the
+container for which no component adapter is specified explicitly.</p>
+
+<p>This page contains a brief low-level overview of the default picocontainer implementation
+package. Much more documentation is available on the
+<a href="http://www.picocontainer.org/">PicoContainer website</a>.</p> 
+
+<h3>Buzzwords</h3>
+
+<p>The implementation provided in this package is very extensible, embeddable and lightweight, to
+get a few buzzwords out of the way.</p>
+
+<ul>
+<li><strong>extensible</strong>. A popular way to extend the container is to not really extend
+it at all, but rather to feed the <code>DefaultPicoContainer</code> a custom-written component
+adapter factory, for example one that creates adapters that support a different kind of IoC. For
+really advanced applications you may wish to subclass <code>DefaultPicoContainer</code>.</li>
+<li><strong>embeddable</strong>. This implementation has no external dependencies aside from the
+java class libraries, is written in 100% pure java, and requires next to no set up to use. Good
+examples of how the default picocontainer package can be embedded in an application can be found
+in the <a href="http://www.nanocontainer.org/">nanocontainer project</a>.</li>
+<li><strong>lightweight</strong>. The base PicoContainer package supports various ways to do
+<a href="http://www.martinfowler.com/articles/injection.html">dependency injection</a> (including
+{@link org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory constructor
+injection},
+which is used by default, and
+{@link org.picocontainer.defaults.SetterInjectionComponentAdapterFactory setter
+injection}), nothing more. With about 3 dozen classes, the picocontainer jar file (including the
+PicoContainer API) is under a 100kb in size, small enough to use in just about any project.</li>
+</ul>
+
+<h3>Notes on Exceptions</h3>
+
+<p>Almost all exceptions thrown in this package are subclasses of
+{@link org.picocontainer.PicoException}, which is a subclass of {@link java.lang.RuntimeException}.
+Furthermore, those exceptions are usually be subclasses of the basic pico exception types specified
+in the API. As an example, {@link org.picocontainer.defaults.CyclicDependencyException} is a
+specialization of {@link org.picocontainer.PicoInitializationException}.</p>
+
+<p>It is not recommended that you catch the specific exceptions thrown in this package (except
+perhaps if you're developing your own container based on this package). Rather catch the broader
+exception classes defined as part of the core PicoContainer API, and minimize the ties your
+application has to the implementation package.</p>
+
+<h3>Notes on ComponentAdapters and ComponentAdapterFactories</h3>
+
+<p>Most of the {@link org.picocontainer.ComponentAdapter} implementations in this package are
+subclasses of either {@link org.picocontainer.defaults.AbstractComponentAdapter} or
+{@link org.picocontainer.defaults.DecoratingComponentAdapter}. Subclasses of the former can
+generally be used on their own, whereas subclasses of the latter wrap another ComponentAdapter,
+providing slightly different behaviour or additional functionality. For example,
+{@link org.picocontainer.defaults.CachingComponentAdapter} extends
+<code>DecoratingComponentAdapter</code>. It can wrap any other adapter to
+provide a singleton-like behaviour (where a single component instance is kept per container).
+Contrast this with {@link org.picocontainer.defaults.ConstructorInjectionComponentAdapter} (a
+subclass of <code>AbstractComponentAdapter</code>), which actually creates instances (using, in
+this case, constructor dependency injection).</p>
+
+<p>All component adapters in this package include a matching <code>ComponentAdapterFactory</code>.
+The classnames of those factories can always be found simply by appending "Factory" to the name of
+the component adapter class. One adapter factory deserves special mention: {@link
+org.picocontainer.defaults.DefaultComponentAdapterFactory} is the factory that is used by
+{@link org.picocontainer.defaults.DefaultPicoContainer} if none is explicitly specified.</p>
+
+<p>It is recommended that you follow similar patterns if you write your own component adapters.
+If you are not sure what type of adapter you need, it is often a good idea to start with a
+decorating component adapter, so that you can mix and match functionality from the existing
+adapters with your own. Also, always try to include a <code>ComponentAdapterFactory</code> for your
+custom adapter.</p>
+
+<h3>Notes on Parameters</h3>
+
+<p>Advanced PicoContainer users may need to have full control over what parameters are fed to
+components on instantiation, and the PicoContainer API provides this control via the
+{@link org.picocontainer.Parameter} class. The default implementation provides two commonly used
+parameter implementations: {@link org.picocontainer.defaults.ConstantParameter} for passing
+"constants" (like primitive types and strings) to components and
+{@link org.picocontainer.defaults.ConstantParameter} for passing a specific argument to the
+component by specifying the key that should be used in retrieving that argument from the
+container.</p>
+
+</body>
+</html>

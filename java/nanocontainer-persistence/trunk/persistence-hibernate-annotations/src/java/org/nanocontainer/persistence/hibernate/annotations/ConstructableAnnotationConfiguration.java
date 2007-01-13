@@ -21,7 +21,7 @@ import org.w3c.dom.Document;
  * @author Michael Rimov
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz> 
  */
-public class AnnotationConstructableConfiguration extends AnnotationConfiguration {
+public class ConstructableAnnotationConfiguration extends AnnotationConfiguration {
 
     /**
      * Serialization UID.
@@ -31,7 +31,7 @@ public class AnnotationConstructableConfiguration extends AnnotationConfiguratio
     /**
      * @throws HibernateException
      */
-    public AnnotationConstructableConfiguration() throws HibernateException {
+    public ConstructableAnnotationConfiguration() throws HibernateException {
         this.configure();
     }
 
@@ -41,7 +41,7 @@ public class AnnotationConstructableConfiguration extends AnnotationConfiguratio
      * @param url
      * @throws HibernateException
      */
-    public AnnotationConstructableConfiguration(URL url) throws HibernateException {
+    public ConstructableAnnotationConfiguration(URL url) throws HibernateException {
         this.configure(url);
     }
 
@@ -50,7 +50,7 @@ public class AnnotationConstructableConfiguration extends AnnotationConfiguratio
      * @param resource
      * @throws HibernateException
      */
-    public AnnotationConstructableConfiguration(String resource) throws HibernateException {
+    public ConstructableAnnotationConfiguration(String resource) throws HibernateException {
         this.configure(resource);
     }
 
@@ -59,7 +59,7 @@ public class AnnotationConstructableConfiguration extends AnnotationConfiguratio
      * @param configFile
      * @throws HibernateException
      */
-    public AnnotationConstructableConfiguration(File configFile) throws HibernateException {
+    public ConstructableAnnotationConfiguration(File configFile) throws HibernateException {
         this.configure(configFile);
     }
 
@@ -68,7 +68,7 @@ public class AnnotationConstructableConfiguration extends AnnotationConfiguratio
      * @param document
      * @throws HibernateException
      */
-    public AnnotationConstructableConfiguration(Document document) throws HibernateException {
+    public ConstructableAnnotationConfiguration(Document document) throws HibernateException {
         this.configure(document);
     }
 

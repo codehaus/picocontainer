@@ -14,25 +14,25 @@ package org.nanocontainer.persistence.hibernate.annotations;
 import junit.framework.TestCase;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.nanocontainer.persistence.hibernate.annotations.AnnotationConstructableConfiguration;
+import org.nanocontainer.persistence.hibernate.annotations.ConstructableAnnotationConfiguration;
 
 /**
  * Constructable Configuration Test case for Annotations.
  * @author Michael Rimov
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz> 
  */
-public class AnnotationConstructableConfigurationTestCase extends TestCase {
+public class ConstructableAnnotationConfigurationTestCase extends TestCase {
 
     public void testDefaultConstruction() throws Exception {
         //Should Will load hibernate.hbm.xml
-        AnnotationConstructableConfiguration config = new AnnotationConstructableConfiguration();
+        ConstructableAnnotationConfiguration config = new ConstructableAnnotationConfiguration();
         assertNotNull(config);
         attemptWrite(config);
     }
 
 
     public void testResourceConstruction() throws Exception {
-        AnnotationConstructableConfiguration config = new AnnotationConstructableConfiguration("/hibernate.cfg.xml");
+        ConstructableAnnotationConfiguration config = new ConstructableAnnotationConfiguration("/hibernate.cfg.xml");
         attemptWrite(config);
     }
     
@@ -42,7 +42,7 @@ public class AnnotationConstructableConfigurationTestCase extends TestCase {
      * then, some of the data doesn't exist until a write occurs.
      * @param config
      */
-    private void attemptWrite(AnnotationConstructableConfiguration config) {
+    private void attemptWrite(ConstructableAnnotationConfiguration config) {
         Pojo pojo = new Pojo();
         pojo.setFoo("Foo!");
         

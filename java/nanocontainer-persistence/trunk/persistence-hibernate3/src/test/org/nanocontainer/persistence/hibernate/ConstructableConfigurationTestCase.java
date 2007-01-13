@@ -10,11 +10,10 @@
 
 package org.nanocontainer.persistence.hibernate;
 
-import org.hibernate.*;
 import junit.framework.TestCase;
 
-import org.nanocontainer.persistence.hibernate.annotations.ConstructableConfiguration;
-import org.nanocontainer.persistence.hibernate.pojo.Pojo;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 /**
  * @version $Revision: 2043 $

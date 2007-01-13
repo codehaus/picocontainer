@@ -20,7 +20,6 @@ import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.type.Type;
 
-import org.nanocontainer.persistence.hibernate.pojo.Pojo;
 
 /**
  * test case for session delegator

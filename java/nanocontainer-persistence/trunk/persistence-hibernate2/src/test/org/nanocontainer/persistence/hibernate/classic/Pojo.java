@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
 
-package org.nanocontainer.persistence.hibernate.pojo;
+package org.nanocontainer.persistence.hibernate.classic;
 
 /**
  * Just a pojo to make hibernate happy.

@@ -9,7 +9,7 @@
 	<groupId>org.nanocontainer</groupId>
 	<artifactId>nanocontainer-persistence-parent</artifactId>
 	<name>NanoContainer Persistence Parent</name>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1-RC-1</version>
 	<packaging>pom</packaging>
 	<url>http://www.nanocontainer.org/persistence</url>
 	<modules>
@@ -28,9 +28,9 @@
 	</issueManagement>
 	
 	<scm>
-		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-persistence/trunk</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-persistence/trunk</developerConnection>
-		<url>https://svn.codehaus.org/picocontainer/java/nanocontainer-persistence/trunk</url>
+		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-persistence/tags/nanocontainer-persistence-1_1-RC-1</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-persistence/tags/nanocontainer-persistence-1_1-RC-1</developerConnection>
+		<url>https://svn.codehaus.org/picocontainer/java/nanocontainer-persistence/tags/nanocontainer-persistence-1_1-RC-1</url>
 	</scm>
 	
 	<repositories>

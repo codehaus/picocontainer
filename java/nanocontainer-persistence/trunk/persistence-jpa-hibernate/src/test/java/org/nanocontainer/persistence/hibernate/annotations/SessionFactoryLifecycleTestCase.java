@@ -8,31 +8,25 @@
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
 
-package org.nanocontainer.persistence.hibernate.pojo;
+package org.nanocontainer.persistence.hibernate.annotations;
+
+import org.hibernate.SessionFactory;
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.nanocontainer.persistence.hibernate.SessionFactoryLifecycle;
 
 /**
- * Just a pojo to make hibernate happy.
+ * Test that lifecycle closes session factory
  * 
- * @author Konstantin Pribluda
  * @version $Revision: 2043 $
  */
-public class Pojo {
+public class SessionFactoryLifecycleTestCase extends MockObjectTestCase {
 
-    private Integer id;
-    private String foo;
-
-    public Pojo() {}
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getFoo() {
-        return foo;
-    }
-
-    public void setFoo(String foo) {
-        this.foo = foo;
+    public void testThatLifecycleCallsClose() throws Exception {
+        Mock sessionFactoryMock = mock(SessionFactory.class);
+        sessionFactoryMock.expects(once()).method("close").withNoArguments();
+        SessionFactoryLifecycle sfl = new SessionFactoryLifecycle((SessionFactory) sessionFactoryMock.proxy());
+        sfl.stop();
     }
 
 }

@@ -6,7 +6,7 @@
 		<artifactId>nanocontainer-parent</artifactId>
 		<version>1.1-SNAPSHOT</version>
 	</parent>
-	<groupId>org.nanocontainer.persistence</groupId>
+	<groupId>org.nanocontainer</groupId>
 	<artifactId>nanocontainer-persistence-parent</artifactId>
 	<name>NanoContainer Persistence Parent</name>
 	<version>1.1-SNAPSHOT</version>
@@ -59,8 +59,13 @@
 			<dependency>
 				<groupId>org.nanocontainer</groupId>
 				<artifactId>nanocontainer</artifactId>
-				<version>1.1-SNAPSHOT</version>
+				<version>1.1-RC-1</version>
 			</dependency>			
+            <dependency>
+                <groupId>${pom.groupId}</groupId>
+                <artifactId>nanocontainer-persistence</artifactId>
+                <version>${pom.version}</version>
+            </dependency>           
 			<dependency>
 				<groupId>commons-dbcp</groupId>
 				<artifactId>commons-dbcp</artifactId>
@@ -69,8 +74,8 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.geronimo.specs</groupId>
-				<artifactId>geronimo-jta_1.0.1B_spec</artifactId>
-				<version>1.1</version>
+				<artifactId>geronimo-jta_1.1_spec</artifactId>
+				<version>1.0</version>
 				<scope>provided</scope>
 			</dependency>
 			<!-- test scoped dependencies -->
@@ -102,6 +107,18 @@
 	</dependencyManagement>
 	
 	<dependencies>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+        </dependency>       
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jta_1.1_spec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+        </dependency>
 		<!-- test scoped dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -120,5 +137,18 @@
 			<artifactId>picocontainer-tck</artifactId>
 		</dependency>
 	</dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <inherited>true</inherited>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <fork>pertest</fork>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 	
 </project>

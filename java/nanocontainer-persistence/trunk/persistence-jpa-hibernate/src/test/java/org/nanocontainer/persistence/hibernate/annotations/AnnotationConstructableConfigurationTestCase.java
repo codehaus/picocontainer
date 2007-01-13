@@ -8,13 +8,13 @@
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
 
-package org.nanocontainer.persistence.hibernatejpa;
+package org.nanocontainer.persistence.hibernate.annotations;
 
 
 import junit.framework.TestCase;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.nanocontainer.persistence.pojo.Pojo;
+import org.nanocontainer.persistence.hibernate.annotations.AnnotationConstructableConfiguration;
 
 /**
  * Constructable Configuration Test case for Annotations.

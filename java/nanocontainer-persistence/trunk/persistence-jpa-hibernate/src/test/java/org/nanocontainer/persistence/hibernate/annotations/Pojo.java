@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
 
-package org.nanocontainer.persistence.pojo;
+package org.nanocontainer.persistence.hibernate.annotations;
 
 import java.io.Serializable;
 import javax.persistence.Column;

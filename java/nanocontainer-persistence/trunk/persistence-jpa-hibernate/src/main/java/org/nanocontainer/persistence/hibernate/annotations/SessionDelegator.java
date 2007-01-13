@@ -7,7 +7,8 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
-package org.nanocontainer.persistence.hibernate;
+
+package org.nanocontainer.persistence.hibernate.annotations;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -18,7 +19,6 @@ import org.hibernate.EntityMode;
 import org.hibernate.Filter;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
-import org.hibernate.Interceptor;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.ReplicationMode;
@@ -28,82 +28,34 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.stat.SessionStatistics;
 import org.nanocontainer.persistence.ExceptionHandler;
-import org.picocontainer.Startable;
 
 /**
- * Session component with failover behaviour in case of hibernate exception. Old session is disposed
- * and new one is obtained transparently. Session creation is done lazily.
+ * Abstract base class for session delegators. delegates all calls to session obtained by implementing class. error
+ * handling is also there. All methods are just delegations to hibernate session.
  * 
- * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
- * @version $Id: SessionComponent.java 2510 2005-09-22 10:11:19Z mauro $
+ * @version $Id: SessionDelegator.java 2835 2005-12-23 00:50:13Z juze $
  */
-public class SessionComponent implements Session, Startable {
+public abstract class SessionDelegator implements Session {
 
-    private Session session = null;
-    
-	private SessionFactory sessionFactory;
-    private Interceptor interceptor;
-    protected ExceptionHandler hibernateExceptionHandler;
+	protected ExceptionHandler hibernateExceptionHandler;
 
-	public SessionComponent(final SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+	public SessionDelegator() {
 		hibernateExceptionHandler = new PingPongExceptionHandler();
-		interceptor = null;
 	}
 
-	public SessionComponent(final SessionFactory sessionFactory, final ExceptionHandler hibernateExceptionHandler) {
-        this.sessionFactory = sessionFactory;
+	public SessionDelegator(ExceptionHandler hibernateExceptionHandler) {
 		this.hibernateExceptionHandler = hibernateExceptionHandler;
-		interceptor = null;
-	}
-
-	public SessionComponent(final SessionFactory sessionFactory, final Interceptor interceptor) {
-        this.sessionFactory = sessionFactory;
-		hibernateExceptionHandler = new PingPongExceptionHandler();
-		this.interceptor = interceptor;
-	}
-
-	public SessionComponent(final SessionFactory sessionFactory, final ExceptionHandler hibernateExceptionHandler, final Interceptor interceptor) {
-        this.sessionFactory = sessionFactory;
-		this.hibernateExceptionHandler = hibernateExceptionHandler;
-		this.interceptor = interceptor;
 	}
 
 	/**
-	 * Obtain hibernate session.  
+	 * Obtain hibernate session.
 	 */
-	protected final Session getDelegatedSession(boolean create) {
-        if (create && (session == null)) {
-            try {
-            	session = interceptor == null ? sessionFactory.openSession() : sessionFactory.openSession(interceptor);
-            } catch (RuntimeException ex) {
-                throw handleException(ex);
-            }
-        }
-
-        return session;
-	}
-
-	/**
-	 * Calls getDelegatedSession(true)
-	 */
-	protected final Session getDelegatedSession() {
-        return getDelegatedSession(true);
-	}
+	public abstract Session getDelegatedSession();
 
 	/**
 	 * Perform actions to dispose "burned" session properly.
 	 */
-	protected void invalidateDelegatedSession() throws HibernateException {
-        if (session != null) {
-            try {
-                session.clear();
-                session.close();           
-            } finally {
-                session = null;
-            }
-        }
-	}
+	public abstract void invalidateDelegatedSession() throws HibernateException;
 
 	/**
 	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
@@ -117,22 +69,6 @@ public class SessionComponent implements Session, Startable {
 		}
 
 		return hibernateExceptionHandler.handle(cause);
-	}
-
-	/**
-	 * org.picocontainer.Startable.start()
-	 */
-	public void start() {
-		// do nothing
-	}
-
-	/**
-	 * org.picocontainer.Startable.stop()
-	 */
-	public void stop() {
-		if (session != null && session.isOpen()) {
-			close();
-		}
 	}
 
 	public Transaction beginTransaction() throws HibernateException {
@@ -153,11 +89,7 @@ public class SessionComponent implements Session, Startable {
 
 	public void clear() {
 		try {
-			if (session == null) {
-				return;
-			}
-
-			session.clear();
+			getDelegatedSession().clear();
 		} catch (RuntimeException ex) {
 			throw handleException(ex);
 		}
@@ -165,12 +97,7 @@ public class SessionComponent implements Session, Startable {
 
 	public Connection close() throws HibernateException {
 		try {
-			if (session == null) {
-				// See Hibernate's javadoc. Returns Connection only when it only was gave by application.
-				return null;
-			}
-
-			return session.close();
+			return getDelegatedSession().close();
 		} catch (RuntimeException ex) {
 			throw handleException(ex);
 		}
@@ -290,11 +217,7 @@ public class SessionComponent implements Session, Startable {
 
 	public void flush() throws HibernateException {
 		try {
-			if (session == null) {
-				return;
-			}
-
-			session.flush();
+			getDelegatedSession().flush();
 		} catch (RuntimeException ex) {
 			throw handleException(ex);
 		}
@@ -588,7 +511,6 @@ public class SessionComponent implements Session, Startable {
 		}
 	}
 
-	
 
 	public Serializable save(String entityName, Object object) throws HibernateException {
 		try {
@@ -640,8 +562,49 @@ public class SessionComponent implements Session, Startable {
 	}
 
 
+	/**
+     * {@inheritDoc}
+     * @param entityName
+     * @param object
+     * @throws HibernateException
+     * @see org.hibernate.Session#delete(java.lang.String, java.lang.Object)
+     */
+    public void delete(String entityName, Object object) throws HibernateException {
+        try {
+            getDelegatedSession().delete(entityName, object);
+        } catch (RuntimeException ex) {
+            throw handleException(ex);
+        }
+     }
 
-	public void update(String entityName, Object object) throws HibernateException {
+    /**
+     * {@inheritDoc}
+     * @return
+     * @see org.hibernate.Session#getTransaction()
+     */
+    public Transaction getTransaction() {
+        try {
+            return getDelegatedSession().getTransaction();
+        } catch (RuntimeException ex) {
+            throw handleException(ex);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param arg0
+     * @param arg1
+     * @see org.hibernate.Session#setReadOnly(java.lang.Object, boolean)
+     */
+    public void setReadOnly(Object entity, boolean readOnly) {
+        try {
+            getDelegatedSession().setReadOnly(entity, readOnly);
+        } catch (RuntimeException ex) {
+            throw handleException(ex);
+        }
+    }
+
+    public void update(String entityName, Object object) throws HibernateException {
 		try {
 			getDelegatedSession().update(entityName, object);
 		} catch (RuntimeException ex) {
@@ -660,36 +623,5 @@ public class SessionComponent implements Session, Startable {
 		}
 
 	}
-
-    /**
-     * {@inheritDoc}
-     * @param entityName
-     * @param object
-     * @throws HibernateException
-     * @see org.hibernate.Session#delete(java.lang.String, java.lang.Object)
-     */
-    public void delete(String entityName, Object object) throws HibernateException {
-        getDelegatedSession().delete(entityName, object);
-        
-    }
-
-    /**
-     * {@inheritDoc}
-     * @return Transaction.
-     * @see org.hibernate.Session#getTransaction()
-     */
-    public Transaction getTransaction() {
-        return getDelegatedSession().getTransaction();
-    }
-
-    /**
-     * {@inheritDoc}
-     * @param entity
-     * @param readOnly
-     * @see org.hibernate.Session#setReadOnly(java.lang.Object, boolean)
-     */
-    public void setReadOnly(Object entity, boolean readOnly) {
-        getDelegatedSession().setReadOnly(entity, readOnly);
-    }
 
 }

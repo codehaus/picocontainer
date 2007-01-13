@@ -13,7 +13,7 @@ package org.nanocontainer.persistence.hibernate;
 import org.hibernate.SessionFactory;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.nanocontainer.persistence.hibernate.SessionFactoryLifecycle;
+import org.nanocontainer.persistence.hibernate.annotations.SessionFactoryLifecycle;
 
 /**
  * Test that lifecycle closes session factory

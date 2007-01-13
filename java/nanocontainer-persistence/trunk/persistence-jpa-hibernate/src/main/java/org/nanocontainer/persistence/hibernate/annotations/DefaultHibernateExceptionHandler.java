@@ -1,4 +1,4 @@
-package org.nanocontainer.persistence.hibernate;
+package org.nanocontainer.persistence.hibernate.annotations;
 
 import org.hibernate.StaleObjectStateException;
 import org.hibernate.TransactionException;

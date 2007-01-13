@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.nanocontainer.persistence.hibernate;
+package org.nanocontainer.persistence.hibernate.annotations;
 
 import java.sql.Connection;
 

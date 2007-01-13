@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
 
-package org.nanocontainer.persistence.hibernate;
+package org.nanocontainer.persistence.hibernate.annotations;
 
 import org.nanocontainer.persistence.hibernate.ConstructableConfiguration;
 

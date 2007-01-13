@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.nanocontainer.persistence</groupId>
+		<groupId>org.nanocontainer</groupId>
 		<artifactId>nanocontainer-persistence-parent</artifactId>
 		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<packaging>jar</packaging>
-	<artifactId>persistence-jpa-hibernate</artifactId>
-	<name>NanoContainer- Hibernate Annotations - JPA Integration</name>	
+	<artifactId>nanocontainer-persistence-hibernate-annotations</artifactId>
+	<name>NanoContainer Persistence Hibernate Annotations</name>	
 	<description><![CDATA[
 		This project initially contains support for Hibernate 3.2 and Hibernate Annotation-integration.
 		
@@ -17,60 +17,8 @@
 		]]></description>
 	<dependencies>
 		<dependency>
-			<groupId>org.nanocontainer.persistence</groupId>
+			<groupId>${pom.groupId}</groupId>
 			<artifactId>nanocontainer-persistence</artifactId>
-			<version>${parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.picocontainer</groupId>
-			<artifactId>picocontainer</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.picocontainer</groupId>
-			<artifactId>picocontainer-gems</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.nanocontainer</groupId>
-			<artifactId>nanocontainer</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jta_1.0.1B_spec</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate</artifactId>
-			<version>3.2.1.ga</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.transaction</groupId>
-					<artifactId>jta</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.security</groupId>
-					<artifactId>jacc</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>cglib</groupId>
-					<artifactId>cglib</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>asm</groupId>
-					<artifactId>asm-attrs</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>asm</groupId>
-					<artifactId>asm</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -90,33 +38,6 @@
 				</exclusion>
 			</exclusions>
 			<version>3.2.1.ga</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>3.2.0.ga</version>
-			<exclusions>
-				<exclusion>
-					<groupId>cglib</groupId>
-					<artifactId>cglib</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>asm</groupId>
-					<artifactId>asm-attrs</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>asm</groupId>
-					<artifactId>asm</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jta_1.0.1B_spec</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

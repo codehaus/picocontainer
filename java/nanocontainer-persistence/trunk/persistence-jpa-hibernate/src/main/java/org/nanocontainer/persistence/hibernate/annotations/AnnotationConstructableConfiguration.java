@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Centerline Computers, Inc.                               *
  *****************************************************************************/
-package org.nanocontainer.persistence.hibernatejpa;
+package org.nanocontainer.persistence.hibernate.annotations;
 
 import java.io.File;
 import java.net.URL;

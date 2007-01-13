@@ -15,8 +15,8 @@ import junit.framework.TestCase;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.nanocontainer.persistence.hibernate.ConstructableConfiguration;
-import org.nanocontainer.persistence.hibernate.FailoverSessionDelegator;
+import org.nanocontainer.persistence.hibernate.annotations.ConstructableConfiguration;
+import org.nanocontainer.persistence.hibernate.annotations.FailoverSessionDelegator;
 import org.nanocontainer.persistence.hibernate.pojo.Pojo;
 
 /**

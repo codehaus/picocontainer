@@ -28,6 +28,7 @@
         <module>examples/nanowar-struts-webapp</module>
         <module>examples/nanowar-webwork-webapp</module>
         <module>examples/nanowar-webwork2-webapp</module>
+        <module>distribution</module>
     </modules>
 
     <description>

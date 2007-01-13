@@ -16,7 +16,7 @@
 		<module>persistence</module>
 		<module>persistence-hibernate2</module>
 		<module>persistence-hibernate3</module>
-		<module>persistence-jpa-hibernate</module>
+		<module>persistence-hibernate-annotations</module>
 	</modules>
 	
 	<description><![CDATA[Please refer to the <a href="http://nanocontainer.org/persistence">main website</a> for documentation.]]></description>

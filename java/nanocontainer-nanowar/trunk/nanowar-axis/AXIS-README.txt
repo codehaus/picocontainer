@@ -1,4 +1,4 @@
-Usage (steps 1 and 2 as per the servlet/webwork integration):
+Usage:
 
 1. Register the servlet container listener in web.xml:
 

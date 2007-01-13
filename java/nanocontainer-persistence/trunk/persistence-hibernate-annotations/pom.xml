@@ -8,13 +8,6 @@
 	<packaging>jar</packaging>
 	<artifactId>nanocontainer-persistence-hibernate-annotations</artifactId>
 	<name>NanoContainer Persistence Hibernate Annotations</name>	
-	<description><![CDATA[
-		This project initially contains support for Hibernate 3.2 and Hibernate Annotation-integration.
-		
-		Full JPA support is planned for future releases.
-		
-		 Please refer to the <a href="http://nanocontainer.org/">NanoContainer Website</a> for documentation.
-		]]></description>
 	<dependencies>
 		<dependency>
 			<groupId>${pom.groupId}</groupId>

@@ -10,8 +10,8 @@
 	<name>NanoContainer Persistence</name>
 	<dependencies>
 		<dependency>
-            <groupId>${pom.groupId}</groupId>
-			<artifactId>nanocontainer</artifactId>
+            <groupId>org.picocontainer</groupId>
+			<artifactId>picocontainer</artifactId>
 		</dependency>
 	</dependencies>
 </project>

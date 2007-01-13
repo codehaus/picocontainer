@@ -92,7 +92,7 @@
 						</goals>
 						<configuration>
 							<descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
-							<finalName>nanowar-${pom.version}</finalName>
+							<finalName>persistence-${pom.version}</finalName>
 							<workDirectory>target/assembly/bin</workDirectory>
 						</configuration>
 					</execution>
@@ -104,7 +104,7 @@
 						</goals>
 						<configuration>
 							<descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
-							<finalName>nanowar-${pom.version}</finalName>
+							<finalName>persistence-${pom.version}</finalName>
 							<workDirectory>target/assembly/src</workDirectory>
 						</configuration>
 					</execution>

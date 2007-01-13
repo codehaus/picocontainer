@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
     
 <hibernate-mapping>
-    <class name="org.nanocontainer.persistence.hibernate.pojo.Pojo" table="pojo">
+    <class name="org.nanocontainer.persistence.hibernate.classic.Pojo" table="pojo">
         <id unsaved-value="null" name="id" type="java.lang.Integer" access="field">
             <generator class="native"/>
         </id>

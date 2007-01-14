@@ -33,23 +33,7 @@
     <welcome-file-list>
       <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-  
-    <!-- Struts Tag Library Descriptors -->
-    <taglib>
-      <taglib-uri>/tags/struts-bean</taglib-uri>
-      <taglib-location>/WEB-INF/struts-bean.tld</taglib-location>
-    </taglib>
-  
-    <taglib>
-      <taglib-uri>/tags/struts-html</taglib-uri>
-      <taglib-location>/WEB-INF/struts-html.tld</taglib-location>
-    </taglib>
-  
-    <taglib>
-      <taglib-uri>/tags/struts-logic</taglib-uri>
-      <taglib-location>/WEB-INF/struts-logic.tld</taglib-location>
-    </taglib>
-    
+     
 </web-app>
 
 

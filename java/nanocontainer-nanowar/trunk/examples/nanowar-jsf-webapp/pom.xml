@@ -21,7 +21,7 @@
 	<parent>
 		<groupId>org.nanocontainer</groupId>
 		<artifactId>nanocontainer-nanowar-parent</artifactId>
-		<version>1.1-RC-1</version>
+		<version>1.1-RC-2-SNAPSHOT</version>
 	</parent>
 	<artifactId>nanowar-jsf-webapp</artifactId>
 	<name>Nanowar JSF Webapp</name>
@@ -34,11 +34,6 @@
 		</dependency>
 		<dependency>
 			<groupId>${pom.groupId}</groupId>
-			<artifactId>nanocontainer-groovy</artifactId>
-			<version>${pom.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${pom.groupId}</groupId>
 			<artifactId>nanocontainer-nanowar-example</artifactId>
             <version>${pom.version}</version>
 		</dependency>
@@ -47,6 +42,10 @@
 			<artifactId>nanocontainer-nanowar-jsf</artifactId>
             <version>${pom.version}</version>			
 		</dependency>
+        <dependency>
+            <groupId>org.nanocontainer</groupId>
+            <artifactId>nanocontainer-groovy</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.apache.myfaces.core</groupId>
 			<artifactId>myfaces-api</artifactId>

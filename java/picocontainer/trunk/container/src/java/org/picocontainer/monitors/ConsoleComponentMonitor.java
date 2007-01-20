@@ -32,13 +32,12 @@ public class ConsoleComponentMonitor extends AbstractComponentMonitor {
     private final ComponentMonitor delegate;
 
     public ConsoleComponentMonitor(OutputStream out) {
-        this.out = new PrintStream(out);
-        delegate = new DefaultComponentMonitor();
+        this(out, new DefaultComponentMonitor());
     }
 
     public ConsoleComponentMonitor(OutputStream out, ComponentMonitor delegate) {
         this.out = new PrintStream(out);
-        this.delegate = new DefaultComponentMonitor();
+        this.delegate = delegate;
     }
 
     public void instantiating(Constructor constructor) {

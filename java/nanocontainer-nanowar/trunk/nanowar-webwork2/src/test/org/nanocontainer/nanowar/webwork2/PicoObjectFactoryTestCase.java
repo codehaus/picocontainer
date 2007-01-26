@@ -23,6 +23,7 @@ import org.picocontainer.gems.adapters.ThreadLocalReference;
 
 /**
  * @author Mauro Talevi
+ * @author Konstantin Pribluda
  */
 public class PicoObjectFactoryTestCase extends MockObjectTestCase {
 
@@ -94,6 +95,12 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
         assertSame(action1, action2);
     }
 
+    /**
+     * if component was not registered explicitely,  there shall be different instance for
+     * next invocation.  not only actions are instantiated via factory,  but also important stuff like filters,
+     * validators, interceptors etc - they shall not be shared. 
+     * @throws Exception
+     */
     public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
         requestMock.expects(atLeastOnce()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
                 returnValue(container));
@@ -102,7 +109,7 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
                 .buildBean(TestAction.class.getName());
         TestAction action2 = (TestAction) factory
                 .buildBean(TestAction.class.getName());
-        assertSame(action1, action2);
+        assertNotSame(action1, action2);
     }
     
 

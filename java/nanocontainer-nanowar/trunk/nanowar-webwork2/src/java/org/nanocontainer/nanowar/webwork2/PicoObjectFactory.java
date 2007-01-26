@@ -11,6 +11,8 @@ package org.nanocontainer.nanowar.webwork2;
 import com.opensymphony.xwork.ObjectFactory;
 import org.nanocontainer.nanowar.ActionsContainerFactory;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,7 @@ import java.util.Map;
  * @author Jonas Engman
  * @author Mauro Talevi
  * @author Gr&eacute;gory Joseph
+ * @author Konstatin Pribluda 
  */
 public class PicoObjectFactory extends ObjectFactory {
 
@@ -69,17 +72,22 @@ public class PicoObjectFactory extends ObjectFactory {
 
     /**
      * Instantiates an action using the PicoContainer found in the request scope.
+     * if action or bean is not registered explicitely, new instance will be provided
+     * on every invocation.
      * 
      * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.Class)
      */
     public Object buildBean(Class actionClass) throws Exception {
-        MutablePicoContainer actionsContainer = actionsContainerFactory.getActionsContainer((HttpServletRequest) objectReference.get());
+        PicoContainer actionsContainer = actionsContainerFactory.getActionsContainer((HttpServletRequest) objectReference.get());
         Object action = actionsContainer.getComponentInstance(actionClass);
 
         if (action == null) {
             // The action wasn't registered. Attempt to instantiate it.
-            actionsContainer.registerComponentImplementation(actionClass);
-            action = actionsContainer.getComponentInstance(actionClass);
+        	// use child container to prevent weirdest errors
+        	MutablePicoContainer child = new DefaultPicoContainer(actionsContainer);
+        	
+            child.registerComponentImplementation(actionClass);
+            action = child.getComponentInstance(actionClass);
         }
         return action;
     }

@@ -60,6 +60,7 @@ public abstract class SessionDelegator implements Session {
 	/**
 	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
 	 * a {@link ExceptionHandler} if it's available otherwise just return the <code>cause</code> back.
+	 * @param cause The original exception.
 	 */
 	protected RuntimeException handleException(RuntimeException cause) throws HibernateException {
 		try {
@@ -592,8 +593,8 @@ public abstract class SessionDelegator implements Session {
 
     /**
      * {@inheritDoc}
-     * @param arg0
-     * @param arg1
+     * @param entity
+     * @param readOnly
      * @see org.hibernate.Session#setReadOnly(java.lang.Object, boolean)
      */
     public void setReadOnly(Object entity, boolean readOnly) {

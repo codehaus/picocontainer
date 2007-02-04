@@ -1,4 +1,3 @@
-package org.nanocontainer.dynaweb;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -9,7 +8,7 @@ public class MyGroovyAction {
     int year
 
     public doit() {
-        if(year > 2003) {
+        if(year > 2003) {            
             return "success";
         } else {
             return "error";

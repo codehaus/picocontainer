@@ -768,7 +768,33 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
     public static class DerivedTouchable extends SimpleTouchable {
         public DerivedTouchable() {
+        }    
+    }
+    
+    
+    public static class NonGreedyClass {
+        
+        public int value = 0;
+        
+        public NonGreedyClass() {
+            //Do nothing.
         }
+        
+        public NonGreedyClass(ComponentA component) {
+            fail("Greedy Constructor should never have been called.  Instead got: " + component);
+        }
+            
+        
+    };
+    
+    public void testNoArgConstructorToBeSelected() {
+        MutablePicoContainer pico = this.createPicoContainer(null);
+        pico.registerComponentImplementation(ComponentA.class);
+        pico.registerComponentImplementation(NonGreedyClass.class, NonGreedyClass.class, new Parameter[] {});
+        
+
+        NonGreedyClass instance = (NonGreedyClass) pico.getComponentInstance(NonGreedyClass.class);
+        assertNotNull(instance);
     }
 
 }

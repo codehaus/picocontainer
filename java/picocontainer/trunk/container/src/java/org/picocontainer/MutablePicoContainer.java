@@ -41,7 +41,22 @@ public interface MutablePicoContainer extends PicoContainer {
     ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation);
 
     /**
-     * Register a component.
+     * Register a component and creates specific instructions on which constructor to use, along with
+     * which components and/or constants to provide as constructor arguments.  These &quot;directives&quot; are
+     * provided through an array of <tt>Parameter</tt> objects.  Parameter[0] correspondes to the first constructor
+     * argument, Parameter[N] corresponds to the  N+1th constructor argument.
+     * <h4>Tips for Parameter usage</h4>
+     * <ul>
+     * <li><strong>Partial Autowiring: </strong>If you have two constructor args to match and you only wish to specify one of the constructors and 
+     * let PicoContainer wire the other one, you can use: 
+     * <code>new Parameter[]{<strong>new ComponentParameter()</strong>, new ComponentParameter("someService"}</code>
+     * The default constructor for the component parameter indicates auto-wiring should take place for 
+     * that parameter.
+     * </li>
+     * <li><strong>Force No-Arg constructor usage:</strong> If you wish to force a component to be constructed with
+     * the no-arg constructor, use a zero length Parameter array.  Ex:  <code>new Parameter[] {}</code> 
+     * <ul>
+     * 
      *
      * @param componentKey            a key that identifies the component. Must be unique within the container. The type
      *                                of the key object has no semantic significance unless explicitly specified in the
@@ -50,11 +65,14 @@ public interface MutablePicoContainer extends PicoContainer {
      *                                class that can be instantiated).
      * @param parameters              an array of parameters that gives the container hints about what arguments to pass
      *                                to the constructor when it is instantiated. Container implementations may ignore
-     *                                one or more of these hints.
+     *                                one or more of these hints.  
      * @return the ComponentAdapter that has been associated with this component. In the majority of cases, this return
      *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
      *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
      * @throws PicoRegistrationException if registration of the component fails.
+     * @see org.picocontainer.Parameter
+     * @see org.picocontainer.defaults.ConstantParameter
+     * @see org.picocontainer.defaults.ComponentParameter
      */
     ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, Parameter[] parameters);
 

@@ -24,7 +24,6 @@ public class MapDivertor implements Divertor {
 	 * 
 	 */
 	public String divert(Throwable cause) {
-		System.err.println("********* divertor retrieving for exception:" + cause);
 		if(cause instanceof PicoLifecycleException) {
 			return divert(cause.getCause());
 		}

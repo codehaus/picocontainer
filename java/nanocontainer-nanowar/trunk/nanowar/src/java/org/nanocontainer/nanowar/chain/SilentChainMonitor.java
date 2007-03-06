@@ -5,7 +5,7 @@ package org.nanocontainer.nanowar.chain;
  * @author Konstantin Priobluda
  *
  */
-public class SilentChaiinMonitor implements ChainMonitor {
+public class SilentChainMonitor implements ChainMonitor {
 
 	public void filteringURL(String originalUrl) {
 	}

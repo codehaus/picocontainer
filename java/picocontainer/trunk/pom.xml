@@ -33,9 +33,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/tags/picocontainer-1_3-RC-1</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/tags/picocontainer-1_3-RC-1</developerConnection>
-        <url>https://svn.codehaus.org/picocontainer/java/picocontainer/tags/picocontainer-1_3-RC-1</url>
+        <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/tags/picocontainer-1_3</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/tags/picocontainer-1_3</developerConnection>
+        <url>https://svn.codehaus.org/picocontainer/java/picocontainer/tags/picocontainer-1_3</url>
     </scm>
     <repositories>
         <repository>
@@ -53,9 +53,6 @@
             <name>Codehaus Dist Repository</name>
             <url>http://dist.codehaus.org</url>
             <layout>legacy</layout>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
         </repository>
         <repository>
             <layout>legacy</layout>
@@ -315,12 +312,12 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh-external</artifactId>
-                <version>1.0-beta-1</version>
+                <version>1.0-beta-2</version>
             </extension>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-webdav</artifactId>
-                <version>1.0-beta-1</version>
+                <version>1.0-beta-2</version>
             </extension>
         </extensions>
     </build>

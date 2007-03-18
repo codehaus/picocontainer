@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.nanocontainer</groupId>
         <artifactId>nanocontainer-nanowar-parent</artifactId>
-        <version>1.1-RC-2-SNAPSHOT</version>
+        <version>1.1</version>
     </parent>
     <artifactId>nanocontainer-nanowar-example</artifactId>
     <name>Nanowar Sample</name>

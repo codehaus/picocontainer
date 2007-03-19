@@ -9,7 +9,7 @@
 	<groupId>org.nanocontainer</groupId>
 	<artifactId>nanocontainer-persistence-parent</artifactId>
 	<name>NanoContainer Persistence Parent</name>
-	<version>1.1</version>
+	<version>1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<url>http://www.nanocontainer.org/persistence</url>
 	<modules>

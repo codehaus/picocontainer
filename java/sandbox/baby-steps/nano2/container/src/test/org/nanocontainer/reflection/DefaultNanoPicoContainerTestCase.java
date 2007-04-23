@@ -26,13 +26,13 @@ public class DefaultNanoPicoContainerTestCase extends AbstractPicoContainerTestC
     }
 
     // TODO - go to a Nano TCK?
-    public void testNamedChildContainerIsAccessible() {
+    public void testNamedChildContainerIsAccessible()  {
         StringBuffer sb = new StringBuffer();
         final NanoPicoContainer parent = (NanoPicoContainer) createPicoContainer(null);
         parent.registerComponent(sb);
         final NanoPicoContainer child = (NanoPicoContainer) parent.makeChildContainer("foo");
         child.registerComponent(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
-        LifeCycleMonitoring o = (LifeCycleMonitoring) parent.getComponent("foo/*" + LifeCycleMonitoring.class.getName());
+        LifeCycleMonitoring o = (LifeCycleMonitoring) parent.getComponent((Object)("foo/*" + LifeCycleMonitoring.class.getName()));
         assertNotNull(o);
     }
 
@@ -43,7 +43,7 @@ public class DefaultNanoPicoContainerTestCase extends AbstractPicoContainerTestC
         parent.registerComponent(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.registerComponent("lcm",LifeCycleMonitoring.class);
-        Object o = parent.getComponent("foo/lcm");
+        Object o = parent.getComponent((Object)"foo/lcm");
         assertNotNull(o);
         assertTrue(sb.toString().indexOf("-instantiated") != -1);
     }
@@ -55,14 +55,14 @@ public class DefaultNanoPicoContainerTestCase extends AbstractPicoContainerTestC
         parent.registerComponent(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.registerComponent(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
-        Object o = parent.getComponent("foo/*" + LifeCycleMonitoring.class.getName());
+        Object o = parent.getComponent((Object)("foo/*" + LifeCycleMonitoring.class.getName()));
         assertNotNull(o);
         assertTrue(sb.toString().indexOf("-instantiated") != -1);
     }
 
-    public void testMakeRemoveChildContainer() {
+    public void testMakeRemoveChildContainer() throws ClassNotFoundException {
         final NanoPicoContainer parent = (NanoPicoContainer) createPicoContainer(null);
-        parent.registerComponent("java.lang.String", "This is a test");
+        parent.registerComponent("java.lang.String", (Object)"This is a test");
         MutablePicoContainer pico = parent.makeChildContainer();
         // Verify they are indeed wired together.
         assertNotNull(pico.getComponent("java.lang.String"));

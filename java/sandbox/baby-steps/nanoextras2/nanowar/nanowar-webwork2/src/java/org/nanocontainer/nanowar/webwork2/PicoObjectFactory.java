@@ -79,15 +79,15 @@ public class PicoObjectFactory extends ObjectFactory {
      */
     public Object buildBean(Class actionClass) throws Exception {
         PicoContainer actionsContainer = actionsContainerFactory.getActionsContainer((HttpServletRequest) objectReference.get());
-        Object action = actionsContainer.getComponentInstance(actionClass);
+        Object action = actionsContainer.getComponent(actionClass);
 
         if (action == null) {
             // The action wasn't registered. Attempt to instantiate it.
         	// use child container to prevent weirdest errors
         	MutablePicoContainer child = new DefaultPicoContainer(actionsContainer);
         	
-            child.registerComponentImplementation(actionClass);
-            action = child.getComponentInstance(actionClass);
+            child.registerComponent(actionClass);
+            action = child.getComponent(actionClass);
         }
         return action;
     }

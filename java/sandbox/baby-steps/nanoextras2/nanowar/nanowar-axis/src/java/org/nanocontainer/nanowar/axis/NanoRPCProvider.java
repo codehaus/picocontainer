@@ -48,8 +48,8 @@ public class NanoRPCProvider extends RPCProvider implements KeyConstants {
         MutablePicoContainer requestContainer = (MutablePicoContainer) ref.get();
 
         MutablePicoContainer container = new DefaultPicoContainer(requestContainer);
-        container.registerComponentImplementation(svcClass);
-        return container.getComponentInstance(svcClass);
+        container.registerComponent(svcClass);
+        return container.getComponent(svcClass);
     }
 
 }

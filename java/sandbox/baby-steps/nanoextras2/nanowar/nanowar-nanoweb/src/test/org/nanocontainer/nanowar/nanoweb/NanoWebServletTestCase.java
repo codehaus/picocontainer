@@ -138,14 +138,14 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
     }
 
     public void testParametersShouldBeSetAndExecuteInvokedOnJavaAction() throws IOException, ServletException {
-        requestContainer.registerComponentImplementation("/test", MyAction.class);
+        requestContainer.registerComponent("/test", MyAction.class);
         requestMock.expects(once())
                    .method("setAttribute")
                    .with(eq("action"), isA(MyAction.class));
 
         nanoServlet.service((HttpServletRequest)requestMock.proxy(), (HttpServletResponse)responseMock.proxy());
 
-        MyAction action = (MyAction) requestContainer.getComponentInstance("/test");
+        MyAction action = (MyAction) requestContainer.getComponent("/test");
         assertEquals(2004, action.getYear());
         assertEquals("success", action.doit());
     }
@@ -165,7 +165,7 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
 
         nanoServlet.service((HttpServletRequest)requestMock.proxy(), (HttpServletResponse)responseMock.proxy());
 
-        Object action = requestContainer.getComponentInstance("/test.groovy");
+        Object action = requestContainer.getComponent("/test.groovy");
         Method getYear = action.getClass().getMethod("getProperty", (new Class[] {String.class}));
         Object resultYear = getYear.invoke(action, (new Object[]{"year"}));
         assertEquals("2004", resultYear.toString());

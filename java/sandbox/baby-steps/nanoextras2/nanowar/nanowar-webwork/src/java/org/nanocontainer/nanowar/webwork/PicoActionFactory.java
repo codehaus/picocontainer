@@ -48,12 +48,12 @@ public class PicoActionFactory extends ActionFactory {
 
     protected Action instantiateAction(Class actionClass) {
         MutablePicoContainer actionsContainer = getActionsContainer();
-        Action action = (Action) actionsContainer.getComponentInstance(actionClass);
+        Action action = (Action) actionsContainer.getComponent(actionClass);
         
         if (action == null) {
             // The action wasn't registered. Attempt to instantiate it.
-            actionsContainer.registerComponentImplementation(actionClass);
-            action = (Action) actionsContainer.getComponentInstance(actionClass);
+            actionsContainer.registerComponent(actionClass);
+            action = (Action) actionsContainer.getComponent(actionClass);
         }
         return action;
     }

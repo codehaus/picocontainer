@@ -46,7 +46,7 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
                 returnValue(container));
         requestMock.expects(atLeastOnce()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
                 isA(MutablePicoContainer.class));
-		container.registerComponentInstance("foo");
+		container.registerComponent("foo");
 		TestAction action = (TestAction) factory
 				.buildBean(TestAction.class.getName());
 		assertNotNull(action);
@@ -87,9 +87,9 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
                 returnValue(container));
         requestMock.expects(atLeastOnce()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
                 isA(MutablePicoContainer.class));
-        container.registerComponentInstance("foo");
-        container.registerComponentImplementation(TestAction.class);
-        TestAction action1 = (TestAction) container.getComponentInstance(TestAction.class);
+        container.registerComponent("foo");
+        container.registerComponent(TestAction.class);
+        TestAction action1 = (TestAction) container.getComponent(TestAction.class);
         TestAction action2 = (TestAction) factory
                 .buildBean(TestAction.class.getName());
         assertSame(action1, action2);
@@ -104,7 +104,7 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
     public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
         requestMock.expects(atLeastOnce()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
                 returnValue(container));
-        container.registerComponentInstance("foo");
+        container.registerComponent("foo");
         TestAction action1 = (TestAction) factory
                 .buildBean(TestAction.class.getName());
         TestAction action2 = (TestAction) factory

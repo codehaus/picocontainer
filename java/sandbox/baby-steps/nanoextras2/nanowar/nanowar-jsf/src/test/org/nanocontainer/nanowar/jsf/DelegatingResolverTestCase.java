@@ -56,13 +56,13 @@ public class DelegatingResolverTestCase extends MockObjectTestCase {
 
     protected void setUp() {
         appContainer = new DefaultPicoContainer();
-        appContainer.registerComponentImplementation("A", A.class);
+        appContainer.registerComponent("A", A.class);
 
         sessionContainer = appContainer.makeChildContainer();
-        sessionContainer.registerComponentImplementation("B", B.class);
+        sessionContainer.registerComponent("B", B.class);
 
         requestContainer = sessionContainer.makeChildContainer();
-        requestContainer.registerComponentImplementation("C", C.class);
+        requestContainer.registerComponent("C", C.class);
 
         facesContextMock = new Mock(FacesContext.class);
         facesContext = (FacesContext) facesContextMock.proxy();
@@ -83,7 +83,7 @@ public class DelegatingResolverTestCase extends MockObjectTestCase {
         variableResolverMock = new Mock(VariableResolver.class);
 
         // Sanity Check for containers.
-        assertNotNull(requestContainer.getComponentInstance("A"));
+        assertNotNull(requestContainer.getComponent("A"));
         delegate = (VariableResolver) variableResolverMock.proxy();
         ourVariableResolver = new NanoWarDelegatingVariableResolver(delegate);
 

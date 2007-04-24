@@ -42,8 +42,8 @@ public class ActionsContainerTestCase extends TestCase {
                 + " </container>");
 
         PicoContainer pico = buildContainer(script);
-        assertNotNull(pico.getComponentInstanceOfType(CheeseDao.class));
-        assertNotNull(pico.getComponentInstanceOfType(CheeseService.class));
+        assertNotNull(pico.getComponent(CheeseDao.class));
+        assertNotNull(pico.getComponent(CheeseService.class));
     }
 
 }

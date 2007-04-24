@@ -61,10 +61,10 @@ public class ActionFactory {
         Object actionKey = mapping.getPath();
         Class actionType = actionsContainerFactory.getActionClass(mapping.getType());
 
-        Action action = (Action) actionsContainer.getComponentInstance(actionKey);
+        Action action = (Action) actionsContainer.getComponent(actionKey);
         if (action == null) {
-            actionsContainer.registerComponentImplementation(actionKey, actionType);
-            action = (Action) actionsContainer.getComponentInstance(actionKey);
+            actionsContainer.registerComponent(actionKey, actionType);
+            action = (Action) actionsContainer.getComponent(actionKey);
         }
 
         action.setServlet(servlet);

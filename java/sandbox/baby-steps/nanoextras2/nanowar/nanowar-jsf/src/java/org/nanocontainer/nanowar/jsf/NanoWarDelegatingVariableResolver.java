@@ -124,7 +124,7 @@ public class NanoWarDelegatingVariableResolver extends VariableResolver  {
         
         PicoContainer nano = getPicoContainer(facesContext);
         
-        Object result =  nano.getComponentInstance(name);
+        Object result =  nano.getComponent(name);
         if (result == null) {
             return nested.resolveVariable(facesContext, name);
         }

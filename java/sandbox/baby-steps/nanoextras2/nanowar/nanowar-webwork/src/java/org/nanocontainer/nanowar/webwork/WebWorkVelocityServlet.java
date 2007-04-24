@@ -99,7 +99,7 @@ public class WebWorkVelocityServlet extends VelocityViewServlet implements KeyCo
 			if(stack.test(key.toString())) 
 				return stack.findValue(key);
 				
-			return container.getComponentInstance(key);
+			return container.getComponent(key);
 		}
    	}
 }

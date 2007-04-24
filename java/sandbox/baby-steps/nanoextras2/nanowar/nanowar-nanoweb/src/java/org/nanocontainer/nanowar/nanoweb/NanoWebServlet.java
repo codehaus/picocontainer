@@ -59,7 +59,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     }
 
     private void initDispatcher(MutablePicoContainer applicationContainer) {
-        dispatcher = (Dispatcher) applicationContainer.getComponentInstanceOfType(Dispatcher.class);
+        dispatcher = (Dispatcher) applicationContainer.getComponent(Dispatcher.class);
         if (dispatcher == null) {
             dispatcher = new ChainingDispatcher(".vm");
         }
@@ -121,7 +121,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     private Object getActionObject(String path, HttpServletRequest request) throws ServletException, ScriptException {
         MutablePicoContainer requestContainer = getRequestContainer(request);
         // Try to get an action as specified in the configuration
-        Object action = requestContainer.getComponentInstance(path);
+        Object action = requestContainer.getComponent(path);
         if (action == null) {
             // Try to get an action from a script (groovy)
             try {
@@ -143,8 +143,8 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
         Object result = null;
         if (scriptURL != null) {
             Class scriptClass = cachingScriptClassLoader.getClass(scriptURL);
-            requestContainer.registerComponentImplementation(scriptPath, scriptClass);
-            result = requestContainer.getComponentInstance(scriptPath);
+            requestContainer.registerComponent(scriptPath, scriptClass);
+            result = requestContainer.getComponent(scriptPath);
         }
         return result;
     }

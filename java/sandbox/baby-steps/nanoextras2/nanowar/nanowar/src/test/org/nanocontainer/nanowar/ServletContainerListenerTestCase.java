@@ -257,11 +257,11 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
           "pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)\n"+
           "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
           "      System.out.println('Application scope parent '+parent)\n "+
-          "      pico.registerComponent('testFoo', org.nanocontainer.nanowar.Foo)\n" +
+          "      pico.registerComponent((Object)'testFoo', org.nanocontainer.nanowar.Foo)\n" +
           "   } else if ( assemblyScope instanceof javax.servlet.http.HttpSession ){ \n" +
           "      System.out.println('Session scope parent '+parent)\n "+
-          "      System.out.println('foo:'+parent.getComponent('testFoo'))\n"+
-          "      pico.registerComponent('testFooHierarchy', org.nanocontainer.nanowar.FooHierarchy)\n"+
+          "      System.out.println('foo:'+parent.getComponent((Object)'testFoo'))\n"+
+          "      pico.registerComponent((Object)'testFooHierarchy', org.nanocontainer.nanowar.FooHierarchy)\n"+
           "   }\n "+
           "";
       assertGroovyContainerBuilderCanBeScopedWithInlinedScript(picoScript);
@@ -272,12 +272,12 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
       String builderScript =
           "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
           "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
-          "      System.out.println('Application scope parent '+parent)\n "+
+//          "      System.out.println('Application scope parent '+parent)\n "+
           "      component(key:org.nanocontainer.nanowar.Foo, class:org.nanocontainer.nanowar.Foo)\n " +
           "   } else if ( assemblyScope instanceof javax.servlet.http.HttpSession ){ \n" +
-          "      System.out.println('Session scope parent '+parent)\n "+
-          "      System.out.println('isEmpty? '+parent.getComponent())\n "+
-          "      System.out.println('foo:'+parent.getComponent('testFoo'))\n"+
+  //        "      System.out.println('Session scope parent '+parent)\n "+
+    //      "      System.out.println('isEmpty? '+parent.getComponent())\n "+
+      //    "      System.out.println('foo:'+parent.getComponent((Object)'testFoo'))\n"+
           "      component(key:'testFooHierarchy', class:org.nanocontainer.nanowar.FooHierarchy)\n"+
           "   }\n "+
           "}";

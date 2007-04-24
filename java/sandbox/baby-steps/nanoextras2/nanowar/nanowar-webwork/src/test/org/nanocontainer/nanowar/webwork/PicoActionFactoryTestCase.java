@@ -34,7 +34,7 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
     }
     
 	public void testActionInstantiationWithValidClassName() throws Exception {
-		container.registerComponentInstance("foo");
+		container.registerComponent("foo");
 		TestAction action = (TestAction) factory
 				.getActionImpl(TestAction.class.getName());
 		assertNotNull(action);
@@ -48,23 +48,23 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
     }
 
     public void testActionInstantiationWithInvalidClassName() throws Exception {
-        container.registerComponentInstance("foo");
+        container.registerComponent("foo");
         TestAction action = (TestAction) factory
                 .getActionImpl("invalidAction");
         assertNull(action);
     }
 
     public void testActionInstantiationWhichHasAlreadyBeenRegistered() throws Exception {
-        container.registerComponentInstance("foo");
-        container.registerComponentImplementation(TestAction.class);
-        TestAction action1 = (TestAction) container.getComponentInstance(TestAction.class);
+        container.registerComponent("foo");
+        container.registerComponent(TestAction.class);
+        TestAction action1 = (TestAction) container.getComponent(TestAction.class);
         TestAction action2 = (TestAction) factory
                 .getActionImpl(TestAction.class.getName());
         assertSame(action1, action2);
     }
 
     public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
-        container.registerComponentInstance("foo");
+        container.registerComponent("foo");
         TestAction action1 = (TestAction) factory
                 .getActionImpl(TestAction.class.getName());
         TestAction action2 = (TestAction) factory
@@ -82,7 +82,7 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
         requestMock.expects(once()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
                 isA(MutablePicoContainer.class));
         ServletActionContext.setRequest(request);
-        container.registerComponentInstance("foo");
+        container.registerComponent("foo");
         TestAction action = (TestAction) factory
                 .getActionImpl(TestAction.class.getName());
         assertNotNull(action);        

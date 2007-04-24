@@ -1,0 +1,50 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+<project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-ioc</id>
+    <name>NanoContainer IoC</name>
+
+    <dependencies>
+
+        <!-- It might be worthwhile to get rid of this dependency.
+        Only needed in one line of code in AvalonUtil. AH. -->
+        <dependency>
+            <id>proxytoys</id>
+            <version>0.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>avalon-framework</groupId>
+            <artifactId>avalon-framework-api</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>avalon-framework</groupId>
+            <artifactId>avalon-framework-impl</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>avalon-logkit</groupId>
+            <artifactId>avalon-logkit</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <dependency>
+            <id>xstream</id>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <id>log4j</id>
+            <version>1.2.8</version>
+        </dependency>
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0.4</version>
+        </dependency>
+
+        <!-- test time only -->
+        <dependency>
+            <id>easymock</id>
+            <version>1.0.1b</version>
+        </dependency>
+    </dependencies>
+    
+</project>

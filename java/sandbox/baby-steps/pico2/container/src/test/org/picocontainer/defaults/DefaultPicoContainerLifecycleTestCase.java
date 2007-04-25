@@ -278,7 +278,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         pico.registerComponent(DefaultPicoContainer.class);
         pico.registerComponent(HashMap.class);
         pico.start();
-        PicoContainer childContainer = (PicoContainer) pico.getComponent(DefaultPicoContainer.class);
+        DefaultPicoContainer childContainer = (DefaultPicoContainer) pico.getComponent(DefaultPicoContainer.class);
         // it should be started too
         try {
             childContainer.start();

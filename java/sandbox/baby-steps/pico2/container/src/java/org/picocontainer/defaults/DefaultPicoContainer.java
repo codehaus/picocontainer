@@ -30,6 +30,8 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.Startable;
+import org.picocontainer.Disposable;
 import org.picocontainer.monitors.DefaultComponentMonitor;
 
 /**
@@ -458,7 +460,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         for (Iterator iterator = children.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
             childrenStarted.add(new Integer(child.hashCode()));
-            child.start();
+            if (child instanceof MutablePicoContainer) {
+                ((Startable) child).start();
+            }
         }
     }
 
@@ -483,7 +487,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         for (Iterator iterator = children.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
             if ( childStarted(child) ){
-                child.stop();
+                if (child instanceof MutablePicoContainer) {
+                    ((Startable) child).stop();
+                }
             }
         }
         this.lifecycleManager.stop(this);
@@ -517,7 +523,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (disposed) throw new IllegalStateException("Already disposed");
         for (Iterator iterator = children.iterator(); iterator.hasNext();) {
             PicoContainer child = (PicoContainer) iterator.next();
-            child.dispose();
+            if (child instanceof MutablePicoContainer) {
+                ((Disposable) child).dispose();
+            }
         }
         this.lifecycleManager.dispose(this);
         disposed = true;

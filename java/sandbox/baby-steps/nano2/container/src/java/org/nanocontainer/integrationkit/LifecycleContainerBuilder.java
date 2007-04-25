@@ -10,6 +10,8 @@ package org.nanocontainer.integrationkit;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.Startable;
+import org.picocontainer.Disposable;
 import org.picocontainer.defaults.ObjectReference;
 
 /**
@@ -49,14 +51,20 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
     }
 
     protected void autoStart(PicoContainer container) {
-        container.start();
+        if (container instanceof Startable) {
+            ((Startable) container).start();
+        }
     }
 
     public void killContainer(ObjectReference containerRef) {
         try {
             PicoContainer pico = (PicoContainer) containerRef.get();
-            pico.stop();
-            pico.dispose();
+            if (pico instanceof Startable) {
+                ((Startable) pico).stop();
+            }
+            if (pico instanceof Disposable) {
+                ((Disposable) pico).dispose();
+            }
             PicoContainer parent = pico.getParent();
             if (parent != null && parent instanceof MutablePicoContainer) {
                 // see comment in buildContainer

@@ -51,7 +51,7 @@ public class BeanNode extends AbstractBuilderNode {
     public Object createNewNode(Object current, Map attributes) {
         MutablePicoContainer pico = ((NanoContainer) current).getPico();
         Object bean = createBean(attributes);
-        pico.registerComponentInstance(bean);
+        pico.registerComponent(bean);
         return bean;
     }
 

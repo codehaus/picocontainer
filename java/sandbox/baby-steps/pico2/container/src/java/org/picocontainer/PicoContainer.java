@@ -26,7 +26,7 @@ import java.util.List;
  *      PicoContainer.</a>
  * @since 1.0
  */
-public interface PicoContainer extends Startable, Disposable {
+public interface PicoContainer {
 
     /**
      * Retrieve a component instance registered with a specific key. If a component cannot be found in this container,

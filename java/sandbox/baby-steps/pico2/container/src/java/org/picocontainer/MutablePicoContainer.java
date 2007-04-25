@@ -21,7 +21,7 @@ package org.picocontainer;
  * @see <a href="package-summary.html#package_description">See package description for basic overview how to use PicoContainer.</a>
  * @since 1.0
  */
-public interface MutablePicoContainer extends PicoContainer {
+public interface MutablePicoContainer extends PicoContainer, Startable, Disposable {
 
     /**
      * Register a component.

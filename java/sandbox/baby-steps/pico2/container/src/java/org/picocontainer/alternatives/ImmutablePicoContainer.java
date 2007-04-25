@@ -85,18 +85,4 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
         delegate.accept(visitor);
     }
 
-    public void start() {
-        // This is false security. As long as components can be accessed with getComponent(), they can also be started. (AH).
-        throw new UnsupportedOperationException("This container is immutable, start() is not allowed");
-    }
-
-    public void stop() {
-        // This is false security. As long as components can be accessed with getComponent(), they can also be stopped. (AH).
-        throw new UnsupportedOperationException("This container is immutable, stop() is not allowed");
-    }
-
-    public void dispose() {
-        // This is false security. As long as components can be accessed with getComponent(), they can also be disposed. (AH).
-        throw new UnsupportedOperationException("This container is immutable, dispose() is not allowed");
-    }
 }

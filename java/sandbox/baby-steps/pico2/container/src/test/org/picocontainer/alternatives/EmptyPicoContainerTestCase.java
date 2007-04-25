@@ -37,8 +37,5 @@ public class EmptyPicoContainerTestCase extends TestCase {
         PicoContainer pico = new EmptyPicoContainer();
         pico.verify();
         pico.accept(null);
-        pico.start();
-        pico.stop();
-        pico.dispose();
     }
 }

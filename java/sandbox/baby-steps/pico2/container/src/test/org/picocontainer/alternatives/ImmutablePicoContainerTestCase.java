@@ -175,42 +175,6 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
         assertEquals(parent, parent2);
     }
 
-    public void testStartBarfs() {
-        DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Map.class, HashMap.class);
-        ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
-        try {
-            ipc.start();
-            fail("should have barfed");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
-    }
-
-    public void testStopBarfs() {
-        DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Map.class, HashMap.class);
-        ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
-        try {
-            ipc.stop();
-            fail("stop have barfed");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
-    }
-
-    public void testDisposeBarfs() {
-        DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Map.class, HashMap.class);
-        ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
-        try {
-            ipc.dispose();
-            fail("should have barfed");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
-    }
-
     public static class MyDisposable implements Disposable {
         public boolean disposed;
 
@@ -240,12 +204,6 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
         parent.registerComponent("foo", MyDisposable.class);
         child.registerComponent("bar", MyDisposable.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(parent);
-        try {
-            ipc.dispose();
-            fail("Should have barfed");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
 
         MyDisposable parentDisposable = (MyDisposable) parent.getComponent("foo");
         assertFalse(parentDisposable.disposed);

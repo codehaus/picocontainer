@@ -33,29 +33,6 @@ public class ImmutablePicoContainerProxyFactoryTest extends MockObjectTestCase {
         }
     }
 
-    public void testLifecylceBarfs() {
-        Mock mockPicoContainer = mock(PicoContainer.class);
-        PicoContainer ipc = ImmutablePicoContainerProxyFactory.newProxyInstance((PicoContainer)mockPicoContainer
-                .proxy());
-        try {
-            ipc.start();
-            fail("should have barfed");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
-        try {
-            ipc.stop();
-            fail("should have barfed");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
-        try {
-            ipc.dispose();
-            fail("should have barfed");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
-    }
 
     public void testVisitingOfImmutableContainerWorks() {
         DefaultPicoContainer pico = new DefaultPicoContainer();

@@ -53,8 +53,9 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "    component(A)\n" +
                 "}");
 
-        PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
+        MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, null, ASSEMBLY_SCOPE);
         // LifecyleContainerBuilder starts the container
+
         pico.dispose();
 
         assertEquals("Should match the expression", "<A!A", X.componentRecorder);
@@ -231,7 +232,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "    }\n" +
                 "}");
 
-        PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
+        MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, null, ASSEMBLY_SCOPE);
         pico.dispose();
         assertEquals("Should match the expression", "<A!A", X.componentRecorder);
     }
@@ -373,7 +374,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "}\n");
 
         // A and C have no no dependancies. B Depends on A.
-        PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
+        MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, null, ASSEMBLY_SCOPE);
         //pico.start();
         pico.stop();
         pico.dispose();

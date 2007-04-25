@@ -30,9 +30,6 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
     public void instantiating(Constructor constructor) {
     }
 
-    public void instantiated(Constructor constructor, long duration) {
-    }
-
     public void instantiationFailed(Constructor constructor, Exception e) {
     }
 

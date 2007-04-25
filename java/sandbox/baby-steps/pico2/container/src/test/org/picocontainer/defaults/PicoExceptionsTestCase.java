@@ -23,7 +23,6 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoInstantiationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 
@@ -75,17 +74,15 @@ public class PicoExceptionsTestCase
     }
 
     public void testPicoInitializationExceptionWithDefaultConstructor() {
-        TestException e = new TestException();
+        TestException e = new TestException(null);
         assertNull(e.getMessage());
         assertNull(e.getCause());
     }
     
     private static class TestException extends PicoInitializationException {
-        
-    }
-
-    public void testPicoInstantiationException() {
-        executeTestOfStandardException(PicoInstantiationException.class);
+        public TestException(final String message) {
+            super(message);
+        }
     }
 
     public void testPicoIntrospectionException() {

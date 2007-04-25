@@ -18,13 +18,6 @@ package org.picocontainer;
  * @since 1.0
  */
 public class PicoInitializationException extends PicoException {
-    /**
-     * Construct a new exception with no cause and no detail message. Note modern JVMs may still track the exception
-     * that caused this one.
-     * @deprecated Use public constructors
-     */
-    protected PicoInitializationException() {
-    }
 
     /**
      * Construct a new exception with no cause and the specified detail message.  Note modern JVMs may still track the

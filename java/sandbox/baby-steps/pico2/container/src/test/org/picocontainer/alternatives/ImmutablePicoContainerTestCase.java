@@ -140,12 +140,6 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
         } catch (PicoVerificationException e) {
             // expected
         }
-        try {
-            ipc.verify();
-            fail("PicoVerificationException expected");
-        } catch (PicoVerificationException e) {
-            // expected
-        }
     }
 
     public void testGetParentForMutable() {

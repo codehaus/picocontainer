@@ -103,13 +103,6 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return delegate.getComponentAdapters(componentType);
     }
 
-    /**
-     * @deprecated since 1.1 - Use new VerifyingVisitor().traverse(this)
-     */
-   public void verify() throws PicoVerificationException {
-        delegate.verify();
-    }
-
     public void start() {
         delegate.start();
     }

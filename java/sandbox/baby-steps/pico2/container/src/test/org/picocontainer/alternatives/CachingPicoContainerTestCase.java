@@ -58,14 +58,5 @@ public class CachingPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertNotNull(list2);
         assertTrue(list1 != list2);
     }    
-    
-
-    public void testDelegationOfVerify() {        
-        DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Iterator.class, UnsatisfiableIterator.class);
-        CachingPicoContainer pico = new CachingPicoContainer(mpc);
-        pico.verify();
-
-    }
-    
+        
 }

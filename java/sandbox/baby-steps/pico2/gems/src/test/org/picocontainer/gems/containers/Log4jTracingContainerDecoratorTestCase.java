@@ -356,13 +356,6 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 		verifyLog("Unregistering component by instance (");
 		
 	}
-
-	public void testVerify() {
-		picoMock.expects(once()).method("verify");
-		tracingDecorator.verify();
-		verifyLog("Verifying container");
-		verifyLog("Using deprecated function PicoContainer.verify().");
-	}
 	
 	public void testDecoratorIsSerializable() throws IOException, ClassNotFoundException {
 		String logCategory = "this.is.a.test";

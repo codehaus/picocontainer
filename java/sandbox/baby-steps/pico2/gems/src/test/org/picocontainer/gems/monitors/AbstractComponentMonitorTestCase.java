@@ -56,12 +56,6 @@ public abstract class AbstractComponentMonitorTestCase extends TestCase {
         assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATING, new Object[]{AbstractComponentMonitor.toString(constructor)}));
     }
 
-    public void testShouldTraceInstantiated() throws Exception {
-        componentMonitor.instantiated(constructor, 543);
-        String line = getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATED, new Object[]{AbstractComponentMonitor.toString(constructor), new Long(543)});
-        assertFileContent(line);
-    }
-
     public void testShouldTraceInstantiatedWithInjected() throws Exception {
         Object[] injected = new Object[0];
         Object instantiated = new Object();

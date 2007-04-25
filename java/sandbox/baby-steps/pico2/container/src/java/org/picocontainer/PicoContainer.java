@@ -106,15 +106,6 @@ public interface PicoContainer {
     List getComponentAdapters(Class componentType);
 
     /**
-     * Verify that the dependencies for all the registered components can be satisfied. No components are instantiated
-     * during the verification process.
-     * 
-     * @throws PicoVerificationException if there are unsatisifiable dependencies.
-     * @deprecated since 1.1 - Use "new VerifyingVisitor().traverse(this)"
-     */
-    void verify() throws PicoVerificationException;
-
-    /**
      * Returns a List of components of a certain componentType. The list is ordered by instantiation order, starting
      * with the components instantiated first at the beginning.
      * 

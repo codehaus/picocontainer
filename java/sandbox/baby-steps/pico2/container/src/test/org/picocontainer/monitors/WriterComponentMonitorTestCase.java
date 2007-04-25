@@ -33,11 +33,6 @@ public class WriterComponentMonitorTestCase extends TestCase {
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATING, new Object[]{AbstractComponentMonitor.toString(constructor)}) +NL,  out.toString());
     }
 
-    public void testShouldTraceInstantiated() {
-        componentMonitor.instantiated(constructor, 543);
-        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATED, new Object[]{AbstractComponentMonitor.toString(constructor), new Long(543)}) +NL,  out.toString());
-    }
-
     public void testShouldTraceInstantiatedWithInjected() {
         Object[] injected = new Object[0];
         Object instantiated = new Object();

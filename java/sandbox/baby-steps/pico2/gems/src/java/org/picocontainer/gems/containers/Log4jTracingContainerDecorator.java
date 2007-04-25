@@ -506,20 +506,6 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
-	 * @throws PicoVerificationException
-	 * @deprecated
-	 * @see org.picocontainer.PicoContainer#verify()
-	 */
-	public void verify() throws PicoVerificationException {
-		logger.info("Verifying container");
-		logger.warn("Using deprecated function PicoContainer.verify().  "
-				+ "Please use VerifyingVisitor instead.");
-		delegate.verify();
-	}
-
-	/**
 	 * Retrieves the logger instance used by this decorator.
 	 * 
 	 * @return Logger instance.

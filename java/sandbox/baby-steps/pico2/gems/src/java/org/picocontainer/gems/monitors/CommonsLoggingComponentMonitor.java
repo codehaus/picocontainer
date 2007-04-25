@@ -114,14 +114,6 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
         delegate.instantiating(constructor);
     }
 
-    public void instantiated(Constructor constructor, long duration) {
-        Log log = getLog(constructor);
-        if (log.isDebugEnabled()) {
-            log.debug(format(INSTANTIATED, new Object[]{toString(constructor), new Long(duration)}));
-        }
-        delegate.instantiated(constructor, duration);
-    }
-
     public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {

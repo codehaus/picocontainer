@@ -32,10 +32,4 @@ public class EmptyPicoContainerTestCase extends TestCase {
         assertTrue(pico.getComponents(null).isEmpty());
         assertNull(pico.getParent());
     }
-
-    public void testVisitorAndLifecycleMethodsProduceNoResult() {
-        PicoContainer pico = new EmptyPicoContainer();
-        pico.verify();
-        pico.accept(null);
-    }
 }

@@ -55,7 +55,6 @@ public class EmptyPicoContainer implements PicoContainer, Serializable {
         return Collections.EMPTY_LIST;
     }
     
-    public void verify()  {}
     
     public void accept(PicoVisitor visitor) { }
     

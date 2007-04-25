@@ -47,7 +47,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 * Alternate constructor that allows specification of the Logger to
 	 * use.
 	 * @param delegate Container to be decorated.
-	 * @param log specific Log4j Logger to use.
+	 * @param loggingCategory specific Log4j Logger to use.
 	 * @throws NullPointerException if delegate or log is null.
 	 */
 	public CommonsLoggingTracingContainerDecorator(final MutablePicoContainer delegate, final String loggingCategory) {
@@ -458,18 +458,6 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 		return delegate.unregisterComponentByInstance(componentInstance);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @throws PicoVerificationException
-	 * @deprecated
-	 * @see org.picocontainer.PicoContainer#verify()
-	 */
-	public void verify() throws PicoVerificationException {
-		log.info("Verifying container");
-		log.warn("Using deprecated function PicoContainer.verify().  Please use VerifyingVisitor instead.");
-		delegate.verify();
-	}
-	
 	
 	/**
 	 * Retrieves the log instance used by this decorator.

@@ -34,15 +34,6 @@ public interface ComponentMonitor {
     void instantiating(Constructor constructor);
 
     /**
-     * Event thrown after the component has been instantiated using the given constructor
-     * 
-     * @param constructor the Constructor used to instantiate the component
-     * @param duration the duration in millis of the instantiation
-     * @deprecated since 1.3
-     */
-    void instantiated(Constructor constructor, long duration);
-
-    /**
      * Event thrown after the component has been instantiated using the given constructor.
      * This should be called for both Constructor and Setter DI.
      *

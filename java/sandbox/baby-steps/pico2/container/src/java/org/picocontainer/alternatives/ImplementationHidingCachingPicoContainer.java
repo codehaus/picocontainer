@@ -46,10 +46,10 @@ public class ImplementationHidingCachingPicoContainer extends AbstractDelegating
             // assume that implementation hiding  CAF inside Caching one.
             return (CachingComponentAdapterFactory) caf;
         }
-        if (caf instanceof ImplementationHidingComponentAdapterFactory) {
+        if (caf instanceof org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory) {
             return new CachingComponentAdapterFactory(caf);
         }
-        return new CachingComponentAdapterFactory(new ImplementationHidingComponentAdapterFactory(caf, false));
+        return new CachingComponentAdapterFactory(new org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory(caf, false));
     }
 
     /**

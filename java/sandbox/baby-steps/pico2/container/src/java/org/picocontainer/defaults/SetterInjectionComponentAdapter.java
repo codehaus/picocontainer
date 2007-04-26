@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.io.Serializable;
 
 /**
  * Instantiates components using empty constructors and
@@ -43,9 +44,9 @@ import java.util.Set;
  * @version $Revision$
  */
 public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapter {
+    private String prefix = "set";
     private transient Guard instantiationGuard;
     private transient List<Method> setters;
-    private transient List<String> setterNames;
     private transient Class[] setterTypes;
 
     /**
@@ -99,7 +100,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public SetterInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public SetterInjectionComponentAdapter(final Serializable componentKey, final Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
     }
 
@@ -115,7 +116,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public SetterInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public SetterInjectionComponentAdapter(final Serializable componentKey, final Class componentImplementation, Parameter... parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
         this(componentKey, componentImplementation, parameters, false);
     }
 
@@ -221,7 +222,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                             setter = setters.get(i);
                             componentMonitor.invoking(setter, componentInstance);
                             Object toInject = matchingParameters[i].resolveInstance(guardedContainer, SetterInjectionComponentAdapter.this, setterTypes[i]);
-                            setter.invoke(componentInstance, new Object[]{toInject});
+                            setter.invoke(componentInstance, toInject);
                             injected[i] = toInject;
                             //componentMonitor.invoked(setter, componentInstance, System.currentTimeMillis() - startTime);
                         }
@@ -265,26 +266,21 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
 
     private void initializeSetterAndTypeLists() {
         setters = new ArrayList<Method>();
-        setterNames = new ArrayList<String>();
         final List<Class> typeList = new ArrayList<Class>();
         final Method[] methods = getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            final Method method = methods[i];
+        for (final Method method : methods) {
             final Class[] parameterTypes = method.getParameterTypes();
             // We're only interested if there is only one parameter and the method name is bean-style.
             if (parameterTypes.length == 1) {
                 String methodName = method.getName();
-                String prefix = "set";
-                boolean isBeanStyle = methodName.length() >= prefix.length()+1 && methodName.startsWith(prefix) && Character.isUpperCase(methodName.charAt(prefix.length()));
+                boolean isBeanStyle = methodName.length() >= prefix.length() + 1 && methodName.startsWith(prefix) && Character.isUpperCase(methodName.charAt(prefix.length()));
                 if (isBeanStyle) {
-                    String attribute = Character.toLowerCase(methodName.charAt(prefix.length())) + methodName.substring(prefix.length()+1);
                     setters.add(method);
-                    setterNames.add(attribute);
                     typeList.add(parameterTypes[0]);
                 }
             }
         }
-        setterTypes = (Class[]) typeList.toArray(new Class[0]);
+        setterTypes = typeList.toArray(new Class[0]);
     }
 
     private Method[] getMethods() {

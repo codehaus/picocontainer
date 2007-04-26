@@ -122,7 +122,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
+    public ConstructorInjectionComponentAdapter(Object componentKey, Class componentImplementation, Parameter... parameters) {
         this(componentKey, componentImplementation, parameters, false);
     }
 

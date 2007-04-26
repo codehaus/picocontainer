@@ -47,7 +47,7 @@ public class BuildingBlocksTestCase extends TestCase {
         // START SNIPPET: register-equivalent-at-length
         picoContainer.registerComponent(
                 new CachingComponentAdapter(
-                        new ConstructorInjectionComponentAdapter(Juicer.class, Juicer.class, null)));
+                        new ConstructorInjectionComponentAdapter(Juicer.class, Juicer.class)));
         // END SNIPPET: register-equivalent-at-length
     }
 

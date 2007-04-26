@@ -196,8 +196,8 @@ public class SetterInjectionComponentAdapterTestCase
     }
 
     public void testAllUnsatisfiableDependenciesAreSignalled() {
-        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter("a", A.class, null);
-        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter("b", B.class, null);
+        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter("a", A.class);
+        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter("b", B.class);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(bAdapter);

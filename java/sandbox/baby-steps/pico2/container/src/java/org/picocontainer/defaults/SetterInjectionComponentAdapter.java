@@ -274,9 +274,10 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             // We're only interested if there is only one parameter and the method name is bean-style.
             if (parameterTypes.length == 1) {
                 String methodName = method.getName();
-                boolean isBeanStyle = methodName.length() >= 4 && methodName.startsWith("set") && Character.isUpperCase(methodName.charAt(3));
+                String prefix = "set";
+                boolean isBeanStyle = methodName.length() >= prefix.length()+1 && methodName.startsWith(prefix) && Character.isUpperCase(methodName.charAt(prefix.length()));
                 if (isBeanStyle) {
-                    String attribute = Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
+                    String attribute = Character.toLowerCase(methodName.charAt(prefix.length())) + methodName.substring(prefix.length()+1);
                     setters.add(method);
                     setterNames.add(attribute);
                     typeList.add(parameterTypes[0]);

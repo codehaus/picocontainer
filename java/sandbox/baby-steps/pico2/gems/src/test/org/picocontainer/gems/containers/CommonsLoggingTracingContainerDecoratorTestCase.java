@@ -212,14 +212,14 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 
 	public void testGetComponentInstance() {
 		String test = "This is a test";
-		picoMock.expects(once()).method("getComponent").with(same(String.class)).will(returnValue(test));
-		picoMock.expects(once()).method("getComponent").with(same(Map.class)).will(returnValue(null));
+		picoMock.expects(once()).method("getComponent").with(eq("foo")).will(returnValue(test));
+		picoMock.expects(once()).method("getComponent").with(eq("bar")).will(returnValue(null));
 		
-		Object result = tracingDecorator.getComponent((Object) String.class);
+		Object result = tracingDecorator.getComponent("foo");
 		assertEquals(test, result);
 		verifyLog("Attempting to load component instance with key: ");
 		
-		assertNull(tracingDecorator.getComponent((Object) Map.class));
+		assertNull(tracingDecorator.getComponent("bar"));
 		this.verifyKeyNotFound();
 	}
 
@@ -233,7 +233,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		verifyLog("Attempting to load component instance with type: ");
 		
 		assertNull(tracingDecorator.getComponent(Map.class));
-		verifyLog("No component of type " + Map.class.getName());
+		verifyLog("Could not find component " + Map.class.getName());
 	}
 
 	public void testGetComponentInstances() {

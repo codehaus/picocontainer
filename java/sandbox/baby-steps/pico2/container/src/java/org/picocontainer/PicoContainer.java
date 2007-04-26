@@ -29,24 +29,14 @@ import java.util.List;
 public interface PicoContainer {
 
     /**
-     * Retrieve a component instance registered with a specific key. If a component cannot be found in this container,
+     * Retrieve a component instance registered with a specific key or type. If a component cannot be found in this container,
      * the parent container (if one exists) will be searched.
      * 
-     * @param componentKey the key that the component was registered with.
+     * @param componentKeyOrType the key or Type that the component was registered with.
      * @return an instantiated component, or <code>null</code> if no component has been registered for the specified
      *         key.
      */
-    Object getComponent(Object componentKey);
-
-    /**
-     * Find a component instance matching the specified type.
-     * 
-     * @param componentType the type of the component
-     * @return an instantiated component matching the class, or <code>null</code> if no component has been registered
-     *         with a matching type
-     * @throws PicoException if the instantiation of the component fails
-     */
-    Object getComponent(Class componentType);
+    Object getComponent(Object componentKeyOrType);
 
     /**
      * Retrieve all the registered component instances in the container, (not including those in the parent container).

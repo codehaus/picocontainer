@@ -50,17 +50,17 @@ public abstract class AbstractNanoPicoContainer extends AbstractDelegatingMutabl
         container = new DefaultNanoContainer(classLoader, delegate);
     }
 
-    public final Object getComponent(Object componentKey) throws PicoException {
+    public final Object getComponent(Object componentKeyOrType) throws PicoException {
 
-        Object instance = getDelegate().getComponent(componentKey);
+        Object instance = getDelegate().getComponent(componentKeyOrType);
 
         if (instance != null) {
             return instance;
         }
 
         ComponentAdapter componentAdapter = null;
-        if (componentKey.toString().startsWith("*")) {
-            String candidateClassName = componentKey.toString().substring(1);
+        if (componentKeyOrType.toString().startsWith("*")) {
+            String candidateClassName = componentKeyOrType.toString().substring(1);
             Collection cas = getComponentAdapters();
             for (Iterator it = cas.iterator(); it.hasNext();) {
                 ComponentAdapter ca = (ComponentAdapter) it.next();
@@ -74,7 +74,7 @@ public abstract class AbstractNanoPicoContainer extends AbstractDelegatingMutabl
         if (componentAdapter != null) {
             return componentAdapter.getComponentInstance(this);
         } else {
-            return getComponentInstanceFromChildren(componentKey);
+            return getComponentInstanceFromChildren(componentKeyOrType);
         }
     }
 

@@ -352,15 +352,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return result;
     }
 
-    public Object getComponent(Object componentKey) {
-        ComponentAdapter componentAdapter = getComponentAdapter(componentKey);
-        return componentAdapter == null ? null : getInstance(componentAdapter);
+    public Object getComponent(Object componentKeyOrType) {
+        if (componentKeyOrType instanceof Class) {
+            final ComponentAdapter componentAdapter = getComponentAdapter((Class) componentKeyOrType);
+            return componentAdapter == null ? null : getInstance(componentAdapter);
+
+        } else {
+            ComponentAdapter componentAdapter = getComponentAdapter(componentKeyOrType);
+            return componentAdapter == null ? null : getInstance(componentAdapter);
+        }
     }
 
-    public Object getComponent(Class componentType) {
-        final ComponentAdapter componentAdapter = getComponentAdapter((Class) componentType);
-        return componentAdapter == null ? null : getInstance(componentAdapter);
-    }
 
     private Object getInstance(ComponentAdapter componentAdapter) {
         // check wether this is our adapter

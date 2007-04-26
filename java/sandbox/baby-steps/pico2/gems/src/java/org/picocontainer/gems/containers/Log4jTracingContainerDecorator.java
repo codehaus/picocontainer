@@ -21,7 +21,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 
 /**
@@ -107,12 +106,13 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * Standard message handling for cases when a null object is returned for a
 	 * given key.
 	 * 
-	 * @param componentKey
+	 * @param componentKeyOrType
 	 * @param target
 	 */
-	protected void onKeyDoesntExistInContainer(final Object componentKey, final Logger target) {
-		logger.info("Could not find component " + ((componentKey != null) ? componentKey.toString() : " null ")
-				+ " in container or parent container.");
+	protected void onKeyOrTypeDoesNotExistInContainer(final Object componentKeyOrType, final Logger target) {
+        String s = componentKeyOrType instanceof Class ? ((Class) componentKeyOrType).getName() : (String) componentKeyOrType;
+        logger.info("Could not find component " + s
+                + " in container or parent container.");
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 
 		ComponentAdapter adapter = delegate.getComponentAdapter(componentKey);
 		if (adapter == null) {
-			onKeyDoesntExistInContainer(componentKey, logger);
+			onKeyOrTypeDoesNotExistInContainer(componentKey, logger);
 		}
 		return adapter;
 	}
@@ -188,7 +188,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 		ComponentAdapter ca = delegate.getComponentAdapter(componentType);
 
 		if (ca == null) {
-			onKeyDoesntExistInContainer(ca, logger);
+			onKeyOrTypeDoesNotExistInContainer(ca, logger);
 		}
 		return ca;
 	}
@@ -224,21 +224,25 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @param componentKey
+	 * @param componentKeyOrType
 	 * @return
 	 * @see org.picocontainer.PicoContainer#getComponent(java.lang.Object)
 	 */
-	public Object getComponent(final Object componentKey) {
+	public Object getComponent(final Object componentKeyOrType) {
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("Attempting to load component instance with key: " + componentKey + " for container "
+			logger.debug("Attempting to load component instance with " 
+                    + (componentKeyOrType instanceof Class ? "type" : "key") 
+                    + ": "
+                    + (componentKeyOrType instanceof Class ? ((Class) componentKeyOrType).getName() : componentKeyOrType)
+                    + " for container "
 					+ delegate);
 
 		}
 
-		Object result = delegate.getComponent(componentKey);
+		Object result = delegate.getComponent(componentKeyOrType);
 		if (result == null) {
-			onKeyDoesntExistInContainer(componentKey, logger);
+			onKeyOrTypeDoesNotExistInContainer(componentKeyOrType, logger);
 		}
 
 		return result;
@@ -251,22 +255,22 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * @return
 	 * @see org.picocontainer.PicoContainer#getComponent(java.lang.Class)
 	 */
-	public Object getComponent(final Class componentType) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Attempting to load component instance with type: " + componentType + " for container "
-					+ delegate);
-
-		}
-
-		Object result = delegate.getComponent(componentType);
-		if (result == null) {
-			if (logger.isInfoEnabled()) {
-				logger.info("No component of type " + componentType.getName() + " was found in container: " + delegate);
-			}
-		}
-
-		return result;
-	}
+//	public Object getComponent(final Class componentType) {
+//		if (logger.isDebugEnabled()) {
+//			logger.debug("Attempting to load component instance with type: " + componentType + " for container "
+//					+ delegate);
+//
+//		}
+//
+//		Object result = delegate.getComponent(componentType);
+//		if (result == null) {
+//			if (logger.isInfoEnabled()) {
+//				logger.info("No component of type " + componentType.getName() + " was found in container: " + delegate);
+//			}
+//		}
+//
+//		return result;
+//	}
 
 	/**
 	 * {@inheritDoc}

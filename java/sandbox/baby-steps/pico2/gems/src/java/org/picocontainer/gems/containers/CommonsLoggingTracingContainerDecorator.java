@@ -9,7 +9,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 
 /**
@@ -72,9 +71,9 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 * @param componentKey
 	 * @param target
 	 */
-	protected void onKeyDoesntExistInContainer(final Object componentKey, final Log target) {
+	protected void onKeyOrTypeDoesNotExistInContainer(final Object componentKey, final Log target) {
 		log.info("Could not find component "
-				+ ((componentKey != null) ? componentKey.toString() : " null ")
+				+ (componentKey instanceof Class ? ((Class) componentKey).getName() : componentKey)
 				+ " in container or parent container.");
 	}
 
@@ -128,7 +127,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 		
 		ComponentAdapter adapter =  delegate.getComponentAdapter(componentKey);
 		if (adapter == null) {
-			onKeyDoesntExistInContainer(componentKey, log);
+			onKeyOrTypeDoesNotExistInContainer(componentKey, log);
 		}
 		return adapter;
 	}
@@ -147,7 +146,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 		ComponentAdapter ca =  delegate.getComponentAdapter(componentType);
 
 		if (ca == null) {
-			onKeyDoesntExistInContainer(ca, log);
+			onKeyOrTypeDoesNotExistInContainer(ca, log);
 		}
 		return ca;
 	}
@@ -180,49 +179,25 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 
 	/**
 	 * {@inheritDoc}
-	 * @param componentKey
+	 * @param componentKeyOrType
 	 * @return
 	 * @see org.picocontainer.PicoContainer#getComponent(java.lang.Object)
 	 */
-	public Object getComponent(final Object componentKey) {
+	public Object getComponent(final Object componentKeyOrType) {
 		
 		if (log.isDebugEnabled()) {
-			log.debug("Attempting to load component instance with key: " 
-					+ componentKey
+			log.debug("Attempting to load component instance with "
+                    + (componentKeyOrType instanceof Class ? "type" : "key")
+                    +": "
+					+ componentKeyOrType
 					+ " for container " 
 					+ delegate);
 			
 		}
 		
-		Object result =  delegate.getComponent(componentKey);
+		Object result =  delegate.getComponent(componentKeyOrType);
 		if (result == null) {
-			onKeyDoesntExistInContainer(componentKey, log);
-		}
-		
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @param componentType
-	 * @return
-	 * @see org.picocontainer.PicoContainer#getComponent(java.lang.Class)
-	 */
-	public Object getComponent(final Class componentType) {
-		if (log.isDebugEnabled()) {
-			log.debug("Attempting to load component instance with type: " 
-					+ componentType
-					+ " for container " 
-					+ delegate);
-			
-		}
-		
-		Object result = delegate.getComponent(componentType);
-		if (result == null) {
-			if (log.isInfoEnabled()) {
-				log.info("No component of type " + componentType.getName()
-						+ " was found in container: " + delegate);
-			}
+			onKeyOrTypeDoesNotExistInContainer(componentKeyOrType, log);
 		}
 		
 		return result;

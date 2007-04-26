@@ -44,8 +44,8 @@ import java.util.Set;
  */
 public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapter {
     private transient Guard instantiationGuard;
-    private transient List setters;
-    private transient List setterNames;
+    private transient List<Method> setters;
+    private transient List<String> setterNames;
     private transient Class[] setterTypes;
 
     /**
@@ -150,7 +150,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
         }
 
         final List matchingParameterList = new ArrayList(Collections.nCopies(setters.size(), null));
-        final Set nonMatchingParameterPositions = new HashSet();
+        final Set<Integer> nonMatchingParameterPositions = new HashSet<Integer>();
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(setterTypes);
         for (int i = 0; i < currentParameters.length; i++) {
             final Parameter parameter = currentParameters[i];
@@ -167,7 +167,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             }
         }
 
-        final Set unsatisfiableDependencyTypes = new HashSet();
+        final Set<Class> unsatisfiableDependencyTypes = new HashSet<Class>();
         for (int i = 0; i < matchingParameterList.size(); i++) {
             if (matchingParameterList.get(i) == null) {
                 unsatisfiableDependencyTypes.add(setterTypes[i]);
@@ -218,7 +218,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                     Object injected[] = new Object[setters.size()];
                     try {
                         for (int i = 0; i < setters.size(); i++) {
-                            setter = (Method) setters.get(i);
+                            setter = setters.get(i);
                             componentMonitor.invoking(setter, componentInstance);
                             Object toInject = matchingParameters[i].resolveInstance(guardedContainer, SetterInjectionComponentAdapter.this, setterTypes[i]);
                             setter.invoke(componentInstance, new Object[]{toInject});
@@ -264,9 +264,9 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
     }
 
     private void initializeSetterAndTypeLists() {
-        setters = new ArrayList();
-        setterNames = new ArrayList();
-        final List typeList = new ArrayList();
+        setters = new ArrayList<Method>();
+        setterNames = new ArrayList<String>();
+        final List<Class> typeList = new ArrayList<Class>();
         final Method[] methods = getMethods();
         for (int i = 0; i < methods.length; i++) {
             final Method method = methods[i];

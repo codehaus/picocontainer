@@ -65,11 +65,6 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        /**
-     * @deprecated since 1.1 - Use new VerifyingVisitor().traverse(this)
-         */
-       public void verify() throws PicoVerificationException {
-        }
 
         public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
         }

@@ -790,7 +790,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
     public void testNoArgConstructorToBeSelected() {
         MutablePicoContainer pico = this.createPicoContainer(null);
         pico.registerComponent(ComponentA.class);
-        pico.registerComponent(NonGreedyClass.class, NonGreedyClass.class, new Parameter[] {});
+        pico.registerComponent(NonGreedyClass.class, NonGreedyClass.class, Parameter.ZERO);
         
 
         NonGreedyClass instance = (NonGreedyClass) pico.getComponent(NonGreedyClass.class);

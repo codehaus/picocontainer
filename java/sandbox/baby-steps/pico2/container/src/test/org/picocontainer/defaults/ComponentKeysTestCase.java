@@ -44,7 +44,7 @@ public class ComponentKeysTestCase extends TestCase {
         pico.registerComponent("default", SimpleTouchable.class);
 
         // Use the List variant instead, so we get better test coverage.
-        pico.registerComponentImplementation(Touchable.class, DecoratedTouchable.class, Collections.singletonList(new ComponentParameter("default")));
+        pico.registerComponent(Touchable.class, DecoratedTouchable.class, new ComponentParameter("default"));
 
         DefaultPicoContainer grandChild = new DefaultPicoContainer(new DefaultPicoContainer(new DefaultPicoContainer(pico)));
 

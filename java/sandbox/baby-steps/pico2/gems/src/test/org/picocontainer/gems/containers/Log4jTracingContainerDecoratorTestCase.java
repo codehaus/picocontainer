@@ -277,9 +277,9 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 
 	public void testRegisterComponentImplementationWithKeyAndClass() {
 		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
-		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(String.class)).will(returnValue(testAdapter));
+		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(String.class), eq(Parameter.ZERO)).will(returnValue(testAdapter));
 		
-		ComponentAdapter result = tracingDecorator.registerComponent(String.class, String.class);
+		ComponentAdapter result = tracingDecorator.registerComponent(String.class, String.class, Parameter.ZERO);
 		assertEquals(testAdapter, result);
 		verifyLog("Registering component implementation ");
 	}
@@ -287,9 +287,9 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 	public void testRegisterComponentInstanceWithKey() {
 		String testString = "This is a test.";
 		ComponentAdapter testAdapter = new InstanceComponentAdapter(String.class, testString);
-		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(testString)).will(returnValue(testAdapter));
+		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(testString), eq(Parameter.ZERO)).will(returnValue(testAdapter));
 
-		ComponentAdapter result = tracingDecorator.registerComponent(String.class, testString);
+		ComponentAdapter result = tracingDecorator.registerComponent(String.class, testString, Parameter.ZERO);
 
 		assertTrue(result instanceof InstanceComponentAdapter);
 		verifyLog("Registering component instance with key ");

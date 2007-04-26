@@ -225,6 +225,9 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         // ok , we processed our children. insert implementation
         Parameter[] parameterArray = (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
         if (parameters.size() > 0 || "default".equals(constructor)) {
+            if (parameterArray.length == 0) {
+                parameterArray = Parameter.ZERO;
+            }
             if (key == null || "".equals(key)) {
                 // without  key. clazz is our key
                 container.registerComponent(clazz, clazz, parameterArray);

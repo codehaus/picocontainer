@@ -26,6 +26,8 @@ package org.picocontainer;
  * @since 1.0
  */
 public interface Parameter {
+    Parameter[] ZERO = new Parameter[0];
+
     /**
      * Retrieve the object from the Parameter that statisfies the expected type.
      * 

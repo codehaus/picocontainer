@@ -64,7 +64,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "    component(A)\n" +
                                          "}");
 
-        PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
+        MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, null, ASSEMBLY_SCOPE);
         // LifecyleContainerBuilder starts the container
         pico.dispose();
 
@@ -212,7 +212,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "  }\n" +
                                          "}");
 
-        PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
+        MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, null, ASSEMBLY_SCOPE);
         pico.dispose();
         assertEquals("Should match the expression", "<A!A", X.componentRecorder);
     }
@@ -342,7 +342,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "}\n");
 
         // A and C have no no dependancies. B Depends on A.
-        PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
+        MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, null, ASSEMBLY_SCOPE);
         pico.stop();
         pico.dispose();
 

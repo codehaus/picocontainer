@@ -94,7 +94,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     
     public void testComponentsWithCommonSupertypeWhichIsAConstructorArgumentCanBeLookedUpByConcreteType() {
         MutablePicoContainer pico = createPicoContainer(null);
-        pico.registerComponent(LinkedList.class, LinkedList.class, new Parameter[0]);
+        pico.registerComponent(LinkedList.class, LinkedList.class, Parameter.ZERO);
         pico.registerComponent((Class) ArrayList.class);
         assertEquals(ArrayList.class, pico.getComponent((Class) ArrayList.class).getClass());
     }

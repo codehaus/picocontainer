@@ -321,60 +321,26 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	/**
 	 * {@inheritDoc}
 	 * @param componentKey
-	 * @param componentImplementation
+	 * @param componentImplementationOrInstance
 	 * @param parameters
 	 * @return
-	 * @see org.picocontainer.MutablePicoContainer#registerComponent(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[])
 	 */
-	public ComponentAdapter registerComponent(final Object componentKey, final Class componentImplementation,
-			final Parameter[] parameters) {
+	public ComponentAdapter registerComponent(final Object componentKey, final Object componentImplementationOrInstance,
+			final Parameter... parameters) {
 		if (log.isDebugEnabled()) {
-			log.debug("Registering component implementation with key " 
+			log.debug("Registering component "
+                    + (componentImplementationOrInstance instanceof Class ? "implementation" : "instance") 
+                    + " with key "
 					+ componentKey 
 					+ " and implementation " 
-					+ componentImplementation.getCanonicalName() 
+					+ (componentImplementationOrInstance instanceof Class
+                      ? ((Class) componentImplementationOrInstance).getCanonicalName()
+                      : componentImplementationOrInstance.getClass() )
 					+ " using parameters "
 					+ parameters);
 		}
 		
-		return delegate.registerComponent(componentKey, componentImplementation, parameters);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @param componentKey
-	 * @param componentImplementation
-	 * @return
-	 * @see org.picocontainer.MutablePicoContainer#registerComponent(java.lang.Object, java.lang.Class)
-	 */
-	public ComponentAdapter registerComponent(final Object componentKey, final Class componentImplementation) {
-		if (log.isDebugEnabled()) {
-			log.debug("Registering component implementation with key " 
-					+ componentKey 
-					+ " and implementation " 
-					+ componentImplementation.getCanonicalName());
-		}
-		
-		return delegate.registerComponent(componentKey, componentImplementation);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @param componentKey
-	 * @param componentInstance
-	 * @return
-	 * @see org.picocontainer.MutablePicoContainer#registerComponent(java.lang.Object, java.lang.Object)
-	 */
-	public ComponentAdapter registerComponent(final Object componentKey, final Object componentInstance) {
-		if (log.isDebugEnabled()) {
-			log.debug("Registering component instance with key " 
-					+ componentKey 
-					+ " and instance " 
-					+ componentInstance + "(class: " 
-					+ ((componentInstance != null) ? componentInstance.getClass().getName() : " null "));
-		}
-
-		return delegate.registerComponent(componentKey, componentInstance);
+		return delegate.registerComponent(componentKey, componentImplementationOrInstance, parameters);
 	}
 
 	/**

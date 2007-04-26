@@ -286,15 +286,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /**
      * {@inheritDoc}
-     * The returned ComponentAdapter will be an {@link InstanceComponentAdapter}.
-     */
-    public ComponentAdapter registerComponent(Object componentKey, Object componentInstance) {
-        ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentInstance, lifecycleStrategyForInstanceRegistrations);
-        return registerComponent(componentAdapter);
-    }
-
-    /**
-     * {@inheritDoc}
      * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
      * passed to the container's constructor.
      */
@@ -307,27 +298,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
      * passed to the container's constructor.
      */
-    public ComponentAdapter registerComponent(Object componentKey, Class componentImplementation) {
-        return registerComponent(componentKey, componentImplementation, (Parameter[]) null);
-    }
-
-    /**
-     * {@inheritDoc}
-     * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
-     * passed to the container's constructor.
-     */
-    public ComponentAdapter registerComponent(Object componentKey, Class componentImplementation, Parameter[] parameters) {
-        ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentKey, componentImplementation, parameters);
-        return registerComponent(componentAdapter);
-    }
-
-    /**
-     * Same as {@link #registerComponent(java.lang.Object, java.lang.Class, org.picocontainer.Parameter[])}
-     * but with parameters as a {@link List}. Makes it possible to use with Groovy arrays (which are actually Lists).
-     */
-    public ComponentAdapter registerComponentImplementation(Object componentKey, Class componentImplementation, List parameters) {
-        Parameter[] parametersAsArray = (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
-        return registerComponent(componentKey, componentImplementation, parametersAsArray);
+    public ComponentAdapter registerComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) {
+        if (parameters != null && parameters.length == 0 && parameters != Parameter.ZERO) {
+            parameters = null; // backwards compatibility!  solve this better later - Paul
+        }
+        if (componentImplementationOrInstance instanceof Class) {
+            ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentKey,
+                    (Class) componentImplementationOrInstance, parameters);
+            return registerComponent(componentAdapter);
+        } else {
+            ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentImplementationOrInstance, lifecycleStrategyForInstanceRegistrations);
+            return registerComponent(componentAdapter);
+        }
     }
 
     private void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {

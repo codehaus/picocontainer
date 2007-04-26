@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.webcontainer.TestHelper;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.mortbay.util.IO;
@@ -26,7 +27,7 @@ public class WebContainerBuilderTestCase extends TestCase {
     private ObjectReference containerRef = new SimpleReference();
     private ObjectReference parentContainerRef = new SimpleReference();
 
-    private PicoContainer pico;
+    private MutablePicoContainer pico;
 
     protected void tearDown() throws Exception {
         if (pico != null) {
@@ -240,7 +241,7 @@ public class WebContainerBuilderTestCase extends TestCase {
 
 
     private void assertPageIsHostedWithContents(Reader script, String message, String url) throws InterruptedException, IOException {
-        pico = buildContainer(script, null, "SOME_SCOPE");
+        pico = (MutablePicoContainer) buildContainer(script, null, "SOME_SCOPE");
         assertNotNull(pico);
         
         Thread.sleep(2 * 1000);

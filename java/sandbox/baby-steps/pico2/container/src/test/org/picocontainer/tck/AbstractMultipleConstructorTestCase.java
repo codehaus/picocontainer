@@ -133,7 +133,7 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
             ComponentParameter.DEFAULT,
             new ConstantParameter(new Integer(5)),
         });
-        pico.registerComponent("MultiNone", Multi.class, new Parameter[]{});
+        pico.registerComponent("MultiNone", Multi.class, Parameter.ZERO);
         pico.registerComponent(One.class);
         pico.registerComponent("Two", Two.class);
 

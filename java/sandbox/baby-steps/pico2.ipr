@@ -258,7 +258,6 @@
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/NanoContainer-NanoWar.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/NanoContainer-NanoWar.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/persistence/NanoContainer-Persistence.iml" filepath="$PROJECT_DIR$/nanoextras2/persistence/NanoContainer-Persistence.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/remoting/NanoContainer-Remoting.iml" filepath="$PROJECT_DIR$/nanoextras2/remoting/NanoContainer-Remoting.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/sandbox/NanoContainer-Sandbox.iml" filepath="$PROJECT_DIR$/nanoextras2/sandbox/NanoContainer-Sandbox.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/tools/NanoContainer-Tools.iml" filepath="$PROJECT_DIR$/nanoextras2/tools/NanoContainer-Tools.iml" />
       <module fileurl="file://$PROJECT_DIR$/pico2/PicoContainer.iml" filepath="$PROJECT_DIR$/pico2/PicoContainer.iml" />
     </modules>

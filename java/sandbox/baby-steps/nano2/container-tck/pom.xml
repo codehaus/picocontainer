@@ -36,8 +36,8 @@
                         <include>org/nanocontainer/TestHelper.java</include>
 						<include>org/nanocontainer/script/*.java</include>
 					</includes>
-					<source>1.4</source>
-					<target>1.4</target>
+					<source>1.5</source>
+					<target>1.5</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>

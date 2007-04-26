@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 
 
 public class Issue0229TestCase extends TestCase {
+    
     public static class MockRunnable implements Runnable {
         public void run() {
         }
@@ -40,8 +41,8 @@ public class Issue0229TestCase extends TestCase {
 
     public void testArrayDependenciesAndVerification() {
         DefaultPicoContainer container = new DefaultPicoContainer();
-        container.registerComponent(MockRunnable.class);
-        container.registerComponent(OtherRunnable.class);
+        container.registerComponent(new MockRunnable());
+        container.registerComponent(new OtherRunnable());
         container.registerComponent(MockRunner.class);
 
         // this will fail to resolve the Runnable array on the MockRunner

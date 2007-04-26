@@ -20,14 +20,9 @@ public class BarDecoratingPicoContainer extends AbstractDelegatingMutablePicoCon
         return null;
     }
 
-    public ComponentAdapter registerComponent(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoRegistrationException {
-        Assert.assertEquals(Vector.class, componentImplementation);
+    public ComponentAdapter registerComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws PicoRegistrationException {
+        Assert.assertEquals(Vector.class, componentImplementationOrInstance);
         return super.registerComponent(HashMap.class, HashMap.class, parameters);
-    }
-
-    public ComponentAdapter registerComponent(Object componentKey, Class componentImplementation) throws PicoRegistrationException {
-        Assert.assertEquals(Vector.class, componentImplementation);
-        return super.registerComponent(HashMap.class, HashMap.class);
     }
 
 }

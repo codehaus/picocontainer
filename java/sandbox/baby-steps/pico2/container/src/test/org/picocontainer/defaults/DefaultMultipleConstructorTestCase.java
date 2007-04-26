@@ -10,6 +10,8 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.tck.AbstractMultipleConstructorTestCase;
 
 /**
@@ -24,4 +26,5 @@ public class DefaultMultipleConstructorTestCase extends AbstractMultipleConstruc
     // Eclipse need at least *one* fixture as direct class member ...
     public void testEclipseDummy() {
     }
+
 }

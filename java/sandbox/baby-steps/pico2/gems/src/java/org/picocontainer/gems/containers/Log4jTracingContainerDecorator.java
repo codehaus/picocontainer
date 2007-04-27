@@ -213,7 +213,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * @return List of ComponentAdapters
 	 * @see org.picocontainer.PicoContainer#getComponentAdapters(java.lang.Class)
 	 */
-	public List getComponentAdapters(final Class componentType) {
+	public List<ComponentAdapter> getComponentAdapters(final Class componentType) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Grabbing all component adapters for container: " + delegate + " of type: "
 					+ componentType.getName());

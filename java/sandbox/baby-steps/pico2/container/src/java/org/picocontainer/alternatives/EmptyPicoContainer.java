@@ -48,7 +48,7 @@ public class EmptyPicoContainer implements PicoContainer, Serializable {
         return Collections.EMPTY_LIST;
     }
     
-    public List getComponentAdapters(Class componentType) {
+    public List<ComponentAdapter> getComponentAdapters(Class componentType) {
         return Collections.EMPTY_LIST;
     }
     

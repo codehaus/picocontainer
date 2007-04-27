@@ -93,7 +93,7 @@ public interface PicoContainer {
      * @return a collection containing all the {@link ComponentAdapter}s inside this container that are associated with
      *         the specified type. Changes to this collection will not be reflected in the container itself.
      */
-    List getComponentAdapters(Class componentType);
+    List<ComponentAdapter> getComponentAdapters(Class componentType);
 
     /**
      * Returns a List of components of a certain componentType. The list is ordered by instantiation order, starting

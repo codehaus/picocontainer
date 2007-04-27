@@ -16,7 +16,6 @@ import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.xml.sax.SAXException;
@@ -57,7 +56,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        public Collection getComponentAdapters() {
+        public Collection<ComponentAdapter> getComponentAdapters() {
             return null;
         }
 

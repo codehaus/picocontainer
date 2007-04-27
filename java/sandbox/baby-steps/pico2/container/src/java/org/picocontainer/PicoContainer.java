@@ -83,7 +83,7 @@ public interface PicoContainer {
      * @see #getComponentAdapters(Class) a variant of this method which returns the component adapters inside this
      *      container that are associated with the specified type.
      */
-    Collection getComponentAdapters();
+    Collection<ComponentAdapter> getComponentAdapters();
 
     /**
      * Retrieve all component adapters inside this container that are associated with the specified type. The component

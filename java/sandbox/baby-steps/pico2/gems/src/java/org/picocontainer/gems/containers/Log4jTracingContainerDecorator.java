@@ -199,7 +199,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * @return Collection or null.
 	 * @see org.picocontainer.PicoContainer#getComponentAdapters()
 	 */
-	public Collection getComponentAdapters() {
+	public Collection<ComponentAdapter> getComponentAdapters() {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Grabbing all component adapters for container: " + delegate);
 		}

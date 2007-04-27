@@ -180,10 +180,7 @@ public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMo
      * {@inheritDoc}
      */
     public boolean hasLifecycle(Class type) {
-        if ( delegate instanceof LifecycleStrategy ){
-            return ((LifecycleStrategy)delegate).hasLifecycle(type);
-        }
-        return false;
+        return delegate instanceof LifecycleStrategy && ((LifecycleStrategy) delegate).hasLifecycle(type);
     }
     
     public String toString() {

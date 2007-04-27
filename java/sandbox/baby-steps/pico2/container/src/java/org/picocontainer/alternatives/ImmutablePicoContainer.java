@@ -12,9 +12,7 @@ package org.picocontainer.alternatives;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.VerifyingVisitor;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -58,7 +56,7 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
         return delegate.getComponentAdapter(componentType);
     }
 
-    public Collection getComponentAdapters() {
+    public Collection<ComponentAdapter> getComponentAdapters() {
         return delegate.getComponentAdapters();
     }
 

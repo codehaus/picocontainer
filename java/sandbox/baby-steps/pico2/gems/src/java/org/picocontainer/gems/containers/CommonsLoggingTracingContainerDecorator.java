@@ -156,7 +156,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 * @return Collection or null.
 	 * @see org.picocontainer.PicoContainer#getComponentAdapters()
 	 */
-	public Collection getComponentAdapters() {
+	public Collection<ComponentAdapter> getComponentAdapters() {
 		if (log.isDebugEnabled()) {
 			log.debug("Grabbing all component adapters for container: " + delegate);
 		}

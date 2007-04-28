@@ -248,9 +248,9 @@ public class SetterInjectionComponentAdapterTestCase
     }
 
     public void testHybridBeans() {
-        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter("b", B.class, null);
-        SetterInjectionComponentAdapter cAdapter = new SetterInjectionComponentAdapter("c", C.class, null);
-        SetterInjectionComponentAdapter cNullAdapter = new SetterInjectionComponentAdapter("c0", C.class, null);
+        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter("b", B.class, (Parameter[])null);
+        SetterInjectionComponentAdapter cAdapter = new SetterInjectionComponentAdapter("c", C.class, (Parameter[])null);
+        SetterInjectionComponentAdapter cNullAdapter = new SetterInjectionComponentAdapter("c0", C.class, (Parameter[])null);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.registerComponent(bAdapter);

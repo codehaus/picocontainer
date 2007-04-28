@@ -48,7 +48,7 @@ public class ConstructorInjectionComponentAdapterFactory extends MonitoringCompo
 
     public ComponentAdapter createComponentAdapter(Object componentKey,
                                                    Class componentImplementation,
-                                                   Parameter[] parameters)
+                                                   Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, 
                 allowNonPublicClasses, currentMonitor(), lifecycleStrategy);

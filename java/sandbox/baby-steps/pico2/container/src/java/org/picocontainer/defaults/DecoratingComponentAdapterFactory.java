@@ -22,7 +22,7 @@ public class DecoratingComponentAdapterFactory extends MonitoringComponentAdapte
 
     public ComponentAdapter createComponentAdapter(Object componentKey,
                                                    Class componentImplementation,
-                                                   Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+                                                   Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return delegate.createComponentAdapter(componentKey, componentImplementation, parameters);
     }
 }

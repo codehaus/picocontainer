@@ -109,7 +109,7 @@ public class ThreadLocalComponentAdapterFactory extends DecoratingComponentAdapt
     }
 
     public ComponentAdapter createComponentAdapter(
-            Object componentKey, Class componentImplementation, Parameter[] parameters)
+            Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final ComponentAdapter componentAdapter;
         if (ensureThreadLocal) {

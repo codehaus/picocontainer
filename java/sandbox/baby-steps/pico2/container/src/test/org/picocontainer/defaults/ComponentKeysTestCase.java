@@ -10,13 +10,12 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
+
 import org.picocontainer.Parameter;
 import org.picocontainer.testmodel.DecoratedTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.testmodel.DependsOnTouchable;
-
-import java.util.Collections;
 
 /**
  * @author Thomas Heller

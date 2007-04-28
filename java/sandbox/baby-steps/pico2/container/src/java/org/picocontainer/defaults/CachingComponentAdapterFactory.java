@@ -28,7 +28,7 @@ public class CachingComponentAdapterFactory extends DecoratingComponentAdapterFa
         super(delegate);
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
+    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new CachingComponentAdapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
 

@@ -47,7 +47,7 @@ public class HotSwappingComponentAdapterFactory extends DecoratingComponentAdapt
         this.proxyFactory = proxyFactory;
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters)
+    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentKey, componentImplementation, parameters);
         return new HotSwappingComponentAdapter(componentAdapter, proxyFactory);

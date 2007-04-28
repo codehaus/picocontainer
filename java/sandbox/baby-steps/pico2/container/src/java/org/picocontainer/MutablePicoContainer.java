@@ -30,13 +30,13 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * <h4>Tips for Parameter usage</h4>
      * <ul>
      * <li><strong>Partial Autowiring: </strong>If you have two constructor args to match and you only wish to specify one of the constructors and 
-     * let PicoContainer wire the other one, you can use: 
-     * <code>new Parameter[]{<strong>new ComponentParameter()</strong>, new ComponentParameter("someService"}</code>
+     * let PicoContainer wire the other one, you can use as parameters: 
+     * <code><strong>new ComponentParameter()</strong>, new ComponentParameter("someService")</code>
      * The default constructor for the component parameter indicates auto-wiring should take place for 
      * that parameter.
      * </li>
      * <li><strong>Force No-Arg constructor usage:</strong> If you wish to force a component to be constructed with
-     * the no-arg constructor, use a zero length Parameter array.  Ex:  <code>new Parameter[] {}</code> 
+     * the no-arg constructor, use a zero length Parameter array.  Ex:  <code>new Parameter[0]</code> 
      * <ul>
      * 
      *
@@ -45,7 +45,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *                                documentation of the implementing container.
      * @param componentImplementationOrInstance the component's implementation class. This must be a concrete class (ie, a
      *                                class that can be instantiated). Or an intance of the compoent.
-     * @param parameters              an array of parameters that gives the container hints about what arguments to pass
+     * @param parameters              the parameters that gives the container hints about what arguments to pass
      *                                to the constructor when it is instantiated. Container implementations may ignore
      *                                one or more of these hints.  
      * @return the ComponentAdapter that has been associated with this component. In the majority of cases, this return

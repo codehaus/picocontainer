@@ -21,7 +21,7 @@ public class SynchronizedComponentAdapterFactory extends DecoratingComponentAdap
         super(delegate);
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
+    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter... parameters) {
         return new SynchronizedComponentAdapter(super.createComponentAdapter(componentKey, componentImplementation, parameters));
     }
 }

@@ -4,6 +4,7 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.toys.hotswap.Swappable;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
 import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -123,9 +124,9 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
         ComponentAdapterFactory caf = createComponentAdapterFactory();
         DefaultPicoContainer pico = new DefaultPicoContainer(caf);
 
-        CachingComponentAdapter wifeAdapter = (CachingComponentAdapter)caf.createComponentAdapter("wife", Wife.class, null);
+        CachingComponentAdapter wifeAdapter = (CachingComponentAdapter)caf.createComponentAdapter("wife", Wife.class, (Parameter[])null);
         CachingComponentAdapter husbandAdapter = (CachingComponentAdapter)caf
-                .createComponentAdapter("husband", Husband.class, null);
+                .createComponentAdapter("husband", Husband.class, (Parameter[])null);
 
         pico.registerComponent(wifeAdapter);
         pico.registerComponent(husbandAdapter);

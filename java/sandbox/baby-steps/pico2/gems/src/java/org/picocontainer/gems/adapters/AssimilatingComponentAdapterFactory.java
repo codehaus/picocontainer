@@ -64,10 +64,10 @@ public class AssimilatingComponentAdapterFactory extends DecoratingComponentAdap
      * deleated {@link ComponentAdapterFactory}.
      * 
      * @see org.picocontainer.defaults.DecoratingComponentAdapterFactory#createComponentAdapter(java.lang.Object,
-     *      java.lang.Class, org.picocontainer.Parameter[])
+     *      java.lang.Class, Parameter...)
      */
     public ComponentAdapter createComponentAdapter(
-            final Object componentKey, final Class componentImplementation, final Parameter[] parameters)
+            final Object componentKey, final Class componentImplementation, final Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new AssimilatingComponentAdapter(assimilationType, super.createComponentAdapter(
                 componentKey, componentImplementation, parameters), proxyFactory);

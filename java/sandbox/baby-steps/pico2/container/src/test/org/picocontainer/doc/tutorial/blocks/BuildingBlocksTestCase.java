@@ -3,6 +3,7 @@ package org.picocontainer.doc.tutorial.blocks;
 import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
 import org.picocontainer.defaults.CachingComponentAdapter;
 import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
@@ -67,7 +68,7 @@ public class BuildingBlocksTestCase extends TestCase {
                 new SynchronizedComponentAdapter(
                         new CachingComponentAdapter(
                                 new SetterInjectionComponentAdapter(
-                                        JuicerBean.class, JuicerBean.class, null))));
+                                        JuicerBean.class, JuicerBean.class, (Parameter[])null))));
         // END SNIPPET: register-equivalent-at-length2
     }
 }

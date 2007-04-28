@@ -53,7 +53,7 @@ public interface ComponentAdapterFactory {
      */
     ComponentAdapter createComponentAdapter(Object componentKey,
                                             Class componentImplementation,
-                                            Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+                                            Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
 
 
 }

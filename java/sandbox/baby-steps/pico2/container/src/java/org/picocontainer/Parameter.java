@@ -17,7 +17,7 @@ package org.picocontainer;
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y
  * @author Thomas Heller
- * @see MutablePicoContainer#registerComponent(Object,Class,Parameter[]) a method on the
+ * @see MutablePicoContainer#registerComponent(Object,Class,Parameter...) a method on the
  *      {@link MutablePicoContainer} interface which allows passing in of an array of {@linkplain Parameter Parameters}.
  * @see org.picocontainer.defaults.ComponentParameter an implementation of this interface that allows you to specify the key
  *      used for resolving the parameter.

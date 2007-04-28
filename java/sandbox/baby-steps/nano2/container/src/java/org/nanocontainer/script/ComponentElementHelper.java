@@ -28,7 +28,7 @@ public class ComponentElementHelper {
         } else if (klass instanceof String) {
             String className = (String) klass;
             key = key == null ? className : key;
-            current.registerComponent(key, className, parameters);
+            current.registerComponent(key, new ClassName(className), parameters);
         } else if (instance != null) {
             key = key == null ? instance.getClass() : key;
             current.getPico().registerComponent(key, instance);

@@ -18,6 +18,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
+import org.nanocontainer.ClassName;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
@@ -133,7 +134,7 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
         ComponentAdapter componentAdapter = null;
         if ( picoConfiguration != null ){
             Parameter[] parameters = new Parameter[]{ new ConstantParameter(picoConfiguration) };
-            componentAdapter = nanoContainer.registerComponent(containerComposerClassName, containerComposerClassName, parameters);
+            componentAdapter = nanoContainer.registerComponent(containerComposerClassName, new ClassName(containerComposerClassName), parameters);
         } else {
             //QQQ
             componentAdapter = nanoContainer.registerComponent(containerComposerClassName);

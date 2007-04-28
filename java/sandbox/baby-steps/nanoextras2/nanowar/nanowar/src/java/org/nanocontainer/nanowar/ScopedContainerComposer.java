@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
+import org.nanocontainer.ClassName;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
@@ -143,7 +144,7 @@ public class ScopedContainerComposer implements ContainerComposer {
                 new ConstantParameter(reader),
                 new ConstantParameter(getClassLoader()) };
         nano.registerComponent(containerBuilderClassName,
-                containerBuilderClassName, parameters);
+                new ClassName(containerBuilderClassName), parameters);
         ContainerBuilder containerBuilder = (ContainerBuilder) nano
                 .getPico().getComponent(containerBuilderClassName);
         ObjectReference parentRef = new SimpleReference();

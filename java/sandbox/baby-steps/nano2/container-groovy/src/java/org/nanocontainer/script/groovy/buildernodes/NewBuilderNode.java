@@ -68,8 +68,7 @@ public class NewBuilderNode extends AbstractBuilderNode {
         } else {
             factory.getPico().registerComponent(GroovyObject.class, (Class) builderClass);
         }
-        Object componentInstance = factory.getPico().getComponent(GroovyObject.class);
-        return componentInstance;
+        return factory.getPico().getComponent(GroovyObject.class);
     }
 
 }

@@ -147,12 +147,8 @@ public abstract class AbstractNanoPicoContainer extends AbstractDelegatingMutabl
         return container.registerComponent(componentImplementationOrInstance);
     }
 
-    public ComponentAdapter registerComponent(Object key, Object componentImplementationOrInstance) {
-        return container.registerComponent(key, componentImplementationOrInstance);
-    }
-
-    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter... parameters) {
-        return container.registerComponent(key, componentImplementationClassName, parameters);
+    public ComponentAdapter registerComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters) {
+        return container.registerComponent(key, componentImplementationOrInstance, parameters);
     }
 
     public ComponentAdapter registerComponent(Object key, String componentImplementationClassName, String[] parameterTypesAsString, String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException {

@@ -96,24 +96,14 @@ public class DefaultNanoContainer implements NanoContainer {
         return picoContainer.registerComponent(componentImplementationOrInstance);
     }
 
-    public ComponentAdapter registerComponent(Object key, Object componentImplementationOrInstance) {
+    public ComponentAdapter registerComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters) {
         if (key instanceof ClassName) {
             key = loadClass(((ClassName) key).getClassName());
         }
         if (componentImplementationOrInstance instanceof ClassName) {
             componentImplementationOrInstance = loadClass(((ClassName) componentImplementationOrInstance).getClassName());
         }
-        return picoContainer.registerComponent(key,componentImplementationOrInstance);
-    }
-
-
-    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter... parameters) {
-        Class componentImplementation = loadClass(componentImplementationClassName);
-        if (key instanceof ClassName) {
-            key = loadClass(((ClassName) key).getClassName());
-
-        }
-        return picoContainer.registerComponent(key, componentImplementation, parameters);
+        return picoContainer.registerComponent(key,componentImplementationOrInstance, parameters);
     }
 
     public ComponentAdapter registerComponent(Object key,

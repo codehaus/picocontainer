@@ -35,9 +35,7 @@ public interface NanoContainer {
 
     ComponentAdapter registerComponent(Object componentImplementationOrInstance) throws PicoRegistrationException, PicoIntrospectionException;
 
-    ComponentAdapter registerComponent(Object key, Object componentImplementationOrInstance);
-
-    ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter... parameters);
+    ComponentAdapter registerComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters);
 
 
     ComponentAdapter registerComponent(Object key,

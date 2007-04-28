@@ -22,6 +22,7 @@ import javax.servlet.ServletContext;
 
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
+import org.nanocontainer.ClassName;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.ContainerRecorder;
@@ -139,7 +140,7 @@ public class ServletChainBuilder {
                 new ConstantParameter(reader),
                 new ConstantParameter(classLoader) };
         nano.registerComponent(containerBuilderClassName,
-                containerBuilderClassName, parameters);
+                new ClassName(containerBuilderClassName), parameters);
         ContainerBuilder containerBuilder = (ContainerBuilder) nano.getPico()
                 .getComponent(containerBuilderClassName);
         //containerBuilder.buildContainer(new SimpleReference(), null, null,

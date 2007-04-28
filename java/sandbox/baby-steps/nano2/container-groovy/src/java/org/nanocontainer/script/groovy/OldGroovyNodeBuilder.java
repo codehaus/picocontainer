@@ -293,7 +293,7 @@ public class OldGroovyNodeBuilder extends BuilderSupport {
         } else if (classValue instanceof String) {
             String className = (String) classValue;
             key = key == null ? className : key;
-            retval = nano.registerComponent(key, className, parameterArray);
+            retval = nano.registerComponent(key, new ClassName(className), parameterArray);
         } else if (instance != null) {
             key = key == null ? instance.getClass() : key;
             retval = pico.registerComponent(key, instance);

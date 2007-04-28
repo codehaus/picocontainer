@@ -23,8 +23,6 @@ import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.defaults.BeanPropertyComponentAdapter;
 import org.picocontainer.defaults.ConstantParameter;
@@ -88,7 +86,7 @@ public class DefaultNanoContainer implements NanoContainer {
         this(Thread.currentThread().getContextClassLoader(), new DefaultPicoContainer());
     }
 
-    public ComponentAdapter registerComponent(Object componentImplementationOrInstance) throws PicoRegistrationException, PicoIntrospectionException {
+    public ComponentAdapter registerComponent(Object componentImplementationOrInstance) {
         if(componentImplementationOrInstance instanceof ClassName) {
             String className = ((ClassName) componentImplementationOrInstance).className;
             return picoContainer.registerComponent(loadClass(className));
@@ -109,7 +107,7 @@ public class DefaultNanoContainer implements NanoContainer {
     public ComponentAdapter registerComponent(Object key,
                                                             String componentImplementationClassName,
                                                             String[] parameterTypesAsString,
-                                                            String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException {
+                                                            String[] parameterValuesAsString) {
         Class componentImplementation = loadClass(componentImplementationClassName);
         if (key instanceof ClassName) {
             key = loadClass(((ClassName) key).getClassName());
@@ -120,7 +118,7 @@ public class DefaultNanoContainer implements NanoContainer {
 
     public ComponentAdapter registerComponent(String componentImplementationClassName,
                                                             String[] parameterTypesAsString,
-                                                            String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException {
+                                                            String[] parameterValuesAsString) {
         Class componentImplementation = loadClass(componentImplementationClassName);
         return registerComponent(parameterTypesAsString, parameterValuesAsString, componentImplementation, componentImplementation);
     }

@@ -33,7 +33,7 @@ import java.net.URL;
  */
 public interface NanoContainer {
 
-    ComponentAdapter registerComponent(Object componentImplementationOrInstance) throws PicoRegistrationException, PicoIntrospectionException;
+    ComponentAdapter registerComponent(Object componentImplementationOrInstance);
 
     ComponentAdapter registerComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters);
 
@@ -41,11 +41,11 @@ public interface NanoContainer {
     ComponentAdapter registerComponent(Object key,
                                        String componentImplementationClassName,
                                        String[] parameterTypesAsString,
-                                       String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException;
+                                       String[] parameterValuesAsString);
 
     ComponentAdapter registerComponent(String componentImplementationClassName,
                                        String[] parameterTypesAsString,
-                                       String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException;
+                                       String[] parameterValuesAsString);
 
     /**
      * Adds a new URL that will be used in classloading

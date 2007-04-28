@@ -18,6 +18,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoClassNotFoundException;
 
 /**
  * Decorating component adapter that can be used to set additional properties
@@ -41,7 +42,7 @@ import org.picocontainer.PicoIntrospectionException;
  */
 public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
     private Map properties;
-    private transient Map setters = null;
+    private transient Map<String, Method> setters = null;
 
     /**
      * Construct a BeanPropertyComponentAdapter.
@@ -73,18 +74,17 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
 
         if (properties != null) {
             ComponentMonitor componentMonitor = currentMonitor();
-            Set propertyNames = properties.keySet();
-            for (Iterator iterator = propertyNames.iterator(); iterator.hasNext();) {
-                final String propertyName = (String) iterator.next();
+            Set<String> propertyNames = properties.keySet();
+            for (String propertyName : propertyNames) {
                 final Object propertyValue = properties.get(propertyName);
-                Method setter = (Method) setters.get(propertyName);
+                Method setter = setters.get(propertyName);
 
-                Object valueToInvoke = this.getSetterParameter(propertyName,propertyValue,componentInstance,container);
+                Object valueToInvoke = this.getSetterParameter(propertyName, propertyValue, componentInstance, container);
 
                 try {
                     componentMonitor.invoking(setter, componentInstance);
                     long startTime = System.currentTimeMillis();
-                    setter.invoke(componentInstance, new Object[]{valueToInvoke});
+                    setter.invoke(componentInstance, valueToInvoke);
                     componentMonitor.invoked(setter, componentInstance, System.currentTimeMillis() - startTime);
                 } catch (final Exception e) {
                     componentMonitor.invocationFailed(setter, componentInstance, e);
@@ -95,11 +95,10 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
         return componentInstance;
     }
 
-    private Map getSetters(Class clazz) {
-        Map result = new HashMap();
+    private Map<String, Method> getSetters(Class clazz) {
+        Map<String, Method> result = new HashMap<String, Method>();
         Method[] methods = getMethods(clazz);
-        for (int i = 0; i < methods.length; i++) {
-            Method method = methods[i];
+        for (Method method : methods) {
             if (isSetter(method)) {
                 result.put(getPropertyName(method), method);
             }
@@ -136,7 +135,7 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
 
 
 
-    private Object convertType(PicoContainer container, Method setter, String propertyValue) throws ClassNotFoundException {
+    private Object convertType(PicoContainer container, Method setter, String propertyValue) {
         if (propertyValue == null) {
             return null;
         }
@@ -171,9 +170,8 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
      * @param value       its value
      * @param classLoader used to load a class if typeName is "class" or "java.lang.Class" (ignored otherwise)
      * @return instantiated object or null if the type was unknown/unsupported
-     * @throws ClassNotFoundException if typeName is "class" or "java.lang.Class" and class couldn't be loaded.
      */
-    public static Object convert(String typeName, String value, ClassLoader classLoader) throws ClassNotFoundException {
+    public static Object convert(String typeName, String value, ClassLoader classLoader) {
         if (typeName.equals(Boolean.class.getName()) || typeName.equals(boolean.class.getName())) {
             return Boolean.valueOf(value);
         } else if (typeName.equals(Byte.class.getName()) || typeName.equals(byte.class.getName())) {
@@ -201,9 +199,9 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
                 throw new PicoInitializationException(e);
             }
         } else if (typeName.equals(Class.class.getName()) || typeName.equals("class")) {
-            return classLoader.loadClass(value);
+            return loadClass(classLoader, value);
         } else {
-            final Class clazz = classLoader.loadClass(typeName);
+            final Class clazz = loadClass(classLoader, typeName);
             final PropertyEditor editor = PropertyEditorManager.findEditor(clazz);
             if (editor != null) {
                 editor.setAsText(value);
@@ -212,6 +210,15 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
         }
         return null;
     }
+
+    private static Class loadClass(ClassLoader classLoader, String typeName) {
+        try {
+            return classLoader.loadClass(typeName);
+        } catch (ClassNotFoundException e) {
+            throw new PicoClassNotFoundException(typeName, e);
+        }
+    }
+
 
     /**
      * Sets the bean property values that should be set upon creation.
@@ -234,15 +241,16 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
      * the setter to.
      * @return Object: the final converted object that can
      * be used in the setter.
+     * @param container
      */
     private Object getSetterParameter(final String propertyName, final Object propertyValue,
-        final Object componentInstance, PicoContainer container) throws PicoInitializationException, ClassCastException {
+        final Object componentInstance, PicoContainer container) {
 
         if (propertyValue == null) {
             return null;
         }
 
-        Method setter = (Method) setters.get(propertyName);
+        Method setter = setters.get(propertyName);
 
         //We can assume that there is only one object (as per typical setters)
         //because the Setter introspector does that job for us earlier.
@@ -250,18 +258,13 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
 
         Object convertedValue = null;
 
-        Class givenParameterClass = propertyValue.getClass();
+        Class<? extends Object> givenParameterClass = propertyValue.getClass();
 
         //
         //If property value is a string or a true primative then convert it to whatever
         //we need.  (String will convert to string).
         //
-        try {
             convertedValue = convertType(container, setter, propertyValue.toString());
-        }
-        catch (ClassNotFoundException e) {
-            throw new PicoInvocationTargetInitializationException(e);
-        }
 
         //Otherwise, check the parameter type to make sure we can
         //assign it properly.

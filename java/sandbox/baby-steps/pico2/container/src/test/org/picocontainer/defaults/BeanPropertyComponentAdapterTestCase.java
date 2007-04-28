@@ -10,7 +10,7 @@ import org.picocontainer.testmodel.CoupleBean;
  * @version $Revision: $ 
  */
 public class BeanPropertyComponentAdapterTestCase extends TestCase {
-    public void testBeanPropertyComponentAdapterCanUsePropertyEditors() throws ClassNotFoundException {
+    public void testBeanPropertyComponentAdapterCanUsePropertyEditors() {
         Object c = BeanPropertyComponentAdapter.convert(CoupleBean.class.getName(), "a's name:Camilla;b's name:Charles;", this.getClass().getClassLoader());
         assertNotNull(c);
         assertTrue(c instanceof CoupleBean);

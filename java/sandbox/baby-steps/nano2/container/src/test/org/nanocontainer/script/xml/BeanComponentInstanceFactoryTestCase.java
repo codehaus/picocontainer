@@ -25,7 +25,7 @@ import java.io.StringReader;
  */
 public class BeanComponentInstanceFactoryTestCase extends TestCase {
 
-    public void testDeserialization() throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
+    public void testDeserialization() throws ParserConfigurationException, IOException, SAXException {
         BeanComponentInstanceFactory factory = new BeanComponentInstanceFactory();
 
         StringReader sr = new StringReader("" +

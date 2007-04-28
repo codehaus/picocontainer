@@ -9,8 +9,8 @@
 package org.nanocontainer.script.xml;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.defaults.BeanPropertyComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultComponentAdapterFactory;
@@ -33,7 +33,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
     
     private static final String NAME_ATTRIBUTE = "name";
     
-    public Object makeInstance(PicoContainer pico, Element element, ClassLoader classLoader) throws ClassNotFoundException, MalformedURLException {
+    public Object makeInstance(PicoContainer pico, Element element, ClassLoader classLoader) throws MalformedURLException {
         String className = element.getNodeName();
         Object instance = null;
 
@@ -49,10 +49,18 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
         return instance;
     }
 
-    private ComponentAdapter createComponentAdapter(String className, ClassLoader classLoader) throws ClassNotFoundException {
-        Class implementation = classLoader.loadClass(className);
+    private ComponentAdapter createComponentAdapter(String className, ClassLoader classLoader)  {
+        Class implementation = loadClass(classLoader, className);
         ComponentAdapterFactory factory = new DefaultComponentAdapterFactory();
         return factory.createComponentAdapter(className, implementation);
+    }
+
+    private Class loadClass(final ClassLoader classLoader, final String className) {
+        try {
+            return classLoader.loadClass(className);
+        } catch (ClassNotFoundException e) {
+            throw new PicoClassNotFoundException(className, e);
+        }
     }
 
     private Properties createProperties(NodeList nodes) {

@@ -28,7 +28,7 @@ import org.nanocontainer.ClassName;
 import org.nanocontainer.ClassPathElement;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
-import org.nanocontainer.NanoClassNotFoundException;
+import org.picocontainer.PicoClassNotFoundException;
 import org.nanocontainer.reflection.DefaultNanoPicoContainer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.PicoCompositionException;
@@ -142,7 +142,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                     rootElement.getAttribute(COMPONENT_MONITOR), parentContainer);
             populateContainer(childContainer);
             return childContainer;
-        } catch (NanoClassNotFoundException e) {
+        } catch (PicoClassNotFoundException e) {
             throw new NanoContainerMarkupException("Class not found:" + e.getMessage(), e);
         }
     }
@@ -464,7 +464,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         } catch (IllegalAccessException e) {
             throw new NanoContainerMarkupException(e);
         } catch (ClassNotFoundException e) {
-            throw new NanoClassNotFoundException(monitorName, e);
+            throw new PicoClassNotFoundException(monitorName, e);
         }
     }
 

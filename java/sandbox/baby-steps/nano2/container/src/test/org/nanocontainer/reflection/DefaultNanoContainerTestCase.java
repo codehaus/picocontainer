@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.ClassName;
-import org.nanocontainer.NanoClassNotFoundException;
+import org.picocontainer.PicoClassNotFoundException;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.*;
@@ -48,7 +48,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
         try {
             nanoContainer.registerComponent(new ClassName("Ping"));
             fail("should have failed");
-        } catch (NanoClassNotFoundException e) {
+        } catch (PicoClassNotFoundException e) {
             // expected
         }
     }
@@ -85,7 +85,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
             Object o = dfca.getPico().getComponent("foo");
             System.out.println("");
             fail("Should have failed. Class was loaded from " + o.getClass().getProtectionDomain().getCodeSource().getLocation());
-        } catch (NanoClassNotFoundException expected) {
+        } catch (PicoClassNotFoundException expected) {
         }
 
     }

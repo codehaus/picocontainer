@@ -25,6 +25,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.defaults.BeanPropertyComponentAdapter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.CustomPermissionsURLClassLoader;
@@ -116,8 +117,8 @@ public class DefaultNanoContainer implements NanoContainer {
     public ComponentAdapter registerComponent(Object key,
                                                             String componentImplementationClassName,
                                                             String[] parameterTypesAsString,
-                                                            String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException, ClassNotFoundException {
-        Class componentImplementation = getComponentClassLoader().loadClass(componentImplementationClassName);
+                                                            String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException {
+        Class componentImplementation = loadClass(componentImplementationClassName);
         if (key instanceof ClassName) {
             key = loadClass(((ClassName) key).getClassName());
 
@@ -132,7 +133,7 @@ public class DefaultNanoContainer implements NanoContainer {
         return registerComponent(parameterTypesAsString, parameterValuesAsString, componentImplementation, componentImplementation);
     }
 
-    private ComponentAdapter registerComponent(String[] parameterTypesAsString, String[] parameterValuesAsString, Object key, Class componentImplementation) throws ClassNotFoundException {
+    private ComponentAdapter registerComponent(String[] parameterTypesAsString, String[] parameterValuesAsString, Object key, Class componentImplementation) {
         Parameter[] parameters = new Parameter[parameterTypesAsString.length];
         for (int i = 0; i < parameters.length; i++) {
             Object value = BeanPropertyComponentAdapter.convert(parameterTypesAsString[i], parameterValuesAsString[i], getComponentClassLoader());
@@ -147,7 +148,7 @@ public class DefaultNanoContainer implements NanoContainer {
         try {
             return classLoader.loadClass(cn);
         } catch (ClassNotFoundException e) {
-            throw new NanoClassNotFoundException(cn, e);
+            throw new PicoClassNotFoundException(cn, e);
         }
     }
 

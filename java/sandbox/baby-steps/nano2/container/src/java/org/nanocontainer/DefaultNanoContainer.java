@@ -105,7 +105,7 @@ public class DefaultNanoContainer implements NanoContainer {
     }
 
 
-    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter[] parameters) {
+    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter... parameters) {
         Class componentImplementation = loadClass(componentImplementationClassName);
         if (key instanceof ClassName) {
             key = loadClass(((ClassName) key).getClassName());
@@ -128,8 +128,8 @@ public class DefaultNanoContainer implements NanoContainer {
 
     public ComponentAdapter registerComponent(String componentImplementationClassName,
                                                             String[] parameterTypesAsString,
-                                                            String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException, ClassNotFoundException {
-        Class componentImplementation = getComponentClassLoader().loadClass(componentImplementationClassName);
+                                                            String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException {
+        Class componentImplementation = loadClass(componentImplementationClassName);
         return registerComponent(parameterTypesAsString, parameterValuesAsString, componentImplementation, componentImplementation);
     }
 
@@ -212,7 +212,7 @@ public class DefaultNanoContainer implements NanoContainer {
 
     public MutablePicoContainer addDecoratingPicoContainer(Class picoContainerClass) {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(MutablePicoContainer.class, picoContainerClass, new Parameter[] { new ConstantParameter(picoContainer) });
+        pico.registerComponent(MutablePicoContainer.class, picoContainerClass, new ConstantParameter(picoContainer));
         picoContainer = (MutablePicoContainer) pico.getComponent(MutablePicoContainer.class);
         return picoContainer;
     }

@@ -21,7 +21,7 @@ import java.net.URL;
 /**
  * A NanoContainer is a container that contains a PicoContainer. -Like
  * <a href="http://www.monkeon.co.uk/russiandolls/">Russian dolls</a>.
- *
+ * <p/>
  * A NanoContainer adapts a {@link MutablePicoContainer} through a similar API that
  * is based only on Strings. (It uses reflection to look up classes before registering them
  * with the adapted PicoContainer). This adapter API is used primarily by the various
@@ -37,17 +37,17 @@ public interface NanoContainer {
 
     ComponentAdapter registerComponent(Object key, String componentImplementationClassName);
 
-    ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter[] parameters);
+    ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter... parameters);
 
 
     ComponentAdapter registerComponent(Object key,
-                                                     String componentImplementationClassName,
-                                                     String[] parameterTypesAsString,
-                                                     String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException, ClassNotFoundException;
+                                       String componentImplementationClassName,
+                                       String[] parameterTypesAsString,
+                                       String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException;
 
     ComponentAdapter registerComponent(String componentImplementationClassName,
-                                                     String[] parameterTypesAsString,
-                                                     String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException, ClassNotFoundException;
+                                       String[] parameterTypesAsString,
+                                       String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException;
 
     /**
      * Adds a new URL that will be used in classloading

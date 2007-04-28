@@ -52,7 +52,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
     private ComponentAdapter createComponentAdapter(String className, ClassLoader classLoader) throws ClassNotFoundException {
         Class implementation = classLoader.loadClass(className);
         ComponentAdapterFactory factory = new DefaultComponentAdapterFactory();
-        return factory.createComponentAdapter(className, implementation, new Parameter[]{});
+        return factory.createComponentAdapter(className, implementation);
     }
 
     private Properties createProperties(NodeList nodes) {

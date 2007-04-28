@@ -116,6 +116,8 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     /**
      * just a convenience method, so we can work recursively with subcontainers
      * for whatever puproses we see cool.
+     * @param container
+     * @param rootElement
      */
     private void populateContainer(MutablePicoContainer container, Element rootElement) {
         NodeList children = rootElement.getChildNodes();
@@ -148,6 +150,8 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 
     /**
      * process adapter node
+     * @param container
+     * @param rootElement
      */
     protected void insertAdapter(MutablePicoContainer container, Element rootElement) {
         String key = rootElement.getAttribute(KEY);
@@ -172,6 +176,9 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 
     /**
      * process implementation node
+     * @param container
+     * @param rootElement
+     * @throws ClassNotFoundException
      */
     protected void insertImplementation(MutablePicoContainer container, Element rootElement) throws ClassNotFoundException {
         String key = rootElement.getAttribute(KEY);
@@ -250,6 +257,8 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     /**
      * process instance node. we get key from atributes ( if any ) and leave content
      * to xstream. we allow only one child node inside. ( first  one wins )
+     * @param container
+     * @param rootElement
      */
     protected void insertInstance(MutablePicoContainer container, Element rootElement) {
         String key = rootElement.getAttribute(KEY);
@@ -268,6 +277,8 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 
     /**
      * parse element child with xstream and provide object
+     * @return
+     * @param rootElement
      */
     protected Object parseElementChild(Element rootElement) {
         NodeList children = rootElement.getChildNodes();

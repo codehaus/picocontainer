@@ -13,6 +13,7 @@ package org.nanocontainer.script.xml;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Permission;
@@ -291,7 +292,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                 String action = childElement.getAttribute(CONTEXT);
                 String value = childElement.getAttribute(VALUE);
                 MutablePicoContainer mpc = new DefaultPicoContainer();
-                mpc.registerComponent(Permission.class, Class.forName(permissionClassName),new Parameter[] {new ConstantParameter(action), new ConstantParameter(value)});
+                mpc.registerComponent(Permission.class, Class.forName(permissionClassName), new ConstantParameter(action), new ConstantParameter(value));
 
                 Permission permission = (Permission) mpc.getComponent(Permission.class);
                 classPathElement.grantPermission(permission);
@@ -334,7 +335,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
 
     private Parameter[] createChildParameters(NanoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
-        List parametersList = new ArrayList();
+        List<Parameter> parametersList = new ArrayList<Parameter>();
         NodeList children = element.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             if (children.item(i) instanceof Element) {
@@ -347,7 +348,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
         Parameter[] parameters = null;
         if (!parametersList.isEmpty()) {
-            parameters = (Parameter[]) parametersList.toArray(new Parameter[parametersList.size()]);
+            parameters = parametersList.toArray(new Parameter[parametersList.size()]);
         }
         return parameters;
     }
@@ -441,7 +442,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         if ( notSet(factoryName)) {
             factoryName = DEFAULT_COMPONENT_ADAPTER_FACTORY;
         }
-        final Object key;
+        final Serializable key;
         if (metaContainer.getPico().getComponentAdapter(factoryName) != null) {
             key = factoryName;
         } else {
@@ -456,7 +457,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             monitorName = DEFAULT_COMPONENT_MONITOR;
         }
         try {
-            Class monitorClass = getClassLoader().loadClass(monitorName);
+            Class<?> monitorClass = getClassLoader().loadClass(monitorName);
             return (ComponentMonitor) monitorClass.newInstance();
         } catch (InstantiationException e) {
             throw new NanoContainerMarkupException(e);

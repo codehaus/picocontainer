@@ -135,6 +135,7 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
             Parameter[] parameters = new Parameter[]{ new ConstantParameter(picoConfiguration) };
             componentAdapter = nanoContainer.registerComponent(containerComposerClassName, containerComposerClassName, parameters);
         } else {
+            //QQQ
             componentAdapter = nanoContainer.registerComponent(containerComposerClassName);
         }
         return (ContainerComposer) componentAdapter.getComponentInstance(nanoContainer.getPico());

@@ -38,7 +38,7 @@ import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
  */
 public abstract class AbstractNanoPicoContainer extends AbstractDelegatingMutablePicoContainer implements NanoPicoContainer, Serializable {
 
-    protected Map namedChildContainers = new HashMap();
+    protected Map<String,PicoContainer> namedChildContainers = new HashMap<String,PicoContainer>();
 
     // Serializable cannot be cascaded into DefaultNanoContainer's referenced classes
     // need to implement custom Externalisable regime.
@@ -61,9 +61,8 @@ public abstract class AbstractNanoPicoContainer extends AbstractDelegatingMutabl
         ComponentAdapter componentAdapter = null;
         if (componentKeyOrType.toString().startsWith("*")) {
             String candidateClassName = componentKeyOrType.toString().substring(1);
-            Collection cas = getComponentAdapters();
-            for (Iterator it = cas.iterator(); it.hasNext();) {
-                ComponentAdapter ca = (ComponentAdapter) it.next();
+            Collection<ComponentAdapter> cas = getComponentAdapters();
+            for (ComponentAdapter ca : cas) {
                 Object key = ca.getComponentKey();
                 if (key instanceof Class && candidateClassName.equals(((Class) key).getName())) {
                     componentAdapter = ca;

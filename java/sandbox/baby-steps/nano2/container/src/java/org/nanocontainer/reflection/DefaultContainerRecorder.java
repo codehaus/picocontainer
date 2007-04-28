@@ -21,7 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ import java.util.List;
  */
 public class DefaultContainerRecorder implements Serializable, ContainerRecorder {
 
-    private final List invocations = new ArrayList();
+    private final List<Invocation> invocations = new ArrayList<Invocation>();
     private transient MutablePicoContainer container;
 
     private final InvocationHandler invocationRecorder = new InvocationRecorder();
@@ -50,8 +49,8 @@ public class DefaultContainerRecorder implements Serializable, ContainerRecorder
     }
 
     public void replay(MutablePicoContainer target) {
-        for (Iterator iter = invocations.iterator(); iter.hasNext();) {
-            Invocation invocation = (Invocation) iter.next();
+        for (Object invocation1 : invocations) {
+            Invocation invocation = (Invocation) invocation1;
             try {
                 invocation.invoke(target);
             } catch (IllegalAccessException e) {
@@ -79,8 +78,8 @@ public class DefaultContainerRecorder implements Serializable, ContainerRecorder
             out.writeObject(method.getDeclaringClass());
             Class[] parameterTypes = method.getParameterTypes();
             out.writeInt(parameterTypes.length);
-            for (int i = 0; i < parameterTypes.length; i++) {
-                out.writeObject(parameterTypes[i]);
+            for (Class parameterType : parameterTypes) {
+                out.writeObject(parameterType);
             }
         }
 
@@ -100,7 +99,7 @@ public class DefaultContainerRecorder implements Serializable, ContainerRecorder
             }
         }
 
-        public void invoke(Object target) throws IllegalAccessException, InvocationTargetException {
+        public void invoke(MutablePicoContainer target) throws IllegalAccessException, InvocationTargetException {
             method.invoke(target, args);
         }
     }

@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class StringToObjectConverter {
 
-    private final Map converters = new HashMap();
+    private final Map<Class, Converter> converters = new HashMap<Class, Converter>();
 
     public StringToObjectConverter() {
         register(String.class, new Converter() {
@@ -27,13 +27,13 @@ public class StringToObjectConverter {
 
         register(Integer.class, new Converter() {
             public Object convert(String in) {
-                return in == null ? new Integer(0) : Integer.valueOf(in);
+                return in == null ? 0 : Integer.valueOf(in);
             }
         });
 
         register(Long.class, new Converter() {
             public Object convert(String in) {
-                return in == null ? new Long(0) : Long.valueOf(in);
+                return in == null ? (long) 0 : Long.valueOf(in);
             }
         });
 
@@ -49,7 +49,7 @@ public class StringToObjectConverter {
     }
 
     public Object convertTo(Class desiredClass, String inputString) {
-        Converter converter = (Converter) converters.get(desiredClass);
+        Converter converter = converters.get(desiredClass);
         if (converter == null) {
             throw new InvalidConversionException("Cannot convert to type " + desiredClass.getName());
         }

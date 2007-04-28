@@ -37,7 +37,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  * @author Aslak Helles&oslash;y
  */
 public class DefaultNanoContainer implements NanoContainer {
-    private static final Map primitiveNameToBoxedName = new HashMap();
+    private static final Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
     static {
         primitiveNameToBoxedName.put("int", Integer.class.getName());
         primitiveNameToBoxedName.put("byte", Byte.class.getName());
@@ -48,7 +48,7 @@ public class DefaultNanoContainer implements NanoContainer {
         primitiveNameToBoxedName.put("boolean", Boolean.class.getName());
     }
 
-    private final List classPathElements = new ArrayList();
+    private final List<ClassPathElement> classPathElements = new ArrayList<ClassPathElement>();
     private MutablePicoContainer picoContainer;
     private final ClassLoader parentClassLoader;
 
@@ -56,7 +56,7 @@ public class DefaultNanoContainer implements NanoContainer {
     private boolean componentClassLoaderLocked;
 
     private static String getClassName(String primitiveOrClass) {
-        String fromMap = (String) primitiveNameToBoxedName.get(primitiveOrClass);
+        String fromMap = primitiveNameToBoxedName.get(primitiveOrClass);
         return fromMap != null ? fromMap : primitiveOrClass;
     }
 
@@ -175,20 +175,19 @@ public class DefaultNanoContainer implements NanoContainer {
         return picoContainer;
     }
 
-    private Map makePermissions() {
-        Map permissionsMap = new HashMap();
-        for (int i = 0; i < classPathElements.size(); i++) {
-            ClassPathElement cpe = (ClassPathElement) classPathElements.get(i);
+    private Map<URL, PermissionCollection> makePermissions() {
+        Map<URL, PermissionCollection> permissionsMap = new HashMap<URL, PermissionCollection>();
+        for (ClassPathElement cpe : classPathElements) {
             PermissionCollection permissionCollection = cpe.getPermissionCollection();
             permissionsMap.put(cpe.getUrl(), permissionCollection);
         }
         return permissionsMap;
     }
 
-    private URL[] getURLs(List classPathElemelements) {
+    private URL[] getURLs(List<ClassPathElement> classPathElemelements) {
         final URL[] urls = new URL[classPathElemelements.size()];
         for(int i = 0; i < urls.length; i++) {
-            urls[i] = ((ClassPathElement) classPathElemelements.get(i)).getUrl();
+            urls[i] = (classPathElemelements.get(i)).getUrl();
         }
         return urls;
     }

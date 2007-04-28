@@ -81,6 +81,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
      * This allows children of this class to add to the default binding.
      * Might want to add similar or a more generic implementation of this
      * method to support the other scripting languages.
+     * @param binding the binding
      */
     protected void handleBinding(Binding binding) {
         // does nothing but adds flexibility for children

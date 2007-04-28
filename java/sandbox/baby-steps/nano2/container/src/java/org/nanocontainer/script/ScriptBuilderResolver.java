@@ -35,7 +35,7 @@ public class ScriptBuilderResolver {
     public static final String DEFAULT_XML_BUILDER = "org.nanocontainer.script.xml.XMLContainerBuilder";
     public static final String DEFAULT_JYTHON_BUILDER = "org.nanocontainer.script.jython.JythonContainerBuilder";
 
-    private final Map extensionToBuilders = new HashMap();
+    private final Map<String, String> extensionToBuilders = new HashMap<String, String>();
 
 
 
@@ -59,7 +59,7 @@ public class ScriptBuilderResolver {
 
     /**
      * Retrieve the classname of the appropriate ScriptedContainerBuilder given the file.
-     * @param compositionFile File
+     * @param compositionURL URL
      * @return String
      */
     public String getBuilderClassName(URL compositionURL) {
@@ -77,10 +77,11 @@ public class ScriptBuilderResolver {
      * </pre></code>
      * @param extension String
      * @return String
+     * @throws UnsupportedScriptTypeException
      */
     public synchronized String getBuilderClassName(final String extension) throws UnsupportedScriptTypeException{
         String resultingBuilderClassName = null;
-        resultingBuilderClassName = (String) extensionToBuilders.get(extension);
+        resultingBuilderClassName = extensionToBuilders.get(extension);
         if (resultingBuilderClassName == null) {
             throw new UnsupportedScriptTypeException(extension, this.getAllSupportedExtensions());
         }

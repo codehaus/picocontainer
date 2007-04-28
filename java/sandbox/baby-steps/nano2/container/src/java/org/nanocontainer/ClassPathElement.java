@@ -24,7 +24,7 @@ public class ClassPathElement implements Serializable {
 
     private final URL url;
     private PermissionCollection permissionCollection;
-    private final List permissions = new ArrayList();
+    private final List<Permission> permissions = new ArrayList<Permission>();
     
     public ClassPathElement(URL url) {
         this.url = url;
@@ -45,8 +45,7 @@ public class ClassPathElement implements Serializable {
     public PermissionCollection getPermissionCollection() {
         if (permissionCollection == null) {
             permissionCollection = new Permissions();
-            for (int i = 0; i < permissions.size(); i++) {
-                Permission permission = (Permission) permissions.get(i);
+            for (Permission permission : permissions) {
                 permissionCollection.add(permission);
             }
         }

@@ -119,8 +119,7 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
 
     public boolean equals(Object obj) {
         // required to make it pass on both jdk 1.3 and jdk 1.4. Btw, what about overriding hashCode()? (AH)
-        final boolean result = delegate.equals(obj) || this == obj;
-        return result;
+        return delegate.equals(obj) || this == obj;
     }
 
 }

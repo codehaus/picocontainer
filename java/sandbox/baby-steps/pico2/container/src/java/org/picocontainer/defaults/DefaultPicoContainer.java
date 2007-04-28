@@ -334,7 +334,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 addOrderedComponentAdapter(componentAdapter);
             }
         }
-        List result = new ArrayList();
+        List<Object> result = new ArrayList<Object>();
         for (Object componentAdapter : orderedComponentAdapters) {
             final Object componentInstance = adapterToInstanceMap.get(componentAdapter);
             if (componentInstance != null) {
@@ -425,7 +425,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         childrenStarted.clear();
         for (PicoContainer child : children) {
             childrenStarted.add(child.hashCode());
-            if (child instanceof MutablePicoContainer) {
+            if (child instanceof Startable) {
                 ((Startable) child).start();
             }
         }
@@ -451,7 +451,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (!started) throw new IllegalStateException("Not started");
         for (PicoContainer child : children) {
             if (childStarted(child)) {
-                if (child instanceof MutablePicoContainer) {
+                if (child instanceof Startable) {
                     ((Startable) child).stop();
                 }
             }

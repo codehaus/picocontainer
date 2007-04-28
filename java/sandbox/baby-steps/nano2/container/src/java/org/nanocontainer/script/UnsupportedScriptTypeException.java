@@ -24,8 +24,6 @@ public class UnsupportedScriptTypeException extends PicoException {
 
     /**
      * Transforms the constructor arguments into a real exption
-     * @param specifiedFileExtension String
-     * @param allSupportedFileExtensions String[]
      * @return String
      */
     private  String buildExceptionMessage() {

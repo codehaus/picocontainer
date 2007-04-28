@@ -75,7 +75,7 @@ public class ScriptedContainerBuilderFactory {
 
 
 
-    public ScriptedContainerBuilderFactory(File compositionFile, ClassLoader classLoader) throws IOException, ClassNotFoundException {
+    public ScriptedContainerBuilderFactory(File compositionFile, ClassLoader classLoader) throws IOException {
         this(compositionFile, classLoader, new ScriptBuilderResolver());
     }
 
@@ -94,16 +94,16 @@ public class ScriptedContainerBuilderFactory {
      * @throws UnsupportedScriptTypeException if the extension of the file
      * does not match that of any known script.
      */
-    public ScriptedContainerBuilderFactory(File compositionFile, ClassLoader classLoader, ScriptBuilderResolver builderClassResolver) throws IOException, ClassNotFoundException ,UnsupportedScriptTypeException {
+    public ScriptedContainerBuilderFactory(File compositionFile, ClassLoader classLoader, ScriptBuilderResolver builderClassResolver) throws IOException ,UnsupportedScriptTypeException {
         this(new FileReader(fileExists(compositionFile)), builderClassResolver.getBuilderClassName(compositionFile), classLoader);
     }
 
 
-    public ScriptedContainerBuilderFactory(File compositionFile) throws IOException, ClassNotFoundException {
+    public ScriptedContainerBuilderFactory(File compositionFile) throws IOException {
         this(compositionFile, Thread.currentThread().getContextClassLoader());
     }
 
-    public ScriptedContainerBuilderFactory(URL compositionURL) throws ClassNotFoundException {
+    public ScriptedContainerBuilderFactory(URL compositionURL) {
         this(compositionURL, Thread.currentThread().getContextClassLoader(),new ScriptBuilderResolver());
     }
 
@@ -122,17 +122,17 @@ public class ScriptedContainerBuilderFactory {
      * @throws UnsupportedScriptTypeException if the extension of the file
      * does not match that of any known script.
      */
-    public ScriptedContainerBuilderFactory(URL compositionURL, ClassLoader classLoader, ScriptBuilderResolver builderClassResolver) throws ClassNotFoundException ,UnsupportedScriptTypeException {
+    public ScriptedContainerBuilderFactory(URL compositionURL, ClassLoader classLoader, ScriptBuilderResolver builderClassResolver) throws UnsupportedScriptTypeException {
         this(compositionURL, builderClassResolver.getBuilderClassName(compositionURL), classLoader);
     }
 
 
-    public ScriptedContainerBuilderFactory(URL compositionURL, String builderClassName, ClassLoader contextClassLoader) throws ClassNotFoundException {
+    public ScriptedContainerBuilderFactory(URL compositionURL, String builderClassName, ClassLoader contextClassLoader) {
         createContainerBuilder(compositionURL, contextClassLoader, builderClassName);
     }
 
 
-    public ScriptedContainerBuilderFactory(Reader composition, String builderClass) throws ClassNotFoundException {
+    public ScriptedContainerBuilderFactory(Reader composition, String builderClass) {
         this(composition, builderClass, Thread.currentThread().getContextClassLoader());
     }
 
@@ -143,7 +143,7 @@ public class ScriptedContainerBuilderFactory {
      * @param classLoader ClassLoader the classloader to use for instantiation.
      * @throws ClassNotFoundException if the specified class cannot be found.
      */
-    public ScriptedContainerBuilderFactory(Reader composition, String builderClass, ClassLoader classLoader) throws ClassNotFoundException {
+    public ScriptedContainerBuilderFactory(Reader composition, String builderClass, ClassLoader classLoader) {
         createContainerBuilder(composition, classLoader, builderClass);
     }
 
@@ -156,7 +156,7 @@ public class ScriptedContainerBuilderFactory {
      * @param builderClass String the builder class to load.
      * @throws ClassNotFoundException if the specified builder class cannot be loaded.
      */
-    private void createContainerBuilder(Object composition, ClassLoader classLoader, String builderClass) throws ClassNotFoundException {
+    private void createContainerBuilder(Object composition, ClassLoader classLoader, String builderClass) {
         DefaultNanoContainer defaultNanoContainer;
         {
             // transient.

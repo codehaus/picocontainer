@@ -60,7 +60,7 @@ public class DefaultNanoPicoContainerTestCase extends AbstractPicoContainerTestC
         assertTrue(sb.toString().indexOf("-instantiated") != -1);
     }
 
-    public void testMakeRemoveChildContainer() throws ClassNotFoundException {
+    public void testMakeRemoveChildContainer() {
         final NanoPicoContainer parent = (NanoPicoContainer) createPicoContainer(null);
         parent.registerComponent("java.lang.String", (Object)"This is a test");
         MutablePicoContainer pico = parent.makeChildContainer();

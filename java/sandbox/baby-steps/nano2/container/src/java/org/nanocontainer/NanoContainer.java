@@ -37,16 +37,6 @@ public interface NanoContainer {
 
     ComponentAdapter registerComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters);
 
-
-    ComponentAdapter registerComponent(Object key,
-                                       String componentImplementationClassName,
-                                       String[] parameterTypesAsString,
-                                       String[] parameterValuesAsString);
-
-    ComponentAdapter registerComponent(String componentImplementationClassName,
-                                       String[] parameterTypesAsString,
-                                       String[] parameterValuesAsString);
-
     /**
      * Adds a new URL that will be used in classloading
      *

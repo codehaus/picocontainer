@@ -23,7 +23,7 @@ import org.apache.commons.cli.CommandLine;
  */
 public class StandaloneTestCase extends TestCase {
 
-    public void testShouldBeAbleToInvokeMainMethodWithScriptFromFile() throws IOException, ClassNotFoundException {
+    public void testShouldBeAbleToInvokeMainMethodWithScriptFromFile() throws IOException {
         File absoluteScriptPath = getAbsoluteScriptPath();
         Standalone.main(new String[] {
             "-c",
@@ -32,7 +32,7 @@ public class StandaloneTestCase extends TestCase {
         });
     }
 
-    public void testShouldBeAbleToInvokeMainMethodWithScriptFromClasspathWithXmlIncludes() throws IOException, ClassNotFoundException {
+    public void testShouldBeAbleToInvokeMainMethodWithScriptFromClasspathWithXmlIncludes() throws IOException {
         Standalone.main(new String[] {
             "-r",
             "/org/nanocontainer/nanocontainer-with-include.xml", 

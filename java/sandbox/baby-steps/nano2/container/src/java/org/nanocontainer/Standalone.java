@@ -21,6 +21,7 @@ import org.apache.commons.cli.PosixParser;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
+import org.picocontainer.PicoClassNotFoundException;
 
 /**
  * Standalone offers a command line interface to NanoContainer.
@@ -61,11 +62,11 @@ public class Standalone {
         return options;
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException {
 		new Standalone(args);
     }
 
-    public Standalone(String[] args) throws IOException, ClassNotFoundException {
+    public Standalone(String[] args) throws IOException {
         File defaultCompositionFile = new File(DEFAULT_COMPOSITION_FILE);
         CommandLine cl = null;
         Options options = createOptions();
@@ -112,10 +113,10 @@ public class Standalone {
             System.err.println("NanoContainer Standalone: Failed to start application. Cause : " + e.getMessage());
             e.printStackTrace();
             throw e;
-        } catch (ClassNotFoundException e) {
-            System.err.println("NanoContainer Standalone: Failed to start application. A Class was not found. Exception message : " + e.getMessage());
-            e.printStackTrace();
-            throw e;
+//        } catch (ClassNotFoundException e) {
+//            System.err.println("NanoContainer Standalone: Failed to start application. A Class was not found. Exception message : " + e.getMessage());
+//            e.printStackTrace();
+//            throw new PicoClassNotFoundException();
         }
         if (!quiet) {
             System.out.println("NanoContainer Standalone: Exiting main method.");
@@ -143,12 +144,12 @@ public class Standalone {
 
     AH
     */
-    private static void buildAndStartContainer(URL composition, final boolean quiet, boolean nowait) throws ClassNotFoundException {
+    private static void buildAndStartContainer(URL composition, final boolean quiet, boolean nowait) {
         final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(composition);
         buildContainer(scriptedContainerBuilderFactory, nowait, quiet);
     }
 
-    private static void buildAndStartContainer(File composition, boolean quiet, boolean nowait) throws IOException, ClassNotFoundException {
+    private static void buildAndStartContainer(File composition, boolean quiet, boolean nowait) throws IOException {
         final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(composition);
         buildContainer(scriptedContainerBuilderFactory, nowait, quiet);
     }

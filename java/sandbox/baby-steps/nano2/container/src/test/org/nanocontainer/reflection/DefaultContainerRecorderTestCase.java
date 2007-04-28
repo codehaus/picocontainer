@@ -75,7 +75,7 @@ public class DefaultContainerRecorderTestCase extends TestCase {
     }
 
 
-    public void testXMLRecorderHierarchy() throws ClassNotFoundException {
+    public void testXMLRecorderHierarchy() {
         MutablePicoContainer parentPrototype = new DefaultPicoContainer();
         DefaultContainerRecorder parentRecorder = new DefaultContainerRecorder(parentPrototype);
         StringReader parentResource = new StringReader("" 

@@ -104,34 +104,6 @@ public class DefaultNanoContainer implements NanoContainer {
         return picoContainer.registerComponent(key,componentImplementationOrInstance, parameters);
     }
 
-    public ComponentAdapter registerComponent(Object key,
-                                                            String componentImplementationClassName,
-                                                            String[] parameterTypesAsString,
-                                                            String[] parameterValuesAsString) {
-        Class componentImplementation = loadClass(componentImplementationClassName);
-        if (key instanceof ClassName) {
-            key = loadClass(((ClassName) key).getClassName());
-
-        }
-        return registerComponent(parameterTypesAsString, parameterValuesAsString, key, componentImplementation);
-    }
-
-    public ComponentAdapter registerComponent(String componentImplementationClassName,
-                                                            String[] parameterTypesAsString,
-                                                            String[] parameterValuesAsString) {
-        Class componentImplementation = loadClass(componentImplementationClassName);
-        return registerComponent(parameterTypesAsString, parameterValuesAsString, componentImplementation, componentImplementation);
-    }
-
-    private ComponentAdapter registerComponent(String[] parameterTypesAsString, String[] parameterValuesAsString, Object key, Class componentImplementation) {
-        Parameter[] parameters = new Parameter[parameterTypesAsString.length];
-        for (int i = 0; i < parameters.length; i++) {
-            Object value = BeanPropertyComponentAdapter.convert(parameterTypesAsString[i], parameterValuesAsString[i], getComponentClassLoader());
-            parameters[i] = new ConstantParameter(value);
-        }
-        return picoContainer.registerComponent(key, componentImplementation, parameters);
-    }
-
     private Class loadClass(final String className) {
         ClassLoader classLoader = getComponentClassLoader();
         String cn = getClassName(className);

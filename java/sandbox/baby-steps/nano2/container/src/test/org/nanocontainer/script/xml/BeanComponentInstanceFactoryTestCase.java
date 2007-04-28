@@ -43,7 +43,7 @@ public class BeanComponentInstanceFactoryTestCase extends TestCase {
         assertEquals(10, bean.getFoo());
     }
 
-    public void testDeserializationWithMappedName() throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
+    public void testDeserializationWithMappedName() throws ParserConfigurationException, IOException, SAXException {
         BeanComponentInstanceFactory factory = new BeanComponentInstanceFactory();
 
         StringReader sr = new StringReader("" +

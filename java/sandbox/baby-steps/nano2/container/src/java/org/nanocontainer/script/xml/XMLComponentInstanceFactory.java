@@ -29,7 +29,6 @@ public interface XMLComponentInstanceFactory {
      * @param element   the DOM Element
      * @param classLoader
      * @return An Object instance
-     * @throws ClassNotFoundException
      */
-    Object makeInstance(PicoContainer container, Element element, ClassLoader classLoader) throws ClassNotFoundException, MalformedURLException;
+    Object makeInstance(PicoContainer container, Element element, ClassLoader classLoader) throws MalformedURLException;
 }

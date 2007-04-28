@@ -151,15 +151,6 @@ public abstract class AbstractNanoPicoContainer extends AbstractDelegatingMutabl
         return container.registerComponent(key, componentImplementationOrInstance, parameters);
     }
 
-    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName, String[] parameterTypesAsString, String[] parameterValuesAsString) {
-        return container.registerComponent(key, componentImplementationClassName, parameterTypesAsString, parameterValuesAsString);
-    }
-
-    public ComponentAdapter registerComponent(String componentImplementationClassName, String[] parameterTypesAsString, String[] parameterValuesAsString) {
-        return container.registerComponent(componentImplementationClassName, parameterTypesAsString, parameterValuesAsString);
-    }
-
-
     //TODO Should this method be the NanoContainer interface only?
     public MutablePicoContainer getPico() {
         return this;

@@ -31,7 +31,7 @@ public class ImplementationHidingNanoPicoContainerTestCase extends AbstractImple
     }
     // test methods inherited. This container is part compliant.
 
-    public void testMakeRemoveChildContainer() throws ClassNotFoundException {
+    public void testMakeRemoveChildContainer() {
         final NanoPicoContainer parent = (NanoPicoContainer) createPicoContainer(null);
         parent.registerComponent("java.lang.String", (Object)"This is a test");
         MutablePicoContainer pico = parent.makeChildContainer();

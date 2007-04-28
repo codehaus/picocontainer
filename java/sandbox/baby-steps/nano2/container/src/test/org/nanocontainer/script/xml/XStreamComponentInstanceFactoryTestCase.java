@@ -30,19 +30,19 @@ import com.thoughtworks.xstream.converters.reflection.Sun14ReflectionProvider;
  */
 public class XStreamComponentInstanceFactoryTestCase extends TestCase {
 
-    public void testDeserializationWithDefaultMode() throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
+    public void testDeserializationWithDefaultMode() throws ParserConfigurationException, IOException, SAXException {
         runDeserializationTest(new XStreamComponentInstanceFactory());
     }
 
-    public void testDeserializationInEncancedMode() throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
+    public void testDeserializationInEncancedMode() throws ParserConfigurationException, IOException, SAXException {
         runDeserializationTest(new XStreamComponentInstanceFactory(new XStream(new Sun14ReflectionProvider())));
     }
 
-    public void testDeserializationInPureJavaMode() throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
+    public void testDeserializationInPureJavaMode() throws ParserConfigurationException, IOException, SAXException {
         runDeserializationTest(new PureJavaXStreamComponentInstanceFactory());
     }
 
-    public void runDeserializationTest(XMLComponentInstanceFactory factory) throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
+    public void runDeserializationTest(XMLComponentInstanceFactory factory) throws ParserConfigurationException, IOException, SAXException {
         StringReader sr = new StringReader("" +
                 "<org.nanocontainer.script.xml.TestBean>" +
                 "<foo>10</foo>" +

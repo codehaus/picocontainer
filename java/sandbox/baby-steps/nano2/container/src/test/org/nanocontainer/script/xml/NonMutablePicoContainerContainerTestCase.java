@@ -86,7 +86,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
 
     }
 
-    public void testCreateSimpleContainerWithPicoContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+    public void testCreateSimpleContainerWithPicoContainer() throws ParserConfigurationException, SAXException, IOException, PicoCompositionException {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
@@ -98,7 +98,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
         assertNotNull(pico.getComponent(DefaultWebServerConfig.class));
     }
 
-    public void testCreateSimpleContainerWithMutablePicoContainer() throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, PicoCompositionException {
+    public void testCreateSimpleContainerWithMutablePicoContainer() throws ParserConfigurationException, SAXException, IOException, PicoCompositionException {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +

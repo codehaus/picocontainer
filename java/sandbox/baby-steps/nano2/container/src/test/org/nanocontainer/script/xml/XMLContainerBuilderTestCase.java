@@ -186,7 +186,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         try {
             Reader script = new StringReader("" +
                     "<container>" +
-                    "  <component-implementation class='Foo'/>" +
+                    "  <component-implementation class='FFFoo'/>" +
                     "</container>");
             buildContainer(script);
             fail();
@@ -704,7 +704,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         }
     }
 
-    public void testChainOfDecoratingPicoContainersCanDoInterceptionOfMutablePicoContainerMethods() throws ClassNotFoundException {
+    public void testChainOfDecoratingPicoContainersCanDoInterceptionOfMutablePicoContainerMethods() {
 
        Reader script = new StringReader("" +
                 "<container>\n" +

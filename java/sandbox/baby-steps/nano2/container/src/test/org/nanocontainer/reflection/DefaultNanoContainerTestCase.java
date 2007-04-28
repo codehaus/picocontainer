@@ -34,7 +34,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
         nanoContainer.registerComponent("org.nanocontainer.testmodel.WebServer", new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
     }
 
-    public void testProvision() throws PicoException, PicoInitializationException, ClassNotFoundException {
+    public void testProvision() throws PicoException {
         NanoContainer nanoContainer = new DefaultNanoContainer();
         nanoContainer.registerComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
         nanoContainer.registerComponent(new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
@@ -53,27 +53,6 @@ public class DefaultNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void testParametersCanBePassedInStringForm() throws ClassNotFoundException, PicoException, PicoInitializationException {
-        NanoContainer nanoContainer = new DefaultNanoContainer();
-        String className = ThingThatTakesParamsInConstructor.class.getName();
-
-        nanoContainer.registerComponent("thing",
-                className,
-                new String[]{
-                    "java.lang.String",
-                    "java.lang.Integer"
-                },
-                new String[]{
-                    "hello",
-                    "22"
-                });
-
-        ThingThatTakesParamsInConstructor thing =
-                (ThingThatTakesParamsInConstructor) nanoContainer.getPico().getComponent("thing");
-        assertNotNull("component not present", thing);
-        assertEquals("hello22", thing.getValue());
-    }
-
     public void testThatTestCompIsNotNaturallyInTheClassPathForTesting() {
 
         // the following tests try to load the jar containing TestComp - it
@@ -90,7 +69,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
 
     }
 
-    public void testChildContainerAdapterCanRelyOnParentContainerAdapter() throws MalformedURLException, ClassNotFoundException {
+    public void testChildContainerAdapterCanRelyOnParentContainerAdapter() throws MalformedURLException {
 
         String testcompJarFileName = System.getProperty("testcomp.jar", "src/test-comp/TestComp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
@@ -144,7 +123,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
 
     }
 
-    public void testClassLoaderJugglingIsPossible() throws MalformedURLException, ClassNotFoundException {
+    public void testClassLoaderJugglingIsPossible() throws MalformedURLException {
         NanoContainer parentContainer = new DefaultNanoContainer();
 
         String testcompJarFileName = System.getProperty("testcomp.jar", "src/test-comp/TestComp.jar");
@@ -183,7 +162,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void TODO_testSecurityManagerCanPreventOperations() throws MalformedURLException, ClassNotFoundException {
+    public void TODO_testSecurityManagerCanPreventOperations() throws MalformedURLException {
         NanoContainer parentContainer = new DefaultNanoContainer();
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
@@ -214,7 +193,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
     }
 
 
-    public void testChainOfDecoratingPicoContainersCanDoInterceptionOfMutablePicoContainerMethods() throws ClassNotFoundException {
+    public void testChainOfDecoratingPicoContainersCanDoInterceptionOfMutablePicoContainerMethods() {
         NanoContainer nanoContainer = new DefaultNanoContainer();
         MutablePicoContainer decorating = nanoContainer.addDecoratingPicoContainer(FooDecoratingPicoContainer.class);
         assertTrue(decorating instanceof FooDecoratingPicoContainer);

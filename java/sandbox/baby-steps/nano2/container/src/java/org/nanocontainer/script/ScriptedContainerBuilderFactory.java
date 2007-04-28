@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
 import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.ClassName;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -182,7 +183,7 @@ public class ScriptedContainerBuilderFactory {
             //
             defaultNanoContainer = new DefaultNanoContainer(classLoader,factory);
         }
-        ComponentAdapter componentAdapter = defaultNanoContainer.registerComponent(builderClass);
+        ComponentAdapter componentAdapter = defaultNanoContainer.registerComponent(new ClassName(builderClass));
         containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultNanoContainer.getPico());
     }
 

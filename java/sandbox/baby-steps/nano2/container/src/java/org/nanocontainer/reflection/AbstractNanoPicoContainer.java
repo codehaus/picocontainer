@@ -144,23 +144,24 @@ public abstract class AbstractNanoPicoContainer extends AbstractDelegatingMutabl
         return container.addClassLoaderURL(url);
     }
 
-    public ComponentAdapter registerComponent(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
-        return container.registerComponent(componentImplementationClassName);
+    public ComponentAdapter registerComponent(Object componentImplementationOrInstance) throws PicoRegistrationException, PicoIntrospectionException {
+        //QQQ
+        return container.registerComponent(componentImplementationOrInstance);
     }
 
-    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName) throws ClassNotFoundException {
+    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName) {
         return container.registerComponent(key, componentImplementationClassName);
     }
 
-    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter[] parameters) throws ClassNotFoundException {
+    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter[] parameters) {
         return container.registerComponent(key, componentImplementationClassName, parameters);
     }
 
-    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName, String[] parameterTypesAsString, String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
+    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName, String[] parameterTypesAsString, String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException, ClassNotFoundException {
         return container.registerComponent(key, componentImplementationClassName, parameterTypesAsString, parameterValuesAsString);
     }
 
-    public ComponentAdapter registerComponent(String componentImplementationClassName, String[] parameterTypesAsString, String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
+    public ComponentAdapter registerComponent(String componentImplementationClassName, String[] parameterTypesAsString, String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException, ClassNotFoundException {
         return container.registerComponent(componentImplementationClassName, parameterTypesAsString, parameterValuesAsString);
     }
 

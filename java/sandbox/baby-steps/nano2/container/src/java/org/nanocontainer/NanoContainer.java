@@ -33,21 +33,21 @@ import java.net.URL;
  */
 public interface NanoContainer {
 
-    ComponentAdapter registerComponent(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
+    ComponentAdapter registerComponent(Object componentImplementationOrInstance) throws PicoRegistrationException, PicoIntrospectionException;
 
-    ComponentAdapter registerComponent(Object key, String componentImplementationClassName) throws ClassNotFoundException;
+    ComponentAdapter registerComponent(Object key, String componentImplementationClassName);
 
-    ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter[] parameters) throws ClassNotFoundException;
+    ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter[] parameters);
 
 
     ComponentAdapter registerComponent(Object key,
                                                      String componentImplementationClassName,
                                                      String[] parameterTypesAsString,
-                                                     String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
+                                                     String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException, ClassNotFoundException;
 
     ComponentAdapter registerComponent(String componentImplementationClassName,
                                                      String[] parameterTypesAsString,
-                                                     String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException;
+                                                     String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException, ClassNotFoundException;
 
     /**
      * Adds a new URL that will be used in classloading

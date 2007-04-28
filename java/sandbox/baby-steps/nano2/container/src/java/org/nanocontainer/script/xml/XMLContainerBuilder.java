@@ -23,10 +23,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.nanocontainer.ClassNameKey;
+import org.nanocontainer.ClassName;
 import org.nanocontainer.ClassPathElement;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
+import org.nanocontainer.NanoClassNotFoundException;
 import org.nanocontainer.reflection.DefaultNanoPicoContainer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.PicoCompositionException;
@@ -140,12 +141,12 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                     rootElement.getAttribute(COMPONENT_MONITOR), parentContainer);
             populateContainer(childContainer);
             return childContainer;
-        } catch (ClassNotFoundException e) {
+        } catch (NanoClassNotFoundException e) {
             throw new NanoContainerMarkupException("Class not found:" + e.getMessage(), e);
         }
     }
 
-    private MutablePicoContainer createMutablePicoContainer(String cafName, String monitorName, PicoContainer parentContainer) throws PicoCompositionException, ClassNotFoundException {
+    private MutablePicoContainer createMutablePicoContainer(String cafName, String monitorName, PicoContainer parentContainer) throws PicoCompositionException {
         MutablePicoContainer container = new DefaultNanoPicoContainer(getClassLoader(),createComponentAdapterFactory(cafName, new DefaultNanoContainer(getClassLoader())), parentContainer);
         if ( !notSet(monitorName) ){
             ComponentMonitor monitor = createComponentMonitor(monitorName);
@@ -401,7 +402,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         return child;
     }
 
-    private XMLComponentInstanceFactory createComponentInstanceFactory(String factoryClass) throws ClassNotFoundException {
+    private XMLComponentInstanceFactory createComponentInstanceFactory(String factoryClass) {
         if ( notSet(factoryClass)) {
             // no factory has been specified for the node
             // return globally defined factory for the container - if there is one
@@ -436,7 +437,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         container.getPico().registerComponent(componentAdapterFactory.createComponentAdapter(key, implementationClass, parameters));
     }
 
-    private ComponentAdapterFactory createComponentAdapterFactory(String factoryName, NanoContainer metaContainer) throws ClassNotFoundException, PicoCompositionException {
+    private ComponentAdapterFactory createComponentAdapterFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {
         if ( notSet(factoryName)) {
             factoryName = DEFAULT_COMPONENT_ADAPTER_FACTORY;
         }
@@ -444,23 +445,25 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         if (metaContainer.getPico().getComponentAdapter(factoryName) != null) {
             key = factoryName;
         } else {
-            metaContainer.registerComponent(new ClassNameKey(ComponentAdapterFactory.class.getName()), factoryName);
+            metaContainer.registerComponent(new ClassName(ComponentAdapterFactory.class.getName()), factoryName);
             key = ComponentAdapterFactory.class;
         }
         return (ComponentAdapterFactory) metaContainer.getPico().getComponent(key);
     }
 
-    private ComponentMonitor createComponentMonitor(String monitorName) throws ClassNotFoundException, PicoCompositionException {
+    private ComponentMonitor createComponentMonitor(String monitorName) throws PicoCompositionException {
         if (notSet(monitorName)) {
             monitorName = DEFAULT_COMPONENT_MONITOR;
         }
-        Class monitorClass = getClassLoader().loadClass(monitorName);
         try {
+            Class monitorClass = getClassLoader().loadClass(monitorName);
             return (ComponentMonitor) monitorClass.newInstance();
         } catch (InstantiationException e) {
             throw new NanoContainerMarkupException(e);
         } catch (IllegalAccessException e) {
             throw new NanoContainerMarkupException(e);
+        } catch (ClassNotFoundException e) {
+            throw new NanoClassNotFoundException(monitorName, e);
         }
     }
 

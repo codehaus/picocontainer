@@ -33,7 +33,7 @@ public class WebContainerBuilderTestCase extends TestCase {
         if (pico != null) {
             pico.stop();
         }
-        Thread.sleep(1 * 1000);
+        Thread.sleep(2 * 1000);
     }
 
     public void testCanComposeWebContainerContextAndFilter() throws InterruptedException, IOException {

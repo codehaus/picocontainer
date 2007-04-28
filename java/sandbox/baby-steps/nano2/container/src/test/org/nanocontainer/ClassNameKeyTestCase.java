@@ -9,8 +9,8 @@ import junit.framework.TestCase;
 public class ClassNameKeyTestCase extends TestCase {
 
     public void testGetClassName(){
-        String className = ClassNameKey.class.getName();
-        ClassNameKey key = new ClassNameKey(className);
+        String className = ClassName.class.getName();
+        ClassName key = new ClassName(className);
         assertEquals(className, key.getClassName());
     }
 }

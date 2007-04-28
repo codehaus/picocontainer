@@ -71,7 +71,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
         public void accept(PicoVisitor containerVisitor) {
         }
 
-        public List getComponentAdapters(Class componentType) {
+        public List<ComponentAdapter> getComponentAdapters(Class componentType) {
             return null;
         }
 

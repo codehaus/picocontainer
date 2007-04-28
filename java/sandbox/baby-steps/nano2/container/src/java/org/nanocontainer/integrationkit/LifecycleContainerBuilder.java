@@ -69,6 +69,7 @@ public abstract class LifecycleContainerBuilder implements ContainerBuilder {
             if (parent != null && parent instanceof MutablePicoContainer) {
                 // see comment in buildContainer
                 synchronized (parent) {
+                    // TODO - is this right ?
                     ((MutablePicoContainer) parent).unregisterComponentByInstance(pico);
                 }
             }

@@ -13,6 +13,8 @@ package org.nanocontainer.reflection;
 import junit.framework.TestCase;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
+import org.nanocontainer.ClassName;
+import org.nanocontainer.NanoClassNotFoundException;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.*;
@@ -26,16 +28,16 @@ import java.util.ArrayList;
 
 public class DefaultNanoContainerTestCase extends TestCase {
 
-    public void testBasic() throws PicoRegistrationException, PicoInitializationException, ClassNotFoundException {
+    public void testBasic() throws PicoRegistrationException, PicoInitializationException {
         NanoContainer nanoContainer = new DefaultNanoContainer();
-        nanoContainer.registerComponent("org.nanocontainer.testmodel.DefaultWebServerConfig");
+        nanoContainer.registerComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
         nanoContainer.registerComponent("org.nanocontainer.testmodel.WebServer", "org.nanocontainer.testmodel.WebServerImpl");
     }
 
     public void testProvision() throws PicoException, PicoInitializationException, ClassNotFoundException {
         NanoContainer nanoContainer = new DefaultNanoContainer();
-        nanoContainer.registerComponent("org.nanocontainer.testmodel.DefaultWebServerConfig");
-        nanoContainer.registerComponent("org.nanocontainer.testmodel.WebServerImpl");
+        nanoContainer.registerComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
+        nanoContainer.registerComponent(new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
 
         assertNotNull("WebServerImpl should exist", nanoContainer.getPico().getComponent(WebServerImpl.class));
         assertTrue("WebServerImpl should exist", nanoContainer.getPico().getComponent(WebServerImpl.class) instanceof WebServerImpl);
@@ -44,9 +46,9 @@ public class DefaultNanoContainerTestCase extends TestCase {
     public void testNoGenerationRegistration() throws PicoRegistrationException, PicoIntrospectionException {
         NanoContainer nanoContainer = new DefaultNanoContainer();
         try {
-            nanoContainer.registerComponent("Ping");
+            nanoContainer.registerComponent(new ClassName("Ping"));
             fail("should have failed");
-        } catch (ClassNotFoundException e) {
+        } catch (NanoClassNotFoundException e) {
             // expected
         }
     }
@@ -77,13 +79,13 @@ public class DefaultNanoContainerTestCase extends TestCase {
         // the following tests try to load the jar containing TestComp - it
         // won't do to have the class already available in the classpath
 
+        DefaultNanoContainer dfca = new DefaultNanoContainer();
         try {
-            DefaultNanoContainer dfca = new DefaultNanoContainer();
             dfca.registerComponent("foo", "TestComp");
             Object o = dfca.getPico().getComponent("foo");
             System.out.println("");
             fail("Should have failed. Class was loaded from " + o.getClass().getProtectionDomain().getCodeSource().getLocation());
-        } catch (ClassNotFoundException expected) {
+        } catch (NanoClassNotFoundException expected) {
         }
 
     }
@@ -100,7 +102,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
         NanoContainer parentContainer = new DefaultNanoContainer();
         parentContainer.addClassLoaderURL(testCompJar.toURL());
         parentContainer.registerComponent("parentTestComp", "TestComp");
-        parentContainer.registerComponent("java.lang.StringBuffer");
+        parentContainer.registerComponent(new ClassName("java.lang.StringBuffer"));
 
         PicoContainer parentContainerAdapterPico = parentContainer.getPico();
         Object parentTestComp = parentContainerAdapterPico.getComponent("parentTestComp");
@@ -218,7 +220,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
         assertTrue(decorating instanceof FooDecoratingPicoContainer);
         MutablePicoContainer decorating2 = nanoContainer.addDecoratingPicoContainer(BarDecoratingPicoContainer.class);
         assertTrue(decorating2 instanceof BarDecoratingPicoContainer);
-        nanoContainer.registerComponent("java.util.Vector");
+        nanoContainer.registerComponent(new ClassName("java.util.Vector"));
         // decorators are fairly dirty - they replace a very select implementation in this TestCase.
         assertNotNull(nanoContainer.getComponent("java.util.ArrayList"));
         assertNull(nanoContainer.getComponent("java.util.Vector"));

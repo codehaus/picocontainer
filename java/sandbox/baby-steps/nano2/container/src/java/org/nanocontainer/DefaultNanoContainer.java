@@ -87,23 +87,27 @@ public class DefaultNanoContainer implements NanoContainer {
         this(Thread.currentThread().getContextClassLoader(), new DefaultPicoContainer());
     }
 
-    public ComponentAdapter registerComponent(String componentImplementationClassName) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
-        return picoContainer.registerComponent(loadClass(componentImplementationClassName));
+    public ComponentAdapter registerComponent(Object componentImplementationOrInstance) throws PicoRegistrationException, PicoIntrospectionException {
+        if(componentImplementationOrInstance instanceof ClassName) {
+            String className = ((ClassName) componentImplementationOrInstance).className;
+            return picoContainer.registerComponent(loadClass(className));
+        }
+        return picoContainer.registerComponent(componentImplementationOrInstance);
     }
 
-    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName) throws ClassNotFoundException {
+    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName) {
         Class componentImplementation = loadClass(componentImplementationClassName);
-        if (key instanceof ClassNameKey) {
-            key = loadClass(((ClassNameKey) key).getClassName());
+        if (key instanceof ClassName) {
+            key = loadClass(((ClassName) key).getClassName());
         }
         return picoContainer.registerComponent(key, componentImplementation);
     }
 
 
-    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter[] parameters) throws ClassNotFoundException {
+    public ComponentAdapter registerComponent(Object key, String componentImplementationClassName, Parameter[] parameters) {
         Class componentImplementation = loadClass(componentImplementationClassName);
-        if (key instanceof ClassNameKey) {
-            key = loadClass(((ClassNameKey) key).getClassName());
+        if (key instanceof ClassName) {
+            key = loadClass(((ClassName) key).getClassName());
 
         }
         return picoContainer.registerComponent(key, componentImplementation, parameters);
@@ -112,10 +116,10 @@ public class DefaultNanoContainer implements NanoContainer {
     public ComponentAdapter registerComponent(Object key,
                                                             String componentImplementationClassName,
                                                             String[] parameterTypesAsString,
-                                                            String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
+                                                            String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException, ClassNotFoundException {
         Class componentImplementation = getComponentClassLoader().loadClass(componentImplementationClassName);
-        if (key instanceof ClassNameKey) {
-            key = loadClass(((ClassNameKey) key).getClassName());
+        if (key instanceof ClassName) {
+            key = loadClass(((ClassName) key).getClassName());
 
         }
         return registerComponent(parameterTypesAsString, parameterValuesAsString, key, componentImplementation);
@@ -123,7 +127,7 @@ public class DefaultNanoContainer implements NanoContainer {
 
     public ComponentAdapter registerComponent(String componentImplementationClassName,
                                                             String[] parameterTypesAsString,
-                                                            String[] parameterValuesAsString) throws PicoRegistrationException, ClassNotFoundException, PicoIntrospectionException {
+                                                            String[] parameterValuesAsString) throws PicoRegistrationException, PicoIntrospectionException, ClassNotFoundException {
         Class componentImplementation = getComponentClassLoader().loadClass(componentImplementationClassName);
         return registerComponent(parameterTypesAsString, parameterValuesAsString, componentImplementation, componentImplementation);
     }
@@ -137,10 +141,14 @@ public class DefaultNanoContainer implements NanoContainer {
         return picoContainer.registerComponent(key, componentImplementation, parameters);
     }
 
-    private Class loadClass(final String className) throws ClassNotFoundException {
+    private Class loadClass(final String className) {
         ClassLoader classLoader = getComponentClassLoader();
         String cn = getClassName(className);
-        return classLoader.loadClass(cn);
+        try {
+            return classLoader.loadClass(cn);
+        } catch (ClassNotFoundException e) {
+            throw new NanoClassNotFoundException(cn, e);
+        }
     }
 
     public ClassPathElement addClassLoaderURL(URL url) {

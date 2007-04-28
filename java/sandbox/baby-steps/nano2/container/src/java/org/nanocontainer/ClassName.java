@@ -8,15 +8,15 @@
 package org.nanocontainer;
 
 /**
- * ClassNameKey is a simple wrapper for a class name which is used as a key in 
+ * ClassName is a simple wrapper for a class name which is used as a key in
  * the registration of components in NanoContainer.
  * 
  * @author Paul Hammant
  */
-public class ClassNameKey {
+public class ClassName {
     final String className;
 
-    public ClassNameKey(String className) {
+    public ClassName(String className) {
         this.className = className;
     }
 

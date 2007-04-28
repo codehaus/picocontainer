@@ -13,7 +13,6 @@ package org.nanocontainer.script.groovy.buildernodes;
 import java.util.Map;
 
 import org.nanocontainer.NanoContainer;
-import org.nanocontainer.script.NanoContainerMarkupException;
 import groovy.lang.GroovyObject;
 import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.MutablePicoContainer;
@@ -63,14 +62,10 @@ public class NewBuilderNode extends AbstractBuilderNode {
         NanoContainer factory = new DefaultNanoContainer();
         MutablePicoContainer parentPico = ((NanoContainer) current).getPico();
         factory.getPico().registerComponent(MutablePicoContainer.class, parentPico);
-        try {
-            if (builderClass instanceof String) {
-                factory.registerComponent(GroovyObject.class, (String) builderClass);
-            } else {
-                factory.getPico().registerComponent(GroovyObject.class, (Class) builderClass);
-            }
-        } catch (ClassNotFoundException e) {
-            throw new NanoContainerMarkupException("ClassNotFoundException " + builderClass);
+        if (builderClass instanceof String) {
+            factory.registerComponent(GroovyObject.class, (String) builderClass);
+        } else {
+            factory.getPico().registerComponent(GroovyObject.class, (Class) builderClass);
         }
         Object componentInstance = factory.getPico().getComponent(GroovyObject.class);
         return componentInstance;

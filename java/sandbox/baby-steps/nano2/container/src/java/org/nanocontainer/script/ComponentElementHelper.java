@@ -10,7 +10,7 @@
 package org.nanocontainer.script;
 
 import org.picocontainer.Parameter;
-import org.nanocontainer.ClassNameKey;
+import org.nanocontainer.ClassName;
 import org.nanocontainer.NanoContainer;
 
 
@@ -18,7 +18,7 @@ public class ComponentElementHelper {
 
     public static void makeComponent(Object cnkey, Object key, Parameter[] parameters, Object klass, NanoContainer current, Object instance) {
         if (cnkey != null)  {
-            key = new ClassNameKey((String)cnkey);
+            key = new ClassName((String)cnkey);
         }
 
         if (klass instanceof Class) {
@@ -28,11 +28,7 @@ public class ComponentElementHelper {
         } else if (klass instanceof String) {
             String className = (String) klass;
             key = key == null ? className : key;
-            try {
-                current.registerComponent(key, className, parameters);
-            } catch (ClassNotFoundException e) {
-                throw new NanoContainerMarkupException("ClassNotFoundException: " + e.getMessage(), e);
-            }
+            current.registerComponent(key, className, parameters);
         } else if (instance != null) {
             key = key == null ? instance.getClass() : key;
             current.getPico().registerComponent(key, instance);

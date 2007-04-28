@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.nanocontainer.ClassNameKey;
+import org.nanocontainer.ClassName;
 import org.nanocontainer.ClassPathElement;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
@@ -224,11 +224,7 @@ public class OldGroovyNodeBuilder extends BuilderSupport {
         NanoContainer factory = new DefaultNanoContainer();
         MutablePicoContainer parentPico = parentContainer.getPico();
         factory.getPico().registerComponent(MutablePicoContainer.class, parentPico);
-        try {
-            factory.registerComponent(GroovyObject.class, builderClass);
-        } catch (ClassNotFoundException e) {
-            throw new NanoContainerMarkupException("ClassNotFoundException " + builderClass);
-        }
+        factory.registerComponent(GroovyObject.class, builderClass);
         Object componentInstance = factory.getPico().getComponent(GroovyObject.class);
         return componentInstance;
     }
@@ -286,7 +282,7 @@ public class OldGroovyNodeBuilder extends BuilderSupport {
         MutablePicoContainer pico = nano.getPico();
 
         if (cnkey != null)  {
-            key = new ClassNameKey((String)cnkey);
+            key = new ClassName((String)cnkey);
         }
 
         Parameter[] parameterArray = getParameters(parameters);

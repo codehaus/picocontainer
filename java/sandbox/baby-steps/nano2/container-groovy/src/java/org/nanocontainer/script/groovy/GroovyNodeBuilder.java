@@ -15,6 +15,7 @@ import groovy.util.BuilderSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
+import org.nanocontainer.NanoClassNotFoundException;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.nanocontainer.script.NullNodeBuilderDecorationDelegate;
@@ -117,11 +118,12 @@ public class GroovyNodeBuilder extends BuilderSupport {
                 .setNode(new DecoratingPicoContainerNode())
                 .setNode(new GrantNode())
                 .setNode(new AppendContainerNode());
-        NanoContainer factory = new DefaultNanoContainer();
+        DefaultNanoContainer factory = new DefaultNanoContainer();
         try {
             factory.registerComponent("wc", "org.nanocontainer.webcontainer.groovy.WebContainerBuilder");
             setNode((BuilderNode) factory.getPico().getComponent("wc"));
-        } catch (ClassNotFoundException cnfe) {
+        } catch (NanoClassNotFoundException e) {
+            //do nothing.
         }
 
     }

@@ -22,12 +22,8 @@ public class WaffleAdapter {
         NanoContainer factory = new DefaultNanoContainer();
         factory.getPico().registerComponent(PicoContextHandler.class, context);
         factory.getPico().registerComponent(MutablePicoContainer.class, parentContainer);
-        try {
-            factory.registerComponent("wb", className);
-            return (NodeBuilder) factory.getPico().getComponent("wb");
-        } catch (ClassNotFoundException e) {
-            throw new org.nanocontainer.script.BuilderClassNotFoundException(className + " class name not found", e);
-        }
+        factory.registerComponent("wb", className);
+        return (NodeBuilder) factory.getPico().getComponent("wb");
 
     }
 

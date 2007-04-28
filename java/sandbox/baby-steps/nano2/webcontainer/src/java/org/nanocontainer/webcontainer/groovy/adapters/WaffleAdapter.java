@@ -3,6 +3,7 @@ package org.nanocontainer.webcontainer.groovy.adapters;
 import org.nanocontainer.webcontainer.PicoContextHandler;
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.ClassName;
 import org.picocontainer.MutablePicoContainer;
 
 import java.util.Map;
@@ -22,7 +23,7 @@ public class WaffleAdapter {
         NanoContainer factory = new DefaultNanoContainer();
         factory.getPico().registerComponent(PicoContextHandler.class, context);
         factory.getPico().registerComponent(MutablePicoContainer.class, parentContainer);
-        factory.registerComponent("wb", className);
+        factory.registerComponent("wb", new ClassName(className));
         return (NodeBuilder) factory.getPico().getComponent("wb");
 
     }

@@ -81,7 +81,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
 
         DefaultNanoContainer dfca = new DefaultNanoContainer();
         try {
-            dfca.registerComponent("foo", "TestComp");
+            dfca.registerComponent("foo", new ClassName("TestComp"));
             Object o = dfca.getPico().getComponent("foo");
             System.out.println("");
             fail("Should have failed. Class was loaded from " + o.getClass().getProtectionDomain().getCodeSource().getLocation());
@@ -101,7 +101,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
         // Set up parent
         NanoContainer parentContainer = new DefaultNanoContainer();
         parentContainer.addClassLoaderURL(testCompJar.toURL());
-        parentContainer.registerComponent("parentTestComp", "TestComp");
+        parentContainer.registerComponent("parentTestComp", new ClassName("TestComp"));
         parentContainer.registerComponent(new ClassName("java.lang.StringBuffer"));
 
         PicoContainer parentContainerAdapterPico = parentContainer.getPico();
@@ -112,7 +112,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
         NanoContainer childContainer = new DefaultNanoContainer(parentContainer);
         File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
         childContainer.addClassLoaderURL(testCompJar2.toURL());
-        childContainer.registerComponent("childTestComp", "TestComp2");
+        childContainer.registerComponent("childTestComp", new ClassName("TestComp2"));
 
         PicoContainer childContainerAdapterPico = childContainer.getPico();
         Object childTestComp = childContainerAdapterPico.getComponent("childTestComp");
@@ -153,14 +153,14 @@ public class DefaultNanoContainerTestCase extends TestCase {
         File testCompJar = new File(testcompJarFileName);
         assertTrue("The testcomp.jar system property should point to java/nanocontainer/src/test-comp/TestComp.jar", testCompJar.isFile());
 
-        parentContainer.registerComponent("foo", "org.nanocontainer.testmodel.DefaultWebServerConfig");
+        parentContainer.registerComponent("foo", new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
 
         Object fooWebServerConfig = parentContainer.getPico().getComponent("foo");
         assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
         NanoContainer childContainer = new DefaultNanoContainer(parentContainer);
         childContainer.addClassLoaderURL(testCompJar.toURL());
-        childContainer.registerComponent("bar", "TestComp");
+        childContainer.registerComponent("bar", new ClassName("TestComp"));
 
         Object barTestComp = childContainer.getPico().getComponent("bar");
         assertEquals("TestComp", barTestComp.getClass().getName());
@@ -193,7 +193,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
         File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());
 
-        parentContainer.registerComponent("foo", "org.nanocontainer.testmodel.DefaultWebServerConfig");
+        parentContainer.registerComponent("foo", new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
 
         Object fooWebServerConfig = parentContainer.getPico().getComponent("foo");
         assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
@@ -203,7 +203,7 @@ public class DefaultNanoContainerTestCase extends TestCase {
         //TODO childContainer.setPermission(some permission list, that includes the preventing of general file access);
         // Or shoud this be done in the ctor for DRCA ?
         // or should it a parameter in the addClassLoaderURL(..) method
-        childContainer.registerComponent("bar", "org.nanocontainer.testmodel.FileSystemUsing");
+        childContainer.registerComponent("bar", new ClassName("org.nanocontainer.testmodel.FileSystemUsing"));
 
         try {
             parentContainer.getPico().getComponent("bar");

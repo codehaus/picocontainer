@@ -414,7 +414,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
 
         NanoContainer adapter = new DefaultNanoContainer(getClassLoader());
-        adapter.registerComponent(XMLComponentInstanceFactory.class.getName(), factoryClass);
+        adapter.registerComponent(XMLComponentInstanceFactory.class.getName(), new ClassName(factoryClass));
         return (XMLComponentInstanceFactory) adapter.getPico().getComponents().get(0);
     }
 
@@ -446,7 +446,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         if (metaContainer.getPico().getComponentAdapter(factoryName) != null) {
             key = factoryName;
         } else {
-            metaContainer.registerComponent(new ClassName(ComponentAdapterFactory.class.getName()), factoryName);
+            metaContainer.registerComponent(new ClassName(ComponentAdapterFactory.class.getName()), new ClassName(factoryName));
             key = ComponentAdapterFactory.class;
         }
         return (ComponentAdapterFactory) metaContainer.getPico().getComponent(key);

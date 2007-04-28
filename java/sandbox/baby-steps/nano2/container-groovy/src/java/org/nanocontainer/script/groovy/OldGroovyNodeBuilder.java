@@ -224,7 +224,7 @@ public class OldGroovyNodeBuilder extends BuilderSupport {
         NanoContainer factory = new DefaultNanoContainer();
         MutablePicoContainer parentPico = parentContainer.getPico();
         factory.getPico().registerComponent(MutablePicoContainer.class, parentPico);
-        factory.registerComponent(GroovyObject.class, builderClass);
+        factory.registerComponent(GroovyObject.class, new ClassName(builderClass));
         Object componentInstance = factory.getPico().getComponent(GroovyObject.class);
         return componentInstance;
     }

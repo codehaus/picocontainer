@@ -13,6 +13,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
+import org.nanocontainer.ClassName;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
@@ -66,7 +67,7 @@ public class PicoContainerTask extends Task {
             NanoContainer container = new DefaultNanoContainer(getClass().getClassLoader(), picoContainer);
             for (Iterator iterator = antSpecifiedComponents.iterator(); iterator.hasNext();) {
                 Component component = (Component) iterator.next();
-                BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) container.registerComponent(component.getKey(), component.getClassname());
+                BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) container.registerComponent(component.getKey(), new ClassName(component.getClassname()));
                 adapter.setProperties(component.getProperties());
             }
         }

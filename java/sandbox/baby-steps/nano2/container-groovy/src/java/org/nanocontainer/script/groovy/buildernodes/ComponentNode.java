@@ -78,11 +78,6 @@ public class ComponentNode extends AbstractBuilderNode {
 
     /**
      * Execute the handler for the given node builder.
-     * TODO - wrong Javadoc
-     * @param name Object the parent object.
-     * @param value The Node value. This is almost never used, but it kept
-     *   in for consistency with the Groovy Builder API. Normally set to
-     *   null.
      * @param current The current node.
      * @param attributes Map attributes specified in the groovy script for
      *   the builder node.

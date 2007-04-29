@@ -141,7 +141,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         assertNotSame(b1, b2);
     }
 
-    public void testShouldAcceptComponentParameterWithClassNameKey() throws PicoCompositionException {
+    public void testShouldAcceptComponentParameter() throws PicoCompositionException {
         Reader script = new StringReader("" +
                 "import org.picocontainer.defaults.ComponentParameter\n" +
                 "import org.nanocontainer.testmodel.*\n" +
@@ -149,6 +149,43 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +
                 "nano = builder.container {\n" +
                 "    component(class:A)\n" +
+                "    component(key:B, class:B, parameters:[ new ComponentParameter(A) ])\n" +
+                "}");
+
+        PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
+        A a = (A) pico.getComponent(A.class);
+        B b = (B) pico.getComponent(B.class);
+
+        assertNotNull(a);
+        assertNotNull(b);
+        assertSame(a, b.a);
+    }
+
+    public void testShouldAcceptComponentParameterWithClassNameKey() throws PicoCompositionException {
+        Reader script = new StringReader("" +
+                "import org.nanocontainer.testmodel.*\n" +
+                "builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +
+                "nano = builder.container {\n" +
+                "    component(classNameKey:'org.nanocontainer.testmodel.A', class:A)\n" +
+                "    component(key:B, class:B)\n" +
+                "}");
+
+        PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
+        A a = (A) pico.getComponent(A.class);
+        B b = (B) pico.getComponent(B.class);
+
+        assertNotNull(a);
+        assertNotNull(b);
+        assertSame(a, b.a);
+    }
+
+    public void testShouldAcceptComponentParameterWithClassNameKeyAndParameter() throws PicoCompositionException {
+        Reader script = new StringReader("" +
+                "import org.picocontainer.defaults.ComponentParameter\n" +
+                "import org.nanocontainer.testmodel.*\n" +
+                "builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +
+                "nano = builder.container {\n" +
+                "    component(classNameKey:'org.nanocontainer.testmodel.A', class:A)\n" +
                 "    component(key:B, class:B, parameters:[ new ComponentParameter(A) ])\n" +
                 "}");
 
@@ -384,7 +421,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
     public void testBuildContainerWithParentAttribute() {
         DefaultNanoPicoContainer parent = new DefaultNanoPicoContainer();
-        parent.registerComponent("hello", (Object) "world");
+        parent.registerComponent("hello", "world");
 
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
@@ -621,7 +658,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
      */
     public void testTestCompIsNotAvailableViaSystemClassPath() {
         try {
-            Class testComp = getClass().getClassLoader().loadClass("TestComp");
+            getClass().getClassLoader().loadClass("TestComp");
             fail("Invalid configuration TestComp exists in system classpath. ");
         } catch (ClassNotFoundException ex) {
             //ok.

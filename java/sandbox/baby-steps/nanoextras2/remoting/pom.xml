@@ -66,9 +66,9 @@
 			</dependency>
 			<dependency>
 				<groupId>groovy</groupId>
-				<artifactId>groovy-all-1.0-jsr</artifactId>
+				<artifactId>groovy-all</artifactId>
 				<type>jar</type>
-				<version>06</version>
+				<version>1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>mx4j</groupId>

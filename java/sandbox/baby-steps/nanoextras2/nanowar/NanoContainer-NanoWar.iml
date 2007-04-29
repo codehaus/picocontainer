@@ -49,7 +49,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/groovy/groovy-all-1.0-jsr/04/groovy-all-1.0-jsr-04.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/groovy/groovy-all/1.0/groovy-all-1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

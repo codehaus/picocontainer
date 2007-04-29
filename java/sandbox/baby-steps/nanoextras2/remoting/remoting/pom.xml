@@ -36,7 +36,7 @@
 		</dependency>
 		<dependency>
 			<groupId>groovy</groupId>
-			<artifactId>groovy-all-1.0-jsr</artifactId>
+			<artifactId>groovy-all</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>mx4j</groupId>

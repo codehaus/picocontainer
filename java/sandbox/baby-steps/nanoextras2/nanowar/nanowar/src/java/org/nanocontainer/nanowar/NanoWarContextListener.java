@@ -81,7 +81,10 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
 
             ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
             containerBuilder.buildContainer(containerRef, new SimpleReference(), context, false);
+        // TODO bad catch - PH
         } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("--> " + e.getMessage());
             // Not all servlet containers print the nested exception. Do it here.
             event.getServletContext().log(e.getMessage(), e);
             throw new PicoCompositionException(e);
@@ -133,11 +136,9 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
         }
         ComponentAdapter componentAdapter = null;
         if ( picoConfiguration != null ){
-            Parameter[] parameters = new Parameter[]{ new ConstantParameter(picoConfiguration) };
-            componentAdapter = nanoContainer.registerComponent(containerComposerClassName, new ClassName(containerComposerClassName), parameters);
+            componentAdapter = nanoContainer.registerComponent(containerComposerClassName, new ClassName(containerComposerClassName), new ConstantParameter(picoConfiguration));
         } else {
-            //QQQ
-            componentAdapter = nanoContainer.registerComponent(containerComposerClassName);
+            componentAdapter = nanoContainer.registerComponent(new ClassName(containerComposerClassName));
         }
         return (ContainerComposer) componentAdapter.getComponentInstance(nanoContainer.getPico());
     }

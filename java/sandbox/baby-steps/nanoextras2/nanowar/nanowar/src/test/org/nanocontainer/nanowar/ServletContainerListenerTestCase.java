@@ -192,7 +192,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
 
     public void testApplicationScopeContainerIsKilledWhenContextDestroyed() {
         Mock servletContextMock = mock(ServletContext.class);
-        Mock containerMock = mock(PicoContainer.class);
+        Mock containerMock = mock(MutablePicoContainer.class);
         containerMock.expects(once()).method("stop");
         containerMock.expects(once()).method("dispose");
         containerMock.expects(once()).method("getParent");
@@ -201,9 +201,10 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
                 .with(eq(APPLICATION_CONTAINER)).will(returnValue(containerMock.proxy()));
         servletContextMock.expects(once())
                 .method("setAttribute");
+        //servletContextMock.expects(once()).method("log").withAnyArguments();
         listener.contextDestroyed(new ServletContextEvent(
                     (ServletContext) servletContextMock.proxy()));
-    }       
+    }
         
     public void testSessionScopeContainerIsCreatedWithApplicationScopeContainerAsParent(){
         assertSessionScopeContainerIsCreatedWithApplicationScopeContainerAsParent(groovyScript, GroovyContainerBuilder.class);

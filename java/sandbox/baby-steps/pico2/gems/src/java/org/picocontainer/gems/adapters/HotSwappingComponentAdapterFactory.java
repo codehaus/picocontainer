@@ -19,7 +19,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 
@@ -35,7 +35,7 @@ public class HotSwappingComponentAdapterFactory extends DecoratingComponentAdapt
     private final ProxyFactory proxyFactory;
 
     public HotSwappingComponentAdapterFactory() {
-        this(new DefaultComponentAdapterFactory());
+        this(new CachingAndConstructorComponentAdapterFactory());
     }
 
     public HotSwappingComponentAdapterFactory(ComponentAdapterFactory delegate) {

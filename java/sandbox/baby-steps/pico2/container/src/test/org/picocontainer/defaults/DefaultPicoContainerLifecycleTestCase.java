@@ -15,7 +15,6 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoLifecycleException;
 import org.picocontainer.Startable;
 import org.picocontainer.monitors.LifecycleComponentMonitor;
@@ -307,7 +306,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
                 return true;
             }
         };
-        MutablePicoContainer pico = new DefaultPicoContainer( new DefaultComponentAdapterFactory(), strategy, null );
+        MutablePicoContainer pico = new DefaultPicoContainer( new CachingAndConstructorComponentAdapterFactory(), strategy, null );
 
         StringBuffer sb = new StringBuffer();
 

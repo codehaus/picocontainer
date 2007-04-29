@@ -20,7 +20,7 @@ import org.nanocontainer.aop.defaults.AspectsComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
@@ -55,11 +55,11 @@ public class DynaopAspectablePicoContainerFactory implements AspectablePicoConta
     }
 
     public AspectablePicoContainer createContainer(PicoContainer parent) {
-        return createContainer(new DefaultComponentAdapterFactory(), parent);
+        return createContainer(new CachingAndConstructorComponentAdapterFactory(), parent);
     }
 
     public AspectablePicoContainer createContainer() {
-        return createContainer(new DefaultComponentAdapterFactory());
+        return createContainer(new CachingAndConstructorComponentAdapterFactory());
     }
 
     public AspectablePicoContainer makeChildContainer(AspectsManager aspectsManager, AspectablePicoContainer parent) {

@@ -16,7 +16,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
@@ -49,12 +49,12 @@ public class AspectsComponentAdapterFactory extends DecoratingComponentAdapterFa
      * will produce <code>AspectsComponentAdapter</code> objects that will use
      * <code>aspectsApplicator</code> to apply aspects to components produced
      * by a
-     * <code>org.picocontainer.defaults.DefaultComponentAdapterFactory</code>.
+     * <code>org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory</code>.
      *
      * @param aspectsApplicator used to apply the aspects.
      */
     public AspectsComponentAdapterFactory(AspectsApplicator aspectsApplicator) {
-        this(aspectsApplicator, new DefaultComponentAdapterFactory());
+        this(aspectsApplicator, new CachingAndConstructorComponentAdapterFactory());
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation,

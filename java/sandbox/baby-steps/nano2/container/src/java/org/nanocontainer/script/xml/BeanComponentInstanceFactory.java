@@ -13,7 +13,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.defaults.BeanPropertyComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -51,7 +51,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
 
     private ComponentAdapter createComponentAdapter(String className, ClassLoader classLoader)  {
         Class implementation = loadClass(classLoader, className);
-        ComponentAdapterFactory factory = new DefaultComponentAdapterFactory();
+        ComponentAdapterFactory factory = new CachingAndConstructorComponentAdapterFactory();
         return factory.createComponentAdapter(className, implementation);
     }
 

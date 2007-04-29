@@ -4,14 +4,14 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * @author Paul Hammant
  * @version $Revision$
  */
-public class TestComponentAdapterFactory extends DefaultComponentAdapterFactory {
+public class TestComponentAdapterFactory extends CachingAndConstructorComponentAdapterFactory {
 
     public StringBuffer sb;
 

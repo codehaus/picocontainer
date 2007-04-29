@@ -17,7 +17,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import java.security.PrivilegedAction;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import java.security.AccessController;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.nanocontainer.DefaultNanoContainer;
@@ -148,7 +148,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
                 }
                 parent.getPico().addChildContainer(childContainer);
             } else if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
-                ComponentAdapterFactory componentAdapterFactory = new DefaultComponentAdapterFactory(
+                ComponentAdapterFactory componentAdapterFactory = new CachingAndConstructorComponentAdapterFactory(
                                                     createComponentMonitor(attributes));
                 childContainer = new DefaultPicoContainer(
                         getDecorationDelegate().decorate(componentAdapterFactory, attributes), parent.getPico());
@@ -196,7 +196,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
     private ComponentAdapterFactory createComponentAdapterFactory(Map attributes) {
         final ComponentAdapterFactory factory = (ComponentAdapterFactory) attributes.remove(COMPONENT_ADAPTER_FACTORY);
         if ( factory == null ){
-            return new DefaultComponentAdapterFactory();
+            return new CachingAndConstructorComponentAdapterFactory();
         }
         return factory;
     }

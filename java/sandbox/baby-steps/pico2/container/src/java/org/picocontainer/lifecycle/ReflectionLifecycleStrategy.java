@@ -5,9 +5,10 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *****************************************************************************/
-package org.picocontainer.gems.lifecycle;
+package org.picocontainer.lifecycle;
 
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.lifecycle.ReflectionLifecycleException;
 import org.picocontainer.defaults.AbstractMonitoringLifecycleStrategy;
 
 import java.lang.reflect.InvocationTargetException;
@@ -25,7 +26,7 @@ import java.util.Map;
  * @author J&ouml;rg Schaible
  * @see org.picocontainer.Startable
  * @see org.picocontainer.Disposable
- * @see org.picocontainer.defaults.DefaultLifecycleStrategy
+ * @see org.picocontainer.lifecycle.StartableLifecycleStrategy
  * @since 1.2
  */
 public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
@@ -34,7 +35,7 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
     private final static int STOP = 1;
     private final static int DISPOSE = 2;
     private String[] methodNames;
-    private final transient Map methodMap = new HashMap();
+    private final transient Map<Class, Method[]> methodMap = new HashMap<Class, Method[]>();
 
     /**
      * Construct a ReflectionLifecycleStrategy.
@@ -83,7 +84,7 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
             try {
                 long str = System.currentTimeMillis();
                 currentMonitor().invoking(method, component);
-                method.invoke(component, new Object[0]);
+                method.invoke(component);
                 currentMonitor().invoked(method, component, System.currentTimeMillis() - str);
             } catch (IllegalAccessException e) {
                 RuntimeException re = new ReflectionLifecycleException(method.getName(), e);
@@ -102,8 +103,8 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
      */
     public boolean hasLifecycle(Class type) {
         Method[] methods = init(type);
-        for (int i = 0; i < methods.length; i++) {
-            if (methods[i] != null) {
+        for (Method method : methods) {
+            if (method != null) {
                 return true;
             }
         }
@@ -113,12 +114,12 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
     private Method[] init(Class type) {
         Method[] methods;
         synchronized (methodMap) {
-            methods = (Method[])methodMap.get(type);
+            methods = methodMap.get(type);
             if (methods == null) {
                 methods = new Method[methodNames.length];
                 for (int i = 0; i < methods.length; i++) {
                     try {
-                        methods[i] = type.getMethod(methodNames[i], new Class[0]);
+                        methods[i] = type.getMethod(methodNames[i]);
                     } catch (NoSuchMethodException e) {
                         continue;
                     }

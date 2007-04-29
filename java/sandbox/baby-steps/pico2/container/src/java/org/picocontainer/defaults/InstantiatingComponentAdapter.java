@@ -14,6 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -94,7 +95,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     protected InstantiatingComponentAdapter(Object componentKey, Class componentImplementation, 
             Parameter[] parameters, boolean allowNonPublicClasses,
             ComponentMonitor monitor) {
-        this(componentKey, componentImplementation, parameters, allowNonPublicClasses, monitor, new DefaultLifecycleStrategy(monitor));
+        this(componentKey, componentImplementation, parameters, allowNonPublicClasses, monitor, new StartableLifecycleStrategy(monitor));
     }
 
     /**

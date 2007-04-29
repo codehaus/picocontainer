@@ -42,7 +42,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
 import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DelegatingComponentMonitor;
 
@@ -334,7 +334,7 @@ public class OldGroovyNodeBuilder extends BuilderSupport {
                 }
                 parent.getPico().addChildContainer(childContainer);
             } else if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
-                ComponentAdapterFactory componentAdapterFactory = new DefaultComponentAdapterFactory(
+                ComponentAdapterFactory componentAdapterFactory = new CachingAndConstructorComponentAdapterFactory(
                                                     createComponentMonitor(attributes));
                 childContainer = new DefaultPicoContainer(
                         decorationDelegate.decorate(componentAdapterFactory, attributes), parent.getPico());
@@ -386,7 +386,7 @@ public class OldGroovyNodeBuilder extends BuilderSupport {
     private ComponentAdapterFactory createComponentAdapterFactory(Map attributes) {
         final ComponentAdapterFactory factory = (ComponentAdapterFactory) attributes.remove(COMPONENT_ADAPTER_FACTORY);
         if ( factory == null ){
-            return new DefaultComponentAdapterFactory();
+            return new CachingAndConstructorComponentAdapterFactory();
         }
         return factory;
     }

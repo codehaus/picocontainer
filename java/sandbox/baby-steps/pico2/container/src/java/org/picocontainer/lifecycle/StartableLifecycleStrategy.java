@@ -5,16 +5,17 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.lifecycle;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
+import org.picocontainer.defaults.AbstractMonitoringLifecycleStrategy;
 
 import java.lang.reflect.Method;
 
 /**
- * Default lifecycle strategy.  Starts and stops component if Startable,
+ * Startable lifecycle strategy.  Starts and stops component if Startable,
  * and disposes it if Disposable.
  *
  * @author Mauro Talevi
@@ -22,7 +23,7 @@ import java.lang.reflect.Method;
  * @see Startable
  * @see Disposable
  */
-public class DefaultLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
+public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 
     private static Method start, stop, dispose;
     {
@@ -34,7 +35,7 @@ public class DefaultLifecycleStrategy extends AbstractMonitoringLifecycleStrateg
         }
     }
 
-    public DefaultLifecycleStrategy(ComponentMonitor monitor) {
+    public StartableLifecycleStrategy(ComponentMonitor monitor) {
         super(monitor);
     }
 

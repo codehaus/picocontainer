@@ -254,10 +254,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
-                                         "DefaultComponentAdapterFactory = org.picocontainer.defaults.DefaultComponentAdapterFactory\n" +
+                                         "CachingAndConstructorComponentAdapterFactory = org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:component_adapter_factory => DefaultComponentAdapterFactory.new, :component_monitor => monitor) {\n"
+                                         "container(:component_adapter_factory => CachingAndConstructorComponentAdapterFactory.new, :component_monitor => monitor) {\n"
                                          +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +
@@ -292,10 +292,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
-                                         "DefaultComponentAdapterFactory = org.picocontainer.defaults.DefaultComponentAdapterFactory\n" +
+                                         "CachingAndConstructorComponentAdapterFactory = org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:parent => $parent, :component_adapter_factory => DefaultComponentAdapterFactory.new, :component_monitor => monitor) {\n"
+                                         "container(:parent => $parent, :component_adapter_factory => CachingAndConstructorComponentAdapterFactory.new, :component_monitor => monitor) {\n"
                                          +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +

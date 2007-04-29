@@ -20,7 +20,7 @@ import org.picocontainer.testmodel.Touchable;
 
 public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-        return new DefaultComponentAdapterFactory();
+        return new CachingAndConstructorComponentAdapterFactory();
     }
 
     public void testInstantiateComponentWithNoDependencies() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {

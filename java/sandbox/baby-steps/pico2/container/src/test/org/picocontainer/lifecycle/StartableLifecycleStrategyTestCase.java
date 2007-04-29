@@ -5,7 +5,7 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.lifecycle;
 
 import java.io.Serializable;
 
@@ -13,18 +13,19 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.DefaultComponentMonitor;
 
 /**
  * 
  * @author Mauro Talevi
  */
-public class DefaultLifecycleStrategyTestCase extends MockObjectTestCase {
+public class StartableLifecycleStrategyTestCase extends MockObjectTestCase {
 
-    private DefaultLifecycleStrategy strategy;
+    private StartableLifecycleStrategy strategy;
     
     public void setUp(){
-        strategy = new DefaultLifecycleStrategy(new DefaultComponentMonitor());
+        strategy = new StartableLifecycleStrategy(new DefaultComponentMonitor());
     }
 
     public void testStartable(){

@@ -28,7 +28,7 @@ import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.CyclicDependencyException;
 import org.picocontainer.defaults.DecoratingComponentAdapter;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.ObjectReference;
@@ -72,7 +72,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
     }
 
     protected ComponentAdapterFactory createDefaultComponentAdapterFactory() {
-        return new DefaultComponentAdapterFactory();
+        return new CachingAndConstructorComponentAdapterFactory();
     }
 
     // ============================================

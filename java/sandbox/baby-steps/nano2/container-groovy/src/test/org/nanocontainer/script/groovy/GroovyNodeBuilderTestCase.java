@@ -278,13 +278,13 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
-                "import org.picocontainer.defaults.DefaultComponentAdapterFactory\n" +
+                "import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "builder = new GroovyNodeBuilder()\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(componentAdapterFactory: new DefaultComponentAdapterFactory(), componentMonitor: monitor) {\n" +
+                "nano = builder.container(componentAdapterFactory: new CachingAndConstructorComponentAdapterFactory(), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -321,13 +321,13 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
-                "import org.picocontainer.defaults.DefaultComponentAdapterFactory\n" +
+                "import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "builder = new GroovyNodeBuilder()\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(parent:parent, componentAdapterFactory: new DefaultComponentAdapterFactory(), componentMonitor: monitor) {\n" +
+                "nano = builder.container(parent:parent, componentAdapterFactory: new CachingAndConstructorComponentAdapterFactory(), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");

@@ -14,6 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.DefaultComponentMonitor;
 
 /**
@@ -24,22 +25,22 @@ import org.picocontainer.monitors.DefaultComponentMonitor;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class DefaultComponentAdapterFactory extends MonitoringComponentAdapterFactory {
+public class CachingAndConstructorComponentAdapterFactory extends MonitoringComponentAdapterFactory {
 
     private final LifecycleStrategy lifecycleStrategy;
 
-    public DefaultComponentAdapterFactory(ComponentMonitor monitor) {
+    public CachingAndConstructorComponentAdapterFactory(ComponentMonitor monitor) {
         super(monitor);
-        this.lifecycleStrategy = new DefaultLifecycleStrategy(monitor);
+        this.lifecycleStrategy = new StartableLifecycleStrategy(monitor);
     }
 
-    public DefaultComponentAdapterFactory(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
+    public CachingAndConstructorComponentAdapterFactory(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
         super(monitor);
         this.lifecycleStrategy = lifecycleStrategy;
     }
 
-    public DefaultComponentAdapterFactory() {
-        this.lifecycleStrategy = new DefaultLifecycleStrategy(new DefaultComponentMonitor());
+    public CachingAndConstructorComponentAdapterFactory() {
+        this.lifecycleStrategy = new StartableLifecycleStrategy(new DefaultComponentMonitor());
     }
 
     public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {

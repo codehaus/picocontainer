@@ -10,7 +10,7 @@ import org.picocontainer.defaults.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     private HotSwappingComponentAdapterFactory implementationHidingComponentAdapterFactory = new HotSwappingComponentAdapterFactory(
-            new DefaultComponentAdapterFactory());
+            new CachingAndConstructorComponentAdapterFactory());
     private CachingComponentAdapterFactory cachingComponentAdapterFactory = new CachingComponentAdapterFactory(
             implementationHidingComponentAdapterFactory);
 

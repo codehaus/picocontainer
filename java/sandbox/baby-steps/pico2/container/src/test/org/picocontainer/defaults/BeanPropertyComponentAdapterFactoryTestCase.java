@@ -144,7 +144,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-        return new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
+        return new BeanPropertyComponentAdapterFactory(new CachingAndConstructorComponentAdapterFactory());
     }
 
     public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {

@@ -14,6 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 
 /**
  * @author Jon Tirs&eacute;n
@@ -31,7 +32,7 @@ public class ConstructorInjectionComponentAdapterFactory extends MonitoringCompo
     }
 
     public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, ComponentMonitor monitor) {
-        this(allowNonPublicClasses, monitor, new DefaultLifecycleStrategy(monitor));
+        this(allowNonPublicClasses, monitor, new StartableLifecycleStrategy(monitor));
     }
 
     public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, LifecycleStrategy lifecycleStrategy) {

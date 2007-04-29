@@ -24,7 +24,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.defaults.BeanPropertyComponentAdapter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.CustomPermissionsURLClassLoader;
 import org.picocontainer.defaults.DefaultPicoContainer;

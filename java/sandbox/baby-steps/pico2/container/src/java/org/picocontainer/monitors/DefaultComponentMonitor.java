@@ -17,6 +17,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 import java.io.Serializable;
 
+// TODO compare to NullComponentAdapter ?? - PH
+
 public class DefaultComponentMonitor implements ComponentMonitor, Serializable {
 
     private static DefaultComponentMonitor instance;

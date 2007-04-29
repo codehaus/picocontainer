@@ -30,6 +30,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.DefaultComponentMonitor;
 
 /**
@@ -97,7 +98,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent                  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-        this(componentAdapterFactory, new DefaultLifecycleStrategy(new DefaultComponentMonitor()), parent);
+        this(componentAdapterFactory, new StartableLifecycleStrategy(new DefaultComponentMonitor()), parent);
     }
 
     /**
@@ -127,19 +128,19 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-      * Creates a new container with the DefaultComponentAdapterFactory using a
+      * Creates a new container with the CachingAndConstructorComponentAdapterFactory using a
       * custom ComponentMonitor
       *
       * @param monitor the ComponentMonitor to use
       * @param parent the parent container (used for component dependency lookups).
       */
     public DefaultPicoContainer(ComponentMonitor monitor, PicoContainer parent) {
-        this(new DefaultComponentAdapterFactory(monitor), parent);
-        lifecycleStrategyForInstanceRegistrations = new DefaultLifecycleStrategy(monitor);
+        this(new CachingAndConstructorComponentAdapterFactory(monitor), parent);
+        lifecycleStrategyForInstanceRegistrations = new StartableLifecycleStrategy(monitor);
     }
 
     /**
-      * Creates a new container with the DefaultComponentAdapterFactory using a
+      * Creates a new container with the CachingAndConstructorComponentAdapterFactory using a
       * custom ComponentMonitor and lifecycle strategy
       *
       * @param monitor the ComponentMonitor to use
@@ -147,11 +148,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
       * @param parent the parent container (used for component dependency lookups).
       */
     public DefaultPicoContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new DefaultComponentAdapterFactory(monitor, lifecycleStrategy), lifecycleStrategy,  parent);
+        this(new CachingAndConstructorComponentAdapterFactory(monitor, lifecycleStrategy), lifecycleStrategy,  parent);
+    }
+
+
+    // to assist PicoBuilder
+    public DefaultPicoContainer(ComponentAdapterFactory caf, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+        this(caf, lifecycleStrategy,  parent);
     }
 
     /**
-      * Creates a new container with the DefaultComponentAdapterFactory using a
+      * Creates a new container with the CachingAndConstructorComponentAdapterFactory using a
       * custom lifecycle strategy
       *
       * @param lifecycleStrategy the lifecycle strategy to use.
@@ -172,30 +179,30 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-      * Creates a new container with the DefaultComponentAdapterFactory using a
+      * Creates a new container with the CachingAndConstructorComponentAdapterFactory using a
       * custom ComponentMonitor
       *
       * @param monitor the ComponentMonitor to use
       */
     public DefaultPicoContainer(ComponentMonitor monitor) {
-        this(monitor, new DefaultLifecycleStrategy(monitor), null);
+        this(monitor, new StartableLifecycleStrategy(monitor), null);
     }
 
     /**
-     * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory}
+     * Creates a new container with a (caching) {@link CachingAndConstructorComponentAdapterFactory}
      * and a parent container.
      *
      * @param parent the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(PicoContainer parent) {
-        this(new DefaultComponentAdapterFactory(), parent);
+        this(new CachingAndConstructorComponentAdapterFactory(), parent);
     }
 
     /**
-     * Creates a new container with a (caching) {@link DefaultComponentAdapterFactory} and no parent container.
+     * Creates a new container with a (caching) {@link CachingAndConstructorComponentAdapterFactory} and no parent container.
      */
     public DefaultPicoContainer() {
-        this(new DefaultComponentAdapterFactory(), null);
+        this(new CachingAndConstructorComponentAdapterFactory(), null);
     }
 
     public Collection<ComponentAdapter> getComponentAdapters() {

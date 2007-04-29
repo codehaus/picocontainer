@@ -17,7 +17,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.LifecycleStrategy;
 
@@ -40,11 +40,11 @@ public class DefaultNanoPicoContainer extends AbstractNanoPicoContainer implemen
     }
 
     public DefaultNanoPicoContainer(ClassLoader classLoader, PicoContainer parent) {
-        super(new DefaultPicoContainer(new DefaultComponentAdapterFactory(), parent), classLoader);
+        super(new DefaultPicoContainer(new CachingAndConstructorComponentAdapterFactory(), parent), classLoader);
     }
 
     public DefaultNanoPicoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor componentMonitor) {
-        super(new DefaultPicoContainer(new DefaultComponentAdapterFactory(componentMonitor), parent), classLoader);
+        super(new DefaultPicoContainer(new CachingAndConstructorComponentAdapterFactory(componentMonitor), parent), classLoader);
     }
 
     public DefaultNanoPicoContainer(ComponentAdapterFactory caf) {

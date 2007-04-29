@@ -21,7 +21,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.BeanPropertyComponentAdapter;
 import org.picocontainer.defaults.BeanPropertyComponentAdapterFactory;
-import org.picocontainer.defaults.DefaultComponentAdapterFactory;
+import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
@@ -82,7 +82,7 @@ public class PicoContainerTask extends Task {
     public void execute() {
         ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(containerComposer) {
             BeanPropertyComponentAdapterFactory propertyFactory =
-                    new BeanPropertyComponentAdapterFactory(new DefaultComponentAdapterFactory());
+                    new BeanPropertyComponentAdapterFactory(new CachingAndConstructorComponentAdapterFactory());
 
             protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
                 return new DefaultPicoContainer(propertyFactory);

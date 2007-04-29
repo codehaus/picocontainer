@@ -31,6 +31,10 @@ public class ConsoleComponentMonitor extends AbstractComponentMonitor {
     private PrintStream out;
     private final ComponentMonitor delegate;
 
+    public ConsoleComponentMonitor() {
+        this(System.out);
+    }
+
     public ConsoleComponentMonitor(OutputStream out) {
         this(out, new DefaultComponentMonitor());
     }
@@ -46,7 +50,7 @@ public class ConsoleComponentMonitor extends AbstractComponentMonitor {
     }
 
     public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {
-        out.println(format(INSTANTIATED2, new Object[]{toString(constructor), new Long(duration), instantiated.getClass().getName(), toString(parameters)}));
+        out.println(format(INSTANTIATED2, new Object[]{toString(constructor), duration, instantiated.getClass().getName(), toString(parameters)}));
         delegate.instantiated(constructor, instantiated, parameters, duration);
     }
 
@@ -61,7 +65,7 @@ public class ConsoleComponentMonitor extends AbstractComponentMonitor {
     }
 
     public void invoked(Method method, Object instance, long duration) {
-        out.println(format(INVOKED, new Object[]{toString(method), instance, new Long(duration)}));
+        out.println(format(INVOKED, new Object[]{toString(method), instance, duration}));
         delegate.invoked(method, instance, duration);
     }
 

@@ -25,7 +25,7 @@ import java.util.Vector;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class DefaultNanoContainerTestCase extends TestCase {
+public class OldDefaultNanoContainerTestCase extends TestCase {
 
     public void testBasic() throws PicoRegistrationException, PicoInitializationException {
         NanoContainer nanoContainer = new OldDefaultNanoContainer();

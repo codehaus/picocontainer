@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.nanocontainer.NanoContainer;
 import groovy.lang.GroovyObject;
-import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.OldDefaultNanoContainer;
 import org.nanocontainer.ClassName;
 import org.picocontainer.MutablePicoContainer;
 
@@ -60,7 +60,7 @@ public class NewBuilderNode extends AbstractBuilderNode {
         Object builderClass = attributes.remove(CLASS_ATTRIBUTE);
 
 
-        NanoContainer factory = new DefaultNanoContainer();
+        NanoContainer factory = new OldDefaultNanoContainer();
         MutablePicoContainer parentPico = ((NanoContainer) current).getPico();
         factory.getPico().registerComponent(MutablePicoContainer.class, parentPico);
         if (builderClass instanceof String) {

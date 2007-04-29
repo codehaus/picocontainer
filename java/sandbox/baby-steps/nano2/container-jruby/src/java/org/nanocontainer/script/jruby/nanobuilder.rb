@@ -15,7 +15,7 @@
 #
 module Nano
   Parameter = org.picocontainer.Parameter
-  DefaultNanoPicoContainer = org.nanocontainer.reflection.DefaultNanoPicoContainer
+  DefaultNanoContainer = org.nanocontainer.DefaultNanoContainer
   ComponentParameter = org.picocontainer.defaults.ComponentParameter
   ConstantParameter = org.picocontainer.defaults.ConstantParameter
   JRubyContainerBuilder = org.nanocontainer.script.jruby.JRubyContainerBuilder
@@ -90,7 +90,7 @@ module Nano
 
   class Container
     def initialize(options = {}, &block)
-      @impl     = DefaultNanoPicoContainer
+      @impl     = DefaultNanoContainer
       @parent   = options[:parent]
       @caf      = options[:component_adapter_factory]
       @monitor  = options[:component_monitor]

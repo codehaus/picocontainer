@@ -18,6 +18,7 @@ import org.nanocontainer.testmodel.FredImpl;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.Wilma;
 import org.nanocontainer.testmodel.WilmaImpl;
+import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ComponentParameter;
@@ -29,7 +30,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  */
 public class DefaultContainerRecorderTestCase extends TestCase {
     public void testInvocationsCanBeRecordedAndReplayedOnADifferentContainerInstance() throws Exception {
-        ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultNanoPicoContainer());
+        ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultNanoContainer());
         MutablePicoContainer recorded = recorder.getContainerProxy();
 
         recorded.registerComponent("fruit", "apple");

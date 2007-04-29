@@ -8,7 +8,7 @@
  * Original code by Paul Hammant                                             *
  *****************************************************************************/
 
-package org.nanocontainer.reflection;
+package org.nanocontainer;
 
 import java.io.Serializable;
 import java.net.URL;
@@ -16,17 +16,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.nanocontainer.ClassPathElement;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.NanoPicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
 
 /**
@@ -36,18 +30,18 @@ import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
  * @author Paul Hammant
  * @version $Revision$
  */
-public abstract class AbstractNanoPicoContainer extends AbstractDelegatingMutablePicoContainer implements NanoPicoContainer, Serializable {
+public abstract class AbstractNanoContainer extends AbstractDelegatingMutablePicoContainer implements NanoPicoContainer, Serializable {
 
     protected Map<String,PicoContainer> namedChildContainers = new HashMap<String,PicoContainer>();
 
-    // Serializable cannot be cascaded into DefaultNanoContainer's referenced classes
+    // Serializable cannot be cascaded into OldDefaultNanoContainer's referenced classes
     // need to implement custom Externalisable regime.
     protected transient NanoContainer container;
 
 
-    protected AbstractNanoPicoContainer(MutablePicoContainer delegate, ClassLoader classLoader) {
+    protected AbstractNanoContainer(MutablePicoContainer delegate, ClassLoader classLoader) {
         super(delegate);
-        container = new DefaultNanoContainer(classLoader, delegate);
+        container = new OldDefaultNanoContainer(classLoader, delegate);
     }
 
     public final Object getComponent(Object componentKeyOrType) throws PicoException {
@@ -103,7 +97,7 @@ public abstract class AbstractNanoPicoContainer extends AbstractDelegatingMutabl
      * @return The child MutablePicoContainer
      */
     public MutablePicoContainer makeChildContainer(String name) {
-        AbstractNanoPicoContainer child = createChildContainer();
+        AbstractNanoContainer child = createChildContainer();
         MutablePicoContainer parentDelegate = getDelegate();
         parentDelegate.removeChildContainer(child.getDelegate());
         parentDelegate.addChildContainer(child);
@@ -111,7 +105,7 @@ public abstract class AbstractNanoPicoContainer extends AbstractDelegatingMutabl
         return child;
     }
 
-    protected abstract AbstractNanoPicoContainer createChildContainer();
+    protected abstract AbstractNanoContainer createChildContainer();
 
     public boolean removeChildContainer(PicoContainer child) {
         boolean result = getDelegate().removeChildContainer(child);

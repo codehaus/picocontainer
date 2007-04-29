@@ -29,7 +29,7 @@ import java.util.Map;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.nanocontainer.ClassName;
 import org.nanocontainer.ClassPathElement;
-import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.OldDefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
@@ -152,7 +152,7 @@ public class OldGroovyNodeBuilder extends BuilderSupport {
             }
             if (parent == null && (parentAttribute instanceof MutablePicoContainer)) {
                 // we're not in an enclosing scope - look at parent attribute instead
-                parent = new DefaultNanoContainer((MutablePicoContainer) parentAttribute);
+                parent = new OldDefaultNanoContainer((MutablePicoContainer) parentAttribute);
             }
             if (parent == null && (parentAttribute instanceof NanoContainer)) {
                 // we're not in an enclosing scope - look at parent attribute instead
@@ -221,7 +221,7 @@ public class OldGroovyNodeBuilder extends BuilderSupport {
 
     private Object createNewBuilderNode(Map attributes, NanoContainer parentContainer) {
         String builderClass = (String) attributes.remove(CLASS);
-        NanoContainer factory = new DefaultNanoContainer();
+        NanoContainer factory = new OldDefaultNanoContainer();
         MutablePicoContainer parentPico = parentContainer.getPico();
         factory.getPico().registerComponent(MutablePicoContainer.class, parentPico);
         factory.registerComponent(GroovyObject.class, new ClassName(builderClass));
@@ -360,7 +360,7 @@ public class OldGroovyNodeBuilder extends BuilderSupport {
             Class clazz = (Class) attributes.get(CLASS);
             return createNanoContainer(clazz, decoratedPico, parentClassLoader);
         } else {
-            return new DefaultNanoContainer(parentClassLoader, decoratedPico);
+            return new OldDefaultNanoContainer(parentClassLoader, decoratedPico);
         }
     }
 
@@ -400,7 +400,7 @@ public class OldGroovyNodeBuilder extends BuilderSupport {
     }
 
     protected NanoContainer createComponentClassLoader(NanoContainer parent) {
-        return new DefaultNanoContainer(parent.getComponentClassLoader(), parent.getPico());
+        return new OldDefaultNanoContainer(parent.getComponentClassLoader(), parent.getPico());
     }
 
 

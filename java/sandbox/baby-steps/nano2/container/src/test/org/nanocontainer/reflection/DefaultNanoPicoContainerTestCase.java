@@ -11,6 +11,7 @@
 package org.nanocontainer.reflection;
 
 import org.nanocontainer.NanoPicoContainer;
+import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
@@ -22,7 +23,7 @@ import org.picocontainer.tck.AbstractPicoContainerTestCase;
 public class DefaultNanoPicoContainerTestCase extends AbstractPicoContainerTestCase {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultNanoPicoContainer(this.getClass().getClassLoader(), parent);
+        return new DefaultNanoContainer(this.getClass().getClassLoader(), parent);
     }
 
     // TODO - go to a Nano TCK?

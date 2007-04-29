@@ -23,11 +23,11 @@ import org.nanocontainer.NanoPicoContainer;
 public class ImplementationHidingNanoPicoContainerTestCase extends AbstractImplementationHidingPicoContainerTestCase {
 
     protected MutablePicoContainer createImplementationHidingPicoContainer() {
-        return new ImplementationHidingNanoPicoContainer();
+        return new ImplementationHidingNanoContainer();
     }
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new ImplementationHidingNanoPicoContainer(this.getClass().getClassLoader(), parent);
+        return new ImplementationHidingNanoContainer(this.getClass().getClassLoader(), parent);
     }
     // test methods inherited. This container is part compliant.
 

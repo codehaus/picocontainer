@@ -39,7 +39,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         Reader script = new StringReader("" +
                 "java.util.Map m = new java.util.HashMap();\n" +
                 "m.put(\"foo\",\"bar\");" +
-                "pico = new org.nanocontainer.reflection.DefaultNanoPicoContainer(parent);\n" +
+                "pico = new org.nanocontainer.DefaultNanoContainer(parent);\n" +
                 "pico.registerComponent((Object) \"hello\", m, new org.picocontainer.Parameter[0]);\n");
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
@@ -71,7 +71,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
             "Class clazz = getClass(\"TestComp\");\n" +
             "print(clazz); \n" +
             "ClassLoader cl = clazz.getClassLoader();" +
-            "pico = new org.nanocontainer.reflection.DefaultNanoPicoContainer(cl, parent);\n" +
+            "pico = new org.nanocontainer.DefaultNanoContainer(cl, parent);\n" +
             "pico.registerComponent( \"TestComp\" );\n");
 
         

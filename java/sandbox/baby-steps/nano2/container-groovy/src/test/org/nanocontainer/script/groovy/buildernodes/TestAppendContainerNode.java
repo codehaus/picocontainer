@@ -13,7 +13,7 @@ package org.nanocontainer.script.groovy.buildernodes;
 import java.util.Collections;
 import java.util.HashMap;
 import org.nanocontainer.NanoContainer;
-import org.nanocontainer.reflection.DefaultNanoPicoContainer;
+import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import junit.framework.TestCase;
 
@@ -45,7 +45,7 @@ public class TestAppendContainerNode extends TestCase {
 
     public void testCreateNodeWithParmeterReturnsParameter() throws NanoContainerMarkupException {
         HashMap params = new HashMap();
-        NanoContainer nano = new DefaultNanoPicoContainer();
+        NanoContainer nano = new DefaultNanoContainer();
         params.put(AppendContainerNode.CONTAINER, nano);
         NanoContainer nano2 = (NanoContainer)appendContainerNode.createNewNode(null,params);
         assertTrue(nano == nano2);

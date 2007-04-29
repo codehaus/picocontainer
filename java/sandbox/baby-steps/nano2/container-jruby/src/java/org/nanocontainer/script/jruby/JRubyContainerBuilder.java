@@ -19,7 +19,7 @@ import org.jruby.exceptions.RaiseException;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.reflection.DefaultNanoPicoContainer;
+import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
@@ -60,7 +60,7 @@ public class JRubyContainerBuilder extends ScriptedContainerBuilder {
         if (parentContainer == null) {
             parentContainer = new EmptyPicoContainer();
         }
-        parentContainer = new DefaultNanoPicoContainer(getClassLoader(), parentContainer);
+        parentContainer = new DefaultNanoContainer(getClassLoader(), parentContainer);
 
         IRuby ruby = JavaEmbedUtils.initialize(Collections.EMPTY_LIST);
         ruby.getLoadService().require("org/nanocontainer/script/jruby/nanobuilder");

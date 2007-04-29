@@ -26,10 +26,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.nanocontainer.ClassName;
 import org.nanocontainer.ClassPathElement;
-import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.OldDefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.picocontainer.PicoClassNotFoundException;
-import org.nanocontainer.reflection.DefaultNanoPicoContainer;
+import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.NanoContainerMarkupException;
@@ -148,7 +148,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     }
 
     private MutablePicoContainer createMutablePicoContainer(String cafName, String monitorName, PicoContainer parentContainer) throws PicoCompositionException {
-        MutablePicoContainer container = new DefaultNanoPicoContainer(getClassLoader(),createComponentAdapterFactory(cafName, new DefaultNanoContainer(getClassLoader())), parentContainer);
+        MutablePicoContainer container = new DefaultNanoContainer(getClassLoader(),createComponentAdapterFactory(cafName, new OldDefaultNanoContainer(getClassLoader())), parentContainer);
         if ( !notSet(monitorName) ){
             ComponentMonitor monitor = createComponentMonitor(monitorName);
             ((ComponentMonitorStrategy)container).changeMonitor(monitor);
@@ -163,8 +163,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             if (parentClass != null && !EMPTY.equals(parentClass)) {
                 classLoader = classLoader.loadClass(parentClass).getClassLoader();
             }
-            NanoContainer nanoContainer = new DefaultNanoContainer(classLoader, container);
-            registerComponentsAndChildContainers(nanoContainer, rootElement, new DefaultNanoContainer(getClassLoader()));
+            NanoContainer nanoContainer = new OldDefaultNanoContainer(classLoader, container);
+            registerComponentsAndChildContainers(nanoContainer, rootElement, new OldDefaultNanoContainer(getClassLoader()));
         } catch (ClassNotFoundException e) {
             throw new NanoContainerMarkupException("Class not found: " + e.getMessage(), e);
         } catch (IOException e) {
@@ -176,7 +176,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
     private void registerComponentsAndChildContainers(NanoContainer parentContainer, Element containerElement, NanoContainer knownComponentAdapterFactories) throws ClassNotFoundException, IOException, SAXException {
 
-        NanoContainer metaContainer = new DefaultNanoContainer(getClassLoader(), knownComponentAdapterFactories.getPico());
+        NanoContainer metaContainer = new OldDefaultNanoContainer(getClassLoader(), knownComponentAdapterFactories.getPico());
         NodeList children = containerElement.getChildNodes();
         // register classpath first, regardless of order in the document.
         for (int i = 0; i < children.getLength(); i++) {
@@ -194,7 +194,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                 String name = childElement.getNodeName();
                 if (CONTAINER.equals(name)) {
                     MutablePicoContainer childContainer = parentContainer.getPico().makeChildContainer();
-                    NanoContainer childNanoContainer = new DefaultNanoContainer(parentContainer.getComponentClassLoader(), childContainer);
+                    NanoContainer childNanoContainer = new OldDefaultNanoContainer(parentContainer.getComponentClassLoader(), childContainer);
                     registerComponentsAndChildContainers(childNanoContainer, childElement, metaContainer);
                 } else if (COMPONENT_IMPLEMENTATION.equals(name)
                         || COMPONENT.equals(name)) {
@@ -254,7 +254,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         if (parentClass != null && !EMPTY.equals(parentClass)) {
             parentClassLoader = parentClassLoader.loadClass(parentClass).getClassLoader();
         }
-        NanoContainer nano = new DefaultNanoContainer(parentClassLoader, parentContainer.getPico());
+        NanoContainer nano = new OldDefaultNanoContainer(parentClassLoader, parentContainer.getPico());
         registerComponentsAndChildContainers(nano, childElement, metaContainer);
     }
 
@@ -413,7 +413,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             factoryClass = DEFAULT_COMPONENT_INSTANCE_FACTORY;
         }
 
-        NanoContainer adapter = new DefaultNanoContainer(getClassLoader());
+        NanoContainer adapter = new OldDefaultNanoContainer(getClassLoader());
         adapter.registerComponent(XMLComponentInstanceFactory.class.getName(), new ClassName(factoryClass));
         return (XMLComponentInstanceFactory) adapter.getPico().getComponents().get(0);
     }

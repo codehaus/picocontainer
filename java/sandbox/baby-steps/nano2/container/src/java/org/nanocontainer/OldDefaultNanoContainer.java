@@ -34,7 +34,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
-public class DefaultNanoContainer implements NanoContainer {
+public class OldDefaultNanoContainer implements NanoContainer {
     private static final Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
     static {
         primitiveNameToBoxedName.put("int", Integer.class.getName());
@@ -58,7 +58,7 @@ public class DefaultNanoContainer implements NanoContainer {
         return fromMap != null ? fromMap : primitiveOrClass;
     }
 
-    public DefaultNanoContainer(ClassLoader parentClassLoader, MutablePicoContainer picoContainer) {
+    public OldDefaultNanoContainer(ClassLoader parentClassLoader, MutablePicoContainer picoContainer) {
         this.parentClassLoader = parentClassLoader;
         if (picoContainer == null) {
             throw new NullPointerException("picoContainer");
@@ -66,22 +66,22 @@ public class DefaultNanoContainer implements NanoContainer {
         this.picoContainer = picoContainer;
     }
 
-    public DefaultNanoContainer(ClassLoader parentClassLoader) {
+    public OldDefaultNanoContainer(ClassLoader parentClassLoader) {
         this(parentClassLoader, new DefaultPicoContainer());
     }
 
-    public DefaultNanoContainer(MutablePicoContainer picoContainer) {
+    public OldDefaultNanoContainer(MutablePicoContainer picoContainer) {
         this(Thread.currentThread().getContextClassLoader(), picoContainer);
     }
 
-    public DefaultNanoContainer(NanoContainer parent) {
+    public OldDefaultNanoContainer(NanoContainer parent) {
         this(parent.getComponentClassLoader(), new DefaultPicoContainer(parent.getPico()));
     }
 
     /**
      * Beware - no parent container and no parent classloader.
      */
-    public DefaultNanoContainer() {
+    public OldDefaultNanoContainer() {
         this(Thread.currentThread().getContextClassLoader(), new DefaultPicoContainer());
     }
 

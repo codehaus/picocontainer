@@ -13,6 +13,7 @@ package org.nanocontainer.reflection;
 import java.io.Serializable;
 
 import org.nanocontainer.NanoPicoContainer;
+import org.nanocontainer.AbstractNanoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.alternatives.ImplementationHidingPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -28,44 +29,44 @@ import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapter
  * @author Michael Rimov
  * @version $Revision$
  */
-public class ImplementationHidingNanoPicoContainer extends AbstractNanoPicoContainer implements NanoPicoContainer, Serializable {
+public class ImplementationHidingNanoContainer extends AbstractNanoContainer implements NanoPicoContainer, Serializable {
 
-    public ImplementationHidingNanoPicoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {
+    public ImplementationHidingNanoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {
         super(new ImplementationHidingPicoContainer(caf, parent), classLoader);
     }
 
 
-    public ImplementationHidingNanoPicoContainer(ClassLoader classLoader, PicoContainer parent) {
+    public ImplementationHidingNanoContainer(ClassLoader classLoader, PicoContainer parent) {
         super(new ImplementationHidingPicoContainer(new CachingAndConstructorComponentAdapterFactory(), parent), classLoader);
     }
 
-    public ImplementationHidingNanoPicoContainer(PicoContainer pc) {
-        this(ImplementationHidingNanoPicoContainer.class.getClassLoader(), pc);
+    public ImplementationHidingNanoContainer(PicoContainer pc) {
+        this(ImplementationHidingNanoContainer.class.getClassLoader(), pc);
     }
 
-    public ImplementationHidingNanoPicoContainer(ClassLoader classLoader) {
+    public ImplementationHidingNanoContainer(ClassLoader classLoader) {
         this(classLoader, null);
     }
 
-    public ImplementationHidingNanoPicoContainer() {
-        this(ImplementationHidingNanoPicoContainer.class.getClassLoader(), null);
+    public ImplementationHidingNanoContainer() {
+        this(ImplementationHidingNanoContainer.class.getClassLoader(), null);
     }
 
     /**
-     * Copy Constructor.  Makes a new ImplementationHidingNanoPicoContainer with the same
+     * Copy Constructor.  Makes a new ImplementationHidingNanoContainer with the same
      * attributes - ClassLoader, child PicoContainer type, ComponentAdapterFactory -
      * as the parent.
      * <p><tt>Note:</tt> This constructor is protected because are existing scripts
-     * that call <tt>new ImplementationHidingNanoPicoContainer(PicoContainer)</tt>, and they get this
+     * that call <tt>new ImplementationHidingNanoContainer(PicoContainer)</tt>, and they get this
      * constructor instead (which has different behavior).</p>
-     * @param parent ImplementationHidingNanoPicoContainer
+     * @param parent ImplementationHidingNanoContainer
      */
-    protected ImplementationHidingNanoPicoContainer(final ImplementationHidingNanoPicoContainer parent) {
+    protected ImplementationHidingNanoContainer(final ImplementationHidingNanoContainer parent) {
         super(parent.getDelegate().makeChildContainer(), parent.getComponentClassLoader());
     }
 
 
-    protected AbstractNanoPicoContainer createChildContainer() {
-        return new ImplementationHidingNanoPicoContainer(this);
+    protected AbstractNanoContainer createChildContainer() {
+        return new ImplementationHidingNanoContainer(this);
     }
 }

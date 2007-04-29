@@ -29,7 +29,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     public void testSimpleConfigurationIsPossible() {
         Reader script = new StringReader("from org.nanocontainer.testmodel import *\n" +
-                "pico = DefaultNanoPicoContainer()\n" +
+                "pico = DefaultNanoContainer()\n" +
                 "pico.registerComponent(WebServerImpl)\n" +
                 "pico.registerComponent(DefaultWebServerConfig)\n");
 
@@ -41,9 +41,9 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
         try {
             Reader script = new StringReader("" +
                     "from org.nanocontainer.testmodel import *\n" +
-                    "pico = DefaultNanoPicoContainer()\n" +
+                    "pico = DefaultNanoContainer()\n" +
                     "pico.registerComponent(WebServerImpl)\n" +
-                    "childContainer = DefaultNanoPicoContainer(pico)\n" +
+                    "childContainer = DefaultNanoContainer(pico)\n" +
                     "childContainer.registerComponent(DefaultWebServerConfig)\n");
             PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
             pico.getComponent(WebServer.class);
@@ -55,7 +55,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
     public void testDependenciesAreSatisfiableByParentContainer() throws IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("" +
                 "from org.nanocontainer.testmodel import *\n" +
-                "pico = DefaultNanoPicoContainer()\n" +
+                "pico = DefaultNanoContainer()\n" +
                 "pico.registerComponent(DefaultWebServerConfig)\n" +
                 "child = pico.makeChildContainer()\n" +
                 "child.registerComponent(WebServerImpl)\n" +
@@ -67,7 +67,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
-                "pico = DefaultNanoPicoContainer(parent)\n");
+                "pico = DefaultNanoContainer(parent)\n");
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
         //pico.getParent() is now ImmutablePicoContainer

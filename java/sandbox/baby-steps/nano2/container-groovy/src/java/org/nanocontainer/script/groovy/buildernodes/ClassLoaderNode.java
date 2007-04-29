@@ -13,7 +13,7 @@ package org.nanocontainer.script.groovy.buildernodes;
 import java.util.Map;
 
 import org.nanocontainer.NanoContainer;
-import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.OldDefaultNanoContainer;
 
 /**
  * @author Paul Hammant
@@ -31,7 +31,7 @@ public class ClassLoaderNode extends AbstractBuilderNode {
     public Object createNewNode(Object current, Map attributes) {
 
         NanoContainer nanoContainer = (NanoContainer) current;
-        return new DefaultNanoContainer(nanoContainer.getComponentClassLoader(), nanoContainer.getPico());
+        return new OldDefaultNanoContainer(nanoContainer.getComponentClassLoader(), nanoContainer.getPico());
     }
 
 }

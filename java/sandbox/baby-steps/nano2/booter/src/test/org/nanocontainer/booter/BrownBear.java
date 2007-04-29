@@ -98,9 +98,9 @@ public class BrownBear implements Startable {
 
         try {
             new BrownBearHelper();
-            System.out.println("BrownBear: Can instantiate new OldDefaultNanoContainer (sub-container) - wrong, OldDefaultNanoContainer should not be in the classpath");
+            System.out.println("BrownBear: Can instantiate new DefaultNanoContainer (sub-container) - wrong, DefaultNanoContainer should not be in the classpath");
         } catch (NoClassDefFoundError e) {
-            System.out.println("BrownBear: Cannot instantiate new OldDefaultNanoContainer (sub-container) - correct, OldDefaultNanoContainer is not in the classpath");
+            System.out.println("BrownBear: Cannot instantiate new DefaultNanoContainer (sub-container) - correct, DefaultNanoContainer is not in the classpath");
         } catch (ClassNotFoundException e) {
             System.out.println("BrownBear: Cannot instantiate new HashMap (error!)");
         }

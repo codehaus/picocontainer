@@ -16,7 +16,7 @@ import javax.management.NotCompliantMBeanException;
 import org.nanocontainer.remoting.jmx.testmodel.DynamicMBeanPerson;
 import org.nanocontainer.remoting.jmx.testmodel.Person;
 import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
-import org.picocontainer.defaults.InstanceComponentAdapter;
+import org.picocontainer.componentadapters.InstanceComponentAdapter;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;

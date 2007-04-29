@@ -20,6 +20,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapter;
+import org.picocontainer.componentadapters.SetterInjectionComponentAdapter;
 
 /**
  * @author Michael Rimov

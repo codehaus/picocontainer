@@ -34,8 +34,8 @@ import org.nanocontainer.testmodel.WebServerConfigComp;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -660,7 +660,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
     public void testComponentCanUsePredefinedCAF() {
         Reader script = new StringReader("" +
                 "<container>" +
-                "  <component-adapter-factory class='org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory' key='factory'/>" +
+                "  <component-adapter-factory class='org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory' key='factory'/>" +
                 "  <component-adapter class='org.nanocontainer.testmodel.DefaultWebServerConfig' factory='factory'/>" +
                 "</container>");
         PicoContainer pico = buildContainer(script);
@@ -672,8 +672,8 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
     public void testComponentCanUsePredefinedNestedCAF() {
         Reader script = new StringReader("" +
                 "<container>" +
-                "  <component-adapter-factory class='org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory' key='factory'>" +
-                "    <component-adapter-factory class='org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory'/>" +
+                "  <component-adapter-factory class='org.picocontainer.componentadapters.ImplementationHidingComponentAdapterFactory' key='factory'>" +
+                "    <component-adapter-factory class='org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory'/>" +
                 "  </component-adapter-factory>" +
                 "  <component-adapter class-name-key='org.nanocontainer.testmodel.WebServerConfig' class='org.nanocontainer.testmodel.DefaultWebServerConfig' factory='factory'/>" +
                 "</container>");
@@ -687,10 +687,10 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
     public void testComponentCanUsePredefinedCAFWithParameters() {
         Reader script = new StringReader("" +
                 "<container>" +
-                "  <component-adapter-factory class='org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory' key='factory'>" +
+                "  <component-adapter-factory class='org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory' key='factory'>" +
                 "    <parameter><boolean>true</boolean></parameter>" +
                 "  </component-adapter-factory>" +
-                "  <component-adapter key='pc1' class='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$PrivateComponent' factory='org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory'/>" +
+                "  <component-adapter key='pc1' class='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$PrivateComponent' factory='org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory'/>" +
                 "  <component-adapter key='pc2' class='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$PrivateComponent' factory='factory'/>" +
                 "</container>");
         PicoContainer pico = buildContainer(script);

@@ -19,8 +19,8 @@ import org.nanocontainer.aop.AspectsManager;
 import org.nanocontainer.aop.defaults.AspectsComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**

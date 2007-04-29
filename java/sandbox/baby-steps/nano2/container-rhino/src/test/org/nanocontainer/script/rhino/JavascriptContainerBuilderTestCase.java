@@ -62,19 +62,21 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         final String testCompJarPath = testCompJar.getCanonicalPath().replace('\\', '/');
         Reader script = new StringReader(
                 "var pico = new DefaultNanoPicoContainer()\n" +
-                "pico.registerComponent('parentComponent', Packages." + FooTestComp.class.getName() + ")\n" +
+                "pico.registerComponent('parentComponent', Packages." + FooTestComp.class.getName() + ", Parameter.ZERO)\n" +
                 "child = new DefaultNanoPicoContainer(pico)\n" +
                 "pico.addChildContainer(child)\n" +
                 "url = new File('" + testCompJarPath + "').toURL()\n" +
                 "child.addClassLoaderURL(url)\n" +
-                "child.registerComponent('childComponent','TestComp')\n" +
-                "pico.registerComponent('wayOfPassingSomethingToTestEnv', child.getComponent('childComponent'))"); // ugly hack for testing
+                "child.registerComponent('childComponent', new ClassName('TestComp'), Parameter.ZERO)\n" +
+                "pico.registerComponent('wayOfPassingSomethingToTestEnv', child.getComponent('childComponent'), Parameter.ZERO)"); // ugly hack for testing
         JavascriptContainerBuilder builder = new JavascriptContainerBuilder(script, getClass().getClassLoader());
         PicoContainer pico = buildContainer(builder, null, "SOME_SCOPE");
 
         Object parentComponent = pico.getComponent("parentComponent");
 
         Object childComponent = pico.getComponent("wayOfPassingSomethingToTestEnv");
+
+        
 
         ClassLoader classLoader1 = parentComponent.getClass().getClassLoader();
         ClassLoader classLoader2 = childComponent.getClass().getClassLoader();
@@ -84,7 +86,9 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
           parent container cl
             child container cl -> loads TestComp
         */
-        ClassLoader loader = childComponent.getClass().getClassLoader().getParent();
+        Class aClass = childComponent.getClass();
+        ClassLoader loader1 = aClass.getClassLoader();
+        ClassLoader loader = loader1.getParent();
         assertSame(parentComponent.getClass().getClassLoader(), loader);
     }
 
@@ -92,7 +96,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         Reader script = new StringReader("" +
                 "var pico = new DefaultNanoPicoContainer()\n" +
                 "pico.registerComponent( new Packages." + FooTestComp.class.getName() + "())\n" +
-                "pico.registerComponent( 'foo', new Packages." + FooTestComp.class.getName() + "())\n");
+                "pico.registerComponent( 'foo', new Packages." + FooTestComp.class.getName() + "(), java.lang.reflect.Array.newInstance(Parameter,0))\n");
 
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 

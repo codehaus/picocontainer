@@ -17,7 +17,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
-import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.LifecycleStrategy;
 

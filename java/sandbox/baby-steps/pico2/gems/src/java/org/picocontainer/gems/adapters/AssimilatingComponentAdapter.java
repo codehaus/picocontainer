@@ -18,7 +18,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.componentadapters.DecoratingComponentAdapter;
 
 import java.lang.reflect.Method;
 
@@ -111,7 +111,7 @@ public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
      * Create and return a component instance. If the component instance and the type to assimilate is not compatible, a proxy
      * for the instance is generated, that implements the assimilated type.
      * 
-     * @see org.picocontainer.defaults.DecoratingComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
+     * @see org.picocontainer.componentadapters.DecoratingComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(final PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException {
@@ -123,7 +123,7 @@ public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
      * Return the type of the component. If the component type is not compatible with the type to assimilate, the assimilated
      * type is returned.
      * 
-     * @see org.picocontainer.defaults.DecoratingComponentAdapter#getComponentImplementation()
+     * @see org.picocontainer.componentadapters.DecoratingComponentAdapter#getComponentImplementation()
      */
     public Class getComponentImplementation() {
         return isCompatible ? super.getComponentImplementation() : type;
@@ -133,7 +133,7 @@ public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
      * Return the key of the component. If the key of the delegated component is a type, that is not compatible with the type to
      * assimilate, then the assimilated type replaces the original type.
      * 
-     * @see org.picocontainer.defaults.DecoratingComponentAdapter#getComponentKey()
+     * @see org.picocontainer.componentadapters.DecoratingComponentAdapter#getComponentKey()
      */
     public Object getComponentKey() {
         final Object key = super.getComponentKey();

@@ -6,13 +6,13 @@ import java.io.StringReader;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.SetterInjectionComponentAdapterFactory;
+import org.picocontainer.componentadapters.SetterInjectionComponentAdapterFactory;
 
 public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     public void testCanInstantiateProcessWithSDIDependencies() {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='"+SetterInjectionComponentAdapterFactory.class.getName()+"'>"+
+                "<container component-adapter-factory='"+ SetterInjectionComponentAdapterFactory.class.getName()+"'>"+
                 " <component-implementation class='"+Service1Impl.class.getName()+"'/>"+
                 " <component-implementation class='"+ServiceAImpl.class.getName()+"'/>"+
                 " <component-implementation class='"+Service2Impl.class.getName()+"'/>"+

@@ -17,7 +17,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import java.security.PrivilegedAction;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import java.security.AccessController;
-import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.nanocontainer.DefaultNanoContainer;

@@ -11,7 +11,7 @@ package org.nanocontainer.script.xml;
 
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.AbstractComponentAdapter;
+import org.picocontainer.componentadapters.AbstractComponentAdapter;
 
 /**
  * component adapter to test script instantiation.

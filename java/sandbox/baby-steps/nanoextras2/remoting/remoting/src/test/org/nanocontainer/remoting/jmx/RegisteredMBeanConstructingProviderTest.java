@@ -15,7 +15,7 @@ import javax.management.ObjectName;
 
 import org.nanocontainer.remoting.jmx.testmodel.Person;
 import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
-import org.picocontainer.defaults.InstanceComponentAdapter;
+import org.picocontainer.componentadapters.InstanceComponentAdapter;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 

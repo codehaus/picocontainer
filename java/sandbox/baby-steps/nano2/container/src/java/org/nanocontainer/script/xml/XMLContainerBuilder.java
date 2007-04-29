@@ -42,7 +42,7 @@ import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DelegatingComponentMonitor;
 import org.w3c.dom.Element;

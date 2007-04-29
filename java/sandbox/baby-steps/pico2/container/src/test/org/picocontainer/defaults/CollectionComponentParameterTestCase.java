@@ -5,6 +5,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapter;
+import org.picocontainer.componentadapters.InstanceComponentAdapter;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 

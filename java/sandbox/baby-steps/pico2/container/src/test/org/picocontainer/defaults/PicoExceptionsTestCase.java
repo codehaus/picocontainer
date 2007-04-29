@@ -25,6 +25,7 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapter;
 
 /**
  * Unit tests for the several PicoException classes.

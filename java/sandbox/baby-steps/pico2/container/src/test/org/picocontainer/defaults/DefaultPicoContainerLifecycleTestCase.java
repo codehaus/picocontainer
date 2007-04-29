@@ -17,6 +17,8 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoLifecycleException;
 import org.picocontainer.Startable;
+import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.monitors.LifecycleComponentMonitor;
 import org.picocontainer.monitors.LifecycleComponentMonitor.LifecycleFailuresException;
 import org.picocontainer.testmodel.RecordingLifecycle.FiveTriesToBeMalicious;

@@ -28,8 +28,8 @@ import org.nanocontainer.ioc.avalon.PicoLifecycleException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.componentadapters.InstanceComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.InstanceComponentAdapter;
 
 import java.io.Serializable;
 

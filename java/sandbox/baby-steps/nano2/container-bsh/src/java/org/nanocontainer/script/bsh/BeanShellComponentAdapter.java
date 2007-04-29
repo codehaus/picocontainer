@@ -15,7 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.AbstractComponentAdapter;
+import org.picocontainer.componentadapters.AbstractComponentAdapter;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import java.io.IOException;

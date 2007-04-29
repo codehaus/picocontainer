@@ -13,10 +13,10 @@ import org.nanocontainer.aop.AspectsApplicator;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
-import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
@@ -49,7 +49,7 @@ public class AspectsComponentAdapterFactory extends DecoratingComponentAdapterFa
      * will produce <code>AspectsComponentAdapter</code> objects that will use
      * <code>aspectsApplicator</code> to apply aspects to components produced
      * by a
-     * <code>org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory</code>.
+     * <code>org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory</code>.
      *
      * @param aspectsApplicator used to apply the aspects.
      */

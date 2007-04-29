@@ -15,9 +15,9 @@ import javax.management.MBeanServer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.componentadapters.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 
@@ -70,7 +70,7 @@ public class JMXExposingComponentAdapterFactory extends DecoratingComponentAdapt
     /**
      * Retrieve a {@link ComponentAdapter}. Wrap the instance retrieved by the delegate with an instance of a
      * {@link JMXExposingComponentAdapter}.
-     * @see org.picocontainer.defaults.DecoratingComponentAdapterFactory#createComponentAdapter(java.lang.Object,
+     * @see org.picocontainer.componentadapters.DecoratingComponentAdapterFactory#createComponentAdapter(java.lang.Object,
      *      java.lang.Class, org.picocontainer.Parameter[])
      */
     public ComponentAdapter createComponentAdapter(

@@ -18,9 +18,9 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.componentadapters.CachingComponentAdapter;
+import org.picocontainer.componentadapters.DecoratingComponentAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.CachingComponentAdapter;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 import java.lang.reflect.InvocationTargetException;

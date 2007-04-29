@@ -16,9 +16,9 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.componentadapters.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 
@@ -63,7 +63,7 @@ public class AssimilatingComponentAdapterFactory extends DecoratingComponentAdap
      * Create a {@link AssimilatingComponentAdapter}. This adapter will wrap the returned {@link ComponentAdapter} of the
      * deleated {@link ComponentAdapterFactory}.
      * 
-     * @see org.picocontainer.defaults.DecoratingComponentAdapterFactory#createComponentAdapter(java.lang.Object,
+     * @see org.picocontainer.componentadapters.DecoratingComponentAdapterFactory#createComponentAdapter(java.lang.Object,
      *      java.lang.Class, Parameter...)
      */
     public ComponentAdapter createComponentAdapter(

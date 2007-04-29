@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapter;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;

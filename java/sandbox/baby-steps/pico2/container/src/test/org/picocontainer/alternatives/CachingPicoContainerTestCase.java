@@ -11,13 +11,11 @@
 package org.picocontainer.alternatives;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.alternatives.ImmutablePicoContainerTestCase.UnsatisfiableIterator;
-import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 

@@ -13,9 +13,10 @@ import java.io.Serializable;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.CachingComponentAdapterFactory;
+import org.picocontainer.componentadapters.CachingComponentAdapterFactory;
+import org.picocontainer.componentadapters.ImplementationHidingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
@@ -46,10 +47,10 @@ public class ImplementationHidingCachingPicoContainer extends AbstractDelegating
             // assume that implementation hiding  CAF inside Caching one.
             return (CachingComponentAdapterFactory) caf;
         }
-        if (caf instanceof org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory) {
+        if (caf instanceof ImplementationHidingComponentAdapterFactory) {
             return new CachingComponentAdapterFactory(caf);
         }
-        return new CachingComponentAdapterFactory(new org.picocontainer.defaults.ImplementationHidingComponentAdapterFactory(caf, false));
+        return new CachingComponentAdapterFactory(new ImplementationHidingComponentAdapterFactory(caf, false));
     }
 
     /**

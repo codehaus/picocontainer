@@ -340,7 +340,7 @@ public class AvalonUtil {
      * 
      * <p>Note that a proxy will be created even if the instance does not implement {@link org.apache.avalon.framework.activity.Startable} or {@link
      * Disposable}, so this method will also always perform implementation hiding, much like {@link
-     * org.picocontainer.defaults.ImplementationHidingComponentAdapter}.</p>
+     * org.picocontainer.componentadapters.ImplementationHidingComponentAdapter}.</p>
      * 
      * <p>Also note that the semantics of <code>start()</code> and <code>stop()</code> differ slightly between
      * Avalon-Framework and PicoContainer. In particular, PicoContainer allows multiple calls to <code>start()</code>

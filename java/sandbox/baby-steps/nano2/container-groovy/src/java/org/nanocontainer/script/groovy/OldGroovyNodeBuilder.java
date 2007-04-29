@@ -39,10 +39,10 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
 import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DelegatingComponentMonitor;
 

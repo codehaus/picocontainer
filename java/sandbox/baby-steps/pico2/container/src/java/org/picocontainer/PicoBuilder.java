@@ -2,7 +2,7 @@ package org.picocontainer;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;

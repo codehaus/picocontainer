@@ -3,7 +3,7 @@ package org.picocontainer;
 import junit.framework.TestCase;
 import com.thoughtworks.xstream.XStream;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;

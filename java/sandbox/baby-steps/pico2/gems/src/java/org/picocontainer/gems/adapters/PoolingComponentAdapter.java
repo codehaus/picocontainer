@@ -22,7 +22,7 @@ import java.util.List;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.componentadapters.DecoratingComponentAdapter;
 import org.picocontainer.defaults.LifecycleStrategy;
 
 import com.thoughtworks.proxy.ProxyFactory;

@@ -5,6 +5,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.componentadapters.AbstractComponentAdapter;
 
 import java.util.HashMap;
 import java.util.Map;

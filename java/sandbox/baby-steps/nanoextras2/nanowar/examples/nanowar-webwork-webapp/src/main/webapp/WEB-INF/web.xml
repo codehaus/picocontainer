@@ -6,18 +6,18 @@
     <context-param>
         <param-name>nanocontainer.groovy</param-name>
         <param-value><![CDATA[
-        	caf = new org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory()
-                    pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)
-                    if(assemblyScope instanceof javax.servlet.ServletContext) {
-                        println("**** Webapp-level pico components registered by Groovy")
-                        pico.registerComponentImplementation(org.nanocontainer.nanowar.sample.dao.simple.MemoryCheeseDao)
-                    } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
-                        println("**** Session-level pico components registered by Groovy")
-                        pico.registerComponentImplementation("cheeseStore", org.nanocontainer.nanowar.sample.service.defaults.DefaultCheeseService)
-                    } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
-                        println("**** Request-level pico components registered by Groovy")
-                    }
-                ]]></param-value>
+        	caf = new org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory()
+                            pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)
+                            if(assemblyScope instanceof javax.servlet.ServletContext) {
+                                println("**** Webapp-level pico components registered by Groovy")
+                                pico.registerComponentImplementation(org.nanocontainer.nanowar.sample.dao.simple.MemoryCheeseDao)
+                            } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
+                                println("**** Session-level pico components registered by Groovy")
+                                pico.registerComponentImplementation("cheeseStore", org.nanocontainer.nanowar.sample.service.defaults.DefaultCheeseService)
+                            } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
+                                println("**** Request-level pico components registered by Groovy")
+                            }
+                        ]]></param-value>
     </context-param>
 
     <filter>

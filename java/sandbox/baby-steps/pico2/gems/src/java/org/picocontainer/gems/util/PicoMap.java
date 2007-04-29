@@ -10,8 +10,8 @@ package org.picocontainer.gems.util;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.componentadapters.InstanceComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.InstanceComponentAdapter;
 
 import java.util.Collection;
 import java.util.Collections;

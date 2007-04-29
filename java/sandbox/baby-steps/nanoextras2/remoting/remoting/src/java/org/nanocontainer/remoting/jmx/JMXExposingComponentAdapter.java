@@ -14,8 +14,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.CachingComponentAdapter;
-import org.picocontainer.defaults.DecoratingComponentAdapter;
+import org.picocontainer.componentadapters.CachingComponentAdapter;
+import org.picocontainer.componentadapters.DecoratingComponentAdapter;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -79,12 +79,12 @@ public class JMXExposingComponentAdapter extends DecoratingComponentAdapter {
      * Retrieve the component instance. The implementation will automatically register it in the {@link MBeanServer},
      * if a provider can return a {@link javax.management.DynamicMBean} for it.
      * <p>
-     * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link CachingComponentAdapter} to avoid
+     * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link org.picocontainer.componentadapters.CachingComponentAdapter} to avoid
      * the registration of the same component again.
      * </p>
      * @throws PicoInitializationException Thrown by the delegate or if the registering of the
      *             {@link javax.management.DynamicMBean} in the {@link MBeanServer } fails.
-     * @see org.picocontainer.defaults.DecoratingComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
+     * @see org.picocontainer.componentadapters.DecoratingComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(final PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException {

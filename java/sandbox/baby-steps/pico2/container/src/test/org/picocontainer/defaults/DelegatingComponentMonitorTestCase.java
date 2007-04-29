@@ -112,11 +112,11 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
         child.getComponent(NeedsACoupleOfThings.class);
     }
 
-    static class NeedsACoupleOfThings {
+    public static class NeedsACoupleOfThings {
         public NeedsACoupleOfThings(Collection collection, String string) {
         }
     }
 
-    static interface MonitorThatSupportsStrategy extends ComponentMonitor, ComponentMonitorStrategy {
+    public static interface MonitorThatSupportsStrategy extends ComponentMonitor, ComponentMonitorStrategy {
     }
 }

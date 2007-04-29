@@ -16,7 +16,7 @@ import org.nanocontainer.NanoPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.alternatives.ImplementationHidingPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
 
 /**
  * This is a MutablePicoContainer that supports soft composition and hides implementations where it can.

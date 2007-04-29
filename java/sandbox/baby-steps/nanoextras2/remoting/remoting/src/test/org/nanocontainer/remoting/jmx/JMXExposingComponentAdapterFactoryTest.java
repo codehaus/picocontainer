@@ -16,8 +16,8 @@ import javax.management.ObjectName;
 import org.nanocontainer.remoting.jmx.testmodel.DynamicMBeanPerson;
 import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;

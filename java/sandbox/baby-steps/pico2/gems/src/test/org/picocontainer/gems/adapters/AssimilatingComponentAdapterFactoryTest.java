@@ -11,7 +11,7 @@
 package org.picocontainer.gems.adapters;
 
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.defaults.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;

@@ -40,7 +40,7 @@ public interface ComponentAdapter {
 
     /**
      * Retrieve the component instance. This method will usually create a new instance each time it is called, but that
-     * is not required. For example, {@link org.picocontainer.defaults.CachingComponentAdapter} will always return the
+     * is not required. For example, {@link org.picocontainer.componentadapters.CachingComponentAdapter} will always return the
      * same instance.
      * 
      * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.

@@ -25,11 +25,11 @@ import org.nanocontainer.testmodel.X;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.componentadapters.InstanceComponentAdapter;
+import org.picocontainer.componentadapters.SetterInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.InstanceComponentAdapter;
-import org.picocontainer.defaults.SetterInjectionComponentAdapter;
-import org.picocontainer.defaults.SetterInjectionComponentAdapterFactory;
+import org.picocontainer.componentadapters.SetterInjectionComponentAdapter;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 /**
@@ -254,7 +254,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
-                                         "CachingAndConstructorComponentAdapterFactory = org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory\n" +
+                                         "CachingAndConstructorComponentAdapterFactory = org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
                                          "container(:component_adapter_factory => CachingAndConstructorComponentAdapterFactory.new, :component_monitor => monitor) {\n"
@@ -292,7 +292,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
-                                         "CachingAndConstructorComponentAdapterFactory = org.picocontainer.defaults.CachingAndConstructorComponentAdapterFactory\n" +
+                                         "CachingAndConstructorComponentAdapterFactory = org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
                                          "container(:parent => $parent, :component_adapter_factory => CachingAndConstructorComponentAdapterFactory.new, :component_monitor => monitor) {\n"

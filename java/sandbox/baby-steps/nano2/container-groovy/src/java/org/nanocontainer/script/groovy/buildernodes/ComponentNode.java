@@ -91,9 +91,7 @@ public class ComponentNode extends AbstractBuilderNode {
         Object instance = attributes.remove(INSTANCE);
         List parameters = (List) attributes.remove(PARAMETERS);
 
-        ComponentElementHelper.makeComponent(cnkey, key, getParameters(parameters), classValue, (NanoContainer) current, instance);
-
-        return this.getNodeName();
+        return ComponentElementHelper.makeComponent(cnkey, key, getParameters(parameters), classValue, (NanoContainer) current, instance);
     }
 
     private static Parameter[] getParameters(List paramsList) {

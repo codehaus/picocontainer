@@ -15,7 +15,7 @@ import org.nanocontainer.NanoContainer;
 
 public class ComponentElementHelper {
 
-    public static void makeComponent(Object cnkey, Object key, Parameter[] parameters, Object klass, NanoContainer current, Object instance) {
+    public static Object makeComponent(Object cnkey, Object key, Parameter[] parameters, Object klass, NanoContainer current, Object instance) {
         if (cnkey != null)  {
             key = new ClassName((String)cnkey);
         }
@@ -23,14 +23,14 @@ public class ComponentElementHelper {
         if (klass instanceof Class) {
             Class clazz = (Class) klass;
             key = key == null ? clazz : key;
-            current.registerComponent(key, clazz, parameters);
+            return current.registerComponent(key, clazz, parameters);
         } else if (klass instanceof String) {
             String className = (String) klass;
             key = key == null ? className : key;
-            current.registerComponent(key, new ClassName(className), parameters);
+            return current.registerComponent(key, new ClassName(className), parameters);
         } else if (instance != null) {
             key = key == null ? instance.getClass() : key;
-            current.registerComponent(key, instance);
+            return current.registerComponent(key, instance);
         } else {
             throw new NanoContainerMarkupException("Must specify a 'class' attribute for a component as a class name (string) or Class.");
         }

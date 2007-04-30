@@ -742,7 +742,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "X.reset()\n" +
-                "builder = new org.nanocontainer.script.groovy.OldGroovyNodeBuilder()\n" +
+                "builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +
                 "nano = builder.container {\n" +
                 "    ca = component(java.lang.Object) \n" +
                 "    component(instance:ca.getClass().getName())\n" +
@@ -750,7 +750,8 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
         // LifecyleContainerBuilder starts the container
-        assertEquals("org.picocontainer.componentadapters.CachingComponentAdapter", pico.getComponents().get(1).toString());
+        Object one = pico.getComponents().get(1);
+        assertEquals("org.picocontainer.componentadapters.CachingComponentAdapter", one.toString());
     }
 
 

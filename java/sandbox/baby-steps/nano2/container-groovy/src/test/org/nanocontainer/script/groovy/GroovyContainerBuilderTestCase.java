@@ -32,7 +32,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
-                "builder = new org.nanocontainer.script.groovy.OldGroovyNodeBuilder()\n" +
+                "builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +
                 "pico = builder.container(parent:parent) { \n" +
                 "  component(StringBuffer)\n" +
                 "}");
@@ -45,7 +45,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
 
         public void testAdditionalBindingViaSubClassing() {
                 Reader script = new StringReader("" +
-                "builder = new org.nanocontainer.script.groovy.OldGroovyNodeBuilder()\n" +
+                "builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +
                 "pico = builder.container(parent:parent) { \n" +
                 "  component(key:String.class, instance:foo)\n" +
                 "}");

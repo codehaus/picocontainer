@@ -129,6 +129,10 @@ public class GroovyNodeBuilder extends BuilderSupport {
 
     }
 
+    public GroovyNodeBuilder(NodeBuilderDecorationDelegate decorationDelegate) {
+        this(decorationDelegate, SKIP_ATTRIBUTE_VALIDATION);
+    }
+
     /**
      * Default constructor.
      */

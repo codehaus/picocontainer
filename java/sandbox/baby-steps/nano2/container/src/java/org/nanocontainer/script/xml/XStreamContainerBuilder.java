@@ -19,7 +19,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.nanocontainer.OldDefaultNanoContainer;
+import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.script.NanoContainerMarkupException;
@@ -301,9 +301,9 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             Class cafClass = getClassLoader().loadClass(cafName);
             ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cafClass.newInstance();
             MutablePicoContainer picoContainer = new DefaultPicoContainer(componentAdapterFactory);
-            NanoContainer nano = new OldDefaultNanoContainer(getClassLoader(), picoContainer);
-            populateContainer(nano.getPico());
-            return nano.getPico();
+            DefaultNanoContainer nano = new DefaultNanoContainer(getClassLoader(), picoContainer);
+            populateContainer(nano);
+            return nano;
         } catch (ClassNotFoundException e) {
             throw new NanoContainerMarkupException(e);
         } catch (InstantiationException e) {

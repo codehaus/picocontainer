@@ -176,7 +176,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
     private void registerComponentsAndChildContainers(NanoContainer parentContainer, Element containerElement, NanoContainer knownComponentAdapterFactories) throws ClassNotFoundException, IOException, SAXException {
 
-        NanoContainer metaContainer = new OldDefaultNanoContainer(getClassLoader(), knownComponentAdapterFactories.getPico());
+        NanoContainer metaContainer = new DefaultNanoContainer(getClassLoader(), knownComponentAdapterFactories.getPico());
         NodeList children = containerElement.getChildNodes();
         // register classpath first, regardless of order in the document.
         for (int i = 0; i < children.getLength(); i++) {

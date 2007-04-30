@@ -15,7 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
-import org.nanocontainer.OldDefaultNanoContainer;
+import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.ClassName;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -157,7 +157,7 @@ public class ScriptedContainerBuilderFactory {
      * @throws ClassNotFoundException if the specified builder class cannot be loaded.
      */
     private void createContainerBuilder(Object composition, ClassLoader classLoader, String builderClass) {
-        OldDefaultNanoContainer defaultNanoContainer;
+        DefaultNanoContainer defaultNanoContainer;
         {
             // transient.
             DefaultPicoContainer factory = new DefaultPicoContainer();
@@ -181,7 +181,7 @@ public class ScriptedContainerBuilderFactory {
             //up a nanocontainer may bomb. And we're only talking a reload
             //within a webapp!  -MR
             //
-            defaultNanoContainer = new OldDefaultNanoContainer(classLoader,factory);
+            defaultNanoContainer = new DefaultNanoContainer(classLoader,factory);
         }
         ComponentAdapter componentAdapter = defaultNanoContainer.registerComponent(new ClassName(builderClass));
         containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultNanoContainer.getPico());

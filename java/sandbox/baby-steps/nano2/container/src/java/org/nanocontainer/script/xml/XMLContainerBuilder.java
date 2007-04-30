@@ -26,7 +26,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.nanocontainer.ClassName;
 import org.nanocontainer.ClassPathElement;
-import org.nanocontainer.OldDefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.picocontainer.PicoClassNotFoundException;
 import org.nanocontainer.DefaultNanoContainer;
@@ -148,7 +147,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     }
 
     private MutablePicoContainer createMutablePicoContainer(String cafName, String monitorName, PicoContainer parentContainer) throws PicoCompositionException {
-        MutablePicoContainer container = new DefaultNanoContainer(getClassLoader(),createComponentAdapterFactory(cafName, new OldDefaultNanoContainer(getClassLoader())), parentContainer);
+        MutablePicoContainer container = new DefaultNanoContainer(getClassLoader(),createComponentAdapterFactory(cafName, new DefaultNanoContainer(getClassLoader())), parentContainer);
         if ( !notSet(monitorName) ){
             ComponentMonitor monitor = createComponentMonitor(monitorName);
             ((ComponentMonitorStrategy)container).changeMonitor(monitor);

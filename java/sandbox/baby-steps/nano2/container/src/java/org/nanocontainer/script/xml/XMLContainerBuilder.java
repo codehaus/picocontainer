@@ -163,7 +163,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             if (parentClass != null && !EMPTY.equals(parentClass)) {
                 classLoader = classLoader.loadClass(parentClass).getClassLoader();
             }
-            NanoContainer nanoContainer = new OldDefaultNanoContainer(classLoader, container);
+            NanoContainer nanoContainer = new DefaultNanoContainer(classLoader, container);
             registerComponentsAndChildContainers(nanoContainer, rootElement, new DefaultNanoContainer(getClassLoader()));
         } catch (ClassNotFoundException e) {
             throw new NanoContainerMarkupException("Class not found: " + e.getMessage(), e);

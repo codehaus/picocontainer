@@ -42,6 +42,10 @@ public class DefaultNanoContainer extends AbstractNanoContainer implements NanoP
         super(new DefaultPicoContainer(new CachingAndConstructorComponentAdapterFactory(), parent), classLoader);
     }
 
+    public DefaultNanoContainer(ClassLoader classLoader, MutablePicoContainer pico) {
+        super(pico, classLoader);
+    }
+
     public DefaultNanoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor componentMonitor) {
         super(new DefaultPicoContainer(new CachingAndConstructorComponentAdapterFactory(componentMonitor), parent), classLoader);
     }

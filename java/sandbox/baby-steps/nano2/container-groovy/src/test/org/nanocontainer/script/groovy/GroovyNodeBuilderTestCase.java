@@ -308,7 +308,9 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
         pico.getComponent(WebServerConfig.class);
         StringWriter writer = (StringWriter)pico.getComponent(StringWriter.class);
-        assertTrue(writer.toString().length() > 0);
+        String s = writer.toString();
+        System.err.println("--> " + s);
+        assertTrue(s.length() > 0);
     }
 
     public void testCustomComponentMonitorCanBeSpecifiedWhenCAFIsSpecified() {

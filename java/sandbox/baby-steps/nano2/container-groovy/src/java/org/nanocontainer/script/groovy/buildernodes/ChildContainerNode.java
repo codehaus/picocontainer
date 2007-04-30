@@ -20,6 +20,7 @@ import java.security.AccessController;
 import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.OldDefaultNanoContainer;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.picocontainer.ComponentMonitor;
@@ -174,7 +175,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
             Class clazz = (Class) attributes.get(CLASS);
             return createNanoContainer(clazz, decoratedPico, parentClassLoader);
         } else {
-            return new OldDefaultNanoContainer(parentClassLoader, decoratedPico);
+            return new DefaultNanoContainer(parentClassLoader, decoratedPico);
         }
     }
 

@@ -49,9 +49,8 @@ public class BeanNode extends AbstractBuilderNode {
     }
 
     public Object createNewNode(Object current, Map attributes) {
-        MutablePicoContainer pico = ((NanoContainer) current).getPico();
         Object bean = createBean(attributes);
-        pico.registerComponent(bean);
+        ((MutablePicoContainer) current).registerComponent(bean);
         return bean;
     }
 
@@ -69,8 +68,8 @@ public class BeanNode extends AbstractBuilderNode {
         try {
             Object bean = type.newInstance();
             // now let's set the properties on the bean
-            for (Iterator iter = attributes.entrySet().iterator(); iter.hasNext();) {
-                Map.Entry entry = (Map.Entry) iter.next();
+            for (Object o : attributes.entrySet()) {
+                Map.Entry entry = (Map.Entry) o;
                 String name = entry.getKey().toString();
                 Object value = entry.getValue();
                 InvokerHelper.setProperty(bean, name, value);

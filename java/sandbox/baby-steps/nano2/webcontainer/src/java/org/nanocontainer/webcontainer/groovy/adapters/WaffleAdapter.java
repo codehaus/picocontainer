@@ -21,10 +21,10 @@ public class WaffleAdapter {
     public NodeBuilder getNodeBuilder() {
         String className = "com.thoughtworks.waffle.groovy.WaffleBuilder";
         NanoContainer factory = new DefaultNanoContainer();
-        factory.getPico().registerComponent(PicoContextHandler.class, context);
-        factory.getPico().registerComponent(MutablePicoContainer.class, parentContainer);
+        factory.registerComponent(PicoContextHandler.class, context);
+        factory.registerComponent(MutablePicoContainer.class, parentContainer);
         factory.registerComponent("wb", new ClassName(className));
-        return (NodeBuilder) factory.getPico().getComponent("wb");
+        return (NodeBuilder) factory.getComponent("wb");
 
     }
 

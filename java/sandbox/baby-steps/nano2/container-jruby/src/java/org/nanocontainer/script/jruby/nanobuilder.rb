@@ -157,7 +157,7 @@ module Nano
         args.delete(nil)
         args << @parent if @parent || args.length == 2
         container = @impl.new(*args)
-        @parent.addChildContainer(container.pico) if @parent
+        @parent.addChildContainer(container) if @parent
       end
       container.changeMonitor(@monitor) if @monitor && container.respond_to?(:changeMonitor)
       container

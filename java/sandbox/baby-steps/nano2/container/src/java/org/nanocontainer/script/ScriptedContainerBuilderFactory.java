@@ -184,7 +184,7 @@ public class ScriptedContainerBuilderFactory {
             defaultNanoContainer = new DefaultNanoContainer(classLoader,factory);
         }
         ComponentAdapter componentAdapter = defaultNanoContainer.registerComponent(new ClassName(builderClass));
-        containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultNanoContainer.getPico());
+        containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultNanoContainer);
     }
 
     private static File fileExists(final File file) throws FileNotFoundException {

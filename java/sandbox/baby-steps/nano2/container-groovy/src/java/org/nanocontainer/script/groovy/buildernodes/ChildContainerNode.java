@@ -142,18 +142,18 @@ public class ChildContainerNode extends AbstractBuilderNode {
             if ( isAttribute(attributes, COMPONENT_ADAPTER_FACTORY) ) {
                 ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory(attributes);
                 childContainer = new DefaultPicoContainer(
-                        getDecorationDelegate().decorate(componentAdapterFactory, attributes), parent.getPico());
+                        getDecorationDelegate().decorate(componentAdapterFactory, attributes), parent);
                 if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
                     changeComponentMonitor(childContainer, createComponentMonitor(attributes));
                 }
-                parent.getPico().addChildContainer(childContainer);
+                parent.addChildContainer(childContainer);
             } else if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
                 ComponentAdapterFactory componentAdapterFactory = new CachingAndConstructorComponentAdapterFactory(
                                                     createComponentMonitor(attributes));
                 childContainer = new DefaultPicoContainer(
-                        getDecorationDelegate().decorate(componentAdapterFactory, attributes), parent.getPico());
+                        getDecorationDelegate().decorate(componentAdapterFactory, attributes), parent);
             } else {
-                childContainer = parent.getPico().makeChildContainer();
+                childContainer = parent.makeChildContainer();
             }
         } else {
             parentClassLoader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {

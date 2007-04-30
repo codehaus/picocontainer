@@ -194,11 +194,6 @@ public abstract class AbstractNanoContainer extends AbstractDelegatingMutablePic
         return super.registerComponent(key,componentImplementationOrInstance, parameters);
     }
 
-    //TODO Should this method be the NanoContainer interface only?
-    public MutablePicoContainer getPico() {
-        return this;
-    }
-
     public ClassLoader getComponentClassLoader() {
         if (componentClassLoader == null) {
             componentClassLoaderLocked = true;

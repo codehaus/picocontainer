@@ -129,7 +129,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         if (picoVariable instanceof PicoContainer) {
             return (PicoContainer) picoVariable;
         } else if (picoVariable instanceof NanoContainer) {
-            return ((NanoContainer) picoVariable).getPico();
+            return ((NanoContainer) picoVariable);
         } else {
             throw new NanoContainerMarkupException("Bad type for pico:" + picoVariable.getClass().getName());
         }

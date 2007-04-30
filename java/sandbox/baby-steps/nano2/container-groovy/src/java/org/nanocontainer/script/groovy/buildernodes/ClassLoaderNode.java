@@ -31,7 +31,7 @@ public class ClassLoaderNode extends AbstractBuilderNode {
     public Object createNewNode(Object current, Map attributes) {
 
         NanoContainer nanoContainer = (NanoContainer) current;
-        return new DefaultNanoContainer(nanoContainer.getComponentClassLoader(), nanoContainer.getPico());
+        return new DefaultNanoContainer(nanoContainer.getComponentClassLoader(), nanoContainer);
     }
 
 }

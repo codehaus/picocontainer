@@ -41,14 +41,6 @@ public interface NanoContainer extends MutablePicoContainer {
      */
     ClassPathElement addClassLoaderURL(URL url);
 
-    /**
-     * Returns the wrapped PicoContainer instance (russian doll concept). The method name is short
-     * in order to favour the use of nano.pico from Groovy.
-     *
-     * @return the wrapped PicoContainer instance.
-     */
-    MutablePicoContainer getPico();
-
     ClassLoader getComponentClassLoader();
 
     /**

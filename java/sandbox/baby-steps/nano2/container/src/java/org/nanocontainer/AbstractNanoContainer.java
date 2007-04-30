@@ -41,7 +41,7 @@ import org.nanocontainer.script.NanoContainerMarkupException;
  * @author Paul Hammant
  * @version $Revision$
  */
-public abstract class AbstractNanoContainer extends AbstractDelegatingMutablePicoContainer implements NanoPicoContainer, Serializable {
+public abstract class AbstractNanoContainer extends AbstractDelegatingMutablePicoContainer implements NanoContainer, Serializable {
 
     private static transient Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
     static {

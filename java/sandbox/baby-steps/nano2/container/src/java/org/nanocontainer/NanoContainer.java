@@ -10,11 +10,8 @@
 
 package org.nanocontainer;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoContainer;
 
 import java.net.URL;
 
@@ -41,7 +38,15 @@ public interface NanoContainer extends MutablePicoContainer {
      */
     ClassPathElement addClassLoaderURL(URL url);
 
+    /**
+     * Get classloader that is teh aggregate of the of the URLs added.
+     * @return the classloader
+     */
     ClassLoader getComponentClassLoader();
+    
+    MutablePicoContainer makeChildContainer(String name);
+
+    void addChildContainer(String name, PicoContainer child);
 
 
 }

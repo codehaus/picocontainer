@@ -31,7 +31,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * @author Michael Rimov
  * @version $Revision$
  */
-public class DefaultNanoContainer extends AbstractNanoContainer implements NanoPicoContainer, Serializable,
+public class DefaultNanoContainer extends AbstractNanoContainer implements NanoContainer, Serializable,
     ComponentMonitorStrategy {
 
     public DefaultNanoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {

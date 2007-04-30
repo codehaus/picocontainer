@@ -4,17 +4,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Vector;
 
 import org.jmock.Mock;
-import org.nanocontainer.NanoPicoContainer;
 import org.nanocontainer.TestHelper;
 import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.script.BarDecoratingPicoContainer;
-import org.nanocontainer.script.FooDecoratingPicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.testmodel.A;
 import org.nanocontainer.testmodel.B;
@@ -477,7 +473,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "}\n");
 
         Reader script = new StringReader(scriptValue);
-        NanoPicoContainer parent = new DefaultNanoContainer(
+        NanoContainer parent = new DefaultNanoContainer(
             buildContainer(script, null, new ParentAssemblyScope()));
 
         assertNotNull(parent.getComponentAdapter(A.class));

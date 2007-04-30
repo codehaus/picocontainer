@@ -12,8 +12,8 @@ package org.nanocontainer.reflection;
 
 import java.io.Serializable;
 
-import org.nanocontainer.NanoPicoContainer;
 import org.nanocontainer.AbstractNanoContainer;
+import org.nanocontainer.NanoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.alternatives.ImplementationHidingPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -29,7 +29,7 @@ import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapter
  * @author Michael Rimov
  * @version $Revision$
  */
-public class ImplementationHidingNanoContainer extends AbstractNanoContainer implements NanoPicoContainer, Serializable {
+public class ImplementationHidingNanoContainer extends AbstractNanoContainer implements NanoContainer, Serializable {
 
     public ImplementationHidingNanoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {
         super(new ImplementationHidingPicoContainer(caf, parent), classLoader);

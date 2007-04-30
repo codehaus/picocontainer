@@ -10,10 +10,10 @@ import java.net.URLClassLoader;
 
 import org.jmock.Mock;
 import org.jruby.exceptions.RaiseException;
-import org.nanocontainer.NanoPicoContainer;
 import org.nanocontainer.TestHelper;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.testmodel.A;
@@ -408,7 +408,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                              "}\n";
 
         Reader script = new StringReader(scriptValue);
-        NanoPicoContainer parent = new DefaultNanoContainer(
+        NanoContainer parent = new DefaultNanoContainer(
             buildContainer(script, null, new ParentAssemblyScope()));
         assertNotNull(parent.getComponentAdapter(A.class));
 

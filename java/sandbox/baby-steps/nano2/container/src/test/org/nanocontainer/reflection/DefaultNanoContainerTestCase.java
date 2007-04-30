@@ -10,8 +10,8 @@
 
 package org.nanocontainer.reflection;
 
-import org.nanocontainer.NanoPicoContainer;
 import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
@@ -29,9 +29,9 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
     // TODO - go to a Nano TCK?
     public void testNamedChildContainerIsAccessible()  {
         StringBuffer sb = new StringBuffer();
-        final NanoPicoContainer parent = (NanoPicoContainer) createPicoContainer(null);
+        final NanoContainer parent = (NanoContainer) createPicoContainer(null);
         parent.registerComponent(sb);
-        final NanoPicoContainer child = (NanoPicoContainer) parent.makeChildContainer("foo");
+        final NanoContainer child = (NanoContainer) parent.makeChildContainer("foo");
         child.registerComponent(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
         LifeCycleMonitoring o = (LifeCycleMonitoring) parent.getComponent((Object)("foo/*" + LifeCycleMonitoring.class.getName()));
         assertNotNull(o);
@@ -40,7 +40,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
     // TODO - go to a Nano TCK?
     public void testNamedChildContainerIsAccessibleForStringKeys() {
         StringBuffer sb = new StringBuffer();
-        final NanoPicoContainer parent = (NanoPicoContainer) createPicoContainer(null);
+        final NanoContainer parent = (NanoContainer) createPicoContainer(null);
         parent.registerComponent(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.registerComponent("lcm",LifeCycleMonitoring.class);
@@ -52,7 +52,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
     // TODO - go to a Nano TCK?
     public void testNamedChildContainerIsAccessibleForClassKeys() {
         StringBuffer sb = new StringBuffer();
-        final NanoPicoContainer parent = (NanoPicoContainer) createPicoContainer(null);
+        final NanoContainer parent = (NanoContainer) createPicoContainer(null);
         parent.registerComponent(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.registerComponent(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
@@ -62,7 +62,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
     }
 
     public void testMakeRemoveChildContainer() {
-        final NanoPicoContainer parent = (NanoPicoContainer) createPicoContainer(null);
+        final NanoContainer parent = (NanoContainer) createPicoContainer(null);
         parent.registerComponent("java.lang.String", (Object)"This is a test");
         MutablePicoContainer pico = parent.makeChildContainer();
         // Verify they are indeed wired together.

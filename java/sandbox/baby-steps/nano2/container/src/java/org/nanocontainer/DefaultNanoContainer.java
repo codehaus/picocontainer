@@ -54,8 +54,12 @@ public class DefaultNanoContainer extends AbstractNanoContainer implements NanoP
         super(new DefaultPicoContainer(caf, null), DefaultNanoContainer.class.getClassLoader());
     }
 
-    public DefaultNanoContainer(PicoContainer pc) {
-        super(new DefaultPicoContainer(pc), DefaultNanoContainer.class.getClassLoader());
+    public DefaultNanoContainer(PicoContainer parent) {
+        super(new DefaultPicoContainer(parent), DefaultNanoContainer.class.getClassLoader());
+    }
+
+    public DefaultNanoContainer(MutablePicoContainer pico) {
+        super(pico, DefaultNanoContainer.class.getClassLoader());
     }
 
     public DefaultNanoContainer(ClassLoader classLoader) {
@@ -85,25 +89,10 @@ public class DefaultNanoContainer extends AbstractNanoContainer implements NanoP
             (cl != null) ? cl : DefaultNanoContainer.class.getClassLoader());
     }
 
-    /**
-     * Copy Constructor.  Makes a new DefaultNanoPicoContainer with the same
-     * attributes  ClassLoader, child PicoContainer type, ComponentAdapterFactory
-     * as the parent.
-     * <p><tt>Note:</tt> This constructor is protected because are existing scripts
-     * that call <tt>new DefaultNanoPicoContainer(PicoContainer)</tt>, and they get this
-     * constructor instead (which has different behavior).</p>
-     * @param parent  The object to copy.
-     */
-    protected DefaultNanoContainer(final DefaultNanoContainer parent) {
-        super(parent.getDelegate().makeChildContainer(),  parent.getComponentClassLoader());
-        MutablePicoContainer parentDelegate = parent.getDelegate();
-        parentDelegate.removeChildContainer(getDelegate());
-        parentDelegate.addChildContainer(this);
-    }
-
 
     protected AbstractNanoContainer createChildContainer() {
-        return new DefaultNanoContainer(this);
+        MutablePicoContainer child = getDelegate().makeChildContainer();
+        return new DefaultNanoContainer(child);
      }
 
     public void changeMonitor(ComponentMonitor monitor) {

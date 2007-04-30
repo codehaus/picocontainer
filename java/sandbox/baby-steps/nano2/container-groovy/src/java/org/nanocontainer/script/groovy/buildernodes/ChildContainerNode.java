@@ -21,7 +21,6 @@ import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapter
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.OldDefaultNanoContainer;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.defaults.DelegatingComponentMonitor;

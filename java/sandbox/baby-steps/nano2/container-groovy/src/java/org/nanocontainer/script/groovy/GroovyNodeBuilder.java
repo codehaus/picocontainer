@@ -13,7 +13,7 @@ import groovy.lang.Closure;
 import groovy.lang.GroovyObject;
 import groovy.util.BuilderSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.nanocontainer.OldDefaultNanoContainer;
+import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.ClassName;
 import org.picocontainer.PicoClassNotFoundException;
@@ -119,7 +119,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
                 .setNode(new DecoratingPicoContainerNode())
                 .setNode(new GrantNode())
                 .setNode(new AppendContainerNode());
-        OldDefaultNanoContainer factory = new OldDefaultNanoContainer();
+        DefaultNanoContainer factory = new DefaultNanoContainer();
         try {
             factory.registerComponent("wc",  new ClassName("org.nanocontainer.webcontainer.groovy.WebContainerBuilder"));
             setNode((BuilderNode) factory.getPico().getComponent("wc"));
@@ -260,7 +260,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
         }
         if (parentAttribute instanceof MutablePicoContainer) {
             // we're not in an enclosing scope - look at parent attribute instead
-            return new OldDefaultNanoContainer((MutablePicoContainer) parentAttribute);
+            return new DefaultNanoContainer((MutablePicoContainer) parentAttribute);
         }
         return null;
     }

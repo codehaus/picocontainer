@@ -26,6 +26,7 @@ import java.util.Map;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.TestHelper;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.alternatives.ImmutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
@@ -42,7 +43,9 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
                 "pico = new org.nanocontainer.DefaultNanoContainer(parent);\n" +
                 "pico.registerComponent((Object) \"hello\", m, new org.picocontainer.Parameter[0]);\n");
         PicoContainer parent = new DefaultPicoContainer();
-        PicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
+        parent = new ImmutablePicoContainer(parent);
+        BeanShellContainerBuilder beanShellContainerBuilder = new BeanShellContainerBuilder(script, getClass().getClassLoader());
+        PicoContainer pico = buildContainer(beanShellContainerBuilder, parent, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
         Object o = pico.getComponent("hello");

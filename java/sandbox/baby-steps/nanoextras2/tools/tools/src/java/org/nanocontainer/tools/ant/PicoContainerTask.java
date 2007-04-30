@@ -16,7 +16,7 @@ import org.nanocontainer.NanoContainer;
 import org.nanocontainer.ClassName;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
-import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
+import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
@@ -80,7 +80,7 @@ public class PicoContainerTask extends Task {
     }
 
     public void execute() {
-        ContainerBuilder containerBuilder = new DefaultLifecycleContainerBuilder(containerComposer) {
+        ContainerBuilder containerBuilder = new DefaultContainerBuilder(containerComposer) {
             BeanPropertyComponentAdapterFactory propertyFactory =
                     new BeanPropertyComponentAdapterFactory(new CachingAndConstructorComponentAdapterFactory());
 

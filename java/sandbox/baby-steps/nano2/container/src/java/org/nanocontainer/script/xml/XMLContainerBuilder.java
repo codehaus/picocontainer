@@ -413,7 +413,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             factoryClass = DEFAULT_COMPONENT_INSTANCE_FACTORY;
         }
 
-        NanoContainer adapter = new OldDefaultNanoContainer(getClassLoader());
+        NanoContainer adapter = new DefaultNanoContainer(getClassLoader());
         adapter.registerComponent(XMLComponentInstanceFactory.class.getName(), new ClassName(factoryClass));
         return (XMLComponentInstanceFactory) adapter.getPico().getComponents().get(0);
     }

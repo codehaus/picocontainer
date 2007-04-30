@@ -704,22 +704,6 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         }
     }
 
-    public void testChainOfDecoratingPicoContainersCanDoInterceptionOfMutablePicoContainerMethods() {
-
-       Reader script = new StringReader("" +
-                "<container>\n" +
-               "   <decorating-picocontainer class='"+FooDecoratingPicoContainer.class.getName()+"'/>" +
-               "   <decorating-picocontainer class='"+BarDecoratingPicoContainer.class.getName()+"'/>" +
-                "  <component-implementation class='java.util.Vector'/>" +
-                "</container>");
-
-        PicoContainer pico = buildContainer(script);
-
-        // decorators are fairly dirty - they replace a very select implementation in this TestCase.
-        assertNotNull(pico.getComponent(ArrayList.class));
-        assertNull(pico.getComponent(Vector.class));
-    }
-
     public void testChainOfWrappedComponents() {
 
        Reader script = new StringReader("" +

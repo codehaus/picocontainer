@@ -20,7 +20,7 @@ import org.picocontainer.tck.AbstractPicoContainerTestCase;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class DefaultNanoPicoContainerTestCase extends AbstractPicoContainerTestCase {
+public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultNanoContainer(this.getClass().getClassLoader(), parent);

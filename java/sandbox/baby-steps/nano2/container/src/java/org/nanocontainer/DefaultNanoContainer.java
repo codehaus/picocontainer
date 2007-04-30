@@ -92,7 +92,7 @@ public class DefaultNanoContainer extends AbstractNanoContainer implements NanoP
 
     protected AbstractNanoContainer createChildContainer() {
         MutablePicoContainer child = getDelegate().makeChildContainer();
-        return new DefaultNanoContainer(child);
+        return new DefaultNanoContainer(getComponentClassLoader(), child);
      }
 
     public void changeMonitor(ComponentMonitor monitor) {

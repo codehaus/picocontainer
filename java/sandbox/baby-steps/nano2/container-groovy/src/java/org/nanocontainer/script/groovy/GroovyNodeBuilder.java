@@ -116,7 +116,6 @@ public class GroovyNodeBuilder extends BuilderSupport {
                 .setNode(new DoCallNode())
                 .setNode(new NewBuilderNode())
                 .setNode(new ClassLoaderNode())
-                .setNode(new DecoratingPicoContainerNode())
                 .setNode(new GrantNode())
                 .setNode(new AppendContainerNode());
         DefaultNanoContainer factory = new DefaultNanoContainer();

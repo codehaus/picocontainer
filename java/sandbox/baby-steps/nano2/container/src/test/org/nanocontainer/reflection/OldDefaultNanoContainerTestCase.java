@@ -11,9 +11,10 @@
 package org.nanocontainer.reflection;
 
 import junit.framework.TestCase;
-import org.nanocontainer.OldDefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.ClassName;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.TestHelper;
 import org.picocontainer.PicoClassNotFoundException;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.*;
@@ -28,13 +29,13 @@ import java.util.ArrayList;
 public class OldDefaultNanoContainerTestCase extends TestCase {
 
     public void testBasic() throws PicoRegistrationException, PicoInitializationException {
-        NanoContainer nanoContainer = new OldDefaultNanoContainer();
+        NanoContainer nanoContainer = new DefaultNanoContainer();
         nanoContainer.registerComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
         nanoContainer.registerComponent("org.nanocontainer.testmodel.WebServer", new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
     }
 
     public void testProvision() throws PicoException {
-        NanoContainer nanoContainer = new OldDefaultNanoContainer();
+        NanoContainer nanoContainer = new DefaultNanoContainer();
         nanoContainer.registerComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
         nanoContainer.registerComponent(new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
 
@@ -43,7 +44,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
     }
 
     public void testNoGenerationRegistration() throws PicoRegistrationException, PicoIntrospectionException {
-        NanoContainer nanoContainer = new OldDefaultNanoContainer();
+        NanoContainer nanoContainer = new DefaultNanoContainer();
         try {
             nanoContainer.registerComponent(new ClassName("Ping"));
             fail("should have failed");
@@ -57,7 +58,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         // the following tests try to load the jar containing TestComp - it
         // won't do to have the class already available in the classpath
 
-        OldDefaultNanoContainer dfca = new OldDefaultNanoContainer();
+        DefaultNanoContainer dfca = new DefaultNanoContainer();
         try {
             dfca.registerComponent("foo", new ClassName("TestComp"));
             Object o = dfca.getPico().getComponent("foo");
@@ -70,14 +71,10 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
 
     public void testChildContainerAdapterCanRelyOnParentContainerAdapter() throws MalformedURLException {
 
-        String testcompJarFileName = System.getProperty("testcomp.jar", "src/test-comp/TestComp.jar");
-        // Paul's path to TestComp. PLEASE do not take out.
-        //testcompJarFileName = "D:/OSS/PN/java/nanocontainer/src/test-comp/TestComp.jar";
-        File testCompJar = new File(testcompJarFileName);
-        assertTrue("The testcomp.jar system property should point to java/nanocontainer/src/test-comp/TestComp.jar", testCompJar.isFile());
+        File testCompJar = TestHelper.getTestCompJarFile();
 
         // Set up parent
-        NanoContainer parentContainer = new OldDefaultNanoContainer();
+        NanoContainer parentContainer = new DefaultNanoContainer();
         parentContainer.addClassLoaderURL(testCompJar.toURL());
         parentContainer.registerComponent("parentTestComp", new ClassName("TestComp"));
         parentContainer.registerComponent(new ClassName("java.lang.StringBuffer"));
@@ -87,8 +84,9 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         assertEquals("TestComp", parentTestComp.getClass().getName());
 
         // Set up child
-        NanoContainer childContainer = new OldDefaultNanoContainer(parentContainer);
+        NanoContainer childContainer = (NanoContainer) parentContainer.makeChildContainer();
         File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
+        //System.err.println("--> " + testCompJar2.getAbsolutePath());
         childContainer.addClassLoaderURL(testCompJar2.toURL());
         childContainer.registerComponent("childTestComp", new ClassName("TestComp2"));
 
@@ -123,20 +121,17 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
     }
 
     public void testClassLoaderJugglingIsPossible() throws MalformedURLException {
-        NanoContainer parentContainer = new OldDefaultNanoContainer();
+        NanoContainer parentContainer = new DefaultNanoContainer();
 
-        String testcompJarFileName = System.getProperty("testcomp.jar", "src/test-comp/TestComp.jar");
-        // Paul's path to TestComp. PLEASE do not take out.
-        //testcompJarFileName = "D:/OSS/PN/java/nanocontainer/src/test-comp/TestComp.jar";
-        File testCompJar = new File(testcompJarFileName);
-        assertTrue("The testcomp.jar system property should point to java/nanocontainer/src/test-comp/TestComp.jar", testCompJar.isFile());
+
+        File testCompJar = TestHelper.getTestCompJarFile();
 
         parentContainer.registerComponent("foo", new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
 
         Object fooWebServerConfig = parentContainer.getPico().getComponent("foo");
         assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
-        NanoContainer childContainer = new OldDefaultNanoContainer(parentContainer);
+        NanoContainer childContainer = new DefaultNanoContainer(parentContainer);
         childContainer.addClassLoaderURL(testCompJar.toURL());
         childContainer.registerComponent("bar", new ClassName("TestComp"));
 
@@ -162,7 +157,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
     }
 
     public void TODO_testSecurityManagerCanPreventOperations() throws MalformedURLException {
-        NanoContainer parentContainer = new OldDefaultNanoContainer();
+        NanoContainer parentContainer = new DefaultNanoContainer();
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
@@ -176,7 +171,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         Object fooWebServerConfig = parentContainer.getPico().getComponent("foo");
         assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
-        NanoContainer childContainer = new OldDefaultNanoContainer(parentContainer);
+        NanoContainer childContainer = new DefaultNanoContainer(parentContainer);
         childContainer.addClassLoaderURL(testCompJar.toURL());
         //TODO childContainer.setPermission(some permission list, that includes the preventing of general file access);
         // Or shoud this be done in the ctor for DRCA ?
@@ -189,21 +184,6 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         } catch (java.security.AccessControlException e) {
             // expected
         }
-    }
-
-
-    public void testChainOfDecoratingPicoContainersCanDoInterceptionOfMutablePicoContainerMethods() {
-        NanoContainer nanoContainer = new OldDefaultNanoContainer();
-        MutablePicoContainer decorating = nanoContainer.addDecoratingPicoContainer(FooDecoratingPicoContainer.class);
-        assertTrue(decorating instanceof FooDecoratingPicoContainer);
-        MutablePicoContainer decorating2 = nanoContainer.addDecoratingPicoContainer(BarDecoratingPicoContainer.class);
-        assertTrue(decorating2 instanceof BarDecoratingPicoContainer);
-        nanoContainer.registerComponent(new ClassName("java.util.Vector"));
-        // decorators are fairly dirty - they replace a very select implementation in this TestCase.
-        assertNotNull(nanoContainer.getComponent("java.util.ArrayList"));
-        assertNull(nanoContainer.getComponent("java.util.Vector"));
-        assertNotNull(nanoContainer.getPico().getComponent(ArrayList.class));
-        assertNull(nanoContainer.getPico().getComponent(Vector.class));
     }
 
     public static class FooDecoratingPicoContainer extends AbstractDelegatingMutablePicoContainer {

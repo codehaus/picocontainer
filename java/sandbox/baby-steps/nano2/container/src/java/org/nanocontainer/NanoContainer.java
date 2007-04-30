@@ -31,16 +31,13 @@ import java.net.URL;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
-public interface NanoContainer {
-
-    ComponentAdapter registerComponent(Object componentImplementationOrInstance);
-
-    ComponentAdapter registerComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters);
+public interface NanoContainer extends MutablePicoContainer {
 
     /**
      * Adds a new URL that will be used in classloading
      *
-     * @param url
+     * @param url url of the jar to find components in.
+     * @return ClassPathElement to add permissions to (subject to security policy)
      */
     ClassPathElement addClassLoaderURL(URL url);
 
@@ -61,9 +58,6 @@ public interface NanoContainer {
      * @return the adapter matching the class.
      */
     Object getComponent(String componentType);
-
-
-    MutablePicoContainer addDecoratingPicoContainer(Class picoContainerClass);
 
 
 }

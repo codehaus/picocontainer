@@ -760,25 +760,6 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
 
-    public void testChainOfDecoratingPicoContainersCanDoInterceptionOfMutablePicoContainerMethods() throws ClassNotFoundException {
-
-        Reader script = new StringReader("" +
-                "import org.nanocontainer.testmodel.*\n" +
-                "builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +
-                "nano = builder.container {\n" +
-                "    decoratingPicoContainer("+ FooDecoratingPicoContainer.class.getName()+")\n" +
-                "    decoratingPicoContainer("+ BarDecoratingPicoContainer.class.getName()+")\n" +
-                "    component(\"java.util.Vector\")\n" +
-                "}");
-
-        PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
-
-
-        // decorators are fairly dirty - they replace a very select implementation in this TestCase.
-        assertNotNull(pico.getComponent(ArrayList.class));
-        assertNull(pico.getComponent(Vector.class));
-    }
-
 
 
 

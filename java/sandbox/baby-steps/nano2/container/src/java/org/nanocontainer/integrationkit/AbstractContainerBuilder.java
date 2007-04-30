@@ -21,7 +21,7 @@ import org.picocontainer.defaults.ObjectReference;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public abstract class LifecycleContainerBuilder implements ContainerBuilder {
+public abstract class AbstractContainerBuilder implements ContainerBuilder {
 
     public final void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope, boolean addChildToParent) {
         PicoContainer parentContainer = parentContainerRef == null ? null : (PicoContainer) parentContainerRef.get();

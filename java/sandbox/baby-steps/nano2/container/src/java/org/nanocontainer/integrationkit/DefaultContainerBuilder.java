@@ -14,10 +14,10 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-public class DefaultLifecycleContainerBuilder extends LifecycleContainerBuilder {
+public class DefaultContainerBuilder extends AbstractContainerBuilder {
     private final ContainerComposer composer;
 
-    public DefaultLifecycleContainerBuilder(ContainerComposer composer) {
+    public DefaultContainerBuilder(ContainerComposer composer) {
         this.composer = composer;
     }
 

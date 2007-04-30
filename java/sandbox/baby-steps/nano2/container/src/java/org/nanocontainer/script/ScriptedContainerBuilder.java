@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 
-import org.nanocontainer.integrationkit.LifecycleContainerBuilder;
+import org.nanocontainer.integrationkit.AbstractContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 
@@ -26,7 +26,7 @@ import org.picocontainer.PicoContainer;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public abstract class ScriptedContainerBuilder extends LifecycleContainerBuilder {
+public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder {
     private final Reader scriptReader;
     private final URL scriptURL;
     private final ClassLoader classLoader;

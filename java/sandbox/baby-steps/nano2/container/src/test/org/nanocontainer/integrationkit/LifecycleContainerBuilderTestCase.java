@@ -33,7 +33,7 @@ public class LifecycleContainerBuilderTestCase extends MockObjectTestCase {
                 container.registerComponent(childStartable.proxy());
             }
         };
-        LifecycleContainerBuilder builder = new DefaultLifecycleContainerBuilder(containerComposer);
+        AbstractContainerBuilder builder = new DefaultContainerBuilder(containerComposer);
 
         ObjectReference parentRef = new SimpleReference();
         MutablePicoContainer parent = new DefaultPicoContainer();

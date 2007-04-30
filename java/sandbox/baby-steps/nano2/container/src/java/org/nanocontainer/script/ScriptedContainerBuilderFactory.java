@@ -40,36 +40,6 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  */
 public class ScriptedContainerBuilderFactory {
 
-    /**
-     * @deprecated Since NanoContainer RC-2. (14-Dec-2005).  Use ScriptBuilderResolver.GROOVY
-     * instead.
-     */
-    public static final String GROOVY = ".groovy";
-
-    /**
-     * @deprecated Since NanoContainer RC-2. (14-Dec-2005).  Use ScriptBuilderResolver.BEANSHELL
-     * instead.
-     */
-    public static final String BEANSHELL = ".bsh";
-
-    /**
-     * @deprecated Since NanoContainer RC-2. (14-Dec-2005).  Use ScriptBuilderResolver.JAVASCRIPT
-     * instead.
-     */
-    public static final String JAVASCRIPT = ".js";
-
-    /**
-     * @deprecated Since NanoContainer RC-2. (14-Dec-2005).  Use ScriptBuilderResolver.JYTHON
-     * instead.
-     */
-    public static final String JYTHON = ".py";
-
-    /**
-     * @deprecated Since NanoContainer RC-2. (14-Dec-2005).  Use ScriptBuilderResolver.XML
-     * instead.
-     */
-    public static final String XML = ".xml";
-
 
     private ScriptedContainerBuilder containerBuilder;
 
@@ -89,7 +59,6 @@ public class ScriptedContainerBuilderFactory {
      * @param builderClassResolver ScriptBuilderResolver the resolver for figuring out
      * file names to container builder class names.
      * @throws IOException upon java.io.File name resolution error.
-     * @throws ClassNotFoundException  If there is an error loading
      * the specified builder using the specified classloader.
      * @throws UnsupportedScriptTypeException if the extension of the file
      * does not match that of any known script.
@@ -117,7 +86,6 @@ public class ScriptedContainerBuilderFactory {
      * file names to container builder class names.
      * @param classLoader ClassLoader for class resolution once we resolve what the name of the
      * builder should be..
-     * @throws ClassNotFoundException  If there is an error loading
      * the specified builder using the specified classloader.
      * @throws UnsupportedScriptTypeException if the extension of the file
      * does not match that of any known script.
@@ -141,7 +109,6 @@ public class ScriptedContainerBuilderFactory {
      * @param composition Reader the script you wish to create the builder for.
      * @param builderClass String the builder class that instantiate.
      * @param classLoader ClassLoader the classloader to use for instantiation.
-     * @throws ClassNotFoundException if the specified class cannot be found.
      */
     public ScriptedContainerBuilderFactory(Reader composition, String builderClass, ClassLoader classLoader) {
         createContainerBuilder(composition, classLoader, builderClass);
@@ -154,7 +121,6 @@ public class ScriptedContainerBuilderFactory {
      * @param classLoader ClassLoader the classloader ot use for classname resolution
      * and loading.
      * @param builderClass String the builder class to load.
-     * @throws ClassNotFoundException if the specified builder class cannot be loaded.
      */
     private void createContainerBuilder(Object composition, ClassLoader classLoader, String builderClass) {
         DefaultNanoContainer defaultNanoContainer;
@@ -194,19 +160,6 @@ public class ScriptedContainerBuilderFactory {
             //todo a proper exception.
             throw new FileNotFoundException("File " + file.getAbsolutePath() + " does not exist.");
         }
-    }
-
-    /**
-     * This function does not support custom file type resolving -- for backwards
-     * compatibility, it uses a fresh instance of ScriptBuilderResolver for
-     * each invocation.  Use ScriptBuilderResolver instead.
-     * @param extension String the file extension to res
-     * @return String the classname to use for the specified extension.
-     * @deprecated Since NanoContainer 1.0 RC-2.  Use the class ScriptBuilderResolver
-     * for this functionality.
-     */
-    public static String getBuilderClassName(final String extension) {
-        return new ScriptBuilderResolver().getBuilderClassName(extension);
     }
 
 

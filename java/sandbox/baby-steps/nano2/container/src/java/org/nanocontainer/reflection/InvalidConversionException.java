@@ -9,6 +9,7 @@
  *****************************************************************************/
 package org.nanocontainer.reflection;
 
+// todo should this extend RTE ??
 public class InvalidConversionException extends RuntimeException {
     public InvalidConversionException(String message) {
         super(message);

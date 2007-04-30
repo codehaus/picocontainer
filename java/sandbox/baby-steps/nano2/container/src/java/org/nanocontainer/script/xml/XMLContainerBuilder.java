@@ -254,7 +254,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         if (parentClass != null && !EMPTY.equals(parentClass)) {
             parentClassLoader = parentClassLoader.loadClass(parentClass).getClassLoader();
         }
-        NanoContainer nano = new OldDefaultNanoContainer(parentClassLoader, parentContainer.getPico());
+        NanoContainer nano = new DefaultNanoContainer(parentClassLoader, parentContainer.getPico());
         registerComponentsAndChildContainers(nano, childElement, metaContainer);
     }
 

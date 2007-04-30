@@ -43,13 +43,5 @@ public interface NanoContainer extends MutablePicoContainer {
 
     ClassLoader getComponentClassLoader();
 
-    /**
-     * Find a component instance matching the specified type.
-     *
-     * @param componentType the type of the component.
-     * @return the adapter matching the class.
-     */
-    Object getComponent(String componentType);
-
 
 }

@@ -73,6 +73,10 @@ public abstract class AbstractNanoContainer extends AbstractDelegatingMutablePic
 
     public final Object getComponent(Object componentKeyOrType) throws PicoException {
 
+        if (componentKeyOrType instanceof ClassName) {
+            componentKeyOrType = loadClass(((ClassName) componentKeyOrType).className);
+        }
+
         Object instance = getDelegate().getComponent(componentKeyOrType);
 
         if (instance != null) {
@@ -151,22 +155,6 @@ public abstract class AbstractNanoContainer extends AbstractDelegatingMutablePic
         return namedChildContainers;
     }
 
-    public Object getComponent(String componentType) {
-        try {
-            Class compType = getComponentClassLoader().loadClass(componentType);
-            return super.getComponent(compType);
-        } catch (ClassNotFoundException e) {
-            // ugly hack as Rhino cannot differentiate between getComponent(String) and getComponent(Object) and
-            // it is likely that there is no way to cast between the two.
-            // moot if we merge all the getComponent() classes ?
-            Object retval = super.getComponent(componentType);
-            if (retval == null) {
-                throw new NanoContainerMarkupException("Can't resolve class as type '" + componentType + "'");
-            } else {
-                return retval;
-            }
-        }
-    }
 
     public ClassPathElement addClassLoaderURL(URL url) {
         if (componentClassLoaderLocked) throw new IllegalStateException("ClassLoader URLs cannot be added once this instance is locked");

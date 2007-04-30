@@ -146,7 +146,7 @@ public class ScopedContainerComposer implements ContainerComposer {
         nano.registerComponent(containerBuilderClassName,
                 new ClassName(containerBuilderClassName), parameters);
         ContainerBuilder containerBuilder = (ContainerBuilder) nano
-                .getPico().getComponent(containerBuilderClassName);
+                .getComponent(containerBuilderClassName);
         ObjectReference parentRef = new SimpleReference();
         parentRef.set(parent);
         containerBuilder.buildContainer(new SimpleReference(), parentRef, null, false);

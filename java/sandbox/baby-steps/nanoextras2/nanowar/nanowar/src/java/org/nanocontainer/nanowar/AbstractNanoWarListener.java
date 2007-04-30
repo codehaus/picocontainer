@@ -15,7 +15,7 @@ import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
+import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 
 /**
  * Base class for application-level and session-level listeners.
@@ -31,7 +31,7 @@ public class AbstractNanoWarListener implements Serializable {
     }
 
     protected void killContainer(ObjectReference containerRef) {
-        ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
+        ContainerBuilder containerKiller = new DefaultContainerBuilder(null);
         if (containerRef.get() != null) {
             containerKiller.killContainer(containerRef);
         }

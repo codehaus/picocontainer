@@ -21,12 +21,11 @@ import org.nanocontainer.NanoContainer;
 import org.nanocontainer.ClassName;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
-import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
+import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptBuilderResolver;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.ObjectReference;
@@ -110,7 +109,7 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
             }
             if (initParameter.equals(CONTAINER_COMPOSER)) {
                 ContainerComposer containerComposer = createContainerComposer(context);
-                return new DefaultLifecycleContainerBuilder(containerComposer);
+                return new DefaultContainerBuilder(containerComposer);
             }
         }
         throw new PicoCompositionException("Couldn't create a builder from context parameters in web.xml");
@@ -140,7 +139,7 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
         } else {
             componentAdapter = nanoContainer.registerComponent(new ClassName(containerComposerClassName));
         }
-        return (ContainerComposer) componentAdapter.getComponentInstance(nanoContainer.getPico());
+        return (ContainerComposer) componentAdapter.getComponentInstance(nanoContainer);
     }
 
     public void contextDestroyed(ServletContextEvent event) {

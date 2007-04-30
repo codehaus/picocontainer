@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSessionEvent;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
+import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
@@ -349,7 +349,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
                 .will(returnValue(null));
         servletContextMock.expects(once())
                 .method("setAttribute")
-                .with(eq(BUILDER), isA(DefaultLifecycleContainerBuilder.class));
+                .with(eq(BUILDER), isA(DefaultContainerBuilder.class));
         servletContextMock.expects(once())
                 .method("setAttribute")
                 .with(eq(APPLICATION_CONTAINER), isA(PicoContainer.class));
@@ -403,7 +403,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
                 .will(returnValue(new ByteArrayInputStream(script.getBytes())));
         servletContextMock.expects(once())
                 .method("setAttribute")
-                .with(eq(BUILDER), isA(DefaultLifecycleContainerBuilder.class));
+                .with(eq(BUILDER), isA(DefaultContainerBuilder.class));
         servletContextMock.expects(once())
                 .method("setAttribute")
                 .with(eq(APPLICATION_CONTAINER), isA(PicoContainer.class));

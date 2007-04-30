@@ -141,7 +141,7 @@ public class ServletChainBuilder {
                 new ConstantParameter(classLoader) };
         nano.registerComponent(containerBuilderClassName,
                 new ClassName(containerBuilderClassName), parameters);
-        ContainerBuilder containerBuilder = (ContainerBuilder) nano.getPico()
+        ContainerBuilder containerBuilder = (ContainerBuilder) nano
                 .getComponent(containerBuilderClassName);
         //containerBuilder.buildContainer(new SimpleReference(), null, null,
         //        false);

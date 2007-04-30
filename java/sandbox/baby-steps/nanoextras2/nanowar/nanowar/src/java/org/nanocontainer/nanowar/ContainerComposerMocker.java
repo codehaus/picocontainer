@@ -12,7 +12,7 @@ package org.nanocontainer.nanowar;
 import org.jmock.Mock;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
-import org.nanocontainer.integrationkit.DefaultLifecycleContainerBuilder;
+import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpSession;
  */
 public class ContainerComposerMocker implements KeyConstants {
 
-    private final ContainerBuilder containerKiller = new DefaultLifecycleContainerBuilder(null);
+    private final ContainerBuilder containerKiller = new DefaultContainerBuilder(null);
     /**
      * application level container
      */
@@ -50,7 +50,7 @@ public class ContainerComposerMocker implements KeyConstants {
 
     public ContainerComposerMocker(Class containerComposerClass) {
         try {
-            containerBuilder = new DefaultLifecycleContainerBuilder((ContainerComposer) containerComposerClass.newInstance());
+            containerBuilder = new DefaultContainerBuilder((ContainerComposer) containerComposerClass.newInstance());
         } catch (Exception ex) {
             throw new PicoCompositionException(ex);
         }

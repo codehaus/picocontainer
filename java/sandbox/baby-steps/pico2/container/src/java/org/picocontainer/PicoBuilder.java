@@ -3,6 +3,7 @@ package org.picocontainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.ImplementationHidingComponentAdapterFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -14,6 +15,7 @@ import org.picocontainer.alternatives.EmptyPicoContainer;
 public class PicoBuilder {
 
     private Class parent = EmptyPicoContainer.class;
+    private Class headCaf;
     private Class caf = CachingAndConstructorComponentAdapterFactory.class;
     private Class componentMonitor = NullComponentMonitor.class;
     private Class lifecycleStrategy = NullLifecycleStrategy.class;
@@ -40,11 +42,22 @@ public class PicoBuilder {
         temp.registerComponent(PicoContainer.class, parent);        
         temp.registerComponent(ComponentMonitor.class, componentMonitor);
         temp.registerComponent(LifecycleStrategy.class, lifecycleStrategy);
-        temp.registerComponent(ComponentAdapterFactory.class, caf);
+        if (headCaf == null) {
+            temp.registerComponent(ComponentAdapterFactory.class, caf);
+        } else {
+            DefaultPicoContainer temp2 = new DefaultPicoContainer(temp);
+            temp2.registerComponent(ComponentAdapterFactory.class, caf);
+            temp2.registerComponent("foo", headCaf);
+            temp.registerComponent(ComponentAdapterFactory.class, temp2.getComponent("foo"));
+        }
         temp.registerComponent(MutablePicoContainer.class, DefaultPicoContainer.class);
 
 
         return (MutablePicoContainer) temp.getComponent(MutablePicoContainer.class);
     }
 
+    public PicoBuilder withImplementationHiding() {
+        headCaf = ImplementationHidingComponentAdapterFactory.class;
+        return this;
+    }
 }

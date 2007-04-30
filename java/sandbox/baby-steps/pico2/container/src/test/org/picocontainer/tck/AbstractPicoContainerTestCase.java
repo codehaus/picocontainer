@@ -108,7 +108,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         assertSame(sb, pico.getComponent(StringBuffer.class));
     }
 
-    public void testContainerIsSerializable() throws PicoException, PicoInitializationException,
+    public void testContainerIsSerializable() throws PicoException,
             IOException, ClassNotFoundException {
 
         getTouchableFromSerializedContainer();
@@ -118,7 +118,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
     private Touchable getTouchableFromSerializedContainer() throws IOException, ClassNotFoundException {
         MutablePicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
         // Add a list too, using a constant parameter
-        pico.registerComponent("list", ArrayList.class, new Parameter[]{new ConstantParameter(new Integer(10))});
+        pico.registerComponent("list", ArrayList.class, new ConstantParameter(10));
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -133,7 +133,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         return (Touchable) pico.getComponent(Touchable.class);
     }
 
-    public void testSerializedContainerCanRetrieveImplementation() throws PicoException, PicoInitializationException,
+    public void testSerializedContainerCanRetrieveImplementation() throws PicoException,
             IOException, ClassNotFoundException {
 
         Touchable touchable = getTouchableFromSerializedContainer();

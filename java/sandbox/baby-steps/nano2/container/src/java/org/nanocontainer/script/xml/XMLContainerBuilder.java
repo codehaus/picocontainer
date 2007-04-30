@@ -194,7 +194,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                 String name = childElement.getNodeName();
                 if (CONTAINER.equals(name)) {
                     MutablePicoContainer childContainer = parentContainer.getPico().makeChildContainer();
-                    NanoContainer childNanoContainer = new OldDefaultNanoContainer(parentContainer.getComponentClassLoader(), childContainer);
+                    NanoContainer childNanoContainer = new DefaultNanoContainer(parentContainer.getComponentClassLoader(), childContainer);
                     registerComponentsAndChildContainers(childNanoContainer, childElement, metaContainer);
                 } else if (COMPONENT_IMPLEMENTATION.equals(name)
                         || COMPONENT.equals(name)) {

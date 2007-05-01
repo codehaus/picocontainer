@@ -77,6 +77,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         }
     }
 
+
+
     public void testComponentsCanBeRemovedByInstance() {
         MutablePicoContainer pico = createPicoContainer(null);
         pico.registerComponent(HashMap.class);
@@ -115,6 +117,13 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         pico.registerComponent(SimpleTouchable.class);
         pico.registerComponent(DecoratedTouchable.class);
         Touchable t = (Touchable) pico.getComponent((Object) DecoratedTouchable.class);
+        assertNotNull(t);
+    }
+
+
+    public void testPicoUsedInBuilderStyle() {
+        MutablePicoContainer pico = createPicoContainer(null);
+        Touchable t = (Touchable) pico.registerComponent(SimpleTouchable.class).registerComponent(DecoratedTouchable.class).getComponent((Object) DecoratedTouchable.class);
         assertNotNull(t);
     }
 

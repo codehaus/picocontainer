@@ -201,7 +201,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
     }
 
     public static class ListAdder {
-        public ListAdder(Collection list) {
+        public ListAdder(Collection<String> list) {
             list.add("something");
         }
     }
@@ -218,7 +218,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
             List list = (List) unsatisfiableDependencies.iterator().next();
 
-            final List expectedList = new ArrayList(2);
+            final List<Class> expectedList = new ArrayList<Class>(2);
             expectedList.add(ComponentE.class);
             expectedList.add(ComponentB.class);
 
@@ -239,7 +239,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
             List list = (List) unsatisfiableDependencies.iterator().next();
-            final List expectedList = new ArrayList(2);
+            final List<Class> expectedList = new ArrayList<Class>(2);
             expectedList.add(ComponentE.class);
             expectedList.add(ComponentB.class);
             assertEquals(expectedList, list);
@@ -258,7 +258,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
             List list = (List) unsatisfiableDependencies.iterator().next();
-            final List expectedList = new ArrayList(2);
+            final List<Class> expectedList = new ArrayList<Class>(2);
             expectedList.add(ComponentE.class);
             expectedList.add(ComponentB.class);
             assertEquals(expectedList, list);
@@ -284,8 +284,8 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         } catch (CyclicDependencyException e) {
             // CyclicDependencyException reports now the stack.
             //final List dependencies = Arrays.asList(ComponentD.class.getConstructors()[0].getParameterTypes());
-            final List dependencies = Arrays.asList(new Class[]{ComponentD.class, ComponentE.class, ComponentD.class});
-            final List reportedDependencies = Arrays.asList(e.getDependencies());
+            final List<Class> dependencies = Arrays.asList(new Class[]{ComponentD.class, ComponentE.class, ComponentD.class});
+            final List<Class> reportedDependencies = Arrays.asList(e.getDependencies());
             assertEquals(dependencies, reportedDependencies);
         } catch (StackOverflowError e) {
             fail();
@@ -591,7 +591,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
     }
 
     public static class TestLifecycleManager implements LifecycleManager {
-        public ArrayList started = new ArrayList();
+        public ArrayList<PicoContainer> started = new ArrayList<PicoContainer>();
         public void start(PicoContainer node) {
             started.add(node);
         }

@@ -40,6 +40,10 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
+        public <T> T getComponent(Class<T> componentType) {
+            return null;
+        }
+
         public List getComponents() {
             return null;
         }

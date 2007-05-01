@@ -137,10 +137,10 @@ public abstract class AbstractNanoContainer extends AbstractDelegatingMutablePic
 
     public boolean removeChildContainer(PicoContainer child) {
         boolean result = getDelegate().removeChildContainer(child);
-        Iterator children = namedChildContainers.entrySet().iterator();
+        Iterator<Map.Entry<String,PicoContainer>> children = namedChildContainers.entrySet().iterator();
         while (children.hasNext()) {
-            Map.Entry e = (Map.Entry) children.next();
-            PicoContainer pc = (PicoContainer) e.getValue();
+            Map.Entry<String,PicoContainer> e = children.next();
+            PicoContainer pc = e.getValue();
             if (pc == child) {
                 children.remove();
             }

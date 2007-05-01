@@ -45,7 +45,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testDelegationOfGettingComponentInstance() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Map.class, HashMap.class);
+        mpc.component(Map.class, HashMap.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         Map map = (Map) ipc.getComponent(Map.class);
         assertNotNull(map);
@@ -53,7 +53,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testDelegationOfGettingComponentInstanceOfType() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Map.class, HashMap.class);
+        mpc.component(Map.class, HashMap.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         Map map = (Map) ipc.getComponent(Map.class);
         assertNotNull(map);
@@ -61,8 +61,8 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testDelegationOfGettingComponentInstancesOfType() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Map.class, HashMap.class);
-        mpc.registerComponent(Collection.class, Vector.class);
+        mpc.component(Map.class, HashMap.class);
+        mpc.component(Collection.class, Vector.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         List list = ipc.getComponents(Map.class);
         assertNotNull(list);
@@ -71,7 +71,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testDelegationOfGetComponentInstances() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Map.class, HashMap.class);
+        mpc.component(Map.class, HashMap.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         List comps = ipc.getComponents();
         assertNotNull(comps);
@@ -80,7 +80,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testDelegationOfGetComponentAdapter() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Map.class, HashMap.class);
+        mpc.component(Map.class, HashMap.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         ComponentAdapter ca = ipc.getComponentAdapter(Map.class);
         assertNotNull(ca);
@@ -89,7 +89,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testDelegationOfGetComponentAdapterOfType() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Map.class, HashMap.class);
+        mpc.component(Map.class, HashMap.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         ComponentAdapter ca = ipc.getComponentAdapter(Map.class);
         assertNotNull(ca);
@@ -97,7 +97,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testDelegationOfGetComponentAdapters() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Map.class, HashMap.class);
+        mpc.component(Map.class, HashMap.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         Collection comps = ipc.getComponentAdapters();
         assertNotNull(comps);
@@ -106,7 +106,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testDelegationOfGetComponentAdaptersOfType() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Map.class, HashMap.class);
+        mpc.component(Map.class, HashMap.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         List comps = ipc.getComponentAdapters(Map.class);
         assertNotNull(comps);
@@ -132,7 +132,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testDelegationOfVerify() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Iterator.class, UnsatisfiableIterator.class);
+        mpc.component(Iterator.class, UnsatisfiableIterator.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         try {
             new VerifyingVisitor().traverse(ipc);
@@ -145,7 +145,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
     public void testGetParentForMutable() {
         DefaultPicoContainer par = new DefaultPicoContainer();
         DefaultPicoContainer mpc = new DefaultPicoContainer(par);
-        mpc.registerComponent(Map.class, HashMap.class);
+        mpc.component(Map.class, HashMap.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         PicoContainer parent = ipc.getParent();
         assertNotNull(parent);
@@ -159,7 +159,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
         DefaultPicoContainer par = new DefaultPicoContainer();
         ImmutablePicoContainer par2 = new ImmutablePicoContainer(par);
         DefaultPicoContainer mpc = new DefaultPicoContainer(par2);
-        mpc.registerComponent(Map.class, HashMap.class);
+        mpc.component(Map.class, HashMap.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         PicoContainer parent = ipc.getParent();
         assertNotNull(parent);
@@ -179,7 +179,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testLifecycleGuardIsEasyToCircumventSoItMightAsWellBeDeleted() {
         DefaultPicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(MyDisposable.class);
+        mpc.component(MyDisposable.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(mpc);
         List componentInstances = ipc.getComponents();
         for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
@@ -195,8 +195,8 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
     public void testFacetiouslyThatLifeCycleGuardPreventsCyclingOfChildContainersAsComponentsAreNotTheOnlyThingsThatAreLifecycleable() {
         DefaultPicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = parent.makeChildContainer();
-        parent.registerComponent("foo", MyDisposable.class);
-        child.registerComponent("bar", MyDisposable.class);
+        parent.component("foo", MyDisposable.class);
+        child.component("bar", MyDisposable.class);
         ImmutablePicoContainer ipc = new ImmutablePicoContainer(parent);
 
         MyDisposable parentDisposable = (MyDisposable) parent.getComponent("foo");
@@ -226,7 +226,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
     public void testVisitingOfImmutableContainerWorks() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         Object foo = new Object();
-        ComponentAdapter componentAdapter = pico.registerComponent(foo).lastCA();
+        ComponentAdapter componentAdapter = pico.component(foo).lastCA();
 
         Mock fooVisitor = new Mock(PicoVisitor.class);
         fooVisitor.expects(once()).method("visitContainer").with(eq(pico));

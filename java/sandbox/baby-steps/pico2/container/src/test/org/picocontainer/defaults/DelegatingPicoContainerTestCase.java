@@ -27,16 +27,16 @@ public class DelegatingPicoContainerTestCase extends TestCase {
     }
 
     public void testChildGetsFromParent() {
-        parent.registerComponent(SimpleTouchable.class);
-        child.registerComponent(DependsOnTouchable.class);
+        parent.component(SimpleTouchable.class);
+        child.component(DependsOnTouchable.class);
         DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) child.getComponent(DependsOnTouchable.class);
 
         assertNotNull(dependsOnTouchable);
     }
 
     public void testParentDoesntGetFromChild() {
-        child.registerComponent(SimpleTouchable.class);
-        parent.registerComponent(DependsOnTouchable.class);
+        child.component(SimpleTouchable.class);
+        parent.component(DependsOnTouchable.class);
         try {
             parent.getComponent(DependsOnTouchable.class);
             fail();
@@ -45,8 +45,8 @@ public class DelegatingPicoContainerTestCase extends TestCase {
     }
 
     public void testChildOverridesParent() {
-        parent.registerComponent(SimpleTouchable.class);
-        child.registerComponent(SimpleTouchable.class);
+        parent.component(SimpleTouchable.class);
+        child.component(SimpleTouchable.class);
 
         SimpleTouchable parentTouchable = (SimpleTouchable) parent.getComponent(SimpleTouchable.class);
         SimpleTouchable childTouchable = (SimpleTouchable) child.getComponent(SimpleTouchable.class);

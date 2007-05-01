@@ -26,10 +26,10 @@ public class DependencyInjectionServletWarFileTestCase extends TestCase {
         File testWar = TestHelper.getTestWarFile();
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
-        parentContainer.registerComponent(String.class, "Fred");
+        parentContainer.component(String.class, "Fred");
         StringBuffer sb = new StringBuffer();
-        parentContainer.registerComponent(StringBuffer.class, sb);
-        parentContainer.registerComponent(Integer.class, new Integer(5));
+        parentContainer.component(StringBuffer.class, sb);
+        parentContainer.component(Integer.class, new Integer(5));
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         WebAppContext wac = server.addWebApplication("/bar", testWar.getAbsolutePath().replace('\\','/'));
@@ -52,9 +52,9 @@ public class DependencyInjectionServletWarFileTestCase extends TestCase {
         File testWar = TestHelper.getTestWarFile();
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
-        parentContainer.registerComponent(String.class, "Fred");
-        parentContainer.registerComponent(StringBuffer.class, new StringBuffer());
-        parentContainer.registerComponent(Integer.class, new Integer(5));
+        parentContainer.component(String.class, "Fred");
+        parentContainer.component(StringBuffer.class, new StringBuffer());
+        parentContainer.component(Integer.class, new Integer(5));
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         WebAppContext wac = server.addWebApplication("/bar", testWar.getAbsolutePath().replace('\\','/'));

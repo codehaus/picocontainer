@@ -31,7 +31,7 @@ public class CachingComponentAdapterFactoryTestCase extends AbstractComponentAda
     }
 
     public void testContainerReturnsSameInstanceEachCall() {
-        picoContainer.registerComponent(Touchable.class, SimpleTouchable.class);
+        picoContainer.component(Touchable.class, SimpleTouchable.class);
         Touchable t1 = (Touchable) picoContainer.getComponent(Touchable.class);
         Touchable t2 = (Touchable) picoContainer.getComponent(Touchable.class);
         assertSame(t1, t2);

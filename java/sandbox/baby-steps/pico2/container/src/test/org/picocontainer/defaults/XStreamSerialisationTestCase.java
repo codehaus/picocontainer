@@ -29,8 +29,8 @@ public class XStreamSerialisationTestCase extends TestCase {
     public void testShouldBeAbleToSerialisePicoWithUninstantiatedComponents() {
         if (JVM.is14()) {
             MutablePicoContainer pico = new DefaultPicoContainer();
-            pico.registerComponent(SimpleTouchable.class);
-            pico.registerComponent(DependsOnTouchable.class);
+            pico.component(SimpleTouchable.class);
+            pico.component(DependsOnTouchable.class);
             String picoXml = xStream.toXML(pico);
             PicoContainer serializedPico = (PicoContainer) xStream.fromXML(picoXml);
 
@@ -41,8 +41,8 @@ public class XStreamSerialisationTestCase extends TestCase {
     public void testShouldBeAbleToSerialisePicoWithInstantiatedComponents() {
         if (JVM.is14()) {
             MutablePicoContainer pico = new DefaultPicoContainer();
-            pico.registerComponent(SimpleTouchable.class);
-            pico.registerComponent(DependsOnTouchable.class);
+            pico.component(SimpleTouchable.class);
+            pico.component(DependsOnTouchable.class);
             pico.getComponents();
             String picoXml = xStream.toXML(pico);
             PicoContainer serializedPico = (PicoContainer) xStream.fromXML(picoXml);

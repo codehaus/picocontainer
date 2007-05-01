@@ -29,7 +29,7 @@ public class TestingChildBuilder extends NodeBuilder {
 
     protected Object createNode(Object name, Map map) {
         if (name.equals("component")) {
-            return toOperateOn.registerComponent(map.remove("key"), (Class) map.remove("class"));
+            return toOperateOn.component(map.remove("key"), (Class) map.remove("class"));
         } else {
             return null;
         }

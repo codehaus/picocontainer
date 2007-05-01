@@ -83,9 +83,9 @@ public class CollectionComponentParameterTestCase
 
     private MutablePicoContainer getDefaultPicoContainer() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(Bowl.class);
-        mpc.registerComponent(Cod.class);
-        mpc.registerComponent(Shark.class);
+        mpc.component(Bowl.class);
+        mpc.component(Cod.class);
+        mpc.component(Shark.class);
         return mpc;
     }
 
@@ -101,11 +101,11 @@ public class CollectionComponentParameterTestCase
 
     public void testCollectionsAreGeneratedOnTheFly() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(new ConstructorInjectionComponentAdapter(Bowl.class, Bowl.class));
-        mpc.registerComponent(Cod.class);
+        mpc.adapter(new ConstructorInjectionComponentAdapter(Bowl.class, Bowl.class));
+        mpc.component(Cod.class);
         Bowl bowl = (Bowl) mpc.getComponent(Bowl.class);
         assertEquals(1, bowl.cods.length);
-        mpc.registerComponent("Nemo", new Cod());
+        mpc.component("Nemo", new Cod());
         bowl = (Bowl) mpc.getComponent(Bowl.class);
         assertEquals(2, bowl.cods.length);
         assertNotSame(bowl.cods[0], bowl.cods[1]);
@@ -123,10 +123,10 @@ public class CollectionComponentParameterTestCase
 
     public void testCollections() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(CollectedBowl.class, CollectedBowl.class, new Parameter[]{
+        mpc.component(CollectedBowl.class, CollectedBowl.class, new Parameter[]{
                 new ComponentParameter(Cod.class, false), new ComponentParameter(Fish.class, false)});
-        mpc.registerComponent(Cod.class);
-        mpc.registerComponent(Shark.class);
+        mpc.component(Cod.class);
+        mpc.component(Shark.class);
         Cod cod = (Cod) mpc.getComponent(Cod.class);
         CollectedBowl bowl = (CollectedBowl) mpc.getComponent(CollectedBowl.class);
         assertEquals(1, bowl.cods.length);
@@ -146,10 +146,10 @@ public class CollectionComponentParameterTestCase
 
     public void testMaps() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent(MappedBowl.class, MappedBowl.class, new Parameter[]{new ComponentParameter(
+        mpc.component(MappedBowl.class, MappedBowl.class, new Parameter[]{new ComponentParameter(
                 Fish.class, false)});
-        mpc.registerComponent(Cod.class);
-        mpc.registerComponent(Shark.class);
+        mpc.component(Cod.class);
+        mpc.component(Shark.class);
         MappedBowl bowl = (MappedBowl) mpc.getComponent(MappedBowl.class);
         assertEquals(2, bowl.fishes.length);
         assertNotSame(bowl.fishes[0], bowl.fishes[1]);
@@ -162,7 +162,7 @@ public class CollectionComponentParameterTestCase
 
     public void testShouldNotInstantiateCollectionForUngenericCollectionParameters() {
         MutablePicoContainer pico = getDefaultPicoContainer();
-        pico.registerComponent(UngenericCollectionBowl.class);
+        pico.component(UngenericCollectionBowl.class);
         try {
             pico.getComponent(UngenericCollectionBowl.class);
             fail();
@@ -185,7 +185,7 @@ public class CollectionComponentParameterTestCase
 
     public void testShouldFailWhenThereAreNoComponentsToPutInTheArray() {
         MutablePicoContainer pico = getDefaultPicoContainer();
-        pico.registerComponent(AnotherGenericCollectionBowl.class);
+        pico.component(AnotherGenericCollectionBowl.class);
         try {
             pico.getComponent(AnotherGenericCollectionBowl.class);
             fail();
@@ -196,7 +196,7 @@ public class CollectionComponentParameterTestCase
 
     public void testAllowsEmptyArraysIfEspeciallySet() {
         MutablePicoContainer pico = getDefaultPicoContainer();
-        pico.registerComponent(
+        pico.component(
                 AnotherGenericCollectionBowl.class, AnotherGenericCollectionBowl.class,
                 new Parameter[]{ComponentParameter.ARRAY_ALLOW_EMPTY});
         AnotherGenericCollectionBowl bowl = (AnotherGenericCollectionBowl) pico
@@ -223,8 +223,8 @@ public class CollectionComponentParameterTestCase
 
     public void testWillOmitSelfFromCollection() {
         MutablePicoContainer pico = getDefaultPicoContainer();
-        pico.registerComponent(SimpleTouchable.class);
-        pico.registerComponent(TouchableObserver.class);
+        pico.component(SimpleTouchable.class);
+        pico.component(TouchableObserver.class);
         Touchable observer = (Touchable) pico.getComponent(TouchableObserver.class);
         assertNotNull(observer);
         observer.touch();
@@ -234,12 +234,12 @@ public class CollectionComponentParameterTestCase
 
     public void testWillRemoveComponentsWithMatchingKeyFromParent() {
         MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.registerComponent("Tom", Cod.class);
-        parent.registerComponent("Dick", Cod.class);
-        parent.registerComponent("Harry", Cod.class);
+        parent.component("Tom", Cod.class);
+        parent.component("Dick", Cod.class);
+        parent.component("Harry", Cod.class);
         MutablePicoContainer child = new DefaultPicoContainer(parent);
-        child.registerComponent("Dick", Shark.class);
-        child.registerComponent(Bowl.class);
+        child.component("Dick", Shark.class);
+        child.component(Bowl.class);
         Bowl bowl = (Bowl) child.getComponent(Bowl.class);
         assertEquals(3, bowl.fishes.length);
         assertEquals(2, bowl.cods.length);
@@ -247,11 +247,11 @@ public class CollectionComponentParameterTestCase
 
     public void testBowlWithoutTom() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.registerComponent("Tom", Cod.class);
-        mpc.registerComponent("Dick", Cod.class);
-        mpc.registerComponent("Harry", Cod.class);
-        mpc.registerComponent(Shark.class);
-        mpc.registerComponent(CollectedBowl.class, CollectedBowl.class, new Parameter[]{
+        mpc.component("Tom", Cod.class);
+        mpc.component("Dick", Cod.class);
+        mpc.component("Harry", Cod.class);
+        mpc.component(Shark.class);
+        mpc.component(CollectedBowl.class, CollectedBowl.class, new Parameter[]{
             new CollectionComponentParameter(Cod.class, false) {
                 protected boolean evaluate(ComponentAdapter adapter) {
                     return !"Tom".equals(adapter.getComponentKey());
@@ -285,7 +285,7 @@ public class CollectionComponentParameterTestCase
     public void testDifferentCollectiveTypesAreResolved() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         CollectionComponentParameter parameter = new CollectionComponentParameter(Fish.class, true);
-        pico.registerComponent(DependsOnAll.class, DependsOnAll.class, new Parameter[]{
+        pico.component(DependsOnAll.class, DependsOnAll.class, new Parameter[]{
                 parameter, parameter, parameter, parameter, parameter, parameter,
         // parameter, parameter, parameter,
                 });
@@ -295,7 +295,7 @@ public class CollectionComponentParameterTestCase
     public void testVerify() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         CollectionComponentParameter parameterNonEmpty = CollectionComponentParameter.ARRAY;
-        pico.registerComponent(Shark.class);
+        pico.component(Shark.class);
         parameterNonEmpty.verify(pico, null, Fish[].class);
         try {
             parameterNonEmpty.verify(pico, null, Cod[].class);
@@ -311,12 +311,12 @@ public class CollectionComponentParameterTestCase
     // PICO-243 : this test will fail if executed on jdk1.3 without commons-collections
     public void testOrderOfElementsOfAnArrayDependencyIsPreserved() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent("first", "first");
-        pico.registerComponent("second", "second");
-        pico.registerComponent("third", "third");
-        pico.registerComponent("fourth", "fourth");
-        pico.registerComponent("fifth", "fifth");
-        pico.registerComponent(Truc.class);
+        pico.component("first", "first");
+        pico.component("second", "second");
+        pico.component("third", "third");
+        pico.component("fourth", "fourth");
+        pico.component("fifth", "fifth");
+        pico.component(Truc.class);
 
         final List strings = pico.getComponents(String.class);
         assertEquals("first", strings.get(0));

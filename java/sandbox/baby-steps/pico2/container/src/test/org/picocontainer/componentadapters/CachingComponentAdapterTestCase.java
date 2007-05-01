@@ -145,7 +145,7 @@ public class CachingComponentAdapterTestCase extends MockObjectTestCase {
     public void testCanStopAComponentThatWasNeverStartedBecauseItHasNoLifecycle() {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
-        pico.registerComponent(StringBuffer.class);
+        pico.component(StringBuffer.class);
 
         pico.start();
 

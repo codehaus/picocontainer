@@ -42,8 +42,8 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractImplement
     public void testHidingWithoutParameter() {
         // this was a bug reported by Arnd Kors on 21st Sept on the mail list.
         ImplementationHidingPicoContainer pico = new ImplementationHidingPicoContainer();
-        pico.registerComponent(String.class);
-        pico.registerComponent(Runnable.class, MyThread.class);
+        pico.component(String.class);
+        pico.component(Runnable.class, MyThread.class);
         new VerifyingVisitor().traverse(pico);
     }
 
@@ -51,7 +51,7 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractImplement
         // Jira bug 212
         MutablePicoContainer parent = new DefaultPicoContainer();
         ImplementationHidingPicoContainer pico = new ImplementationHidingPicoContainer(new ConstructorInjectionComponentAdapterFactory(), parent);
-        pico.registerComponent(List.class, ArrayList.class);
+        pico.component(List.class, ArrayList.class);
         List list1 = (List) pico.getComponent(List.class);
         List list2 = (List) pico.getComponent(List.class);
         assertNotNull(list1);
@@ -63,7 +63,7 @@ public class ImplementationHidingPicoContainerTestCase extends AbstractImplement
    
     public void testMakeChildContainer(){
         MutablePicoContainer parent = new ImplementationHidingPicoContainer();
-        parent.registerComponent("t1", SimpleTouchable.class);
+        parent.component("t1", SimpleTouchable.class);
         MutablePicoContainer child = parent.makeChildContainer();
         Object t1 = child.getParent().getComponent("t1");
         assertNotNull(t1);

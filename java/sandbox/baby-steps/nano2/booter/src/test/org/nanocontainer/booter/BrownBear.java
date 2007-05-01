@@ -89,8 +89,8 @@ public class BrownBear implements Startable {
         System.out.println("BrownBear: Can leverage any implementation detail from honey instance? - false");
 
         subContainer = new DefaultPicoContainer();
-        subContainer.registerComponent(Map.class, HashMap.class);
-        subContainer.registerComponent(PicoContainer.class, DefaultPicoContainer.class);
+        subContainer.component(Map.class, HashMap.class);
+        subContainer.component(PicoContainer.class, DefaultPicoContainer.class);
         subContainer.getComponent(Map.class);
         subContainer.getComponent(PicoContainer.class);
 

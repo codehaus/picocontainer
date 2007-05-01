@@ -12,10 +12,8 @@ package org.nanocontainer.script.groovy.buildernodes;
 
 import java.util.Map;
 
-import org.nanocontainer.NanoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
-import java.util.Iterator;
 import org.codehaus.groovy.runtime.InvokerHelper;
 
 /**
@@ -50,7 +48,7 @@ public class BeanNode extends AbstractBuilderNode {
 
     public Object createNewNode(Object current, Map attributes) {
         Object bean = createBean(attributes);
-        ((MutablePicoContainer) current).registerComponent(bean);
+        ((MutablePicoContainer) current).component(bean);
         return bean;
     }
 

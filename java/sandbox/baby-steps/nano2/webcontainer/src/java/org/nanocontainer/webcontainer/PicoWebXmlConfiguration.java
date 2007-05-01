@@ -34,7 +34,7 @@ public class PicoWebXmlConfiguration extends WebXmlConfiguration {
 
     protected Object newListenerInstance(Class clazz) throws InstantiationException, IllegalAccessException {
         DefaultPicoContainer child = new DefaultPicoContainer(parentContainer);
-        child.registerComponent("listener", clazz);
+        child.component("listener", clazz);
         Object componentInstance = child.getComponent("listener");
         return componentInstance;
 

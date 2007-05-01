@@ -265,10 +265,10 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
      * @return the adapter to test
      */
     private ComponentAdapter prepDEF_lifecycleManagerSupport(MutablePicoContainer picoContainer) {
-        picoContainer.registerComponent(RecordingLifecycle.One.class);
+        picoContainer.component(RecordingLifecycle.One.class);
         PoolingComponentAdapter poolingComponentAdapter = new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
                 RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class));
-        return picoContainer.registerComponent(poolingComponentAdapter).lastCA();
+        return picoContainer.adapter(poolingComponentAdapter).lastCA();
     }
 
     public void testDEF_lifecycleManagerSupport() {
@@ -278,7 +278,7 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
                 final StringBuffer buffer = new StringBuffer();
                 final MutablePicoContainer picoContainer = new DefaultPicoContainer(
                         createDefaultComponentAdapterFactory());
-                picoContainer.registerComponent(buffer);
+                picoContainer.component(buffer);
                 final ComponentAdapter componentAdapter = prepDEF_lifecycleManagerSupport(picoContainer);
                 assertSame(getComponentAdapterType(), componentAdapter.getClass());
                 assertEquals(0, buffer.length());
@@ -301,10 +301,10 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
      * @return the adapter to test
      */
     private ComponentAdapter prepRES_lifecycleManagerHonorsInstantiationSequence(MutablePicoContainer picoContainer) {
-        picoContainer.registerComponent(RecordingLifecycle.One.class);
+        picoContainer.component(RecordingLifecycle.One.class);
         PoolingComponentAdapter poolingComponentAdapter = new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
                 RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class));
-        return picoContainer.registerComponent(poolingComponentAdapter).lastCA();
+        return picoContainer.adapter(poolingComponentAdapter).lastCA();
     }
 
     public void testRES_lifecycleManagerHonorsInstantiationSequence() {
@@ -314,7 +314,7 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
                 final StringBuffer buffer = new StringBuffer();
                 final MutablePicoContainer picoContainer = new DefaultPicoContainer(
                         createDefaultComponentAdapterFactory());
-                picoContainer.registerComponent(buffer);
+                picoContainer.component(buffer);
                 final ComponentAdapter componentAdapter = prepRES_lifecycleManagerHonorsInstantiationSequence(picoContainer);
                 assertSame(getComponentAdapterType(), componentAdapter.getClass());
                 assertEquals(0, buffer.length());

@@ -17,7 +17,7 @@ public class Issue0265TestCase extends MockObjectTestCase {
         Mock mockMonitor1 = mock(ComponentMonitor.class, "Monitor1");
         Mock mockMonitor2 = mock(ComponentMonitor.class, "Monitor2");
         DefaultPicoContainer pico = new DefaultPicoContainer((ComponentMonitor) mockMonitor1.proxy());
-        pico.registerComponent(DefaultPicoContainerTestCase.MyStartable.class);
+        pico.component(DefaultPicoContainerTestCase.MyStartable.class);
         mockMonitor1.expects(once()).method("instantiating");
         mockMonitor1.expects(once()).method("instantiated");
         mockMonitor1.expects(once()).method("invoking").with(eq(start), ANYTHING);

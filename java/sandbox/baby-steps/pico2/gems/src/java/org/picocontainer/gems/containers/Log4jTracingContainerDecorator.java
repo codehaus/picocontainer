@@ -340,14 +340,14 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * 
 	 * @param componentAdapter
 	 * @return
-	 * @see org.picocontainer.MutablePicoContainer#registerComponent(org.picocontainer.ComponentAdapter)
+	 * @see org.picocontainer.MutablePicoContainer#adapter(org.picocontainer.ComponentAdapter)
 	 */
-	public MutablePicoContainer registerComponent(final ComponentAdapter componentAdapter) {
+	public MutablePicoContainer adapter(final ComponentAdapter componentAdapter) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Registering component adapter " + componentAdapter);
 		}
 
-		return delegate.registerComponent(componentAdapter);
+		return delegate.adapter(componentAdapter);
 	}
 
 	/**
@@ -355,14 +355,14 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * 
 	 * @param componentImplementation
 	 * @return
-	 * @see org.picocontainer.MutablePicoContainer#registerComponent(java.lang.Class)
+	 * @see org.picocontainer.MutablePicoContainer#component(java.lang.Class)
 	 */
-	public MutablePicoContainer registerComponent(final Class componentImplementation) {
+	public MutablePicoContainer component(final Class componentImplementation) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Registering component implementation " + componentImplementation.getName());
 		}
 
-		return delegate.registerComponent(componentImplementation);
+		return delegate.component(componentImplementation);
 	}
 
 	/**
@@ -373,7 +373,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * @param parameters
 	 * @return
 	 */
-	public MutablePicoContainer registerComponent(final Object componentKey,
+	public MutablePicoContainer component(final Object componentKey,
 			final Object componentImplementationOrInstance, final Parameter... parameters) {
 
 		if (logger.isDebugEnabled()) {
@@ -385,7 +385,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
                       : componentKey.getClass()) + " using parameters " + parameters);
 		}
 
-		return delegate.registerComponent(componentKey, componentImplementationOrInstance, parameters);
+		return delegate.component(componentKey, componentImplementationOrInstance, parameters);
 	}
 
 	/**
@@ -393,15 +393,15 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * 
 	 * @param componentInstance
 	 * @return
-	 * @see org.picocontainer.MutablePicoContainer#registerComponent(java.lang.Object)
+	 * @see org.picocontainer.MutablePicoContainer#component(java.lang.Object)
 	 */
-	public MutablePicoContainer registerComponent(final Object componentInstance) {
+	public MutablePicoContainer component(final Object componentInstance) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Registering component instance " + componentInstance + "(class: "
 					+ ((componentInstance != null) ? componentInstance.getClass().getName() : " null "));
 		}
 
-		return delegate.registerComponent(componentInstance);
+		return delegate.component(componentInstance);
 	}
 
 	/**

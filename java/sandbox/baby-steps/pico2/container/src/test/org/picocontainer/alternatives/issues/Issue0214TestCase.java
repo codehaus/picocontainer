@@ -11,7 +11,7 @@ public class Issue0214TestCase extends TestCase {
     // This bug as described in the bug report, http://jira.codehaus.org/browse/PICO-214, cannot be reproduced.
     public void testTheBug() {
         final MutablePicoContainer pico = new ImplementationHidingPicoContainer();
-        pico.registerComponent(A.class);
+        pico.component(A.class);
 
         /* This is a workaround for the bug described further down. Normally
          * this method call should only be needed if specific requirements for
@@ -20,9 +20,9 @@ public class Issue0214TestCase extends TestCase {
          * this is currently the only way to register a class/interface such
          * that the automatic resolution works.
          */
-        pico.registerComponent(I1.class, B.class, null);
+        pico.component(I1.class, B.class, null);
 
-        /* The following registerComponent(Object, Class) of
+        /* The following adapter(Object, Class) of
          * ImplementationHidingPicoContainer is buggy, as it contains
          * "ComponentAdapter delegate = caf.createComponentAdapter(componentKey,
          * componentImplementation, new Parameter[0]);". Instead of "new
@@ -30,7 +30,7 @@ public class Issue0214TestCase extends TestCase {
          * DefaultPicoContainer, i.e. if PicoContainer shall resolve
          * dependencies itself.
          */
-        pico.registerComponent(I2.class, C.class);
+        pico.component(I2.class, C.class);
 
         /* The following verify() throws the exception, but is expected not to
          * throw: "org.picocontainer.PicoVerificationException:

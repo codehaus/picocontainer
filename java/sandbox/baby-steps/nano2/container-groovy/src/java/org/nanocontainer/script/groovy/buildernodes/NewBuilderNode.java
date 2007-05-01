@@ -62,11 +62,11 @@ public class NewBuilderNode extends AbstractBuilderNode {
 
         NanoContainer factory = new DefaultNanoContainer();
         MutablePicoContainer parentPico = ((NanoContainer) current);
-        factory.registerComponent(MutablePicoContainer.class, parentPico);
+        factory.component(MutablePicoContainer.class, parentPico);
         if (builderClass instanceof String) {
-            factory.registerComponent(GroovyObject.class, new ClassName((String) builderClass));
+            factory.component(GroovyObject.class, new ClassName((String) builderClass));
         } else {
-            factory.registerComponent(GroovyObject.class, (Class) builderClass);
+            factory.component(GroovyObject.class, (Class) builderClass);
         }
         return factory.getComponent(GroovyObject.class);
     }

@@ -623,9 +623,9 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             }
             final MutablePicoContainer instantiatingPicoContainer = new DefaultPicoContainer(
                     new ConstructorInjectionComponentAdapterFactory());
-            instantiatingPicoContainer.registerComponent(
+            instantiatingPicoContainer.component(
                     "decorator", decoratingComponentAdapterClass, parameters);
-            mutablePicoContainer.registerComponent((ComponentAdapter)instantiatingPicoContainer
+            mutablePicoContainer.adapter((ComponentAdapter)instantiatingPicoContainer
                     .getComponent("decorator"));
         }
         return mutablePicoContainer;

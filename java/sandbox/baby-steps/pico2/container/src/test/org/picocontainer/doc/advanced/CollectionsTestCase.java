@@ -53,9 +53,9 @@ public class CollectionsTestCase
 
         //      START SNIPPET: usage
 
-        pico.registerComponent(Shark.class);
-        pico.registerComponent(Cod.class);
-        pico.registerComponent(Bowl.class, Bowl.class, new Parameter[]{
+        pico.component(Shark.class);
+        pico.component(Cod.class);
+        pico.component(Bowl.class, Bowl.class, new Parameter[]{
                 new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false)});
         //      END SNIPPET: usage
 
@@ -78,11 +78,11 @@ public class CollectionsTestCase
         //      START SNIPPET: directUsage
 
         final Set set = new HashSet();
-        pico.registerComponent(Shark.class);
-        pico.registerComponent(Cod.class);
-        pico.registerComponent(Bowl.class, Bowl.class, new Parameter[]{
+        pico.component(Shark.class);
+        pico.component(Cod.class);
+        pico.component(Bowl.class, Bowl.class, new Parameter[]{
                 new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false)});
-        pico.registerComponent(set);
+        pico.component(set);
 
         Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
         //      END SNIPPET: directUsage
@@ -108,12 +108,12 @@ public class CollectionsTestCase
 
         //      START SNIPPET: ensureCollection
 
-        pico.registerComponent(Shark.class);
-        pico.registerComponent(Cod.class);
-        pico.registerComponent(Bowl.class, Bowl.class, new Parameter[]{
+        pico.component(Shark.class);
+        pico.component(Cod.class);
+        pico.component(Bowl.class, Bowl.class, new Parameter[]{
                 new CollectionComponentParameter(Fish.class, false), new CollectionComponentParameter(Cod.class, false)});
         // This component will match both arguments of Bowl's constructor
-        pico.registerComponent(new LinkedList());
+        pico.component(new LinkedList());
 
         Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
         //      END SNIPPET: ensureCollection
@@ -135,7 +135,7 @@ public class CollectionsTestCase
 
         //      START SNIPPET: emptyCollection
 
-        pico.registerComponent(Bowl.class, Bowl.class, new Parameter[]{
+        pico.component(Bowl.class, Bowl.class, new Parameter[]{
                 new ComponentParameter(Fish.class, true), new ComponentParameter(Cod.class, true)});
 
         Bowl bowl = (Bowl) pico.getComponent(Bowl.class);

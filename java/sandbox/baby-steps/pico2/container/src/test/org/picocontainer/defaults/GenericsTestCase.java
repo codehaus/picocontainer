@@ -27,9 +27,9 @@ public class GenericsTestCase extends TestCase {
         shark = new Shark();
         cod = new Cod();
 
-        pico.registerComponent("shark", shark);
-        pico.registerComponent(cod);
-        pico.registerComponent(Bowl.class);
+        pico.adapter("shark", shark);
+        pico.adapter(cod);
+        pico.adapter(Bowl.class);
 
         bowl = (Bowl) pico.getComponent(Bowl.class);
     }
@@ -102,7 +102,7 @@ public class GenericsTestCase extends TestCase {
     }
 
     public void testShouldNotInstantiateCollectionForUngenericCollectionParameters() {
-        pico.registerComponent(UngenericCollectionBowl.class);
+        pico.adapter(UngenericCollectionBowl.class);
         try {
             pico.getComponent(UngenericCollectionBowl.class);
             fail();
@@ -117,7 +117,7 @@ public class GenericsTestCase extends TestCase {
     }
 
     public void testShouldNotInstantiateMapForUngenericMapParameters() {
-        pico.registerComponent(UngenericMapBowl.class);
+        pico.adapter(UngenericMapBowl.class);
         try {
             pico.getComponent(UngenericMapBowl.class);
             fail();
@@ -139,7 +139,7 @@ public class GenericsTestCase extends TestCase {
     }
 
     public void testShouldInstantiateAmptyCollectionForAnotherGenericCollection() {
-        pico.registerComponent(AnotherGenericCollectionBowl.class);
+        pico.adapter(AnotherGenericCollectionBowl.class);
         AnotherGenericCollectionBowl anotherGenericCollectionBowl = (AnotherGenericCollectionBowl) pico.getComponent(AnotherGenericCollectionBowl.class);
         assertEquals(0, anotherGenericCollectionBowl.getStrings().size());
     }

@@ -161,22 +161,22 @@ public abstract class AbstractNanoContainer extends AbstractDelegatingMutablePic
         return classPathElement;
     }
 
-    public MutablePicoContainer registerComponent(Object componentImplementationOrInstance) {
+    public MutablePicoContainer component(Object componentImplementationOrInstance) {
         if(componentImplementationOrInstance instanceof ClassName) {
             String className = ((ClassName) componentImplementationOrInstance).className;
-            return super.registerComponent(loadClass(className));
+            return super.component(loadClass(className));
         }
-        return super.registerComponent(componentImplementationOrInstance);
+        return super.component(componentImplementationOrInstance);
     }
 
-    public MutablePicoContainer registerComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters) {
+    public MutablePicoContainer component(Object key, Object componentImplementationOrInstance, Parameter... parameters) {
         if (key instanceof ClassName) {
             key = loadClass(((ClassName) key).getClassName());
         }
         if (componentImplementationOrInstance instanceof ClassName) {
             componentImplementationOrInstance = loadClass(((ClassName) componentImplementationOrInstance).getClassName());
         }
-        return super.registerComponent(key,componentImplementationOrInstance, parameters);
+        return super.component(key,componentImplementationOrInstance, parameters);
     }
 
     public ClassLoader getComponentClassLoader() {

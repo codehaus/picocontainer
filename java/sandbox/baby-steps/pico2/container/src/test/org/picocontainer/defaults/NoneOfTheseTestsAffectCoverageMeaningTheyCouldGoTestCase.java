@@ -32,7 +32,7 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         assertNull(pico.getComponentAdapter(Touchable.class));
-        pico.registerComponent(SimpleTouchable.class);
+        pico.component(SimpleTouchable.class);
         assertNotNull(pico.getComponentAdapter(SimpleTouchable.class));
         assertNotNull(pico.getComponentAdapter(Touchable.class));
     }
@@ -44,10 +44,10 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
         SimpleTouchable Touchable1 = new SimpleTouchable();
         SimpleTouchable Touchable2 = new SimpleTouchable();
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent("Touchable1", Touchable1);
-        pico.registerComponent("Touchable2", Touchable2);
-        pico.registerComponent("fred1", DependsOnTouchable.class, new Parameter[]{new ComponentParameter("Touchable1")});
-        pico.registerComponent("fred2", DependsOnTouchable.class, new Parameter[]{new ComponentParameter("Touchable2")});
+        pico.component("Touchable1", Touchable1);
+        pico.component("Touchable2", Touchable2);
+        pico.component("fred1", DependsOnTouchable.class, new Parameter[]{new ComponentParameter("Touchable1")});
+        pico.component("fred2", DependsOnTouchable.class, new Parameter[]{new ComponentParameter("Touchable2")});
 
         DependsOnTouchable fred1 = (DependsOnTouchable) pico.getComponent("fred1");
         DependsOnTouchable fred2 = (DependsOnTouchable) pico.getComponent("fred2");
@@ -64,8 +64,8 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
         Webster one = new Webster(new ArrayList());
         Touchable two = new SimpleTouchable();
 
-        pico.registerComponent("one", one);
-        pico.registerComponent("two", two);
+        pico.component("one", one);
+        pico.component("two", two);
 
         assertEquals("Wrong number of comps in the internals", 2, pico.getComponents().size());
 
@@ -81,9 +81,9 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
     public void testRegistrationByNameAndClassWithResolving() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
-        pico.registerComponent(List.class, new ArrayList());
-        pico.registerComponent("one", Webster.class);
-        pico.registerComponent("two", SimpleTouchable.class);
+        pico.component(List.class, new ArrayList());
+        pico.component("one", Webster.class);
+        pico.component("two", SimpleTouchable.class);
 
         assertEquals("Wrong number of comps in the internals", 3, pico.getComponents().size());
 
@@ -96,9 +96,9 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
     public void testDuplicateRegistrationWithTypeAndObject() throws PicoRegistrationException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
-        pico.registerComponent(SimpleTouchable.class);
+        pico.component(SimpleTouchable.class);
         try {
-            pico.registerComponent(SimpleTouchable.class, new SimpleTouchable());
+            pico.component(SimpleTouchable.class, new SimpleTouchable());
             fail("Should have barfed with dupe registration");
         } catch (DuplicateComponentKeyRegistrationException e) {
             // expected
@@ -112,7 +112,7 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {
-            pico.registerComponent(List.class, SimpleTouchable.class);
+            pico.component(List.class, SimpleTouchable.class);
         } catch (AssignabilityRegistrationException e) {
             // not worded in message
             assertTrue(e.getMessage().indexOf(List.class.getName()) > 0);
@@ -158,7 +158,7 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
 
     public void testParameterCanBePassedToConstructor() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(Animal.class,
+        pico.component(Animal.class,
                 Dino.class,
                 new Parameter[]{
                     new ConstantParameter("bones")
@@ -171,7 +171,7 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
 
     public void testParameterCanBePrimitive() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(Animal.class, Dino2.class, new Parameter[]{new ConstantParameter(new Integer(22))});
+        pico.component(Animal.class, Dino2.class, new Parameter[]{new ConstantParameter(new Integer(22))});
 
         Animal animal = (Animal) pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
@@ -180,7 +180,7 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
 
     public void testMultipleParametersCanBePassed() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(Animal.class, Dino3.class, new Parameter[]{
+        pico.component(Animal.class, Dino3.class, new Parameter[]{
             new ConstantParameter("a"),
             new ConstantParameter("b")
         });
@@ -193,8 +193,8 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
 
     public void testParametersCanBeMixedWithComponentsCanBePassed() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(Touchable.class, SimpleTouchable.class);
-        pico.registerComponent(Animal.class, Dino4.class, new Parameter[]{
+        pico.component(Touchable.class, SimpleTouchable.class);
+        pico.component(Animal.class, Dino4.class, new Parameter[]{
             new ConstantParameter("a"),
             new ConstantParameter(new Integer(3)),
             new ConstantParameter("b"),

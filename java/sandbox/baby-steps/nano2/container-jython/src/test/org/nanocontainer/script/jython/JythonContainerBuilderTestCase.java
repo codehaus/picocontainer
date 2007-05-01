@@ -30,8 +30,8 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
     public void testSimpleConfigurationIsPossible() {
         Reader script = new StringReader("from org.nanocontainer.testmodel import *\n" +
                 "pico = DefaultNanoContainer()\n" +
-                "pico.registerComponent(WebServerImpl)\n" +
-                "pico.registerComponent(DefaultWebServerConfig)\n");
+                "pico.adapter(WebServerImpl)\n" +
+                "pico.adapter(DefaultWebServerConfig)\n");
 
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertNotNull(pico.getComponent(WebServer.class));
@@ -42,9 +42,9 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
             Reader script = new StringReader("" +
                     "from org.nanocontainer.testmodel import *\n" +
                     "pico = DefaultNanoContainer()\n" +
-                    "pico.registerComponent(WebServerImpl)\n" +
+                    "pico.adapter(WebServerImpl)\n" +
                     "childContainer = DefaultNanoContainer(pico)\n" +
-                    "childContainer.registerComponent(DefaultWebServerConfig)\n");
+                    "childContainer.adapter(DefaultWebServerConfig)\n");
             PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
             pico.getComponent(WebServer.class);
             fail();
@@ -56,9 +56,9 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
         Reader script = new StringReader("" +
                 "from org.nanocontainer.testmodel import *\n" +
                 "pico = DefaultNanoContainer()\n" +
-                "pico.registerComponent(DefaultWebServerConfig)\n" +
+                "pico.adapter(DefaultWebServerConfig)\n" +
                 "child = pico.makeChildContainer()\n" +
-                "child.registerComponent(WebServerImpl)\n" +
+                "child.adapter(WebServerImpl)\n" +
                 "pico.registerComponentInstance('wayOfPassingSomethingToTestEnv', child.getComponentInstance(WebServerImpl))");
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         WebServerImpl wsi = (WebServerImpl) pico.getComponent("wayOfPassingSomethingToTestEnv");

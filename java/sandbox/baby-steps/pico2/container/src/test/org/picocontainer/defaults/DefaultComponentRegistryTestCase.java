@@ -28,20 +28,20 @@ public class DefaultComponentRegistryTestCase extends TestCase {
 
     public void testRegisterComponent() throws PicoRegistrationException {
         ComponentAdapter componentAdapter = createComponentAdapter();
-        picoContainer.registerComponent(componentAdapter);
+        picoContainer.adapter(componentAdapter);
         assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
 
     public void testUnregisterComponent() throws PicoRegistrationException {
         ComponentAdapter componentAdapter = createComponentAdapter();
-        picoContainer.registerComponent(componentAdapter);
+        picoContainer.adapter(componentAdapter);
         picoContainer.unregisterComponent(Touchable.class);
         assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
 
     public void testCannotInstantiateAnUnregisteredComponent() throws PicoRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoInvocationTargetInitializationException, PicoInitializationException {
         ComponentAdapter componentAdapter = createComponentAdapter();
-        picoContainer.registerComponent(componentAdapter);
+        picoContainer.adapter(componentAdapter);
         picoContainer.getComponents();
         picoContainer.unregisterComponent(Touchable.class);
 
@@ -50,11 +50,11 @@ public class DefaultComponentRegistryTestCase extends TestCase {
 
     public void testCanInstantiateReplacedComponent() throws PicoRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoInvocationTargetInitializationException, PicoInitializationException {
         ComponentAdapter componentAdapter = createComponentAdapter();
-        picoContainer.registerComponent(componentAdapter);
+        picoContainer.adapter(componentAdapter);
         picoContainer.getComponents();
         picoContainer.unregisterComponent(Touchable.class);
 
-        picoContainer.registerComponent(Touchable.class, AlternativeTouchable.class);
+        picoContainer.component(Touchable.class, AlternativeTouchable.class);
 
         assertEquals("Container should container 1 component",
                 1, picoContainer.getComponents().size());
@@ -62,7 +62,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
 
     public void testUnregisterAfterInstantiateComponents() throws PicoRegistrationException, AssignabilityRegistrationException, PicoInitializationException, DuplicateComponentKeyRegistrationException, PicoInvocationTargetInitializationException, AmbiguousComponentResolutionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
-        picoContainer.registerComponent(componentAdapter);
+        picoContainer.adapter(componentAdapter);
         picoContainer.getComponents();
         picoContainer.unregisterComponent(Touchable.class);
         assertNull(picoContainer.getComponent(Touchable.class));
@@ -70,11 +70,11 @@ public class DefaultComponentRegistryTestCase extends TestCase {
 
     public void testReplacedInstantiatedComponentHasCorrectClass() throws PicoRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoInvocationTargetInitializationException, PicoInitializationException {
         ComponentAdapter componentAdapter = createComponentAdapter();
-        picoContainer.registerComponent(componentAdapter);
+        picoContainer.adapter(componentAdapter);
         picoContainer.getComponents();
         picoContainer.unregisterComponent(Touchable.class);
 
-        picoContainer.registerComponent(Touchable.class, AlternativeTouchable.class);
+        picoContainer.component(Touchable.class, AlternativeTouchable.class);
         Object component = picoContainer.getComponents().iterator().next();
 
         assertEquals(AlternativeTouchable.class, component.getClass());

@@ -265,7 +265,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * This method can be used to override the ComponentAdapter created by the {@link ComponentAdapterFactory}
      * passed to the constructor of this container.
      */
-    public MutablePicoContainer registerComponent(ComponentAdapter componentAdapter) {
+    public MutablePicoContainer adapter(ComponentAdapter componentAdapter) {
         Object componentKey = componentAdapter.getComponentKey();
         if (componentKeyToAdapterCache.containsKey(componentKey)) {
             throw new DuplicateComponentKeyRegistrationException(componentKey);
@@ -286,8 +286,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * {@inheritDoc}
      * The returned ComponentAdapter will be an {@link org.picocontainer.componentadapters.InstanceComponentAdapter}.
      */
-    public MutablePicoContainer registerComponent(Object component) {
-        return registerComponent(component.getClass(), component);
+    public MutablePicoContainer component(Object component) {
+        return component(component.getClass(), component);
     }
 
     /**
@@ -295,8 +295,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
      * passed to the container's constructor.
      */
-    public MutablePicoContainer registerComponent(Class componentImplementation) {
-        return registerComponent(componentImplementation, componentImplementation);
+    public MutablePicoContainer component(Class componentImplementation) {
+        return component(componentImplementation, componentImplementation);
     }
 
     /**
@@ -304,17 +304,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
      * passed to the container's constructor.
      */
-    public MutablePicoContainer registerComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) {
+    public MutablePicoContainer component(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) {
         if (parameters != null && parameters.length == 0 && parameters != Parameter.ZERO) {
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
         if (componentImplementationOrInstance instanceof Class) {
             ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentKey,
                     (Class) componentImplementationOrInstance, parameters);
-            return registerComponent(componentAdapter);
+            return adapter(componentAdapter);
         } else {
             ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentImplementationOrInstance, lifecycleStrategyForInstanceRegistrations);
-            return registerComponent(componentAdapter);
+            return adapter(componentAdapter);
         }
     }
 

@@ -20,7 +20,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoContainer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
@@ -161,12 +160,12 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             populateContainer(nested, rootElement);
 
             if (key != null) {
-                container.registerComponent((ComponentAdapter) nested.getComponent(key));
+                container.adapter((ComponentAdapter) nested.getComponent(key));
             } else if (klass != null) {
                 Class clazz = getClassLoader().loadClass(klass);
-                container.registerComponent((ComponentAdapter) nested.getComponent(clazz));
+                container.adapter((ComponentAdapter) nested.getComponent(clazz));
             } else {
-                container.registerComponent((ComponentAdapter) nested.getComponent(ComponentAdapter.class));
+                container.adapter((ComponentAdapter) nested.getComponent(ComponentAdapter.class));
             }
         } catch (ClassNotFoundException ex) {
             throw new NanoContainerMarkupException(ex);
@@ -237,18 +236,18 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             }
             if (key == null || "".equals(key)) {
                 // without  key. clazz is our key
-                container.registerComponent(clazz, clazz, parameterArray);
+                container.component(clazz, clazz, parameterArray);
             } else {
                 // with key
-                container.registerComponent(key, clazz, parameterArray);
+                container.component(key, clazz, parameterArray);
             }
         } else {
             if (key == null || "".equals(key)) {
                 // without  key. clazz is our key
-                container.registerComponent(clazz, clazz);
+                container.component(clazz, clazz);
             } else {
                 // with key
-                container.registerComponent(key, clazz);
+                container.component(key, clazz);
             }
 
         }
@@ -268,10 +267,10 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         }
         if (key != null && !"".equals(key)) {
             // insert with key
-            container.registerComponent(key, result);
+            container.component(key, result);
         } else {
             // or without
-            container.registerComponent(result);
+            container.component(result);
         }
     }
 

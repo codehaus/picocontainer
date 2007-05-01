@@ -29,7 +29,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
     public void testComponentRegisteredWithInterfaceKeyOnlyImplementsThatInterfaceUsingStandardProxyfactory() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory(
                 new ConstructorInjectionComponentAdapterFactory()));
-        pico.registerComponent(Collection.class, ArrayList.class);
+        pico.component(Collection.class, ArrayList.class);
         Object collection = pico.getComponent(Collection.class);
         assertTrue(collection instanceof Collection);
         assertFalse(collection instanceof List);
@@ -39,7 +39,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
     public void testComponentRegisteredWithOtherKeyImplementsAllInterfacesUsingStandardProxyFactory() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory(
                 new ConstructorInjectionComponentAdapterFactory()));
-        pico.registerComponent("list", ArrayList.class);
+        pico.component("list", ArrayList.class);
         Object collection = pico.getComponent("list");
         assertTrue(collection instanceof List);
         assertFalse(collection instanceof ArrayList);
@@ -48,7 +48,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
     public void testComponentRegisteredWithInterfaceKeyOnlyImplementsThatInterfaceUsingCGLIBProxyfactory() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory(
                 new ConstructorInjectionComponentAdapterFactory(), new CglibProxyFactory()));
-        pico.registerComponent(Collection.class, ArrayList.class);
+        pico.component(Collection.class, ArrayList.class);
         Object collection = pico.getComponent(Collection.class);
         assertTrue(collection instanceof Collection);
         assertFalse(collection instanceof List);
@@ -58,7 +58,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
     public void testComponentRegisteredWithOtherKeyImplementsAllInterfacesUsingCGLIBProxyFactory() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory(
                 new ConstructorInjectionComponentAdapterFactory(), new CglibProxyFactory()));
-        pico.registerComponent("list", ArrayList.class);
+        pico.component("list", ArrayList.class);
         Object collection = pico.getComponent("list");
         assertTrue(collection instanceof Collection);
         assertTrue(collection instanceof List);
@@ -128,8 +128,8 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
         CachingComponentAdapter husbandAdapter = (CachingComponentAdapter)caf
                 .createComponentAdapter("husband", Husband.class, (Parameter[])null);
 
-        pico.registerComponent(wifeAdapter);
-        pico.registerComponent(husbandAdapter);
+        pico.adapter(wifeAdapter);
+        pico.adapter(husbandAdapter);
 
         Woman wife = (Woman)wifeAdapter.getComponentInstance(pico);
         Man wifesMan = wife.getMan();
@@ -160,7 +160,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
     public void testTheThingThatPaulDoesNotLikeAboutTheCurrentHotSwapper() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory());
 
-        HotSwappingComponentAdapter ca = (HotSwappingComponentAdapter) pico.registerComponent(List.class, ArrayList.class).lastCA();
+        HotSwappingComponentAdapter ca = (HotSwappingComponentAdapter) pico.component(List.class, ArrayList.class).lastCA();
 
         List list = (List) pico.getComponent(List.class);
 
@@ -169,7 +169,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
         List list2 = (List) ((Swappable) list).hotswap(new ArrayList());
 
         MutablePicoContainer child = pico.makeChildContainer();
-        child.registerComponent(ExposesListMember.class, ExposesListMemberImpl.class);
+        child.component(ExposesListMember.class, ExposesListMemberImpl.class);
         Object componentInstance = child.getComponent(ExposesListMember.class);
         ExposesListMember exposer = (ExposesListMember) componentInstance;
 
@@ -202,8 +202,8 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
         MutablePicoContainer pico = new DefaultPicoContainer(createComponentAdapterFactory());
 
         // Register two classes with mutual dependencies in the constructor (!!!)
-        pico.registerComponent(Wife.class);
-        pico.registerComponent(Husband.class);
+        pico.component(Wife.class);
+        pico.component(Husband.class);
 
         Woman wife = (Woman)pico.getComponent(Wife.class);
         Man man = (Man)pico.getComponent(Husband.class);
@@ -224,7 +224,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
     public void testBigamy() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory(
                 new ConstructorInjectionComponentAdapterFactory()));
-        pico.registerComponent(Woman.class, Wife.class);
+        pico.component(Woman.class, Wife.class);
         Woman firstWife = (Woman)pico.getComponent(Woman.class);
         Woman secondWife = (Woman)pico.getComponent(Woman.class);
         assertNotSame(firstWife, secondWife);
@@ -240,7 +240,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
     public void testIHCAFwithCTORandNoCaching() {
         // http://lists.codehaus.org/pipermail/picocontainer-dev/2004-January/001985.html
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(new HotSwappingComponentAdapter(new ConstructorInjectionComponentAdapter("l", ArrayList.class)));
+        pico.adapter(new HotSwappingComponentAdapter(new ConstructorInjectionComponentAdapter("l", ArrayList.class)));
 
         List list1 = (List)pico.getComponent("l");
         List list2 = (List)pico.getComponent("l");
@@ -255,7 +255,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
 
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(new HotSwappingComponentAdapter(new ConstructorInjectionComponentAdapter("l", ArrayList.class)));
+        pico.adapter(new HotSwappingComponentAdapter(new ConstructorInjectionComponentAdapter("l", ArrayList.class)));
         List l = (List)pico.getComponent("l");
         l.add("Hello");
         final ArrayList newList = new ArrayList();
@@ -278,7 +278,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
 
     public void testInterferingSwapMethodsInComponentMasksHotSwappingFunctionality() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(new HotSwappingComponentAdapter(new ConstructorInjectionComponentAdapter(
+        pico.adapter(new HotSwappingComponentAdapter(new ConstructorInjectionComponentAdapter(
                 "os", OtherSwappableImpl.class)));
         OtherSwappable os = (OtherSwappable)pico.getComponent("os");
         OtherSwappable os2 = new OtherSwappableImpl();
@@ -321,8 +321,8 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
         MutablePicoContainer pico = new DefaultPicoContainer(new CachingComponentAdapterFactory(
                 new HotSwappingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory(), new CglibProxyFactory())));
 
-        pico.registerComponent(Yin.class);
-        pico.registerComponent(Yang.class);
+        pico.component(Yin.class);
+        pico.component(Yang.class);
 
         Yin yin = (Yin)pico.getComponent(Yin.class);
         Yang yang = (Yang)pico.getComponent(Yang.class);

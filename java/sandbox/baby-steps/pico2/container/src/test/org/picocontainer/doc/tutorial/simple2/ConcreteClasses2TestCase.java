@@ -11,8 +11,8 @@ public class ConcreteClasses2TestCase extends TestCase {
     public void testAssembleComponentsAndInstantiateAndUseThem() {
         // START SNIPPET: assemble
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(Kissable.class, Boy.class);
-        pico.registerComponent(Girl.class);
+        pico.component(Kissable.class, Boy.class);
+        pico.component(Girl.class);
         // END SNIPPET: assemble
 
     }

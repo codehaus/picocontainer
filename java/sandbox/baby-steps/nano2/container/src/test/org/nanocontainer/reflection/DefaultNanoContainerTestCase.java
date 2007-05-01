@@ -30,9 +30,9 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
     public void testNamedChildContainerIsAccessible()  {
         StringBuffer sb = new StringBuffer();
         final NanoContainer parent = (NanoContainer) createPicoContainer(null);
-        parent.registerComponent(sb);
+        parent.component(sb);
         final NanoContainer child = (NanoContainer) parent.makeChildContainer("foo");
-        child.registerComponent(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
+        child.component(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
         LifeCycleMonitoring o = (LifeCycleMonitoring) parent.getComponent((Object)("foo/*" + LifeCycleMonitoring.class.getName()));
         assertNotNull(o);
     }
@@ -41,9 +41,9 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
     public void testNamedChildContainerIsAccessibleForStringKeys() {
         StringBuffer sb = new StringBuffer();
         final NanoContainer parent = (NanoContainer) createPicoContainer(null);
-        parent.registerComponent(sb);
+        parent.component(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
-        child.registerComponent("lcm",LifeCycleMonitoring.class);
+        child.component("lcm",LifeCycleMonitoring.class);
         Object o = parent.getComponent((Object)"foo/lcm");
         assertNotNull(o);
         assertTrue(sb.toString().indexOf("-instantiated") != -1);
@@ -53,9 +53,9 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
     public void testNamedChildContainerIsAccessibleForClassKeys() {
         StringBuffer sb = new StringBuffer();
         final NanoContainer parent = (NanoContainer) createPicoContainer(null);
-        parent.registerComponent(sb);
+        parent.component(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
-        child.registerComponent(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
+        child.component(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
         Object o = parent.getComponent((Object)("foo/*" + LifeCycleMonitoring.class.getName()));
         assertNotNull(o);
         assertTrue(sb.toString().indexOf("-instantiated") != -1);
@@ -63,7 +63,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
 
     public void testMakeRemoveChildContainer() {
         final NanoContainer parent = (NanoContainer) createPicoContainer(null);
-        parent.registerComponent("java.lang.String", (Object)"This is a test");
+        parent.component("java.lang.String", (Object)"This is a test");
         MutablePicoContainer pico = parent.makeChildContainer();
         // Verify they are indeed wired together.
         assertNotNull(pico.getComponent("java.lang.String"));

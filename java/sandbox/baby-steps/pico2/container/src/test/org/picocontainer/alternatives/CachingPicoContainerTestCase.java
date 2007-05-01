@@ -37,7 +37,7 @@ public class CachingPicoContainerTestCase extends AbstractPicoContainerTestCase 
         // Jira bug 212 - logical opposite
         MutablePicoContainer parent = new DefaultPicoContainer();
         CachingPicoContainer pico = new CachingPicoContainer(new ConstructorInjectionComponentAdapterFactory(), parent);
-        pico.registerComponent(List.class, ArrayList.class);
+        pico.component(List.class, ArrayList.class);
         List list1 = (List) pico.getComponent(List.class);
         List list2 = (List) pico.getComponent(List.class);
         assertNotNull(list1);
@@ -49,7 +49,7 @@ public class CachingPicoContainerTestCase extends AbstractPicoContainerTestCase 
     public void testComponentAdaptersListsAreNotCached() {
         MutablePicoContainer parent = new DefaultPicoContainer();
         CachingPicoContainer pico = new CachingPicoContainer(new ConstructorInjectionComponentAdapterFactory(), parent);
-        pico.registerComponent(List.class, ArrayList.class);
+        pico.component(List.class, ArrayList.class);
         List list1 = (List) pico.getComponentAdapters(List.class);
         List list2 = (List) pico.getComponentAdapters(List.class);
         assertNotNull(list1);

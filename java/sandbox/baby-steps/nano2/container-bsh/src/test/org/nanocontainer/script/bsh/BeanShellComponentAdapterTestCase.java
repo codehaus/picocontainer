@@ -32,10 +32,10 @@ public class BeanShellComponentAdapterTestCase extends TestCase {
 
     ComponentAdapter setupComponentAdapter(Class implementation) {
         pico = new DefaultPicoContainer();
-        pico.registerComponent("whatever", ArrayList.class);
+        pico.component("whatever", ArrayList.class);
 
         ComponentAdapter adapter = new BeanShellComponentAdapter("thekey", implementation, null);
-        pico.registerComponent(adapter);
+        pico.adapter(adapter);
         return adapter;
     }
 

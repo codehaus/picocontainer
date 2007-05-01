@@ -16,10 +16,10 @@ public class Issue0191TestCase extends TestCase {
     public void testTheBug()
     {
         MutablePicoContainer pico = new DefaultPicoContainer( ) ;
-        pico.registerComponent(Shark.class);
-        pico.registerComponent(Cod.class);
+        pico.component(Shark.class);
+        pico.component(Cod.class);
         try {
-            pico.registerComponent(Bowl.class);
+            pico.component(Bowl.class);
             Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
             fail("Should have barfed here with UnsatisfiableDependenciesException");
             Fish[] fishes = bowl.getFishes( ) ;

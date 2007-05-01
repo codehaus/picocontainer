@@ -64,9 +64,9 @@ public class PicoMap implements Map {
     public Object put(Object o, Object o1) {
         Object object = remove(o);
         if (o1 instanceof Class) {
-            mutablePicoContainer.registerComponent(o, (Class)o1);
+            mutablePicoContainer.component(o, (Class)o1);
         } else {
-            mutablePicoContainer.registerComponent(o, o1);
+            mutablePicoContainer.component(o, o1);
         }
         return object;
     }

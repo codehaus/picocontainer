@@ -82,14 +82,14 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals("foo", pico.getComponent("string"));
     }
 
-    // whoa - wrong registerComponent() being called. 
+    // whoa - wrong adapter() being called.
     public void do_NOT_testBuildingWithPicoSyntax() {
         Reader script = new StringReader(
-                                         "$parent.registerComponent('foo', Java::JavaClass.for_name('java.lang.String'))\n"
+                                         "$parent.adapter('foo', Java::JavaClass.for_name('java.lang.String'))\n"
                                          +
                                          "DefaultPicoContainer = org.picocontainer.defaults.DefaultPicoContainer\n" +
                                          "pico = DefaultPicoContainer.new($parent)\n" +
-                                         "pico.registerComponent(Java::JavaClass.for_name('org.nanocontainer.testmodel.A'))\n"
+                                         "pico.adapter(Java::JavaClass.for_name('org.nanocontainer.testmodel.A'))\n"
                                          +
                                          "pico");
 
@@ -351,7 +351,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     public void testBuildContainerWithParentAttribute() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
-        parent.registerComponent("hello", (Object) "world");
+        parent.component("hello", (Object) "world");
 
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
@@ -366,7 +366,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     public void testBuildContainerWithParentDependencyAndAssemblyScope() throws Exception {
         DefaultNanoContainer parent = new DefaultNanoContainer();
-        parent.registerComponent("a", A.class);
+        parent.component("a", A.class);
 
         String source =
                         "B = org.nanocontainer.testmodel.B\n" +
@@ -423,7 +423,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
-        ComponentAdapter componentAdapter = pico.registerComponent(String.class).lastCA();
+        ComponentAdapter componentAdapter = pico.component(String.class).lastCA();
         assertTrue("ComponentAdapter should be originally defined by parent",
                    componentAdapter instanceof SetterInjectionComponentAdapter);
     }

@@ -220,7 +220,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
     }
 
     public void testSetDependenComponentWillBeSetByTheAdapter() {
-        picoContainer.registerComponent("b", B.class);
+        picoContainer.component("b", B.class);
         BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) createComponentAdapterFactory();
         Map properties = new HashMap();
 
@@ -228,7 +228,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         properties.put("b", "b");
         BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.createComponentAdapter(A.class, A.class, (Parameter[])null);
         adapter.setProperties(properties);
-        picoContainer.registerComponent(adapter);
+        picoContainer.adapter(adapter);
         A a = (A) picoContainer.getComponent(A.class);
 
         assertNotNull(a);
@@ -244,7 +244,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
 
       BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter)factory.createComponentAdapter(SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
       adapter.setProperties(properties);
-      picoContainer.registerComponent(adapter);
+      picoContainer.adapter(adapter);
 
 
       SimpleDateFormat dateFormat = (SimpleDateFormat)picoContainer.getComponent(SimpleDateFormat.class);
@@ -277,7 +277,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         properties.put("multiValues","abcdefg");
         adapter.setProperties(properties);
 
-        picoContainer.registerComponent(adapter);
+        picoContainer.adapter(adapter);
 
         try {
             Object testResult = picoContainer.getComponent("TestBean");
@@ -299,7 +299,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         properties.put("2DigitYearStart", Boolean.FALSE);
         BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter)factory.createComponentAdapter(SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
         adapter.setProperties(properties);
-        picoContainer.registerComponent(adapter);
+        picoContainer.adapter(adapter);
 
 
         try {

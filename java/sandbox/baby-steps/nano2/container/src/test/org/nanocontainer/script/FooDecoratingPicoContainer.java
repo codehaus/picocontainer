@@ -18,9 +18,9 @@ public class FooDecoratingPicoContainer extends AbstractDelegatingMutablePicoCon
         return null;
     }
 
-    public MutablePicoContainer registerComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws PicoRegistrationException {
+    public MutablePicoContainer component(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws PicoRegistrationException {
         Assert.assertEquals(HashMap.class, componentImplementationOrInstance);
-        return super.registerComponent(ArrayList.class, ArrayList.class, parameters);
+        return super.component(ArrayList.class, ArrayList.class, parameters);
     }
 
 }

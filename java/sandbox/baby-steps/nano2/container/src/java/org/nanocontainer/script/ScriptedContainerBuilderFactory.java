@@ -130,7 +130,7 @@ public class ScriptedContainerBuilderFactory {
             if(composition == null) {
                 throw new NullPointerException("composition can't be null");
             }
-            factory.registerComponent(composition);
+            factory.component(composition);
 
             if(classLoader == null) {
                 // on some weird JVMs (like jeode) Thread.currentThread().getContextClassLoader() returns null !?!?
@@ -140,7 +140,7 @@ public class ScriptedContainerBuilderFactory {
                 //
                 classLoader = getClass().getClassLoader();
             }
-            factory.registerComponent(classLoader);
+            factory.component(classLoader);
 
             //
             //If we don't specify the classloader here, some of the things that make
@@ -149,7 +149,7 @@ public class ScriptedContainerBuilderFactory {
             //
             defaultNanoContainer = new DefaultNanoContainer(classLoader,factory);
         }
-        ComponentAdapter componentAdapter = defaultNanoContainer.registerComponent(new ClassName(builderClass)).lastCA();
+        ComponentAdapter componentAdapter = defaultNanoContainer.component(new ClassName(builderClass)).lastCA();
         containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultNanoContainer);
     }
 

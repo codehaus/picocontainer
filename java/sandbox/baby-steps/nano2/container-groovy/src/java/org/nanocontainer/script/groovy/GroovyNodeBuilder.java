@@ -120,7 +120,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
                 .setNode(new AppendContainerNode());
         DefaultNanoContainer factory = new DefaultNanoContainer();
         try {
-            factory.registerComponent("wc",  new ClassName("org.nanocontainer.webcontainer.groovy.WebContainerBuilder"));
+            factory.component("wc",  new ClassName("org.nanocontainer.webcontainer.groovy.WebContainerBuilder"));
             setNode((BuilderNode) factory.getComponent("wc"));
         } catch (PicoClassNotFoundException e) {
             //do nothing.

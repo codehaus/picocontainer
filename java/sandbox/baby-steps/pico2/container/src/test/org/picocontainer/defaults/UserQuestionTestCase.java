@@ -69,8 +69,8 @@ public class UserQuestionTestCase extends TestCase {
         Map cheeseMap = new HashMap();
 
         MutablePicoContainer pico = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory());
-        pico.registerComponent(Omelette.class);
-        pico.registerComponent(new CheeseComponentAdapter("scott", Gouda.class, cheeseMap));
+        pico.component(Omelette.class);
+        pico.adapter(new CheeseComponentAdapter("scott", Gouda.class, cheeseMap));
 
         Cheese gouda = new Gouda();
         cheeseMap.put("cheese", gouda);
@@ -134,12 +134,12 @@ public class UserQuestionTestCase extends TestCase {
     public void testMoreWeirdness() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         Map map = new HashMap();
-        pico.registerComponent(map);
+        pico.component(map);
         // See class level javadoc in DefaultPicoContainer - about precedence. 
-        pico.registerComponent(InterfaceX.class, Something.class);
-        pico.registerComponent(Disabled.class);
-        pico.registerComponent(Enabled.class);
-        pico.registerComponent(NeedsInterfaceX.class);
+        pico.component(InterfaceX.class, Something.class);
+        pico.component(Disabled.class);
+        pico.component(Enabled.class);
+        pico.component(NeedsInterfaceX.class);
 
         NeedsInterfaceX needsInterfaceX = (NeedsInterfaceX) pico.getComponent(NeedsInterfaceX.class);
         assertEquals("Disabled", needsInterfaceX.getIt());
@@ -167,8 +167,8 @@ public class UserQuestionTestCase extends TestCase {
     public void testJohnTalOne() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
 
-        picoContainer.registerComponent("ABC", ABCImpl.class);
-        picoContainer.registerComponent("DEF", DEFImpl.class);
+        picoContainer.component("ABC", ABCImpl.class);
+        picoContainer.component("DEF", DEFImpl.class);
 
         assertEquals(ABCImpl.class, picoContainer.getComponent("ABC").getClass());
     }
@@ -208,9 +208,9 @@ public class UserQuestionTestCase extends TestCase {
 
     public void testShouldBeAbleShareSameReferenceForDifferentTypes() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(FooBar.class);
-        pico.registerComponent(NeedsFoo.class);
-        pico.registerComponent(NeedsBar.class);
+        pico.component(FooBar.class);
+        pico.component(NeedsFoo.class);
+        pico.component(NeedsBar.class);
         NeedsFoo needsFoo = (NeedsFoo) pico.getComponent(NeedsFoo.class);
         NeedsBar needsBar = (NeedsBar) pico.getComponent(NeedsBar.class);
         assertSame(needsFoo.getFoo(), needsBar.getBar());
@@ -219,17 +219,17 @@ public class UserQuestionTestCase extends TestCase {
     public void testSeveralDifferentInstancesCanBeCreatedWithOnePreconfiguredContainer() {
         // create a container that doesn't cache instances
         MutablePicoContainer container = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory());
-        container.registerComponent(NeedsBar.class);
+        container.component(NeedsBar.class);
 
         Bar barOne = new FooBar();
-        container.registerComponent(Bar.class, barOne);
+        container.component(Bar.class, barOne);
         NeedsBar needsBarOne = (NeedsBar) container.getComponent(NeedsBar.class);
         assertSame(barOne, needsBarOne.getBar());
 
         // reuse the same container - just flip out the existing foo.
         Bar barTwo = new FooBar();
         container.unregisterComponent(Bar.class);
-        container.registerComponent(Bar.class, barTwo);
+        container.component(Bar.class, barTwo);
         NeedsBar needsBarTwo = (NeedsBar) container.getComponent(NeedsBar.class);
         assertSame(barTwo, needsBarTwo.getBar());
 

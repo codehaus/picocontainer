@@ -164,9 +164,9 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     public final void testInstancesAreNotSharedBetweenContainers() {
         final MutablePicoContainer picoA = new DefaultPicoContainer();
         final MutablePicoContainer picoB = new DefaultPicoContainer();
-        picoA.registerComponent(new ThreadLocalComponentAdapter(new ConstructorInjectionComponentAdapter(
+        picoA.adapter(new ThreadLocalComponentAdapter(new ConstructorInjectionComponentAdapter(
                 List.class, ArrayList.class, null)));
-        picoB.registerComponent(new ThreadLocalComponentAdapter(new ConstructorInjectionComponentAdapter(
+        picoB.adapter(new ThreadLocalComponentAdapter(new ConstructorInjectionComponentAdapter(
                 List.class, ArrayList.class, null)));
         final List hello1 = (List)picoA.getComponent(List.class);
         final List hello2 = (List)picoA.getComponent(List.class);

@@ -19,9 +19,9 @@ public class HierarchyTestCase extends TestCase {
             MutablePicoContainer z = new DefaultPicoContainer( x );
 
             // Assemble components
-            x.registerComponent(Apple.class);
-            y.registerComponent(Juicer.class);
-            z.registerComponent(Peeler.class);
+            x.component(Apple.class);
+            y.component(Juicer.class);
+            z.component(Peeler.class);
 
             // Instantiate components
             Peeler peeler = (Peeler) z.getComponent(Peeler.class);

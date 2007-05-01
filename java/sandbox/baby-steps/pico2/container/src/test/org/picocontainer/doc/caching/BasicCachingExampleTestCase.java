@@ -24,7 +24,7 @@ public class BasicCachingExampleTestCase extends TestCase {
 
         // START SNIPPET: caching
         CachingPicoContainer pico = new CachingPicoContainer();
-        pico.registerComponent(List.class, ArrayList.class);
+        pico.component(List.class, ArrayList.class);
         // other resitrations
 
         Object one = pico.getComponent(List.class);
@@ -39,7 +39,7 @@ public class BasicCachingExampleTestCase extends TestCase {
 
         // START SNIPPET: caching2
         CachingPicoContainer pico = new CachingPicoContainer(new ConstructorInjectionComponentAdapterFactory());
-        pico.registerComponent(List.class, ArrayList.class);
+        pico.component(List.class, ArrayList.class);
         // other resitrations
 
         Object one = pico.getComponent(List.class);
@@ -53,7 +53,7 @@ public class BasicCachingExampleTestCase extends TestCase {
     public void testDefaulCaching() {
         // START SNIPPET: default
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(List.class, ArrayList.class);
+        pico.component(List.class, ArrayList.class);
         // other resitrations
 
         Object one = pico.getComponent(List.class);
@@ -68,7 +68,7 @@ public class BasicCachingExampleTestCase extends TestCase {
         // START SNIPPET: default2
         DefaultPicoContainer pico = new DefaultPicoContainer(
                         new CachingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()));
-        pico.registerComponent(List.class, ArrayList.class);
+        pico.component(List.class, ArrayList.class);
         // other resitrations
 
         Object one = pico.getComponent(List.class);
@@ -83,7 +83,7 @@ public class BasicCachingExampleTestCase extends TestCase {
 
         // START SNIPPET: default-noncaching
         DefaultPicoContainer pico = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory());
-        pico.registerComponent(List.class, ArrayList.class);
+        pico.component(List.class, ArrayList.class);
         // other resitrations
 
         Object one = pico.getComponent(List.class);
@@ -98,7 +98,7 @@ public class BasicCachingExampleTestCase extends TestCase {
 
         // START SNIPPET: implhiding
         ImplementationHidingCachingPicoContainer pico = new ImplementationHidingCachingPicoContainer();
-        pico.registerComponent(List.class, ArrayList.class);
+        pico.component(List.class, ArrayList.class);
         // other resitrations
 
         Object one = pico.getComponent(List.class);
@@ -115,7 +115,7 @@ public class BasicCachingExampleTestCase extends TestCase {
     public void testFlushingOfCache() {
         // START SNIPPET: caching
         CachingPicoContainer pico = new CachingPicoContainer();
-        CachingComponentAdapter cca = (CachingComponentAdapter) pico.registerComponent(List.class, ArrayList.class).lastCA();
+        CachingComponentAdapter cca = (CachingComponentAdapter) pico.component(List.class, ArrayList.class).lastCA();
         // other resitrations
 
         Object one = pico.getComponent(List.class);

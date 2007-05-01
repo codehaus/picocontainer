@@ -21,7 +21,7 @@ public class PicoFilterHolder extends FilterHolder {
 
     public synchronized Object newInstance() throws InstantiationException, IllegalAccessException {
         DefaultPicoContainer child = new DefaultPicoContainer(parentContainer);
-        child.registerComponent(Filter.class, _class);
+        child.component(Filter.class, _class);
         return child.getComponent(Filter.class);
     }
 

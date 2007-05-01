@@ -36,10 +36,10 @@ public class ConstraintsTestCase extends MockObjectTestCase {
         super.setUp();
         
         container = new DefaultPicoContainer();
-        container.registerComponent(SimpleTouchable.class);
-        container.registerComponent(DecoratedTouchable.class);
-        container.registerComponent(AlternativeTouchable.class);
-        container.registerComponent(DependsOnTouchable.class);
+        container.component(SimpleTouchable.class);
+        container.component(DecoratedTouchable.class);
+        container.component(AlternativeTouchable.class);
+        container.component(DependsOnTouchable.class);
     }
 
     public void testIsKeyConstraint() {
@@ -61,9 +61,9 @@ public class ConstraintsTestCase extends MockObjectTestCase {
     }
 
     public void testIsKeyTypeConstraint() {
-        container.registerComponent("Simple", SimpleTouchable.class);
-        container.registerComponent(new Integer(5), SimpleTouchable.class);
-        container.registerComponent(Boolean.TRUE, SimpleTouchable.class);
+        container.component("Simple", SimpleTouchable.class);
+        container.component(new Integer(5), SimpleTouchable.class);
+        container.component(Boolean.TRUE, SimpleTouchable.class);
         Touchable t = (Touchable) container.getComponent(Boolean.TRUE);
         
         Constraint c = new IsKeyType(Boolean.class);

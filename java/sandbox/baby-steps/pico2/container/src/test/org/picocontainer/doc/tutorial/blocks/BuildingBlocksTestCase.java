@@ -27,26 +27,26 @@ public class BuildingBlocksTestCase extends TestCase {
     public void testRegisterConvenient() {
         // START SNIPPET: register-convenient
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        picoContainer.registerComponent(Juicer.class);
-        picoContainer.registerComponent("My Peeler", Peeler.class);
-        picoContainer.registerComponent(new Apple());
+        picoContainer.component(Juicer.class);
+        picoContainer.component("My Peeler", Peeler.class);
+        picoContainer.component(new Apple());
         // END SNIPPET: register-convenient
         // START SNIPPET: register-direct
-        picoContainer.registerComponent(new InstanceComponentAdapter("Another Apple", new Apple()));
+        picoContainer.adapter(new InstanceComponentAdapter("Another Apple", new Apple()));
         // END SNIPPET: register-direct
     }
 
     public void testRegisterEquivalentConvenient() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         // START SNIPPET: register-equivalent-convenient
-        picoContainer.registerComponent(Juicer.class);
+        picoContainer.component(Juicer.class);
         // END SNIPPET: register-equivalent-convenient
     }
 
     public void testRegisterEquivalentAtLength() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         // START SNIPPET: register-equivalent-at-length
-        picoContainer.registerComponent(
+        picoContainer.adapter(
                 new CachingComponentAdapter(
                         new ConstructorInjectionComponentAdapter(Juicer.class, Juicer.class)));
         // END SNIPPET: register-equivalent-at-length
@@ -64,7 +64,7 @@ public class BuildingBlocksTestCase extends TestCase {
     public void testRegisterEquivalentAtLength2() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         // START SNIPPET: register-equivalent-at-length2
-        picoContainer.registerComponent(
+        picoContainer.adapter(
                 new SynchronizedComponentAdapter(
                         new CachingComponentAdapter(
                                 new SetterInjectionComponentAdapter(

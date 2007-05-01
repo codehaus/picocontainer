@@ -23,7 +23,7 @@ public class DependencyInjectionListenerTestCase extends TestCase {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         StringBuffer sb = new StringBuffer();
-        parentContainer.registerComponent(StringBuffer.class, sb);
+        parentContainer.component(StringBuffer.class, sb);
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContextHandler barContext = server.createContext("/bar", false);

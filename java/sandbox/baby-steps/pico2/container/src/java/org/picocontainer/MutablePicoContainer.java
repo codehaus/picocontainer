@@ -56,11 +56,11 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * @see org.picocontainer.defaults.ConstantParameter
      * @see org.picocontainer.defaults.ComponentParameter
      */
-    MutablePicoContainer registerComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters);
+    MutablePicoContainer component(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters);
 
     /**
      * Register a component using the componentImplementation as key. Calling this method is equivalent to calling
-     * <code>registerComponent(componentImplementation, componentImplementation)</code>.
+     * <code>adapter(componentImplementation, componentImplementation)</code>.
      *
      * @param componentImplementation the concrete component class.
      * @return the ComponentAdapter that has been associated with this component. In the majority of cases, this return
@@ -68,11 +68,11 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
      * @throws PicoRegistrationException if registration fails.
      */
-    MutablePicoContainer registerComponent(Class componentImplementation);
+    MutablePicoContainer component(Class componentImplementation);
 
     /**
      * Register an arbitrary object. The class of the object will be used as a key. Calling this method is equivalent to
-     * calling     * <code>registerComponent(componentImplementation, componentImplementation)</code>.
+     * calling     * <code>adapter(componentImplementation, componentImplementation)</code>.
      *
      * @param componentInstance
      * @return the ComponentAdapter that has been associated with this component. In the majority of cases, this return
@@ -80,7 +80,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
      * @throws PicoRegistrationException if registration fails.
      */
-    MutablePicoContainer registerComponent(Object componentInstance);
+    MutablePicoContainer component(Object componentInstance);
 
     /**
      * Register a component via a ComponentAdapter. Use this if you need fine grained control over what
@@ -90,7 +90,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * @return the same adapter that was passed as an argument.
      * @throws PicoRegistrationException if registration fails.
      */
-    MutablePicoContainer registerComponent(ComponentAdapter componentAdapter);
+    MutablePicoContainer adapter(ComponentAdapter componentAdapter);
 
     /**
      * Unregister a component by key.

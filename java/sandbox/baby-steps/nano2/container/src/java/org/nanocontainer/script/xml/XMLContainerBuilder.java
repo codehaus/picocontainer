@@ -288,7 +288,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                 String action = childElement.getAttribute(CONTEXT);
                 String value = childElement.getAttribute(VALUE);
                 MutablePicoContainer mpc = new DefaultPicoContainer();
-                mpc.registerComponent(Permission.class, Class.forName(permissionClassName), new ConstantParameter(action), new ConstantParameter(value));
+                mpc.component(Permission.class, Class.forName(permissionClassName), new ConstantParameter(action), new ConstantParameter(value));
 
                 Permission permission = (Permission) mpc.getComponent(Permission.class);
                 classPathElement.grantPermission(permission);
@@ -315,9 +315,9 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             }
         }
         if (parameters == null) {
-            container.registerComponent(key, clazz);
+            container.component(key, clazz);
         } else {
-            container.registerComponent(key, clazz, parameters);
+            container.component(key, clazz, parameters);
         }
     }
 
@@ -362,12 +362,12 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         String classKey = element.getAttribute(CLASS_NAME_KEY);
         if (notSet(key)) {
             if (!notSet(classKey)) {
-                container.registerComponent(getClassLoader().loadClass(classKey), instance);
+                container.component(getClassLoader().loadClass(classKey), instance);
             } else {
-                container.registerComponent(instance);
+                container.component(instance);
             }
         } else {
-            container.registerComponent(key, instance);
+            container.component(key, instance);
         }
     }
 
@@ -403,7 +403,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
 
         NanoContainer adapter = new DefaultNanoContainer(getClassLoader());
-        adapter.registerComponent(XMLComponentInstanceFactory.class.getName(), new ClassName(factoryClass));
+        adapter.component(XMLComponentInstanceFactory.class.getName(), new ClassName(factoryClass));
         return (XMLComponentInstanceFactory) adapter.getComponents().get(0);
     }
 
@@ -424,7 +424,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
         Parameter[] parameters = createChildParameters(container, element);
         ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory(element.getAttribute(FACTORY), metaContainer);
-        container.registerComponent(componentAdapterFactory.createComponentAdapter(key, implementationClass, parameters));
+        container.adapter(componentAdapterFactory.createComponentAdapter(key, implementationClass, parameters));
     }
 
     private ComponentAdapterFactory createComponentAdapterFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {
@@ -435,7 +435,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         if (metaContainer.getComponentAdapter(factoryName) != null) {
             key = factoryName;
         } else {
-            metaContainer.registerComponent(new ClassName(ComponentAdapterFactory.class.getName()), new ClassName(factoryName));
+            metaContainer.component(new ClassName(ComponentAdapterFactory.class.getName()), new ClassName(factoryName));
             key = ComponentAdapterFactory.class;
         }
         return (ComponentAdapterFactory) metaContainer.getComponent(key);

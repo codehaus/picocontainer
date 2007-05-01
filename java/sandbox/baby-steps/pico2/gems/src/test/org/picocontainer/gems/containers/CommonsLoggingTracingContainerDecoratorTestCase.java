@@ -283,27 +283,27 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 
 	public void testRegisterComponent() {
 		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
-		picoMock.expects(once()).method("registerComponent").with(same(testAdapter)).will(returnValue(new TicklePicoContainer(testAdapter)));
+		picoMock.expects(once()).method("adapter").with(same(testAdapter)).will(returnValue(new TicklePicoContainer(testAdapter)));
 		
-		ComponentAdapter result = tracingDecorator.registerComponent(testAdapter).lastCA();
+		ComponentAdapter result = tracingDecorator.adapter(testAdapter).lastCA();
 		assertEquals(testAdapter, result);
 		verifyLog("Registering component adapter ");
 	}
 
 	public void testRegisterComponentImplementationClass() {
 		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
-		picoMock.expects(once()).method("registerComponent").with(same(String.class)).will(returnValue(new TicklePicoContainer(testAdapter)));
+		picoMock.expects(once()).method("component").with(same(String.class)).will(returnValue(new TicklePicoContainer(testAdapter)));
 		
-		ComponentAdapter result = tracingDecorator.registerComponent(String.class).lastCA();
+		ComponentAdapter result = tracingDecorator.component(String.class).lastCA();
 		assertEquals(testAdapter, result);
 		verifyLog("Registering component implementation ");
 	}
 
 	public void testRegisterComponentImplementationWithKeyAndClass() {
 		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
-		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(String.class), eq(Parameter.ZERO)).will(returnValue(new TicklePicoContainer(testAdapter)));
+		picoMock.expects(once()).method("component").with(same(String.class), same(String.class), eq(Parameter.ZERO)).will(returnValue(new TicklePicoContainer(testAdapter)));
 		
-		ComponentAdapter result = tracingDecorator.registerComponent(String.class, String.class, Parameter.ZERO).lastCA();
+		ComponentAdapter result = tracingDecorator.component(String.class, String.class, Parameter.ZERO).lastCA();
 		assertEquals(testAdapter, result);
 		verifyLog("Registering component implementation ");
 	}
@@ -311,9 +311,9 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 	public void testRegisterComponentInstanceWithKey() {
 		String testString = "This is a test.";
 		ComponentAdapter testAdapter = new InstanceComponentAdapter(String.class, testString);
-		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(testString), eq(Parameter.ZERO)).will(returnValue(new TicklePicoContainer(testAdapter)));
+		picoMock.expects(once()).method("component").with(same(String.class), same(testString), eq(Parameter.ZERO)).will(returnValue(new TicklePicoContainer(testAdapter)));
 
-		ComponentAdapter result = tracingDecorator.registerComponent(String.class, testString, Parameter.ZERO).lastCA();
+		ComponentAdapter result = tracingDecorator.component(String.class, testString, Parameter.ZERO).lastCA();
 
 		assertTrue(result instanceof InstanceComponentAdapter);
 		verifyLog("Registering component instance with key ");
@@ -323,9 +323,9 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 	public void testRegisterComponentImplementationObjectClassParameterArray() {
 		Parameter params[] = new Parameter []{new ConstantParameter("test")};
 		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class, params);
-		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(String.class), same(params)).will(returnValue(new TicklePicoContainer(testAdapter)));
+		picoMock.expects(once()).method("component").with(same(String.class), same(String.class), same(params)).will(returnValue(new TicklePicoContainer(testAdapter)));
 	
-		ComponentAdapter result = tracingDecorator.registerComponent(String.class, String.class, params).lastCA();
+		ComponentAdapter result = tracingDecorator.component(String.class, String.class, params).lastCA();
 		assertEquals(testAdapter, result);
 		
 		verifyLog("Registering component implementation with key ");

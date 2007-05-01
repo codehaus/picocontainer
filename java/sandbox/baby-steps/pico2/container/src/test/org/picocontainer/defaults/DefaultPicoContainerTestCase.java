@@ -64,10 +64,10 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         MutablePicoContainer child = createPicoContainer(parent);
 
         // ComponentF -> ComponentA -> ComponentB+C
-        child.registerComponent(ComponentF.class);
-        parent.registerComponent(ComponentA.class);
-        child.registerComponent(ComponentB.class);
-        child.registerComponent(ComponentC.class);
+        child.component(ComponentF.class);
+        parent.component(ComponentA.class);
+        child.component(ComponentB.class);
+        child.component(ComponentC.class);
 
         try {
             child.getComponent(ComponentF.class);
@@ -81,8 +81,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
     public void testComponentsCanBeRemovedByInstance() {
         MutablePicoContainer pico = createPicoContainer(null);
-        pico.registerComponent(HashMap.class);
-        pico.registerComponent(ArrayList.class);
+        pico.component(HashMap.class);
+        pico.component(ArrayList.class);
         List list = (List) pico.getComponent(List.class);
         pico.unregisterComponentByInstance(list);
         assertEquals(1, pico.getComponentAdapters().size());
@@ -99,8 +99,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     
     public void testComponentsWithCommonSupertypeWhichIsAConstructorArgumentCanBeLookedUpByConcreteType() {
         MutablePicoContainer pico = createPicoContainer(null);
-        pico.registerComponent(LinkedList.class, LinkedList.class, Parameter.ZERO);
-        pico.registerComponent((Class) ArrayList.class);
+        pico.component(LinkedList.class, LinkedList.class, Parameter.ZERO);
+        pico.component((Class) ArrayList.class);
         assertEquals(ArrayList.class, pico.getComponent((Class) ArrayList.class).getClass());
     }
 
@@ -114,8 +114,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
      */
     public void testUnambiguouSelfDependency() {
         MutablePicoContainer pico = createPicoContainer(null);
-        pico.registerComponent(SimpleTouchable.class);
-        pico.registerComponent(DecoratedTouchable.class);
+        pico.component(SimpleTouchable.class);
+        pico.component(DecoratedTouchable.class);
         Touchable t = (Touchable) pico.getComponent((Object) DecoratedTouchable.class);
         assertNotNull(t);
     }
@@ -123,7 +123,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
     public void testPicoUsedInBuilderStyle() {
         MutablePicoContainer pico = createPicoContainer(null);
-        Touchable t = (Touchable) pico.registerComponent(SimpleTouchable.class).registerComponent(DecoratedTouchable.class).getComponent((Object) DecoratedTouchable.class);
+        Touchable t = (Touchable) pico.component(SimpleTouchable.class).component(DecoratedTouchable.class).getComponent((Object) DecoratedTouchable.class);
         assertNotNull(t);
     }
 
@@ -135,8 +135,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
     public void testThangCanBeInstantiatedWithArrayList() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(Thingie.class);
-        pico.registerComponent(ArrayList.class);
+        pico.component(Thingie.class);
+        pico.component(ArrayList.class);
         assertNotNull(pico.getComponent(Thingie.class));
     }
 
@@ -161,8 +161,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
     public void testDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientComponentAdapter() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
-        picoContainer.registerComponent(Service.class);
-        picoContainer.registerComponent(new ConstructorInjectionComponentAdapter(TransientComponent.class, TransientComponent.class));
+        picoContainer.component(Service.class);
+        picoContainer.adapter(new ConstructorInjectionComponentAdapter(TransientComponent.class, TransientComponent.class));
         TransientComponent c1 = (TransientComponent) picoContainer.getComponent(TransientComponent.class);
         TransientComponent c2 = (TransientComponent) picoContainer.getComponent(TransientComponent.class);
         assertNotSame(c1, c2);
@@ -176,9 +176,9 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
     public void testShouldProvideInfoAboutDependingWhenAmbiguityHappens() {
         MutablePicoContainer pico = this.createPicoContainer(null);
-        pico.registerComponent(new ArrayList());
-        pico.registerComponent(new LinkedList());
-        pico.registerComponent(DependsOnCollection.class);
+        pico.component(new ArrayList());
+        pico.component(new LinkedList());
+        pico.component(DependsOnCollection.class);
         try {
             pico.getComponent(DependsOnCollection.class);
             fail();
@@ -193,8 +193,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         ComponentMonitor monitor = new WriterComponentMonitor(writer);
         DefaultPicoContainer parent = new DefaultPicoContainer();
         DefaultPicoContainer child = new DefaultPicoContainer(monitor, parent);
-        parent.registerComponent("st", SimpleTouchable.class);
-        child.registerComponent("dot", DependsOnTouchable.class);
+        parent.component("st", SimpleTouchable.class);
+        child.component("dot", DependsOnTouchable.class);
         DependsOnTouchable dot = (DependsOnTouchable) child.getComponent("dot");
         assertNotNull(dot);
         assertTrue("writer not empty", writer.toString().length() > 0);
@@ -207,7 +207,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
                 sb.append(method.toString());
             }
         });
-        dpc.registerComponent(DefaultPicoContainer.class);
+        dpc.component(DefaultPicoContainer.class);
         dpc.start();
         assertEquals("ComponentMonitor should have been notified that the component had been started",
                 "public abstract void org.picocontainer.Startable.start()", sb.toString());
@@ -217,15 +217,15 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         StringWriter writer1 = new StringWriter();
         ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
         DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);
-        pico.registerComponent("t1", SimpleTouchable.class);
-        pico.registerComponent("t3", SimpleTouchable.class);
+        pico.component("t1", SimpleTouchable.class);
+        pico.component("t3", SimpleTouchable.class);
         Touchable t1 = (Touchable) pico.getComponent("t1");
         assertNotNull(t1);
         assertTrue("writer not empty", writer1.toString().length() > 0);
         StringWriter writer2 = new StringWriter();
         ComponentMonitor monitor2 = new WriterComponentMonitor(writer2);
         pico.changeMonitor(monitor2);
-        pico.registerComponent("t2", SimpleTouchable.class);
+        pico.component("t2", SimpleTouchable.class);
         Touchable t2 = (Touchable) pico.getComponent("t2");
         assertNotNull(t2);
         assertTrue("writer not empty", writer2.toString().length() > 0);
@@ -241,15 +241,15 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         DefaultPicoContainer parent = new DefaultPicoContainer();
         DefaultPicoContainer child = new DefaultPicoContainer(monitor1);
         parent.addChildContainer(child);
-        child.registerComponent("t1", SimpleTouchable.class);
-        child.registerComponent("t3", SimpleTouchable.class);
+        child.component("t1", SimpleTouchable.class);
+        child.component("t3", SimpleTouchable.class);
         Touchable t1 = (Touchable) child.getComponent("t1");
         assertNotNull(t1);
         assertTrue("writer not empty", writer1.toString().length() > 0);
         StringWriter writer2 = new StringWriter();
         ComponentMonitor monitor2 = new WriterComponentMonitor(writer2);
         parent.changeMonitor(monitor2);
-        child.registerComponent("t2", SimpleTouchable.class);
+        child.component("t2", SimpleTouchable.class);
         Touchable t2 = (Touchable) child.getComponent("t2");
         assertNotNull(t2);
         assertTrue("writer not empty", writer2.toString().length() > 0);
@@ -266,7 +266,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         ComponentMonitor monitor = new WriterComponentMonitor(writer);
         DefaultPicoContainer parent = new DefaultPicoContainer(new ComponentAdapterFactoryWithNoMonitor(new ComponentAdapterWithNoMonitor(new SimpleTouchable())));
         parent.addChildContainer(new EmptyPicoContainer());
-        parent.registerComponent("t1", SimpleTouchable.class);
+        parent.component("t1", SimpleTouchable.class);
         parent.changeMonitor(monitor);
         assertTrue("writer empty", writer.toString().length() == 0);
     }
@@ -288,7 +288,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         InstanceComponentAdapter adapterWithMonitor = new InstanceComponentAdapter(SimpleTouchable.class.getName(), new SimpleTouchable());
         adapterWithMonitor.changeMonitor(monitor1);
         DefaultPicoContainer pico = new DefaultPicoContainer(new ComponentAdapterFactoryWithNoMonitor(adapterWithMonitor));
-        pico.registerComponent("t1", SimpleTouchable.class);
+        pico.component("t1", SimpleTouchable.class);
         assertEquals(monitor1, pico.currentMonitor());
         StringWriter writer2 = new StringWriter();
         ComponentMonitor monitor2 = new WriterComponentMonitor(writer2);
@@ -300,7 +300,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         StringWriter writer1 = new StringWriter();
         ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
         DefaultPicoContainer pico = new DefaultPicoContainer(new ComponentAdapterFactoryWithNoMonitor(new ComponentAdapterWithNoMonitor(new SimpleTouchable())));
-        pico.registerComponent("t1", SimpleTouchable.class);
+        pico.component("t1", SimpleTouchable.class);
         // first child does not support ComponentMonitorStrategy
         pico.addChildContainer(new EmptyPicoContainer());
         // second child does support ComponentMonitorStrategy
@@ -354,7 +354,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     
     public void testMakeChildContainer() {
         MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.registerComponent("t1", SimpleTouchable.class);
+        parent.component("t1", SimpleTouchable.class);
         MutablePicoContainer child = parent.makeChildContainer();
         Object t1 = child.getParent().getComponent("t1");
         assertNotNull(t1);
@@ -363,7 +363,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
     public void testCanUseCustomLifecycleStrategyForClassRegistrations() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new FailingLifecycleStrategy(), null);
-        dpc.registerComponent(Startable.class, MyStartable.class);
+        dpc.component(Startable.class, MyStartable.class);
         try {
             dpc.start();
             fail("should have barfed");
@@ -375,7 +375,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     public void testCanUseCustomLifecycleStrategyForInstanceRegistrations() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new FailingLifecycleStrategy(), null);
         Startable myStartable = new MyStartable();
-        dpc.registerComponent(Startable.class, myStartable);
+        dpc.component(Startable.class, myStartable);
         try {
             dpc.start();
             fail("should have barfed");
@@ -432,8 +432,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     public void testCanRegisterTwoComponentsImplementingSameInterfaceOneWithInterfaceAsKey() throws Exception {
         MutablePicoContainer container = createPicoContainer(null);
 
-        container.registerComponent(SimpleA.class);
-        container.registerComponent(A.class, WrappingA.class);
+        container.component(SimpleA.class);
+        container.component(A.class, WrappingA.class);
 
         container.start();
 
@@ -443,8 +443,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     public void testCanRegisterTwoComponentsWithSameImplementionAndDifferentKey() throws Exception {
         MutablePicoContainer container = createPicoContainer(null);
 
-        container.registerComponent(SimpleA.class);
-        container.registerComponent("A", SimpleA.class);
+        container.component(SimpleA.class);
+        container.component("A", SimpleA.class);
 
         container.start();
 
@@ -455,16 +455,16 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     
     public static class MyPicoContainer extends DefaultPicoContainer {
 
-        public MutablePicoContainer registerComponent(ComponentAdapter componentAdapter) {
-            return super.registerComponent(new SynchronizedComponentAdapter(componentAdapter));
+        public MutablePicoContainer adapter(ComponentAdapter componentAdapter) {
+            return super.adapter(new SynchronizedComponentAdapter(componentAdapter));
         }
         
     }
     
     public void testDerivedPicoContainerCanOverloadRegisterComponentForAllCreatedComponentAdapters() {
         MutablePicoContainer mpc = new MyPicoContainer();
-        assertEquals(SynchronizedComponentAdapter.class, mpc.registerComponent(new InstanceComponentAdapter("foo", "bar")).lastCA().getClass());
-        assertEquals(SynchronizedComponentAdapter.class, mpc.registerComponent("foobar").lastCA().getClass());
-        assertEquals(SynchronizedComponentAdapter.class, mpc.registerComponent(SimpleA.class).lastCA().getClass());
+        assertEquals(SynchronizedComponentAdapter.class, mpc.adapter(new InstanceComponentAdapter("foo", "bar")).lastCA().getClass());
+        assertEquals(SynchronizedComponentAdapter.class, mpc.component("foobar").lastCA().getClass());
+        assertEquals(SynchronizedComponentAdapter.class, mpc.component(SimpleA.class).lastCA().getClass());
     }
 }

@@ -44,7 +44,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
         ComponentAdapter componentAdapter =
                 createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
 
-        picoContainer.registerComponent(componentAdapter);
+        picoContainer.adapter(componentAdapter);
 
         assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
@@ -53,7 +53,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
         ComponentAdapter componentAdapter =
                 createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
 
-        picoContainer.registerComponent(componentAdapter);
+        picoContainer.adapter(componentAdapter);
         picoContainer.unregisterComponent(Touchable.class);
 
         assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));

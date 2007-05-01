@@ -90,19 +90,19 @@ public class DefaultAnnotablePicoContainer extends DefaultPicoContainer implemen
 			registerComponentImplementation(componentType, implementationType);
 		}
 		if (PicoContainer.class.isAssignableFrom(componentType)) {
-			PicoContainer cont = this;
-			while (cont.getParent() != null) {
-				cont = cont.getParent();
+			PicoContainer container = this;
+			while (container.getParent() != null) {
+				container = container.getParent();
 			}
-			return cont;
+			return container;
 		}
-		Object res = super.getComponentInstanceOfType(componentType);
+		Object instance = super.getComponentInstanceOfType(componentType);
 		// auto registration
-		if (res == null) {
+		if (instance == null) {
 			registerComponentImplementation(componentType);
-			res = super.getComponentInstanceOfType(componentType);
+			instance = super.getComponentInstanceOfType(componentType);
 		}
-		return res;
+		return instance;
 	}
 
 }

@@ -56,13 +56,13 @@ public class DelegatingResolverTestCase extends MockObjectTestCase {
 
     protected void setUp() {
         appContainer = new DefaultPicoContainer();
-        appContainer.registerComponent("A", A.class);
+        appContainer.component("A", A.class);
 
         sessionContainer = appContainer.makeChildContainer();
-        sessionContainer.registerComponent("B", B.class);
+        sessionContainer.component("B", B.class);
 
         requestContainer = sessionContainer.makeChildContainer();
-        requestContainer.registerComponent("C", C.class);
+        requestContainer.component("C", C.class);
 
         facesContextMock = new Mock(FacesContext.class);
         facesContext = (FacesContext) facesContextMock.proxy();

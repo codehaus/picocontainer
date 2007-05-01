@@ -47,7 +47,7 @@ public class NanoMsgProvider extends MsgProvider implements KeyConstants {
         MutablePicoContainer requestContainer = (MutablePicoContainer) ref.get();
 
         MutablePicoContainer container = new DefaultPicoContainer(requestContainer);
-        container.registerComponent(svcClass);
+        container.component(svcClass);
         return container.getComponent(svcClass);
     }
 

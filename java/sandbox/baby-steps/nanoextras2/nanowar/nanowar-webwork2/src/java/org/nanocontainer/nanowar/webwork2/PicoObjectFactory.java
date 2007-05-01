@@ -86,7 +86,7 @@ public class PicoObjectFactory extends ObjectFactory {
         	// use child container to prevent weirdest errors
         	MutablePicoContainer child = new DefaultPicoContainer(actionsContainer);
         	
-            child.registerComponent(actionClass);
+            child.component(actionClass);
             action = child.getComponent(actionClass);
         }
         return action;

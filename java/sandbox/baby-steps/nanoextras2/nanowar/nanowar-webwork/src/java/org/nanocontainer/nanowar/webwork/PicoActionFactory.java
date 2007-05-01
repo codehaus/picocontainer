@@ -52,7 +52,7 @@ public class PicoActionFactory extends ActionFactory {
         
         if (action == null) {
             // The action wasn't registered. Attempt to instantiate it.
-            actionsContainer.registerComponent(actionClass);
+            actionsContainer.component(actionClass);
             action = (Action) actionsContainer.getComponent(actionClass);
         }
         return action;

@@ -39,9 +39,9 @@ public class NanoNamingTestCase extends TestCase {
         pico = new DefaultPicoContainer();
         thingKey = new ByRefKey("thing");
         thangKey = new ByRefKey("thang");
-        pico.registerComponent(thingKey, Thing.class);
-        pico.registerComponent(thangKey, Thang.class);
-        pico.registerComponent(ArrayList.class);
+        pico.component(thingKey, Thing.class);
+        pico.component(thangKey, Thang.class);
+        pico.component(ArrayList.class);
 
         // Configure nano naming lookup service
 

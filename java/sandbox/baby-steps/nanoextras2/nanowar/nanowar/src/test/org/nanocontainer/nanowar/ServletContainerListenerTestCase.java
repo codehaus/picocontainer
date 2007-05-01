@@ -66,7 +66,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
     private void assertApplicationScopeContainerIsCreatedWithInlinedScript(String scriptName, String script, 
             Class containerBuilder) {
         Mock servletContextMock = mock(ServletContext.class);
-        final Vector initParams = new Vector();
+        final Vector<String> initParams = new Vector<String>();
         initParams.add(scriptName);
         servletContextMock.expects(once())
                 .method("getInitParameterNames")
@@ -94,7 +94,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
     private void assertApplicationScopeContainerIsCreatedWithSeparateScript(String scriptName, String script, 
             Class containerBuilder) {
         Mock servletContextMock = mock(ServletContext.class);
-        final Vector initParams = new Vector();
+        final Vector<String> initParams = new Vector<String>();
         initParams.add(scriptName);
         servletContextMock.expects(once())
                 .method("getInitParameterNames")
@@ -139,7 +139,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
 
     public void testApplicationScopeContainerIsNotBuildWhenInvalidParametersAreFound() {
         Mock servletContextMock = mock(ServletContext.class);
-        final Vector initParams = new Vector();
+        final Vector<String> initParams = new Vector<String>();
         initParams.add("invalid-param");
         servletContextMock.expects(once())
                 .method("getInitParameterNames")
@@ -164,7 +164,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
             "</component-implementation>" +
             "</container>";
         Mock servletContextMock = mock(ServletContext.class);
-        final Vector initParams = new Vector();
+        final Vector<String> initParams = new Vector<String>();
         initParams.add("nanocontainer.xml");
         servletContextMock.expects(once())
                 .method("getInitParameterNames")
@@ -241,9 +241,9 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
     
     private ContainerBuilder createContainerBuilder(Class containerBuilder, String script) {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(new StringReader(script));
-        pico.registerComponent(getClass().getClassLoader());
-        pico.registerComponent(containerBuilder);
+        pico.component(new StringReader(script));
+        pico.component(getClass().getClassLoader());
+        pico.component(containerBuilder);
         return (ContainerBuilder)pico.getComponent(ContainerBuilder.class);
     }
 
@@ -258,11 +258,11 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
           "pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)\n"+
           "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
           "      System.out.println('Application scope parent '+parent)\n "+
-          "      pico.registerComponent((Object)'testFoo', org.nanocontainer.nanowar.Foo)\n" +
+          "      pico.component((Object)'testFoo', org.nanocontainer.nanowar.Foo)\n" +
           "   } else if ( assemblyScope instanceof javax.servlet.http.HttpSession ){ \n" +
           "      System.out.println('Session scope parent '+parent)\n "+
           "      System.out.println('foo:'+parent.getComponent((Object)'testFoo'))\n"+
-          "      pico.registerComponent((Object)'testFooHierarchy', org.nanocontainer.nanowar.FooHierarchy)\n"+
+          "      pico.component((Object)'testFooHierarchy', org.nanocontainer.nanowar.FooHierarchy)\n"+
           "   }\n "+
           "";
       assertGroovyContainerBuilderCanBeScopedWithInlinedScript(picoScript);
@@ -287,7 +287,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
     
     public void assertGroovyContainerBuilderCanBeScopedWithInlinedScript(String script) throws Exception {
 
-        Class containerBuilder = GroovyContainerBuilder.class;
+        Class<GroovyContainerBuilder> containerBuilder = GroovyContainerBuilder.class;
         PicoContainer applicationContainer = buildApplicationContainer(script, containerBuilder);
         Mock servletContextMock = mock(ServletContext.class);
         servletContextMock.expects(atLeastOnce())
@@ -314,7 +314,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
 
     }    
 
-    private PicoContainer buildApplicationContainer(String script, Class containerBuilderClass) throws ClassNotFoundException {
+    private PicoContainer buildApplicationContainer(String script, Class<GroovyContainerBuilder> containerBuilderClass) throws ClassNotFoundException {
         Mock servletContextMock = mock(ServletContext.class);
         ServletContext context = (ServletContext)servletContextMock.proxy();
         ContainerBuilder containerBuilder = createContainerBuilder(script, containerBuilderClass);
@@ -324,7 +324,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         return (PicoContainer) containerRef.get();
     }
 
-    private ContainerBuilder createContainerBuilder(String script, Class containerBuilderClass) throws ClassNotFoundException {
+    private ContainerBuilder createContainerBuilder(String script, Class<GroovyContainerBuilder> containerBuilderClass) throws ClassNotFoundException {
         ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = 
             new ScriptedContainerBuilderFactory(new StringReader(script), containerBuilderClass.getName(), 
                     Thread.currentThread().getContextClassLoader());
@@ -333,7 +333,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
 
     public void testScopedContainerComposerIsCreatedWithDefaultConfiguration() {
         Mock servletContextMock = mock(ServletContext.class);
-        final Vector initParams = new Vector();
+        final Vector<String> initParams = new Vector<String>();
         initParams.add(ServletContainerListener.CONTAINER_COMPOSER);
         servletContextMock.expects(once())
                 .method("getInitParameterNames")
@@ -383,7 +383,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
     
     private void assertScopedContainerComposerIsCreatedWithConfiguration(String scriptName, String script) {
         Mock servletContextMock = mock(ServletContext.class);
-        final Vector initParams = new Vector();
+        final Vector<String> initParams = new Vector<String>();
         initParams.add(ServletContainerListener.CONTAINER_COMPOSER);
         servletContextMock.expects(once())
                 .method("getInitParameterNames")

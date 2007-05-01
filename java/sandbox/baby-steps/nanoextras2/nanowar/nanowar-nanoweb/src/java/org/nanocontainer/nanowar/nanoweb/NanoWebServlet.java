@@ -143,7 +143,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
         Object result = null;
         if (scriptURL != null) {
             Class scriptClass = cachingScriptClassLoader.getClass(scriptURL);
-            requestContainer.registerComponent(scriptPath, scriptClass);
+            requestContainer.component(scriptPath, scriptClass);
             result = requestContainer.getComponent(scriptPath);
         }
         return result;
@@ -173,8 +173,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
             throw new ServletException(message, e);
         }
         try {
-            String view = (String) actionMethod.invoke(actionObject, (Object[])null);
-            return view;
+            return (String) actionMethod.invoke(actionObject, (Object[])null);
         } catch (IllegalAccessException e) {
             String message = actionObject.getClass().getName() + "." + actionMethodName + "() isn't public";
             log(message, e);

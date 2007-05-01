@@ -63,7 +63,7 @@ public class ActionFactory {
 
         Action action = (Action) actionsContainer.getComponent(actionKey);
         if (action == null) {
-            actionsContainer.registerComponent(actionKey, actionType);
+            actionsContainer.component(actionKey, actionType);
             action = (Action) actionsContainer.getComponent(actionKey);
         }
 

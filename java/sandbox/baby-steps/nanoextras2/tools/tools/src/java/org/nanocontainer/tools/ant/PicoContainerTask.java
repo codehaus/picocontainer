@@ -67,7 +67,7 @@ public class PicoContainerTask extends Task {
             NanoContainer container = new DefaultNanoContainer(getClass().getClassLoader(), picoContainer);
             for (Iterator iterator = antSpecifiedComponents.iterator(); iterator.hasNext();) {
                 Component component = (Component) iterator.next();
-                BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) container.registerComponent(component.getKey(), new ClassName(component.getClassname()));
+                BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) container.component(component.getKey(), new ClassName(component.getClassname()));
                 adapter.setProperties(component.getProperties());
             }
         }

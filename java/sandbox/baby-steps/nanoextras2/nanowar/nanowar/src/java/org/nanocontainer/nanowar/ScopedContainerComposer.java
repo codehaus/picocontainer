@@ -143,7 +143,7 @@ public class ScopedContainerComposer implements ContainerComposer {
         Parameter[] parameters = new Parameter[] {
                 new ConstantParameter(reader),
                 new ConstantParameter(getClassLoader()) };
-        nano.registerComponent(containerBuilderClassName,
+        nano.component(containerBuilderClassName,
                 new ClassName(containerBuilderClassName), parameters);
         ContainerBuilder containerBuilder = (ContainerBuilder) nano
                 .getComponent(containerBuilderClassName);

@@ -16,7 +16,6 @@ import java.util.List;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -312,7 +311,7 @@ public class ContainerChainFilter implements Filter {
 		if (failureUrl != null) {
 			// if we got an exception, we create fake container
 			DefaultPicoContainer dpc = new DefaultPicoContainer(container);
-			dpc.registerComponent("cause", e.getCause());
+			dpc.component("cause", e.getCause());
 			// wire container to request
 			obtainRequestObjectReference(request).set(dpc);
 			// and transfer us to this url

@@ -47,7 +47,7 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
 
     public void testActionContainerCreatedOnlyOncePerRequest() {
         MutablePicoContainer requestContainer = new DefaultPicoContainer();
-        requestContainer.registerComponent(TestService.class);
+        requestContainer.component(TestService.class);
         MutablePicoContainer actionsContainer = new DefaultPicoContainer(requestContainer);
 
         requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
@@ -68,7 +68,7 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
 
     public void testGetActionWhenActionsContainerAlreadyExists() {
         MutablePicoContainer requestContainer = new DefaultPicoContainer();
-        requestContainer.registerComponent(TestService.class, service);
+        requestContainer.component(TestService.class, service);
         MutablePicoContainer actionsContainer = new DefaultPicoContainer(requestContainer);
 
         requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
@@ -99,7 +99,7 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
 
     public void testRequestContainerExists() {
         MutablePicoContainer requestContainer = new DefaultPicoContainer();
-        requestContainer.registerComponent(TestService.class, service);
+        requestContainer.component(TestService.class, service);
 
         requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
                 returnValue(null));
@@ -115,7 +115,7 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
 
     public void testSessionContainerExists() {
         MutablePicoContainer sessionContainer = new DefaultPicoContainer();
-        sessionContainer.registerComponent(TestService.class, service);
+        sessionContainer.component(TestService.class, service);
 
         requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
                 returnValue(null));
@@ -133,7 +133,7 @@ public class ActionFactoryTestCase extends MockObjectTestCase {
 
     public void testApplicationContainerExists() {
         MutablePicoContainer appContainer = new DefaultPicoContainer();
-        appContainer.registerComponent(TestService.class, service);
+        appContainer.component(TestService.class, service);
 
         requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
                 returnValue(null));

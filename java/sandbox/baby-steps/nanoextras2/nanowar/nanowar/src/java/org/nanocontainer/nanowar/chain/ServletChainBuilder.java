@@ -139,7 +139,7 @@ public class ServletChainBuilder {
         Parameter[] parameters = new Parameter[] {
                 new ConstantParameter(reader),
                 new ConstantParameter(classLoader) };
-        nano.registerComponent(containerBuilderClassName,
+        nano.component(containerBuilderClassName,
                 new ClassName(containerBuilderClassName), parameters);
         ContainerBuilder containerBuilder = (ContainerBuilder) nano
                 .getComponent(containerBuilderClassName);

@@ -37,8 +37,8 @@ public class ComponentTypeConventionMBeanInfoProviderTest extends MockObjectTest
     }
 
     public void testMBeanInfoIsDeterminedFromComponentType() {
-        final ComponentAdapter componentAdapter = pico.registerComponent("JUnit", Person.class).lastCA();
-        pico.registerComponent(Person.class.getName() + "MBeanInfo", Person.createMBeanInfo());
+        final ComponentAdapter componentAdapter = pico.component("JUnit", Person.class).lastCA();
+        pico.component(Person.class.getName() + "MBeanInfo", Person.createMBeanInfo());
 
         final MBeanInfo info = mBeanProvider.provide(pico, componentAdapter);
         assertNotNull(info);
@@ -52,8 +52,8 @@ public class ComponentTypeConventionMBeanInfoProviderTest extends MockObjectTest
         mockComponentAdapter.stubs().method("getComponentKey").will(returnValue(Person.class));
         mockComponentAdapter.stubs().method("getComponentImplementation").will(returnValue(person.getClass()));
 
-        pico.registerComponent((ComponentAdapter)mockComponentAdapter.proxy());
-        pico.registerComponent(PersonMBeanInfo.class);
+        pico.adapter((ComponentAdapter)mockComponentAdapter.proxy());
+        pico.component(PersonMBeanInfo.class);
 
         final MBeanInfo info = mBeanProvider.provide(pico, (ComponentAdapter)mockComponentAdapter.proxy());
         assertNotNull(info);

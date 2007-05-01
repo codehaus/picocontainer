@@ -37,19 +37,19 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return delegate;
     }
 
-    public ComponentAdapter registerComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws PicoRegistrationException {
+    public MutablePicoContainer registerComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws PicoRegistrationException {
         return delegate.registerComponent(componentKey, componentImplementationOrInstance, parameters);
     }
 
-    public ComponentAdapter registerComponent(Class componentImplementation) throws PicoRegistrationException {
+    public MutablePicoContainer registerComponent(Class componentImplementation) throws PicoRegistrationException {
         return delegate.registerComponent(componentImplementation);
     }
 
-    public ComponentAdapter registerComponent(Object componentInstance) throws PicoRegistrationException {
+    public MutablePicoContainer registerComponent(Object componentInstance) throws PicoRegistrationException {
         return delegate.registerComponent(componentInstance);
     }
 
-    public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException {
+    public MutablePicoContainer registerComponent(ComponentAdapter componentAdapter) throws PicoRegistrationException {
         return delegate.registerComponent(componentAdapter);
     }
 
@@ -122,4 +122,7 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return delegate.equals(obj) || this == obj;
     }
 
+    public ComponentAdapter lastCA() {
+        return null; 
+    }
 }

@@ -30,6 +30,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
+import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.componentadapters.InstanceComponentAdapter;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -264,14 +265,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * This method can be used to override the ComponentAdapter created by the {@link ComponentAdapterFactory}
      * passed to the constructor of this container.
      */
-    public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) {
+    public MutablePicoContainer registerComponent(ComponentAdapter componentAdapter) {
         Object componentKey = componentAdapter.getComponentKey();
         if (componentKeyToAdapterCache.containsKey(componentKey)) {
             throw new DuplicateComponentKeyRegistrationException(componentKey);
         }
         componentAdapters.add(componentAdapter);
         componentKeyToAdapterCache.put(componentKey, componentAdapter);
-        return componentAdapter;
+        return new WrappingPicoContainer(componentAdapter);
     }
 
     public ComponentAdapter unregisterComponent(Object componentKey) {
@@ -285,7 +286,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * {@inheritDoc}
      * The returned ComponentAdapter will be an {@link org.picocontainer.componentadapters.InstanceComponentAdapter}.
      */
-    public ComponentAdapter registerComponent(Object component) {
+    public MutablePicoContainer registerComponent(Object component) {
         return registerComponent(component.getClass(), component);
     }
 
@@ -294,7 +295,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
      * passed to the container's constructor.
      */
-    public ComponentAdapter registerComponent(Class componentImplementation) {
+    public MutablePicoContainer registerComponent(Class componentImplementation) {
         return registerComponent(componentImplementation, componentImplementation);
     }
 
@@ -303,7 +304,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
      * passed to the container's constructor.
      */
-    public ComponentAdapter registerComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) {
+    public MutablePicoContainer registerComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) {
         if (parameters != null && parameters.length == 0 && parameters != Parameter.ZERO) {
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
@@ -529,6 +530,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return result;
     }
 
+    public ComponentAdapter lastCA() {
+        return null; 
+    }
+
     public void accept(PicoVisitor visitor) {
         visitor.visitContainer(this);
         final List<ComponentAdapter> componentAdapters = new ArrayList<ComponentAdapter>(getComponentAdapters());
@@ -669,5 +674,23 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
 
     }
+
+    private class WrappingPicoContainer extends AbstractDelegatingMutablePicoContainer {
+        private final ComponentAdapter componentAdapter;
+
+        public WrappingPicoContainer(ComponentAdapter componentAdapter) {
+            super(DefaultPicoContainer.this);
+            this.componentAdapter = componentAdapter;
+        }
+
+        public MutablePicoContainer makeChildContainer() {
+            return getDelegate().makeChildContainer();
+        }
+
+        public ComponentAdapter lastCA() {
+            return componentAdapter;
+        }
+    }
+
 
 }

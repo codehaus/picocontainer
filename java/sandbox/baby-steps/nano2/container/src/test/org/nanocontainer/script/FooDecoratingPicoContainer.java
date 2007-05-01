@@ -2,7 +2,6 @@ package org.nanocontainer.script;
 
 import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.Parameter;
 
@@ -19,7 +18,7 @@ public class FooDecoratingPicoContainer extends AbstractDelegatingMutablePicoCon
         return null;
     }
 
-    public ComponentAdapter registerComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws PicoRegistrationException {
+    public MutablePicoContainer registerComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws PicoRegistrationException {
         Assert.assertEquals(HashMap.class, componentImplementationOrInstance);
         return super.registerComponent(ArrayList.class, ArrayList.class, parameters);
     }

@@ -149,7 +149,7 @@ public class ScriptedContainerBuilderFactory {
             //
             defaultNanoContainer = new DefaultNanoContainer(classLoader,factory);
         }
-        ComponentAdapter componentAdapter = defaultNanoContainer.registerComponent(new ClassName(builderClass));
+        ComponentAdapter componentAdapter = defaultNanoContainer.registerComponent(new ClassName(builderClass)).lastCA();
         containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultNanoContainer);
     }
 

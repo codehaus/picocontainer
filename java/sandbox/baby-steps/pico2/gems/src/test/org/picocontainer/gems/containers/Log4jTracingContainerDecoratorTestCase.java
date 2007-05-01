@@ -23,6 +23,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapter;
 import org.picocontainer.componentadapters.InstanceComponentAdapter;
 import org.picocontainer.defaults.ConstantParameter;
@@ -259,27 +260,27 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 
 	public void testRegisterComponent() {
 		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
-		picoMock.expects(once()).method("registerComponent").with(same(testAdapter)).will(returnValue(testAdapter));
+		picoMock.expects(once()).method("registerComponent").with(same(testAdapter)).will(returnValue(new TicklePicoContainer(testAdapter)));
 		
-		ComponentAdapter result = tracingDecorator.registerComponent(testAdapter);
+		ComponentAdapter result = tracingDecorator.registerComponent(testAdapter).lastCA();
 		assertEquals(testAdapter, result);
 		verifyLog("Registering component adapter ");
 	}
 
 	public void testRegisterComponentImplementationClass() {
 		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
-		picoMock.expects(once()).method("registerComponent").with(same(String.class)).will(returnValue(testAdapter));
+		picoMock.expects(once()).method("registerComponent").with(same(String.class)).will(returnValue(new TicklePicoContainer(testAdapter)));
 		
-		ComponentAdapter result = tracingDecorator.registerComponent(String.class);
+		ComponentAdapter result = tracingDecorator.registerComponent(String.class).lastCA();
 		assertEquals(testAdapter, result);
 		verifyLog("Registering component implementation ");
 	}
 
 	public void testRegisterComponentImplementationWithKeyAndClass() {
 		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
-		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(String.class), eq(Parameter.ZERO)).will(returnValue(testAdapter));
+		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(String.class), eq(Parameter.ZERO)).will(returnValue(new TicklePicoContainer(testAdapter)));
 		
-		ComponentAdapter result = tracingDecorator.registerComponent(String.class, String.class, Parameter.ZERO);
+		ComponentAdapter result = tracingDecorator.registerComponent(String.class, String.class, Parameter.ZERO).lastCA();
 		assertEquals(testAdapter, result);
 		verifyLog("Registering component implementation ");
 	}
@@ -287,9 +288,9 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 	public void testRegisterComponentInstanceWithKey() {
 		String testString = "This is a test.";
 		ComponentAdapter testAdapter = new InstanceComponentAdapter(String.class, testString);
-		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(testString), eq(Parameter.ZERO)).will(returnValue(testAdapter));
+		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(testString), eq(Parameter.ZERO)).will(returnValue(new TicklePicoContainer(testAdapter)));
 
-		ComponentAdapter result = tracingDecorator.registerComponent(String.class, testString, Parameter.ZERO);
+		ComponentAdapter result = tracingDecorator.registerComponent(String.class, testString, Parameter.ZERO).lastCA();
 
 		assertTrue(result instanceof InstanceComponentAdapter);
 		verifyLog("Registering component instance with key ");
@@ -299,9 +300,9 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 	public void testRegisterComponentImplementationObjectClassParameterArray() {
 		Parameter params[] = new Parameter []{new ConstantParameter("test")};
 		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class, params);
-		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(String.class), same(params)).will(returnValue(testAdapter));
+		picoMock.expects(once()).method("registerComponent").with(same(String.class), same(String.class), same(params)).will(returnValue(new TicklePicoContainer(testAdapter)));
 	
-		ComponentAdapter result = tracingDecorator.registerComponent(String.class, String.class, params);
+		ComponentAdapter result = tracingDecorator.registerComponent(String.class, String.class, params).lastCA();
 		assertEquals(testAdapter, result);
 		
 		verifyLog("Registering component implementation with key ");
@@ -378,5 +379,23 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 		
 		
 	}
+
+    public class TicklePicoContainer extends AbstractDelegatingMutablePicoContainer {
+        private final ComponentAdapter componentAdapter;
+
+        public TicklePicoContainer(ComponentAdapter componentAdapter) {
+            super(null);
+            this.componentAdapter = componentAdapter;
+        }
+
+        public MutablePicoContainer makeChildContainer() {
+            return getDelegate().makeChildContainer();
+        }
+
+        public ComponentAdapter lastCA() {
+            return componentAdapter;
+        }
+    }
+
 
 }

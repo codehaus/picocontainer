@@ -115,7 +115,7 @@ public class BasicCachingExampleTestCase extends TestCase {
     public void testFlushingOfCache() {
         // START SNIPPET: caching
         CachingPicoContainer pico = new CachingPicoContainer();
-        CachingComponentAdapter cca = (CachingComponentAdapter) pico.registerComponent(List.class, ArrayList.class);
+        CachingComponentAdapter cca = (CachingComponentAdapter) pico.registerComponent(List.class, ArrayList.class).lastCA();
         // other resitrations
 
         Object one = pico.getComponent(List.class);

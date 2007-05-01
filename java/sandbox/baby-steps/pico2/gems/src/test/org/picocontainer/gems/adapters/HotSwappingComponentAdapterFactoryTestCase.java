@@ -160,7 +160,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
     public void testTheThingThatPaulDoesNotLikeAboutTheCurrentHotSwapper() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory());
 
-        HotSwappingComponentAdapter ca = (HotSwappingComponentAdapter) pico.registerComponent(List.class, ArrayList.class);
+        HotSwappingComponentAdapter ca = (HotSwappingComponentAdapter) pico.registerComponent(List.class, ArrayList.class).lastCA();
 
         List list = (List) pico.getComponent(List.class);
 

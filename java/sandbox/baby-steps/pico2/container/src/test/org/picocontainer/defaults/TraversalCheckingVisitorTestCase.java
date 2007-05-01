@@ -40,9 +40,11 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
         super.setUp();
 
         pico = new DefaultPicoContainer();
-        parentAdapter = pico.registerComponent(new SetterInjectionComponentAdapter(StringBuffer.class, StringBuffer.class));
+        SetterInjectionComponentAdapter componentAdapter = new SetterInjectionComponentAdapter(StringBuffer.class, StringBuffer.class);
+        parentAdapter = pico.registerComponent(componentAdapter).lastCA();
         child = pico.makeChildContainer();
-        childAdapter = child.registerComponent(new ConstructorInjectionComponentAdapter(ArrayList.class, ArrayList.class, new ConstantParameter(3)));
+        ConstructorInjectionComponentAdapter adapter = new ConstructorInjectionComponentAdapter(ArrayList.class, ArrayList.class, new ConstantParameter(3));
+        childAdapter = child.registerComponent(adapter).lastCA();
     }
 
     protected void tearDown() throws Exception {

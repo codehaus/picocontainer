@@ -271,7 +271,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 * @return
 	 * @see org.picocontainer.MutablePicoContainer#registerComponent(org.picocontainer.ComponentAdapter)
 	 */
-	public ComponentAdapter registerComponent(final ComponentAdapter componentAdapter) {
+	public MutablePicoContainer registerComponent(final ComponentAdapter componentAdapter) {
 		if (log.isDebugEnabled()) {
 			log.debug("Registering component adapter " + componentAdapter);
 		}
@@ -285,7 +285,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 * @return
 	 * @see org.picocontainer.MutablePicoContainer#registerComponent(java.lang.Class)
 	 */
-	public ComponentAdapter registerComponent(final Class componentImplementation) {
+	public MutablePicoContainer registerComponent(final Class componentImplementation) {
 		if (log.isDebugEnabled()) {
 			log.debug("Registering component implementation " + componentImplementation.getName());
 		}
@@ -300,7 +300,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 * @param parameters
 	 * @return
 	 */
-	public ComponentAdapter registerComponent(final Object componentKey, final Object componentImplementationOrInstance,
+	public MutablePicoContainer registerComponent(final Object componentKey, final Object componentImplementationOrInstance,
 			final Parameter... parameters) {
 		if (log.isDebugEnabled()) {
 			log.debug("Registering component "
@@ -324,7 +324,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 * @return
 	 * @see org.picocontainer.MutablePicoContainer#registerComponent(java.lang.Object)
 	 */
-	public ComponentAdapter registerComponent(final Object componentInstance) {
+	public MutablePicoContainer registerComponent(final Object componentInstance) {
 		if (log.isDebugEnabled()) {
 			log.debug("Registering component instance " 
 					+ componentInstance + "(class: " 
@@ -413,4 +413,8 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	        s.defaultReadObject();
 	        log = LogFactory.getLog(this.logCategory);
 	}
+
+    public ComponentAdapter lastCA() {
+        return null; 
+    }
 }

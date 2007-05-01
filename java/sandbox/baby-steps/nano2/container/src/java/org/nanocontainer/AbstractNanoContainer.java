@@ -29,10 +29,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.defaults.CustomPermissionsURLClassLoader;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
-import org.nanocontainer.script.NanoContainerMarkupException;
 
 /**
  * A base class for NanoPicoContainers. As well as the functionality indicated by the interface it
@@ -164,7 +161,7 @@ public abstract class AbstractNanoContainer extends AbstractDelegatingMutablePic
         return classPathElement;
     }
 
-    public ComponentAdapter registerComponent(Object componentImplementationOrInstance) {
+    public MutablePicoContainer registerComponent(Object componentImplementationOrInstance) {
         if(componentImplementationOrInstance instanceof ClassName) {
             String className = ((ClassName) componentImplementationOrInstance).className;
             return super.registerComponent(loadClass(className));
@@ -172,7 +169,7 @@ public abstract class AbstractNanoContainer extends AbstractDelegatingMutablePic
         return super.registerComponent(componentImplementationOrInstance);
     }
 
-    public ComponentAdapter registerComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters) {
+    public MutablePicoContainer registerComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters) {
         if (key instanceof ClassName) {
             key = loadClass(((ClassName) key).getClassName());
         }

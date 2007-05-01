@@ -37,7 +37,7 @@ public class ImmutablePicoContainerProxyFactoryTest extends MockObjectTestCase {
     public void testVisitingOfImmutableContainerWorks() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         Object foo = new Object();
-        ComponentAdapter componentAdapter = pico.registerComponent(foo);
+        ComponentAdapter componentAdapter = pico.registerComponent(foo).lastCA();
 
         Mock fooVisitor = new Mock(PicoVisitor.class);
         fooVisitor.expects(once()).method("visitContainer").with(same(pico));

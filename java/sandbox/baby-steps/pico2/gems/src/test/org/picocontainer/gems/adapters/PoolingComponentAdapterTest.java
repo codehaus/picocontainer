@@ -266,8 +266,9 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
      */
     private ComponentAdapter prepDEF_lifecycleManagerSupport(MutablePicoContainer picoContainer) {
         picoContainer.registerComponent(RecordingLifecycle.One.class);
-        return picoContainer.registerComponent(new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
-                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class)));
+        PoolingComponentAdapter poolingComponentAdapter = new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
+                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class));
+        return picoContainer.registerComponent(poolingComponentAdapter).lastCA();
     }
 
     public void testDEF_lifecycleManagerSupport() {
@@ -301,8 +302,9 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
      */
     private ComponentAdapter prepRES_lifecycleManagerHonorsInstantiationSequence(MutablePicoContainer picoContainer) {
         picoContainer.registerComponent(RecordingLifecycle.One.class);
-        return picoContainer.registerComponent(new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
-                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class)));
+        PoolingComponentAdapter poolingComponentAdapter = new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
+                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class));
+        return picoContainer.registerComponent(poolingComponentAdapter).lastCA();
     }
 
     public void testRES_lifecycleManagerHonorsInstantiationSequence() {

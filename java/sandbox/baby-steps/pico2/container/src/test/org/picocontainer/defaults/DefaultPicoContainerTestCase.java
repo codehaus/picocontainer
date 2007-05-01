@@ -446,7 +446,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     
     public static class MyPicoContainer extends DefaultPicoContainer {
 
-        public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) {
+        public MutablePicoContainer registerComponent(ComponentAdapter componentAdapter) {
             return super.registerComponent(new SynchronizedComponentAdapter(componentAdapter));
         }
         
@@ -454,8 +454,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     
     public void testDerivedPicoContainerCanOverloadRegisterComponentForAllCreatedComponentAdapters() {
         MutablePicoContainer mpc = new MyPicoContainer();
-        assertEquals(SynchronizedComponentAdapter.class, mpc.registerComponent(new InstanceComponentAdapter("foo", "bar")).getClass());
-        assertEquals(SynchronizedComponentAdapter.class, mpc.registerComponent("foobar").getClass());
-        assertEquals(SynchronizedComponentAdapter.class, mpc.registerComponent(SimpleA.class).getClass());
+        assertEquals(SynchronizedComponentAdapter.class, mpc.registerComponent(new InstanceComponentAdapter("foo", "bar")).lastCA().getClass());
+        assertEquals(SynchronizedComponentAdapter.class, mpc.registerComponent("foobar").lastCA().getClass());
+        assertEquals(SynchronizedComponentAdapter.class, mpc.registerComponent(SimpleA.class).lastCA().getClass());
     }
 }

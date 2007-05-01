@@ -70,9 +70,10 @@ public class SetterInjectionComponentAdapterTestCase
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
         picoContainer.registerComponent("Pico Container");
         picoContainer.registerComponent(PersonBean.class);
-        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(
+        SetterInjectionComponentAdapter componentAdapter = new SetterInjectionComponentAdapter(
                 PurseBean.class, MoneyPurse.class, new Parameter[]{
-                        ComponentParameter.DEFAULT, new ConstantParameter(new Double(100.0))}));
+                ComponentParameter.DEFAULT, new ConstantParameter(new Double(100.0))});
+        return picoContainer.registerComponent(componentAdapter).lastCA();
     }
 
     public static class MoneyPurse
@@ -91,8 +92,9 @@ public class SetterInjectionComponentAdapterTestCase
     protected ComponentAdapter prepVER_verificationFails(MutablePicoContainer picoContainer) {
         picoContainer.registerComponent("Pico Container");
         picoContainer.registerComponent(PersonBean.class);
-        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(
-                PurseBean.class, MoneyPurse.class, new Parameter[]{ComponentParameter.DEFAULT}));
+        SetterInjectionComponentAdapter componentAdapter = new SetterInjectionComponentAdapter(
+                PurseBean.class, MoneyPurse.class, new Parameter[]{ComponentParameter.DEFAULT});
+        return picoContainer.registerComponent(componentAdapter).lastCA();
     }
 
     protected ComponentAdapter prepINS_createsNewInstances(MutablePicoContainer picoContainer) {
@@ -160,15 +162,17 @@ public class SetterInjectionComponentAdapterTestCase
     protected ComponentAdapter prepRES_failingVerificationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
         picoContainer.registerComponent("Pico Container");
         picoContainer.registerComponent(PersonBean.class, WealthyPerson.class);
-        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(
-                PurseBean.class, PurseBean.class, new Parameter[]{ComponentParameter.DEFAULT}));
+        SetterInjectionComponentAdapter componentAdapter = new SetterInjectionComponentAdapter(
+                PurseBean.class, PurseBean.class, new Parameter[]{ComponentParameter.DEFAULT});
+        return picoContainer.registerComponent(componentAdapter).lastCA();
     }
 
     protected ComponentAdapter prepRES_failingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
         picoContainer.registerComponent("Pico Container");
         picoContainer.registerComponent(PersonBean.class, WealthyPerson.class);
-        return picoContainer.registerComponent(new SetterInjectionComponentAdapter(
-                PurseBean.class, PurseBean.class, new Parameter[]{ComponentParameter.DEFAULT}));
+        SetterInjectionComponentAdapter componentAdapter = new SetterInjectionComponentAdapter(
+                PurseBean.class, PurseBean.class, new Parameter[]{ComponentParameter.DEFAULT});
+        return picoContainer.registerComponent(componentAdapter).lastCA();
     }
 
     public static class A {

@@ -423,7 +423,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
-        ComponentAdapter componentAdapter = pico.registerComponent(String.class);
+        ComponentAdapter componentAdapter = pico.registerComponent(String.class).lastCA();
         assertTrue("ComponentAdapter should be originally defined by parent",
                    componentAdapter instanceof SetterInjectionComponentAdapter);
     }

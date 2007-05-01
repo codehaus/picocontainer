@@ -35,15 +35,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/commons-dbcp/jars/commons-dbcp-1.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -72,6 +63,15 @@
       <library>
         <CLASSES>
           <root url="jar://$M2_REPOSITORY$/proxytoys/proxytoys/0.2.1/proxytoys-0.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/commons-dbcp/commons-dbcp/1.2/commons-dbcp-1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

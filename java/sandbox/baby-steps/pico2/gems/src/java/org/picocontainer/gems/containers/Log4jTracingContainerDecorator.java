@@ -342,7 +342,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * @return
 	 * @see org.picocontainer.MutablePicoContainer#registerComponent(org.picocontainer.ComponentAdapter)
 	 */
-	public ComponentAdapter registerComponent(final ComponentAdapter componentAdapter) {
+	public MutablePicoContainer registerComponent(final ComponentAdapter componentAdapter) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Registering component adapter " + componentAdapter);
 		}
@@ -357,7 +357,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * @return
 	 * @see org.picocontainer.MutablePicoContainer#registerComponent(java.lang.Class)
 	 */
-	public ComponentAdapter registerComponent(final Class componentImplementation) {
+	public MutablePicoContainer registerComponent(final Class componentImplementation) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Registering component implementation " + componentImplementation.getName());
 		}
@@ -373,7 +373,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * @param parameters
 	 * @return
 	 */
-	public ComponentAdapter registerComponent(final Object componentKey,
+	public MutablePicoContainer registerComponent(final Object componentKey,
 			final Object componentImplementationOrInstance, final Parameter... parameters) {
 
 		if (logger.isDebugEnabled()) {
@@ -395,7 +395,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * @return
 	 * @see org.picocontainer.MutablePicoContainer#registerComponent(java.lang.Object)
 	 */
-	public ComponentAdapter registerComponent(final Object componentInstance) {
+	public MutablePicoContainer registerComponent(final Object componentInstance) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Registering component instance " + componentInstance + "(class: "
 					+ ((componentInstance != null) ? componentInstance.getClass().getName() : " null "));
@@ -494,4 +494,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 		s.writeUTF(logger.getName());
 	}
 
+    public ComponentAdapter lastCA() {
+        return null; 
+    }
 }

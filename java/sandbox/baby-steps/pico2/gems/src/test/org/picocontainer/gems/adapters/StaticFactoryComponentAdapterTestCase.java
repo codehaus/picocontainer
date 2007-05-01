@@ -36,7 +36,7 @@ public class StaticFactoryComponentAdapterTestCase extends TestCase {
         });
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.registerComponent(componentAdapter).verify(pico);
+        pico.registerComponent(componentAdapter).lastCA().verify(pico);
         Registry registry = (Registry)pico.getComponent(Registry.class);
         assertNotNull(registry);
     }

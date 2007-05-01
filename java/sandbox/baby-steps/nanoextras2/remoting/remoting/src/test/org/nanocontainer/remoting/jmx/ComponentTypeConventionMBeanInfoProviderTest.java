@@ -37,7 +37,7 @@ public class ComponentTypeConventionMBeanInfoProviderTest extends MockObjectTest
     }
 
     public void testMBeanInfoIsDeterminedFromComponentType() {
-        final ComponentAdapter componentAdapter = pico.registerComponent("JUnit", Person.class);
+        final ComponentAdapter componentAdapter = pico.registerComponent("JUnit", Person.class).lastCA();
         pico.registerComponent(Person.class.getName() + "MBeanInfo", Person.createMBeanInfo());
 
         final MBeanInfo info = mBeanProvider.provide(pico, componentAdapter);

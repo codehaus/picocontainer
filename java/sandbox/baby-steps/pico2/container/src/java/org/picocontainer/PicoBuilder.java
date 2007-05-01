@@ -14,24 +14,33 @@ import org.picocontainer.alternatives.EmptyPicoContainer;
 
 public class PicoBuilder {
 
-    private Class parent = EmptyPicoContainer.class;
-    private Class headCaf;
-    private Class caf = CachingAndConstructorComponentAdapterFactory.class;
-    private Class componentMonitor = NullComponentMonitor.class;
-    private Class lifecycleStrategy = NullLifecycleStrategy.class;
+    private PicoContainer parentContainer;
+
+    public PicoBuilder(PicoContainer parentContainer) {
+        this.parentContainer = parentContainer;
+    }
+
+    public PicoBuilder() {
+        parentContainer = new EmptyPicoContainer();
+    }
+
+    private Class headComponentAdapterFactory;
+    private Class componentAdapterFactoryClass = CachingAndConstructorComponentAdapterFactory.class;
+    private Class componentMonitorClass = NullComponentMonitor.class;
+    private Class lifecycleStrategyClass = NullLifecycleStrategy.class;
 
     public PicoBuilder withStartableLifecycle() {
-        lifecycleStrategy = StartableLifecycleStrategy.class;
+        lifecycleStrategyClass = StartableLifecycleStrategy.class;
         return this;
     }
 
     public PicoBuilder withReflectionLifecycle() {
-        lifecycleStrategy = ReflectionLifecycleStrategy.class;
+        lifecycleStrategyClass = ReflectionLifecycleStrategy.class;
         return this;
     }
 
     public PicoBuilder withConsoleMonitor() {
-        componentMonitor =  ConsoleComponentMonitor.class;
+        componentMonitorClass =  ConsoleComponentMonitor.class;
         return this;
     }
 
@@ -39,15 +48,15 @@ public class PicoBuilder {
 
         DefaultPicoContainer temp = new DefaultPicoContainer();
 
-        temp.component(PicoContainer.class, parent);
-        temp.component(ComponentMonitor.class, componentMonitor);
-        temp.component(LifecycleStrategy.class, lifecycleStrategy);
-        if (headCaf == null) {
-            temp.component(ComponentAdapterFactory.class, caf);
+        temp.component(PicoContainer.class, parentContainer);
+        temp.component(ComponentMonitor.class, componentMonitorClass);
+        temp.component(LifecycleStrategy.class, lifecycleStrategyClass);
+        if (headComponentAdapterFactory == null) {
+            temp.component(ComponentAdapterFactory.class, componentAdapterFactoryClass);
         } else {
             DefaultPicoContainer temp2 = new DefaultPicoContainer(temp);
-            temp2.component(ComponentAdapterFactory.class, caf);
-            temp2.component("foo", headCaf);
+            temp2.component(ComponentAdapterFactory.class, componentAdapterFactoryClass);
+            temp2.component("foo", headComponentAdapterFactory);
             temp.component(ComponentAdapterFactory.class, temp2.getComponent("foo"));
         }
         temp.component(MutablePicoContainer.class, DefaultPicoContainer.class);
@@ -57,7 +66,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withImplementationHiding() {
-        headCaf = ImplementationHidingComponentAdapterFactory.class;
+        headComponentAdapterFactory = ImplementationHidingComponentAdapterFactory.class;
         return this;
     }
 }

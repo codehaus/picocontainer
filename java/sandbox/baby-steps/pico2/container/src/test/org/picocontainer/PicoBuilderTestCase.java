@@ -17,6 +17,8 @@ public class PicoBuilderTestCase extends TestCase {
 
     XStream xs = new XStream();
 
+
+
     public void testBasic() {
         MutablePicoContainer mpc = new PicoBuilder().build();
         String foo = xs.toXML(mpc);
@@ -70,6 +72,18 @@ public class PicoBuilderTestCase extends TestCase {
         assertTrue(foo.contains(EmptyPicoContainer.class.getName())); // parent
     }
 
+    public static class CustomParentcontainer extends EmptyPicoContainer {}
+
+    public void testWithCustomParentContainer() {
+        MutablePicoContainer mpc = new PicoBuilder(new CustomParentcontainer()).build();
+        String foo = xs.toXML(mpc);
+        System.err.println("-->" + foo);
+        assertTrue(foo.contains(DefaultPicoContainer.class.getName()));
+        assertTrue(foo.contains(NullLifecycleStrategy.class.getName()));
+        assertTrue(foo.contains(CachingAndConstructorComponentAdapterFactory.class.getName()));
+        assertTrue(foo.contains(NullComponentMonitor.class.getName()));
+        assertTrue(foo.contains(CustomParentcontainer.class.getName().replace("$","-"))); // parent
+    }
 
 
 }

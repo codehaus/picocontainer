@@ -38,6 +38,9 @@ public interface PicoContainer {
      */
     Object getComponent(Object componentKeyOrType);
 
+    <T> T getComponent(Class<T> componentType);
+
+
     /**
      * Retrieve all the registered component instances in the container, (not including those in the parent container).
      * The components are returned in their order of instantiation, which depends on the dependency order between them.

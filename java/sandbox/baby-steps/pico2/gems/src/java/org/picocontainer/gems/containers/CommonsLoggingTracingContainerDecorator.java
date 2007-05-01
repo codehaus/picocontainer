@@ -203,7 +203,11 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 		return result;
 	}
 
-	/**
+    public <T> T getComponent(Class<T> componentType) {
+        return (T) getComponent((Object) componentType);
+    }
+
+    /**
 	 * {@inheritDoc}
 	 * @return
 	 * @see org.picocontainer.PicoContainer#getComponents()

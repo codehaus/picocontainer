@@ -25,10 +25,15 @@ import org.picocontainer.ComponentAdapter;
  * @since 1.1
 */
 public class EmptyPicoContainer implements PicoContainer, Serializable {
+
     public Object getComponent(Object componentKeyOrType) {
         return null;
     }
-   
+
+    public <T> T getComponent(Class<T> componentType) {
+        return null;
+    }
+
     public List getComponents() {
         return Collections.EMPTY_LIST;
     }

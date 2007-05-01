@@ -84,8 +84,8 @@ public class PicoMap implements Map {
     }
 
     public void putAll(Map map) {
-        for (final Iterator iter = map.entrySet().iterator(); iter.hasNext();) {
-            final Map.Entry entry = (Map.Entry)iter.next();
+        for (Object o : map.entrySet()) {
+            final Entry entry = (Entry) o;
             put(entry.getKey(), entry.getValue());
         }
     }
@@ -98,10 +98,10 @@ public class PicoMap implements Map {
     }
 
     public Set keySet() {
-        Set set = new HashSet();
-        Collection adapters = mutablePicoContainer.getComponentAdapters();
-        for (final Iterator iter = adapters.iterator(); iter.hasNext();) {
-            final ComponentAdapter adapter = (ComponentAdapter)iter.next();
+        Set<Object> set = new HashSet<Object>();
+        Collection<ComponentAdapter> adapters = mutablePicoContainer.getComponentAdapters();
+        for (final Iterator<ComponentAdapter> iter = adapters.iterator(); iter.hasNext();) {
+            final ComponentAdapter adapter = iter.next();
             set.add(adapter.getComponentKey());
         }
         return Collections.unmodifiableSet(set);
@@ -112,10 +112,10 @@ public class PicoMap implements Map {
     }
 
     public Set entrySet() {
-        Set set = new HashSet();
-        Collection adapters = mutablePicoContainer.getComponentAdapters();
-        for (final Iterator iter = adapters.iterator(); iter.hasNext();) {
-            final Object key = ((ComponentAdapter)iter.next()).getComponentKey();
+        Set<Entry> set = new HashSet<Entry>();
+        Collection<ComponentAdapter> adapters = mutablePicoContainer.getComponentAdapters();
+        for (final Iterator<ComponentAdapter> iter = adapters.iterator(); iter.hasNext();) {
+            final Object key = (iter.next()).getComponentKey();
             final Object component = mutablePicoContainer.getComponent(key);
             set.add(new Map.Entry() {
                 public Object getKey() {

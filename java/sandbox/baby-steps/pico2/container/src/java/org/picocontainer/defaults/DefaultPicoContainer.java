@@ -367,6 +367,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
     }
 
+    public <T> T getComponent(Class<T> componentType) {
+        return (T) getComponent((Object) componentType);
+    }
 
     private Object getInstance(ComponentAdapter componentAdapter) {
         // check wether this is our adapter

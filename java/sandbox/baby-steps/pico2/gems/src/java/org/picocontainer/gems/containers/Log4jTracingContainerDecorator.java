@@ -248,7 +248,12 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 		return result;
 	}
 
-	/**
+    public <T> T getComponent(Class<T> componentType) {
+        return (T) getComponent((Object) componentType);
+    }    
+
+
+    /**
 	 * {@inheritDoc}
 	 * 
 	 * @param componentType

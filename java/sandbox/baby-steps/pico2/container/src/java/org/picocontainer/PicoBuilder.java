@@ -5,6 +5,7 @@ import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
 import org.picocontainer.componentadapters.ImplementationHidingComponentAdapterFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
@@ -17,6 +18,9 @@ public class PicoBuilder {
     private PicoContainer parentContainer;
 
     public PicoBuilder(PicoContainer parentContainer) {
+        if (parentContainer == null) {
+            throw new NullPointerException("parentContainer class cannot be null");
+        }
         this.parentContainer = parentContainer;
     }
 
@@ -44,6 +48,18 @@ public class PicoBuilder {
         return this;
     }
 
+    public PicoBuilder withMonitor(Class cmClass) {
+        if (cmClass == null) {
+            throw new NullPointerException("monitor class cannot be null");
+        }
+        if (!ComponentMonitor.class.isAssignableFrom(cmClass)) {
+            throw new AssignabilityRegistrationException(ComponentMonitor.class, cmClass);
+        }
+        componentMonitorClass = cmClass;
+        return this;
+    }
+
+
     public MutablePicoContainer build() {
 
         DefaultPicoContainer temp = new DefaultPicoContainer();
@@ -69,4 +85,5 @@ public class PicoBuilder {
         headComponentAdapterFactory = ImplementationHidingComponentAdapterFactory.class;
         return this;
     }
+
 }

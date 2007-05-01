@@ -123,8 +123,12 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
     public void testPicoUsedInBuilderStyle() {
         MutablePicoContainer pico = createPicoContainer(null);
-        Touchable t = (Touchable) pico.component(SimpleTouchable.class).component(DecoratedTouchable.class).getComponent((Object) DecoratedTouchable.class);
+        Touchable t = pico.component(SimpleTouchable.class).component(DecoratedTouchable.class).getComponent(DecoratedTouchable.class);
+        SimpleTouchable t2 = pico.getComponent(SimpleTouchable.class);
         assertNotNull(t);
+        assertNotNull(t2);
+        t.touch();
+        assertTrue(t2.wasTouched);
     }
 
     public static class Thingie {

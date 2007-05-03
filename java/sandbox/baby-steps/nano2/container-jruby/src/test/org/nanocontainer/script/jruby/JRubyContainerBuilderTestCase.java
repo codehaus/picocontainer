@@ -25,6 +25,7 @@ import org.nanocontainer.testmodel.X;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.componentadapters.InstanceComponentAdapter;
 import org.picocontainer.componentadapters.SetterInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -226,7 +227,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         A a = new A();
         Mock cafMock = mock(ComponentAdapterFactory.class);
-        cafMock.expects(once()).method("createComponentAdapter").with(same(A.class), same(A.class), eq(null))
+        cafMock.expects(once()).method("createComponentAdapter").with(isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null))
             .will(returnValue(new InstanceComponentAdapter(A.class, a)));
         PicoContainer pico = buildContainer(script, null, cafMock.proxy());
         assertSame(a, pico.getComponent(A.class));
@@ -254,10 +255,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
-                                         "CachingAndConstructorComponentAdapterFactory = org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory\n" +
+                                         "CachingComponentAdapterFactory = org.picocontainer.componentadapters.CachingComponentAdapterFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:component_adapter_factory => CachingAndConstructorComponentAdapterFactory.new, :component_monitor => monitor) {\n"
+                                         "container(:component_adapter_factory => CachingComponentAdapterFactory.new, :component_monitor => monitor) {\n"
                                          +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +
@@ -292,10 +293,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
-                                         "CachingAndConstructorComponentAdapterFactory = org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory\n" +
+                                         "CachingComponentAdapterFactory = org.picocontainer.componentadapters.CachingComponentAdapterFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:parent => $parent, :component_adapter_factory => CachingAndConstructorComponentAdapterFactory.new, :component_monitor => monitor) {\n"
+                                         "container(:parent => $parent, :component_adapter_factory => CachingComponentAdapterFactory.new, :component_monitor => monitor) {\n"
                                          +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +

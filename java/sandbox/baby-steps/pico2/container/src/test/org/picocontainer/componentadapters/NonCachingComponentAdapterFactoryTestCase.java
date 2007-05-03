@@ -27,31 +27,38 @@ import java.util.HashMap;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Revision$
  */
-public class CachingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public class NonCachingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     protected void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-        return new CachingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
+        return new NonCachingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
     }
 
     public void testContainerReturnsSameInstanceEachCall() {
         picoContainer.component(Touchable.class, SimpleTouchable.class);
         Touchable t1 = (Touchable) picoContainer.getComponent(Touchable.class);
         Touchable t2 = (Touchable) picoContainer.getComponent(Touchable.class);
-        assertSame(t1, t2);
+        assertNotSame(t1, t2);
     }
 
     public void testContainerCanFollowNOCACHEDirectiveSelectively() {
         picoContainer.component(Touchable.class, SimpleTouchable.class);
-        picoContainer.change(ComponentCharacteristics.NOCACHE);
+        picoContainer.change(ComponentCharacteristics.CACHE);
         picoContainer.component(Map.class, HashMap.class);
-        assertSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
-        final Map component = picoContainer.getComponent(Map.class);
-        final Map component1 = picoContainer.getComponent(Map.class);
-        assertNotSame(component, component1);
+        assertNotSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
+        assertSame(picoContainer.getComponent(Map.class), picoContainer.getComponent(Map.class));
     }
+
+    public void testContainerCanFollowSINGLETONDirectiveSelectively() {
+        picoContainer.component(Touchable.class, SimpleTouchable.class);
+        picoContainer.change(ComponentCharacteristics.SINGLETON);
+        picoContainer.component(Map.class, HashMap.class);
+        assertNotSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
+        assertSame(picoContainer.getComponent(Map.class), picoContainer.getComponent(Map.class));
+    }
+
 
 
 }

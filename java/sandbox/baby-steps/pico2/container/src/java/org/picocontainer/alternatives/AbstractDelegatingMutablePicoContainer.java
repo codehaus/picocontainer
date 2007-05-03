@@ -20,6 +20,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ComponentCharacteristic;
 
 /**
  * @author Paul Hammant
@@ -128,5 +129,9 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
 
     public ComponentAdapter lastCA() {
         return null; 
+    }
+
+    public MutablePicoContainer change(ComponentCharacteristic... rc) {
+        return delegate.change(rc); 
     }
 }

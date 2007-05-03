@@ -18,6 +18,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapter;
 import org.picocontainer.componentadapters.InstanceComponentAdapter;
 import org.picocontainer.componentadapters.SynchronizedComponentAdapter;
@@ -29,6 +30,8 @@ import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
+import static org.picocontainer.ComponentCharacteristics.CDI;
+import static org.picocontainer.ComponentCharacteristics.SDI;
 
 import java.io.Serializable;
 import java.io.StringWriter;
@@ -225,14 +228,16 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         pico.component("t3", SimpleTouchable.class);
         Touchable t1 = (Touchable) pico.getComponent("t1");
         assertNotNull(t1);
-        assertTrue("writer not empty", writer1.toString().length() > 0);
+        final String s = writer1.toString();
+        assertTrue("writer not empty", s.length() > 0);
         StringWriter writer2 = new StringWriter();
         ComponentMonitor monitor2 = new WriterComponentMonitor(writer2);
         pico.changeMonitor(monitor2);
         pico.component("t2", SimpleTouchable.class);
         Touchable t2 = (Touchable) pico.getComponent("t2");
         assertNotNull(t2);
-        assertTrue("writer not empty", writer2.toString().length() > 0);
+        final String s2 = writer2.toString();
+        assertTrue("writer not empty", s2.length() > 0);
         assertTrue("writers of same length", writer1.toString().length() == writer2.toString().length());
         Touchable t3 = (Touchable) pico.getComponent("t3");
         assertNotNull(t3);
@@ -331,7 +336,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         public ComponentAdapterFactoryWithNoMonitor(ComponentAdapter adapter){
             this.adapter = adapter;
         }
-        public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
             return adapter;
         }        
     }
@@ -471,4 +476,74 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertEquals(SynchronizedComponentAdapter.class, mpc.component("foobar").lastCA().getClass());
         assertEquals(SynchronizedComponentAdapter.class, mpc.component(SimpleA.class).lastCA().getClass());
     }
+
+
+    public static class Horse {}
+
+    public static class CdiTurtle {
+        public final Horse horse;
+        public CdiTurtle(Horse horse) {
+            this.horse = horse;
+        }
+    }
+
+    public static class SdiDonkey {
+        public Horse horse;
+        public void setHorse(Horse horse) {
+            this.horse = horse;
+        }
+    }
+
+    public void testMixingOfSDIandCDI() {
+        MutablePicoContainer container = createPicoContainer(null);
+
+        container.component(Horse.class);
+        container.change(SDI);
+        container.component(SdiDonkey.class);
+        container.change(CDI);
+        container.component(CdiTurtle.class);
+
+        SdiDonkey donkey = container.getComponent(SdiDonkey.class);
+        assertNotNull(donkey);
+        CdiTurtle turtle = container.getComponent(CdiTurtle.class);
+        assertNotNull(turtle);
+        assertNotNull(turtle.horse);
+        assertNotNull(donkey.horse);
+        assertSame(container.getComponent(SdiDonkey.class).horse, container.getComponent(CdiTurtle.class).horse);
+    }
+
+    public void testMixingOfSDIandCDIInBuilderStyle() {
+
+        MutablePicoContainer container = createPicoContainer(null);
+
+        container.component(Horse.class).change(SDI)
+                .component(SdiDonkey.class).change(CDI).component(CdiTurtle.class);
+
+        SdiDonkey donkey = container.getComponent(SdiDonkey.class);
+        assertNotNull(donkey);
+        CdiTurtle turtle = container.getComponent(CdiTurtle.class);
+        assertNotNull(turtle);
+        assertNotNull(turtle.horse);
+        assertNotNull(donkey.horse);
+        assertSame(container.getComponent(SdiDonkey.class).horse, container.getComponent(CdiTurtle.class).horse);
+    }
+
+    public void testMixingOfSDIandCDIDifferently() {
+        MutablePicoContainer container = createPicoContainer(null);
+
+        container.component(Horse.class);
+        container.component(CdiTurtle.class);
+        container.change(SDI);
+        container.component(SdiDonkey.class);
+
+        SdiDonkey donkey = container.getComponent(SdiDonkey.class);
+        assertNotNull(donkey);
+        CdiTurtle turtle = container.getComponent(CdiTurtle.class);
+        assertNotNull(turtle);
+        assertNotNull(turtle.horse);
+        assertNotNull(donkey.horse);
+        assertSame(container.getComponent(SdiDonkey.class).horse, container.getComponent(CdiTurtle.class).horse);
+    }
+
+
 }

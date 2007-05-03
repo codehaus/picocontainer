@@ -17,6 +17,10 @@ package org.nanocontainer.testmodel;
  */
 public class OrderEntityImpl implements OrderEntity {
 
+    public OrderEntityImpl() {
+        System.err.println("");
+    }
+
     public void saveMeToo() {
     }
 

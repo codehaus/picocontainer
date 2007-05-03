@@ -13,7 +13,8 @@ import org.nanocontainer.aop.AspectsApplicator;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.componentadapters.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -49,18 +50,18 @@ public class AspectsComponentAdapterFactory extends DecoratingComponentAdapterFa
      * will produce <code>AspectsComponentAdapter</code> objects that will use
      * <code>aspectsApplicator</code> to apply aspects to components produced
      * by a
-     * <code>org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory</code>.
+     * <code>org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory</code>.
      *
      * @param aspectsApplicator used to apply the aspects.
      */
     public AspectsComponentAdapterFactory(AspectsApplicator aspectsApplicator) {
-        this(aspectsApplicator, new CachingAndConstructorComponentAdapterFactory());
+        this(aspectsApplicator, new AnyInjectionComponentAdapterFactory());
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation,
+    public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation,
                                                    Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException,
             NotConcreteRegistrationException {
-        return new AspectsComponentAdapter(aspectsApplicator, super.createComponentAdapter(componentKey,
+        return new AspectsComponentAdapter(aspectsApplicator, super.createComponentAdapter(registerationCharacteristic, componentKey,
                 componentImplementation, parameters));
     }
 

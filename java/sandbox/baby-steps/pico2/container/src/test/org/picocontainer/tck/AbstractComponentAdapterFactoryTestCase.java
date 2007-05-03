@@ -13,6 +13,8 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -34,7 +36,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
     }
 
     public void testEquals() throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
+        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, null);
 
         assertEquals(componentAdapter, componentAdapter);
         assertTrue(!componentAdapter.equals("blah"));
@@ -42,7 +44,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
 
     public void testRegisterComponent() throws PicoRegistrationException, AssignabilityRegistrationException {
         ComponentAdapter componentAdapter =
-                createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
+                createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, null);
 
         picoContainer.adapter(componentAdapter);
 
@@ -51,7 +53,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
 
     public void testUnregisterComponent() throws PicoRegistrationException, AssignabilityRegistrationException {
         ComponentAdapter componentAdapter =
-                createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, null);
+                createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, null);
 
         picoContainer.adapter(componentAdapter);
         picoContainer.unregisterComponent(Touchable.class);

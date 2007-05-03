@@ -14,6 +14,7 @@ import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.componentadapters.DecoratingComponentAdapter;
 
 import java.io.Reader;
@@ -52,12 +53,14 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         assertEquals(5, pico.getComponents().size());
         assertEquals("foo bar", pico.getComponent("foo"));
-        assertEquals(new Integer(239), pico.getComponent("bar"));
-        assertEquals(555, ((DefaultWebServerConfig) pico.getComponent(DefaultWebServerConfig.class)).getPort());
+        assertEquals(239, pico.getComponent("bar"));
+        assertEquals(555, pico.getComponent(DefaultWebServerConfig.class).getPort());
 
         assertNotNull(pico.getComponent(WebServerImpl.class));
         assertNotNull(pico.getComponent(ThingThatTakesParamsInConstructor.class));
-        assertSame(pico.getComponent("konstantin needs beer"), pico.getComponent(ThingThatTakesParamsInConstructor.class));
+        final Object o = pico.getComponent("konstantin needs beer");
+        final ThingThatTakesParamsInConstructor o2 = pico.getComponent(ThingThatTakesParamsInConstructor.class);
+        assertSame(o, o2);
         assertEquals("it's really late239", ((ThingThatTakesParamsInConstructor) pico.getComponent("konstantin needs beer")).getValue());
     }
 
@@ -125,7 +128,8 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         );
         
        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,null);
-       DecoratingComponentAdapter adapter = (DecoratingComponentAdapter)pico.getComponentAdapter("foo");
+        ComponentAdapter componentAdapter = pico.getComponentAdapter("foo");
+        DecoratingComponentAdapter adapter = (DecoratingComponentAdapter) componentAdapter;
        assertNotNull(adapter);
     }
     

@@ -13,6 +13,7 @@ package org.picocontainer.componentadapters;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
@@ -49,12 +50,12 @@ public class SetterInjectionComponentAdapterFactory extends MonitoringComponentA
     /**
      * Create a {@link SetterInjectionComponentAdapter}.
      *
-     * @param componentKey            The component's key
+     * @param registerationCharacteristic
+     *@param componentKey            The component's key
      * @param componentImplementation The class of the bean.
      * @param parameters              Any parameters for the setters. If null the adapter solves the
-     *                                dependencies for all setters internally. Otherwise the number parameters must match
-     *                                the number of the setter.
-     * @return Returns a new {@link SetterInjectionComponentAdapter}.
+*                                dependencies for all setters internally. Otherwise the number parameters must match
+*                                the number of the setter. @return Returns a new {@link SetterInjectionComponentAdapter}.
      * @throws PicoIntrospectionException if dependencies cannot be solved
      * @throws org.picocontainer.defaults.AssignabilityRegistrationException
      *                                    if  the <code>componentKey</code> is a type
@@ -63,7 +64,7 @@ public class SetterInjectionComponentAdapterFactory extends MonitoringComponentA
      *                                    if the implementation is an interface or an
      *                                    abstract class.
      */
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter... parameters)
+    public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters, 
                 allowNonPublicClasses, currentMonitor(), lifecycleStrategy);

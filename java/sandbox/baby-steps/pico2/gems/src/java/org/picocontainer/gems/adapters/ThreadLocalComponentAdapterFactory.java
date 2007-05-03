@@ -16,6 +16,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.componentadapters.CachingComponentAdapter;
 import org.picocontainer.componentadapters.DecoratingComponentAdapterFactory;
@@ -109,15 +110,15 @@ public class ThreadLocalComponentAdapterFactory extends DecoratingComponentAdapt
     }
 
     public ComponentAdapter createComponentAdapter(
-            Object componentKey, Class componentImplementation, Parameter... parameters)
+            ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final ComponentAdapter componentAdapter;
         if (ensureThreadLocal) {
             componentAdapter = new ThreadLocalComponentAdapter(super.createComponentAdapter(
-                    componentKey, componentImplementation, parameters), proxyFactory);
+                    null, componentKey, componentImplementation, parameters), proxyFactory);
         } else {
             componentAdapter = new CachingComponentAdapter(super.createComponentAdapter(
-                    componentKey, componentImplementation, parameters), new ThreadLocalReference());
+                    null, componentKey, componentImplementation, parameters), new ThreadLocalReference());
         }
         return componentAdapter;
     }

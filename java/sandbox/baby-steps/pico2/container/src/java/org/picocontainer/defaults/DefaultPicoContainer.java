@@ -30,9 +30,11 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
-import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.componentadapters.InstanceComponentAdapter;
+import org.picocontainer.componentadapters.CachingComponentAdapterFactory;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.DefaultComponentMonitor;
 
@@ -86,6 +88,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     private LifecycleManager lifecycleManager = new OrderedComponentAdapterLifecycleManager();
     private LifecycleStrategy lifecycleStrategyForInstanceRegistrations;
+    private ComponentCharacteristic rc = new ComponentCharacteristic() {
+        public void mergeInto(ComponentCharacteristic rc) {
+        }
+        public boolean isSoCharacterized(ComponentCharacteristic rc) {
+            return false;
+        }
+    };
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
@@ -131,19 +140,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-      * Creates a new container with the CachingAndConstructorComponentAdapterFactory using a
+      * Creates a new container with the AnyInjectionComponentAdapterFactory using a
       * custom ComponentMonitor
       *
       * @param monitor the ComponentMonitor to use
       * @param parent the parent container (used for component dependency lookups).
       */
     public DefaultPicoContainer(ComponentMonitor monitor, PicoContainer parent) {
-        this(new CachingAndConstructorComponentAdapterFactory(monitor), parent);
+        this(new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory(monitor)), parent);
         lifecycleStrategyForInstanceRegistrations = new StartableLifecycleStrategy(monitor);
+        ((CachingComponentAdapterFactory) componentAdapterFactory).changeMonitor(monitor);
     }
 
     /**
-      * Creates a new container with the CachingAndConstructorComponentAdapterFactory using a
+      * Creates a new container with the AnyInjectionComponentAdapterFactory using a
       * custom ComponentMonitor and lifecycle strategy
       *
       * @param monitor the ComponentMonitor to use
@@ -151,7 +161,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
       * @param parent the parent container (used for component dependency lookups).
       */
     public DefaultPicoContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new CachingAndConstructorComponentAdapterFactory(monitor, lifecycleStrategy), lifecycleStrategy,  parent);
+        this(new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory(monitor, lifecycleStrategy)), lifecycleStrategy,  parent);
+        ((CachingComponentAdapterFactory) componentAdapterFactory).changeMonitor(monitor);
     }
 
 
@@ -161,7 +172,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-      * Creates a new container with the CachingAndConstructorComponentAdapterFactory using a
+      * Creates a new container with the AnyInjectionComponentAdapterFactory using a
       * custom lifecycle strategy
       *
       * @param lifecycleStrategy the lifecycle strategy to use.
@@ -182,7 +193,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-      * Creates a new container with the CachingAndConstructorComponentAdapterFactory using a
+      * Creates a new container with the AnyInjectionComponentAdapterFactory using a
       * custom ComponentMonitor
       *
       * @param monitor the ComponentMonitor to use
@@ -192,20 +203,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with a (caching) {@link CachingAndConstructorComponentAdapterFactory}
+     * Creates a new container with a (caching) {@link AnyInjectionComponentAdapterFactory}
      * and a parent container.
      *
      * @param parent the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(PicoContainer parent) {
-        this(new CachingAndConstructorComponentAdapterFactory(), parent);
+        this(new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory()), parent);
     }
 
     /**
-     * Creates a new container with a (caching) {@link CachingAndConstructorComponentAdapterFactory} and no parent container.
+     * Creates a new container with a (caching) {@link AnyInjectionComponentAdapterFactory} and no parent container.
      */
     public DefaultPicoContainer() {
-        this(new CachingAndConstructorComponentAdapterFactory(), null);
+        this(new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory()), null);
     }
 
     public Collection<ComponentAdapter> getComponentAdapters() {
@@ -309,7 +320,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
         if (componentImplementationOrInstance instanceof Class) {
-            ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentKey,
+            ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(rc, componentKey,
                     (Class) componentImplementationOrInstance, parameters);
             return adapter(componentAdapter);
         } else {
@@ -537,6 +548,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return null; 
     }
 
+    public MutablePicoContainer change(ComponentCharacteristic... rcs) {
+        for (ComponentCharacteristic rc : rcs) {
+            rc.mergeInto(this.rc);
+        }
+        return this;
+    }
+
     public void accept(PicoVisitor visitor) {
         visitor.visitContainer(this);
         final List<ComponentAdapter> componentAdapters = new ArrayList<ComponentAdapter>(getComponentAdapters());
@@ -617,8 +635,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
          */
         public void start(PicoContainer node) {
             Collection<ComponentAdapter> adapters = getComponentAdapters();
-            for (ComponentAdapter adapter1 : adapters) {
-                final ComponentAdapter adapter = (ComponentAdapter) adapter1;
+            for (ComponentAdapter adapter : adapters) {
                 if (adapter instanceof LifecycleManager) {
                     LifecycleManager manager = (LifecycleManager) adapter;
                     if (manager.hasLifecycle()) {
@@ -694,6 +711,5 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return componentAdapter;
         }
     }
-
 
 }

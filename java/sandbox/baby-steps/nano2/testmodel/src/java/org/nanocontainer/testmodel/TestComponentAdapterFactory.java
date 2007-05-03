@@ -3,7 +3,8 @@ package org.nanocontainer.testmodel;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
@@ -11,7 +12,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class TestComponentAdapterFactory extends CachingAndConstructorComponentAdapterFactory {
+public class TestComponentAdapterFactory extends AnyInjectionComponentAdapterFactory {
 
     public StringBuffer sb;
 
@@ -19,8 +20,8 @@ public class TestComponentAdapterFactory extends CachingAndConstructorComponentA
         this.sb = sb;
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         sb.append("called");
-        return super.createComponentAdapter(componentKey, componentImplementation, parameters);    //To change body of overridden methods use File | Settings | File Templates.
+        return super.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters); 
     }
 }

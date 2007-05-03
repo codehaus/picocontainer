@@ -15,6 +15,7 @@ import java.util.Map;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.componentadapters.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
@@ -43,8 +44,8 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
     /**
      * {@inheritDoc}
      */
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentKey, componentImplementation, parameters);
+    public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        ComponentAdapter decoratedAdapter = super.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters);
         BeanPropertyComponentAdapter propertyAdapter = new BeanPropertyComponentAdapter(decoratedAdapter);
         adapterCache.put(componentKey, propertyAdapter);
         return propertyAdapter;

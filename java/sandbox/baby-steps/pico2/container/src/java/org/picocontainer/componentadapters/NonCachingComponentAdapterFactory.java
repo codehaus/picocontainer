@@ -25,22 +25,22 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Revision$
  */
-public class CachingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+public class NonCachingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
 
-    public CachingComponentAdapterFactory() {
-        this(new AnyInjectionComponentAdapterFactory());
+    public NonCachingComponentAdapterFactory() {
+        this(null);
     }
 
-    public CachingComponentAdapterFactory(ComponentAdapterFactory delegate) {
+    public NonCachingComponentAdapterFactory(ComponentAdapterFactory delegate) {
         super(delegate);
     }
 
     public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        if (ComponentCharacteristics.NOCACHE.isSoCharacterized(registerationCharacteristic)) {
-            return super.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters);
+        if (ComponentCharacteristics.CACHE.isSoCharacterized(registerationCharacteristic)) {
+            return new CachingComponentAdapter(super.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters));
         }
-        return new CachingComponentAdapter(super.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters));
+        return super.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters);
 
     }
 }

@@ -22,6 +22,7 @@ import org.nanocontainer.testmodel.X;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.componentadapters.InstanceComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.componentadapters.SetterInjectionComponentAdapter;
@@ -281,7 +282,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         A a = new A();
         Mock cafMock = mock(ComponentAdapterFactory.class);
-        cafMock.expects(once()).method("createComponentAdapter").with(same(A.class), same(A.class), eq(null)).will(returnValue(new InstanceComponentAdapter(A.class, a)));
+        cafMock.expects(once()).method("createComponentAdapter").with(isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)).will(returnValue(new InstanceComponentAdapter(A.class, a)));
         ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cafMock.proxy();
         PicoContainer pico = buildContainer(script, null, componentAdapterFactory);
         assertSame(a, pico.getComponent(A.class));
@@ -313,20 +314,20 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
-                "import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory\n" +
+                "import org.picocontainer.componentadapters.CachingComponentAdapterFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "builder = new GroovyNodeBuilder()\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(componentAdapterFactory: new CachingAndConstructorComponentAdapterFactory(), componentMonitor: monitor) {\n" +
+                "nano = builder.container(componentAdapterFactory: new CachingComponentAdapterFactory(), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
 
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
         pico.getComponent(WebServerConfig.class);
-        StringWriter writer = (StringWriter)pico.getComponent(StringWriter.class);
+        StringWriter writer = pico.getComponent(StringWriter.class);
         assertTrue(writer.toString().length() > 0);
     }
 
@@ -356,13 +357,13 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
-                "import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory\n" +
+                "import org.picocontainer.componentadapters.CachingComponentAdapterFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "builder = new GroovyNodeBuilder()\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(parent:parent, componentAdapterFactory: new CachingAndConstructorComponentAdapterFactory(), componentMonitor: monitor) {\n" +
+                "nano = builder.container(parent:parent, componentAdapterFactory: new CachingComponentAdapterFactory(), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");

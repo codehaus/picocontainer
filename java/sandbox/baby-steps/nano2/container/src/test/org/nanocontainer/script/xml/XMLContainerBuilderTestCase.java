@@ -17,24 +17,21 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.JButton;
 
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.script.BarDecoratingPicoContainer;
-import org.nanocontainer.script.FooDecoratingPicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfigComp;
+import org.nanocontainer.TestHelper;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -137,16 +134,12 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         PicoContainer pico = buildContainer(script);
         assertNotNull(pico.getComponent(DefaultWebServerConfig.class));
 
-        StringBuffer sb = (StringBuffer) pico.getComponent(StringBuffer.class);
+        StringBuffer sb = pico.getComponent(StringBuffer.class);
         assertTrue(sb.toString().indexOf("-WebServerImpl") != -1);
     }
 
     public void testClassLoaderHierarchy() throws IOException {
-        String testcompJarFileName = System.getProperty("testcomp.jar", "src/test-comp/TestComp.jar");
-        // Paul's path to TestComp. PLEASE do not take out.
-        //testcompJarFileName = "D:/OSS/PN/java/nanocontainer/src/test-comp/TestComp.jar";
-        File testCompJar = new File(testcompJarFileName);
-        assertTrue("The testcomp.jar system property should point to java/nanocontainer/src/test-comp/TestComp.jar", testCompJar.isFile());
+        File testCompJar = TestHelper.getTestCompJarFile();
         File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
         File notStartableJar = new File(testCompJar.getParentFile(), "NotStartable.jar");
 
@@ -176,7 +169,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         Object fooTestComp = pico.getComponent("foo");
         assertNotNull("Container should have a 'foo' component", fooTestComp);
 
-        StringBuffer sb = (StringBuffer) pico.getComponent(StringBuffer.class);
+        StringBuffer sb = pico.getComponent(StringBuffer.class);
         assertTrue("Container should have instantiated a 'TestComp2' component because it is Startable", sb.toString().indexOf("-TestComp2") != -1);
         // We are using the DefaultLifecycleManager, which only instantiates Startable components, and not non-Startable components.
         assertTrue("Container should NOT have instantiated a 'NotStartable' component because it is NOT Startable", sb.toString().indexOf("-NotStartable") == -1);
@@ -585,7 +578,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "	</org.nanocontainer.script.xml.TestBean>" +
                 "  </component-instance>" +
                 "  <component-adapter key='beanKey' class='org.nanocontainer.script.xml.TestBeanComposer'" +
-                "					factory='" + CachingAndConstructorComponentAdapterFactory.class.getName() + "'>" +
+                "					factory='" + AnyInjectionComponentAdapterFactory.class.getName() + "'>" +
                 " 		<parameter key='bean1'/>" +
                 " 		<parameter key='bean2'/>" +
                 "  </component-adapter>" +
@@ -647,7 +640,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
 
     public void testComponentMonitorCanBeSpecifiedIfCAFIsSpecified() {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='" + CachingAndConstructorComponentAdapterFactory.class.getName() +
+                "<container component-adapter-factory='" + AnyInjectionComponentAdapterFactory.class.getName() +
                 "' component-monitor='" + StaticWriterComponentMonitor.class.getName() + "'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");

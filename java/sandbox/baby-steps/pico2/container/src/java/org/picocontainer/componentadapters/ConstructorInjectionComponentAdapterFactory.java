@@ -14,6 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.componentadapters.MonitoringComponentAdapterFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.DelegatingComponentMonitor;
@@ -52,7 +53,7 @@ public class ConstructorInjectionComponentAdapterFactory extends MonitoringCompo
         this(false);
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey,
+    public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {

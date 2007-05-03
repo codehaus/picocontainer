@@ -16,6 +16,10 @@ package org.nanocontainer.testmodel;
  */
 public class DaoImpl implements Dao {
 
+    public DaoImpl() {
+        System.err.println("");
+    }
+
     public String loadData() {
         return "data";
     }

@@ -37,11 +37,13 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.componentadapters.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DelegatingComponentMonitor;
 import org.w3c.dom.Element;
@@ -61,7 +63,7 @@ import org.xml.sax.SAXException;
  */
 public class XMLContainerBuilder extends ScriptedContainerBuilder implements ContainerPopulator {
 
-    private final static String DEFAULT_COMPONENT_ADAPTER_FACTORY = CachingAndConstructorComponentAdapterFactory.class.getName();
+    private final static String DEFAULT_COMPONENT_ADAPTER_FACTORY = CachingComponentAdapterFactory.class.getName();
     private final static String DEFAULT_COMPONENT_INSTANCE_FACTORY = BeanComponentInstanceFactory.class.getName();
     private final static String DEFAULT_COMPONENT_MONITOR = DelegatingComponentMonitor.class.getName();
 
@@ -424,7 +426,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
         Parameter[] parameters = createChildParameters(container, element);
         ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory(element.getAttribute(FACTORY), metaContainer);
-        container.adapter(componentAdapterFactory.createComponentAdapter(key, implementationClass, parameters));
+
+        container.adapter(componentAdapterFactory.createComponentAdapter(new ComponentCharacteristic(), key, implementationClass, parameters));
     }
 
     private ComponentAdapterFactory createComponentAdapterFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {

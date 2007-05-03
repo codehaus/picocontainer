@@ -10,6 +10,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ComponentCharacteristic;
 
 /**
  *  
@@ -420,5 +421,9 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 
     public ComponentAdapter lastCA() {
         return null; 
+    }
+
+    public MutablePicoContainer change(ComponentCharacteristic... rcs) {
+        return delegate.change(rcs);
     }
 }

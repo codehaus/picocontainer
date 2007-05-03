@@ -38,7 +38,7 @@ public class ConstructorInjectionComponentAdapterFactoryTestCase extends Abstrac
         ConstructorInjectionComponentAdapterFactory caf =
             new ConstructorInjectionComponentAdapterFactory(false, strategy);
         ConstructorInjectionComponentAdapter cica =  (ConstructorInjectionComponentAdapter)
-        caf.createComponentAdapter(NullLifecycle.class, NullLifecycle.class, new Parameter[0]);
+        caf.createComponentAdapter(null, NullLifecycle.class, NullLifecycle.class, new Parameter[0]);
         One one = new RecordingLifecycle.One(new StringBuffer());
         cica.start(one);
         cica.stop(one);        

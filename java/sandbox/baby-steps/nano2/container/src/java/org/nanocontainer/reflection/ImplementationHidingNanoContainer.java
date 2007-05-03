@@ -17,7 +17,8 @@ import org.nanocontainer.NanoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.alternatives.ImplementationHidingPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.componentadapters.CachingComponentAdapterFactory;
 
 /**
  * This is a MutablePicoContainer that supports soft composition and hides implementations where it can.
@@ -37,7 +38,7 @@ public class ImplementationHidingNanoContainer extends AbstractNanoContainer imp
 
 
     public ImplementationHidingNanoContainer(ClassLoader classLoader, PicoContainer parent) {
-        super(new ImplementationHidingPicoContainer(new CachingAndConstructorComponentAdapterFactory(), parent), classLoader);
+        super(new ImplementationHidingPicoContainer(new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory()), parent), classLoader);
     }
 
     public ImplementationHidingNanoContainer(PicoContainer pc) {

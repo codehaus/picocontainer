@@ -2,7 +2,7 @@ package org.picocontainer;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.componentadapters.ImplementationHidingComponentAdapterFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
@@ -29,7 +29,7 @@ public class PicoBuilder {
     }
 
     private Class headComponentAdapterFactory;
-    private Class componentAdapterFactoryClass = CachingAndConstructorComponentAdapterFactory.class;
+    private Class componentAdapterFactoryClass = AnyInjectionComponentAdapterFactory.class;
     private Class componentMonitorClass = NullComponentMonitor.class;
     private Class lifecycleStrategyClass = NullLifecycleStrategy.class;
 

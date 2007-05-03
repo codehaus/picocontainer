@@ -14,11 +14,11 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.componentadapters.MonitoringComponentAdapterFactory;
+import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.DefaultComponentMonitor;
@@ -31,26 +31,42 @@ import org.picocontainer.monitors.DefaultComponentMonitor;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class CachingAndConstructorComponentAdapterFactory extends MonitoringComponentAdapterFactory {
+public class AnyInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
 
     private final LifecycleStrategy lifecycleStrategy;
 
-    public CachingAndConstructorComponentAdapterFactory(ComponentMonitor monitor) {
+    ConstructorInjectionComponentAdapterFactory cdiCaf;
+    private SetterInjectionComponentAdapterFactory sdiCaf;
+
+
+    public AnyInjectionComponentAdapterFactory(ComponentMonitor monitor) {
         super(monitor);
         this.lifecycleStrategy = new StartableLifecycleStrategy(monitor);
+        cafs(monitor, lifecycleStrategy);
     }
 
-    public CachingAndConstructorComponentAdapterFactory(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
+    private void cafs(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
+        cdiCaf = new ConstructorInjectionComponentAdapterFactory(false, monitor, lifecycleStrategy);
+        sdiCaf = new SetterInjectionComponentAdapterFactory(false, lifecycleStrategy);
+        sdiCaf.changeMonitor(monitor);
+    }
+
+    public AnyInjectionComponentAdapterFactory(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
         super(monitor);
         this.lifecycleStrategy = lifecycleStrategy;
+        cafs(monitor, lifecycleStrategy);
     }
 
-    public CachingAndConstructorComponentAdapterFactory() {
+    public AnyInjectionComponentAdapterFactory() {
         this.lifecycleStrategy = new StartableLifecycleStrategy(new DefaultComponentMonitor());
+        cafs(currentMonitor(), lifecycleStrategy);
     }
 
-    public ComponentAdapter createComponentAdapter(Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, false, currentMonitor(), lifecycleStrategy));
+    public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        if (ComponentCharacteristics.SDI.isSoCharacterized(registerationCharacteristic)) {
+            return sdiCaf.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters);
+        }
+        return cdiCaf.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters);
     }
 
     public void changeMonitor(ComponentMonitor monitor) {
@@ -58,6 +74,8 @@ public class CachingAndConstructorComponentAdapterFactory extends MonitoringComp
         if (lifecycleStrategy instanceof ComponentMonitorStrategy) {
             ((ComponentMonitorStrategy) lifecycleStrategy).changeMonitor(monitor);
         }
+        cdiCaf.changeMonitor(monitor);
+        sdiCaf.changeMonitor(monitor);
     }
 
 }

@@ -12,36 +12,37 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentCharacteristic;
 
 /**
- * <p>
+ * <p/>
  * A component adapter factory is responsible for creating
  * {@link ComponentAdapter} component adapters. The main use of the component adapter factory is
  * inside {@link DefaultPicoContainer#DefaultPicoContainer(ComponentAdapterFactory)}, where it can
  * be used to customize the default component adapter that is used when none is specified
  * explicitly.
  * </p>
- * 
+ *
  * @author Jon Tirs&eacute;n
  * @author Mauro Talevi
  * @version $Revision$
  */
 public interface ComponentAdapterFactory {
-    
+
     /**
      * Create a new component adapter based on the specified arguments.
      *
-     * @param componentKey            the key to be associated with this adapter. This value should be returned
-     *                                from a call to {@link ComponentAdapter#getComponentKey()} on the created adapter.
-     * @param componentImplementation the implementation class to be associated with this adapter.
-     *                                This value should be returned from a call to
-     *                                {@link ComponentAdapter#getComponentImplementation()} on the created adapter. Should not
-     *                                be null.
-     * @param parameters              additional parameters to use by the component adapter in constructing
-     *                                component instances. These may be used, for example, to make decisions about the
-     *                                arguments passed into the component constructor. These should be considered hints; they
-     *                                may be ignored by some implementations. May be null, and may be of zero length.
-     * @return a new component adapter based on the specified arguments. Should not return null.
+     * @param registerationCharacteristic
+     * @param componentKey                 the key to be associated with this adapter. This value should be returned
+     *                                     from a call to {@link org.picocontainer.ComponentAdapter#getComponentKey()} on the created adapter.
+     * @param componentImplementation      the implementation class to be associated with this adapter.
+     *                                     This value should be returned from a call to
+     *                                     {@link org.picocontainer.ComponentAdapter#getComponentImplementation()} on the created adapter. Should not
+     *                                     be null.
+     * @param parameters                   additional parameters to use by the component adapter in constructing
+     *                                     component instances. These may be used, for example, to make decisions about the
+     *                                     arguments passed into the component constructor. These should be considered hints; they
+     *                                     may be ignored by some implementations. May be null, and may be of zero length. @return a new component adapter based on the specified arguments. Should not return null.
      * @throws PicoIntrospectionException if the creation of the component adapter results in a
      *                                    {@link PicoIntrospectionException}.
      * @throws AssignabilityRegistrationException
@@ -51,9 +52,12 @@ public interface ComponentAdapterFactory {
      *                                    if the creation of the component adapter results in a
      *                                    {@link NotConcreteRegistrationException}.
      */
-    ComponentAdapter createComponentAdapter(Object componentKey,
+    ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic,
+                                            Object componentKey,
                                             Class componentImplementation,
-                                            Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+                                            Parameter... parameters) throws PicoIntrospectionException,
+            AssignabilityRegistrationException,
+            NotConcreteRegistrationException;
 
 
 }

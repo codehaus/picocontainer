@@ -5,12 +5,14 @@ import com.thoughtworks.proxy.toys.hotswap.Swappable;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.componentadapters.CachingComponentAdapter;
 import org.picocontainer.componentadapters.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapter;
 import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 
@@ -22,7 +24,7 @@ import java.util.List;
 
 public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     private HotSwappingComponentAdapterFactory implementationHidingComponentAdapterFactory = new HotSwappingComponentAdapterFactory(
-            new CachingAndConstructorComponentAdapterFactory());
+            new AnyInjectionComponentAdapterFactory());
     private CachingComponentAdapterFactory cachingComponentAdapterFactory = new CachingComponentAdapterFactory(
             implementationHidingComponentAdapterFactory);
 
@@ -124,9 +126,9 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
         ComponentAdapterFactory caf = createComponentAdapterFactory();
         DefaultPicoContainer pico = new DefaultPicoContainer(caf);
 
-        CachingComponentAdapter wifeAdapter = (CachingComponentAdapter)caf.createComponentAdapter("wife", Wife.class, (Parameter[])null);
+        CachingComponentAdapter wifeAdapter = (CachingComponentAdapter)caf.createComponentAdapter(ComponentCharacteristics.CDI, "wife", Wife.class, (Parameter[])null);
         CachingComponentAdapter husbandAdapter = (CachingComponentAdapter)caf
-                .createComponentAdapter("husband", Husband.class, (Parameter[])null);
+                .createComponentAdapter(ComponentCharacteristics.CDI, "husband", Husband.class, (Parameter[])null);
 
         pico.adapter(wifeAdapter);
         pico.adapter(husbandAdapter);

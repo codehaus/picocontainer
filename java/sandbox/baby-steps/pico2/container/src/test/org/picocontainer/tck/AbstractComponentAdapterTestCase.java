@@ -22,7 +22,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.AbstractPicoVisitor;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstantParameter;
@@ -72,7 +72,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
     }
 
     protected ComponentAdapterFactory createDefaultComponentAdapterFactory() {
-        return new CachingAndConstructorComponentAdapterFactory();
+        return new AnyInjectionComponentAdapterFactory();
     }
 
     // ============================================

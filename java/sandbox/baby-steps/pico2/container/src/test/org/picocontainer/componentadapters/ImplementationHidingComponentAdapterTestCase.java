@@ -40,7 +40,7 @@ public class ImplementationHidingComponentAdapterTestCase extends TestCase {
 
     public void testFactoryWithDefaultStrictMode(){
         ComponentAdapterFactory factory = new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
-        ComponentAdapter ihca = factory.createComponentAdapter("ww", Footle.class, new Parameter[0]);
+        ComponentAdapter ihca = factory.createComponentAdapter(null, "ww", Footle.class, new Parameter[0]);
         try {
             ihca.getComponentInstance(null);
             fail("PicoIntrospectionException expected");

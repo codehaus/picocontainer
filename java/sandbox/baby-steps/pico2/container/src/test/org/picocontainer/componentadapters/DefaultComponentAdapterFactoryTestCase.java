@@ -14,23 +14,25 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.componentadapters.CachingAndConstructorComponentAdapterFactory;
+import org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-        return new CachingAndConstructorComponentAdapterFactory();
+        return new AnyInjectionComponentAdapterFactory();
     }
 
     public void testInstantiateComponentWithNoDependencies() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter componentAdapter =
-                createComponentAdapterFactory().createComponentAdapter(Touchable.class, SimpleTouchable.class, (Parameter[])null);
+                createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
 
         Object comp = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(comp);
@@ -38,7 +40,7 @@ public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAda
     }
 
     public void testSingleUsecanBeInstantiatedByDefaultComponentAdapter() {
-        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter("o", Object.class, (Parameter[])null);
+        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, "o", Object.class, (Parameter[])null);
         Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(component);
     }

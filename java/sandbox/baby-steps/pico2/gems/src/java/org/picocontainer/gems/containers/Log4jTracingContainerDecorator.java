@@ -22,6 +22,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ComponentCharacteristic;
 
 /**
  * Decorates a MutablePicoContainer to provide extensive tracing capabilities
@@ -501,5 +502,9 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 
     public ComponentAdapter lastCA() {
         return null; 
+    }
+
+    public MutablePicoContainer change(ComponentCharacteristic... rcs) {
+        return delegate.change(rcs);
     }
 }

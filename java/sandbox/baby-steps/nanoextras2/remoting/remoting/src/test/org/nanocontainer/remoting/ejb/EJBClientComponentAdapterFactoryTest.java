@@ -62,7 +62,7 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
     public final void testSystemInitialContext() {
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
         final ComponentAdapterFactory caf = new EJBClientComponentAdapterFactory();
-        final ComponentAdapter componentAdapter = caf.createComponentAdapter("Hello", Hello.class, null);
+        final ComponentAdapter componentAdapter = caf.createComponentAdapter(null, "Hello", Hello.class, null);
         assertNotNull(componentAdapter);
         final Object hello1 = componentAdapter.getComponentInstance(null);
         final Object hello2 = componentAdapter.getComponentInstance(null);
@@ -79,7 +79,7 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
         final Hashtable env = new Hashtable();
         env.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
         final ComponentAdapterFactory caf = new EJBClientComponentAdapterFactory(env);
-        final ComponentAdapter componentAdapter = caf.createComponentAdapter("Hello", Hello.class, null);
+        final ComponentAdapter componentAdapter = caf.createComponentAdapter(null, "Hello", Hello.class, null);
         assertNotNull(componentAdapter);
         final Object hello1 = componentAdapter.getComponentInstance(null);
         final Object hello2 = componentAdapter.getComponentInstance(null);
@@ -97,7 +97,7 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
         env.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
         final ComponentAdapterFactory caf = new EJBClientComponentAdapterFactory(env, true);
         try {
-            caf.createComponentAdapter("Foo", Test.class, null);
+            caf.createComponentAdapter(null, "Foo", Test.class, null);
             fail("Should have thrown a PicoIntrospectionException");
         } catch (PicoIntrospectionException e) {
             assertTrue(e.getCause() instanceof ClassNotFoundException);

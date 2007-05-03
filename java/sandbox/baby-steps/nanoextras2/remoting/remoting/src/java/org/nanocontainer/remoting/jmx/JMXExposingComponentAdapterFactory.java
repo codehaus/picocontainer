@@ -15,6 +15,8 @@ import javax.management.MBeanServer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.componentadapters.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -70,15 +72,18 @@ public class JMXExposingComponentAdapterFactory extends DecoratingComponentAdapt
     /**
      * Retrieve a {@link ComponentAdapter}. Wrap the instance retrieved by the delegate with an instance of a
      * {@link JMXExposingComponentAdapter}.
-     * @see org.picocontainer.componentadapters.DecoratingComponentAdapterFactory#createComponentAdapter(java.lang.Object,
-     *      java.lang.Class, org.picocontainer.Parameter[])
+     * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
      */
     public ComponentAdapter createComponentAdapter(
-            Object componentKey, Class componentImplementation, Parameter[] parameters)
+            ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final ComponentAdapter componentAdapter = super.createComponentAdapter(
-                componentKey, componentImplementation, parameters);
-        return new JMXExposingComponentAdapter(componentAdapter, mBeanServer, providers);
+                registerationCharacteristic, componentKey, componentImplementation, parameters);
+        if (ComponentCharacteristics.NOJMX.isSoCharacterized(registerationCharacteristic)) {
+            return componentAdapter;            
+        } else {
+            return new JMXExposingComponentAdapter(componentAdapter, mBeanServer, providers);
+        }
     }
 
 }

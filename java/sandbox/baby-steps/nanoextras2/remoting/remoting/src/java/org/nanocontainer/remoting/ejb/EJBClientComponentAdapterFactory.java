@@ -18,6 +18,7 @@ import javax.naming.InitialContext;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.gems.adapters.ThreadLocalComponentAdapter;
@@ -65,7 +66,7 @@ public class EJBClientComponentAdapterFactory implements ComponentAdapterFactory
     }
 
     public ComponentAdapter createComponentAdapter(
-            final Object componentKey, final Class componentImplementation, final Parameter[] parameters)
+            ComponentCharacteristic registerationCharacteristic, final Object componentKey, final Class componentImplementation, final Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException {
         return createComponentAdapter(componentKey.toString(), componentImplementation);
     }
@@ -74,8 +75,7 @@ public class EJBClientComponentAdapterFactory implements ComponentAdapterFactory
      * Creates a {@link ComponentAdapter} for EJB objects.
      * @param componentKey the key used to lookup the {@link InitialContext}.
      * @param componentImplementation the home interface.
-     * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(java.lang.Object, java.lang.Class,
-     *      org.picocontainer.Parameter[])
+     * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
      * @return Returns the created {@link ComponentAdapter}
      * @throws PicoIntrospectionException if the home interface of the EJB could not instanciated
      * @throws AssignabilityRegistrationException if the <code>componentImplementation</code> does not extend

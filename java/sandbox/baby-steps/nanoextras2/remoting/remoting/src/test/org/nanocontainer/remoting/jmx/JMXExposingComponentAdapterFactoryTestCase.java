@@ -16,6 +16,8 @@ import javax.management.ObjectName;
 import org.nanocontainer.remoting.jmx.testmodel.DynamicMBeanPerson;
 import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentCharacteristics;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 
@@ -26,7 +28,7 @@ import org.jmock.MockObjectTestCase;
 /**
  * @author J&ouml;rg Schaible
  */
-public class JMXExposingComponentAdapterFactoryTest extends MockObjectTestCase {
+public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCase {
 
     private Mock mockMBeanServer;
 
@@ -36,14 +38,29 @@ public class JMXExposingComponentAdapterFactoryTest extends MockObjectTestCase {
     }
 
     public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
-        final ComponentAdapterFactory componentAdapterFactory = new JMXExposingComponentAdapterFactory(
+        final JMXExposingComponentAdapterFactory componentAdapterFactory = new JMXExposingComponentAdapterFactory(
                 new ConstructorInjectionComponentAdapterFactory(), (MBeanServer)mockMBeanServer.proxy());
 
         mockMBeanServer.expects(once()).method("registerMBean").with(
                 isA(DynamicMBeanPerson.class), isA(ObjectName.class));
 
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
-                PersonMBean.class, DynamicMBeanPerson.class, null);
+                ComponentCharacteristics.CDI, PersonMBean.class, DynamicMBeanPerson.class, null);
+        assertNotNull(componentAdapter);
+        assertNotNull(componentAdapter.getComponentInstance(null));
+    }
+
+    public void testWillRegisterByDefaultComponentsThatAreMBeansUnlessNOJMX() throws NotCompliantMBeanException {
+        final JMXExposingComponentAdapterFactory componentAdapterFactory = new JMXExposingComponentAdapterFactory(
+                new ConstructorInjectionComponentAdapterFactory(), (MBeanServer)mockMBeanServer.proxy());
+
+        final ComponentCharacteristic rc = new ComponentCharacteristic() {
+        };
+
+        ComponentCharacteristics.NOJMX.mergeInto(rc);
+
+        final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
+                rc, PersonMBean.class, DynamicMBeanPerson.class, null);
         assertNotNull(componentAdapter);
         assertNotNull(componentAdapter.getComponentInstance(null));
     }

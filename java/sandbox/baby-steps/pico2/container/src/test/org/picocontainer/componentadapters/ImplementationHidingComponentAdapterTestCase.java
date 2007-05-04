@@ -20,7 +20,7 @@ public class ImplementationHidingComponentAdapterTestCase extends TestCase {
 
     public void testMultipleInterfacesCanBeHidden() {
         ComponentAdapter ca = new ConstructorInjectionComponentAdapter(new Class[]{ActionListener.class, MouseListener.class}, Footle.class);
-        ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca, true);
+        ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca);
         Object comp = ihca.getComponentInstance(null);
         assertNotNull(comp);
         assertTrue(comp instanceof ActionListener);
@@ -29,18 +29,7 @@ public class ImplementationHidingComponentAdapterTestCase extends TestCase {
 
     public void testNonInterfaceInArrayCantBeHidden() {
         ComponentAdapter ca = new ConstructorInjectionComponentAdapter(new Class[]{String.class}, Footle.class);
-        ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca, true);
-        try {
-            ihca.getComponentInstance(null);
-            fail("PicoIntrospectionException expected");
-        } catch (PicoIntrospectionException e) {
-            // expected        
-        }
-    }
-
-    public void testFactoryWithDefaultStrictMode(){
-        ComponentAdapterFactory factory = new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
-        ComponentAdapter ihca = factory.createComponentAdapter(null, "ww", Footle.class, new Parameter[0]);
+        ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca);
         try {
             ihca.getComponentInstance(null);
             fail("PicoIntrospectionException expected");
@@ -49,17 +38,6 @@ public class ImplementationHidingComponentAdapterTestCase extends TestCase {
         }
     }
     
-    public void testShouldThrowExceptionWhenAccessingNonInterfaceKeyedComponentInStrictMode() {
-        ComponentAdapter ca = new ConstructorInjectionComponentAdapter("ww", Footle.class);
-        ImplementationHidingComponentAdapter ihca = new ImplementationHidingComponentAdapter(ca, true);
-        try {
-            ihca.getComponentInstance(null);
-            fail("PicoIntrospectionException expected");
-        } catch (PicoIntrospectionException e) {
-            // expected        
-        }
-    }
-
     public class Footle implements ActionListener, MouseListener {
         public void actionPerformed(ActionEvent e) {
         }

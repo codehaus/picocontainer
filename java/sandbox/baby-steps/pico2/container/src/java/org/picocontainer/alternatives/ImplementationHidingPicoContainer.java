@@ -43,7 +43,7 @@ public class ImplementationHidingPicoContainer extends AbstractDelegatingMutable
         if (caf instanceof ImplementationHidingComponentAdapterFactory) {
             return (ImplementationHidingComponentAdapterFactory) caf;
         }
-        return new ImplementationHidingComponentAdapterFactory(caf, false);
+        return new ImplementationHidingComponentAdapterFactory(caf);
     }
 
     /**

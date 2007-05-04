@@ -23,7 +23,6 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * @since 1.2, moved from package {@link org.picocontainer.alternatives}
  */
 public class ImplementationHidingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
-    private final boolean strict;
 
     /**
      * For serialisation only. Do not use this constructor explicitly.
@@ -32,16 +31,12 @@ public class ImplementationHidingComponentAdapterFactory extends DecoratingCompo
         this(null);
     }
 
-    public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate, boolean strict) {
-        super(delegate);
-        this.strict = strict;
-    }
-
     public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate) {
-        this(delegate, true);
+        super(delegate);
     }
 
     public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new ImplementationHidingComponentAdapter(super.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters), strict);
+        ComponentAdapter componentAdapter = super.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters);
+        return new ImplementationHidingComponentAdapter(componentAdapter);
     }
 }

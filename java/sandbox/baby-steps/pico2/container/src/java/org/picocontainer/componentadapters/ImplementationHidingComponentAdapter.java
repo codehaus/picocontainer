@@ -35,16 +35,13 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * @since 1.2, moved from package {@link org.picocontainer.alternatives}
  */
 public class ImplementationHidingComponentAdapter extends DecoratingComponentAdapter {
-    private final boolean strict;
 
     /**
      * Creates an ImplementationHidingComponentAdapter with a delegate 
      * @param delegate the component adapter to which this adapter delegates
-     * @param strict the scrict mode boolean
      */
-    public ImplementationHidingComponentAdapter(ComponentAdapter delegate, boolean strict) {
+    public ImplementationHidingComponentAdapter(ComponentAdapter delegate) {
         super(delegate);
-        this.strict = strict;
     }
 
     public Object getComponentInstance(final PicoContainer container)
@@ -57,9 +54,6 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         } else if (componentKey instanceof Class[]) {
             classes = (Class[]) componentKey;
         } else {
-            if(strict) {
-                throw new PicoIntrospectionException("In strict mode, " + getClass().getName() + " only allows components registered with interface keys (java.lang.Class or java.lang.Class[])");
-            }
             return getDelegate().getComponentInstance(container);
         }
 

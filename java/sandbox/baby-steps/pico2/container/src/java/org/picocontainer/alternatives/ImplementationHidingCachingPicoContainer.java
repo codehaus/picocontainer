@@ -50,7 +50,7 @@ public class ImplementationHidingCachingPicoContainer extends AbstractDelegating
         if (caf instanceof ImplementationHidingComponentAdapterFactory) {
             return new CachingComponentAdapterFactory(caf);
         }
-        return new CachingComponentAdapterFactory(new ImplementationHidingComponentAdapterFactory(caf, false));
+        return new CachingComponentAdapterFactory(new ImplementationHidingComponentAdapterFactory(caf));
     }
 
     /**

@@ -27,10 +27,6 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  */
 public class NonCachingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
 
-    public NonCachingComponentAdapterFactory() {
-        this(null);
-    }
-
     public NonCachingComponentAdapterFactory(ComponentAdapterFactory delegate) {
         super(delegate);
     }

@@ -32,13 +32,8 @@ import org.picocontainer.monitors.DefaultComponentMonitor;
 public class SetterInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
     private LifecycleStrategy lifecycleStrategy;
 
-    public SetterInjectionComponentAdapterFactory(
-            LifecycleStrategy lifecycleStrategy) {
+    public SetterInjectionComponentAdapterFactory(LifecycleStrategy lifecycleStrategy) {
         this.lifecycleStrategy = lifecycleStrategy;
-    }
-
-    public SetterInjectionComponentAdapterFactory() {
-        this(new StartableLifecycleStrategy(new DefaultComponentMonitor()));
     }
 
     /**
@@ -60,7 +55,6 @@ public class SetterInjectionComponentAdapterFactory extends MonitoringComponentA
      */
     public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters,
-                currentMonitor(), lifecycleStrategy);
+        return new SetterInjectionComponentAdapter(componentKey, componentImplementation, parameters, currentMonitor(), lifecycleStrategy);
     }
 }

@@ -26,6 +26,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.componentadapters.InstanceComponentAdapter;
 import org.picocontainer.componentadapters.SetterInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -419,7 +420,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     public void FAILING_testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory());
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance()));
         Reader script = new StringReader("container(:parent => $parent)\n");
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
@@ -430,7 +431,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory());
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance()));
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "B = org.nanocontainer.testmodel.B\n" +

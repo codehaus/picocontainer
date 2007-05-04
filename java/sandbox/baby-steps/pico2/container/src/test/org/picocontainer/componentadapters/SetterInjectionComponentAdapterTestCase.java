@@ -15,6 +15,7 @@ import java.util.List;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.ComponentParameter;
@@ -41,7 +42,7 @@ public class SetterInjectionComponentAdapterTestCase
     }
 
     protected ComponentAdapterFactory createDefaultComponentAdapterFactory() {
-        return new CachingComponentAdapterFactory(new SetterInjectionComponentAdapterFactory());
+        return new CachingComponentAdapterFactory(new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance()));
     }
 
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
@@ -305,7 +306,7 @@ public class SetterInjectionComponentAdapterTestCase
     // http://jira.codehaus.org/browse/PICO-188
     public void FIXME_testShouldBeAbleToHandleMutualDependenciesWithSetterInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer(new CachingComponentAdapterFactory(
-                new SetterInjectionComponentAdapterFactory()));
+                new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance())));
 
         pico.component(Yin.class);
         pico.component(Yang.class);

@@ -4,10 +4,12 @@ import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.componentadapters.CachingComponentAdapter;
 import org.picocontainer.componentadapters.CachingComponentAdapterFactory;
 import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.componentadapters.InstanceComponentAdapter;
 import org.picocontainer.componentadapters.SetterInjectionComponentAdapterFactory;
 import org.picocontainer.componentadapters.SetterInjectionComponentAdapter;
@@ -53,11 +55,12 @@ public class BuildingBlocksTestCase extends TestCase {
     }
 
     public void testRegisterDifferentComponentAdapterFactory() {
+
         // START SNIPPET: register-different-caf
         MutablePicoContainer picoContainer = new DefaultPicoContainer(
                 new SynchronizedComponentAdapterFactory(
                         new CachingComponentAdapterFactory(
-                                new SetterInjectionComponentAdapterFactory())));
+                                new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance()))));
         // END SNIPPET: register-different-caf
     }
 

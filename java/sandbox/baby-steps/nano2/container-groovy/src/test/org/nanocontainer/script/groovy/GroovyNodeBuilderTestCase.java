@@ -23,6 +23,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.componentadapters.InstanceComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.componentadapters.SetterInjectionComponentAdapter;
@@ -508,7 +509,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     public void testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory() );
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance()) );
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +
@@ -525,7 +526,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory() );
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance()) );
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +

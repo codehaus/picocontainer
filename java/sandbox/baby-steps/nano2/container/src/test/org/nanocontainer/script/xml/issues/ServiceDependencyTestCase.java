@@ -6,13 +6,23 @@ import java.io.StringReader;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.componentadapters.SetterInjectionComponentAdapterFactory;
 
 public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderTestCase {
 
+    public static class MySetterInjectionComponentAdapterFactory extends SetterInjectionComponentAdapterFactory {
+        public MySetterInjectionComponentAdapterFactory() {
+            super(NullLifecycleStrategy.getInstance());
+        }
+    }
+
+    //TODO - make sure that this container builder can supply a LifecycleStrategy.
+    //       meaning MySetterInjectionComponentAdapterFactory can be swapped for SetterInjectionComponentAdapterFactory
     public void testCanInstantiateProcessWithSDIDependencies() {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='"+ SetterInjectionComponentAdapterFactory.class.getName()+"'>"+
+                "<container component-adapter-factory='"+ MySetterInjectionComponentAdapterFactory.class.getName()+"'>"+
                 " <component-implementation class='"+Service1Impl.class.getName()+"'/>"+
                 " <component-implementation class='"+ServiceAImpl.class.getName()+"'/>"+
                 " <component-implementation class='"+Service2Impl.class.getName()+"'/>"+
@@ -25,7 +35,7 @@ public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderT
     private void assertProcessWithDependencies(Reader script) {
         PicoContainer pico = buildContainer(script);
         assertNotNull(pico);
-        Process process = (Process)pico.getComponent(Process.class);
+        Process process = pico.getComponent(Process.class);
         assertNotNull(process);
         assertNotNull(process.getServiceA());
         assertNotNull(process.getServiceA().getService1());

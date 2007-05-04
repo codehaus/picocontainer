@@ -11,6 +11,7 @@ package org.picocontainer.componentadapters;
 
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.componentadapters.SetterInjectionComponentAdapterFactory;
@@ -31,7 +32,7 @@ public class SetterInjectionComponentAdapterFactoryTestCase extends AbstractComp
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-        return new SetterInjectionComponentAdapterFactory();
+        return new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance());
     }
 
     public static interface Bean {

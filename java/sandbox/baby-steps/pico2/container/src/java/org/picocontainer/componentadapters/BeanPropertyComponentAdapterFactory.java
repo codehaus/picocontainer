@@ -30,7 +30,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * @since 1.0
  */
 public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdapterFactory {
-    private Map adapterCache = new HashMap();
+    private Map<Object, BeanPropertyComponentAdapter> adapterCache = new HashMap<Object, BeanPropertyComponentAdapter>();
 
     /**
      * Construct a BeanPropertyComponentAdapterFactory. 
@@ -51,11 +51,4 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
         return propertyAdapter;
     }
 
-    // TODO: What is this method for? It is not used in complete Pico/Nano and caching is normally done by CachingCA ...
-    /**
-     * @deprecated
-     */
-    public BeanPropertyComponentAdapter getComponentAdapter(Object key) {
-        return (BeanPropertyComponentAdapter) adapterCache.get(key);
-    }
 }

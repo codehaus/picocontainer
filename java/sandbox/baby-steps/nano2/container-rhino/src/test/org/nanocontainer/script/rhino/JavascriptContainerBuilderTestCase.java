@@ -16,8 +16,8 @@ import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.TestHelper;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.alternatives.ImmutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.ImmutablePicoContainerProxyFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -113,7 +113,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         Reader script = new StringReader("" +
                 "var pico = new DefaultNanoContainer(parent)\n");
         PicoContainer parent = new DefaultPicoContainer();
-        ImmutablePicoContainer ipc = new ImmutablePicoContainer(parent);
+        PicoContainer ipc = ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), ipc, "SOME_SCOPE");
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());

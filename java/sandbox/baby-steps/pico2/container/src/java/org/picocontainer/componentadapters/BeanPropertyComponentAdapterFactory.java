@@ -30,6 +30,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * @since 1.0
  */
 public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+    // var never used ? needed ?
     private Map<Object, BeanPropertyComponentAdapter> adapterCache = new HashMap<Object, BeanPropertyComponentAdapter>();
 
     /**

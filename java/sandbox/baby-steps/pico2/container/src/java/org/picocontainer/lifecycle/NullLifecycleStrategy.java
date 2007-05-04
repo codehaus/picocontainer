@@ -4,6 +4,12 @@ import org.picocontainer.defaults.LifecycleStrategy;
 
 public class NullLifecycleStrategy implements LifecycleStrategy {
 
+    private static LifecycleStrategy instance;
+    public static synchronized LifecycleStrategy getInstance() {
+        instance = new NullLifecycleStrategy();
+        return instance;
+    }
+
     public void start(Object component) {
     }
 

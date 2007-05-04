@@ -241,14 +241,6 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
         }
     }
 
-    // http://jira.codehaus.org/browse/PICO-189
-    public void testShouldBeAbleToInstantiateNonPublicClassesWithNonPublicConstructors() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory(true));
-        pico.component(Private.class);
-        pico.component(NotYourBusiness.class);
-        assertNotNull(pico.getComponent(NotYourBusiness.class));
-    }
-
     static public class Component201 {
         public Component201(final String s) {
         }
@@ -305,7 +297,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
         monitor.expects(once()).method("instantiated").with(eq(emptyHashMapCtor), isAHashMapThatWozCreated, injectedIsEmptyArray, durationIsGreaterThanOrEqualToZero);
         ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(
-                Map.class, HashMap.class, new Parameter[0], false, (ComponentMonitor)monitor.proxy());
+                Map.class, HashMap.class, new Parameter[0], (ComponentMonitor)monitor.proxy());
         cica.getComponentInstance(null);
     }
 
@@ -327,7 +319,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
         monitor.expects(once()).method("instantiationFailed").with(eq(barfingActionListenerCtor), isITE);
         ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(
-                ActionListener.class, BarfingActionListener.class, new Parameter[0], false, (ComponentMonitor)monitor.proxy());
+                ActionListener.class, BarfingActionListener.class, new Parameter[0], (ComponentMonitor)monitor.proxy());
         try {
             cica.getComponentInstance(null);
             fail("Should barf");
@@ -348,7 +340,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
     public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         ConstructorInjectionComponentAdapter cica = new ConstructorInjectionComponentAdapter(
-                NullLifecycle.class, NullLifecycle.class, new Parameter[0], false, 
+                NullLifecycle.class, NullLifecycle.class, new Parameter[0],
                 new DelegatingComponentMonitor(), strategy);
         Touchable touchable = new SimpleTouchable();
         cica.start(touchable);

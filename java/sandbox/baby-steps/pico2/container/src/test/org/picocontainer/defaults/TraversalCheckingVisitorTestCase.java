@@ -57,9 +57,9 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
 
     public void testVisitComponentAdapter() {
         final int numExpectedComponentAdapters = 2;
-        final List allAdapters = new ArrayList();
+        final List<ComponentAdapter> allAdapters = new ArrayList<ComponentAdapter>();
 
-        Set knownAdapters = new HashSet();
+        Set<ComponentAdapter> knownAdapters = new HashSet<ComponentAdapter>();
         knownAdapters.add(parentAdapter);
         knownAdapters.add(childAdapter);
 
@@ -73,7 +73,7 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
 
         assertEquals(numExpectedComponentAdapters, allAdapters.size());
 
-        for (Iterator i = allAdapters.iterator(); i.hasNext(); ) {
+        for (Iterator<ComponentAdapter> i = allAdapters.iterator(); i.hasNext(); ) {
             boolean knownAdapter = knownAdapters.remove(i.next());
             assertTrue("Encountered unknown adapter in collection: " + allAdapters.toString(), knownAdapter);
         }
@@ -82,7 +82,7 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
     }
 
     public void testVisitContainer() {
-        final List allContainers = new ArrayList();
+        final List<PicoContainer> allContainers = new ArrayList<PicoContainer>();
         final int expectedNumberOfContainers = 2;
 
         PicoVisitor containerCollector = new TraversalCheckingVisitor() {
@@ -96,11 +96,11 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
 
         assertTrue(allContainers.size() == expectedNumberOfContainers);
 
-        Set knownContainers = new HashSet();
+        Set<MutablePicoContainer> knownContainers = new HashSet<MutablePicoContainer>();
         knownContainers.add(pico);
         knownContainers.add(child);
-        for (Iterator i = allContainers.iterator(); i.hasNext(); ) {
-            PicoContainer oneContainer = (PicoContainer) i.next();
+        for (Iterator<PicoContainer> i = allContainers.iterator(); i.hasNext(); ) {
+            PicoContainer oneContainer = i.next();
             boolean knownContainer = knownContainers.remove(oneContainer);
             assertTrue("Found a picocontainer that wasn't previously expected.", knownContainer);
         }

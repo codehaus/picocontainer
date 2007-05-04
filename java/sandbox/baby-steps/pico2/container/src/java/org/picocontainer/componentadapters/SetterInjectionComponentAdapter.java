@@ -62,7 +62,6 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
-     * @param allowNonPublicClasses   flag to allow instantiation of non-public classes.
      * @param monitor                 the component monitor used by this adapter
      * @param lifecycleStrategy       the component lifecycle strategy used by this adapter
      * @throws org.picocontainer.defaults.AssignabilityRegistrationException
@@ -71,8 +70,8 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public SetterInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, allowNonPublicClasses, monitor, lifecycleStrategy);
+    public SetterInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
     }
 
 
@@ -82,7 +81,6 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
-     * @param allowNonPublicClasses   flag to allow instantiation of non-public classes.
      * @param monitor                 the component monitor used by this adapter
      * @throws AssignabilityRegistrationException
      *                              if the key is a type and the implementation cannot be assigned to.
@@ -90,29 +88,12 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public SetterInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses, ComponentMonitor monitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, allowNonPublicClasses, monitor);
+    public SetterInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, monitor);
     }
 
     /**
      * Constructs a SetterInjectionComponentAdapter with a {@link org.picocontainer.defaults.DelegatingComponentMonitor} as default.
-     *
-     * @param componentKey            the search key for this implementation
-     * @param componentImplementation the concrete implementation
-     * @param parameters              the parameters to use for the initialization
-     * @param allowNonPublicClasses   flag to allow instantiation of non-public classes.
-     * @throws AssignabilityRegistrationException
-     *                              if the key is a type and the implementation cannot be assigned to.
-     * @throws NotConcreteRegistrationException
-     *                              if the implementation is not a concrete class.
-     * @throws NullPointerException if one of the parameters is <code>null</code>
-     */
-    public SetterInjectionComponentAdapter(final Serializable componentKey, final Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
-    }
-
-    /**
-     * Constructs a SetterInjectionComponentAdapter with key, implementation and parameters.
      *
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
@@ -124,10 +105,11 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public SetterInjectionComponentAdapter(final Serializable componentKey, final Class componentImplementation, Parameter... parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        this(componentKey, componentImplementation, parameters, false);
+        super(componentKey, componentImplementation, parameters);
     }
 
-    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+
+    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final Constructor constructor = getConstructor();
         getMatchingParameterListForSetters(container);
         return constructor;

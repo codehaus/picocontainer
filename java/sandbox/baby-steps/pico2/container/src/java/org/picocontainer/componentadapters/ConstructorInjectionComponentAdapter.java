@@ -71,7 +71,6 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
-     * @param allowNonPublicClasses   flag to allow instantiation of non-public classes.
      * @param monitor                 the component monitor used by this adapter
      * @param lifecycleStrategy       the component lifecycle strategy used by this adapter
      * @throws org.picocontainer.defaults.AssignabilityRegistrationException
@@ -80,8 +79,8 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, allowNonPublicClasses, monitor, lifecycleStrategy);
+    public ConstructorInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
     }
 
     /**
@@ -90,7 +89,6 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
-     * @param allowNonPublicClasses   flag to allow instantiation of non-public classes.
      * @param monitor                 the component monitor used by this adapter
      * @throws AssignabilityRegistrationException
      *                              if the key is a type and the implementation cannot be assigned to.
@@ -98,8 +96,8 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses, ComponentMonitor monitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, allowNonPublicClasses, monitor);
+    public ConstructorInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, monitor);
     }
 
     /**
@@ -108,31 +106,14 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
-     * @param allowNonPublicClasses   flag to allow instantiation of non-public classes.
      * @throws AssignabilityRegistrationException
      *                              if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
-    }
-
-    /**
-     * Creates a ConstructorInjectionComponentAdapter with key, implementation and parameters
-     *
-     * @param componentKey            the search key for this implementation
-     * @param componentImplementation the concrete implementation
-     * @param parameters              the parameters to use for the initialization
-     * @throws AssignabilityRegistrationException
-     *                              if the key is a type and the implementation cannot be assigned to.
-     * @throws NotConcreteRegistrationException
-     *                              if the implementation is not a concrete class.
-     * @throws NullPointerException if one of the parameters is <code>null</code>
-     */
-    public ConstructorInjectionComponentAdapter(Object componentKey, Class componentImplementation, Parameter... parameters) {
-        this(componentKey, componentImplementation, parameters, false);
+    public ConstructorInjectionComponentAdapter(final Object componentKey, final Class componentImplementation, Parameter... parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters);
     }
 
     /**
@@ -150,7 +131,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         this(componentKey, componentImplementation, null);
     }
 
-    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final Set<Constructor> conflicts = new HashSet<Constructor>();
         final Set unsatisfiableDependencyTypes = new HashSet();
         if (sortedMatchingConstructors == null) {
@@ -204,7 +185,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             for (Constructor constructor : getConstructors()) {
                 nonMatching.add(constructor);
             }
-            throw new PicoInitializationException("Either do the specified parameters not match any of the following constructors: " + nonMatching.toString() + " or the constructors were not accessible for '" + getComponentImplementation() + "'");
+            throw new PicoInitializationException("Either the specified parameters do not match any of the following constructors: " + nonMatching.toString() + "; OR the constructors were not accessible for '" + getComponentImplementation().getName() + "'");
         }
         return greediestConstructor;
     }
@@ -272,7 +253,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         Constructor[] allConstructors = getConstructors();
         // filter out all constructors that will definately not match
         for (Constructor constructor : allConstructors) {
-            if ((parameters == null || constructor.getParameterTypes().length == parameters.length) && (allowNonPublicClasses || (constructor.getModifiers() & Modifier.PUBLIC) != 0)) {
+            if ((parameters == null || constructor.getParameterTypes().length == parameters.length) && (constructor.getModifiers() & Modifier.PUBLIC) != 0) {
                 matchingConstructors.add(constructor);
             }
         }

@@ -46,8 +46,8 @@ public class AnyInjectionComponentAdapterFactory extends MonitoringComponentAdap
     }
 
     private void cafs(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
-        cdiCaf = new ConstructorInjectionComponentAdapterFactory(false, monitor, lifecycleStrategy);
-        sdiCaf = new SetterInjectionComponentAdapterFactory(false, lifecycleStrategy);
+        cdiCaf = new ConstructorInjectionComponentAdapterFactory(monitor, lifecycleStrategy);
+        sdiCaf = new SetterInjectionComponentAdapterFactory(lifecycleStrategy);
         sdiCaf.changeMonitor(monitor);
     }
 

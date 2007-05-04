@@ -69,10 +69,10 @@ public class ComponentAdapterTestCase
     }
     
     private static class TestInstantiatingComponentAdapter extends InstantiatingComponentAdapter {
-        TestInstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses) {
-            super(componentKey, componentImplementation, parameters, allowNonPublicClasses);
+        TestInstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
+            super(componentKey, componentImplementation, parameters);
         }
-        protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
             return null;
         }
         public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
@@ -116,7 +116,7 @@ public class ComponentAdapterTestCase
 
     public void testParameterMayNotBeNull() throws Exception {
         try {
-            new TestInstantiatingComponentAdapter("Key", String.class, new Parameter[]{new ConstantParameter("Value"), null}, false);
+            new TestInstantiatingComponentAdapter("Key", String.class, new Parameter[]{new ConstantParameter("Value"), null});
             fail("Thrown " + NullPointerException.class.getName() + " expected");
         } catch (final NullPointerException e) {
             assertTrue(e.getMessage().endsWith("1 is null"));

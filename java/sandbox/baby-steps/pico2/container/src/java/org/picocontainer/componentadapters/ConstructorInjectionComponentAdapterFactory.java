@@ -27,30 +27,24 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
  * @version $Revision$
  */
 public class ConstructorInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
-    private final boolean allowNonPublicClasses;
     private LifecycleStrategy lifecycleStrategy;
 
-    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, 
-                        ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
-        this.allowNonPublicClasses = allowNonPublicClasses;
+    public ConstructorInjectionComponentAdapterFactory(
+            ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
         this.changeMonitor(monitor);
         this.lifecycleStrategy = lifecycleStrategy;
     }
 
-    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, ComponentMonitor monitor) {
-        this(allowNonPublicClasses, monitor, new StartableLifecycleStrategy(monitor));
+    public ConstructorInjectionComponentAdapterFactory(ComponentMonitor monitor) {
+        this(monitor, new StartableLifecycleStrategy(monitor));
     }
 
-    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses, LifecycleStrategy lifecycleStrategy) {
-        this(allowNonPublicClasses, new DelegatingComponentMonitor(), lifecycleStrategy);
-    }
-
-    public ConstructorInjectionComponentAdapterFactory(boolean allowNonPublicClasses) {
-        this(allowNonPublicClasses, new DelegatingComponentMonitor());
+    public ConstructorInjectionComponentAdapterFactory(LifecycleStrategy lifecycleStrategy) {
+        this(new DelegatingComponentMonitor(), lifecycleStrategy);
     }
 
     public ConstructorInjectionComponentAdapterFactory() {
-        this(false);
+        this(new DelegatingComponentMonitor());
     }
 
     public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey,
@@ -58,6 +52,6 @@ public class ConstructorInjectionComponentAdapterFactory extends MonitoringCompo
                                                    Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, 
-                allowNonPublicClasses, currentMonitor(), lifecycleStrategy);
+                    currentMonitor(), lifecycleStrategy);
     }
 }

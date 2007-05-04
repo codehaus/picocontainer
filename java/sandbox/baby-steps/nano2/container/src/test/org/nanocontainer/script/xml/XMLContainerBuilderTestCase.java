@@ -386,7 +386,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "</container>");
 
         PicoContainer pico = buildContainer(script);
-        Map map = (Map)pico.getComponent(Map.class);
+        Map map = pico.getComponent(Map.class);
         assertNotNull(map);
         assertEquals("bar", map.get("foo"));
     }
@@ -671,30 +671,10 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "  <component-adapter class-name-key='org.nanocontainer.testmodel.WebServerConfig' class='org.nanocontainer.testmodel.DefaultWebServerConfig' factory='factory'/>" +
                 "</container>");
         PicoContainer pico = buildContainer(script);
-        WebServerConfig cfg1 = (WebServerConfig)pico.getComponent(WebServerConfig.class);
-        WebServerConfig cfg2 = (WebServerConfig)pico.getComponent(WebServerConfig.class);
+        WebServerConfig cfg1 = pico.getComponent(WebServerConfig.class);
+        WebServerConfig cfg2 = pico.getComponent(WebServerConfig.class);
         assertNotSame("Instances for components registered with a CICA must not be the same", cfg1, cfg2);
         assertFalse("Instance exposes only interface", cfg1 instanceof DefaultWebServerConfig);
-    }
-
-    public void testComponentCanUsePredefinedCAFWithParameters() {
-        Reader script = new StringReader("" +
-                "<container>" +
-                "  <component-adapter-factory class='org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory' key='factory'>" +
-                "    <parameter><boolean>true</boolean></parameter>" +
-                "  </component-adapter-factory>" +
-                "  <component-adapter key='pc1' class='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$PrivateComponent' factory='org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory'/>" +
-                "  <component-adapter key='pc2' class='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$PrivateComponent' factory='factory'/>" +
-                "</container>");
-        PicoContainer pico = buildContainer(script);
-        PrivateComponent pc2 = (PrivateComponent)pico.getComponent("pc2");
-        assertNotNull(pc2);
-        try {
-            pico.getComponent("pc1");
-            fail("Thrown " + PicoException.class.getName() + " expected");
-        } catch (final PicoException e) {
-            assertTrue(e.getMessage().indexOf(PrivateComponent.class.getName())>0);
-        }
     }
 
     public void testChainOfWrappedComponents() {
@@ -722,9 +702,6 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
             super(WRITER);
         }
 
-    }
-
-    static private class PrivateComponent {
     }
 
     // TODO: Move this into pico-tck as soon as nano is dependend on a pico snapshot again ...

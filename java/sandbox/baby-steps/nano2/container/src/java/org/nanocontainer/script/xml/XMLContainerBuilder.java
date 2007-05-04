@@ -148,7 +148,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     }
 
     private MutablePicoContainer createMutablePicoContainer(String cafName, String monitorName, PicoContainer parentContainer) throws PicoCompositionException {
-        MutablePicoContainer container = new DefaultNanoContainer(getClassLoader(),createComponentAdapterFactory(cafName, new DefaultNanoContainer(getClassLoader())), parentContainer);
+        ComponentAdapterFactory caf = createComponentAdapterFactory(cafName, new DefaultNanoContainer(getClassLoader()));
+        MutablePicoContainer container = new DefaultNanoContainer(getClassLoader(), caf, parentContainer);
         if ( !notSet(monitorName) ){
             ComponentMonitor monitor = createComponentMonitor(monitorName);
             ((ComponentMonitorStrategy)container).changeMonitor(monitor);
@@ -438,10 +439,11 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         if (metaContainer.getComponentAdapter(factoryName) != null) {
             key = factoryName;
         } else {
-            metaContainer.component(new ClassName(ComponentAdapterFactory.class.getName()), new ClassName(factoryName));
+            metaContainer.component(ComponentAdapterFactory.class, new ClassName(factoryName));
             key = ComponentAdapterFactory.class;
         }
-        return (ComponentAdapterFactory) metaContainer.getComponent(key);
+        ComponentAdapterFactory factory = (ComponentAdapterFactory) metaContainer.getComponent(key);
+        return factory;
     }
 
     private ComponentMonitor createComponentMonitor(String monitorName) throws PicoCompositionException {

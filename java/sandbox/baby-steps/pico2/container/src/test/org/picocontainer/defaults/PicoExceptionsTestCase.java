@@ -37,7 +37,7 @@ public class PicoExceptionsTestCase
     final static public Throwable THROWABLE = new Throwable();
 
     final void executeTestOfStandardException(final Class clazz) {
-        final ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter(clazz, clazz, null, true, new DelegatingComponentMonitor());
+        final ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter(clazz, clazz, null, new DelegatingComponentMonitor());
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.component(MESSAGE);
         try {

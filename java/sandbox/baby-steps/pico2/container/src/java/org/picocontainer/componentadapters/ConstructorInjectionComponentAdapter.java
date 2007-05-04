@@ -54,7 +54,7 @@ import java.util.Set;
  * @version $Revision$
  */
 public class ConstructorInjectionComponentAdapter extends InstantiatingComponentAdapter {
-    private transient List sortedMatchingConstructors;
+    private transient List<Constructor> sortedMatchingConstructors;
     private transient Guard instantiationGuard;
 
     private static abstract class Guard extends ThreadLocalCyclicDependencyGuard {
@@ -151,7 +151,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
     }
 
     protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        final Set conflicts = new HashSet();
+        final Set<Constructor> conflicts = new HashSet<Constructor>();
         final Set unsatisfiableDependencyTypes = new HashSet();
         if (sortedMatchingConstructors == null) {
             sortedMatchingConstructors = getSortedMatchingConstructors();
@@ -159,9 +159,9 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         Constructor greediestConstructor = null;
         int lastSatisfiableConstructorSize = -1;
         Class unsatisfiedDependencyType = null;
-        for (int i = 0; i < sortedMatchingConstructors.size(); i++) {
+        for (Constructor sortedMatchingConstructor : sortedMatchingConstructors) {
             boolean failedDependency = false;
-            Constructor constructor = (Constructor) sortedMatchingConstructors.get(i);
+            Constructor constructor = sortedMatchingConstructor;
             Class[] parameterTypes = constructor.getParameterTypes();
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
@@ -200,10 +200,9 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
             throw new UnsatisfiableDependenciesException(this, unsatisfiedDependencyType, unsatisfiableDependencyTypes, container);
         } else if (greediestConstructor == null) {
             // be nice to the user, show all constructors that were filtered out
-            final Set nonMatching = new HashSet();
-            final Constructor[] constructors = getConstructors();
-            for (int i = 0; i < constructors.length; i++) {
-                nonMatching.add(constructors[i]);
+            final Set<Constructor> nonMatching = new HashSet<Constructor>();
+            for (Constructor constructor : getConstructors()) {
+                nonMatching.add(constructor);
             }
             throw new PicoInitializationException("Either do the specified parameters not match any of the following constructors: " + nonMatching.toString() + " or the constructors were not accessible for '" + getComponentImplementation() + "'");
         }
@@ -268,12 +267,11 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         return result;
     }
 
-    private List getSortedMatchingConstructors() {
-        List matchingConstructors = new ArrayList();
+    private List<Constructor> getSortedMatchingConstructors() {
+        List<Constructor> matchingConstructors = new ArrayList<Constructor>();
         Constructor[] allConstructors = getConstructors();
         // filter out all constructors that will definately not match
-        for (int i = 0; i < allConstructors.length; i++) {
-            Constructor constructor = allConstructors[i];
+        for (Constructor constructor : allConstructors) {
             if ((parameters == null || constructor.getParameterTypes().length == parameters.length) && (allowNonPublicClasses || (constructor.getModifiers() & Modifier.PUBLIC) != 0)) {
                 matchingConstructors.add(constructor);
             }

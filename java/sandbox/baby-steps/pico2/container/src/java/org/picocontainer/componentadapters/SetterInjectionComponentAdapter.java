@@ -157,7 +157,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             initializeSetterAndTypeLists();
         }
 
-        final List matchingParameterList = new ArrayList(Collections.nCopies(setters.size(), null));
+        final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(setters.size(), null));
         final Set<Integer> nonMatchingParameterPositions = new HashSet<Integer>();
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(setterTypes);
         for (int i = 0; i < currentParameters.length; i++) {
@@ -171,7 +171,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                 }
             }
             if (failedDependency) {
-                nonMatchingParameterPositions.add(new Integer(i));
+                nonMatchingParameterPositions.add(i);
             }
         }
 

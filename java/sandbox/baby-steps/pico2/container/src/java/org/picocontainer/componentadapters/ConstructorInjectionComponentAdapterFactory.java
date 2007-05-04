@@ -29,18 +29,13 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 public class ConstructorInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
     private LifecycleStrategy lifecycleStrategy;
 
-    public ConstructorInjectionComponentAdapterFactory(
-            ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
+    public ConstructorInjectionComponentAdapterFactory(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
         this.changeMonitor(monitor);
         this.lifecycleStrategy = lifecycleStrategy;
     }
 
-    public ConstructorInjectionComponentAdapterFactory(ComponentMonitor monitor) {
+    private ConstructorInjectionComponentAdapterFactory(ComponentMonitor monitor) {
         this(monitor, new StartableLifecycleStrategy(monitor));
-    }
-
-    public ConstructorInjectionComponentAdapterFactory(LifecycleStrategy lifecycleStrategy) {
-        this(new DelegatingComponentMonitor(), lifecycleStrategy);
     }
 
     public ConstructorInjectionComponentAdapterFactory() {

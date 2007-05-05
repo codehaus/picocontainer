@@ -18,8 +18,8 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.componentadapters.CachingComponentAdapter;
-import org.picocontainer.componentadapters.DecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.CachingComponentAdapter;
+import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
@@ -31,7 +31,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * This mode ({@link #ENSURE_THREAD_LOCALITY}) makes internal usage of a {@link ThreadLocalComponentAdapter}. If the
  * application architecture ensures, that the thread that creates the component is always also the thread that is th
  * only user, you can set the mode {@link #THREAD_ENSURES_LOCALITY}. In this mode the factory uses a simple
- * {@link CachingComponentAdapter} that uses a {@link ThreadLocalReference} to cache the component.
+ * {@link org.picocontainer.adapters.CachingComponentAdapter} that uses a {@link ThreadLocalReference} to cache the component.
  * </p>
  * <p>
  * See the use cases for the subtile difference:

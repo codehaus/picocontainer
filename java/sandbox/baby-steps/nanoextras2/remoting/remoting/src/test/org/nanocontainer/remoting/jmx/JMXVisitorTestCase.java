@@ -23,7 +23,7 @@ import org.nanocontainer.remoting.jmx.testmodel.Person;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.componentadapters.InstanceComponentAdapter;
+import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 

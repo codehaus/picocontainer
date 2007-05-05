@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 
 import java.util.ArrayList;

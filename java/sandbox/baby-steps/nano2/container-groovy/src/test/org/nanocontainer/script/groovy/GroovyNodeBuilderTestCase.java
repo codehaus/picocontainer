@@ -24,10 +24,10 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.componentadapters.InstanceComponentAdapter;
+import org.picocontainer.adapters.InstanceComponentAdapter;
+import org.picocontainer.adapters.SetterInjectionComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.componentadapters.SetterInjectionComponentAdapter;
-import org.picocontainer.componentadapters.SetterInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import java.io.File;
 import java.net.URLClassLoader;
@@ -315,7 +315,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
-                "import org.picocontainer.componentadapters.CachingComponentAdapterFactory\n" +
+                "import org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "builder = new GroovyNodeBuilder()\n" +
@@ -358,7 +358,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
-                "import org.picocontainer.componentadapters.CachingComponentAdapterFactory\n" +
+                "import org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "builder = new GroovyNodeBuilder()\n" +
@@ -749,7 +749,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
         // LifecyleContainerBuilder starts the container
         Object one = pico.getComponents().get(1);
-        assertEquals("org.picocontainer.componentadapters.CachingComponentAdapter", one.toString());
+        assertEquals("org.picocontainer.adapters.CachingComponentAdapter", one.toString());
     }
 
 

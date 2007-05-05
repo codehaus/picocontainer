@@ -13,9 +13,9 @@ import java.io.Serializable;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.componentadapters.ImplementationHidingComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**

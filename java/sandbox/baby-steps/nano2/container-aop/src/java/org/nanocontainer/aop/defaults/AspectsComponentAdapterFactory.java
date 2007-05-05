@@ -14,8 +14,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
-import org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory;
-import org.picocontainer.componentadapters.DecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
@@ -50,7 +50,7 @@ public class AspectsComponentAdapterFactory extends DecoratingComponentAdapterFa
      * will produce <code>AspectsComponentAdapter</code> objects that will use
      * <code>aspectsApplicator</code> to apply aspects to components produced
      * by a
-     * <code>org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory</code>.
+     * <code>org.picocontainer.adapters.AnyInjectionComponentAdapterFactory</code>.
      *
      * @param aspectsApplicator used to apply the aspects.
      */

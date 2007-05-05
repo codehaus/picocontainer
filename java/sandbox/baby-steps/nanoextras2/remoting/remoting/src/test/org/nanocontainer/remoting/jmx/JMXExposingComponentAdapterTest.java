@@ -18,7 +18,7 @@ import org.nanocontainer.remoting.jmx.testmodel.Person;
 import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.componentadapters.InstanceComponentAdapter;
+import org.picocontainer.adapters.InstanceComponentAdapter;
 
 import javax.management.DynamicMBean;
 import javax.management.InstanceAlreadyExistsException;

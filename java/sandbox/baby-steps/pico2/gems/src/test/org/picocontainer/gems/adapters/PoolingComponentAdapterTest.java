@@ -11,7 +11,7 @@ import com.thoughtworks.proxy.toys.pool.Poolable;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapter;
+import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.RecordingLifecycle;

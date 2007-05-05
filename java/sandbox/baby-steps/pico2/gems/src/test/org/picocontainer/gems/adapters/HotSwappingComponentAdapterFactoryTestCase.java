@@ -5,14 +5,13 @@ import com.thoughtworks.proxy.toys.hotswap.Swappable;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
-import org.picocontainer.componentadapters.CachingComponentAdapter;
-import org.picocontainer.componentadapters.CachingComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.CachingComponentAdapter;
+import org.picocontainer.adapters.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapter;
-import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.componentadapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
+import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 

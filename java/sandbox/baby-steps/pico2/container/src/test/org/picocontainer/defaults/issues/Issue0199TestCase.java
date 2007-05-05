@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.componentadapters.SynchronizedComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.SynchronizedComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class Issue0199TestCase extends TestCase {

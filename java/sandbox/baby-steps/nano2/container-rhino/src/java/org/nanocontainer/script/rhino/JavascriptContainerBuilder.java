@@ -65,7 +65,7 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
                     scope, new NativeJavaPackage[]{
                         new NativeJavaPackage("org.picocontainer.lifecycle", loader),
                         new NativeJavaPackage("org.picocontainer", loader),
-                        new NativeJavaPackage("org.picocontainer.componentadapters", loader),
+                        new NativeJavaPackage("org.picocontainer.adapters", loader),
                         new NativeJavaPackage("org.picocontainer.defaults", loader),
                         new NativeJavaPackage("org.nanocontainer", loader),
                         new NativeJavaPackage("org.nanocontainer.reflection", loader),

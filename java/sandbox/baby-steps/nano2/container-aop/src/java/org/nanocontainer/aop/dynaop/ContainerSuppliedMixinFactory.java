@@ -13,7 +13,7 @@ import dynaop.MixinFactory;
 import dynaop.Proxy;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapter;
+import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
 
 import java.util.Properties;
 

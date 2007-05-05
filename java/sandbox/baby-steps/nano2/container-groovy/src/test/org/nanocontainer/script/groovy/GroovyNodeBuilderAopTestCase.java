@@ -43,7 +43,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
 
         PicoContainer pico = buildContainer(script);
         Dao dao = (Dao) pico.getComponent(Dao.class);
-        StringBuffer log = (StringBuffer) pico.getComponent(StringBuffer.class);
+        StringBuffer log = pico.getComponent(StringBuffer.class);
         verifyIntercepted(dao, log);
     }
 

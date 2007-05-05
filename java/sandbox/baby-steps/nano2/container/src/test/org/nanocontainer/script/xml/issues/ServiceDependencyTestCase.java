@@ -7,8 +7,7 @@ import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.defaults.LifecycleStrategy;
-import org.picocontainer.componentadapters.SetterInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
 
 public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderTestCase {
 

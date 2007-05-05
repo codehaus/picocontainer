@@ -18,7 +18,7 @@ import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.componentadapters.DecoratingComponentAdapter;
+import org.picocontainer.adapters.DecoratingComponentAdapter;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -32,7 +32,7 @@ import java.util.Set;
  * underlying subject. In any case, the proxy will also implement {@link com.thoughtworks.proxy.toys.hotswap.Swappable}, making
  * it possible to swap out the underlying subject at runtime. <p/> <em>
  * Note that this class doesn't cache instances. If you want caching,
- * use a {@link org.picocontainer.componentadapters.CachingComponentAdapter} around this one.
+ * use a {@link org.picocontainer.adapters.CachingComponentAdapter} around this one.
  * </em>
  * 
  * @author Paul Hammant

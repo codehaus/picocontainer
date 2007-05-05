@@ -15,7 +15,7 @@ import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.componentadapters.DecoratingComponentAdapter;
+import org.picocontainer.adapters.DecoratingComponentAdapter;
 
 import java.io.Reader;
 import java.io.StringReader;

@@ -4,9 +4,9 @@ import junit.framework.TestCase;
 import org.picocontainer.alternatives.CachingPicoContainer;
 import org.picocontainer.alternatives.ImplementationHidingCachingPicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.componentadapters.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.componentadapters.CachingComponentAdapter;
-import org.picocontainer.componentadapters.CachingComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.CachingComponentAdapter;
+import org.picocontainer.adapters.CachingComponentAdapterFactory;
 
 import java.util.List;
 import java.util.ArrayList;

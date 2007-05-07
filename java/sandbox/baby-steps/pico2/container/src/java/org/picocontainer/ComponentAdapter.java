@@ -8,8 +8,8 @@
 package org.picocontainer;
 
 /**
- * A component adapter is responsible for providing a specific component instance. An instance of an implementation of
- * this interface is used inside a {@link PicoContainer} for every registered component or instance.  Each
+ * A addComponent addAdapter is responsible for providing a specific addComponent instance. An instance of an implementation of
+ * this interface is used inside a {@link PicoContainer} for every registered addComponent or instance.  Each
  * <code>ComponentAdapter</code> instance has to have a key which is unique within that container. The key itself is
  * either a class type (normally an interface) or an identifier.
  *
@@ -23,37 +23,37 @@ package org.picocontainer;
  */
 public interface ComponentAdapter {
     /**
-     * Retrieve the key associated with the component.
+     * Retrieve the key associated with the addComponent.
      * 
-     * @return the component's key. Should either be a class type (normally an interface) or an identifier that is
+     * @return the addComponent's key. Should either be a class type (normally an interface) or an identifier that is
      *         unique (within the scope of the current PicoContainer).
      */
     Object getComponentKey();
 
     /**
-     * Retrieve the class of the component.
+     * Retrieve the class of the addComponent.
      * 
-     * @return the component's implementation class. Should normally be a concrete class (ie, a class that can be
+     * @return the addComponent's implementation class. Should normally be a concrete class (ie, a class that can be
      *         instantiated).
      */
     Class getComponentImplementation();
 
     /**
-     * Retrieve the component instance. This method will usually create a new instance each time it is called, but that
+     * Retrieve the addComponent instance. This method will usually create a new instance each time it is called, but that
      * is not required. For example, {@link org.picocontainer.adapters.CachingComponentAdapter} will always return the
      * same instance.
      * 
      * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.
-     * @return the component instance.
-     * @throws PicoInitializationException if the component could not be instantiated.
-     * @throws PicoIntrospectionException  if the component has dependencies which could not be resolved, or
-     *                                     instantiation of the component lead to an ambigous situation within the
+     * @return the addComponent instance.
+     * @throws PicoInitializationException if the addComponent could not be instantiated.
+     * @throws PicoIntrospectionException  if the addComponent has dependencies which could not be resolved, or
+     *                                     instantiation of the addComponent lead to an ambigous situation within the
      *                                     container.
      */
     Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException;
 
     /**
-     * Verify that all dependencies for this adapter can be satisifed. Normally, the adapter should verify this by
+     * Verify that all dependencies for this addAdapter can be satisifed. Normally, the addAdapter should verify this by
      * checking that the associated PicoContainer contains all the needed dependnecies.
      *
      * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.

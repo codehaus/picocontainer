@@ -24,8 +24,8 @@ public class Issue0196TestCase extends TestCase {
 
         Descriptor.DescriptorData[] datas = new Descriptor.DescriptorData[3];
 
-        pico.component(datas);
-        pico.component(DescriptorDep.class);
+        pico.addComponent(datas);
+        pico.addComponent(DescriptorDep.class);
 
         DescriptorDep descriptorDep = (DescriptorDep) pico.getComponent(DescriptorDep.class);
 

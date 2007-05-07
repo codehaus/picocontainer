@@ -30,7 +30,7 @@ public class PicoActionServlet extends ActionServlet {
 
     /**
      * Creates or retrieves the action instance.  The action is retrieved from the actions
-     * Pico container, using the mapping path as the component key.  If no such action exists,
+     * Pico container, using the mapping path as the addComponent key.  If no such action exists,
      * a new one will be instantiated and placed in the actions container, thus injecting
      * its dependencies.
      *

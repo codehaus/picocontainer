@@ -25,7 +25,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * Factory for the AssimilatingComponentAdapter. This factory will create {@link AssimilatingComponentAdapter} instances for all
- * {@link ComponentAdapter} instances created by the delegate. This will assimilate every component for a specific type.
+ * {@link ComponentAdapter} instances created by the delegate. This will assimilate every addComponent for a specific type.
  * 
  * @author J&ouml;rg Schaible
  * @since 1.2
@@ -61,7 +61,7 @@ public class AssimilatingComponentAdapterFactory extends DecoratingComponentAdap
     }
 
     /**
-     * Create a {@link AssimilatingComponentAdapter}. This adapter will wrap the returned {@link ComponentAdapter} of the
+     * Create a {@link AssimilatingComponentAdapter}. This addAdapter will wrap the returned {@link ComponentAdapter} of the
      * deleated {@link ComponentAdapterFactory}.
      * 
      * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)

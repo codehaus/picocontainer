@@ -12,7 +12,7 @@ import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
 
 /**
- * An abstract component and three dependancies used for testing.
+ * An abstract addComponent and three dependancies used for testing.
  */
 public abstract class X implements Startable, Disposable {
 

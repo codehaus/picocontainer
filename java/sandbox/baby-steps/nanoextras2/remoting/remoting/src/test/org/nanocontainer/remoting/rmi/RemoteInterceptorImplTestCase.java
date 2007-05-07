@@ -25,8 +25,8 @@ public class RemoteInterceptorImplTestCase extends TestCase {
     public void testInvocationsArePassedThrough() throws RemoteException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         MutablePicoContainer pico = new DefaultPicoContainer();
         ByRefKey thangKey = new ByRefKey("thang");
-        pico.component(thangKey, Thang.class);
-        pico.component(ArrayList.class);
+        pico.addComponent(thangKey, Thang.class);
+        pico.addComponent(ArrayList.class);
         List serverList = (List) pico.getComponent(ArrayList.class);
 
         ProxyFactory proxyFactory = new CglibProxyFactory();
@@ -40,9 +40,9 @@ public class RemoteInterceptorImplTestCase extends TestCase {
         ProxyFactory proxyFactory = new CglibProxyFactory();
         ByRefKey thingKey = new ByRefKey("thing");
         ByRefKey thangKey = new ByRefKey("thang");
-        ComponentAdapter thingAdapter = pico.component(thingKey, Thing.class).lastCA();
-        pico.component(thangKey, Thang.class);
-        pico.component(ArrayList.class);
+        ComponentAdapter thingAdapter = pico.addComponent(thingKey, Thing.class).lastCA();
+        pico.addComponent(thangKey, Thang.class);
+        pico.addComponent(ArrayList.class);
 
         RemoteInterceptorImpl remoteInterceptor = new RemoteInterceptorImpl(RegistryHelper.getRegistry(), pico, thingKey, proxyFactory);
         remoteInterceptor.bind(thingAdapter);

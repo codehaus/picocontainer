@@ -40,8 +40,8 @@ import java.util.List;
  * &lt;taskdef name="pico" classname="org.nanocontainer.tools.ant.PicoContainerTask"/&gt;
  * <p/>
  * &lt;pico&gt;
- * &lt;component classname="foo.Bar" someprop="somevalue"/&gt;
- * &lt;component classname="ping.Pong"/&gt;
+ * &lt;addComponent classname="foo.Bar" someprop="somevalue"/&gt;
+ * &lt;addComponent classname="ping.Pong"/&gt;
  * &lt;/pico&gt;
  * <p/>
  * Also note that bean/ant style properties can be set too. The above
@@ -67,7 +67,7 @@ public class PicoContainerTask extends Task {
             NanoContainer container = new DefaultNanoContainer(getClass().getClassLoader(), picoContainer);
             for (Iterator iterator = antSpecifiedComponents.iterator(); iterator.hasNext();) {
                 Component component = (Component) iterator.next();
-                BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) container.component(component.getKey(), new ClassName(component.getClassname()));
+                BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) container.addComponent(component.getKey(), new ClassName(component.getClassname()));
                 adapter.setProperties(component.getProperties());
             }
         }

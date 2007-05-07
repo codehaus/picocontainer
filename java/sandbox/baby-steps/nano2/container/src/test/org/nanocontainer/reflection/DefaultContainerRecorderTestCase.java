@@ -33,9 +33,9 @@ public class DefaultContainerRecorderTestCase extends TestCase {
         ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultNanoContainer());
         MutablePicoContainer recorded = recorder.getContainerProxy();
 
-        recorded.component("fruit", "apple");
-        recorded.component("int", new Integer(239));
-        recorded.component("thing",
+        recorded.addComponent("fruit", "apple");
+        recorded.addComponent("int", new Integer(239));
+        recorded.addComponent("thing",
                 ThingThatTakesParamsInConstructor.class,
                 new Parameter[]{
                     ComponentParameter.DEFAULT,
@@ -57,7 +57,7 @@ public class DefaultContainerRecorderTestCase extends TestCase {
     public void testRecorderWorksAfterSerialization() throws IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException {
         ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultPicoContainer());
         MutablePicoContainer recorded = recorder.getContainerProxy();
-        recorded.component("fruit", "apple");
+        recorded.addComponent("fruit", "apple");
 
         ContainerRecorder serializedRecorder = (ContainerRecorder) serializeAndDeserialize(recorder);
         MutablePicoContainer slave = new DefaultPicoContainer();
@@ -96,7 +96,7 @@ public class DefaultContainerRecorderTestCase extends TestCase {
                 + "<container>" 
                 + "  <component-implementation key='fred' class='"+FredImpl.class.getName()+"'>"
                 + "     <parameter key='wilma'/>"  
-               + "  </component-implementation>"  
+               + "  </component-implementation>"
                 + "</container>" 
                 );
         populateXMLContainer(childRecorder, childResource);

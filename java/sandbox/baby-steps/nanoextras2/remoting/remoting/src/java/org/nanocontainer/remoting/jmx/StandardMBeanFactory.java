@@ -26,7 +26,7 @@ import javax.management.modelmbean.RequiredModelMBean;
 /**
  * A factory for DynamicMBeans, that creates MBean instances using the classes {@link StandardMBean} and
  * {@link ModelMBean} provided by the JMX specification. The implementation offers special support for StandardMBeans
- * following the naming convention for their management interface using the class name of the component with an appended
+ * following the naming convention for their management interface using the class name of the addComponent with an appended
  * <em>MBean</em>.
  * @author Michael Ward
  * @author J&ouml;rg Schaible
@@ -35,7 +35,7 @@ import javax.management.modelmbean.RequiredModelMBean;
 public class StandardMBeanFactory implements DynamicMBeanFactory {
 
     /**
-     * Create a StandardMBean for the component.
+     * Create a StandardMBean for the addComponent.
      * @param componentInstance {@inheritDoc}
      * @param management The management interface. If <code>null</code> the implementation will use the interface
      *            complying with the naming convention for management interfaces.

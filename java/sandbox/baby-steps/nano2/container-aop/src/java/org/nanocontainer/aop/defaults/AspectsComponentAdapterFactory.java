@@ -21,7 +21,7 @@ import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
- * Produces component adapters that apply aspects to components.
+ * Produces addComponent adapters that apply aspects to components.
  *
  * @author Stephen Molitor
  * @version $Revision$
@@ -37,7 +37,7 @@ public class AspectsComponentAdapterFactory extends DecoratingComponentAdapterFa
      * by <code>delegate</code>.
      *
      * @param aspectsApplicator used to apply the aspects.
-     * @param delegate          the real component adapter factory that this factory
+     * @param delegate          the real addComponent addAdapter factory that this factory
      *                          delegates to.
      */
     public AspectsComponentAdapterFactory(AspectsApplicator aspectsApplicator, ComponentAdapterFactory delegate) {

@@ -23,16 +23,16 @@ public class ComponentElementHelper {
         if (klass instanceof Class) {
             Class clazz = (Class) klass;
             key = key == null ? clazz : key;
-            return current.component(key, clazz, parameters);
+            return current.addComponent(key, clazz, parameters);
         } else if (klass instanceof String) {
             String className = (String) klass;
             key = key == null ? className : key;
-            return current.component(key, new ClassName(className), parameters);
+            return current.addComponent(key, new ClassName(className), parameters);
         } else if (instance != null) {
             key = key == null ? instance.getClass() : key;
-            return current.component(key, instance);
+            return current.addComponent(key, instance);
         } else {
-            throw new NanoContainerMarkupException("Must specify a 'class' attribute for a component as a class name (string) or Class.");
+            throw new NanoContainerMarkupException("Must specify a 'class' attribute for a addComponent as a class name (string) or Class.");
         }
     }
 

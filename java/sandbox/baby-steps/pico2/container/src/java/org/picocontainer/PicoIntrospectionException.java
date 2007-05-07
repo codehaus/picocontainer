@@ -10,8 +10,8 @@
 package org.picocontainer;
 
 /**
- * Subclass of {@link PicoException} that is thrown when there is a problem creating, providing or locating a component
- * instance or a part of the PicoContainer API, for example, when a request for a component is ambiguous.
+ * Subclass of {@link PicoException} that is thrown when there is a problem creating, providing or locating a addComponent
+ * instance or a part of the PicoContainer API, for example, when a request for a addComponent is ambiguous.
  * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y

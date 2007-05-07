@@ -21,8 +21,8 @@ public class DependencyInjectionFilterTestCase extends TestCase {
     public void testCanInstantiateWebContainerContextAndFilter() throws InterruptedException, IOException {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
-        parentContainer.component(String.class, "Fred");
-        parentContainer.component(Integer.class, new Integer(5));
+        parentContainer.addComponent(String.class, "Fred");
+        parentContainer.addComponent(Integer.class, new Integer(5));
 
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
@@ -44,7 +44,7 @@ public class DependencyInjectionFilterTestCase extends TestCase {
     public void testCanInstantiateWebContainerContextAndFilterInstance() throws InterruptedException, IOException {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
-        parentContainer.component(String.class, "Fred");
+        parentContainer.addComponent(String.class, "Fred");
 
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
@@ -67,8 +67,8 @@ public class DependencyInjectionFilterTestCase extends TestCase {
     public void testCanInstantiateWebContainerContextAndServlet() throws InterruptedException, IOException {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
-        parentContainer.component(String.class, "Fred");
-        parentContainer.component(Integer.class, new Integer(5));
+        parentContainer.addComponent(String.class, "Fred");
+        parentContainer.addComponent(Integer.class, new Integer(5));
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContextHandler barContext = server.createContext("/bar", false);

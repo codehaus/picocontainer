@@ -9,8 +9,8 @@ public class ConcreteClassesTestCase extends TestCase {
     public void testAssembleComponentsAndInstantiateAndUseThem() {
         // START SNIPPET: assemble
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.component(Boy.class);
-        pico.component(Girl.class);
+        pico.addComponent(Boy.class);
+        pico.addComponent(Girl.class);
         // END SNIPPET: assemble
 
         // START SNIPPET: instantiate-and-use

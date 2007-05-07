@@ -19,7 +19,7 @@ import org.nanocontainer.persistence.ExceptionHandler;
 import org.picocontainer.Startable;
 
 /**
- * Commons-DBCP DataSource component implementation. It has failover support. 
+ * Commons-DBCP DataSource addComponent implementation. It has failover support.
  * 
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
  */
@@ -48,7 +48,7 @@ public class DBCPDataSource extends AbstractDataSource implements Startable {
 	 * @param connectionURL The connection url.
 	 * @param username The connection username.
 	 * @param password The connection password.
-	 * @param jdbcExceptionHandler The ExceptionHandler component instance. 
+	 * @param jdbcExceptionHandler The ExceptionHandler addComponent instance.
 	 */
 	public DBCPDataSource(final String driver, final String connectionURL, final String username, final String password, final ExceptionHandler jdbcExceptionHandler) {
 		super(jdbcExceptionHandler);
@@ -68,7 +68,7 @@ public class DBCPDataSource extends AbstractDataSource implements Startable {
 
 	/**
 	 * @param properties DBCP properties. See at @{link http://jakarta.apache.org/commons/dbcp/configuration.html}
-	 * @param jdbcExceptionHandler The ExceptionHandler component instance. 
+	 * @param jdbcExceptionHandler The ExceptionHandler addComponent instance.
 	 */
 	public DBCPDataSource(final Properties properties, final ExceptionHandler jdbcExceptionHandler) {
 		super(jdbcExceptionHandler);

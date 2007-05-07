@@ -15,7 +15,7 @@ import dynaop.Pointcuts;
 import org.nanocontainer.aop.ComponentPointcut;
 
 /**
- * Mixin aspect that is applied to the components that match a component
+ * Mixin aspect that is applied to the components that match a addComponent
  * pointcut.
  *
  * @author Stephen Molitor
@@ -28,11 +28,11 @@ class MixinComponentAspect extends ComponentAspect {
 
     /**
      * Creates a new <code>MixinComponentAspect</code> from the given
-     * component pointcut and mixin class. The aspected component will implement
+     * addComponent pointcut and mixin class. The aspected addComponent will implement
      * the provided set of mixin interfaces.
      *
      * @param componentPointcut the components to introduce the mixin to.
-     * @param mixinInterfaces   the mixin interfaces the aspected component will
+     * @param mixinInterfaces   the mixin interfaces the aspected addComponent will
      *                          implement.
      * @param mixinFactory      the mixin factory.
      */

@@ -22,11 +22,11 @@ public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderT
     public void testCanInstantiateProcessWithSDIDependencies() {
         Reader script = new StringReader("" +
                 "<container component-adapter-factory='"+ MySetterInjectionComponentAdapterFactory.class.getName()+"'>"+
-                " <component-implementation class='"+Service1Impl.class.getName()+"'/>"+
-                " <component-implementation class='"+ServiceAImpl.class.getName()+"'/>"+
-                " <component-implementation class='"+Service2Impl.class.getName()+"'/>"+
-                " <component-implementation class='"+ServiceBImpl.class.getName()+"'/>"+
-                " <component-implementation class='"+Process.class.getName()+"'/>"+
+                "  <component-implementation class='"+Service1Impl.class.getName()+"'/>"+
+                "  <component-implementation class='"+ServiceAImpl.class.getName()+"'/>"+
+                "  <component-implementation class='"+Service2Impl.class.getName()+"'/>"+
+                "  <component-implementation class='"+ServiceBImpl.class.getName()+"'/>"+
+                "  <component-implementation class='"+Process.class.getName()+"'/>"+
                 "</container>");
         assertProcessWithDependencies(script);
     }

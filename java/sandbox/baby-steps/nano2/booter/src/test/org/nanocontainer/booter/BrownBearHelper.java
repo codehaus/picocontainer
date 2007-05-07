@@ -9,7 +9,7 @@ public class BrownBearHelper {
 
     public BrownBearHelper() throws ClassNotFoundException {
        DefaultNanoContainer nano = new DefaultNanoContainer();
-        nano.component(Map.class, new ClassName("java.util.HashMap"));
+        nano.addComponent(Map.class, new ClassName("java.util.HashMap"));
     }
 
 }

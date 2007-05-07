@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Represents the collection of component scoped aspects for a Pico container.
+ * Represents the collection of addComponent scoped aspects for a Pico container.
  * Manages a collection of <code>ComponentAspect</code> objects, and knows how
  * to register their aspects.
  *
@@ -32,26 +32,26 @@ class ComponentAspectsCollection {
     private final Collection componentsAspects = new ArrayList();
 
     /**
-     * Adds a component aspect to this collection.
+     * Adds a addComponent aspect to this collection.
      *
-     * @param componentAspect the component aspect to add.
+     * @param componentAspect the addComponent aspect to add.
      */
     void add(ComponentAspect componentAspect) {
         componentsAspects.add(componentAspect);
     }
 
     /**
-     * Registers all aspects whose component pointcut matches
+     * Registers all aspects whose addComponent pointcut matches
      * <code>componentKey</code>. Creates and returns a new
-     * <code>dynaop.Aspects</code> object that is the union of the component
+     * <code>dynaop.Aspects</code> object that is the union of the addComponent
      * and container scoped aspects. By copying the container scoped aspects to
-     * a new <code>dynaop.Aspects</code> and adding the component aspects to
+     * a new <code>dynaop.Aspects</code> and adding the addComponent aspects to
      * this new object, we avoid having to create proxies on top of proxies.
      *
-     * @param componentKey     the component key.
+     * @param componentKey     the addComponent key.
      * @param containerAspects the container scoped aspects.
      * @return a new <code>dynaop.Aspects</code> object that contains
-     *         everything in <code>containerAspects</code> plus the component
+     *         everything in <code>containerAspects</code> plus the addComponent
      *         aspects that match <code>componentKey</code>.
      */
     Aspects registerAspects(Object componentKey, Aspects containerAspects) {

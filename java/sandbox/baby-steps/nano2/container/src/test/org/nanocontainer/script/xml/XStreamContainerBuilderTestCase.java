@@ -116,7 +116,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
     
-    // do not know how to extract parameters off adapter....
+    // do not know how to extract parameters off addAdapter....
     public void testThatDependencyUsesClassAsKey() {
         Reader script = new StringReader("" +
         "<container>" +                                          

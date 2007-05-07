@@ -52,7 +52,7 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
             "      <parameter><string>nanowar-application.xml</string></parameter> "+
             "      <parameter><string>nanowar-session.xml</string></parameter>        "+
             "      <parameter><string>nanowar-request.xml</string></parameter> "+
-            "</component-implementation>" +                         
+            "</component-implementation>" +
             "</container>";
         assertComposedHierarchy(new ScopedContainerComposer(createConfigurationContainer(xmlConfig, XMLContainerBuilder.class)));
     }
@@ -61,7 +61,7 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
     public void TODO_testComposedHierarchyWithCustomGroovyConfiguration() throws ClassNotFoundException {
         String groovyConfig =
             "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
-            "   component(class:'org.nanocontainer.nanowar.ScopedContainerConfigurator', \n"+
+            "   addComponent(class:'org.nanocontainer.nanowar.ScopedContainerConfigurator', \n"+
             "             parameters:['org.nanocontainer.script.groovy.GroovyContainerBuilder', " +
             "                         'nanowar-application.groovy', " +
             "                         'nanowar-session.groovy', " +

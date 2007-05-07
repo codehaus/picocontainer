@@ -17,7 +17,6 @@ import java.util.Map;
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.nanocontainer.script.ComponentElementHelper;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.ConstantParameter;
 

@@ -48,7 +48,7 @@ public class BeanNode extends AbstractBuilderNode {
 
     public Object createNewNode(Object current, Map attributes) {
         Object bean = createBean(attributes);
-        ((MutablePicoContainer) current).component(bean);
+        ((MutablePicoContainer) current).addComponent(bean);
         return bean;
     }
 

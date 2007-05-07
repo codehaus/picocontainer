@@ -35,7 +35,7 @@ public interface Parameter {
      * @param adapter the {@link ComponentAdapter} that is asking for the instance
      * @param expectedType the type that the returned instance needs to match.
      * @return the instance or <code>null</code> if no suitable instance can be found.
-     * @throws PicoInitializationException if a referenced component could not be instantiated.
+     * @throws PicoInitializationException if a referenced addComponent could not be instantiated.
      * @since 1.1
      */
     Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType);
@@ -46,7 +46,7 @@ public interface Parameter {
      * @param container the container from which dependencies are resolved.
      * @param adapter the {@link ComponentAdapter} that is asking for the instance
      * @param expectedType the required type
-     * @return <code>true</code> if the component parameter can be resolved.
+     * @return <code>true</code> if the addComponent parameter can be resolved.
      * @since 1.1
      */
     boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType);

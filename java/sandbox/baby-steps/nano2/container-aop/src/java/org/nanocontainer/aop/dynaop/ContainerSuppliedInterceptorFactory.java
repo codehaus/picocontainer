@@ -33,11 +33,11 @@ class ContainerSuppliedInterceptorFactory implements InterceptorFactory {
     /**
      * Creates a new <code>ContainerSuppliedInterceptorFactory</code> that
      * will manufacture interceptors by retrieving them from the
-     * <code>PicoContainer</code> using a given component key.
+     * <code>PicoContainer</code> using a given addComponent key.
      *
      * @param pico                    the <code>PicoContainer</code> to retrieve the interceptor
      *                                from.
-     * @param interceptorComponentKey the component key that will be used to
+     * @param interceptorComponentKey the addComponent key that will be used to
      *                                retrieve the interceptor from the pico container.
      */
     ContainerSuppliedInterceptorFactory(PicoContainer pico, Object interceptorComponentKey) {
@@ -57,7 +57,7 @@ class ContainerSuppliedInterceptorFactory implements InterceptorFactory {
     public Interceptor create(Proxy proxy) throws NullPointerException {
         MethodInterceptor methodInterceptor = (MethodInterceptor) pico.getComponent(interceptorComponentKey);
         if (methodInterceptor == null) {
-            throw new NullPointerException("Interceptor with component key " + interceptorComponentKey
+            throw new NullPointerException("Interceptor with addComponent key " + interceptorComponentKey
                     + " + not found in PicoContainer");
         }
         return new MethodInterceptorAdapter(methodInterceptor);

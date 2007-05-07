@@ -6,7 +6,7 @@ import org.picocontainer.defaults.DelegatingComponentMonitor;
 import org.picocontainer.gems.monitors.prefuse.ComponentDependencyListener;
 
 /**
- * Understands how to capture component dependency information from
+ * Understands how to capture addComponent dependency information from
  * picocontainer.
  * 
  * @author Peter Barry
@@ -36,7 +36,7 @@ public class ComponentDependencyMonitor extends DelegatingComponentMonitor {
     }
 
     /**
-     * Understands which other classes are required to instantiate a component.
+     * Understands which other classes are required to instantiate a addComponent.
      * 
      * @author Peter Barry
      * @author Kent R. Spillner

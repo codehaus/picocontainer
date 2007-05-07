@@ -257,18 +257,18 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
     }
 
     /**
-     * Prepare the test <em>lifecycleManagerSupport</em>. Prepare the delivered PicoContainer with an adapter, that
+     * Prepare the test <em>lifecycleManagerSupport</em>. Prepare the delivered PicoContainer with an addAdapter, that
      * has a lifecycle and use a StringBuffer registered in the container to record the lifecycle method invocations.
-     * The recorded String in the buffer must result in <strong>&qout;&lt;OneOne&gt;!One&qout;</strong>. The adapter
+     * The recorded String in the buffer must result in <strong>&qout;&lt;OneOne&gt;!One&qout;</strong>. The addAdapter
      * top test should be registered in the container and delivered as return value.
      * @param picoContainer the container
-     * @return the adapter to test
+     * @return the addAdapter to test
      */
     private ComponentAdapter prepDEF_lifecycleManagerSupport(MutablePicoContainer picoContainer) {
-        picoContainer.component(RecordingLifecycle.One.class);
+        picoContainer.addComponent(RecordingLifecycle.One.class);
         PoolingComponentAdapter poolingComponentAdapter = new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
                 RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class));
-        return picoContainer.adapter(poolingComponentAdapter).lastCA();
+        return picoContainer.addAdapter(poolingComponentAdapter).lastCA();
     }
 
     public void testDEF_lifecycleManagerSupport() {
@@ -278,7 +278,7 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
                 final StringBuffer buffer = new StringBuffer();
                 final MutablePicoContainer picoContainer = new DefaultPicoContainer(
                         createDefaultComponentAdapterFactory());
-                picoContainer.component(buffer);
+                picoContainer.addComponent(buffer);
                 final ComponentAdapter componentAdapter = prepDEF_lifecycleManagerSupport(picoContainer);
                 assertSame(getComponentAdapterType(), componentAdapter.getClass());
                 assertEquals(0, buffer.length());
@@ -293,18 +293,18 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
 
     /**
      * Prepare the test <em>lifecycleManagerHonorsInstantiationSequence</em>. Prepare the delivered PicoContainer
-     * with adapter(s), that have dependend components, have a lifecycle and use a StringBuffer registered in the
+     * with addAdapter(s), that have dependend components, have a lifecycle and use a StringBuffer registered in the
      * container to record the lifecycle method invocations. The recorded String in the buffer must result in
-     * <strong>&qout;&lt;One&lt;TwoTwo&gt;One&gt;!Two!One&qout;</strong>. The adapter top test should be registered in
+     * <strong>&qout;&lt;One&lt;TwoTwo&gt;One&gt;!Two!One&qout;</strong>. The addAdapter top test should be registered in
      * the container and delivered as return value.
      * @param picoContainer the container
-     * @return the adapter to test
+     * @return the addAdapter to test
      */
     private ComponentAdapter prepRES_lifecycleManagerHonorsInstantiationSequence(MutablePicoContainer picoContainer) {
-        picoContainer.component(RecordingLifecycle.One.class);
+        picoContainer.addComponent(RecordingLifecycle.One.class);
         PoolingComponentAdapter poolingComponentAdapter = new PoolingComponentAdapter(new ConstructorInjectionComponentAdapter(
                 RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class));
-        return picoContainer.adapter(poolingComponentAdapter).lastCA();
+        return picoContainer.addAdapter(poolingComponentAdapter).lastCA();
     }
 
     public void testRES_lifecycleManagerHonorsInstantiationSequence() {
@@ -314,7 +314,7 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
                 final StringBuffer buffer = new StringBuffer();
                 final MutablePicoContainer picoContainer = new DefaultPicoContainer(
                         createDefaultComponentAdapterFactory());
-                picoContainer.component(buffer);
+                picoContainer.addComponent(buffer);
                 final ComponentAdapter componentAdapter = prepRES_lifecycleManagerHonorsInstantiationSequence(picoContainer);
                 assertSame(getComponentAdapterType(), componentAdapter.getClass());
                 assertEquals(0, buffer.length());

@@ -73,10 +73,10 @@ public class DynaopAspectablePicoContainerFactory implements AspectablePicoConta
     private MutablePicoContainer createMutablePicoContainer(Class containerClass, ComponentAdapterFactory caFactory,
                                                       PicoContainer parent) {
         MutablePicoContainer temp = new DefaultPicoContainer();
-        temp.component(containerClass);
-        temp.component(ComponentAdapterFactory.class, caFactory);
+        temp.addComponent(containerClass);
+        temp.addComponent(ComponentAdapterFactory.class, caFactory);
         if (parent != null) {
-            temp.component(PicoContainer.class, parent);
+            temp.addComponent(PicoContainer.class, parent);
         }
         return (MutablePicoContainer) temp.getComponent(containerClass);
     }

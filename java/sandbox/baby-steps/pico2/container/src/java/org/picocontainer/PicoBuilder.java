@@ -64,18 +64,18 @@ public class PicoBuilder {
 
         DefaultPicoContainer temp = new DefaultPicoContainer();
 
-        temp.component(PicoContainer.class, parentContainer);
-        temp.component(ComponentMonitor.class, componentMonitorClass);
-        temp.component(LifecycleStrategy.class, lifecycleStrategyClass);
+        temp.addComponent(PicoContainer.class, parentContainer);
+        temp.addComponent(ComponentMonitor.class, componentMonitorClass);
+        temp.addComponent(LifecycleStrategy.class, lifecycleStrategyClass);
         if (headComponentAdapterFactory == null) {
-            temp.component(ComponentAdapterFactory.class, componentAdapterFactoryClass);
+            temp.addComponent(ComponentAdapterFactory.class, componentAdapterFactoryClass);
         } else {
             DefaultPicoContainer temp2 = new DefaultPicoContainer(temp);
-            temp2.component(ComponentAdapterFactory.class, componentAdapterFactoryClass);
-            temp2.component("foo", headComponentAdapterFactory);
-            temp.component(ComponentAdapterFactory.class, temp2.getComponent("foo"));
+            temp2.addComponent(ComponentAdapterFactory.class, componentAdapterFactoryClass);
+            temp2.addComponent("foo", headComponentAdapterFactory);
+            temp.addComponent(ComponentAdapterFactory.class, temp2.getComponent("foo"));
         }
-        temp.component(MutablePicoContainer.class, DefaultPicoContainer.class);
+        temp.addComponent(MutablePicoContainer.class, DefaultPicoContainer.class);
 
 
         return (MutablePicoContainer) temp.getComponent(MutablePicoContainer.class);

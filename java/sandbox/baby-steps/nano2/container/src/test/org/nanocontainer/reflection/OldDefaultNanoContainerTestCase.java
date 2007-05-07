@@ -30,14 +30,14 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
 
     public void testBasic() throws PicoRegistrationException, PicoInitializationException {
         NanoContainer nanoContainer = new DefaultNanoContainer();
-        nanoContainer.component(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
-        nanoContainer.component("org.nanocontainer.testmodel.WebServer", new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
+        nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
+        nanoContainer.addComponent("org.nanocontainer.testmodel.WebServer", new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
     }
 
     public void testProvision() throws PicoException {
         NanoContainer nanoContainer = new DefaultNanoContainer();
-        nanoContainer.component(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
-        nanoContainer.component(new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
+        nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
+        nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
 
         assertNotNull("WebServerImpl should exist", nanoContainer.getComponent(WebServerImpl.class));
         assertTrue("WebServerImpl should exist", nanoContainer.getComponent(WebServerImpl.class) instanceof WebServerImpl);
@@ -46,7 +46,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
     public void testNoGenerationRegistration() throws PicoRegistrationException, PicoIntrospectionException {
         NanoContainer nanoContainer = new DefaultNanoContainer();
         try {
-            nanoContainer.component(new ClassName("Ping"));
+            nanoContainer.addComponent(new ClassName("Ping"));
             fail("should have failed");
         } catch (PicoClassNotFoundException e) {
             // expected
@@ -60,7 +60,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
 
         DefaultNanoContainer dfca = new DefaultNanoContainer();
         try {
-            dfca.component("foo", new ClassName("TestComp"));
+            dfca.addComponent("foo", new ClassName("TestComp"));
             Object o = dfca.getComponent("foo");
             System.out.println("");
             fail("Should have failed. Class was loaded from " + o.getClass().getProtectionDomain().getCodeSource().getLocation());
@@ -76,8 +76,8 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         // Set up parent
         NanoContainer parentContainer = new DefaultNanoContainer();
         parentContainer.addClassLoaderURL(testCompJar.toURL());
-        parentContainer.component("parentTestComp", new ClassName("TestComp"));
-        parentContainer.component(new ClassName("java.lang.StringBuffer"));
+        parentContainer.addComponent("parentTestComp", new ClassName("TestComp"));
+        parentContainer.addComponent(new ClassName("java.lang.StringBuffer"));
 
         PicoContainer parentContainerAdapterPico = parentContainer;
         Object parentTestComp = parentContainerAdapterPico.getComponent("parentTestComp");
@@ -88,7 +88,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
         //System.err.println("--> " + testCompJar2.getAbsolutePath());
         childContainer.addClassLoaderURL(testCompJar2.toURL());
-        childContainer.component("childTestComp", new ClassName("TestComp2"));
+        childContainer.addComponent("childTestComp", new ClassName("TestComp2"));
 
         PicoContainer childContainerAdapterPico = childContainer;
         Object childTestComp = childContainerAdapterPico.getComponent("childTestComp");
@@ -126,14 +126,14 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
 
         File testCompJar = TestHelper.getTestCompJarFile();
 
-        parentContainer.component("foo", new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
+        parentContainer.addComponent("foo", new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
 
         Object fooWebServerConfig = parentContainer.getComponent("foo");
         assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
         NanoContainer childContainer = new DefaultNanoContainer(parentContainer);
         childContainer.addClassLoaderURL(testCompJar.toURL());
-        childContainer.component("bar", new ClassName("TestComp"));
+        childContainer.addComponent("bar", new ClassName("TestComp"));
 
         Object barTestComp = childContainer.getComponent("bar");
         assertEquals("TestComp", barTestComp.getClass().getName());
@@ -166,7 +166,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());
 
-        parentContainer.component("foo", new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
+        parentContainer.addComponent("foo", new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
 
         Object fooWebServerConfig = parentContainer.getComponent("foo");
         assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
@@ -176,7 +176,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         //TODO childContainer.setPermission(some permission list, that includes the preventing of general file access);
         // Or shoud this be done in the ctor for DRCA ?
         // or should it a parameter in the addClassLoaderURL(..) method
-        childContainer.component("bar", new ClassName("org.nanocontainer.testmodel.FileSystemUsing"));
+        childContainer.addComponent("bar", new ClassName("org.nanocontainer.testmodel.FileSystemUsing"));
 
         try {
             parentContainer.getComponent("bar");
@@ -194,9 +194,9 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
             return null;
         }
 
-        public MutablePicoContainer component(Class compImpl) throws PicoRegistrationException {
+        public MutablePicoContainer addComponent(Class compImpl) throws PicoRegistrationException {
             assertEquals(HashMap.class, compImpl);
-            return super.component(ArrayList.class);
+            return super.addComponent(ArrayList.class);
         }
     }
 
@@ -207,9 +207,9 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         public MutablePicoContainer makeChildContainer() {
             return null;
         }
-        public MutablePicoContainer component(Class compImpl) throws PicoRegistrationException {
+        public MutablePicoContainer addComponent(Class compImpl) throws PicoRegistrationException {
             assertEquals(Vector.class, compImpl);
-            return super.component(HashMap.class);
+            return super.addComponent(HashMap.class);
         }
     }
 

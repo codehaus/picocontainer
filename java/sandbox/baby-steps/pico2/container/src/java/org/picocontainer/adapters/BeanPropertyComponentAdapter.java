@@ -23,13 +23,13 @@ import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
- * Decorating component adapter that can be used to set additional properties
- * on a component in a bean style. These properties must be managed manually
+ * Decorating addComponent addAdapter that can be used to set additional properties
+ * on a addComponent in a bean style. These properties must be managed manually
  * by the user of the API, and will not be managed by PicoContainer. This class
  * is therefore <em>not</em> the same as {@link SetterInjectionComponentAdapter},
- * which is a true Setter Injection adapter.
+ * which is a true Setter Injection addAdapter.
  * <p/>
- * This adapter is mostly handy for setting various primitive properties via setters;
+ * This addAdapter is mostly handy for setting various primitive properties via setters;
  * it is also able to set javabean properties by discovering an appropriate
  * {@link PropertyEditor} and using its <code>setAsText</code> method.
  * <p/>
@@ -57,9 +57,9 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
     }
 
     /**
-     * Get a component instance and set given property values.
+     * Get a addComponent instance and set given property values.
      *
-     * @return the component instance with any properties of the properties map set.
+     * @return the addComponent instance with any properties of the properties map set.
      * @throws PicoInitializationException {@inheritDoc}
      * @throws PicoIntrospectionException  {@inheritDoc}
      * @throws org.picocontainer.defaults.AssignabilityRegistrationException
@@ -148,8 +148,8 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
 
         if (result == null) {
 
-            // check if the propertyValue is a key of a component in the container
-            // if so, the typeName of the component and the setters parameter typeName
+            // check if the propertyValue is a key of a addComponent in the container
+            // if so, the typeName of the addComponent and the setters parameter typeName
             // have to be compatible
 
             // TODO: null check only because of test-case, otherwise null is impossible
@@ -234,12 +234,12 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
     /**
      * Converts and validates the given property value to an appropriate object
      * for calling the bean's setter.
-     * @param propertyName String the property name on the component that
+     * @param propertyName String the property name on the addComponent that
      * we will be setting the value to.
      * @param propertyValue Object the property value that we've been given. It
      * may need conversion to be formed into the value we need for the
-     * component instance setter.
-     * @param componentInstance the component that we're looking to provide
+     * addComponent instance setter.
+     * @param componentInstance the addComponent that we're looking to provide
      * the setter to.
      * @return Object: the final converted object that can
      * be used in the setter.
@@ -274,7 +274,7 @@ public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
             if (setterParameter.isAssignableFrom(givenParameterClass)) {
                 convertedValue = propertyValue;
             } else {
-                throw new ClassCastException("Setter: " + setter.getName() + " for component: "
+                throw new ClassCastException("Setter: " + setter.getName() + " for addComponent: "
                     + componentInstance.toString() + " can only take objects of: " + setterParameter.getName()
                     + " instead got: " + givenParameterClass.getName());
             }

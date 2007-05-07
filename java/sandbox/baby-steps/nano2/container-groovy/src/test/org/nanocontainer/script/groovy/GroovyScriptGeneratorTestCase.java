@@ -15,8 +15,8 @@ import java.util.ArrayList;
 public class GroovyScriptGeneratorTestCase extends TestCase {
     public void testShouldWriteAGroovyScriptThatAllowsToRecreateASimilarContainer() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.component(ArrayList.class);
-        pico.component("Hello", "World");
+        pico.addComponent(ArrayList.class);
+        pico.addComponent("Hello", "World");
 
         GroovyScriptGenerator groovyScriptGenerator = new GroovyScriptGenerator();
         String script = groovyScriptGenerator.generateScript(pico);

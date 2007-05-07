@@ -7,8 +7,8 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 public class InterfacesTestCase extends TestCase {
     public void testKissing() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.component(Boy.class);
-        pico.component(Girl.class);
+        pico.addComponent(Boy.class);
+        pico.addComponent(Girl.class);
 
         Girl girl = (Girl) pico.getComponent(Girl.class);
         girl.kissSomeone();

@@ -26,7 +26,7 @@ import net.sf.hibernate.SessionFactory;
 import org.picocontainer.PicoInitializationException;
 /** 
  * delegates everything to session factory obtained from confiuration.
- * this class is necessary because component adapters are really ugly when 
+ * this class is necessary because addComponent adapters are really ugly when
  * it comes to scripting 
  * 
  * 

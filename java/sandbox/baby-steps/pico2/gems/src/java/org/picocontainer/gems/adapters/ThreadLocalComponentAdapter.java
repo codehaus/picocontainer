@@ -30,15 +30,15 @@ import java.util.Set;
 
 
 /**
- * A {@link ComponentAdapter} that realizes a {@link ThreadLocal} component instance.
+ * A {@link ComponentAdapter} that realizes a {@link ThreadLocal} addComponent instance.
  * <p>
- * The adapter creates proxy instances, that will create the necessary instances on-the-fly invoking the methods of the
- * instance. Use this adapter, if you are instantiating your components in a single thread, but should be different when
+ * The addAdapter creates proxy instances, that will create the necessary instances on-the-fly invoking the methods of the
+ * instance. Use this addAdapter, if you are instantiating your components in a single thread, but should be different when
  * accessed from different threads. See {@link ThreadLocalComponentAdapterFactory} for details.
  * </p>
  * <p>
  * Note: Because this implementation uses a {@link Proxy}, you can only access the methods exposed by the implemented
- * interfaces of your component.
+ * interfaces of your addComponent.
  * </p>
  * 
  * @author J&ouml;rg Schaible
@@ -53,7 +53,7 @@ public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
      * 
      * @param delegate The {@link ComponentAdapter} to delegate.
      * @param proxyFactory The {@link ProxyFactory} to use.
-     * @throws PicoIntrospectionException Thrown if the component does not implement any interface.
+     * @throws PicoIntrospectionException Thrown if the addComponent does not implement any interface.
      */
     public ThreadLocalComponentAdapter(final ComponentAdapter delegate, final ProxyFactory proxyFactory)
             throws PicoIntrospectionException {
@@ -66,7 +66,7 @@ public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
      * Construct a ThreadLocalComponentAdapter using {@link Proxy} instances.
      * 
      * @param delegate The {@link ComponentAdapter} to delegate.
-     * @throws PicoIntrospectionException Thrown if the component does not implement any interface.
+     * @throws PicoIntrospectionException Thrown if the addComponent does not implement any interface.
      */
     public ThreadLocalComponentAdapter(final ComponentAdapter delegate) throws PicoIntrospectionException {
         this(new CachingComponentAdapter(delegate, new ThreadLocalReference()), new StandardProxyFactory());

@@ -41,9 +41,9 @@ public class Issue0229TestCase extends TestCase {
 
     public void testArrayDependenciesAndVerification() {
         DefaultPicoContainer container = new DefaultPicoContainer();
-        container.component(new MockRunnable());
-        container.component(new OtherRunnable());
-        container.component(MockRunner.class);
+        container.addComponent(new MockRunnable());
+        container.addComponent(new OtherRunnable());
+        container.addComponent(MockRunner.class);
 
         // this will fail to resolve the Runnable array on the MockRunner
         VerifyingVisitor visitor = new VerifyingVisitor();

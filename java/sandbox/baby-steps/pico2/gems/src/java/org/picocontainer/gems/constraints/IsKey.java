@@ -11,7 +11,7 @@ package org.picocontainer.gems.constraints;
 import org.picocontainer.ComponentAdapter;
 
 /**
- * Constraint that accepts an adapter of a specific key.
+ * Constraint that accepts an addAdapter of a specific key.
  *
  * @author Nick Sieger
  * @version 1.1

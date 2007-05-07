@@ -37,16 +37,16 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * {@link ComponentAdapter} implementation that pools components.
  * <p>
  * The implementation utilizes a delegated ComponentAdapter to create the instances of the pool. The
- * pool can be configured to grow unlimited or to a maximum size. If a component is requested from
- * this adapter, the implementation returns an availailabe instance from the pool or will create a
+ * pool can be configured to grow unlimited or to a maximum size. If a addComponent is requested from
+ * this addAdapter, the implementation returns an availailabe instance from the pool or will create a
  * new one, if the maximum pool size is not reached yet. If none is available, the implementation
  * can wait a defined time for a returned object before it throws a {@link PoolException}.
  * </p>
  * <p>
  * This implementation uses the {@link Pool} toy from the <a
- * href="http://proxytoys.codehaus.org">ProxyToys</a> project. This ensures, that any component,
+ * href="http://proxytoys.codehaus.org">ProxyToys</a> project. This ensures, that any addComponent,
  * that is out of scope will be automatically returned to the pool by the garbage collector.
- * Additionally will every component instance also implement
+ * Additionally will every addComponent instance also implement
  * {@link com.thoughtworks.proxy.toys.pool.Poolable}, that can be used to return the instance
  * manually. After returning an instance it should not be used in client code anymore.
  * </p>
@@ -58,8 +58,8 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * </p>
  * <p>
  * The pool supports components with a lifecylce. If the delegated {@link ComponentAdapter}
- * implements a {@link LifecycleStrategy}, any component retrieved form the pool will be started
- * before and stopped again, when it returns back into the pool. Also if a component cannot be
+ * implements a {@link LifecycleStrategy}, any addComponent retrieved form the pool will be started
+ * before and stopped again, when it returns back into the pool. Also if a addComponent cannot be
  * resetted it will automatically be disposed. If the container of the pool is disposed, that any
  * returning object is also disposed and will not return to the pool anymore. Note, that current
  * implementation cannot dispose pooled objects.
@@ -235,9 +235,9 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
 
     /**
      * Construct a PoolingComponentAdapter. Remember, that the implementation will request new
-     * components from the delegate as long as no component instance is available in the pool and
+     * components from the delegate as long as no addComponent instance is available in the pool and
      * the maximum pool size is not reached. Therefore the delegate may not return the same
-     * component instance twice. Ensure, that the used {@link ComponentAdapter} does not cache.
+     * addComponent instance twice. Ensure, that the used {@link ComponentAdapter} does not cache.
      * 
      * @param delegate the delegated ComponentAdapter
      * @param context the {@link Context} of the pool
@@ -376,7 +376,7 @@ public class PoolingComponentAdapter extends DecoratingComponentAdapter implemen
     }
 
     /**
-     * Start of the container ensures that at least one pooled component has been started. Applies
+     * Start of the container ensures that at least one pooled addComponent has been started. Applies
      * only if the delegated {@link ComponentAdapter} supports a lifecylce by implementing
      * {@link LifecycleStrategy}.
      * 

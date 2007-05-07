@@ -24,15 +24,15 @@ import org.picocontainer.defaults.LifecycleStrategy;
 
 /**
  * <p>
- * Component adapter which decorates another adapter.
+ * Component addAdapter which decorates another addAdapter.
  * </p>
  * <p>
- * This adapter supports a {@link org.picocontainer.defaults.ComponentMonitorStrategy component monitor strategy}
+ * This addAdapter supports a {@link org.picocontainer.defaults.ComponentMonitorStrategy addComponent monitor strategy}
  * and will propagate change of monitor to the delegate if the delegate itself
  * support the monitor strategy.
  * </p>
  * <p>
- * This adapter also supports a {@link LifecycleManager lifecycle manager} and a 
+ * This addAdapter also supports a {@link LifecycleManager lifecycle manager} and a
  * {@link org.picocontainer.defaults.LifecycleStrategy lifecycle strategy} if the delegate does.
  * </p>
  * 
@@ -77,7 +77,7 @@ public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMo
 
     /**
      * Delegates change of monitor if the delegate supports 
-     * a component monitor strategy.
+     * a addComponent monitor strategy.
      * {@inheritDoc}
      */
     public void changeMonitor(ComponentMonitor monitor) {
@@ -88,15 +88,15 @@ public class DecoratingComponentAdapter implements ComponentAdapter, ComponentMo
 
     /**
      * Returns delegate's current monitor if the delegate supports 
-     * a component monitor strategy.
+     * a addComponent monitor strategy.
      * {@inheritDoc}
-     * @throws PicoIntrospectionException if no component monitor is found in delegate
+     * @throws PicoIntrospectionException if no addComponent monitor is found in delegate
      */
     public ComponentMonitor currentMonitor() {
         if ( delegate instanceof ComponentMonitorStrategy ){
             return ((ComponentMonitorStrategy)delegate).currentMonitor();
         }
-        throw new PicoIntrospectionException("No component monitor found in delegate");
+        throw new PicoIntrospectionException("No addComponent monitor found in delegate");
     }
 
     // ~~~~~~~~ LifecylceManager ~~~~~~~~

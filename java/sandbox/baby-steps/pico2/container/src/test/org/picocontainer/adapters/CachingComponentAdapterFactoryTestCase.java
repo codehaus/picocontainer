@@ -35,16 +35,16 @@ public class CachingComponentAdapterFactoryTestCase extends AbstractComponentAda
     }
 
     public void testContainerReturnsSameInstanceEachCall() {
-        picoContainer.component(Touchable.class, SimpleTouchable.class);
+        picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
         Touchable t1 = (Touchable) picoContainer.getComponent(Touchable.class);
         Touchable t2 = (Touchable) picoContainer.getComponent(Touchable.class);
         assertSame(t1, t2);
     }
 
     public void testContainerCanFollowNOCACHEDirectiveSelectively() {
-        picoContainer.component(Touchable.class, SimpleTouchable.class);
+        picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
         picoContainer.change(ComponentCharacteristics.NOCACHE);
-        picoContainer.component(Map.class, HashMap.class);
+        picoContainer.addComponent(Map.class, HashMap.class);
         assertSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
         final Map component = picoContainer.getComponent(Map.class);
         final Map component1 = picoContainer.getComponent(Map.class);

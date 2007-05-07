@@ -148,7 +148,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     }
 
     /**
-     * process adapter node
+     * process addAdapter node
      * @param container
      * @param rootElement
      */
@@ -160,12 +160,12 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             populateContainer(nested, rootElement);
 
             if (key != null) {
-                container.adapter((ComponentAdapter) nested.getComponent(key));
+                container.addAdapter((ComponentAdapter) nested.getComponent(key));
             } else if (klass != null) {
                 Class clazz = getClassLoader().loadClass(klass);
-                container.adapter((ComponentAdapter) nested.getComponent(clazz));
+                container.addAdapter((ComponentAdapter) nested.getComponent(clazz));
             } else {
-                container.adapter((ComponentAdapter) nested.getComponent(ComponentAdapter.class));
+                container.addAdapter((ComponentAdapter) nested.getComponent(ComponentAdapter.class));
             }
         } catch (ClassNotFoundException ex) {
             throw new NanoContainerMarkupException(ex);
@@ -184,7 +184,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         String klass = rootElement.getAttribute(CLASS);
         String constructor = rootElement.getAttribute(CONSTRUCTOR);
         if (klass == null || "".equals(klass)) {
-            throw new NanoContainerMarkupException("class specification is required for component implementation");
+            throw new NanoContainerMarkupException("class specification is required for addComponent implementation");
         }
 
         Class clazz = getClassLoader().loadClass(klass);
@@ -236,18 +236,18 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             }
             if (key == null || "".equals(key)) {
                 // without  key. clazz is our key
-                container.component(clazz, clazz, parameterArray);
+                container.addComponent(clazz, clazz, parameterArray);
             } else {
                 // with key
-                container.component(key, clazz, parameterArray);
+                container.addComponent(key, clazz, parameterArray);
             }
         } else {
             if (key == null || "".equals(key)) {
                 // without  key. clazz is our key
-                container.component(clazz, clazz);
+                container.addComponent(clazz, clazz);
             } else {
                 // with key
-                container.component(key, clazz);
+                container.addComponent(key, clazz);
             }
 
         }
@@ -267,10 +267,10 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         }
         if (key != null && !"".equals(key)) {
             // insert with key
-            container.component(key, result);
+            container.addComponent(key, result);
         } else {
             // or without
-            container.component(result);
+            container.addComponent(result);
         }
     }
 

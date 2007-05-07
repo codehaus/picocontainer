@@ -65,7 +65,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
-     * @param monitor the component monitor used by this ComponentAdapter
+     * @param monitor the addComponent monitor used by this ComponentAdapter
      * @param lifecycleStrategy the lifecycle strategy used by this ComponentAdapter
      * @throws org.picocontainer.defaults.AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException if the implementation is not a concrete class
@@ -91,7 +91,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
-     * @param monitor the component monitor used by this ComponentAdapter
+     * @param monitor the addComponent monitor used by this ComponentAdapter
      * @throws org.picocontainer.defaults.AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
@@ -116,7 +116,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     }
     
     private void checkConcrete() throws NotConcreteRegistrationException {
-        // Assert that the component class is concrete.
+        // Assert that the addComponent class is concrete.
         boolean isAbstract = (getComponentImplementation().getModifiers() & Modifier.ABSTRACT) == Modifier.ABSTRACT;
         if (getComponentImplementation().isInterface() || isAbstract) {
             throw new NotConcreteRegistrationException(getComponentImplementation());

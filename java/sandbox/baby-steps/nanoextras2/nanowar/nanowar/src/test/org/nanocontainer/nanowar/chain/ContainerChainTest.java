@@ -41,11 +41,11 @@ public class ContainerChainTest extends TestCase {
 		ContainerChain chain = new ContainerChain();
 		MutablePicoContainer first = new DefaultPicoContainer();
 	
-		first.component(new MockStartable());
+		first.addComponent(new MockStartable());
 		chain.addContainer(first);
 		
 		MutablePicoContainer second = new DefaultPicoContainer();
-		second.component(new MockStartable());
+		second.addComponent(new MockStartable());
 		
 		chain.addContainer(second);
 		

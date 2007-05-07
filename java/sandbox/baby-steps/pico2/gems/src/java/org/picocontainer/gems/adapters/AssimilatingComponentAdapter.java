@@ -24,10 +24,10 @@ import java.lang.reflect.Method;
 
 
 /**
- * ComponentAdapter, that assimilates a component for a specific type.
+ * ComponentAdapter, that assimilates a addComponent for a specific type.
  * <p>
  * Allows the instance of another {@link ComponentAdapter} to be converted into interfacte <code>type</code>, that the
- * instance is not assignable from. In other words the instance of the delegated adapter does NOT necessarily implement the
+ * instance is not assignable from. In other words the instance of the delegated addAdapter does NOT necessarily implement the
  * <code>type</code> interface.
  * </p>
  * <p>
@@ -61,8 +61,8 @@ public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
     private boolean isCompatible;
 
     /**
-     * Construct an AssimilatingComponentAdapter. The <code>type</code> may not implement the type of the component instance.
-     * If the component instance <b>does</b> implement the interface, no proxy is used though.
+     * Construct an AssimilatingComponentAdapter. The <code>type</code> may not implement the type of the addComponent instance.
+     * If the addComponent instance <b>does</b> implement the interface, no proxy is used though.
      * 
      * @param type The class type used as key.
      * @param delegate The delegated {@link ComponentAdapter}.
@@ -96,8 +96,8 @@ public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
     }
 
     /**
-     * Construct an AssimilatingComponentAdapter. The <code>type</code> may not implement the type of the component instance.
-     * The implementation will use JDK {@link java.lang.reflect.Proxy} instances. If the component instant <b>does </b>
+     * Construct an AssimilatingComponentAdapter. The <code>type</code> may not implement the type of the addComponent instance.
+     * The implementation will use JDK {@link java.lang.reflect.Proxy} instances. If the addComponent instant <b>does </b>
      * implement the interface, no proxy is used anyway.
      * 
      * @param type The class type used as key.
@@ -108,7 +108,7 @@ public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
     }
 
     /**
-     * Create and return a component instance. If the component instance and the type to assimilate is not compatible, a proxy
+     * Create and return a addComponent instance. If the addComponent instance and the type to assimilate is not compatible, a proxy
      * for the instance is generated, that implements the assimilated type.
      * 
      * @see org.picocontainer.adapters.DecoratingComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
@@ -120,7 +120,7 @@ public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
     }
 
     /**
-     * Return the type of the component. If the component type is not compatible with the type to assimilate, the assimilated
+     * Return the type of the addComponent. If the addComponent type is not compatible with the type to assimilate, the assimilated
      * type is returned.
      * 
      * @see org.picocontainer.adapters.DecoratingComponentAdapter#getComponentImplementation()
@@ -130,7 +130,7 @@ public class AssimilatingComponentAdapter extends DecoratingComponentAdapter {
     }
 
     /**
-     * Return the key of the component. If the key of the delegated component is a type, that is not compatible with the type to
+     * Return the key of the addComponent. If the key of the delegated addComponent is a type, that is not compatible with the type to
      * assimilate, then the assimilated type replaces the original type.
      * 
      * @see org.picocontainer.adapters.DecoratingComponentAdapter#getComponentKey()

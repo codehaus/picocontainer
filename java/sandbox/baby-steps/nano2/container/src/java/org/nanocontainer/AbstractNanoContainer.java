@@ -33,7 +33,7 @@ import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
 
 /**
  * A base class for NanoPicoContainers. As well as the functionality indicated by the interface it
- * implements, extenders of this class will have named child component capability.
+ * implements, extenders of this class will have named child addComponent capability.
  *
  * @author Paul Hammant
  * @version $Revision$
@@ -161,22 +161,22 @@ public abstract class AbstractNanoContainer extends AbstractDelegatingMutablePic
         return classPathElement;
     }
 
-    public MutablePicoContainer component(Object componentImplementationOrInstance) {
+    public MutablePicoContainer addComponent(Object componentImplementationOrInstance) {
         if(componentImplementationOrInstance instanceof ClassName) {
             String className = ((ClassName) componentImplementationOrInstance).className;
-            return super.component(loadClass(className));
+            return super.addComponent(loadClass(className));
         }
-        return super.component(componentImplementationOrInstance);
+        return super.addComponent(componentImplementationOrInstance);
     }
 
-    public MutablePicoContainer component(Object key, Object componentImplementationOrInstance, Parameter... parameters) {
+    public MutablePicoContainer addComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters) {
         if (key instanceof ClassName) {
             key = loadClass(((ClassName) key).getClassName());
         }
         if (componentImplementationOrInstance instanceof ClassName) {
             componentImplementationOrInstance = loadClass(((ClassName) componentImplementationOrInstance).getClassName());
         }
-        return super.component(key,componentImplementationOrInstance, parameters);
+        return super.addComponent(key,componentImplementationOrInstance, parameters);
     }
 
     public ClassLoader getComponentClassLoader() {

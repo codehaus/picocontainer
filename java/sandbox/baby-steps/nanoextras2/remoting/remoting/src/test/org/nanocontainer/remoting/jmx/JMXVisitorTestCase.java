@@ -75,7 +75,7 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
         final ObjectInstance objectInstance = new ObjectInstance(objectName, Person.class.getName());
 
         // parameter fixes coverage of visitParameter !!
-        final ComponentAdapter componentAdapter = picoContainer.component(
+        final ComponentAdapter componentAdapter = picoContainer.addComponent(
                 Person.class, Person.class, new Parameter[]{new ConstantParameter("John Doe")}).lastCA();
 
         dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter))
@@ -99,8 +99,8 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
         final JMXRegistrationInfo registrationInfo = new JMXRegistrationInfo(
                 new ObjectName(":type=JUnit"), (DynamicMBean)dynamicMBeanMock.proxy());
 
-        final ComponentAdapter componentAdapter1 = picoContainer.component(this).lastCA();
-        final ComponentAdapter componentAdapter2 = picoContainer.component(Person.class).lastCA();
+        final ComponentAdapter componentAdapter1 = picoContainer.addComponent(this).lastCA();
+        final ComponentAdapter componentAdapter2 = picoContainer.addComponent(Person.class).lastCA();
 
         dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter1))
                 .will(returnValue(null));
@@ -122,7 +122,7 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
         final MutablePicoContainer child = new DefaultPicoContainer();
         picoContainer.addChildContainer(child);
 
-        final ComponentAdapter componentAdapter = child.component(Person.class).lastCA();
+        final ComponentAdapter componentAdapter = child.addComponent(Person.class).lastCA();
 
         dynamicMBeanProviderMock.expects(once()).method("provide").with(same(child), same(componentAdapter)).will(
                 returnValue(null));
@@ -179,7 +179,7 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
         final Exception exception = new MBeanRegistrationException(null, "JUnit");
 
         // parameter fixes coverage of visitParameter !!
-        final ComponentAdapter componentAdapter = picoContainer.component(Person.class).lastCA();
+        final ComponentAdapter componentAdapter = picoContainer.addComponent(Person.class).lastCA();
 
         dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter))
                 .will(returnValue(registrationInfo));

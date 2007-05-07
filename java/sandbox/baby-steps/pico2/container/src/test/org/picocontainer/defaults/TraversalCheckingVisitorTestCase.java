@@ -41,10 +41,10 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
 
         pico = new DefaultPicoContainer();
         SetterInjectionComponentAdapter componentAdapter = new SetterInjectionComponentAdapter(StringBuffer.class, StringBuffer.class);
-        parentAdapter = pico.adapter(componentAdapter).lastCA();
+        parentAdapter = pico.addAdapter(componentAdapter).lastCA();
         child = pico.makeChildContainer();
         ConstructorInjectionComponentAdapter adapter = new ConstructorInjectionComponentAdapter(ArrayList.class, ArrayList.class, new ConstantParameter(3));
-        childAdapter = child.adapter(adapter).lastCA();
+        childAdapter = child.addAdapter(adapter).lastCA();
     }
 
     protected void tearDown() throws Exception {
@@ -75,7 +75,7 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
 
         for (Iterator<ComponentAdapter> i = allAdapters.iterator(); i.hasNext(); ) {
             boolean knownAdapter = knownAdapters.remove(i.next());
-            assertTrue("Encountered unknown adapter in collection: " + allAdapters.toString(), knownAdapter);
+            assertTrue("Encountered unknown addAdapter in collection: " + allAdapters.toString(), knownAdapter);
         }
 
         assertTrue("All adapters should match known adapters.", knownAdapters.size() == 0);

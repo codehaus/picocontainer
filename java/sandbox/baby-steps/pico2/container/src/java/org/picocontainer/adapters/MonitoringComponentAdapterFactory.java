@@ -20,7 +20,7 @@ import org.picocontainer.defaults.DelegatingComponentMonitor;
  * Abstract {@link org.picocontainer.defaults.ComponentAdapterFactory ComponentAdapterFactory} supporting a
  * {@link org.picocontainer.defaults.ComponentMonitorStrategy ComponentMonitorStrategy}.
  * It provides a {@link org.picocontainer.defaults.DelegatingComponentMonitor default ComponentMonitor},
- * but does not allow to use <code>null</code> for the component monitor.
+ * but does not allow to use <code>null</code> for the addComponent monitor.
  *  
  * @author Mauro Talevi
  * @see org.picocontainer.defaults.ComponentAdapterFactory

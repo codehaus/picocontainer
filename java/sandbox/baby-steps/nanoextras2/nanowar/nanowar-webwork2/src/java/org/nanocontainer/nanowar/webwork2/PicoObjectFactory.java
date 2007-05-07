@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * <p>
- * XWork ObjectFactory which uses a PicoContainer to create component instances.
+ * XWork ObjectFactory which uses a PicoContainer to create addComponent instances.
  * </p>
  * 
  * @author Cyrille Le Clerc
@@ -86,7 +86,7 @@ public class PicoObjectFactory extends ObjectFactory {
         	// use child container to prevent weirdest errors
         	MutablePicoContainer child = new DefaultPicoContainer(actionsContainer);
         	
-            child.component(actionClass);
+            child.addComponent(actionClass);
             action = child.getComponent(actionClass);
         }
         return action;

@@ -62,8 +62,8 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
-     * @param monitor                 the component monitor used by this adapter
-     * @param lifecycleStrategy       the component lifecycle strategy used by this adapter
+     * @param monitor                 the addComponent monitor used by this addAdapter
+     * @param lifecycleStrategy       the addComponent lifecycle strategy used by this addAdapter
      * @throws org.picocontainer.defaults.AssignabilityRegistrationException
      *                              if the key is a type and the implementation cannot be assigned to.
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException
@@ -81,7 +81,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
-     * @param monitor                 the component monitor used by this adapter
+     * @param monitor                 the addComponent monitor used by this addAdapter
      * @throws AssignabilityRegistrationException
      *                              if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException

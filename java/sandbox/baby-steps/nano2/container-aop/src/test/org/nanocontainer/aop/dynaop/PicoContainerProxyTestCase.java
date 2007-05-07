@@ -26,7 +26,7 @@ public class PicoContainerProxyTestCase extends TestCase {
         PicoContainer proxy = PicoContainerProxy.create(containerLoader);
         containerLoader.setContainer(container);
 
-        container.component("key", "instance");
+        container.addComponent("key", "instance");
         assertEquals("instance", proxy.getComponent("key"));
     }
 

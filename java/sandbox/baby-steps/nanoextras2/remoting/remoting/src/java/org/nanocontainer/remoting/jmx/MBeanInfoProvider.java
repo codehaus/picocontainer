@@ -17,17 +17,17 @@ import org.picocontainer.PicoContainer;
 
 
 /**
- * Provide a MBeanInfo for a component. Several strategies exist and can be used as plugin.
+ * Provide a MBeanInfo for a addComponent. Several strategies exist and can be used as plugin.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
 public interface MBeanInfoProvider {
 
     /**
-     * Provide a MBeanInfo for the given component. An implementation should not create an instance of the component
+     * Provide a MBeanInfo for the given addComponent. An implementation should not create an instance of the addComponent
      * though.
      * @param picoContainer The picoContainer to resolve dependencies or other services necessary to get the MBeanInfo.
-     * @param componentAdapter The ComponentAdapter of the component.
+     * @param componentAdapter The ComponentAdapter of the addComponent.
      * @return Returns the MBeanInfo for the compoennt or <code>null</code> if none could be found or created.
      */
     MBeanInfo provide(PicoContainer picoContainer, ComponentAdapter componentAdapter);

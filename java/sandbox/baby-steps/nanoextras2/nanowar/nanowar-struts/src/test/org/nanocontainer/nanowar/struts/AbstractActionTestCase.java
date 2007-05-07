@@ -45,7 +45,7 @@ public abstract class AbstractActionTestCase extends MockObjectTestCase {
 
         service = new TestService();
         container = new DefaultPicoContainer();
-        container.component(TestService.class, service);
+        container.addComponent(TestService.class, service);
 
         requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(returnValue(container));
     }

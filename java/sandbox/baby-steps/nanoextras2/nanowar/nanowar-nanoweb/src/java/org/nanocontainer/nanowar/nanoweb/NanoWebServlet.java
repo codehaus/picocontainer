@@ -143,7 +143,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
         Object result = null;
         if (scriptURL != null) {
             Class scriptClass = cachingScriptClassLoader.getClass(scriptURL);
-            requestContainer.component(scriptPath, scriptClass);
+            requestContainer.addComponent(scriptPath, scriptClass);
             result = requestContainer.getComponent(scriptPath);
         }
         return result;

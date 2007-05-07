@@ -60,7 +60,7 @@ import org.picocontainer.PicoContainer;
  *        if(assemblyScope instanceof javax.servlet.ServletContext) {
  *          // Application Services would go here.
  *        } else if (assemblyScope instanceof javax.servlet.ServletRequest) {
- *            <strong>component(key: 'cheeseBean', class: 'org.nanocontainer.nanowar.samples.jsf.ListCheeseController')</strong>
+ *            <strong>addComponent(key: 'cheeseBean', class: 'org.nanocontainer.nanowar.samples.jsf.ListCheeseController')</strong>
  *        }
  *    }
  * </pre>

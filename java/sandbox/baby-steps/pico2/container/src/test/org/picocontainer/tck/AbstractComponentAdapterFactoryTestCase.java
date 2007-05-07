@@ -13,7 +13,6 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -46,7 +45,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
         ComponentAdapter componentAdapter =
                 createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, null);
 
-        picoContainer.adapter(componentAdapter);
+        picoContainer.addAdapter(componentAdapter);
 
         assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
@@ -55,8 +54,8 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
         ComponentAdapter componentAdapter =
                 createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, null);
 
-        picoContainer.adapter(componentAdapter);
-        picoContainer.unregisterComponent(Touchable.class);
+        picoContainer.addAdapter(componentAdapter);
+        picoContainer.removeComponent(Touchable.class);
 
         assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
     }

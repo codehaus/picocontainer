@@ -24,7 +24,7 @@ import org.picocontainer.PicoContainer;
 public abstract class AbstractNamingConventionMBeanInfoProvider implements MBeanInfoProvider {
 
     /**
-     * Locate a MBeanInfo as component in a PicoContainer. If no component is registered using the name of the MBeanInfo
+     * Locate a MBeanInfo as addComponent in a PicoContainer. If no addComponent is registered using the name of the MBeanInfo
      * as key, the method turns the name into a type and searches again.
      * @param mBeanInfoName The name of the {@link MBeanInfo} used as key.
      * @param picoContainer The {@link PicoContainer} used for the lookup.

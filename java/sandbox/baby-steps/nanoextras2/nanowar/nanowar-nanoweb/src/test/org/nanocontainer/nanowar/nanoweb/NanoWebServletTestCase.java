@@ -138,7 +138,7 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
     }
 
     public void testParametersShouldBeSetAndExecuteInvokedOnJavaAction() throws IOException, ServletException {
-        requestContainer.component("/test", MyAction.class);
+        requestContainer.addComponent("/test", MyAction.class);
         requestMock.expects(once())
                    .method("setAttribute")
                    .with(eq("action"), isA(MyAction.class));

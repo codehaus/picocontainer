@@ -38,28 +38,28 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return delegate;
     }
 
-    public MutablePicoContainer component(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws PicoRegistrationException {
-        return delegate.component(componentKey, componentImplementationOrInstance, parameters);
+    public MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws PicoRegistrationException {
+        return delegate.addComponent(componentKey, componentImplementationOrInstance, parameters);
     }
 
-    public MutablePicoContainer component(Class componentImplementation) throws PicoRegistrationException {
-        return delegate.component(componentImplementation);
+    public MutablePicoContainer addComponent(Class componentImplementation) throws PicoRegistrationException {
+        return delegate.addComponent(componentImplementation);
     }
 
-    public MutablePicoContainer component(Object componentInstance) throws PicoRegistrationException {
-        return delegate.component(componentInstance);
+    public MutablePicoContainer addComponent(Object componentInstance) throws PicoRegistrationException {
+        return delegate.addComponent(componentInstance);
     }
 
-    public MutablePicoContainer adapter(ComponentAdapter componentAdapter) throws PicoRegistrationException {
-        return delegate.adapter(componentAdapter);
+    public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) throws PicoRegistrationException {
+        return delegate.addAdapter(componentAdapter);
     }
 
-    public ComponentAdapter unregisterComponent(Object componentKey) {
-        return delegate.unregisterComponent(componentKey);
+    public ComponentAdapter removeComponent(Object componentKey) {
+        return delegate.removeComponent(componentKey);
     }
 
-    public ComponentAdapter unregisterComponentByInstance(Object componentInstance) {
-        return delegate.unregisterComponentByInstance(componentInstance);
+    public ComponentAdapter removeComponentByInstance(Object componentInstance) {
+        return delegate.removeComponentByInstance(componentInstance);
     }
 
     public Object getComponent(Object componentKeyOrType) {

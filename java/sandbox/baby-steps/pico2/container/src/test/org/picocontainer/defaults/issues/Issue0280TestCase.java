@@ -15,8 +15,8 @@ public class Issue0280TestCase extends TestCase
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = new DefaultPicoContainer(parent);
 
-        parent.component(CommonInterface.class, ParentImplementation.class);
-        child.component(CommonInterface.class, ChildImplementation.class);
+        parent.addComponent(CommonInterface.class, ParentImplementation.class);
+        child.addComponent(CommonInterface.class, ChildImplementation.class);
 
         parent.start();
         

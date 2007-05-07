@@ -30,7 +30,7 @@ public class AmbiguousComponentResolutionException extends PicoIntrospectionExce
 
 
     /**
-     * Construct a new exception with the ambigous class type and the ambiguous component keys.
+     * Construct a new exception with the ambigous class type and the ambiguous addComponent keys.
      * 
      * @param ambiguousDependency the unresolved dependency type
      * @param componentKeys the ambiguous keys.
@@ -59,7 +59,7 @@ public class AmbiguousComponentResolutionException extends PicoIntrospectionExce
     }
 
     /**
-     * @return Returns the ambiguous component keys as array.
+     * @return Returns the ambiguous addComponent keys as array.
      */
     public Object[] getAmbiguousComponentKeys() {
         return ambiguousComponentKeys;

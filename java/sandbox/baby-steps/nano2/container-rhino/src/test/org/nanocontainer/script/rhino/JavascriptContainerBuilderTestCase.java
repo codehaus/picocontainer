@@ -30,7 +30,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
 
         Reader script = new StringReader("" +
                 "var pico = new DefaultNanoContainer()\n" +
-                "pico.component(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n");
+                "pico.addComponent(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n");
 
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 
@@ -41,8 +41,8 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
 
         Reader script = new StringReader("" +
                 "var pico = new DefaultNanoContainer(new ConstructorInjectionComponentAdapterFactory())\n" +
-                "pico.component(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n" +
-                "pico.component(Packages.org.nanocontainer.testmodel.WebServerImpl)\n");
+                "pico.addComponent(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n" +
+                "pico.addComponent(Packages.org.nanocontainer.testmodel.WebServerImpl)\n");
 
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 
@@ -63,12 +63,12 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         final String testCompJarPath = testCompJar.getCanonicalPath().replace('\\', '/');
         Reader script = new StringReader(
                 "var pico = new DefaultNanoContainer()\n" +
-                "pico.component('parentComponent', Packages." + FooTestComp.class.getName() + ", Parameter.ZERO)\n" +
+                "pico.addComponent('parentComponent', Packages." + FooTestComp.class.getName() + ", Parameter.ZERO)\n" +
                 "child = pico.makeChildContainer()\n" +
                 "url = new File('" + testCompJarPath + "').toURL()\n" +
                 "child.addClassLoaderURL(url)\n" +
-                "child.component('childComponent', new ClassName('TestComp'), Parameter.ZERO)\n" +
-                "pico.component('wayOfPassingSomethingToTestEnv', child.getComponent('childComponent'), Parameter.ZERO)"); // ugly hack for testing
+                "child.addComponent('childComponent', new ClassName('TestComp'), Parameter.ZERO)\n" +
+                "pico.addComponent('wayOfPassingSomethingToTestEnv', child.getComponent('childComponent'), Parameter.ZERO)"); // ugly hack for testing
         JavascriptContainerBuilder builder = new JavascriptContainerBuilder(script, getClass().getClassLoader());
         PicoContainer pico = buildContainer(builder, null, "SOME_SCOPE");
 
@@ -96,8 +96,8 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
     public void testRegisterComponentInstance() throws JavaScriptException, IOException {
         Reader script = new StringReader("" +
                 "var pico = new DefaultNanoContainer()\n" +
-                "pico.component( new Packages." + FooTestComp.class.getName() + "())\n" +
-                "pico.component( 'foo', new Packages." + FooTestComp.class.getName() + "(), java.lang.reflect.Array.newInstance(Parameter,0))\n");
+                "pico.addComponent( new Packages." + FooTestComp.class.getName() + "())\n" +
+                "pico.addComponent( 'foo', new Packages." + FooTestComp.class.getName() + "(), java.lang.reflect.Array.newInstance(Parameter,0))\n");
 
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 

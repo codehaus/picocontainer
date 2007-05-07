@@ -40,7 +40,7 @@ public class NewBuilderNode extends AbstractBuilderNode {
     public static final String CLASS_ATTRIBUTE = "class";
 
     /**
-     * Suppoerted attribute 'validating'.  Indicates that attributes should
+     * Supported attribute 'validating'.  Indicates that attributes should
      * be validated and NanoContainerMarkupException should be thrown
      * if invalid attributes are found.
      * @todo Not yet implemented. How do we get NanoContainer to register
@@ -62,11 +62,11 @@ public class NewBuilderNode extends AbstractBuilderNode {
 
         NanoContainer factory = new DefaultNanoContainer();
         MutablePicoContainer parentPico = ((NanoContainer) current);
-        factory.component(MutablePicoContainer.class, parentPico);
+        factory.addComponent(MutablePicoContainer.class, parentPico);
         if (builderClass instanceof String) {
-            factory.component(GroovyObject.class, new ClassName((String) builderClass));
+            factory.addComponent(GroovyObject.class, new ClassName((String) builderClass));
         } else {
-            factory.component(GroovyObject.class, (Class) builderClass);
+            factory.addComponent(GroovyObject.class, (Class) builderClass);
         }
         return factory.getComponent(GroovyObject.class);
     }

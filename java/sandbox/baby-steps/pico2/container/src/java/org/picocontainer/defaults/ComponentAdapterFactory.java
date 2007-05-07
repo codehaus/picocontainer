@@ -16,10 +16,10 @@ import org.picocontainer.ComponentCharacteristic;
 
 /**
  * <p/>
- * A component adapter factory is responsible for creating
- * {@link ComponentAdapter} component adapters. The main use of the component adapter factory is
+ * A addComponent addAdapter factory is responsible for creating
+ * {@link ComponentAdapter} addComponent adapters. The main use of the addComponent addAdapter factory is
  * inside {@link DefaultPicoContainer#DefaultPicoContainer(ComponentAdapterFactory)}, where it can
- * be used to customize the default component adapter that is used when none is specified
+ * be used to customize the default addComponent addAdapter that is used when none is specified
  * explicitly.
  * </p>
  *
@@ -30,26 +30,26 @@ import org.picocontainer.ComponentCharacteristic;
 public interface ComponentAdapterFactory {
 
     /**
-     * Create a new component adapter based on the specified arguments.
+     * Create a new addComponent addAdapter based on the specified arguments.
      *
      * @param registerationCharacteristic
-     * @param componentKey                 the key to be associated with this adapter. This value should be returned
-     *                                     from a call to {@link org.picocontainer.ComponentAdapter#getComponentKey()} on the created adapter.
-     * @param componentImplementation      the implementation class to be associated with this adapter.
+     * @param componentKey                 the key to be associated with this addAdapter. This value should be returned
+     *                                     from a call to {@link org.picocontainer.ComponentAdapter#getComponentKey()} on the created addAdapter.
+     * @param componentImplementation      the implementation class to be associated with this addAdapter.
      *                                     This value should be returned from a call to
-     *                                     {@link org.picocontainer.ComponentAdapter#getComponentImplementation()} on the created adapter. Should not
+     *                                     {@link org.picocontainer.ComponentAdapter#getComponentImplementation()} on the created addAdapter. Should not
      *                                     be null.
-     * @param parameters                   additional parameters to use by the component adapter in constructing
-     *                                     component instances. These may be used, for example, to make decisions about the
-     *                                     arguments passed into the component constructor. These should be considered hints; they
-     *                                     may be ignored by some implementations. May be null, and may be of zero length. @return a new component adapter based on the specified arguments. Should not return null.
-     * @throws PicoIntrospectionException if the creation of the component adapter results in a
+     * @param parameters                   additional parameters to use by the addComponent addAdapter in constructing
+     *                                     addComponent instances. These may be used, for example, to make decisions about the
+     *                                     arguments passed into the addComponent constructor. These should be considered hints; they
+     *                                     may be ignored by some implementations. May be null, and may be of zero length. @return a new addComponent addAdapter based on the specified arguments. Should not return null.
+     * @throws PicoIntrospectionException if the creation of the addComponent addAdapter results in a
      *                                    {@link PicoIntrospectionException}.
      * @throws AssignabilityRegistrationException
-     *                                    if the creation of the component adapter results in a
+     *                                    if the creation of the addComponent addAdapter results in a
      *                                    {@link AssignabilityRegistrationException}.
      * @throws NotConcreteRegistrationException
-     *                                    if the creation of the component adapter results in a
+     *                                    if the creation of the addComponent addAdapter results in a
      *                                    {@link NotConcreteRegistrationException}.
      */
     ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic,

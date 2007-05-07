@@ -70,7 +70,7 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
                 // see comment in buildContainer
                 synchronized (parent) {
                     // TODO - is this right ?
-                    ((MutablePicoContainer) parent).unregisterComponentByInstance(pico);
+                    ((MutablePicoContainer) parent).removeComponentByInstance(pico);
                 }
             }
         } finally {

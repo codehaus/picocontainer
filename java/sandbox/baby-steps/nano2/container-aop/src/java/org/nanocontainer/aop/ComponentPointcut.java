@@ -10,7 +10,7 @@
 package org.nanocontainer.aop;
 
 /**
- * Pointcut that picks component keys.
+ * Pointcut that picks addComponent keys.
  *
  * @author Stephen Molitor
  * @version $Revision$
@@ -18,9 +18,9 @@ package org.nanocontainer.aop;
 public interface ComponentPointcut {
 
     /**
-     * Returns true if the component key satisfies this pointcut.
+     * Returns true if the addComponent key satisfies this pointcut.
      *
-     * @param componentKey the component key.
+     * @param componentKey the addComponent key.
      * @return true if the pointcut is satisfied, else false.
      */
     boolean picks(Object componentKey);

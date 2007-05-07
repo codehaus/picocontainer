@@ -18,7 +18,7 @@ import org.nanocontainer.persistence.ExceptionHandler;
 import org.picocontainer.Startable;
 
 /**
- * Connection component implementation which obtains a connection instance using a injected datasource. It has failover
+ * Connection addComponent implementation which obtains a connection instance using a injected datasource. It has failover
  * support.
  * 
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
@@ -38,7 +38,7 @@ public class FailoverDataSourceConnection extends AbstractConnection implements 
 
 	/**
 	 * @param dataSource The DataSource instance where connections will be requested.
-	 * @param jdbcExceptionHandler The ExceptionHandler component instance.
+	 * @param jdbcExceptionHandler The ExceptionHandler addComponent instance.
 	 */
 	public FailoverDataSourceConnection(DataSource dataSource, ExceptionHandler exceptionHandler) {
 		super(exceptionHandler);

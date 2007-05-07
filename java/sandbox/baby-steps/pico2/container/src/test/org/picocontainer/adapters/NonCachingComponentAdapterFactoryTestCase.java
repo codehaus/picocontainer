@@ -35,24 +35,24 @@ public class NonCachingComponentAdapterFactoryTestCase extends AbstractComponent
     }
 
     public void testContainerReturnsSameInstanceEachCall() {
-        picoContainer.component(Touchable.class, SimpleTouchable.class);
+        picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
         Touchable t1 = (Touchable) picoContainer.getComponent(Touchable.class);
         Touchable t2 = (Touchable) picoContainer.getComponent(Touchable.class);
         assertNotSame(t1, t2);
     }
 
     public void testContainerCanFollowNOCACHEDirectiveSelectively() {
-        picoContainer.component(Touchable.class, SimpleTouchable.class);
+        picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
         picoContainer.change(ComponentCharacteristics.CACHE);
-        picoContainer.component(Map.class, HashMap.class);
+        picoContainer.addComponent(Map.class, HashMap.class);
         assertNotSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
         assertSame(picoContainer.getComponent(Map.class), picoContainer.getComponent(Map.class));
     }
 
     public void testContainerCanFollowSINGLETONDirectiveSelectively() {
-        picoContainer.component(Touchable.class, SimpleTouchable.class);
+        picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
         picoContainer.change(ComponentCharacteristics.SINGLETON);
-        picoContainer.component(Map.class, HashMap.class);
+        picoContainer.addComponent(Map.class, HashMap.class);
         assertNotSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
         assertSame(picoContainer.getComponent(Map.class), picoContainer.getComponent(Map.class));
     }

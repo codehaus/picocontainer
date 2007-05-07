@@ -17,7 +17,7 @@ import org.picocontainer.adapters.AbstractComponentAdapter;
 
 
 /**
- * Component adapter that wrapps a static factory with the help of {@link StaticFactory}.
+ * Component addAdapter that wrapps a static factory with the help of {@link StaticFactory}.
  * 
  * @author J&ouml;rg Schaible
  * @author Leo Simmons
@@ -27,9 +27,9 @@ public class StaticFactoryComponentAdapter extends AbstractComponentAdapter {
     private StaticFactory staticFactory;
 
     /**
-     * Construct a ComponentAdapter accessing a static factory creating the component.
+     * Construct a ComponentAdapter accessing a static factory creating the addComponent.
      * 
-     * @param type The type of the created component.
+     * @param type The type of the created addComponent.
      * @param staticFactory Wrapper instance for the static factory.
      */
     public StaticFactoryComponentAdapter(Class type, StaticFactory staticFactory) {
@@ -38,11 +38,11 @@ public class StaticFactoryComponentAdapter extends AbstractComponentAdapter {
     }
 
     /**
-     * Construct a ComponentAdapter accessing a static factory creating the component using a special key for component
+     * Construct a ComponentAdapter accessing a static factory creating the addComponent using a special key for addComponent
      * registration.
      * 
-     * @param componentKey The key of the created component.
-     * @param type The type of the created component.
+     * @param componentKey The key of the created addComponent.
+     * @param type The type of the created addComponent.
      * @param staticFactory Wrapper instance for the static factory.
      */
     public StaticFactoryComponentAdapter(Object componentKey, Class type, StaticFactory staticFactory) {
@@ -51,7 +51,7 @@ public class StaticFactoryComponentAdapter extends AbstractComponentAdapter {
     }
 
     /**
-     * @return Returns the component created by the static factory.
+     * @return Returns the addComponent created by the static factory.
      * @see org.picocontainer.ComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {

@@ -40,9 +40,9 @@ public class AssimilatingComponentAdapterFactoryTest extends AbstractComponentAd
      */
     public void testAutomaticAssimilation() {
         picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
-        picoContainer.component(SimpleTouchable.class);
-        picoContainer.component(AlternativeTouchable.class);
-        picoContainer.component(CompatibleTouchable.class);
+        picoContainer.addComponent(SimpleTouchable.class);
+        picoContainer.addComponent(AlternativeTouchable.class);
+        picoContainer.addComponent(CompatibleTouchable.class);
         final List list = picoContainer.getComponents(Touchable.class);
         assertEquals(3, list.size());
     }
@@ -52,9 +52,9 @@ public class AssimilatingComponentAdapterFactoryTest extends AbstractComponentAd
      */
     public void testOnlyOneTouchableComponentKeyPossible() {
         picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
-        picoContainer.component(Touchable.class, SimpleTouchable.class);
+        picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
         try {
-            picoContainer.component(CompatibleTouchable.class);
+            picoContainer.addComponent(CompatibleTouchable.class);
             fail("DuplicateComponentKeyRegistrationException expected");
         } catch (final DuplicateComponentKeyRegistrationException e) {
             // fine
@@ -66,10 +66,10 @@ public class AssimilatingComponentAdapterFactoryTest extends AbstractComponentAd
      */
     public void testMultipleAssimilatedComponentsWithUserDefinedKeys() {
         picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
-        picoContainer.component(Touchable.class, SimpleTouchable.class);
-        picoContainer.component("1", CompatibleTouchable.class);
-        picoContainer.component("2", CompatibleTouchable.class);
-        picoContainer.component("3", CompatibleTouchable.class);
+        picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
+        picoContainer.addComponent("1", CompatibleTouchable.class);
+        picoContainer.addComponent("2", CompatibleTouchable.class);
+        picoContainer.addComponent("3", CompatibleTouchable.class);
         final List list = picoContainer.getComponents(Touchable.class);
         assertEquals(4, list.size());
     }

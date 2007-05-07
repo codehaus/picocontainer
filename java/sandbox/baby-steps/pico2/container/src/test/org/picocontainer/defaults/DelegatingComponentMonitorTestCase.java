@@ -105,10 +105,10 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
         };
         monitor.expects(once()).method("instantiated").with(eq(nacotCtor), isANACOTThatWozCreated, collectionAndStringWereInjected, durationIsGreaterThanOrEqualToZero);
         DefaultPicoContainer parent = new DefaultPicoContainer();
-        parent.component(ourIntendedInjectee0);
-        parent.component(ourIntendedInjectee1);
+        parent.addComponent(ourIntendedInjectee0);
+        parent.addComponent(ourIntendedInjectee1);
         DefaultPicoContainer child = new DefaultPicoContainer(new DelegatingComponentMonitor((ComponentMonitor) monitor.proxy()), parent);
-        child.component(NeedsACoupleOfThings.class);
+        child.addComponent(NeedsACoupleOfThings.class);
         child.getComponent(NeedsACoupleOfThings.class);
     }
 

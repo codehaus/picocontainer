@@ -44,8 +44,8 @@ public class ComponentKeyConventionMBeanInfoProviderTest extends MockObjectTestC
         mockComponentAdapter.stubs().method("getComponentKey").will(returnValue(Person.class));
         mockComponentAdapter.stubs().method("getComponentImplementation").will(returnValue(person.getClass()));
 
-        pico.adapter((ComponentAdapter)mockComponentAdapter.proxy());
-        pico.component(Person.class.getName() + "MBeanInfo", Person.createMBeanInfo());
+        pico.addAdapter((ComponentAdapter)mockComponentAdapter.proxy());
+        pico.addComponent(Person.class.getName() + "MBeanInfo", Person.createMBeanInfo());
 
         final MBeanInfo info = mBeanProvider.provide(pico, (ComponentAdapter)mockComponentAdapter.proxy());
         assertNotNull(info);
@@ -53,8 +53,8 @@ public class ComponentKeyConventionMBeanInfoProviderTest extends MockObjectTestC
     }
 
     public void testMBeanInfoIsDeterminedIfKeyIsManagementInterface() {
-        final ComponentAdapter componentAdapter = pico.component(PersonMBean.class, Person.class).lastCA();
-        pico.component(PersonMBean.class.getName() + "Info", Person.createMBeanInfo());
+        final ComponentAdapter componentAdapter = pico.addComponent(PersonMBean.class, Person.class).lastCA();
+        pico.addComponent(PersonMBean.class.getName() + "Info", Person.createMBeanInfo());
 
         final MBeanInfo info = mBeanProvider.provide(pico, componentAdapter);
         assertNotNull(info);
@@ -62,8 +62,8 @@ public class ComponentKeyConventionMBeanInfoProviderTest extends MockObjectTestC
     }
 
     public void testMBeanInfoIsDeterminedIfKeyIsString() {
-        final ComponentAdapter componentAdapter = pico.component("JUnit", Person.class).lastCA();
-        pico.component("JUnitMBeanInfo", Person.createMBeanInfo());
+        final ComponentAdapter componentAdapter = pico.addComponent("JUnit", Person.class).lastCA();
+        pico.addComponent("JUnitMBeanInfo", Person.createMBeanInfo());
 
         final MBeanInfo info = mBeanProvider.provide(pico, componentAdapter);
         assertNotNull(info);

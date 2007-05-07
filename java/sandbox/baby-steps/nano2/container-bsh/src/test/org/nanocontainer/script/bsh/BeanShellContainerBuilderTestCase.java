@@ -41,7 +41,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
                 "java.util.Map m = new java.util.HashMap();\n" +
                 "m.put(\"foo\",\"bar\");" +
                 "pico = new org.nanocontainer.DefaultNanoContainer(parent);\n" +
-                "pico.component((Object) \"hello\", m, new org.picocontainer.Parameter[0]);\n");
+                "pico.addComponent((Object) \"hello\", m, new org.picocontainer.Parameter[0]);\n");
         PicoContainer parent = new DefaultPicoContainer();
         parent = ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
         BeanShellContainerBuilder beanShellContainerBuilder = new BeanShellContainerBuilder(script, getClass().getClassLoader());
@@ -75,7 +75,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
             "print(clazz); \n" +
             "ClassLoader cl = clazz.getClassLoader();" +
             "pico = new org.nanocontainer.DefaultNanoContainer(cl, parent);\n" +
-            "pico.adapter( \"TestComp\" );\n");
+            "pico.addAdapter( \"TestComp\" );\n");
 
         
 
@@ -89,7 +89,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
             testComp = classLoader.loadClass("TestComp");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            fail("Unable to load test component from the jar using a url classloader");
+            fail("Unable to load test addComponent from the jar using a url classloader");
         }
 
         PicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, classLoader), parent, "SOME_SCOPE");

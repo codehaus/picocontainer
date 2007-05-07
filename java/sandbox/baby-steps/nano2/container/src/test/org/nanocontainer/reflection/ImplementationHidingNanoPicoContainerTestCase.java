@@ -33,7 +33,7 @@ public class ImplementationHidingNanoPicoContainerTestCase extends AbstractImple
 
     public void testMakeRemoveChildContainer() {
         final NanoContainer parent = (NanoContainer) createPicoContainer(null);
-        parent.component("java.lang.String", (Object)"This is a test");
+        parent.addComponent("java.lang.String", (Object)"This is a test");
         MutablePicoContainer pico = parent.makeChildContainer();
         // Verify they are indeed wired together.
         assertNotNull(pico.getComponent("java.lang.String"));

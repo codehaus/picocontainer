@@ -30,7 +30,7 @@ public class PicoServletHolder extends ServletHolder {
 
     public synchronized Object newInstance() throws InstantiationException, IllegalAccessException {
         DefaultPicoContainer child = new DefaultPicoContainer(parentContainer);
-        child.component(Servlet.class, _class);
+        child.addComponent(Servlet.class, _class);
         return child.getComponent(Servlet.class);
     }
 

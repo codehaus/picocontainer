@@ -42,7 +42,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter componentAdapter = new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(
                 CompatibleTouchable.class, CompatibleTouchable.class));
-        mpc.adapter(new AssimilatingComponentAdapter(Touchable.class, componentAdapter));
+        mpc.addAdapter(new AssimilatingComponentAdapter(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = (CompatibleTouchable)componentAdapter.getComponentInstance(mpc);
         final Touchable touchable = (Touchable)mpc.getComponent(Touchable.class);
         assertFalse(compatibleTouchable.wasTouched());
@@ -52,13 +52,13 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
     }
 
     /**
-     * Test if the component key is preserved if it is not a class type.
+     * Test if the addComponent key is preserved if it is not a class type.
      */
     public void testComponentKeyIsPreserved() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter componentAdapter = new CachingComponentAdapter(new ConstructorInjectionComponentAdapter(
                 "Touchy", CompatibleTouchable.class));
-        mpc.adapter(new AssimilatingComponentAdapter(Touchable.class, componentAdapter));
+        mpc.addAdapter(new AssimilatingComponentAdapter(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = (CompatibleTouchable)componentAdapter.getComponentInstance(mpc);
         final Touchable touchable = (Touchable)mpc.getComponent("Touchy");
         assertFalse(compatibleTouchable.wasTouched());
@@ -72,18 +72,18 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
      */
     public void testAvoidUnnecessaryProxy() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.adapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(TestCase.class, this)));
+        mpc.addAdapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(TestCase.class, this)));
         final TestCase self = (TestCase)mpc.getComponent(TestCase.class);
         assertFalse(Proxy.isProxyClass(self.getClass()));
         assertSame(this, self);
     }
 
     /**
-     * Test if proxy generation is omitted, if types are compatible and that the component key is not changed.
+     * Test if proxy generation is omitted, if types are compatible and that the addComponent key is not changed.
      */
     public void testAvoidedProxyDoesNotChangeComponentKey() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.adapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(getClass(), this)));
+        mpc.addAdapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(getClass(), this)));
         final TestCase self = (TestCase)mpc.getComponent(getClass());
         assertNotNull(self);
         assertSame(this, self);

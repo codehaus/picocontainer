@@ -17,7 +17,7 @@ import dynaop.Pointcuts;
 import org.nanocontainer.aop.ComponentPointcut;
 
 /**
- * Interceptor aspect that is applied to the components that match a component
+ * Interceptor aspect that is applied to the components that match a addComponent
  * pointcut.
  *
  * @author Stephen Molitor

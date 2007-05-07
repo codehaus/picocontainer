@@ -19,7 +19,7 @@ import mx4j.MBeanDescriptionAdapter;
 /**
  * MBean description used automatically for StandardMBeans by MX4J. Note: This will only work if MX4J provides
  * javax.management.StandardMBean. With J2SE 5 you will always use the classes from the JDK and therefore the mechanism
- * fails. The component will still be exposed as bean, but no description for the exposed parts will be available.
+ * fails. The addComponent will still be exposed as bean, but no description for the exposed parts will be available.
  * @author J&ouml;rg Schaible
  */
 public class PersonMBeanDescription extends MBeanDescriptionAdapter {

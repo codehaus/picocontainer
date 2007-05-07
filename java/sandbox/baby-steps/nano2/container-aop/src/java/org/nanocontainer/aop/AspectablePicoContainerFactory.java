@@ -30,7 +30,7 @@ public interface AspectablePicoContainerFactory {
      * @param containerClass          the class of the basic container to delegate to.
      * @param aspectsManager          the aspects manager used to register and apply
      *                                aspects.
-     * @param componentAdapterFactory the delegate component adapter factory
+     * @param componentAdapterFactory the delegate addComponent addAdapter factory
      *                                used to produce components.
      * @param parent                  the parent container.
      * @return a new <code>AspectablePicoContainer</code>.
@@ -42,7 +42,7 @@ public interface AspectablePicoContainerFactory {
      * Creates a new <code>AspectablePicoContainer</code>.
      *
      * @param containerClass          the class of the basic container to delegate to.
-     * @param componentAdapterFactory the delegate component adapter factory
+     * @param componentAdapterFactory the delegate addComponent addAdapter factory
      *                                used to produce components.
      * @param parent                  the parent container.
      * @return a new <code>AspectablePicoContainer</code>.
@@ -55,7 +55,7 @@ public interface AspectablePicoContainerFactory {
      * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
      * delegate container.
      *
-     * @param componentAdapterFactory the delegate component adapter factory
+     * @param componentAdapterFactory the delegate addComponent addAdapter factory
      *                                used to produce components.
      * @param parent                  the parent container.
      * @return a new <code>AspectablePicoContainer</code>.
@@ -67,7 +67,7 @@ public interface AspectablePicoContainerFactory {
      * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
      * delegate container.
      *
-     * @param componentAdapterFactory the delegate component adapter factory
+     * @param componentAdapterFactory the delegate addComponent addAdapter factory
      *                                used to produce components.
      * @return a new <code>AspectablePicoContainer</code>.
      */
@@ -78,7 +78,7 @@ public interface AspectablePicoContainerFactory {
      * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
      * delegate container. Uses
      * <code>org.picocontainer.adapters.AnyInjectionComponentAdapterFactory</code>
-     * as the delegate component adapter factory.
+     * as the delegate addComponent addAdapter factory.
      *
      * @param parent the parent container.
      * @return a new <code>AspectablePicoContainer</code>.
@@ -90,7 +90,7 @@ public interface AspectablePicoContainerFactory {
      * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
      * delegate container. Uses
      * <code>org.picocontainer.adapters.AnyInjectionComponentAdapterFactory</code>
-     * as the delegate component adapter factory.
+     * as the delegate addComponent addAdapter factory.
      *
      * @return a new <code>AspectablePicoContainer</code>.
      */

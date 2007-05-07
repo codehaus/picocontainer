@@ -37,7 +37,7 @@ public class JMXExposingComponentAdapterFactory extends DecoratingComponentAdapt
      * Construct a JMXExposingComponentAdapterFactory.
      * @param delegate The delegated {@link ComponentAdapterFactory}.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
-     * @param providers An array with providers for converting the component instance into a
+     * @param providers An array with providers for converting the addComponent instance into a
      *            {@link javax.management.DynamicMBean}.
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
      *             instances is null.
@@ -56,7 +56,7 @@ public class JMXExposingComponentAdapterFactory extends DecoratingComponentAdapt
 
     /**
      * Construct a JMXExposingComponentAdapterFactory. This instance uses a {@link DynamicMBeanComponentProvider} as
-     * default to register any component instance in the {@link MBeanServer}, that is already a
+     * default to register any addComponent instance in the {@link MBeanServer}, that is already a
      * {@link javax.management.DynamicMBean}.
      * @param delegate The delegated {@link ComponentAdapterFactory}.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.

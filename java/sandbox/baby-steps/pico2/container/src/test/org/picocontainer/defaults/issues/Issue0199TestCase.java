@@ -60,9 +60,9 @@ public class Issue0199TestCase extends TestCase {
 
     public void testPicoContainerCausesDeadlock() throws InterruptedException {
         DefaultPicoContainer container = createContainer();
-        container.component("A", A.class);
-        container.component("B", B.class);
-        container.component("C", C.class);
+        container.addComponent("A", A.class);
+        container.addComponent("B", B.class);
+        container.addComponent("C", C.class);
 
         final int THREAD_COUNT = 2;
         List runnerList = new ArrayList(THREAD_COUNT);

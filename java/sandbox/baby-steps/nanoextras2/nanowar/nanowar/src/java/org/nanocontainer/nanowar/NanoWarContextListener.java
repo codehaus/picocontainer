@@ -135,9 +135,9 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
         }
         ComponentAdapter componentAdapter = null;
         if ( picoConfiguration != null ){
-            componentAdapter = nanoContainer.component(containerComposerClassName, new ClassName(containerComposerClassName), new ConstantParameter(picoConfiguration)).lastCA();
+            componentAdapter = nanoContainer.addComponent(containerComposerClassName, new ClassName(containerComposerClassName), new ConstantParameter(picoConfiguration)).lastCA();
         } else {
-            componentAdapter = nanoContainer.component(new ClassName(containerComposerClassName)).lastCA();
+            componentAdapter = nanoContainer.addComponent(new ClassName(containerComposerClassName)).lastCA();
         }
         return (ContainerComposer) componentAdapter.getComponentInstance(nanoContainer);
     }

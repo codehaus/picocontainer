@@ -4,7 +4,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * This class can generate a Groovy script from a preconfigured container.
@@ -37,9 +36,9 @@ public class GroovyScriptGenerator {
             Object componentInstance = componentAdapter.getComponentInstance(pico);
 
             if (componentInstance instanceof String) {
-                groovy.append("pico.component(" + groovyKey + ", (Object) \"" + componentInstance + "\")\n");
+                groovy.append("pico.addComponent(" + groovyKey + ", (Object) \"" + componentInstance + "\")\n");
             } else {
-                groovy.append("pico.component(" + groovyKey + ", " + componentInstance.getClass().getName() + ")\n");
+                groovy.append("pico.addComponent(" + groovyKey + ", " + componentInstance.getClass().getName() + ")\n");
             }
         }
         return groovy.toString();

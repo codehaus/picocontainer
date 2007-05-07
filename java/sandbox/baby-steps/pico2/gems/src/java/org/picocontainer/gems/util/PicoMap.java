@@ -64,15 +64,15 @@ public class PicoMap implements Map {
     public Object put(Object o, Object o1) {
         Object object = remove(o);
         if (o1 instanceof Class) {
-            mutablePicoContainer.component(o, (Class)o1);
+            mutablePicoContainer.addComponent(o, (Class)o1);
         } else {
-            mutablePicoContainer.component(o, o1);
+            mutablePicoContainer.addComponent(o, o1);
         }
         return object;
     }
 
     public Object remove(Object o) {
-        ComponentAdapter adapter = mutablePicoContainer.unregisterComponent(o);
+        ComponentAdapter adapter = mutablePicoContainer.removeComponent(o);
         if (adapter != null) {
             // if previously an instance was registered, return it, otherwise return the type
             return adapter instanceof InstanceComponentAdapter ? adapter
@@ -93,7 +93,7 @@ public class PicoMap implements Map {
     public void clear() {
         Set adapters = keySet();
         for (final Iterator iter = adapters.iterator(); iter.hasNext();) {
-            mutablePicoContainer.unregisterComponent(iter.next());
+            mutablePicoContainer.removeComponent(iter.next());
         }
     }
 
@@ -127,7 +127,7 @@ public class PicoMap implements Map {
                 }
 
                 public Object setValue(Object value) {
-                    throw new UnsupportedOperationException("Cannot set component");
+                    throw new UnsupportedOperationException("Cannot set addComponent");
                 }
             });
         }

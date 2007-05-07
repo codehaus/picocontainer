@@ -83,7 +83,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * Prepare the test <em>verifyWithoutDependencyWorks</em>.
      * 
      * @param picoContainer container, may probably not be used.
-     * @return a ComponentAdapter of the type to test for a component without dependencies. Registration in the pico is
+     * @return a ComponentAdapter of the type to test for a addComponent without dependencies. Registration in the pico is
      *         not necessary.
      */
     protected abstract ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer);
@@ -99,7 +99,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * Prepare the test <em>verifyDoesNotInstantiate</em>.
      * 
      * @param picoContainer container, may probably not be used.
-     * @return a ComponentAdapter of the type to test for a component that may throw on instantiation. Registration in
+     * @return a ComponentAdapter of the type to test for a addComponent that may throw on instantiation. Registration in
      *         the pico is not necessary.
      */
     protected abstract ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer);
@@ -119,7 +119,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * Prepare the test <em>visitable</em>.
      * 
      * @return a ComponentAdapter of the type to test. If the ComponentAdapter supports {@link Parameter}, you have to
-     *         select a component, that have some.
+     *         select a addComponent, that have some.
      */
     protected abstract ComponentAdapter prepDEF_visitable();
 
@@ -146,7 +146,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * supports {@link Parameter}.
      * 
      * @param picoContainer container, may probably not be used.
-     * @return a ComponentAdapter of the type to test. Select a component, that has some parameters. Registration in the
+     * @return a ComponentAdapter of the type to test. Select a addComponent, that has some parameters. Registration in the
      *         pico is not necessary.
      */
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
@@ -333,7 +333,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * Prepare the test <em>errorIsRethrown</em>. Overload this function, if the ComponentAdapter is instantiating.
      * 
      * @param picoContainer container, may probably not be used.
-     * @return a ComponentAdapter of the type to test with a component that fails with an {@link Error} at
+     * @return a ComponentAdapter of the type to test with a addComponent that fails with an {@link Error} at
      *         instantiation. Registration in the pico is not necessary.
      */
     protected ComponentAdapter prepINS_errorIsRethrown(MutablePicoContainer picoContainer) {
@@ -359,7 +359,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * instantiating.
      * 
      * @param picoContainer container, may probably not be used.
-     * @return a ComponentAdapter of the type to test with a component that fails with a {@link RuntimeException} at
+     * @return a ComponentAdapter of the type to test with a addComponent that fails with a {@link RuntimeException} at
      *         instantiation. Registration in the pico is not necessary.
      */
     protected ComponentAdapter prepINS_runtimeExceptionIsRethrown(MutablePicoContainer picoContainer) {
@@ -385,7 +385,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * this function, if the ComponentAdapter is instantiating.
      * 
      * @param picoContainer container, may probably not be used.
-     * @return a ComponentAdapter of the type to test with a component that fails with a
+     * @return a ComponentAdapter of the type to test with a addComponent that fails with a
      *         {@link PicoInvocationTargetInitializationException} at instantiation. Registration in the pico is not
      *         necessary.
      */
@@ -418,7 +418,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * dependencies.
      * 
      * @param picoContainer container, used to register dependencies.
-     * @return a ComponentAdapter of the type to test with a component that has dependencies. Registration in the pico
+     * @return a ComponentAdapter of the type to test with a addComponent that has dependencies. Registration in the pico
      *         is not necessary.
      */
     protected ComponentAdapter prepRES_dependenciesAreResolved(MutablePicoContainer picoContainer) {
@@ -446,8 +446,8 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * ComponentAdapter is resolves dependencies.
      * 
      * @param picoContainer container, used to register dependencies.
-     * @return a ComponentAdapter of the type to test with a component that has cyclic dependencies. You have to
-     *         register the component itself in the pico.
+     * @return a ComponentAdapter of the type to test with a addComponent that has cyclic dependencies. You have to
+     *         register the addComponent itself in the pico.
      */
     protected ComponentAdapter prepRES_failingVerificationWithCyclicDependencyException(
             MutablePicoContainer picoContainer) {
@@ -480,8 +480,8 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * ComponentAdapter is resolves dependencies.
      * 
      * @param picoContainer container, used to register dependencies.
-     * @return a ComponentAdapter of the type to test with a component that has cyclic dependencies. You have to
-     *         register the component itself in the pico.
+     * @return a ComponentAdapter of the type to test with a addComponent that has cyclic dependencies. You have to
+     *         register the addComponent itself in the pico.
      */
     protected ComponentAdapter prepRES_failingInstantiationWithCyclicDependencyException(
             MutablePicoContainer picoContainer) {
@@ -623,9 +623,9 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             }
             final MutablePicoContainer instantiatingPicoContainer = new DefaultPicoContainer(
                     new ConstructorInjectionComponentAdapterFactory());
-            instantiatingPicoContainer.component(
+            instantiatingPicoContainer.addComponent(
                     "decorator", decoratingComponentAdapterClass, parameters);
-            mutablePicoContainer.adapter((ComponentAdapter)instantiatingPicoContainer
+            mutablePicoContainer.addAdapter((ComponentAdapter)instantiatingPicoContainer
                     .getComponent("decorator"));
         }
         return mutablePicoContainer;

@@ -65,9 +65,9 @@ public class ArraysTestCase
 
         //      START SNIPPET: usage
 
-        pico.component(Shark.class);
-        pico.component(Cod.class);
-        pico.component(Bowl.class);
+        pico.addComponent(Shark.class);
+        pico.addComponent(Cod.class);
+        pico.addComponent(Bowl.class);
 
         Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
         //      END SNIPPET: usage
@@ -89,10 +89,10 @@ public class ArraysTestCase
 
         //      START SNIPPET: directUsage
 
-        pico.component(Shark.class);
-        pico.component(Cod.class);
-        pico.component(Bowl.class);
-        pico.component(new Fish[]{});
+        pico.addComponent(Shark.class);
+        pico.addComponent(Cod.class);
+        pico.addComponent(Bowl.class);
+        pico.addComponent(new Fish[]{});
 
         Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
         //      END SNIPPET: directUsage
@@ -115,12 +115,12 @@ public class ArraysTestCase
 
         //      START SNIPPET: ensureArray
 
-        pico.component(Shark.class);
-        pico.component(Cod.class);
+        pico.addComponent(Shark.class);
+        pico.addComponent(Cod.class);
         Parameter parameter = new CollectionComponentParameter();
-        pico.component(Bowl.class, Bowl.class, new Parameter[]{parameter, parameter});
-        pico.component(new Fish[]{});
-        pico.component(new Cod[]{});
+        pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{parameter, parameter});
+        pico.addComponent(new Fish[]{});
+        pico.addComponent(new Cod[]{});
 
         Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
         //      END SNIPPET: ensureArray
@@ -147,7 +147,7 @@ public class ArraysTestCase
         //      START SNIPPET: emptyArray
 
         Parameter parameter = CollectionComponentParameter.ARRAY_ALLOW_EMPTY;
-        pico.component(Bowl.class, Bowl.class, new Parameter[]{parameter, parameter});
+        pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{parameter, parameter});
 
         Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
         //      END SNIPPET: emptyArray
@@ -162,9 +162,9 @@ public class ArraysTestCase
 
         //      START SNIPPET: useKeyType
 
-        pico.component(Shark.class);
-        pico.component("Nemo", Cod.class);
-        pico.component(Bowl.class, Bowl.class, new Parameter[]{
+        pico.addComponent(Shark.class);
+        pico.addComponent("Nemo", Cod.class);
+        pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
                 new ComponentParameter(String.class, Fish.class, false), new ComponentParameter(Cod.class, false)});
 
         Bowl bowl = (Bowl) pico.getComponent(Bowl.class);

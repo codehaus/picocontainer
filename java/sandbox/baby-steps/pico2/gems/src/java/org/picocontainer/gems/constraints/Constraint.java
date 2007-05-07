@@ -13,17 +13,17 @@ import org.picocontainer.Parameter;
 
 /**
  * Extension to {@link org.picocontainer.Parameter} that allows for
- * constraint-based configuration of component parameters.
+ * constraint-based configuration of addComponent parameters.
  *
  * @author Nick Sieger
  * @version 1.0
  */
 public interface Constraint extends Parameter {
     /**
-     * Evaluate whether the given component adapter matches this constraint.
+     * Evaluate whether the given addComponent addAdapter matches this constraint.
      *
      * @param adapter a <code>ComponentAdapter</code> value
-     * @return true if the adapter matches the constraint
+     * @return true if the addAdapter matches the constraint
      */
     boolean evaluate(ComponentAdapter adapter);
 }

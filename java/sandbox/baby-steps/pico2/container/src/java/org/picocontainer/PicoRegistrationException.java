@@ -11,8 +11,8 @@
 package org.picocontainer;
 
 /**
- * Subclass of {@link PicoException} that is thrown when there is a problem registering a component with the container
- * or another part of the PicoContainer API, for example, when a request for a component is ambiguous.
+ * Subclass of {@link PicoException} that is thrown when there is a problem registering a addComponent with the container
+ * or another part of the PicoContainer API, for example, when a request for a addComponent is ambiguous.
  * 
  * @version $Revision$
  * @since 1.0

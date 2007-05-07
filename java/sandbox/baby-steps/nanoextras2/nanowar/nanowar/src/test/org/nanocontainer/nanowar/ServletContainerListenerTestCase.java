@@ -241,9 +241,9 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
     
     private ContainerBuilder createContainerBuilder(Class containerBuilder, String script) {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.component(new StringReader(script));
-        pico.component(getClass().getClassLoader());
-        pico.component(containerBuilder);
+        pico.addComponent(new StringReader(script));
+        pico.addComponent(getClass().getClassLoader());
+        pico.addComponent(containerBuilder);
         return (ContainerBuilder)pico.getComponent(ContainerBuilder.class);
     }
 
@@ -258,11 +258,11 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
           "pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)\n"+
           "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
           "      System.out.println('Application scope parent '+parent)\n "+
-          "      pico.component((Object)'testFoo', org.nanocontainer.nanowar.Foo)\n" +
+          "      pico.addComponent((Object)'testFoo', org.nanocontainer.nanowar.Foo)\n" +
           "   } else if ( assemblyScope instanceof javax.servlet.http.HttpSession ){ \n" +
           "      System.out.println('Session scope parent '+parent)\n "+
           "      System.out.println('foo:'+parent.getComponent((Object)'testFoo'))\n"+
-          "      pico.component((Object)'testFooHierarchy', org.nanocontainer.nanowar.FooHierarchy)\n"+
+          "      pico.addComponent((Object)'testFooHierarchy', org.nanocontainer.nanowar.FooHierarchy)\n"+
           "   }\n "+
           "";
       assertGroovyContainerBuilderCanBeScopedWithInlinedScript(picoScript);

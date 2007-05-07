@@ -29,9 +29,9 @@ public class ChildContainerTestCase extends TestCase {
         DefaultPicoContainer parent = new DefaultPicoContainer();
         DefaultPicoContainer child = new DefaultPicoContainer(parent);
 
-        parent.component("key", AlternativeTouchable.class);
-        child.component("key", SimpleTouchable.class);
-        child.component(DependsOnTouchable.class);
+        parent.addComponent("key", AlternativeTouchable.class);
+        child.addComponent("key", SimpleTouchable.class);
+        child.addComponent(DependsOnTouchable.class);
 
         DependsOnTouchable dot = (DependsOnTouchable) child.getComponent(DependsOnTouchable.class);
         assertEquals(SimpleTouchable.class, dot.getTouchable().getClass());
@@ -41,9 +41,9 @@ public class ChildContainerTestCase extends TestCase {
         DefaultPicoContainer parent = new DefaultPicoContainer();
         DefaultPicoContainer child = new DefaultPicoContainer(parent);
 
-        parent.component(Touchable.class, AlternativeTouchable.class);
-        child.component("key", SimpleTouchable.class);
-        child.component(DependsOnTouchable.class);
+        parent.addComponent(Touchable.class, AlternativeTouchable.class);
+        child.addComponent("key", SimpleTouchable.class);
+        child.addComponent(DependsOnTouchable.class);
 
         DependsOnTouchable dot = (DependsOnTouchable) child.getComponent(DependsOnTouchable.class);
         assertEquals(AlternativeTouchable.class, dot.getTouchable().getClass());
@@ -51,20 +51,20 @@ public class ChildContainerTestCase extends TestCase {
 
     public void testResolveFromParentByType() {
         MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.component(Touchable.class, SimpleTouchable.class);
+        parent.addComponent(Touchable.class, SimpleTouchable.class);
 
         MutablePicoContainer child = new DefaultPicoContainer(parent);
-        child.component(DependsOnTouchable.class);
+        child.addComponent(DependsOnTouchable.class);
 
         assertNotNull(child.getComponent(DependsOnTouchable.class));
     }
 
     public void testResolveFromParentByKey() {
         MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.component(Touchable.class, SimpleTouchable.class);
+        parent.addComponent(Touchable.class, SimpleTouchable.class);
 
         MutablePicoContainer child = new DefaultPicoContainer(parent);
-        child.component(DependsOnTouchable.class, DependsOnTouchable.class,
+        child.addComponent(DependsOnTouchable.class, DependsOnTouchable.class,
                 new Parameter[]{new ComponentParameter(Touchable.class)});
 
         assertNotNull(child.getComponent(DependsOnTouchable.class));
@@ -72,24 +72,24 @@ public class ChildContainerTestCase extends TestCase {
 
     public void testResolveFromGrandParentByType() {
         MutablePicoContainer grandParent = new DefaultPicoContainer();
-        grandParent.component(Touchable.class, SimpleTouchable.class);
+        grandParent.addComponent(Touchable.class, SimpleTouchable.class);
 
         MutablePicoContainer parent = new DefaultPicoContainer(grandParent);
 
         MutablePicoContainer child = new DefaultPicoContainer(parent);
-        child.component(DependsOnTouchable.class);
+        child.addComponent(DependsOnTouchable.class);
 
         assertNotNull(child.getComponent(DependsOnTouchable.class));
     }
 
     public void testResolveFromGrandParentByKey() {
         MutablePicoContainer grandParent = new DefaultPicoContainer();
-        grandParent.component(Touchable.class, SimpleTouchable.class);
+        grandParent.addComponent(Touchable.class, SimpleTouchable.class);
 
         MutablePicoContainer parent = new DefaultPicoContainer(grandParent);
 
         MutablePicoContainer child = new DefaultPicoContainer(parent);
-        child.component(DependsOnTouchable.class, DependsOnTouchable.class,
+        child.addComponent(DependsOnTouchable.class, DependsOnTouchable.class,
                 new Parameter[]{new ComponentParameter(Touchable.class)});
 
         assertNotNull(child.getComponent(DependsOnTouchable.class));

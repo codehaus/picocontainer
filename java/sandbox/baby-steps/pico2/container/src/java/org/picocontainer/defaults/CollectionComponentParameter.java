@@ -36,7 +36,7 @@ import java.util.TreeSet;
  * A CollectionComponentParameter should be used to support inject an {@link Array}, a
  * {@link Collection}or {@link Map}of components automatically. The collection will contain
  * all components of a special type and additionally the type of the key may be specified. In
- * case of a map, the map's keys are the one of the component adapter.
+ * case of a map, the map's keys are the one of the addComponent addAdapter.
  * 
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
@@ -61,8 +61,8 @@ public class CollectionComponentParameter
     private final Class componentValueType;
 
     /**
-     * Expect an {@link Array}of an appropriate type as parameter. At least one component of
-     * the array's component type must exist.
+     * Expect an {@link Array}of an appropriate type as parameter. At least one addComponent of
+     * the array's addComponent type must exist.
      */
     public CollectionComponentParameter() {
         this(false);
@@ -94,7 +94,7 @@ public class CollectionComponentParameter
      * Expect any of the collection types {@link Array},{@link Collection}or {@link Map}as
      * parameter.
      * 
-     * @param componentKeyType the type of the component's key
+     * @param componentKeyType the type of the addComponent's key
      * @param componentValueType the type of the components (ignored in case of an Array)
      * @param emptyCollection <code>true</code> if an empty collection resolves the
      *                   dependency.
@@ -198,10 +198,10 @@ public class CollectionComponentParameter
     }
 
     /**
-     * Evaluate whether the given component adapter will be part of the collective type.
+     * Evaluate whether the given addComponent addAdapter will be part of the collective type.
      * 
      * @param adapter a <code>ComponentAdapter</code> value
-     * @return <code>true</code> if the adapter takes part
+     * @return <code>true</code> if the addAdapter takes part
      */
     protected boolean evaluate(final ComponentAdapter adapter) {
         return adapter != null; // use parameter, prevent compiler warning
@@ -212,8 +212,8 @@ public class CollectionComponentParameter
      * @param container container to use for dependency resolution
      * @param adapter {@link ComponentAdapter} to exclude
      * @param keyType the compatible type of the key
-     * @param valueType the compatible type of the component
-     * @return a {@link Map} with the ComponentAdapter instances and their component keys as map key.
+     * @param valueType the compatible type of the addComponent
+     * @return a {@link Map} with the ComponentAdapter instances and their addComponent keys as map key.
      */
     protected Map getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter, Class keyType, Class valueType) {
         final Map adapterMap = mapFactory.newInstance();

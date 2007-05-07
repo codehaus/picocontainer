@@ -42,17 +42,17 @@ public class ConstraintIntegrationTestCase
         super.setUp();
 
         container = new DefaultPicoContainer();
-        container.component(SimpleTouchable.class);
-        container.component(DependsOnTouchable.class);
-        container.component(DependsOnTwoComponents.class);
-        container.component(ArrayList.class, new ArrayList());
-        container.component(Object[].class, new Object[0]);
+        container.addComponent(SimpleTouchable.class);
+        container.addComponent(DependsOnTouchable.class);
+        container.addComponent(DependsOnTwoComponents.class);
+        container.addComponent(ArrayList.class, new ArrayList());
+        container.addComponent(Object[].class, new Object[0]);
     }
 
 
     public void testAmbiguouTouchableDependency() {
-        container.component(AlternativeTouchable.class);
-        container.component(DecoratedTouchable.class);
+        container.addComponent(AlternativeTouchable.class);
+        container.addComponent(DecoratedTouchable.class);
 
         try {
             container.getComponent(DecoratedTouchable.class);
@@ -63,8 +63,8 @@ public class ConstraintIntegrationTestCase
     }
 
     public void testTouchableDependencyWithComponentKeyParameter() {
-        container.component(AlternativeTouchable.class);
-        container.component(DecoratedTouchable.class,
+        container.addComponent(AlternativeTouchable.class);
+        container.addComponent(DecoratedTouchable.class,
                                                   DecoratedTouchable.class,
                                                   new Parameter[] { new ComponentParameter(SimpleTouchable.class) });
 
@@ -73,8 +73,8 @@ public class ConstraintIntegrationTestCase
     }
 
     public void testTouchableDependencyInjectedViaConstraint() {
-        container.component(AlternativeTouchable.class);
-        container.component(DecoratedTouchable.class,
+        container.addComponent(AlternativeTouchable.class);
+        container.addComponent(DecoratedTouchable.class,
                                                   DecoratedTouchable.class,
                                                   new Parameter[] { new Not(new IsType(SimpleTouchable.class)) });
         Touchable t = (Touchable) container.getComponent(DecoratedTouchable.class);
@@ -82,7 +82,7 @@ public class ConstraintIntegrationTestCase
     }
 
     public void testComponentDependsOnCollectionOfEverythingElse() {
-        container.component(DependsOnList.class,
+        container.addComponent(DependsOnList.class,
                                                   DependsOnList.class,
                                                   new Parameter[] { new CollectionConstraint(Anything.ANYTHING) });
         DependsOnList dol = (DependsOnList) container.getComponent(DependsOnList.class);
@@ -92,11 +92,11 @@ public class ConstraintIntegrationTestCase
     }
 
     public void testComponentDependsOnCollectionOfTouchables() {
-        container.component(AlternativeTouchable.class);
-        container.component(DecoratedTouchable.class,
+        container.addComponent(AlternativeTouchable.class);
+        container.addComponent(DecoratedTouchable.class,
                                                   DecoratedTouchable.class,
                                                   new Parameter[] { new Not(new IsType(SimpleTouchable.class)) });
-        container.component(DependsOnList.class,
+        container.addComponent(DependsOnList.class,
                                                   DependsOnList.class,
                                                   new Parameter[] { new CollectionConstraint(new IsType(Touchable.class)) });
         DependsOnList dol = (DependsOnList) container.getComponent(DependsOnList.class);
@@ -106,11 +106,11 @@ public class ConstraintIntegrationTestCase
     }
 
     public void testComponentDependsOnCollectionOfSpecificTouchables() {
-        container.component(AlternativeTouchable.class);
-        container.component(DecoratedTouchable.class,
+        container.addComponent(AlternativeTouchable.class);
+        container.addComponent(DecoratedTouchable.class,
                                                   DecoratedTouchable.class,
                                                   new Parameter[] { new Not(new IsType(SimpleTouchable.class)) });
-        container.component(DependsOnList.class,
+        container.addComponent(DependsOnList.class,
                                                   DependsOnList.class,
                                                   new Parameter[] {
             new CollectionConstraint(new Or(new IsType(AlternativeTouchable.class),
@@ -128,7 +128,7 @@ public class ConstraintIntegrationTestCase
     }
 
     public void testComponentDependsOnArrayOfEverythingElse() {
-        container.component(DependsOnArray.class,
+        container.addComponent(DependsOnArray.class,
                                                   DependsOnArray.class,
                                                   new Parameter[] { new CollectionConstraint(Anything.ANYTHING) });
         DependsOnArray doa = (DependsOnArray) container.getComponent(DependsOnArray.class);

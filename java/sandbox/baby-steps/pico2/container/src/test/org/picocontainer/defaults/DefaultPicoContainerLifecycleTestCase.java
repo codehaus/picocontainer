@@ -46,11 +46,11 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
     public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.component("recording", StringBuffer.class);
-        pico.component(Four.class);
-        pico.component(Two.class);
-        pico.component(One.class);
-        pico.component(Three.class);
+        pico.addComponent("recording", StringBuffer.class);
+        pico.addComponent(Four.class);
+        pico.addComponent(Two.class);
+        pico.addComponent(One.class);
+        pico.addComponent(Three.class);
         final List componentInstances = pico.getComponents();
 
         // instantiation - would be difficult to do these in the wrong order!!
@@ -64,11 +64,11 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         DefaultPicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = parent.makeChildContainer();
 
-        parent.component("recording", StringBuffer.class);
-        child.component(Four.class);
-        parent.component(Two.class);
-        parent.component(One.class);
-        child.component(Three.class);
+        parent.addComponent("recording", StringBuffer.class);
+        child.addComponent(Four.class);
+        parent.addComponent(Two.class);
+        parent.addComponent(One.class);
+        child.addComponent(Three.class);
 
         parent.start();
         parent.stop();
@@ -83,11 +83,11 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         DefaultPicoContainer parent = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory());
         MutablePicoContainer child = parent.makeChildContainer();
 
-        parent.component("recording", StringBuffer.class);
-        child.component(Four.class);
-        parent.component(Two.class);
-        parent.component(One.class);
-        child.component(Three.class);
+        parent.addComponent("recording", StringBuffer.class);
+        child.addComponent(Four.class);
+        parent.addComponent(Two.class);
+        parent.addComponent(One.class);
+        child.addComponent(Three.class);
 
         parent.start();
         parent.stop();
@@ -172,7 +172,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
     public void testStartStopOfDaemonizedThread() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.component(FooRunnable.class);
+        pico.addComponent(FooRunnable.class);
 
         pico.getComponents();
         pico.start();
@@ -195,11 +195,11 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
     public void testComponentsAreStartedBreadthFirstAndStoppedAndDisposedDepthFirst() {
         MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.component(Two.class);
-        parent.component("recording", StringBuffer.class);
-        parent.component(One.class);
+        parent.addComponent(Two.class);
+        parent.addComponent("recording", StringBuffer.class);
+        parent.addComponent(One.class);
         MutablePicoContainer child = parent.makeChildContainer();
-        child.component(Three.class);
+        child.addComponent(Three.class);
         parent.start();
         parent.stop();
         parent.dispose();
@@ -209,17 +209,17 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
     public void testMaliciousComponentCannotExistInAChildContainerAndSeeAnyElementOfContainerHierarchy() {
         MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.component(Two.class);
-        parent.component("recording", StringBuffer.class);
-        parent.component(One.class);
-        parent.component(Three.class);
+        parent.addComponent(Two.class);
+        parent.addComponent("recording", StringBuffer.class);
+        parent.addComponent(One.class);
+        parent.addComponent(Three.class);
         MutablePicoContainer child = parent.makeChildContainer();
-        child.component(FiveTriesToBeMalicious.class);
+        child.addComponent(FiveTriesToBeMalicious.class);
         try {
             parent.start();
             fail("Thrown " + UnsatisfiableDependenciesException.class.getName() + " expected");
         } catch ( UnsatisfiableDependenciesException e) {
-            // FiveTriesToBeMalicious can't get instantiated as there is no PicoContainer in any component set
+            // FiveTriesToBeMalicious can't get instantiated as there is no PicoContainer in any addComponent set
         }
         String recording = parent.getComponent("recording").toString();
         assertEquals("<One<Two<Three", recording);
@@ -227,7 +227,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
             child.getComponent(FiveTriesToBeMalicious.class);
             fail("Thrown " + UnsatisfiableDependenciesException.class.getName() + " expected");
         } catch (final UnsatisfiableDependenciesException e) {
-            // can't get instantiated as there is no PicoContainer in any component set
+            // can't get instantiated as there is no PicoContainer in any addComponent set
         }
         recording = parent.getComponent("recording").toString();
         assertEquals("<One<Two<Three", recording); // still the same
@@ -242,9 +242,9 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
     public void testOnlyStartableComponentsAreStartedOnStart() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.component("recording", StringBuffer.class);
-        pico.component(One.class);
-        pico.component(NotStartable.class);
+        pico.addComponent("recording", StringBuffer.class);
+        pico.addComponent(One.class);
+        pico.addComponent(NotStartable.class);
         pico.start();
         pico.stop();
         pico.dispose();
@@ -275,9 +275,9 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         // this is merely a code coverage test - but it doesn't seem to cover the StackContainersAtEndComparator
         // fully. oh well.
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.component(ArrayList.class);
-        pico.component(DefaultPicoContainer.class);
-        pico.component(HashMap.class);
+        pico.addComponent(ArrayList.class);
+        pico.addComponent(DefaultPicoContainer.class);
+        pico.addComponent(HashMap.class);
         pico.start();
         DefaultPicoContainer childContainer = (DefaultPicoContainer) pico.getComponent(DefaultPicoContainer.class);
         // it should be started too
@@ -312,7 +312,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
         StringBuffer sb = new StringBuffer();
 
-        pico.component(sb);
+        pico.addComponent(sb);
 
         pico.start();
         pico.stop();
@@ -346,7 +346,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
         StringBuffer sb = new StringBuffer();
 
-        pico.component(sb);
+        pico.addComponent(sb);
 
         pico.start();
         pico.stop();
@@ -364,8 +364,8 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         Mock s2 = mock(Startable.class, "s2");
 
         DefaultPicoContainer dpc = new DefaultPicoContainer();
-        dpc.component("foo", s1.proxy());
-        dpc.component("bar", s2.proxy());
+        dpc.addComponent("foo", s1.proxy());
+        dpc.addComponent("bar", s2.proxy());
         try {
             dpc.start();
             fail("PicoLifecylceException expected");
@@ -400,8 +400,8 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("stop", (Class[])null)), same(s2.proxy()), ANYTHING);
 
         DefaultPicoContainer dpc = new DefaultPicoContainer((ComponentMonitor) cm.proxy());
-        dpc.component("foo", s1.proxy());
-        dpc.component("bar", s2.proxy());
+        dpc.addComponent("foo", s1.proxy());
+        dpc.addComponent("bar", s2.proxy());
         dpc.start();
         dpc.stop();
     }
@@ -419,8 +419,8 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         LifecycleComponentMonitor lifecycleComponentMonitor = new LifecycleComponentMonitor();
 
         DefaultPicoContainer dpc = new DefaultPicoContainer(lifecycleComponentMonitor);
-        dpc.component("foo", s1.proxy());
-        dpc.component("bar", s2.proxy());
+        dpc.addComponent("foo", s1.proxy());
+        dpc.addComponent("bar", s2.proxy());
 
         dpc.start();
 
@@ -445,8 +445,8 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         // s2 does not expect stop().
 
         DefaultPicoContainer dpc = new DefaultPicoContainer();
-        dpc.component("foo", s1.proxy());
-        dpc.component("bar", s2.proxy());
+        dpc.addComponent("foo", s1.proxy());
+        dpc.addComponent("bar", s2.proxy());
 
         try {
             dpc.start();
@@ -468,8 +468,8 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         // s2 does not expect stop().
 
         DefaultPicoContainer dpc = new DefaultPicoContainer();
-        dpc.component("foo", s1.proxy());
-        dpc.component("bar", s2.proxy());
+        dpc.addComponent("foo", s1.proxy());
+        dpc.addComponent("bar", s2.proxy());
         dpc.addChildContainer(new DefaultPicoContainer(dpc));
 
         try {
@@ -493,7 +493,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         s1.expects(once()).method("start");
         s1.expects(once()).method("stop");
 
-        child.component(s1.proxy());
+        child.addComponent(s1.proxy());
 
         child.start();
         parent.stop();

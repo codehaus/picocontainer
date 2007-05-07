@@ -46,7 +46,7 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
     public void testInterceptor() {
         StringBuffer log = new StringBuffer();
         aspects.registerInterceptor(cuts.instancesOf(Dao.class), cuts.allMethods(), new LoggingInterceptor(log));
-        pico.component(Dao.class, DaoImpl.class);
+        pico.addComponent(Dao.class, DaoImpl.class);
         Dao dao = pico.getComponent(Dao.class);
         verifyIntercepted(dao, log);
     }
@@ -54,9 +54,9 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
     public void testContainerSuppliedInterceptor() {
         aspects.registerInterceptor(cuts.instancesOf(Dao.class), cuts.allMethods(), LoggingInterceptor.class);
 
-        pico.component("log", StringBuffer.class);
-        pico.component(LoggingInterceptor.class);
-        pico.component(Dao.class, DaoImpl.class);
+        pico.addComponent("log", StringBuffer.class);
+        pico.addComponent(LoggingInterceptor.class);
+        pico.addComponent(Dao.class, DaoImpl.class);
 
         Dao dao = pico.getComponent(Dao.class);
         StringBuffer log = (StringBuffer) pico.getComponent("log");
@@ -67,8 +67,8 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         StringBuffer log = new StringBuffer();
 
         aspects.registerInterceptor(cuts.component("intercepted"), cuts.allMethods(), new LoggingInterceptor(log));
-        pico.component("intercepted", DaoImpl.class);
-        pico.component("notIntercepted", DaoImpl.class);
+        pico.addComponent("intercepted", DaoImpl.class);
+        pico.addComponent("notIntercepted", DaoImpl.class);
 
         Dao intercepted = (Dao) pico.getComponent("intercepted");
         Dao notIntercepted = (Dao) pico.getComponent("notIntercepted");
@@ -80,10 +80,10 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
     public void testContainerSuppliedComponentInterceptor() {
         aspects.registerInterceptor(cuts.component("intercepted"), cuts.allMethods(), LoggingInterceptor.class);
 
-        pico.component("log", StringBuffer.class);
-        pico.component(LoggingInterceptor.class);
-        pico.component("intercepted", DaoImpl.class);
-        pico.component("notIntercepted", DaoImpl.class);
+        pico.addComponent("log", StringBuffer.class);
+        pico.addComponent(LoggingInterceptor.class);
+        pico.addComponent("intercepted", DaoImpl.class);
+        pico.addComponent("notIntercepted", DaoImpl.class);
 
         StringBuffer log = (StringBuffer) pico.getComponent("log");
         Dao intercepted = (Dao) pico.getComponent("intercepted");
@@ -95,7 +95,7 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
 
     public void testMixin() {
         aspects.registerMixin(cuts.instancesOf(Dao.class), IdentifiableMixin.class);
-        pico.component(Dao.class, DaoImpl.class);
+        pico.addComponent(Dao.class, DaoImpl.class);
         Dao dao = (Dao) pico.getComponent(Dao.class);
         verifyMixin(dao);
         assertTrue(dao instanceof AnotherInterface);
@@ -103,11 +103,11 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
 
     public void testContainerSuppliedMixin() {
         aspects.registerMixin(cuts.instancesOf(OrderEntity.class), IdentifiableMixin.class);
-        pico.component("order1", OrderEntityImpl.class);
-        pico.component("order2", OrderEntityImpl.class);
+        pico.addComponent("order1", OrderEntityImpl.class);
+        pico.addComponent("order2", OrderEntityImpl.class);
 
         // register mixin dependency:
-        pico.component(IdGenerator.class, IdGeneratorImpl.class);
+        pico.addComponent(IdGenerator.class, IdGeneratorImpl.class);
 
         Identifiable order1 = (Identifiable) pico.getComponent("order1");
         Identifiable order2 = (Identifiable) pico.getComponent("order2");
@@ -125,9 +125,9 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
 
     public void testContainerSuppliedMixinWithMixinExplicitlyRegistered() {
         aspects.registerMixin(cuts.instancesOf(OrderEntity.class), IdentifiableMixin.class);
-        pico.component(IdentifiableMixin.class);
-        pico.component("order1", OrderEntityImpl.class);
-        pico.component("order2", OrderEntityImpl.class);
+        pico.addComponent(IdentifiableMixin.class);
+        pico.addComponent("order1", OrderEntityImpl.class);
+        pico.addComponent("order2", OrderEntityImpl.class);
 
         Identifiable order1 = (Identifiable) pico.getComponent("order1");
         Identifiable order2 = (Identifiable) pico.getComponent("order2");
@@ -143,8 +143,8 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
     }
 
     public void testComponentMixin() {
-        pico.component("hasMixin", DaoImpl.class);
-        pico.component("noMixin", DaoImpl.class);
+        pico.addComponent("hasMixin", DaoImpl.class);
+        pico.addComponent("noMixin", DaoImpl.class);
 
         aspects.registerMixin(cuts.component("hasMixin"), IdentifiableMixin.class);
 
@@ -161,10 +161,10 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         aspects.registerMixin(cuts.componentName("hasMixin*"), new Class[]{Identifiable.class},
                 IdentifiableMixin.class);
 
-        pico.component("hasMixin1", OrderEntityImpl.class);
-        pico.component("hasMixin2", OrderEntityImpl.class);
-        pico.component("noMixin", OrderEntityImpl.class);
-        pico.component(IdGenerator.class, IdGeneratorImpl.class);
+        pico.addComponent("hasMixin1", OrderEntityImpl.class);
+        pico.addComponent("hasMixin2", OrderEntityImpl.class);
+        pico.addComponent("noMixin", OrderEntityImpl.class);
+        pico.addComponent(IdGenerator.class, IdGeneratorImpl.class);
 
         Identifiable hasMixin1 = (Identifiable) pico.getComponent("hasMixin1");
         Identifiable hasMixin2 = (Identifiable) pico.getComponent("hasMixin1");
@@ -181,15 +181,15 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
 
     public void testMixinExplicitInterfaces() {
         aspects.registerMixin(cuts.instancesOf(Dao.class), new Class[]{Identifiable.class}, IdentifiableMixin.class);
-        pico.component(Dao.class, DaoImpl.class);
+        pico.addComponent(Dao.class, DaoImpl.class);
         Dao dao = (Dao) pico.getComponent(Dao.class);
         verifyMixin(dao);
         assertFalse(dao instanceof AnotherInterface);
     }
 
     public void testComponentMixinExplicitInterfaces() {
-        pico.component("hasMixin", DaoImpl.class);
-        pico.component("noMixin", DaoImpl.class);
+        pico.addComponent("hasMixin", DaoImpl.class);
+        pico.addComponent("noMixin", DaoImpl.class);
 
         aspects.registerMixin(cuts.component("hasMixin"), new Class[]{Identifiable.class}, IdentifiableMixin.class);
 
@@ -212,7 +212,7 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         };
 
         aspects.registerInterceptor(customCut, cuts.allMethods(), new LoggingInterceptor(log));
-        pico.component(Dao.class, DaoImpl.class);
+        pico.addComponent(Dao.class, DaoImpl.class);
         Dao dao = (Dao) pico.getComponent(Dao.class);
         verifyIntercepted(dao, log);
     }
@@ -227,7 +227,7 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         };
 
         aspects.registerInterceptor(cuts.instancesOf(Dao.class), customCut, new LoggingInterceptor(log));
-        pico.component(Dao.class, DaoImpl.class);
+        pico.addComponent(Dao.class, DaoImpl.class);
         Dao dao = (Dao) pico.getComponent(Dao.class);
         verifyIntercepted(dao, log);
     }
@@ -242,7 +242,7 @@ public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         };
 
         aspects.registerInterceptor(customCut, cuts.allMethods(), new LoggingInterceptor(log));
-        pico.component(Dao.class, DaoImpl.class);
+        pico.addComponent(Dao.class, DaoImpl.class);
         Dao dao = (Dao) pico.getComponent(Dao.class);
         verifyIntercepted(dao, log);
     }

@@ -38,8 +38,8 @@ public class MethodCallingVisitorTest extends MockObjectTestCase {
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = new DefaultPicoContainer();
         parent.addChildContainer(child);
-        parent.component(List.class, LinkedList.class, new Parameter[0]);
-        child.component(List.class, LinkedList.class, new Parameter[0]);
+        parent.addComponent(List.class, LinkedList.class, new Parameter[0]);
+        child.addComponent(List.class, LinkedList.class, new Parameter[0]);
         List parentList = (List)parent.getComponent(List.class);
         List childList = (List)child.getComponent(List.class);
 
@@ -60,8 +60,8 @@ public class MethodCallingVisitorTest extends MockObjectTestCase {
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = new DefaultPicoContainer();
         parent.addChildContainer(child);
-        parent.component(mockTouchable1.proxy());
-        child.component(mockTouchable2.proxy());
+        parent.addComponent(mockTouchable1.proxy());
+        child.addComponent(mockTouchable2.proxy());
 
         mockTouchable1.expects(once()).method("touch").id("1");
         mockTouchable2.expects(once()).method("touch").after(mockTouchable1, "1");
@@ -77,8 +77,8 @@ public class MethodCallingVisitorTest extends MockObjectTestCase {
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = new DefaultPicoContainer();
         parent.addChildContainer(child);
-        parent.component(mockTouchable1.proxy());
-        child.component(mockTouchable2.proxy());
+        parent.addComponent(mockTouchable1.proxy());
+        child.addComponent(mockTouchable2.proxy());
 
         mockTouchable2.expects(once()).method("touch").id("1");
         mockTouchable1.expects(once()).method("touch").after(mockTouchable2, "1");

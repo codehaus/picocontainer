@@ -25,12 +25,12 @@ import org.picocontainer.testmodel.Touchable;
 public class ComponentKeysTestCase extends TestCase {
     public void testComponensRegisteredWithClassKeyTakePrecedenceOverOthersWhenThereAreMultipleImplementations() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.component("default", SimpleTouchable.class);
+        pico.addComponent("default", SimpleTouchable.class);
 
         /**
          * By using a class as key, this should take precedence over the other Touchable
          */
-        pico.component(Touchable.class, DecoratedTouchable.class, new Parameter[]{
+        pico.addComponent(Touchable.class, DecoratedTouchable.class, new Parameter[]{
                             new ComponentParameter("default")
                     });
 
@@ -40,10 +40,10 @@ public class ComponentKeysTestCase extends TestCase {
 
     public void testComponentAdapterResolutionIsFirstLookedForByClassKeyToTheTopOfTheContainerHierarchy() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.component("default", SimpleTouchable.class);
+        pico.addComponent("default", SimpleTouchable.class);
 
         // Use the List variant instead, so we get better test coverage.
-        pico.component(Touchable.class, DecoratedTouchable.class, new ComponentParameter("default"));
+        pico.addComponent(Touchable.class, DecoratedTouchable.class, new ComponentParameter("default"));
 
         DefaultPicoContainer grandChild = new DefaultPicoContainer(new DefaultPicoContainer(new DefaultPicoContainer(pico)));
 
@@ -54,11 +54,11 @@ public class ComponentKeysTestCase extends TestCase {
 
     public void testComponentKeysFromParentCannotConfuseTheChild() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.component("test", SimpleTouchable.class);
+        pico.addComponent("test", SimpleTouchable.class);
 
         DefaultPicoContainer child = new DefaultPicoContainer(pico);
 
-        child.component("test", DependsOnTouchable.class);
+        child.addComponent("test", DependsOnTouchable.class);
 
         DependsOnTouchable dot = (DependsOnTouchable) child.getComponent("test");
 

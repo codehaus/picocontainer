@@ -45,7 +45,7 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
                 returnValue(container));
         requestMock.expects(atLeastOnce()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
                 isA(MutablePicoContainer.class));
-		container.component("foo");
+		container.addComponent("foo");
 		TestAction action = (TestAction) factory
 				.buildBean(TestAction.class.getName());
 		assertNotNull(action);
@@ -86,8 +86,8 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
                 returnValue(container));
         requestMock.expects(atLeastOnce()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
                 isA(MutablePicoContainer.class));
-        container.component("foo");
-        container.component(TestAction.class);
+        container.addComponent("foo");
+        container.addComponent(TestAction.class);
         TestAction action1 = (TestAction) container.getComponent(TestAction.class);
         TestAction action2 = (TestAction) factory
                 .buildBean(TestAction.class.getName());
@@ -95,7 +95,7 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
     }
 
     /**
-     * if component was not registered explicitely,  there shall be different instance for
+     * if addComponent was not registered explicitely,  there shall be different instance for
      * next invocation.  not only actions are instantiated via factory,  but also important stuff like filters,
      * validators, interceptors etc - they shall not be shared. 
      * @throws Exception
@@ -103,7 +103,7 @@ public class PicoObjectFactoryTestCase extends MockObjectTestCase {
     public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
         requestMock.expects(atLeastOnce()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
                 returnValue(container));
-        container.component("foo");
+        container.addComponent("foo");
         TestAction action1 = (TestAction) factory
                 .buildBean(TestAction.class.getName());
         TestAction action2 = (TestAction) factory

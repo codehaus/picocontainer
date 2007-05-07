@@ -311,7 +311,7 @@ public class ContainerChainFilter implements Filter {
 		if (failureUrl != null) {
 			// if we got an exception, we create fake container
 			DefaultPicoContainer dpc = new DefaultPicoContainer(container);
-			dpc.component("cause", e.getCause());
+			dpc.addComponent("cause", e.getCause());
 			// wire container to request
 			obtainRequestObjectReference(request).set(dpc);
 			// and transfer us to this url

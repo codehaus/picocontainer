@@ -62,7 +62,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
     }
 
     protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
-        picoContainer.component(A.class);
+        picoContainer.addComponent(A.class);
         return new ConstructorInjectionComponentAdapter(B.class, B.class);
     }
 
@@ -71,7 +71,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
     }
 
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
-        picoContainer.component(SimpleTouchable.class);
+        picoContainer.addComponent(SimpleTouchable.class);
         return new ConstructorInjectionComponentAdapter(
                 NamedDependsOnTouchable.class, NamedDependsOnTouchable.class, new Parameter[]{
                         ComponentParameter.DEFAULT, new ConstantParameter("Name")});
@@ -131,7 +131,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
     }
 
     protected ComponentAdapter prepRES_dependenciesAreResolved(MutablePicoContainer picoContainer) {
-        picoContainer.component(SimpleTouchable.class);
+        picoContainer.addComponent(SimpleTouchable.class);
         return new ConstructorInjectionComponentAdapter(DependsOnTouchable.class, DependsOnTouchable.class);
     }
 
@@ -149,21 +149,21 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
 
     protected ComponentAdapter prepRES_failingVerificationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
         final ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter(C1.class, C1.class);
-        picoContainer.adapter(componentAdapter);
-        picoContainer.component(C2.class, C2.class);
+        picoContainer.addAdapter(componentAdapter);
+        picoContainer.addComponent(C2.class, C2.class);
         return componentAdapter;
     }
 
     protected ComponentAdapter prepRES_failingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
         final ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter(C1.class, C1.class);
-        picoContainer.adapter(componentAdapter);
-        picoContainer.component(C2.class, C2.class);
+        picoContainer.addAdapter(componentAdapter);
+        picoContainer.addComponent(C2.class, C2.class);
         return componentAdapter;
     }
 
     public void testNormalExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
-        picoContainer.component(NormalExceptionThrowing.class);
+        picoContainer.addComponent(NormalExceptionThrowing.class);
         try {
             picoContainer.getComponent(NormalExceptionThrowing.class);
             fail();
@@ -180,7 +180,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
     public void testInstantiationExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         try {
-            picoContainer.component(InstantiationExceptionThrowing.class);
+            picoContainer.addComponent(InstantiationExceptionThrowing.class);
             picoContainer.getComponent(InstantiationExceptionThrowing.class);
             fail();
         } catch (NotConcreteRegistrationException e) {
@@ -198,7 +198,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
     public void XXXtestIllegalAccessExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         try {
-            picoContainer.component(IllegalAccessExceptionThrowing.class);
+            picoContainer.addComponent(IllegalAccessExceptionThrowing.class);
             picoContainer.getComponent(IllegalAccessExceptionThrowing.class);
             fail();
         } catch (PicoInitializationException e) {
@@ -209,7 +209,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
     public void testPicoInitializationExceptionThrownBecauseOfFilteredConstructors() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         try {
-            picoContainer.component(IllegalAccessExceptionThrowing.class);
+            picoContainer.addComponent(IllegalAccessExceptionThrowing.class);
             picoContainer.getComponent(IllegalAccessExceptionThrowing.class);
             fail();
         } catch (PicoInitializationException e) {
@@ -221,7 +221,7 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {
-            pico.component(Runnable.class);
+            pico.addComponent(Runnable.class);
             fail("Shouldn't be allowed to register abstract classes or interfaces.");
         } catch (NotConcreteRegistrationException e) {
             assertEquals(Runnable.class, e.getComponentImplementation());
@@ -252,10 +252,10 @@ public class ConstructorInjectionComponentAdapterTestCase extends AbstractCompon
     // http://jira.codehaus.org/browse/PICO-201
     public void testShouldNotConsiderNonPublicConstructors() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.component(Component201.class);
-        pico.component(new Integer(2));
-        pico.component(new Boolean(true));
-        pico.component("Hello");
+        pico.addComponent(Component201.class);
+        pico.addComponent(new Integer(2));
+        pico.addComponent(new Boolean(true));
+        pico.addComponent("Hello");
         assertNotNull(pico.getComponent(Component201.class));
     }
 

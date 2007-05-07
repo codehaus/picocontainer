@@ -39,7 +39,7 @@ public class PicoExceptionsTestCase
     final void executeTestOfStandardException(final Class clazz) {
         final ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter(clazz, clazz, null, new DelegatingComponentMonitor());
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.component(MESSAGE);
+        pico.addComponent(MESSAGE);
         try {
             final Exception exception = (Exception) componentAdapter.getComponentInstance(pico);
             assertEquals(MESSAGE, exception.getMessage());
@@ -52,7 +52,7 @@ public class PicoExceptionsTestCase
             assertTrue(set.contains(Throwable.class));
         }
         pico = new DefaultPicoContainer();
-        pico.component(THROWABLE);
+        pico.addComponent(THROWABLE);
         try {
             final PicoException exception = (PicoException) componentAdapter.getComponentInstance(pico);
             assertSame(THROWABLE, exception.getCause());
@@ -64,7 +64,7 @@ public class PicoExceptionsTestCase
             }
             assertTrue(set.contains(String.class));
         }
-        pico.component(MESSAGE);
+        pico.addComponent(MESSAGE);
         final PicoException exception = (PicoException) componentAdapter.getComponentInstance(pico);
         assertEquals(MESSAGE, exception.getMessage());
         assertSame(THROWABLE, exception.getCause());

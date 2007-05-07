@@ -53,9 +53,9 @@ public class MapsTestCase
 
         //      START SNIPPET: usage
 
-        pico.component("Shark", Shark.class);
-        pico.component("Cod", Cod.class);
-        pico.component(Bowl.class, Bowl.class, new Parameter[]{
+        pico.addComponent("Shark", Shark.class);
+        pico.addComponent("Cod", Cod.class);
+        pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
             new ComponentParameter(Fish.class, false),
             new ComponentParameter(Cod.class, false)
         });
@@ -81,9 +81,9 @@ public class MapsTestCase
 
         //      START SNIPPET: useKeyType
 
-        pico.component(Shark.class);
-        pico.component("Nemo", Cod.class);
-        pico.component(Bowl.class, Bowl.class, new Parameter[]{
+        pico.addComponent(Shark.class);
+        pico.addComponent("Nemo", Cod.class);
+        pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
             new ComponentParameter(String.class, Fish.class, false),
             new ComponentParameter(Cod.class, false)
         });
@@ -108,11 +108,11 @@ public class MapsTestCase
         // START SNIPPET: scope
 
         MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.component("Tom", Cod.class);
-        parent.component("Harry", Cod.class);
+        parent.addComponent("Tom", Cod.class);
+        parent.addComponent("Harry", Cod.class);
         MutablePicoContainer child = new DefaultPicoContainer(parent);
-        child.component("Dick", Cod.class);
-        child.component(Bowl.class, Bowl.class, new Parameter[]{
+        child.addComponent("Dick", Cod.class);
+        child.addComponent(Bowl.class, Bowl.class, new Parameter[]{
             new ComponentParameter(Fish.class, false),
             new ComponentParameter(Cod.class, false)
         });
@@ -128,12 +128,12 @@ public class MapsTestCase
         // START SNIPPET: scopeOverlay
 
         MutablePicoContainer parent = new DefaultPicoContainer();
-        parent.component("Tom", Cod.class);
-        parent.component("Dick", Cod.class);
-        parent.component("Harry", Cod.class);
+        parent.addComponent("Tom", Cod.class);
+        parent.addComponent("Dick", Cod.class);
+        parent.addComponent("Harry", Cod.class);
         MutablePicoContainer child = new DefaultPicoContainer(parent);
-        child.component("Dick", Shark.class);
-        child.component(Bowl.class, Bowl.class, new Parameter[]{
+        child.addComponent("Dick", Shark.class);
+        child.addComponent(Bowl.class, Bowl.class, new Parameter[]{
             new ComponentParameter(Fish.class, false),
             new ComponentParameter(Cod.class, false)
         });
@@ -149,11 +149,11 @@ public class MapsTestCase
         // START SNIPPET: individualSelection
 
         MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.component("Tom", Cod.class);
-        mpc.component("Dick", Cod.class);
-        mpc.component("Harry", Cod.class);
-        mpc.component("Sharky", Shark.class);
-        mpc.component(Bowl.class, Bowl.class, new Parameter[]{
+        mpc.addComponent("Tom", Cod.class);
+        mpc.addComponent("Dick", Cod.class);
+        mpc.addComponent("Harry", Cod.class);
+        mpc.addComponent("Sharky", Shark.class);
+        mpc.addComponent(Bowl.class, Bowl.class, new Parameter[]{
             new CollectionComponentParameter(Fish.class, false),
             new CollectionComponentParameter(Cod.class, false) {
                 protected boolean evaluate(ComponentAdapter adapter) {

@@ -84,14 +84,14 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals("foo", pico.getComponent("string"));
     }
 
-    // whoa - wrong adapter() being called.
+    // whoa - wrong addAdapter() being called.
     public void do_NOT_testBuildingWithPicoSyntax() {
         Reader script = new StringReader(
-                                         "$parent.adapter('foo', Java::JavaClass.for_name('java.lang.String'))\n"
+                                         "$parent.addAdapter('foo', Java::JavaClass.for_name('java.lang.String'))\n"
                                          +
                                          "DefaultPicoContainer = org.picocontainer.defaults.DefaultPicoContainer\n" +
                                          "pico = DefaultPicoContainer.new($parent)\n" +
-                                         "pico.adapter(Java::JavaClass.for_name('org.nanocontainer.testmodel.A'))\n"
+                                         "pico.addAdapter(Java::JavaClass.for_name('org.nanocontainer.testmodel.A'))\n"
                                          +
                                          "pico");
 
@@ -259,8 +259,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "CachingComponentAdapterFactory = org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:component_adapter_factory => CachingComponentAdapterFactory.new, :component_monitor => monitor) {\n"
-                                         +
+                                         "container(:component_adapter_factory => CachingComponentAdapterFactory.new, :component_monitor => monitor) {\n" +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +
                                          "}");
@@ -324,7 +323,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         try {
             buildContainer(script, null, ASSEMBLY_SCOPE);
-            fail("Should not have been able to instansiate component tree due to visibility/parent reasons.");
+            fail("Should not have been able to instansiate addComponent tree due to visibility/parent reasons.");
         } catch(UnsatisfiableDependenciesException expected) {
         }
     }
@@ -353,7 +352,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     public void testBuildContainerWithParentAttribute() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
-        parent.component("hello", (Object) "world");
+        parent.addComponent("hello", (Object) "world");
 
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
@@ -368,7 +367,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     public void testBuildContainerWithParentDependencyAndAssemblyScope() throws Exception {
         DefaultNanoContainer parent = new DefaultNanoContainer();
-        parent.component("a", A.class);
+        parent.addComponent("a", A.class);
 
         String source =
                         "B = org.nanocontainer.testmodel.B\n" +
@@ -425,7 +424,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
-        ComponentAdapter componentAdapter = pico.component(String.class).lastCA();
+        ComponentAdapter componentAdapter = pico.addComponent(String.class).lastCA();
         assertTrue("ComponentAdapter should be originally defined by parent",
                    componentAdapter instanceof SetterInjectionComponentAdapter);
     }
@@ -550,7 +549,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         try {
             testComp = classLoader.loadClass("TestComp");
         } catch(ClassNotFoundException ex) {
-            fail("Unable to load test component from the jar using a url classloader");
+            fail("Unable to load test addComponent from the jar using a url classloader");
         }
         Reader script = new StringReader(
             "container(:parent => $parent) {\n"
@@ -569,9 +568,9 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 //        Reader script = new StringReader("" +
 //                "package org.nanocontainer.testmodel\n" +
 //                "nano = new GroovyNodeBuilder().container() {\n" +
-//                "    component(A)\n" +
+//                "    addComponent(A)\n" +
 //                "    container(parent:parent) {\n" +
-//                "         component(B)\n" +
+//                "         addComponent(B)\n" +
 //                "    }\n" +
 //                "}\n");
 //

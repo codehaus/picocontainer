@@ -26,8 +26,8 @@ import java.util.Set;
 
 
 /**
- * This component adapter makes it possible to hide the implementation of a real subject (behind a proxy). If the key of the
- * component is of type {@link Class} and that class represents an interface, the proxy will only implement the interface
+ * This addComponent addAdapter makes it possible to hide the implementation of a real subject (behind a proxy). If the key of the
+ * addComponent is of type {@link Class} and that class represents an interface, the proxy will only implement the interface
  * represented by that Class. Otherwise (if the key is something else), the proxy will implement all the interfaces of the
  * underlying subject. In any case, the proxy will also implement {@link com.thoughtworks.proxy.toys.hotswap.Swappable}, making
  * it possible to swap out the underlying subject at runtime. <p/> <em>

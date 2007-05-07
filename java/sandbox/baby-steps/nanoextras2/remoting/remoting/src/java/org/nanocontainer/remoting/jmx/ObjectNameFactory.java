@@ -24,7 +24,7 @@ public interface ObjectNameFactory {
 
     /**
      * Create an ObjectName.
-     * @param key The key of the component within PicoContainer.
+     * @param key The key of the addComponent within PicoContainer.
      * @param mBean The instance of the DynamicMBean.
      * @return Returns the Object Name for the DynamicMBean.
      * @throws MalformedObjectNameException Thrown for an invalid part in the {@link ObjectName}.

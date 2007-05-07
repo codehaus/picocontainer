@@ -15,7 +15,7 @@ import org.picocontainer.ComponentMonitor;
  * <p>
  * Interface responsible for changing monitoring strategy.
  * It may be implemented by {@link PicoContainer containers} and
- * single {@link ComponentAdapter component adapters}.
+ * single {@link ComponentAdapter addComponent adapters}.
  * The choice of supporting the monitor strategy is left to the
  * implementers of the container and adapters.
  * </p>
@@ -29,7 +29,7 @@ import org.picocontainer.ComponentMonitor;
 public interface ComponentMonitorStrategy {
 
     /**
-     * Changes the component monitor used
+     * Changes the addComponent monitor used
      * @param monitor the new ComponentMonitor to use
      */
     void changeMonitor(ComponentMonitor monitor);

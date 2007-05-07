@@ -14,7 +14,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 /**
- * A component monitor is responsible for monitoring the component instantiation 
+ * A addComponent monitor is responsible for monitoring the addComponent instantiation
  * and method invocation.
  * 
  * @author Paul Hammant
@@ -27,18 +27,18 @@ import java.lang.reflect.Method;
 public interface ComponentMonitor {
 
     /**
-     * Event thrown as the component is being instantiated using the given constructor
+     * Event thrown as the addComponent is being instantiated using the given constructor
      * 
-     * @param constructor the Constructor used to instantiate the component
+     * @param constructor the Constructor used to instantiate the addComponent
      */
     void instantiating(Constructor constructor);
 
     /**
-     * Event thrown after the component has been instantiated using the given constructor.
+     * Event thrown after the addComponent has been instantiated using the given constructor.
      * This should be called for both Constructor and Setter DI.
      *
-     * @param constructor the Constructor used to instantiate the component
-     * @param instantiated the component that was instantiated by PicoContainer
+     * @param constructor the Constructor used to instantiate the addComponent
+     * @param instantiated the addComponent that was instantiated by PicoContainer
      * @param injected the components during instantiation.
      * @param duration the duration in millis of the instantiation
      * @since 1.3
@@ -47,35 +47,35 @@ public interface ComponentMonitor {
     void instantiated(Constructor constructor, Object instantiated, Object[] injected, long duration);
 
     /**
-     * Event thrown if the component instantiation failed using the given constructor
+     * Event thrown if the addComponent instantiation failed using the given constructor
      * 
-     * @param constructor the Constructor used to instantiate the component
+     * @param constructor the Constructor used to instantiate the addComponent
      * @param cause the Exception detailing the cause of the failure
      */
     void instantiationFailed(Constructor constructor, Exception cause);
 
     /**
-     * Event thrown as the component method is being invoked on the given instance
+     * Event thrown as the addComponent method is being invoked on the given instance
      * 
-     * @param method the Method invoked on the component instance
-     * @param instance the component instance
+     * @param method the Method invoked on the addComponent instance
+     * @param instance the addComponent instance
      */
     void invoking(Method method, Object instance);
 
     /**
-     * Event thrown after the component method has been invoked on the given instance
+     * Event thrown after the addComponent method has been invoked on the given instance
      * 
-     * @param method the Method invoked on the component instance
-     * @param instance the component instance
+     * @param method the Method invoked on the addComponent instance
+     * @param instance the addComponent instance
      * @param duration the duration in millis of the invocation
      */
     void invoked(Method method, Object instance, long duration);
 
     /**
-     * Event thrown if the component method invocation failed on the given instance
+     * Event thrown if the addComponent method invocation failed on the given instance
      * 
-     * @param method the Method invoked on the component instance
-     * @param instance the component instance
+     * @param method the Method invoked on the addComponent instance
+     * @param instance the addComponent instance
      * @param cause the Exception detailing the cause of the failure
      */
     void invocationFailed(Method method, Object instance, Exception cause);
@@ -84,8 +84,8 @@ public interface ComponentMonitor {
      * Event thrown if a lifecycle method invocation - start, stop or dispose - 
      * failed on the given instance
      *
-     * @param method the lifecycle Method invoked on the component instance
-     * @param instance the component instance
+     * @param method the lifecycle Method invoked on the addComponent instance
+     * @param instance the addComponent instance
      * @param cause the RuntimeException detailing the cause of the failure
      */
     void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause);

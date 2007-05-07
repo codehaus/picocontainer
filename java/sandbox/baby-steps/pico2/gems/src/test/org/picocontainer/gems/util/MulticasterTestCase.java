@@ -18,11 +18,11 @@ public class MulticasterTestCase extends TestCase {
     public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.component("recording", StringBuffer.class);
-        pico.component(RecordingLifecycle.Four.class);
-        pico.component(RecordingLifecycle.Two.class);
-        pico.component(RecordingLifecycle.One.class);
-        pico.component(RecordingLifecycle.Three.class);
+        pico.addComponent("recording", StringBuffer.class);
+        pico.addComponent(RecordingLifecycle.Four.class);
+        pico.addComponent(RecordingLifecycle.Two.class);
+        pico.addComponent(RecordingLifecycle.One.class);
+        pico.addComponent(RecordingLifecycle.Three.class);
 
         ProxyFactory proxyFactory = new StandardProxyFactory();
         Startable startable = (Startable) Multicaster.object(pico, true, proxyFactory);

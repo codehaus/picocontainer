@@ -73,15 +73,15 @@ public class SetterInjectionComponentAdapterFactoryTestCase extends AbstractComp
     }
 
     public void testContainerUsesStandardConstructor() {
-        picoContainer.component(Bean.class, NamedBeanWithPossibleDefault.class);
-        picoContainer.component("Tom");
+        picoContainer.addComponent(Bean.class, NamedBeanWithPossibleDefault.class);
+        picoContainer.addComponent("Tom");
         NamedBeanWithPossibleDefault bean = (NamedBeanWithPossibleDefault) picoContainer.getComponent(Bean.class);
         assertFalse(bean.getByDefault());
     }
 
     public void testContainerUsesOnlyStandardConstructor() {
-        picoContainer.component(Bean.class, NoBean.class);
-        picoContainer.component("Tom");
+        picoContainer.addComponent(Bean.class, NoBean.class);
+        picoContainer.addComponent("Tom");
         try {
             picoContainer.getComponent(Bean.class);
             fail("Instantiation should have failed.");

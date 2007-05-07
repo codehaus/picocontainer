@@ -187,9 +187,9 @@ public class ChildContainerNode extends AbstractBuilderNode {
 
     private NanoContainer createNanoContainer(Class clazz, MutablePicoContainer decoratedPico, ClassLoader parentClassLoader) {
         DefaultPicoContainer instantiatingContainer = new DefaultPicoContainer();
-        instantiatingContainer.component(ClassLoader.class, parentClassLoader);
-        instantiatingContainer.component(MutablePicoContainer.class, decoratedPico);
-        instantiatingContainer.component(NanoContainer.class, clazz);
+        instantiatingContainer.addComponent(ClassLoader.class, parentClassLoader);
+        instantiatingContainer.addComponent(MutablePicoContainer.class, decoratedPico);
+        instantiatingContainer.addComponent(NanoContainer.class, clazz);
         Object componentInstance = instantiatingContainer.getComponent(NanoContainer.class);
         return (NanoContainer) componentInstance;
     }

@@ -20,22 +20,22 @@ import java.lang.reflect.Method;
 public interface PointcutsFactory {
 
     /**
-     * Returns a component pointcut that picks one component key.
+     * Returns a addComponent pointcut that picks one addComponent key.
      *
-     * @param componentKey the component key to match against.
+     * @param componentKey the addComponent key to match against.
      * @return a <code>ComponentPointcut</code> that matches
      *         <code>componentKey</code>.
      */
     ComponentPointcut component(Object componentKey);
 
     /**
-     * Returns a component pointcut that matches component keys with a regular
+     * Returns a addComponent pointcut that matches addComponent keys with a regular
      * expression. The regular expression must be an <a
      * href="http://jakarta.apache.org/oro/index.html">ORO </a> Perl5 compatible
      * regular expression.
      *
      * @param regex the regular expression to match against.
-     * @return a <code>ComponentPointcut</code> that matches the component key
+     * @return a <code>ComponentPointcut</code> that matches the addComponent key
      *         against <code>regex</code>.
      * @throws MalformedRegularExpressionException
      *          if the regular expression is
@@ -88,7 +88,7 @@ public interface PointcutsFactory {
      * returned pointcut expects an exact match against the package name.
      *
      * @param packageName the package name to match against the package of the
-     *                    candidate component's class.
+     *                    candidate addComponent's class.
      * @return a <code>ClassPointcut</code> that matches the class package
      *         with <code>packageName</code>.
      */

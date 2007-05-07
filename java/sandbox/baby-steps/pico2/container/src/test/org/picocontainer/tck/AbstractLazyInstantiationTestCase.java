@@ -39,8 +39,8 @@ public abstract class AbstractLazyInstantiationTestCase extends TestCase {
     public void testLazyInstantiation() throws PicoException, PicoRegistrationException {
         MutablePicoContainer pico = createPicoContainer();
 
-        pico.component(Kilroy.class);
-        pico.component(Havana.class);
+        pico.addComponent(Kilroy.class);
+        pico.addComponent(Havana.class);
 
         assertSame(pico.getComponent(Havana.class), pico.getComponent(Havana.class));
         assertNotNull(pico.getComponent(Havana.class));

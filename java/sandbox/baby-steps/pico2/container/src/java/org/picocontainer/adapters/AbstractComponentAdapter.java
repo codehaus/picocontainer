@@ -18,7 +18,7 @@ import org.picocontainer.defaults.DelegatingComponentMonitor;
 /**
  * Base class for a ComponentAdapter with general functionality.
  * This implementation provides basic checks for a healthy implementation of a ComponentAdapter.
- * It does not allow to use <code>null</code> for the component key or the implementation, 
+ * It does not allow to use <code>null</code> for the addComponent key or the implementation,
  * ensures that the implementation is a concrete class and that the key is assignable from the 
  * implementation if the key represents a type.   
  *  
@@ -46,7 +46,7 @@ public abstract class AbstractComponentAdapter extends MonitoringComponentAdapte
      * Constructs a new ComponentAdapter for the given key and implementation. 
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
-     * @param monitor the component monitor used by this ComponentAdapter
+     * @param monitor the addComponent monitor used by this ComponentAdapter
      * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      */
     protected AbstractComponentAdapter(Object componentKey, Class componentImplementation, ComponentMonitor monitor) throws AssignabilityRegistrationException {
@@ -88,7 +88,7 @@ public abstract class AbstractComponentAdapter extends MonitoringComponentAdapte
     }
 
     /**
-     * @return Returns the ComponentAdapter's class name and the component's key.
+     * @return Returns the ComponentAdapter's class name and the addComponent's key.
      * @see java.lang.Object#toString()
      */
     public String toString() {

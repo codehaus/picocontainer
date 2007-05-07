@@ -9,8 +9,8 @@ public class LifecycleTestCase extends TestCase {
 
     public void testStartStopDispose() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.component(Boy.class);
-        pico.component(Girl.class);
+        pico.addComponent(Boy.class);
+        pico.addComponent(Girl.class);
 
 // START SNIPPET: start
         pico.start();

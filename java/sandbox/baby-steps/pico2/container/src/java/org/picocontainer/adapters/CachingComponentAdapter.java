@@ -24,12 +24,12 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * <p>
- * {@link ComponentAdapter} implementation that caches the component instance.
+ * {@link ComponentAdapter} implementation that caches the addComponent instance.
  * </p>
  * <p>
- * This adapter supports components with a lifecycle, as it is a {@link LifecycleManager lifecycle manager} 
- * which will apply the delegate's {@link org.picocontainer.defaults.LifecycleStrategy lifecycle strategy} to the cached component instance.
- * The lifecycle state is maintained so that the component instance behaves in the expected way:
+ * This addAdapter supports components with a lifecycle, as it is a {@link LifecycleManager lifecycle manager}
+ * which will apply the delegate's {@link org.picocontainer.defaults.LifecycleStrategy lifecycle strategy} to the cached addComponent instance.
+ * The lifecycle state is maintained so that the addComponent instance behaves in the expected way:
  * it can't be started if already started, it can't be started or stopped if disposed, it can't
  * be stopped if not started, it can't be disposed if already disposed.
  * </p>
@@ -69,7 +69,7 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
 
     /**
      * Flushes the cache.
-     * If the component instance is started is will stop and dispose it before
+     * If the addComponent instance is started is will stop and dispose it before
      * flushing the cache.
      */
     public void flush() {
@@ -82,7 +82,7 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
     }
 
     /**
-     * Starts the cached component instance
+     * Starts the cached addComponent instance
      * {@inheritDoc}
      */
     public void start(PicoContainer container) {
@@ -95,7 +95,7 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
     }
 
     /**
-     * Stops the cached component instance
+     * Stops the cached addComponent instance
      * {@inheritDoc}
      */
     public void stop(PicoContainer container) {
@@ -108,7 +108,7 @@ public class CachingComponentAdapter extends DecoratingComponentAdapter implemen
     }
 
     /**
-     * Disposes the cached component instance
+     * Disposes the cached addComponent instance
      * {@inheritDoc}
      */
     public void dispose(PicoContainer container) {

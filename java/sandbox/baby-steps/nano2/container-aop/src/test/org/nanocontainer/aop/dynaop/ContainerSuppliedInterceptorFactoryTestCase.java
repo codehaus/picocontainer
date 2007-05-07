@@ -27,7 +27,7 @@ public class ContainerSuppliedInterceptorFactoryTestCase extends MockObjectTestC
     public void testCreate() throws Throwable {
         Mock methodInterceptorMock = mock(MethodInterceptor.class);
 
-        pico.component("interceptorComponentKey", methodInterceptorMock.proxy());
+        pico.addComponent("interceptorComponentKey", methodInterceptorMock.proxy());
 
         InterceptorFactory interceptorFactory = new ContainerSuppliedInterceptorFactory(pico, "interceptorComponentKey");
         Interceptor interceptor = interceptorFactory.create(null);

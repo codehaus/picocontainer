@@ -46,7 +46,7 @@ public abstract class SessionDelegator implements Session {
 	}
 
 	/**
-	 * @param exceptionHandler Exception handler component to use with created session
+	 * @param exceptionHandler Exception handler addComponent to use with created session
 	 */
 	public SessionDelegator(HibernateExceptionHandler exceptionHandler) {
 		this.exceptionHandler = exceptionHandler;

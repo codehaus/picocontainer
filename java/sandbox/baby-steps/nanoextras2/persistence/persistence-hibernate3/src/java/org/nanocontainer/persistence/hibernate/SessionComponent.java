@@ -31,7 +31,7 @@ import org.nanocontainer.persistence.ExceptionHandler;
 import org.picocontainer.Startable;
 
 /**
- * Session component with failover behaviour in case of hibernate exception. Old session is disposed
+ * Session addComponent with failover behaviour in case of hibernate exception. Old session is disposed
  * and new one is obtained transparently. Session creation is done lazily.
  * 
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>

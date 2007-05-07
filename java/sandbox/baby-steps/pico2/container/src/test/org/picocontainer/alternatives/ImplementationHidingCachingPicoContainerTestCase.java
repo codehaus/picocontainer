@@ -38,7 +38,7 @@ public class ImplementationHidingCachingPicoContainerTestCase extends AbstractIm
         // Jira bug 212 - logical opposite
         MutablePicoContainer parent = new DefaultPicoContainer();
         ImplementationHidingCachingPicoContainer pico = new ImplementationHidingCachingPicoContainer(new ConstructorInjectionComponentAdapterFactory(), parent);
-        pico.component(List.class, ArrayList.class);
+        pico.addComponent(List.class, ArrayList.class);
         List list1 = (List) pico.getComponent(List.class);
         List list2 = (List) pico.getComponent(List.class);
         assertNotNull(list1);
@@ -51,7 +51,7 @@ public class ImplementationHidingCachingPicoContainerTestCase extends AbstractIm
 
     public void testMakeChildContainer(){
         MutablePicoContainer parent = new ImplementationHidingCachingPicoContainer();
-        parent.component("t1", SimpleTouchable.class);
+        parent.addComponent("t1", SimpleTouchable.class);
         MutablePicoContainer child = parent.makeChildContainer();
         Object t1 = child.getParent().getComponent("t1");
         assertNotNull(t1);

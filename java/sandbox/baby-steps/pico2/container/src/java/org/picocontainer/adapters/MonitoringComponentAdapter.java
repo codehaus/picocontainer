@@ -20,7 +20,7 @@ import org.picocontainer.defaults.DelegatingComponentMonitor;
  * Abstract {@link ComponentAdapter ComponentAdapter} supporting a 
  * {@link org.picocontainer.defaults.ComponentMonitorStrategy ComponentMonitorStrategy}.
  * It provides a {@link org.picocontainer.defaults.DelegatingComponentMonitor default ComponentMonitor},
- * but does not allow to use <code>null</code> for the component monitor.
+ * but does not allow to use <code>null</code> for the addComponent monitor.
  *  
  * @author Mauro Talevi
  * @version $Revision: $
@@ -33,7 +33,7 @@ public abstract class MonitoringComponentAdapter implements ComponentAdapter, Co
 
     /**
      * Constructs a MonitoringComponentAdapter with a custom monitor
-     * @param monitor the component monitor used by this ComponentAdapter
+     * @param monitor the addComponent monitor used by this ComponentAdapter
      */
     protected MonitoringComponentAdapter(ComponentMonitor monitor) {
         if (monitor == null){

@@ -23,7 +23,7 @@ import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
- * This component adapter makes it possible to hide the implementation
+ * This addComponent addAdapter makes it possible to hide the implementation
  * of a real subject (behind a proxy) provided the key is an interface.
  * <p/>
  * This class exists here, because a) it has no deps on external jars, b) dynamic proxy is quite easy.
@@ -38,7 +38,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
 
     /**
      * Creates an ImplementationHidingComponentAdapter with a delegate 
-     * @param delegate the component adapter to which this adapter delegates
+     * @param delegate the addComponent addAdapter to which this addAdapter delegates
      */
     public ImplementationHidingComponentAdapter(ComponentAdapter delegate) {
         super(delegate);

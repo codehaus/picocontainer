@@ -14,7 +14,7 @@ import dynaop.Pointcuts;
 import org.nanocontainer.aop.ComponentPointcut;
 
 /**
- * Aspect that addes interfaces to a component.
+ * Aspect that addes interfaces to a addComponent.
  *
  * @author Stephen Molitor
  * @version $Revision$

@@ -30,7 +30,7 @@ public class LifecycleContainerBuilderTestCase extends MockObjectTestCase {
 
         ContainerComposer containerComposer = new ContainerComposer() {
             public void composeContainer(MutablePicoContainer container, Object assemblyScope) {
-                container.component(childStartable.proxy());
+                container.addComponent(childStartable.proxy());
             }
         };
         AbstractContainerBuilder builder = new DefaultContainerBuilder(containerComposer);
@@ -39,7 +39,7 @@ public class LifecycleContainerBuilderTestCase extends MockObjectTestCase {
         MutablePicoContainer parent = new DefaultPicoContainer();
 
         Mock parentStartable = mock(Startable.class);
-        parent.component(parentStartable.proxy());
+        parent.addComponent(parentStartable.proxy());
         parentRef.set(parent);
 
         ObjectReference childRef = new SimpleReference();

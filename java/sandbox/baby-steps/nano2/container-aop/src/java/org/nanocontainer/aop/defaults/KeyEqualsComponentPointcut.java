@@ -12,7 +12,7 @@ package org.nanocontainer.aop.defaults;
 import org.nanocontainer.aop.ComponentPointcut;
 
 /**
- * Component pointcut that matches against a component key.
+ * Component pointcut that matches against a addComponent key.
  *
  * @author Stephen Molitor
  * @version $Revision$
@@ -25,7 +25,7 @@ public class KeyEqualsComponentPointcut implements ComponentPointcut {
      * Creates a new <code>KeyEqualsComponentPointcut</code> that matches
      * against <code>componentKey</code>.
      *
-     * @param componentKey the component key to match against.
+     * @param componentKey the addComponent key to match against.
      */
     public KeyEqualsComponentPointcut(Object componentKey) {
         if (componentKey == null) {
@@ -35,12 +35,12 @@ public class KeyEqualsComponentPointcut implements ComponentPointcut {
     }
 
     /**
-     * Tests to see if the <code>componentKey</code> matches the component key
+     * Tests to see if the <code>componentKey</code> matches the addComponent key
      * passed to the constructor.
      *
-     * @param componentKey the candidate component key to match against.
+     * @param componentKey the candidate addComponent key to match against.
      * @return true if <code>componentKey</code> is equivalent to the
-     *         component key passed to the constructor, else false.
+     *         addComponent key passed to the constructor, else false.
      */
     public boolean picks(Object componentKey) {
         return this.componentKey.equals(componentKey);

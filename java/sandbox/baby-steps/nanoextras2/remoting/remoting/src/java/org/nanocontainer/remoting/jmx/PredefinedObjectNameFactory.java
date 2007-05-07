@@ -15,7 +15,7 @@ import javax.management.ObjectName;
 
 
 /**
- * An ObjectNameFactory, that uses the key of the Pico component as {@link ObjectName}, if the key is of this type.
+ * An ObjectNameFactory, that uses the key of the Pico addComponent as {@link ObjectName}, if the key is of this type.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */

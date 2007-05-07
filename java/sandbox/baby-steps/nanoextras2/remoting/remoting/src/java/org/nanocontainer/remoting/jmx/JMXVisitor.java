@@ -40,7 +40,7 @@ public class JMXVisitor extends TraversalCheckingVisitor {
     private PicoContainer picoContainer;
 
     /**
-     * Construct a JMXVisitor. This instance will register by default any component in the {@link MBeanServer}, that is
+     * Construct a JMXVisitor. This instance will register by default any addComponent in the {@link MBeanServer}, that is
      * already a {@link DynamicMBean}. The {@link ObjectName} will use the default domain of the MBeanServer and has a
      * <em>type</em> key with the class name (without package name) as value.
      * @param server The {@link MBeanServer}to use for registering the MBeans.
@@ -95,8 +95,8 @@ public class JMXVisitor extends TraversalCheckingVisitor {
     }
 
     /**
-     * Register the component as MBean. The implementation uses the known DynamicMBeanProvider instances to get the
-     * MBean from the component.
+     * Register the addComponent as MBean. The implementation uses the known DynamicMBeanProvider instances to get the
+     * MBean from the addComponent.
      * @see org.picocontainer.PicoVisitor#visitComponentAdapter(org.picocontainer.ComponentAdapter)
      */
     public void visitComponentAdapter(final ComponentAdapter componentAdapter) {

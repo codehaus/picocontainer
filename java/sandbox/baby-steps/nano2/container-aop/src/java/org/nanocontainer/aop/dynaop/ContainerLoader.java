@@ -16,8 +16,8 @@ import org.picocontainer.PicoInitializationException;
  * Loads a <code>PicoContainer</code> 'late'. Used to create a late-loading
  * <code>PicoContainer</code> proxy which is passed to
  * <code>dynaop.MixinFactory</code> and <code>dynaop.InterceptorFactory</code>
- * objects whose mixin or interceptor advice is a component in the container,
- * specified by component key. The container object may be created after the
+ * objects whose mixin or interceptor advice is a addComponent in the container,
+ * specified by addComponent key. The container object may be created after the
  * advice factories.
  *
  * @author Stephen Molitor

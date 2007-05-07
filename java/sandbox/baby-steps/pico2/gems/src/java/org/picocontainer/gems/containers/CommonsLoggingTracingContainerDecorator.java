@@ -73,7 +73,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 * @param target
 	 */
 	protected void onKeyOrTypeDoesNotExistInContainer(final Object componentKey, final Log target) {
-		log.info("Could not find component "
+		log.info("Could not find addComponent "
 				+ (componentKey instanceof Class ? ((Class) componentKey).getName() : componentKey)
 				+ " in container or parent container.");
 	}
@@ -123,7 +123,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 */
 	public ComponentAdapter getComponentAdapter(final Object componentKey) {
 		if (log.isDebugEnabled()) {
-			log.debug("Locating component adapter with key " + componentKey);
+			log.debug("Locating addComponent addAdapter with key " + componentKey);
 		}
 		
 		ComponentAdapter adapter =  delegate.getComponentAdapter(componentKey);
@@ -141,7 +141,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 */
 	public ComponentAdapter getComponentAdapter(final Class componentType) {
 		if (log.isDebugEnabled()) {
-			log.debug("Locating component adapter with type " + componentType);
+			log.debug("Locating addComponent addAdapter with type " + componentType);
 		}
 
 		ComponentAdapter ca =  delegate.getComponentAdapter(componentType);
@@ -159,7 +159,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 */
 	public Collection<ComponentAdapter> getComponentAdapters() {
 		if (log.isDebugEnabled()) {
-			log.debug("Grabbing all component adapters for container: " + delegate);
+			log.debug("Grabbing all addComponent adapters for container: " + delegate);
 		}
 		return delegate.getComponentAdapters();
 	}
@@ -172,7 +172,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 */
 	public List<ComponentAdapter> getComponentAdapters(final Class componentType) {
 		if (log.isDebugEnabled()) {
-			log.debug("Grabbing all component adapters for container: " 
+			log.debug("Grabbing all addComponent adapters for container: "
 					+ delegate + " of type: " + componentType.getName());
 		}
 		return delegate.getComponentAdapters(componentType);
@@ -187,7 +187,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	public Object getComponent(final Object componentKeyOrType) {
 		
 		if (log.isDebugEnabled()) {
-			log.debug("Attempting to load component instance with "
+			log.debug("Attempting to load addComponent instance with "
                     + (componentKeyOrType instanceof Class ? "type" : "key")
                     +": "
 					+ componentKeyOrType
@@ -215,7 +215,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 */
 	public List getComponents() {
 		if (log.isDebugEnabled()) {
-			log.debug("Retrieving all component instances for container "
+			log.debug("Retrieving all addComponent instances for container "
 					+ delegate);
 		}
 		return delegate.getComponents();
@@ -229,7 +229,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 */
 	public List getComponents(final Class componentType) {
 		if (log.isDebugEnabled()) {
-			log.debug("Loading all component instances of type " + componentType
+			log.debug("Loading all addComponent instances of type " + componentType
 					+ " for container " + delegate);
 		}
 		List result = delegate.getComponents(componentType);
@@ -274,28 +274,28 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 * {@inheritDoc}
 	 * @param componentAdapter
 	 * @return
-	 * @see org.picocontainer.MutablePicoContainer#adapter(org.picocontainer.ComponentAdapter)
+	 * @see org.picocontainer.MutablePicoContainer#addAdapter(org.picocontainer.ComponentAdapter)
 	 */
-	public MutablePicoContainer adapter(final ComponentAdapter componentAdapter) {
+	public MutablePicoContainer addAdapter(final ComponentAdapter componentAdapter) {
 		if (log.isDebugEnabled()) {
-			log.debug("Registering component adapter " + componentAdapter);
+			log.debug("Registering addComponent addAdapter " + componentAdapter);
 		}
 		
-		return delegate.adapter(componentAdapter);
+		return delegate.addAdapter(componentAdapter);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @param componentImplementation
 	 * @return
-	 * @see org.picocontainer.MutablePicoContainer#component(java.lang.Class)
+	 * @see org.picocontainer.MutablePicoContainer#addComponent(java.lang.Class)
 	 */
-	public MutablePicoContainer component(final Class componentImplementation) {
+	public MutablePicoContainer addComponent(final Class componentImplementation) {
 		if (log.isDebugEnabled()) {
-			log.debug("Registering component implementation " + componentImplementation.getName());
+			log.debug("Registering addComponent implementation " + componentImplementation.getName());
 		}
 
-		return delegate.component(componentImplementation);
+		return delegate.addComponent(componentImplementation);
 	}
 
 	/**
@@ -305,10 +305,10 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 * @param parameters
 	 * @return
 	 */
-	public MutablePicoContainer component(final Object componentKey, final Object componentImplementationOrInstance,
+	public MutablePicoContainer addComponent(final Object componentKey, final Object componentImplementationOrInstance,
 			final Parameter... parameters) {
 		if (log.isDebugEnabled()) {
-			log.debug("Registering component "
+			log.debug("Registering addComponent "
                     + (componentImplementationOrInstance instanceof Class ? "implementation" : "instance") 
                     + " with key "
 					+ componentKey 
@@ -320,23 +320,23 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 					+ parameters);
 		}
 		
-		return delegate.component(componentKey, componentImplementationOrInstance, parameters);
+		return delegate.addComponent(componentKey, componentImplementationOrInstance, parameters);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @param componentInstance
 	 * @return
-	 * @see org.picocontainer.MutablePicoContainer#component(java.lang.Object)
+	 * @see org.picocontainer.MutablePicoContainer#addComponent(java.lang.Object)
 	 */
-	public MutablePicoContainer component(final Object componentInstance) {
+	public MutablePicoContainer addComponent(final Object componentInstance) {
 		if (log.isDebugEnabled()) {
-			log.debug("Registering component instance " 
+			log.debug("Registering addComponent instance "
 					+ componentInstance + "(class: " 
 					+ ((componentInstance != null) ? componentInstance.getClass().getName() : " null "));
 		}
 		
-		return delegate.component(componentInstance);
+		return delegate.addComponent(componentInstance);
 	}
 
 	/**
@@ -380,28 +380,28 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 * {@inheritDoc}
 	 * @param componentKey
 	 * @return
-	 * @see org.picocontainer.MutablePicoContainer#unregisterComponent(java.lang.Object)
+	 * @see org.picocontainer.MutablePicoContainer#removeComponent(java.lang.Object)
 	 */
-	public ComponentAdapter unregisterComponent(final Object componentKey) {
+	public ComponentAdapter removeComponent(final Object componentKey) {
 		if (log.isDebugEnabled()) {
-			log.debug("Unregistering component " + componentKey + " from container " + delegate);
+			log.debug("Unregistering addComponent " + componentKey + " from container " + delegate);
 		}
 		
-		return delegate.unregisterComponent(componentKey);
+		return delegate.removeComponent(componentKey);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @param componentInstance
 	 * @return
-	 * @see org.picocontainer.MutablePicoContainer#unregisterComponentByInstance(java.lang.Object)
+	 * @see org.picocontainer.MutablePicoContainer#removeComponentByInstance(java.lang.Object)
 	 */
-	public ComponentAdapter unregisterComponentByInstance(final Object componentInstance) {
+	public ComponentAdapter removeComponentByInstance(final Object componentInstance) {
 		if (log.isDebugEnabled()) {
-			log.debug("Unregistering component by instance (" + componentInstance + ") from container " + delegate);
+			log.debug("Unregistering addComponent by instance (" + componentInstance + ") from container " + delegate);
 		}
 		
-		return delegate.unregisterComponentByInstance(componentInstance);
+		return delegate.removeComponentByInstance(componentInstance);
 	}
 
 	

@@ -14,6 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ParameterName;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 import org.picocontainer.defaults.DelegatingComponentMonitor;
@@ -28,6 +29,9 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+
+import com.thoughtworks.paranamer.Paranamer;
+import com.thoughtworks.paranamer.asm.AsmParanamer;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
@@ -145,7 +149,17 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
                     final Class[] parameterTypes = constructor.getParameterTypes();
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
                     for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, InstantiatingComponentAdapter.this, parameterTypes[i]);
+                        final int i1 = i;
+                        currentParameters[i].verify(container, InstantiatingComponentAdapter.this, parameterTypes[i], new ParameterName() {
+                    public String getParameterName() {
+                        Paranamer dpn = new AsmParanamer();
+                        String[] names = dpn.lookupParameterNames(constructor);
+                        if (names.length != 0) {
+                            return names[i1];
+                        }
+                        return null;
+                    }
+                });
                     }
                     return null;
                 }

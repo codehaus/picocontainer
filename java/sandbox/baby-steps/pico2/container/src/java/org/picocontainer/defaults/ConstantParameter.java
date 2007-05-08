@@ -16,6 +16,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ParameterName;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -41,13 +42,13 @@ public class ConstantParameter
         this.value = value;
     }
 
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
         return value;
     }
 
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
         try {
-            verify(container, adapter, expectedType);
+            verify(container, adapter, expectedType, expectedParameterName);
             return true;
         } catch(final PicoIntrospectionException e) {
             return false;
@@ -57,10 +58,9 @@ public class ConstantParameter
     /**
      * {@inheritDoc}
      *
-     * @see org.picocontainer.Parameter#verify(org.picocontainer.PicoContainer,
-     *           org.picocontainer.ComponentAdapter, java.lang.Class)
+     * @see org.picocontainer.Parameter#verify(org.picocontainer.PicoContainer,org.picocontainer.ComponentAdapter,Class,org.picocontainer.ParameterName)
      */
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoException {
+    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) throws PicoException {
         if (!checkPrimitive(expectedType) && !expectedType.isInstance(value)) {
             throw new PicoIntrospectionException(
                     ((expectedType != null) ? expectedType.getClass().getName() : "null")

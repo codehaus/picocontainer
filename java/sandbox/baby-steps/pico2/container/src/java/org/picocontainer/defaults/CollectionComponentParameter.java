@@ -15,6 +15,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ParameterName;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -114,10 +115,11 @@ public class CollectionComponentParameter
      * @param container {@inheritDoc}
      * @param adapter {@inheritDoc}
      * @param expectedType {@inheritDoc}
+     * @param expectedParameterName
      * @return the instance of the collection type or <code>null</code>
      * @throws PicoInitializationException {@inheritDoc}
      */
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
         // type check is done in isResolvable
         Object result = null;
         final Class collectionType = getCollectionType(expectedType);
@@ -145,10 +147,11 @@ public class CollectionComponentParameter
      * @param container {@inheritDoc}
      * @param adapter {@inheritDoc}
      * @param expectedType {@inheritDoc}
+     * @param expectedParameterName
      * @return <code>true</code> if matching components were found or an empty collective type
      *               is allowed
      */
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
         final Class collectionType = getCollectionType(expectedType);
         final Class valueType = getValueType(expectedType);
         return collectionType != null && (emptyCollection || getMatchingComponentAdapters(container, adapter, componentKeyType, valueType).size() > 0);
@@ -163,9 +166,10 @@ public class CollectionComponentParameter
      * @param container {@inheritDoc}
      * @param adapter {@inheritDoc}
      * @param expectedType {@inheritDoc}
+     * @param expectedParameterName
      * @throws PicoIntrospectionException {@inheritDoc}
      */
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
             final Class valueType = getValueType(expectedType);

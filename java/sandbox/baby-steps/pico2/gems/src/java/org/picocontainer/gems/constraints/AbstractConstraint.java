@@ -11,6 +11,7 @@ package org.picocontainer.gems.constraints;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ParameterName;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.CollectionComponentParameter;
 
@@ -32,20 +33,20 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
         super(false);
     }
     
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
-        final Object[] array = (Object[]) super.resolveInstance(container, adapter, getArrayType(expectedType));
+    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) throws PicoIntrospectionException {
+        final Object[] array = (Object[]) super.resolveInstance(container, adapter, getArrayType(expectedType), expectedParameterName);
         if (array.length == 1) {
             return array[0];
         }
         return null;
     }
 
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
-        return super.isResolvable(container, adapter, getArrayType(expectedType));
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) throws PicoIntrospectionException {
+        return super.isResolvable(container, adapter, getArrayType(expectedType), expectedParameterName);
     }
 
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) throws PicoIntrospectionException {
-        super.verify(container, adapter, getArrayType(expectedType));
+    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) throws PicoIntrospectionException {
+        super.verify(container, adapter, getArrayType(expectedType), expectedParameterName);
     }
     
     public abstract boolean evaluate(ComponentAdapter adapter);

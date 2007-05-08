@@ -47,7 +47,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
 
         Object object = c.resolveInstance(container, 
                 container.getComponentAdapter(DependsOnTouchable.class),
-                Touchable.class);
+                Touchable.class, null);
         assertEquals(SimpleTouchable.class, object.getClass());
     }
 
@@ -56,7 +56,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
 
         Object object = c.resolveInstance(container, 
                 container.getComponentAdapter(DependsOnTouchable.class),
-                Touchable.class);
+                Touchable.class, null);
         assertEquals(AlternativeTouchable.class, object.getClass());
     }
 
@@ -70,7 +70,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
 
         assertSame(t, c.resolveInstance(container, 
                 container.getComponentAdapter(DependsOnTouchable.class),
-                Touchable.class));
+                Touchable.class, null));
     }
 
     public void testConstraintTooBroadThrowsAmbiguityException() {
@@ -79,7 +79,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
         try {
             c.resolveInstance(container, 
                     container.getComponentAdapter(DependsOnTouchable.class),
-                    Touchable.class);
+                    Touchable.class, null);
             fail("did not throw ambiguous resolution exception");
         } catch (AmbiguousComponentResolutionException acre) {
             // success
@@ -93,7 +93,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
                 new Not(new IsType(DecoratedTouchable.class))));
         Touchable[] touchables = (Touchable[]) c.resolveInstance(container, 
                 container.getComponentAdapter(DependsOnTouchable.class),
-                Touchable[].class);
+                Touchable[].class, null);
         assertEquals(2, touchables.length);
         for (int i = 0; i < touchables.length; i++) {
             assertFalse(touchables[i] instanceof DecoratedTouchable);

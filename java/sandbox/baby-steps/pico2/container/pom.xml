@@ -13,5 +13,28 @@
         <groupId>com.thoughtworks.paranamer</groupId>
         <artifactId>paranamer</artifactId>
       </dependency>
-    </dependencies>  
+    </dependencies>
+
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>com.thoughtworks.paranamer</groupId>
+          <artifactId>paranamer-maven-plugin</artifactId>
+          <configuration>
+            <sourceDirectory>src/test</sourceDirectory>
+            <outputDirectory>target/test-classes</outputDirectory>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>test</phase>
+              <id>generate</id>
+              <goals>
+                <goal>generate</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+
 </project>

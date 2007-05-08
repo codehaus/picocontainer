@@ -15,6 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ParameterName;
 import org.picocontainer.adapters.InstantiatingComponentAdapter;
 import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 import org.picocontainer.defaults.LifecycleStrategy;
@@ -38,6 +39,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.thoughtworks.paranamer.Paranamer;
+import com.thoughtworks.paranamer.asm.AsmParanamer;
+
 /**
  * Instantiates components using Constructor Injection.
  * <em>
@@ -56,6 +60,7 @@ import java.util.Set;
 public class ConstructorInjectionComponentAdapter extends InstantiatingComponentAdapter {
     private transient List<Constructor> sortedMatchingConstructors;
     private transient Guard instantiationGuard;
+    private transient Paranamer paranamer = new AsmParanamer();
 
     private static abstract class Guard extends ThreadLocalCyclicDependencyGuard {
         protected PicoContainer guardedContainer;
@@ -131,7 +136,7 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         this(componentKey, componentImplementation, (Parameter[])null);
     }
 
-    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final Set<Constructor> conflicts = new HashSet<Constructor>();
         final Set<List<Class>> unsatisfiableDependencyTypes = new HashSet<List<Class>>();
         if (sortedMatchingConstructors == null) {
@@ -142,14 +147,23 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         Class unsatisfiedDependencyType = null;
         for (Constructor sortedMatchingConstructor : sortedMatchingConstructors) {
             boolean failedDependency = false;
-            Constructor constructor = sortedMatchingConstructor;
+            final Constructor constructor = sortedMatchingConstructor;
             Class[] parameterTypes = constructor.getParameterTypes();
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
                 // check wether this constructor is statisfiable
-                if (currentParameters[j].isResolvable(container, this, parameterTypes[j])) {
+                final int j1 = j;
+                if (currentParameters[j].isResolvable(container, this, parameterTypes[j], new ParameterName() {
+                    public String getParameterName() {
+                        String[] names = paranamer.lookupParameterNames(constructor);
+                        if (names.length != 0) {
+                            return names[j1];
+                        }
+                        return null;
+                    }
+                })) {
                     continue;
                 }
                 unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
@@ -189,6 +203,8 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         }
         return greediestConstructor;
     }
+
+
 
     public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (instantiationGuard == null) {
@@ -237,13 +253,19 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
         return instantiationGuard.observe(getComponentImplementation());
     }
 
-    protected Object[] getConstructorArguments(PicoContainer container, Constructor ctor) {
+    protected Object[] getConstructorArguments(PicoContainer container, final Constructor ctor) {
         Class[] parameterTypes = ctor.getParameterTypes();
         Object[] result = new Object[parameterTypes.length];
         Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
         for (int i = 0; i < currentParameters.length; i++) {
-            result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i]);
+            final int i1 = i;
+            result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i], new ParameterName() {
+                public String getParameterName() {
+                    String[] strings = paranamer.lookupParameterNames(ctor);
+                    return strings.length == 0 ? "" : strings[i1];
+                }
+            });
         }
         return result;
     }

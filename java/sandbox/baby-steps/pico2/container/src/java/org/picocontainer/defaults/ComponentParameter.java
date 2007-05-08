@@ -13,6 +13,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ParameterName;
 
 
 /**
@@ -109,31 +110,31 @@ public class ComponentParameter
         this.collectionParameter = collectionParameter;
     }
 
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
         // type check is done in isResolvable
-        Object result = super.resolveInstance(container, adapter, expectedType);
+        Object result = super.resolveInstance(container, adapter, expectedType, expectedParameterName);
         if (result == null && collectionParameter != null) {
-            result = collectionParameter.resolveInstance(container, adapter, expectedType);
+            result = collectionParameter.resolveInstance(container, adapter, expectedType, expectedParameterName);
         }
         return result;
     }
 
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
-        if (!super.isResolvable(container, adapter, expectedType)) {
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
+        if (!super.isResolvable(container, adapter, expectedType, expectedParameterName)) {
             if (collectionParameter != null) {
-                return collectionParameter.isResolvable(container, adapter, expectedType);
+                return collectionParameter.isResolvable(container, adapter, expectedType, expectedParameterName);
             }
             return false;
         }
         return true;
     }
 
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
         try {
-            super.verify(container, adapter, expectedType);
+            super.verify(container, adapter, expectedType, expectedParameterName);
         } catch (UnsatisfiableDependenciesException e) {
             if (collectionParameter != null) {
-                collectionParameter.verify(container, adapter, expectedType);
+                collectionParameter.verify(container, adapter, expectedType, expectedParameterName);
                 return;
             }
             throw e;

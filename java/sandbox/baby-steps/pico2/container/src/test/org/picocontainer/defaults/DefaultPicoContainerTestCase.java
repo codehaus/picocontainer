@@ -19,6 +19,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.adapters.SynchronizedComponentAdapter;
@@ -477,6 +478,14 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertEquals(SynchronizedComponentAdapter.class, mpc.addComponent(SimpleA.class).lastCA().getClass());
     }
 
+
+    public void testPicoCanDifferentiateBetweenNamedElementsThatWouldOtherwiseBeAmbiguous() {
+        MutablePicoContainer mpc = createPicoContainer(null);
+        mpc.addComponent("greeting", "1");
+        mpc.addComponent("message", "2");
+        mpc.addComponent(PicoRegistrationException.class, PicoRegistrationException.class);
+        assertEquals("2", mpc.getComponent(PicoRegistrationException.class).getMessage());
+    }
 
     public static class Horse {}
 

@@ -14,6 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ParameterName;
 import org.picocontainer.adapters.InstantiatingComponentAdapter;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
@@ -146,7 +147,11 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
             final Parameter parameter = currentParameters[i];
             boolean failedDependency = true;
             for (int j = 0; j < setterTypes.length; j++) {
-                if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, setterTypes[j])) {
+                if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, setterTypes[j], new ParameterName() {
+                    public String getParameterName() {
+                        return ""; // TODO 
+                    }
+                })) {
                     matchingParameterList.set(j, parameter);
                     failedDependency = false;
                     break;
@@ -210,7 +215,11 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                         for (int i = 0; i < setters.size(); i++) {
                             setter = setters.get(i);
                             componentMonitor.invoking(setter, componentInstance);
-                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, SetterInjectionComponentAdapter.this, setterTypes[i]);
+                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, SetterInjectionComponentAdapter.this, setterTypes[i], new ParameterName() {
+                                public String getParameterName() {
+                                    return ""; // TODO
+                                }
+                            });
                             setter.invoke(componentInstance, toInject);
                             injected[i] = toInject;
                             //componentMonitor.invoked(setter, componentInstance, System.currentTimeMillis() - startTime);
@@ -243,7 +252,11 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                 public Object run() {
                     final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
                     for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, SetterInjectionComponentAdapter.this, setterTypes[i]);
+                        currentParameters[i].verify(container, SetterInjectionComponentAdapter.this, setterTypes[i], new ParameterName() {
+                            public String getParameterName() {
+                                return ""; // TODO
+                            }
+                        });
                     }
                     return null;
                 }

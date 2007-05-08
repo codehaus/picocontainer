@@ -28,7 +28,7 @@ public interface ComponentAdapter {
      * @return the addComponent's key. Should either be a class type (normally an interface) or an identifier that is
      *         unique (within the scope of the current PicoContainer).
      */
-    Object getComponentKey();
+    Object getComponentKey();    
 
     /**
      * Retrieve the class of the addComponent.

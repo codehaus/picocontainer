@@ -12,13 +12,13 @@ package org.picocontainer.defaults;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ParameterName;
 
 /**
  * A BasicComponentParameter should be used to pass in a particular addComponent as argument to a
@@ -64,23 +64,22 @@ public class BasicComponentParameter
      *
      * @return <code>true</code> if the Parameter can be verified.
      * @throws org.picocontainer.PicoInitializationException {@inheritDoc}
-     * @see org.picocontainer.Parameter#isResolvable(org.picocontainer.PicoContainer,
-     *           org.picocontainer.ComponentAdapter, java.lang.Class)
+     * @see org.picocontainer.Parameter#isResolvable(org.picocontainer.PicoContainer,org.picocontainer.ComponentAdapter,Class,org.picocontainer.ParameterName)
      */
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
-        return resolveAdapter(container, adapter, expectedType) != null;
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
+        return resolveAdapter(container, adapter, expectedType, expectedParameterName) != null;
     }
 
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
-        final ComponentAdapter componentAdapter = resolveAdapter(container, adapter, expectedType);
+    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
+        final ComponentAdapter componentAdapter = resolveAdapter(container, adapter, expectedType, expectedParameterName);
         if (componentAdapter != null) {
             return container.getComponent(componentAdapter.getComponentKey());
         }
         return null;
     }
 
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
-        final ComponentAdapter componentAdapter = resolveAdapter(container, adapter, expectedType);
+    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
+        final ComponentAdapter componentAdapter = resolveAdapter(container, adapter, expectedType, expectedParameterName);
         if (componentAdapter == null) {
             final HashSet set = new HashSet();
             set.add(expectedType);
@@ -98,9 +97,9 @@ public class BasicComponentParameter
         visitor.visitParameter(this);
     }
 
-    private ComponentAdapter resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+    private ComponentAdapter resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
 
-        final ComponentAdapter result = getTargetAdapter(container, expectedType,adapter);
+        final ComponentAdapter result = getTargetAdapter(container, expectedType, expectedParameterName, adapter);
         if (result == null) {
             return null;
         }
@@ -125,7 +124,7 @@ public class BasicComponentParameter
         return result;
     }
 
-    private ComponentAdapter getTargetAdapter(PicoContainer container, Class expectedType, ComponentAdapter excludeAdapter) {
+    private ComponentAdapter getTargetAdapter(PicoContainer container, Class expectedType, ParameterName expectedParameterName, ComponentAdapter excludeAdapter) {
         if (componentKey != null) {
             // key tells us where to look so we follow
             return container.getComponentAdapter(componentKey);
@@ -137,11 +136,10 @@ public class BasicComponentParameter
             if(byKey != null && !excludeKey.equals(byKey.getComponentKey())) {
                 return byKey;
             }
-            List found = container.getComponentAdapters(expectedType);
+            List<ComponentAdapter> found = container.getComponentAdapters(expectedType);
             ComponentAdapter exclude = null;
-            for(Iterator iterator = found.iterator(); iterator.hasNext();) {
-                ComponentAdapter work = (ComponentAdapter) iterator.next();
-                if( work.getComponentKey().equals(excludeKey)) {
+            for (ComponentAdapter work : found) {
+                if (work.getComponentKey().equals(excludeKey)) {
                     exclude = work;
                 }
             }
@@ -153,11 +151,18 @@ public class BasicComponentParameter
                     return null;
                 }
             } else if(found.size() == 1) {
-                return (ComponentAdapter)found.get(0);
+                return found.get(0);
             } else {
+                for (ComponentAdapter componentAdapter : found) {
+                    Object key = componentAdapter.getComponentKey();
+                    if (key instanceof String && key.equals(expectedParameterName.getParameterName())) {
+                        return componentAdapter;
+                    }
+                }
+
                 Class[] foundClasses = new Class[found.size()];
                 for (int i = 0; i < foundClasses.length; i++) {
-                    foundClasses[i] = ((ComponentAdapter) found.get(i)).getComponentImplementation();
+                    foundClasses[i] = found.get(i).getComponentImplementation();
                 }
                 throw new AmbiguousComponentResolutionException(expectedType, foundClasses);
             }

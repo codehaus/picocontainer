@@ -128,12 +128,12 @@ public class ConstructorInjectionComponentAdapter extends InstantiatingComponent
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public ConstructorInjectionComponentAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
-        this(componentKey, componentImplementation, null);
+        this(componentKey, componentImplementation, (Parameter[])null);
     }
 
     protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final Set<Constructor> conflicts = new HashSet<Constructor>();
-        final Set unsatisfiableDependencyTypes = new HashSet();
+        final Set<List<Class>> unsatisfiableDependencyTypes = new HashSet<List<Class>>();
         if (sortedMatchingConstructors == null) {
             sortedMatchingConstructors = getSortedMatchingConstructors();
         }

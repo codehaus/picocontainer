@@ -46,6 +46,12 @@
             <groupId>${pom.groupId}</groupId>
             <artifactId>picocontainer-tck</artifactId>
             <scope>test</scope>
-        </dependency>        
-	</dependencies>
+        </dependency>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>3.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>

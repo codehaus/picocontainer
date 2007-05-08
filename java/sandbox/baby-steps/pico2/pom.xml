@@ -103,6 +103,12 @@
                 <artifactId>picocontainer-tck</artifactId>
                 <version>${pom.version}</version>
             </dependency>
+            <!-- For paranamer -->
+            <dependency>
+                <groupId>com.thoughtworks.paranamer</groupId>
+                <artifactId>paranamer</artifactId>
+                <version>1.0-RC-3-SNAPSHOT</version>
+            </dependency>
             <!-- For proxy -->
             <dependency>
                 <groupId>proxytoys</groupId>

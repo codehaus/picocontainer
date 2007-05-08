@@ -8,4 +8,10 @@
 	<artifactId>picocontainer</artifactId>
 	<name>PicoContainer Core</name>
 	<packaging>jar</packaging>
+    <dependencies>
+      <dependency>
+        <groupId>com.thoughtworks.paranamer</groupId>
+        <artifactId>paranamer</artifactId>
+      </dependency>
+    </dependencies>  
 </project>

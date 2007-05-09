@@ -12,6 +12,7 @@ package org.nanocontainer.webcontainer;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.jetty.webapp.WebXmlConfiguration;
 import org.mortbay.jetty.webapp.Configuration;
+import org.mortbay.jetty.servlet.ServletHandler;
 import org.picocontainer.PicoContainer;
 import org.nanocontainer.webcontainer.PicoServletHandler;
 
@@ -34,5 +35,8 @@ public class PicoWebAppContext extends WebAppContext {
         setConfigurations(configurations);
     }
 
-
+    /* ------------------------------------------------------------ */
+    public ServletHandler getServletHandler() {
+        return super.getServletHandler();
+    }
 }

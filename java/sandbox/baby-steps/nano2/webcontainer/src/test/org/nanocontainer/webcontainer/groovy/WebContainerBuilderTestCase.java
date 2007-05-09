@@ -21,6 +21,7 @@ import org.mortbay.util.IO;
 
 import java.io.*;
 import java.net.URL;
+import java.net.ConnectException;
 
 public class WebContainerBuilderTestCase extends TestCase {
 
@@ -33,7 +34,7 @@ public class WebContainerBuilderTestCase extends TestCase {
         if (pico != null) {
             pico.stop();
         }
-        Thread.sleep(2 * 1000);
+        //Thread.sleep(2 * 1000);
     }
 
     public void testCanComposeWebContainerContextAndFilter() throws InterruptedException, IOException {
@@ -197,7 +198,7 @@ public class WebContainerBuilderTestCase extends TestCase {
                 " </body>\n" +
                 "</html>", "http://localhost:8080/bar/hello.html");
 
-        Thread.sleep(1 * 1000);
+        //Thread.sleep(1 * 1000);
 
         pico.stop();
         pico = null;
@@ -231,7 +232,7 @@ public class WebContainerBuilderTestCase extends TestCase {
                 " </body>\n" +
                 "</html>", "http://localhost:8080/bar/");
 
-        Thread.sleep(1 * 1000);
+        //Thread.sleep(1 * 1000);
 
         pico.stop();
         pico = null;
@@ -244,10 +245,13 @@ public class WebContainerBuilderTestCase extends TestCase {
         pico = (MutablePicoContainer) buildContainer(script, null, "SOME_SCOPE");
         assertNotNull(pico);
         
-        Thread.sleep(2 * 1000);
+        //Thread.sleep(2 * 1000);
 
         String actual = null;
         try {
+            actual = IO.toString(new URL(url).openStream());
+        } catch (ConnectException e) {
+            Thread.sleep(1 * 1000);
             actual = IO.toString(new URL(url).openStream());
         } catch (FileNotFoundException e) {
             actual = "";

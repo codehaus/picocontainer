@@ -13,6 +13,7 @@ import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.RequestLog;
 import org.mortbay.jetty.servlet.ErrorPageErrorHandler;
+import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.handler.ContextHandler;
 import org.mortbay.jetty.handler.HandlerList;
 import org.mortbay.jetty.handler.RequestLogHandler;
@@ -48,10 +49,8 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
     }
 
     public PicoContextHandler createContext(String contextPath, boolean withSessionHandler) {
-        ContextHandler context = new ContextHandler();
-        context.setContextPath(contextPath);
-        server.addHandler(context);
-        return new PicoContextHandler(context, server, parentContainer, withSessionHandler);
+        Context context = new Context(server, contextPath, Context.SESSIONS);
+        return new PicoContextHandler(context, parentContainer, withSessionHandler);
     }
 
 

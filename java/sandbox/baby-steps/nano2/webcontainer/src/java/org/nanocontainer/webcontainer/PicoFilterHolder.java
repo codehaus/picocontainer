@@ -25,5 +25,4 @@ public class PicoFilterHolder extends FilterHolder {
         return child.getComponent(Filter.class);
     }
 
-
 }

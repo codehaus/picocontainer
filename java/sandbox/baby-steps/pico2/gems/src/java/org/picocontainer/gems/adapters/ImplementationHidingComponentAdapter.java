@@ -45,22 +45,19 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
     }
 
     public Object getComponentInstance(final PicoContainer container) {
-        Object key = getComponentKey();
         Object o = getDelegate().getComponentInstance(container);
-        if (key instanceof Class) {
-            Class clazz = (Class) key;
-            if (clazz.isInterface()) {
-                byte[] bytes = makeProxy("XX", new Class[] {clazz});
-                AsmClassLoader cl = new AsmClassLoader();
-                Class pClazz = cl.defineClass("XX", bytes);
-                try {
-                    Constructor ctor = pClazz.getConstructor(clazz);
-                    return ctor.newInstance(o);
-                } catch (NoSuchMethodException e) {
-                } catch (InstantiationException e) {
-                } catch (IllegalAccessException e) {
-                } catch (InvocationTargetException e) {
-                }
+        Class[] interfaces = o.getClass().getInterfaces();
+        if (interfaces.length != 0) {
+            byte[] bytes = makeProxy("XX", interfaces);
+            AsmClassLoader cl = new AsmClassLoader();
+            Class pClazz = cl.defineClass("XX", bytes);
+            try {
+                Constructor ctor = pClazz.getConstructor(Object.class);
+                return ctor.newInstance(o);
+            } catch (NoSuchMethodException e) {
+            } catch (InstantiationException e) {
+            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException e) {
             }
         }
         return o;
@@ -75,18 +72,18 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
 
         Class superclass = Object.class;
 
-        String iName = getName(interfaces[0]);
-        cw.visit(V1_5, ACC_PUBLIC + ACC_SUPER, proxyName, null, getName(superclass), new String[]{iName});
+        cw.visit(V1_5, ACC_PUBLIC + ACC_SUPER, proxyName, null, getName(superclass), getNames(interfaces));
 
         {
-            fv = cw.visitField(ACC_PRIVATE + ACC_TRANSIENT, "delegate", "L" + iName + ";", null, null);
+            fv = cw.visitField(ACC_PRIVATE + ACC_TRANSIENT, "delegate", "Ljava/lang/Object;", null, null);
             fv.visitEnd();
         }
-        doConstructor(proxyName, cw, interfaces[0]);
-        Method[] meths = interfaces[0].getMethods();
-        for (Method meth : meths) {
-
-            doMethod(proxyName, cw, interfaces[0], meth);
+        doConstructor(proxyName, cw);
+        for (Class iface : interfaces) {
+            Method[] meths = iface.getMethods();
+            for (Method meth : meths) {
+                doMethod(proxyName, cw, iface, meth);
+            }
         }
 
         cw.visitEnd();
@@ -94,16 +91,23 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         return cw.toByteArray();
     }
 
-    private void doConstructor(String proxyName, ClassWriter cw, Class iface) {
+    private String[] getNames(Class[] interfaces) {
+        String[] retVal = new String[interfaces.length];
+        for (int i = 0; i < interfaces.length; i++) {
+            retVal[i] = getName(interfaces[i]);
+        }
+        return retVal;
+    }
+
+    private void doConstructor(String proxyName, ClassWriter cw) {
         MethodVisitor mv;
-        String iName = getName(iface);
-        mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(L" + iName + ";)V", null, null);
+        mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(Ljava/lang/Object;)V", null, null);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
         mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V");
         mv.visitVarInsn(ALOAD, 0);
         mv.visitVarInsn(ALOAD, 1);
-        mv.visitFieldInsn(PUTFIELD, proxyName, "delegate", "L" + iName + ";");
+        mv.visitFieldInsn(PUTFIELD, proxyName, "delegate", "Ljava/lang/Object;");
         mv.visitInsn(RETURN);
         mv.visitMaxs(2, 2);
         mv.visitEnd();
@@ -116,7 +120,8 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         mv = cw.visitMethod(ACC_PUBLIC, meth.getName(), signature, null, exceptions);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
-        mv.visitFieldInsn(GETFIELD, proxyName, "delegate", getClassType(iface));
+        mv.visitFieldInsn(GETFIELD, proxyName, "delegate", "Ljava/lang/Object;");
+        mv.visitTypeInsn(CHECKCAST, getName(iface));
         Class[] types = meth.getParameterTypes();
         int ix = 1;
         for (Class type : types) {

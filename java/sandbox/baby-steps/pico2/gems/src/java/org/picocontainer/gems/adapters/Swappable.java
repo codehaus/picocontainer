@@ -4,11 +4,13 @@ public class Swappable {
 
     private transient Object delegate;
 
-    public Object getDelegate() {
+    public Object getInstance() {
         return delegate;
     }
 
-    public void setDelegate(Object delegate) {
+    public Object swap(Object delegate) {
+        Object old = this.delegate;
         this.delegate = delegate;
+        return old;
     }
 }

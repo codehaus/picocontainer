@@ -9,20 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.gems.adapters;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.kit.ObjectReference;
-import com.thoughtworks.proxy.kit.ReflectionUtils;
-import com.thoughtworks.proxy.toys.delegate.Delegating;
-import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.DecoratingComponentAdapter;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -36,53 +24,36 @@ import java.util.Set;
  * </em>
  * 
  * @author Paul Hammant
- * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class HotSwappingComponentAdapter extends DecoratingComponentAdapter {
-    private final ProxyFactory proxyFactory;
+public class HotSwappingComponentAdapter extends ImplementationHidingComponentAdapter {
 
-    private static class ImplementationHidingReference implements ObjectReference {
-        private final ComponentAdapter delegate;
-        private Object componentInstance;
-        private final PicoContainer container;
-
-        public ImplementationHidingReference(ComponentAdapter delegate, PicoContainer container) {
-            this.delegate = delegate;
-            this.container = container;
-        }
-
-        public Object get() {
-            if (componentInstance == null) {
-                componentInstance = delegate.getComponentInstance(container);
-            }
-            return componentInstance;
-        }
-
-        public void set(Object item) {
-            componentInstance = item;
-        }
-    }
-
-    public HotSwappingComponentAdapter(final ComponentAdapter delegate, ProxyFactory proxyFactory) {
-        super(delegate);
-        this.proxyFactory = proxyFactory;
-    }
+    private final Swappable swappable = new Swappable();
+    private Object instance;
 
     public HotSwappingComponentAdapter(ComponentAdapter delegate) {
-        this(delegate, new StandardProxyFactory());
+        super(delegate);
     }
 
-    public Object getComponentInstance(final PicoContainer container) {
-        final Class[] proxyTypes;
-        if (getComponentKey() instanceof Class && proxyFactory.canProxy((Class)getComponentKey())) {
-            proxyTypes = new Class[]{(Class)getComponentKey()};
-        } else {
-            Set types = new HashSet(Arrays.asList(getComponentImplementation().getInterfaces()));
-            ReflectionUtils.addIfClassProxyingSupportedAndNotObject(getComponentImplementation(), types, proxyFactory);
-            proxyTypes = (Class[])types.toArray(new Class[types.size()]);
+    protected Swappable getSwappable() {
+        return swappable;
+    }
+
+    public Object swapRealInstance(Object instance) {
+        return swappable.swap(instance);
+    }
+
+    public Object getRealInstance() {
+        return swappable.getInstance();
+    }
+
+
+    public Object getComponentInstance(PicoContainer container) {
+        synchronized(swappable) {
+            if (instance == null) {
+                instance = super.getComponentInstance(container);
+            }
         }
-        ObjectReference reference = new ImplementationHidingReference(getDelegate(), container);
-        return HotSwapping.object(proxyTypes, proxyFactory, reference, Delegating.MODE_DIRECT);
+        return instance;
     }
 }

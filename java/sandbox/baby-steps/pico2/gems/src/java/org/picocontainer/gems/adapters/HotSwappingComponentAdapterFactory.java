@@ -33,24 +33,18 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * @see HotSwappingComponentAdapter
  */
 public class HotSwappingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
-    private final ProxyFactory proxyFactory;
 
     public HotSwappingComponentAdapterFactory() {
         this(new AnyInjectionComponentAdapterFactory());
     }
 
     public HotSwappingComponentAdapterFactory(ComponentAdapterFactory delegate) {
-        this(delegate, new StandardProxyFactory());
-    }
-
-    public HotSwappingComponentAdapterFactory(ComponentAdapterFactory delegate, ProxyFactory proxyFactory) {
         super(delegate);
-        this.proxyFactory = proxyFactory;
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public ComponentAdapter createComponentAdapter(ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        ComponentAdapter componentAdapter = super.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters);
-        return new HotSwappingComponentAdapter(componentAdapter, proxyFactory);
+        ComponentAdapter componentAdapter = super.createComponentAdapter(componentCharacteristic, componentKey, componentImplementation, parameters);
+        return new HotSwappingComponentAdapter(componentAdapter);
     }
 }

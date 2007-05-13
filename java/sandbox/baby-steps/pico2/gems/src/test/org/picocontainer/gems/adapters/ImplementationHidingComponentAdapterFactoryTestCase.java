@@ -1,13 +1,8 @@
 package org.picocontainer.gems.adapters;
 
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.hotswap.Swappable;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.adapters.CachingComponentAdapter;
 import org.picocontainer.adapters.CachingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
@@ -15,7 +10,6 @@ import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

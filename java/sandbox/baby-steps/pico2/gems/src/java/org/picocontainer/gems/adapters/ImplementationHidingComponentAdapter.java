@@ -47,7 +47,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         Class[] interfaces = o.getClass().getInterfaces();
         if (interfaces.length != 0) {
             byte[] bytes = makeProxy("XX", interfaces, true);
-            AsmClassLoader cl = new AsmClassLoader();
+            AsmClassLoader cl = new AsmClassLoader(Swappable.class.getClassLoader());
             Class<?> pClazz = cl.defineClass("XX", bytes);
             try {
                 Constructor<?> ctor = pClazz.getConstructor(Swappable.class);
@@ -267,6 +267,10 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
     }
 
     private static class AsmClassLoader extends ClassLoader {
+
+        public AsmClassLoader(ClassLoader parent) {
+            super(parent);
+        }
 
         public Class<?> defineClass(String name, byte[] b) {
             return defineClass(name, b, 0, b.length);

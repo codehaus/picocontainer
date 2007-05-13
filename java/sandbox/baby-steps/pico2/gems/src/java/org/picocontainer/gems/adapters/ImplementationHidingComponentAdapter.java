@@ -20,6 +20,8 @@ import org.objectweb.asm.AnnotationVisitor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.objectweb.asm.*;
 
@@ -40,6 +42,7 @@ import org.objectweb.asm.*;
  */
 public class ImplementationHidingComponentAdapter extends DecoratingComponentAdapter implements Opcodes {
 
+
     public ImplementationHidingComponentAdapter(final ComponentAdapter delegate) {
         super(delegate);
     }
@@ -48,12 +51,14 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         Object o = getDelegate().getComponentInstance(container);
         Class[] interfaces = o.getClass().getInterfaces();
         if (interfaces.length != 0) {
-            byte[] bytes = makeProxy("XX", interfaces);
+            byte[] bytes = makeProxy("XX", interfaces, true);
             AsmClassLoader cl = new AsmClassLoader();
-            Class pClazz = cl.defineClass("XX", bytes);
+            Class<?> pClazz = cl.defineClass("XX", bytes);
             try {
-                Constructor ctor = pClazz.getConstructor(Object.class);
-                return ctor.newInstance(o);
+                Constructor<?> ctor = pClazz.getConstructor(Swappable.class);
+                final Swappable swappable = new Swappable();
+                swappable.setDelegate(o);
+                return ctor.newInstance(swappable);
             } catch (NoSuchMethodException e) {
             } catch (InstantiationException e) {
             } catch (IllegalAccessException e) {
@@ -63,26 +68,30 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         return o;
     }
 
-    public byte[] makeProxy(String proxyName, Class[] interfaces) {
+    public byte[] makeProxy(String proxyName, Class[] interfaces, boolean setter) {
 
         ClassWriter cw = new ClassWriter(0);
         FieldVisitor fv;
         MethodVisitor mv;
         AnnotationVisitor av0;
 
-        Class superclass = Object.class;
+        Class<Object> superclass = Object.class;
 
-        cw.visit(V1_5, ACC_PUBLIC + ACC_SUPER, proxyName, null, getName(superclass), getNames(interfaces));
+        cw.visit(V1_5, ACC_PUBLIC + ACC_SUPER, proxyName, null, dotsToSlashes(superclass), getNames(interfaces));
 
         {
-            fv = cw.visitField(ACC_PRIVATE + ACC_TRANSIENT, "delegate", "Ljava/lang/Object;", null, null);
+            fv = cw.visitField(ACC_PRIVATE + ACC_TRANSIENT, "swappable", encodedClassName(Swappable.class), null, null);
             fv.visitEnd();
         }
         doConstructor(proxyName, cw);
+        Set<String> methodsDone = new HashSet<String>();
         for (Class iface : interfaces) {
             Method[] meths = iface.getMethods();
             for (Method meth : meths) {
-                doMethod(proxyName, cw, iface, meth);
+                if (!methodsDone.contains(meth.toString())) {
+                    doMethod(proxyName, cw, iface, meth);
+                    methodsDone.add(meth.toString());
+                }
             }
         }
 
@@ -94,34 +103,35 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
     private String[] getNames(Class[] interfaces) {
         String[] retVal = new String[interfaces.length];
         for (int i = 0; i < interfaces.length; i++) {
-            retVal[i] = getName(interfaces[i]);
+            retVal[i] = dotsToSlashes(interfaces[i]);
         }
         return retVal;
     }
 
     private void doConstructor(String proxyName, ClassWriter cw) {
         MethodVisitor mv;
-        mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(Ljava/lang/Object;)V", null, null);
+        mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(L"+ dotsToSlashes(Swappable.class)+";)V", null, null);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
         mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V");
         mv.visitVarInsn(ALOAD, 0);
         mv.visitVarInsn(ALOAD, 1);
-        mv.visitFieldInsn(PUTFIELD, proxyName, "delegate", "Ljava/lang/Object;");
+        mv.visitFieldInsn(PUTFIELD, proxyName, "swappable", encodedClassName(Swappable.class));
         mv.visitInsn(RETURN);
         mv.visitMaxs(2, 2);
         mv.visitEnd();
     }
 
     private void doMethod(String proxyName, ClassWriter cw, Class iface, Method meth) {
-        String signature = "(" + getParamTypes(meth) + ")" + getClassType(meth.getReturnType());
-        String[] exceptions = getExceptionTypes(meth.getExceptionTypes());
+        String signature = "(" + encodedParameterNames(meth) + ")" + encodedClassName(meth.getReturnType());
+        String[] exceptions = encodedExceptionNames(meth.getExceptionTypes());
         MethodVisitor mv;
         mv = cw.visitMethod(ACC_PUBLIC, meth.getName(), signature, null, exceptions);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
-        mv.visitFieldInsn(GETFIELD, proxyName, "delegate", "Ljava/lang/Object;");
-        mv.visitTypeInsn(CHECKCAST, getName(iface));
+        mv.visitFieldInsn(GETFIELD, proxyName, "swappable", encodedClassName(Swappable.class));
+        mv.visitMethodInsn(INVOKEVIRTUAL, dotsToSlashes(Swappable.class), "getDelegate", "()Ljava/lang/Object;");
+        mv.visitTypeInsn(CHECKCAST, dotsToSlashes(iface));
         Class[] types = meth.getParameterTypes();
         int ix = 1;
         for (Class type : types) {
@@ -129,7 +139,7 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
             mv.visitVarInsn(load, ix);
             ix = indexOf(ix, load);
         }
-        mv.visitMethodInsn(INVOKEINTERFACE, getName(iface), meth.getName(), signature);
+        mv.visitMethodInsn(INVOKEINTERFACE, dotsToSlashes(iface), meth.getName(), signature);
         mv.visitInsn(whichReturn(meth.getReturnType()));
         mv.visitMaxs(ix, ix);
         mv.visitEnd();
@@ -150,14 +160,14 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         return 0;
     }
 
-    private String[] getExceptionTypes(Class[] exceptionTypes) {
+    private String[] encodedExceptionNames(Class[] exceptionTypes) {
         if (exceptionTypes.length == 0) {
             return null;
         }
         String[] retVal = new String[exceptionTypes.length];
         for (int i = 0; i < exceptionTypes.length; i++) {
             Class clazz = exceptionTypes[i];
-            retVal[i] = getName(clazz);
+            retVal[i] = dotsToSlashes(clazz);
         }
         return retVal;
     }
@@ -216,11 +226,11 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         }
     }
 
-    private String getClassType(Class clazz) {
+    private String encodedClassName(Class clazz) {
         if (clazz.getName().startsWith("[")) {
-            return getName(clazz);
+            return dotsToSlashes(clazz);
         } else if (!clazz.isPrimitive()) {
-            return "L" + getName(clazz) + ";";
+            return "L" + dotsToSlashes(clazz) + ";";
         } else if (clazz == int.class) {
             return "I";
         } else if (clazz == long.class) {
@@ -244,21 +254,21 @@ public class ImplementationHidingComponentAdapter extends DecoratingComponentAda
         }
     }
 
-    private String getParamTypes(Method meth) {
+    private String encodedParameterNames(Method meth) {
         String retVal = "";
         for (Class type : meth.getParameterTypes()) {
-            retVal += getClassType(type);
+            retVal += encodedClassName(type);
         }
         return retVal;
     }
 
-    private String getName(Class type) {
+    private String dotsToSlashes(Class type) {
         return type.getName().replace('.', '/');
     }
 
     private static class AsmClassLoader extends ClassLoader {
 
-        public Class defineClass(String name, byte[] b) {
+        public Class<?> defineClass(String name, byte[] b) {
             return defineClass(name, b, 0, b.length);
         }
     }

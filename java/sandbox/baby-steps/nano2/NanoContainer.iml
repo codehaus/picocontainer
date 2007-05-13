@@ -231,6 +231,7 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="asm-3.0" level="project" />
     <orderEntryProperties />
   </component>
 </module>

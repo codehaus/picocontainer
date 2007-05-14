@@ -13,6 +13,9 @@ import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor;
 
 
 public class ImplementationHidingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
@@ -58,8 +61,8 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new ImplementationHidingComponentAdapter(new ConstructorInjectionComponentAdapter("l", ArrayList.class)));
 
-        List list1 = (List)pico.getComponent("l");
-        List list2 = (List)pico.getComponent("l");
+        List list1 = (List) pico.getComponent("l");
+        List list2 = (List) pico.getComponent("l");
 
         assertNotSame(list1, list2);
         assertFalse(list1 instanceof ArrayList);
@@ -71,6 +74,33 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
         return cachingComponentAdapterFactory;
+    }
+
+    public void testElephantWithoutAsmProxy() throws IOException {
+        assertions(new ElephantProxy(new ElephantImpl()));
+    }
+
+    public void testElephantWithAsmProxy() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.addAdapter(new ImplementationHidingComponentAdapter(new ConstructorInjectionComponentAdapter("l", ArrayList.class)));
+        Elephant elephant = pico.addComponent(Elephant.class, ElephantImpl.class).getComponent(Elephant.class);
+
+        assertions(elephant);
+
+    }
+
+    private void assertions(Elephant foo) throws IOException {
+        assertEquals("onetwo", foo.objects("one", "two"));
+        assertEquals("onetwo", foo.objectsArray(new String[]{"one"}, new String[]{"two"})[0]);
+        assertEquals(3, foo.iint(1, 2));
+        assertEquals(3, foo.llong(1, 2));
+        assertEquals(6, foo.bbyte((byte) 1, (byte) 2, (byte) 3));
+        assertEquals((float) 10, foo.ffloat(1, 2, 3, 4));
+        assertEquals((double) 3, foo.ddouble(1, 2));
+        assertEquals('c', foo.cchar('a', 'b'));
+        assertEquals(3, foo.sshort((short) 1, (short) 2));
+        assertEquals(true, foo.bboolean(true, true));
+        assertEquals(true, foo.bbooleanArray(new boolean[]{true}, new boolean[]{true})[0]);
     }
 
 }

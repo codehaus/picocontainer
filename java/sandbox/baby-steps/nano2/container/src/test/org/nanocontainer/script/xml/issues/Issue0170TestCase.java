@@ -5,10 +5,13 @@ import com.thoughtworks.proxy.toys.hotswap.Swappable;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.gems.adapters.HotSwappingComponentAdapter;
 
 //http://jira.codehaus.org/browse/NANO-170
 public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase {
@@ -28,7 +31,24 @@ public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase 
         assertNotNull(pico);
         List list = (List)pico.getComponent(List.class);
         assertNotNull(list);
-        assertTrue(list instanceof Swappable);
+
+        ComponentAdapter listCA = pico.getComponentAdapter(List.class);
+
+        assertTrue(listCA instanceof HotSwappingComponentAdapter);
+        HotSwappingComponentAdapter hsca = (HotSwappingComponentAdapter) listCA;
+        ArrayList newList = new ArrayList();
+        List oldList = (List) hsca.swapRealInstance(newList);
+
+        List list2 = (List)pico.getComponent(List.class);
+
+        assertEquals(list, list2); // still the same 'end point'
+
+        list2.add("foo");
+
+        assertFalse(oldList.contains("foo"));
+        assertTrue(newList.contains("foo"));
+
+
     }
 
     private PicoContainer buildContainer(Reader script) {

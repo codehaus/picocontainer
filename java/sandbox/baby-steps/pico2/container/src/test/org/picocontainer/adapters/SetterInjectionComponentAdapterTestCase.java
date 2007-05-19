@@ -205,6 +205,37 @@ public class SetterInjectionComponentAdapterTestCase
         }
     }
 
+    public static class A2 {
+        private B b;
+        private String string;
+        private List list;
+
+        public void injectB(B b) {
+            this.b = b;
+        }
+
+        public B getB() {
+            return b;
+        }
+
+        public String getString() {
+            return string;
+        }
+
+        public void injectString(String string) {
+            this.string = string;
+        }
+
+        public List getList() {
+            return list;
+        }
+
+        public void injectList(List list) {
+            this.list = list;
+        }
+    }
+
+
     public static class B {
     }
 
@@ -223,6 +254,79 @@ public class SetterInjectionComponentAdapterTestCase
             assertTrue(e.getUnsatisfiableDependencies().contains(String.class));
         }
     }
+
+    public void testAllUnsatisfiableDependenciesAreSignalled2() {
+        SetterInjectionComponentAdapter aAdapter = new SetterInjectionComponentAdapter(A2.class, A2.class);
+        SetterInjectionComponentAdapter bAdapter = new SetterInjectionComponentAdapter("b", B.class);
+
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.addComponent(List.class, ArrayList.class).addComponent(String.class, "foo");
+        pico.addAdapter(bAdapter);
+        pico.addAdapter(aAdapter);
+
+        aAdapter.getComponentInstance(pico);
+
+        assertNotNull(aAdapter);
+
+        A2 a = pico.getComponent(A2.class);
+        assertTrue(a.getList() == null);
+        assertTrue(a.getString() == null);
+    }
+
+    public static class InitBurp {
+
+        private Wind wind;
+
+        public void initWind(Wind wind) {
+            this.wind = wind;
+        }
+    }
+
+    public static class SetterBurp {
+
+        private Wind wind;
+
+        public void setWind(Wind wind) {
+            this.wind = wind;
+        }
+    }
+
+    public static class Wind {
+
+    }
+
+    public void testSetterMethodInjectionToContrastWithThatBelow() {
+
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.addAdapter(new SetterInjectionComponentAdapter(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT));
+        pico.addComponent(Wind.class, new Wind());
+        SetterBurp burp = pico.getComponent(SetterBurp.class);
+        assertNotNull(burp);
+        assertNotNull(burp.wind);
+    }
+
+    public void testNonSetterMethodInjection() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.addAdapter(new SetterInjectionComponentAdapter(InitBurp.class, InitBurp.class, Parameter.DEFAULT) {
+            protected String getInjectorPrefix() {
+                return "init";
+            }
+        });
+        pico.addComponent(Wind.class, new Wind());
+        InitBurp burp = pico.getComponent(InitBurp.class);
+        assertNotNull(burp);
+        assertNotNull(burp.wind);
+    }
+
+    public void testNonSetterMethodInjectionWithoutOverridingSetterPrefix() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.addAdapter(new SetterInjectionComponentAdapter(InitBurp.class, InitBurp.class, Parameter.ZERO));
+        pico.addComponent(Wind.class, new Wind());
+        InitBurp burp = pico.getComponent(InitBurp.class);
+        assertNotNull(burp);
+        assertTrue(burp.wind == null);
+    }
+
 
     public static class C {
         private B b;

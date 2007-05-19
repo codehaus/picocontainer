@@ -49,13 +49,13 @@ import java.io.Serializable;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
+ * @author Paul Hammant
  * @version $Revision$
  */
 public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapter {
-    private String prefix = "set";
     private transient Guard instantiationGuard;
-    private transient List<Method> setters;
-    private transient Class[] setterTypes;
+    private transient List<Method> injectionMethods;
+    private transient Class[] injectionTypes;
 
     /**
      * Constructs a SetterInjectionComponentAdapter
@@ -136,18 +136,18 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
     }
 
     private Parameter[] getMatchingParameterListForSetters(PicoContainer container) throws PicoInitializationException, UnsatisfiableDependenciesException {
-        if (setters == null) {
-            initializeSetterAndTypeLists();
+        if (injectionMethods == null) {
+            initializeInjectionMethodsAndTypeLists();
         }
 
-        final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(setters.size(), null));
+        final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMethods.size(), null));
         final Set<Integer> nonMatchingParameterPositions = new HashSet<Integer>();
-        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(setterTypes);
+        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
         for (int i = 0; i < currentParameters.length; i++) {
             final Parameter parameter = currentParameters[i];
             boolean failedDependency = true;
-            for (int j = 0; j < setterTypes.length; j++) {
-                if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, setterTypes[j], new ParameterName() {
+            for (int j = 0; j < injectionTypes.length; j++) {
+                if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, injectionTypes[j], new ParameterName() {
                     public String getParameterName() {
                         return ""; // TODO 
                     }
@@ -156,6 +156,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                     failedDependency = false;
                     break;
                 }
+                int y = 0;
             }
             if (failedDependency) {
                 nonMatchingParameterPositions.add(i);
@@ -165,15 +166,15 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
         final Set<Class> unsatisfiableDependencyTypes = new HashSet<Class>();
         for (int i = 0; i < matchingParameterList.size(); i++) {
             if (matchingParameterList.get(i) == null) {
-                unsatisfiableDependencyTypes.add(setterTypes[i]);
+                unsatisfiableDependencyTypes.add(injectionTypes[i]);
             }
         }
         if (unsatisfiableDependencyTypes.size() > 0) {
             throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes, container);
         } else if (nonMatchingParameterPositions.size() > 0) {
-            throw new PicoInitializationException("Following parameters do not match any of the setters for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
+            throw new PicoInitializationException("Following parameters do not match any of the injectionMethods for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
         }
-        return (Parameter[]) matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
+        return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
     }
 
     public Object getComponentInstance(final PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
@@ -210,12 +211,12 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                         ///CLOVER:ON
                     }
                     Method setter = null;
-                    Object injected[] = new Object[setters.size()];
+                    Object injected[] = new Object[injectionMethods.size()];
                     try {
-                        for (int i = 0; i < setters.size(); i++) {
-                            setter = setters.get(i);
+                        for (int i = 0; i < injectionMethods.size(); i++) {
+                            setter = injectionMethods.get(i);
                             componentMonitor.invoking(setter, componentInstance);
-                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, SetterInjectionComponentAdapter.this, setterTypes[i], new ParameterName() {
+                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, SetterInjectionComponentAdapter.this, injectionTypes[i], new ParameterName() {
                                 public String getParameterName() {
                                     return ""; // TODO
                                 }
@@ -252,7 +253,7 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
                 public Object run() {
                     final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
                     for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, SetterInjectionComponentAdapter.this, setterTypes[i], new ParameterName() {
+                        currentParameters[i].verify(container, SetterInjectionComponentAdapter.this, injectionTypes[i], new ParameterName() {
                             public String getParameterName() {
                                 return ""; // TODO
                             }
@@ -266,23 +267,31 @@ public class SetterInjectionComponentAdapter extends InstantiatingComponentAdapt
         verifyingGuard.observe(getComponentImplementation());
     }
 
-    private void initializeSetterAndTypeLists() {
-        setters = new ArrayList<Method>();
+    private void initializeInjectionMethodsAndTypeLists() {
+        injectionMethods = new ArrayList<Method>();
         final List<Class> typeList = new ArrayList<Class>();
         final Method[] methods = getMethods();
         for (final Method method : methods) {
             final Class[] parameterTypes = method.getParameterTypes();
             // We're only interested if there is only one parameter and the method name is bean-style.
             if (parameterTypes.length == 1) {
-                String methodName = method.getName();
-                boolean isBeanStyle = methodName.length() >= prefix.length() + 1 && methodName.startsWith(prefix) && Character.isUpperCase(methodName.charAt(prefix.length()));
-                if (isBeanStyle) {
-                    setters.add(method);
+                boolean isInjector = isInjectorMethod(method);
+                if (isInjector) {
+                    injectionMethods.add(method);
                     typeList.add(parameterTypes[0]);
                 }
             }
         }
-        setterTypes = typeList.toArray(new Class[0]);
+        injectionTypes = typeList.toArray(new Class[0]);
+    }
+
+    protected boolean isInjectorMethod(Method method) {
+        String methodName = method.getName();
+        return methodName.length() >= getInjectorPrefix().length() + 1 && methodName.startsWith(getInjectorPrefix()) && Character.isUpperCase(methodName.charAt(getInjectorPrefix().length()));
+    }
+
+    protected String getInjectorPrefix() {
+        return "set";
     }
 
     private Method[] getMethods() {

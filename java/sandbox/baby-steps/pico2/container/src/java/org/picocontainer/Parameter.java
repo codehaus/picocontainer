@@ -10,6 +10,9 @@
 
 package org.picocontainer;
 
+import static org.picocontainer.defaults.ComponentParameter.DEFAULT;
+import org.picocontainer.defaults.ComponentParameter;
+
 /**
  * This class provides control over the arguments that will be passed to a constructor. It can be used for finer control over
  * what arguments are passed to a particular constructor.
@@ -26,7 +29,9 @@ package org.picocontainer;
  * @since 1.0
  */
 public interface Parameter {
+
     Parameter[] ZERO = new Parameter[0];
+    Parameter[] DEFAULT = new Parameter[]{ComponentParameter.DEFAULT};
 
     /**
      * Retrieve the object from the Parameter that statisfies the expected type.

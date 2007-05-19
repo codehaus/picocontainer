@@ -13,10 +13,14 @@ import org.picocontainer.defaults.LifecycleStrategy;
 import java.lang.reflect.Method;
 import java.io.Serializable;
 
-public class AnnotationComponentAdapter extends SetterInjectionComponentAdapter {
+public class AnnotationInjectionComponentAdapter extends SetterInjectionComponentAdapter {
 
-    public AnnotationComponentAdapter(Serializable key, Class  impl, Parameter... params) {
+    public AnnotationInjectionComponentAdapter(Serializable key, Class  impl, Parameter... params) {
         super(key, impl, params);
+    }
+
+    public AnnotationInjectionComponentAdapter(Object key, Class impl, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
+        super(key, impl, parameters, monitor, lifecycleStrategy);
     }
 
 

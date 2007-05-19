@@ -6,7 +6,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.Inject;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-public class AnnotationComponentAdapterTestCase extends TestCase {
+public class AnnotationInjectionComponentAdapterTestCase extends TestCase {
 
     public static class AnnotatedBurp {
 
@@ -42,7 +42,7 @@ public class AnnotationComponentAdapterTestCase extends TestCase {
 
     public void testNonSetterMethodInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new AnnotationComponentAdapter(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT) {
+        pico.addAdapter(new AnnotationInjectionComponentAdapter(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT) {
             protected String getInjectorPrefix() {
                 return "init";
             }

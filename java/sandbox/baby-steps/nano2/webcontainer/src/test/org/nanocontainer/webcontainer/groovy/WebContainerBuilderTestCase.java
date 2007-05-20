@@ -10,18 +10,17 @@
 
 package org.nanocontainer.webcontainer.groovy;
 
-import junit.framework.TestCase;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.webcontainer.TestHelper;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.mortbay.util.IO;
-
-import java.io.*;
-import java.net.URL;
-import java.net.ConnectException;
 
 public class WebContainerBuilderTestCase extends TestCase {
 
@@ -237,16 +236,13 @@ public class WebContainerBuilderTestCase extends TestCase {
         pico.stop();
         pico = null;
 
-
     }
-
 
     private void assertPageIsHostedWithContents(Reader script, String message, String url) throws InterruptedException, IOException {
         pico = (MutablePicoContainer) buildContainer(script, null, "SOME_SCOPE");
         assertNotNull(pico);
         
         //Thread.sleep(2 * 1000);
-
         String actual = null;
         try {
             actual = IO.toString(new URL(url).openStream());

@@ -33,7 +33,7 @@ public class PicoBuilder {
     private Class componentMonitorClass = NullComponentMonitor.class;
     private Class lifecycleStrategyClass = NullLifecycleStrategy.class;
 
-    public PicoBuilder withStartableLifecycle() {
+    public PicoBuilder withLifecycle() {
         lifecycleStrategyClass = StartableLifecycleStrategy.class;
         return this;
     }
@@ -81,7 +81,7 @@ public class PicoBuilder {
         return (MutablePicoContainer) temp.getComponent(MutablePicoContainer.class);
     }
 
-    public PicoBuilder withImplementationHiding() {
+    public PicoBuilder withHiddenImplementations() {
         headComponentAdapterFactory = ImplementationHidingComponentAdapterFactory.class;
         return this;
     }

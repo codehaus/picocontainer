@@ -30,7 +30,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithStartableLifecycle() {
-        MutablePicoContainer mpc = new PicoBuilder().withStartableLifecycle().build();
+        MutablePicoContainer mpc = new PicoBuilder().withLifecycle().build();
         String foo = xs.toXML(mpc);
         assertTrue(foo.contains(DefaultPicoContainer.class.getName()));
         assertTrue(foo.contains(StartableLifecycleStrategy.class.getName()));
@@ -80,7 +80,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithImplementationHiding() {
-        MutablePicoContainer mpc = new PicoBuilder().withImplementationHiding().build();
+        MutablePicoContainer mpc = new PicoBuilder().withHiddenImplementations().build();
         String foo = xs.toXML(mpc);
         assertTrue(foo.contains(DefaultPicoContainer.class.getName()));
         assertTrue(foo.contains(NullLifecycleStrategy.class.getName()));

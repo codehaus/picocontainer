@@ -34,6 +34,7 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.adapters.CachingComponentAdapterFactory;
 import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
+import org.picocontainer.alternatives.EmptyPicoContainer;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -139,7 +140,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (lifecycleStrategyForInstanceRegistrations == null) throw new NullPointerException("lifecycleStrategy");
         this.componentAdapterFactory = componentAdapterFactory;
         this.lifecycleStrategy = lifecycleStrategyForInstanceRegistrations;
-        this.parent = parent == null ? null : ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
+        this.parent = parent;
+        if (parent != null && !(parent instanceof EmptyPicoContainer)) {
+            this.parent = ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
+        }
     }
 
     /**

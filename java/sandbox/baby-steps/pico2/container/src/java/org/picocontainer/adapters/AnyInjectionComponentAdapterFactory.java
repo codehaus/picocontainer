@@ -34,15 +34,14 @@ import java.io.Serializable;
  */
 public class AnyInjectionComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
 
-
-    ConstructorInjectionComponentAdapterFactory cdiCaf = new ConstructorInjectionComponentAdapterFactory();
-    private SetterInjectionComponentAdapterFactory sdiCaf = new SetterInjectionComponentAdapterFactory();
+    private ConstructorInjectionComponentAdapterFactory cdiDelegate = new ConstructorInjectionComponentAdapterFactory();
+    private SetterInjectionComponentAdapterFactory sdiDelegate = new SetterInjectionComponentAdapterFactory();
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (ComponentCharacteristics.SDI.isSoCharacterized(registerationCharacteristic)) {
-            return sdiCaf.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);
+            return sdiDelegate.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);
         }
-        return cdiCaf.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);
+        return cdiDelegate.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);
     }
 
 }

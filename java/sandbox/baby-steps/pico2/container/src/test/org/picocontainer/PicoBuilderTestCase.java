@@ -4,15 +4,6 @@ import junit.framework.TestCase;
 import com.thoughtworks.xstream.XStream;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
-import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
-import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
-import org.picocontainer.adapters.AnnotationInjectionComponentAdapterFactory;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.alternatives.EmptyPicoContainer;
 

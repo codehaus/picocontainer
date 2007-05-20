@@ -33,7 +33,7 @@ public class JspTestCase extends TestCase {
         //server.addRequestLog(new NCSARequestLog("./logs/jetty-yyyy-mm-dd.log"));
 
 
-        PicoContextHandler barContext = server.createContext("/bar", true);
+        PicoContext barContext = server.createContext("/bar", true);
         String absolutePath = warFile.getParentFile().getAbsolutePath();
         String scratchDir = warFile.getParentFile().getParentFile().getParentFile().getAbsolutePath() + File.separator + "target" + File.separator + "work";
         new File(scratchDir).mkdirs();
@@ -64,7 +64,7 @@ public class JspTestCase extends TestCase {
 
         server = new PicoJettyServer("localhost", 8080, new EmptyPicoContainer());
 
-        PicoContextHandler barContext = server.createContext("/bar", true);
+        PicoContext barContext = server.createContext("/bar", true);
         barContext.addErrorHandler(new MyErrorHandler());
         String absolutePath = warFile.getParentFile().getAbsolutePath();
         String scratchDir = warFile.getParentFile().getParentFile().getParentFile().getAbsolutePath() + File.separator + "target" + File.separator + "work";

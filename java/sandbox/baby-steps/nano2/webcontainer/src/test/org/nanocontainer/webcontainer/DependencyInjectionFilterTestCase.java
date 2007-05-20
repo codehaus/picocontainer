@@ -26,7 +26,7 @@ public class DependencyInjectionFilterTestCase extends TestCase {
 
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
-        PicoContextHandler barContext = server.createContext("/bar", false);
+        PicoContext barContext = server.createContext("/bar", false);
         PicoFilterHolder filterHolder = barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0);
         filterHolder.setInitParameter("foo", "bau");
         barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
@@ -48,7 +48,7 @@ public class DependencyInjectionFilterTestCase extends TestCase {
 
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
-        PicoContextHandler barContext = server.createContext("/bar", false);
+        PicoContext barContext = server.createContext("/bar", false);
         DependencyInjectionTestFilter filter = (DependencyInjectionTestFilter) barContext.addFilterWithMapping(new DependencyInjectionTestFilter(new Integer(5)), "/*", 0);
         filter.setFoo("bau");
         barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
@@ -71,7 +71,7 @@ public class DependencyInjectionFilterTestCase extends TestCase {
         parentContainer.addComponent(Integer.class, new Integer(5));
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
-        PicoContextHandler barContext = server.createContext("/bar", false);
+        PicoContext barContext = server.createContext("/bar", false);
         barContext.addFilterWithMapping(DependencyInjectionTestFilter.class, "/*", 0);
         PicoServletHolder holder = barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
         holder.setInitParameter("foo", "bau");

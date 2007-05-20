@@ -34,7 +34,7 @@ public class DependencyInjectionServletTestCase extends TestCase {
         parentContainer.addComponent(String.class, "Fred");
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
-        PicoContextHandler barContext = server.createContext("/bar", false);
+        PicoContext barContext = server.createContext("/bar", false);
         Class servletClass = DependencyInjectionTestServlet.class;
         PicoServletHolder holder = barContext.addServletWithMapping(servletClass, "/foo");
         holder.setInitParameter("foo", "bar");
@@ -53,7 +53,7 @@ public class DependencyInjectionServletTestCase extends TestCase {
 
 
         server = new PicoJettyServer("localhost", 8080, new EmptyPicoContainer());
-        PicoContextHandler barContext = server.createContext("/bar", false);
+        PicoContext barContext = server.createContext("/bar", false);
 
         DependencyInjectionTestServlet servlet0 = new DependencyInjectionTestServlet("Fred");
         DependencyInjectionTestServlet servlet1 = (DependencyInjectionTestServlet)

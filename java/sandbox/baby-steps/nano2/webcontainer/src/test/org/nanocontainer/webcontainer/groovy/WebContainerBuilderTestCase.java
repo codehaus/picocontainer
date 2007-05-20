@@ -11,14 +11,20 @@
 package org.nanocontainer.webcontainer.groovy;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.ConnectException;
+import java.net.URL;
 
+import junit.framework.TestCase;
+
+import org.mortbay.util.IO;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.webcontainer.TestHelper;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 

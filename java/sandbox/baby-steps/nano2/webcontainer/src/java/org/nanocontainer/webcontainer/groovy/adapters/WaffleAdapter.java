@@ -1,46 +1,35 @@
 package org.nanocontainer.webcontainer.groovy.adapters;
 
-import org.nanocontainer.webcontainer.PicoContextHandler;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.ClassName;
-import org.picocontainer.MutablePicoContainer;
+import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
-import groovy.util.NodeBuilder;
+import org.nanocontainer.ClassName;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
+import org.nanocontainer.webcontainer.PicoContext;
+import org.picocontainer.MutablePicoContainer;
 
-/**
- * 
- * @author Paul Hammant
- * @author Mauro Talevi
- * @deprecated Use NodeBuilderAdapter
- */
 public class WaffleAdapter {
-    
-    private static final String WAFFLE_NODE_BUILDER = "org.codehaus.waffle.groovy.WaffleNodeBuilder";
-    
-    private final PicoContextHandler context;
+
+    private final PicoContext context;
     private final MutablePicoContainer parentContainer;
     private final Map attributes;
-    
-    public WaffleAdapter(PicoContextHandler context, MutablePicoContainer parentContainer, Map attributes) {
+
+    public WaffleAdapter(PicoContext context, MutablePicoContainer parentContainer, Map attributes) {
         this.context = context;
         this.parentContainer = parentContainer;
         this.attributes = attributes;
     }
-    
+
     public NodeBuilder getNodeBuilder() {
+        String className = "com.thoughtworks.waffle.groovy.WaffleBuilder";
         NanoContainer factory = new DefaultNanoContainer();
-        factory.getPico().registerComponentInstance(PicoContextHandler.class, context);
-        factory.getPico().registerComponentInstance(PicoContainer.class, parentContainer);
-        factory.getPico().registerComponentInstance(Map.class, attributes);
-        try {
-            factory.registerComponentImplementation("waffleNodeBuilder", WAFFLE_NODE_BUILDER);
-            return (NodeBuilder) factory.getPico().getComponentInstance("waffleNodeBuilder");
-        } catch (ClassNotFoundException e) {
-            throw new org.nanocontainer.script.BuilderClassNotFoundException(WAFFLE_NODE_BUILDER + " class name not found", e);
-        }
+        factory.addComponent(PicoContext.class, context);
+        factory.addComponent(MutablePicoContainer.class, parentContainer);
+        factory.addComponent(Map.class, attributes);
+        factory.addComponent("wb", new ClassName(className));
+        return (NodeBuilder) factory.getComponent("wb");
     }
 
 }

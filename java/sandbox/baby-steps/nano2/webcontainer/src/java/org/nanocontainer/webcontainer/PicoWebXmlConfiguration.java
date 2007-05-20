@@ -37,7 +37,6 @@ public class PicoWebXmlConfiguration extends WebXmlConfiguration {
         child.addComponent("listener", clazz);
         Object componentInstance = child.getComponent("listener");
         return componentInstance;
-
     }
 
 }

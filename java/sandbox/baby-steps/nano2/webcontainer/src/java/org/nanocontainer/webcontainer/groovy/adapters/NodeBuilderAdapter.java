@@ -1,23 +1,23 @@
 package org.nanocontainer.webcontainer.groovy.adapters;
 
-import org.nanocontainer.webcontainer.PicoContextHandler;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.DefaultNanoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
+import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
-import groovy.util.NodeBuilder;
+import org.nanocontainer.ClassName;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
+import org.nanocontainer.webcontainer.PicoContext;
+import org.picocontainer.MutablePicoContainer;
 
 public class NodeBuilderAdapter {
     
     private final String nodeBuilderClassName;    
-    private final PicoContextHandler context;
+    private final PicoContext context;
     private final MutablePicoContainer parentContainer;
     private final Map attributes;
 
-    public NodeBuilderAdapter(String nodeBuilderClassName, PicoContextHandler context, MutablePicoContainer parentContainer, Map attributes) {
+    public NodeBuilderAdapter(String nodeBuilderClassName, PicoContext context, MutablePicoContainer parentContainer, Map attributes) {
         this.nodeBuilderClassName = nodeBuilderClassName;
         this.context = context;
         this.parentContainer = parentContainer;
@@ -26,15 +26,11 @@ public class NodeBuilderAdapter {
     
     public NodeBuilder getNodeBuilder() {
         NanoContainer factory = new DefaultNanoContainer();
-        factory.getPico().registerComponentInstance(PicoContextHandler.class, context);
-        factory.getPico().registerComponentInstance(PicoContainer.class, parentContainer);
-        factory.getPico().registerComponentInstance(Map.class, attributes);
-        try {
-            factory.registerComponentImplementation("nodeBuilder", nodeBuilderClassName);
-            return (NodeBuilder) factory.getPico().getComponentInstance("nodeBuilder");
-        } catch (ClassNotFoundException e) {
-            throw new org.nanocontainer.script.BuilderClassNotFoundException(nodeBuilderClassName + " class name not found", e);
-        }
+        factory.addComponent(PicoContext.class, context);
+        factory.addComponent(MutablePicoContainer.class, parentContainer);
+        factory.addComponent(Map.class, attributes);
+        factory.addComponent("wb", new ClassName(nodeBuilderClassName));
+        return (NodeBuilder) factory.getComponent("wb");
     }
 
 }

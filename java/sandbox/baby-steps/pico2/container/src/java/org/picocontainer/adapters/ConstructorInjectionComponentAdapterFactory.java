@@ -15,13 +15,10 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
-import org.picocontainer.adapters.MonitoringComponentAdapterFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
-import org.picocontainer.defaults.DelegatingComponentMonitor;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 
 import java.io.Serializable;
 

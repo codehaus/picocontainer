@@ -6,6 +6,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import org.jmock.Mock;
+import org.jmock.core.Constraint;
 import org.nanocontainer.TestHelper;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
@@ -23,12 +24,15 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.adapters.SetterInjectionComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.defaults.LifecycleStrategy;
+
 import java.io.File;
 import java.net.URLClassLoader;
 import java.net.URL;
@@ -283,7 +287,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         A a = new A();
         Mock cafMock = mock(ComponentAdapterFactory.class);
-        cafMock.expects(once()).method("createComponentAdapter").with(isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)).will(returnValue(new InstanceComponentAdapter(A.class, a)));
+        cafMock.expects(once()).method("createComponentAdapter").with(new Constraint[] { isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)}).will(returnValue(new InstanceComponentAdapter(A.class, a)));
         ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cafMock.proxy();
         PicoContainer pico = buildContainer(script, null, componentAdapterFactory);
         assertSame(a, pico.getComponent(A.class));
@@ -509,7 +513,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     public void testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance()) );
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory() );
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +
@@ -526,7 +530,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance()) );
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory() );
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +

@@ -18,6 +18,8 @@ import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
 
 import org.jmock.Mock;
@@ -44,7 +46,7 @@ public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCa
                 isA(DynamicMBeanPerson.class), isA(ObjectName.class));
 
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
-                ComponentCharacteristics.CDI, PersonMBean.class, DynamicMBeanPerson.class, null);
+                new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, PersonMBean.class, DynamicMBeanPerson.class, null);
         assertNotNull(componentAdapter);
         assertNotNull(componentAdapter.getComponentInstance(null));
     }
@@ -59,7 +61,7 @@ public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCa
         ComponentCharacteristics.NOJMX.mergeInto(rc);
 
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
-                rc, PersonMBean.class, DynamicMBeanPerson.class, null);
+                new NullComponentMonitor(), new NullLifecycleStrategy(), rc, PersonMBean.class, DynamicMBeanPerson.class, null);
         assertNotNull(componentAdapter);
         assertNotNull(componentAdapter.getComponentInstance(null));
     }

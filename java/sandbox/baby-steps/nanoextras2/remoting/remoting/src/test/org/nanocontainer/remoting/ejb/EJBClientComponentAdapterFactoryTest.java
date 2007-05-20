@@ -19,6 +19,8 @@ import org.nanocontainer.remoting.ejb.testmodel.Hello;
 import org.nanocontainer.remoting.ejb.testmodel.HelloHomeImpl;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 
 import junit.framework.Test;
@@ -62,7 +64,7 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
     public final void testSystemInitialContext() {
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
         final ComponentAdapterFactory caf = new EJBClientComponentAdapterFactory();
-        final ComponentAdapter componentAdapter = caf.createComponentAdapter(null, "Hello", Hello.class, null);
+        final ComponentAdapter componentAdapter = caf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Hello", Hello.class, null);
         assertNotNull(componentAdapter);
         final Object hello1 = componentAdapter.getComponentInstance(null);
         final Object hello2 = componentAdapter.getComponentInstance(null);
@@ -79,7 +81,7 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
         final Hashtable env = new Hashtable();
         env.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
         final ComponentAdapterFactory caf = new EJBClientComponentAdapterFactory(env);
-        final ComponentAdapter componentAdapter = caf.createComponentAdapter(null, "Hello", Hello.class, null);
+        final ComponentAdapter componentAdapter = caf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Hello", Hello.class, null);
         assertNotNull(componentAdapter);
         final Object hello1 = componentAdapter.getComponentInstance(null);
         final Object hello2 = componentAdapter.getComponentInstance(null);
@@ -97,7 +99,7 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
         env.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
         final ComponentAdapterFactory caf = new EJBClientComponentAdapterFactory(env, true);
         try {
-            caf.createComponentAdapter(null, "Foo", Test.class, null);
+            caf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Foo", Test.class, null);
             fail("Should have thrown a PicoIntrospectionException");
         } catch (PicoIntrospectionException e) {
             assertTrue(e.getCause() instanceof ClassNotFoundException);

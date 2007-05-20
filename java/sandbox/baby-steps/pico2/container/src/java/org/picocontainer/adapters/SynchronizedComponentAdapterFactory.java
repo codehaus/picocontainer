@@ -12,7 +12,9 @@ package org.picocontainer.adapters;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
 
 /**
@@ -24,7 +26,7 @@ public class SynchronizedComponentAdapterFactory extends DecoratingComponentAdap
         super(delegate);
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) {
-        return new SynchronizedComponentAdapter(super.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters));
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) {
+        return new SynchronizedComponentAdapter(super.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters));
     }
 }

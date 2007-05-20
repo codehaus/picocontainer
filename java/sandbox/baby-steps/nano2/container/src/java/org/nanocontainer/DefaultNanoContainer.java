@@ -43,12 +43,13 @@ public class DefaultNanoContainer extends AbstractNanoContainer implements NanoC
         super(new DefaultPicoContainer(new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory()), parent), classLoader);
     }
 
-    public DefaultNanoContainer(ClassLoader classLoader, MutablePicoContainer pico) {
-        super(pico, classLoader);
+    public DefaultNanoContainer(ClassLoader classLoader, MutablePicoContainer delegate) {
+        super(delegate, classLoader);
     }
 
     public DefaultNanoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor componentMonitor) {
-        super(new DefaultPicoContainer(new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory(componentMonitor)), parent), classLoader);
+        super(new DefaultPicoContainer(new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory()), parent), classLoader);
+        ((ComponentMonitorStrategy)getDelegate()).changeMonitor(componentMonitor);
     }
 
     public DefaultNanoContainer(ComponentAdapterFactory caf) {
@@ -76,16 +77,16 @@ public class DefaultNanoContainer extends AbstractNanoContainer implements NanoC
      * Constructor that provides the same control over the nanocontainer lifecycle strategies
      * as {@link DefaultPicoContainer(ComponentAdapterFactory, LifecycleStrategy, PicoContainer)}.
      * @param componentAdapterFactory ComponentAdapterFactory
-     * @param lifecycleStrategyForInstanceRegistrations LifecycleStrategy
+     * @param lifecycleStrategy LifecycleStrategy
      * @param parent PicoContainer may be null if there is no parent.
      * @param cl the Classloader to use.  May be null, in which case DefaultNanoPicoContainer.class.getClassLoader()
      * will be called instead.
      */
     public DefaultNanoContainer(ComponentAdapterFactory componentAdapterFactory,
-        LifecycleStrategy lifecycleStrategyForInstanceRegistrations, PicoContainer parent, ClassLoader cl) {
+        LifecycleStrategy lifecycleStrategy, PicoContainer parent, ClassLoader cl) {
 
         super(new DefaultPicoContainer(componentAdapterFactory,
-            lifecycleStrategyForInstanceRegistrations, parent),
+            lifecycleStrategy, parent),
             //Use a default classloader if none is specified.
             (cl != null) ? cl : DefaultNanoContainer.class.getClassLoader());
     }
@@ -93,7 +94,9 @@ public class DefaultNanoContainer extends AbstractNanoContainer implements NanoC
 
     protected AbstractNanoContainer createChildContainer() {
         MutablePicoContainer child = getDelegate().makeChildContainer();
-        return new DefaultNanoContainer(getComponentClassLoader(), child);
+        DefaultNanoContainer container = new DefaultNanoContainer(getComponentClassLoader(), child);
+        container.changeMonitor(currentMonitor());
+        return container;
      }
 
     public void changeMonitor(ComponentMonitor monitor) {

@@ -12,6 +12,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.BeanPropertyComponentAdapter;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -53,7 +55,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
     private ComponentAdapter createComponentAdapter(String className, ClassLoader classLoader)  {
         Class implementation = loadClass(classLoader, className);
         ComponentAdapterFactory factory = new AnyInjectionComponentAdapterFactory();
-        return factory.createComponentAdapter(new ComponentCharacteristic(), className, implementation);
+        return factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new ComponentCharacteristic(), className, implementation);
     }
 
     private Class loadClass(final ClassLoader classLoader, final String className) {

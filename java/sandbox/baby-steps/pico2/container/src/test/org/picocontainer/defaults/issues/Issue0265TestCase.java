@@ -12,8 +12,8 @@ import java.lang.reflect.Method;
 public class Issue0265TestCase extends MockObjectTestCase {
 
     public void testCanReallyChangeMonitor() throws SecurityException, NoSuchMethodException {
-        Method start = Startable.class.getMethod("start", (Class[])null);
-        Method stop = Startable.class.getMethod("stop", (Class[])null);
+        Method start = Startable.class.getMethod("start");
+        Method stop = Startable.class.getMethod("stop");
         Mock mockMonitor1 = mock(ComponentMonitor.class, "Monitor1");
         Mock mockMonitor2 = mock(ComponentMonitor.class, "Monitor2");
         DefaultPicoContainer pico = new DefaultPicoContainer((ComponentMonitor) mockMonitor1.proxy());
@@ -26,7 +26,7 @@ public class Issue0265TestCase extends MockObjectTestCase {
         mockMonitor1.expects(once()).method("invoked").with(eq(stop), ANYTHING, ANYTHING);
         pico.start();
         pico.stop();
-        Startable startable = (Startable) pico.getComponent(DefaultPicoContainerTestCase.MyStartable.class);
+        Startable startable = pico.getComponent(DefaultPicoContainerTestCase.MyStartable.class);
         assertNotNull(startable);
         pico.changeMonitor((ComponentMonitor) mockMonitor2.proxy());
         mockMonitor2.expects(once()).method("invoking").with(eq(start), ANYTHING);

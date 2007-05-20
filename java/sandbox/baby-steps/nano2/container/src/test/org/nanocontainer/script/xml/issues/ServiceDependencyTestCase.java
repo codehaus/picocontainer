@@ -13,7 +13,6 @@ public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderT
 
     public static class MySetterInjectionComponentAdapterFactory extends SetterInjectionComponentAdapterFactory {
         public MySetterInjectionComponentAdapterFactory() {
-            super(NullLifecycleStrategy.getInstance());
         }
     }
 

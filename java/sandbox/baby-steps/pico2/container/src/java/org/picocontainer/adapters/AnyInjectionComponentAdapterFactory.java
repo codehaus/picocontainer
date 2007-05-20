@@ -35,49 +35,15 @@ import org.picocontainer.monitors.DefaultComponentMonitor;
  */
 public class AnyInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
 
-    private final LifecycleStrategy lifecycleStrategy;
 
-    ConstructorInjectionComponentAdapterFactory cdiCaf;
-    private SetterInjectionComponentAdapterFactory sdiCaf;
+    ConstructorInjectionComponentAdapterFactory cdiCaf = new ConstructorInjectionComponentAdapterFactory();
+    private SetterInjectionComponentAdapterFactory sdiCaf = new SetterInjectionComponentAdapterFactory();
 
-
-    public AnyInjectionComponentAdapterFactory(ComponentMonitor monitor) {
-        super(monitor);
-        this.lifecycleStrategy = new StartableLifecycleStrategy(monitor);
-        cafs(monitor, lifecycleStrategy);
-    }
-
-    private void cafs(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
-        cdiCaf = new ConstructorInjectionComponentAdapterFactory(monitor, lifecycleStrategy);
-        sdiCaf = new SetterInjectionComponentAdapterFactory(lifecycleStrategy);
-        sdiCaf.changeMonitor(monitor);
-    }
-
-    public AnyInjectionComponentAdapterFactory(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
-        super(monitor);
-        this.lifecycleStrategy = lifecycleStrategy;
-        cafs(monitor, lifecycleStrategy);
-    }
-
-    public AnyInjectionComponentAdapterFactory() {
-        this.lifecycleStrategy = new StartableLifecycleStrategy(new DefaultComponentMonitor());
-        cafs(currentMonitor(), lifecycleStrategy);
-    }
-
-    public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (ComponentCharacteristics.SDI.isSoCharacterized(registerationCharacteristic)) {
-            return sdiCaf.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters);
+            return sdiCaf.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);
         }
-        return cdiCaf.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters);
-    }
-
-    public void changeMonitor(ComponentMonitor monitor) {
-        super.changeMonitor(monitor);
-        if (lifecycleStrategy instanceof ComponentMonitorStrategy) {
-            ((ComponentMonitorStrategy) lifecycleStrategy).changeMonitor(monitor);
-        }
-        cdiCaf.changeMonitor(monitor);
-        sdiCaf.changeMonitor(monitor);
+        return cdiCaf.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);
     }
 
 }

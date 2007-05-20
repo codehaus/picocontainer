@@ -38,6 +38,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
 import org.picocontainer.defaults.ComponentParameter;
@@ -427,7 +429,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         Parameter[] parameters = createChildParameters(container, element);
         ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory(element.getAttribute(FACTORY), metaContainer);
 
-        container.addAdapter(componentAdapterFactory.createComponentAdapter(new ComponentCharacteristic(), key, implementationClass, parameters));
+        container.addAdapter(componentAdapterFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new ComponentCharacteristic(), key, implementationClass, parameters));
     }
 
     private ComponentAdapterFactory createComponentAdapterFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {

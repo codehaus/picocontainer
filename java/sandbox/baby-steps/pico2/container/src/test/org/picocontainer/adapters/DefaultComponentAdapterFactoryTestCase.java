@@ -15,6 +15,8 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristics;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
@@ -31,7 +33,7 @@ public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAda
 
     public void testInstantiateComponentWithNoDependencies() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter componentAdapter =
-                createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
+                createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
 
         Object comp = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(comp);
@@ -39,7 +41,7 @@ public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAda
     }
 
     public void testSingleUsecanBeInstantiatedByDefaultComponentAdapter() {
-        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, "o", Object.class, (Parameter[])null);
+        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, "o", Object.class, (Parameter[])null);
         Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(component);
     }

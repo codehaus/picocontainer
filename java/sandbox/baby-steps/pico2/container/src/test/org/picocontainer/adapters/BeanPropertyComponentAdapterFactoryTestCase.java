@@ -23,6 +23,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.ComponentCharacteristics;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.adapters.BeanPropertyComponentAdapter;
 import org.picocontainer.adapters.BeanPropertyComponentAdapterFactory;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
@@ -156,7 +158,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
     public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
         BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) createComponentAdapterFactory();
 
-        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.createComponentAdapter(ComponentCharacteristics.CDI, "foo", Foo.class, (Parameter[])null);
+        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, "foo", Foo.class, (Parameter[])null);
 
         Map properties = new HashMap();
         properties.put("message", "hello");
@@ -170,7 +172,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
 
     public void testDelegateIsAccessible() {
         DecoratingComponentAdapter componentAdapter =
-                (DecoratingComponentAdapter) createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
+                (DecoratingComponentAdapter) createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
 
         assertNotNull(componentAdapter.getDelegate());
     }
@@ -181,7 +183,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         Map properties = new HashMap();
         properties.put("message", "hello");
 
-        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.createComponentAdapter(ComponentCharacteristics.CDI, impl, impl, (Parameter[])null);
+        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, impl, impl, (Parameter[])null);
         adapter.setProperties(properties);
         return adapter;
     }
@@ -201,7 +203,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         properties.put("url_", "http://www.picocontainer.org/");
         properties.put("string_", "g string");
         properties.put("class_", "javax.swing.JLabel");
-        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.createComponentAdapter(ComponentCharacteristics.CDI, Primitives.class, Primitives.class, (Parameter[])null);
+        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Primitives.class, Primitives.class, (Parameter[])null);
         adapter.setProperties(properties);
         Primitives primitives = (Primitives) adapter.getComponentInstance(null);
 
@@ -227,7 +229,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
 
         // the second b is the key of the B implementation
         properties.put("b", "b");
-        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.createComponentAdapter(ComponentCharacteristics.CDI, A.class, A.class, (Parameter[])null);
+        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, A.class, A.class, (Parameter[])null);
         adapter.setProperties(properties);
         picoContainer.addAdapter(adapter);
         A a = (A) picoContainer.getComponent(A.class);
@@ -243,7 +245,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
       properties.put("lenient", Boolean.FALSE);
       properties.put("2DigitYearStart", new Date(0));
 
-      BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter)factory.createComponentAdapter(ComponentCharacteristics.CDI, SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
+      BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
       adapter.setProperties(properties);
       picoContainer.addAdapter(adapter);
 
@@ -272,7 +274,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         BeanPropertyComponentAdapterFactory factory = (BeanPropertyComponentAdapterFactory) createComponentAdapterFactory();
 
 
-        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter)factory.createComponentAdapter(ComponentCharacteristics.CDI, "TestBean", testBean.getClass(), (Parameter[])null);
+        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, "TestBean", testBean.getClass(), (Parameter[])null);
 
         Map properties = new HashMap();
         properties.put("multiValues","abcdefg");
@@ -298,7 +300,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
 
         // Set two digit year to a boolean (should throw error)
         properties.put("2DigitYearStart", Boolean.FALSE);
-        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter)factory.createComponentAdapter(ComponentCharacteristics.CDI, SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
+        BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
         adapter.setProperties(properties);
         picoContainer.addAdapter(adapter);
 

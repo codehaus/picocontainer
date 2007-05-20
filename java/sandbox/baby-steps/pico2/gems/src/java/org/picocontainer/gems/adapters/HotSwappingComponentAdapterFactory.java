@@ -10,18 +10,17 @@
 
 package org.picocontainer.gems.adapters;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.StandardProxyFactory;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.defaults.LifecycleStrategy;
 
 
 /**
@@ -42,9 +41,9 @@ public class HotSwappingComponentAdapterFactory extends DecoratingComponentAdapt
         super(delegate);
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        ComponentAdapter componentAdapter = super.createComponentAdapter(componentCharacteristic, componentKey, componentImplementation, parameters);
+        ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
         return new HotSwappingComponentAdapter(componentAdapter);
     }
 }

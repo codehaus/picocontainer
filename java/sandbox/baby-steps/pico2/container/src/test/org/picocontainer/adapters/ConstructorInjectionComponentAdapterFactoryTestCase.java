@@ -19,6 +19,7 @@ import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycle
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
 /**
  * @author Mauro Talevi
@@ -36,9 +37,9 @@ public class ConstructorInjectionComponentAdapterFactoryTestCase extends Abstrac
     public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         ConstructorInjectionComponentAdapterFactory caf =
-            new ConstructorInjectionComponentAdapterFactory(NullComponentMonitor.getInstance(), strategy);
+            new ConstructorInjectionComponentAdapterFactory();
         ConstructorInjectionComponentAdapter cica =  (ConstructorInjectionComponentAdapter)
-        caf.createComponentAdapter(null, NullLifecycle.class, NullLifecycle.class);
+        caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
         One one = new RecordingLifecycle.One(new StringBuffer());
         cica.start(one);
         cica.stop(one);        

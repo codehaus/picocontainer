@@ -14,6 +14,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.ComponentCharacteristics;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -26,6 +28,7 @@ import org.picocontainer.testmodel.Touchable;
  * @version $Revision$
  */
 public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
+
     protected DefaultPicoContainer picoContainer;
 
     protected abstract ComponentAdapterFactory createComponentAdapterFactory();
@@ -35,7 +38,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
     }
 
     public void testEquals() throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, null);
+        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, null);
 
         assertEquals(componentAdapter, componentAdapter);
         assertTrue(!componentAdapter.equals("blah"));
@@ -43,7 +46,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
 
     public void testRegisterComponent() throws PicoRegistrationException, AssignabilityRegistrationException {
         ComponentAdapter componentAdapter =
-                createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, null);
+                createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, null);
 
         picoContainer.addAdapter(componentAdapter);
 
@@ -52,7 +55,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
 
     public void testUnregisterComponent() throws PicoRegistrationException, AssignabilityRegistrationException {
         ComponentAdapter componentAdapter =
-                createComponentAdapterFactory().createComponentAdapter(ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, null);
+                createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, null);
 
         picoContainer.addAdapter(componentAdapter);
         picoContainer.removeComponent(Touchable.class);

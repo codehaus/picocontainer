@@ -11,6 +11,7 @@ package org.picocontainer.adapters;
 
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
@@ -29,7 +30,7 @@ public class AnnotationInjectionComponentAdapterFactoryTestCase extends Abstract
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-        return new AnnotationInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance());
+        return new AnnotationInjectionComponentAdapterFactory();
     }
 
     public static interface Bean {
@@ -88,8 +89,8 @@ public class AnnotationInjectionComponentAdapterFactoryTestCase extends Abstract
 
     public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
-        AnnotationInjectionComponentAdapterFactory caf = new AnnotationInjectionComponentAdapterFactory(strategy);
-        AnnotationInjectionComponentAdapter aica = (AnnotationInjectionComponentAdapter)caf.createComponentAdapter(null, NullLifecycle.class, NullLifecycle.class, new Parameter[0]);
+        AnnotationInjectionComponentAdapterFactory caf = new AnnotationInjectionComponentAdapterFactory();
+        AnnotationInjectionComponentAdapter aica = (AnnotationInjectionComponentAdapter)caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class, new Parameter[0]);
         One one = new One(new StringBuffer());
         aica.start(one);
         aica.stop(one);

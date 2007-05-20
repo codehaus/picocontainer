@@ -27,26 +27,13 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
  * @version $Revision$
  */
 public class ConstructorInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
-    private LifecycleStrategy lifecycleStrategy;
 
-    public ConstructorInjectionComponentAdapterFactory(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
-        this.changeMonitor(monitor);
-        this.lifecycleStrategy = lifecycleStrategy;
-    }
 
-    private ConstructorInjectionComponentAdapterFactory(ComponentMonitor monitor) {
-        this(monitor, new StartableLifecycleStrategy(monitor));
-    }
-
-    public ConstructorInjectionComponentAdapterFactory() {
-        this(new DelegatingComponentMonitor());
-    }
-
-    public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey,
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new ConstructorInjectionComponentAdapter(componentKey, componentImplementation, parameters, 
-                    currentMonitor(), lifecycleStrategy);
+                    componentMonitor, lifecycleStrategy);
     }
 }

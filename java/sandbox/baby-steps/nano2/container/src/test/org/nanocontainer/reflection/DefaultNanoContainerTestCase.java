@@ -74,4 +74,8 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
     // test methods inherited. This container is otherwise fully compliant.
 
 
+    public void testAcceptImplementsBreadthFirstStrategy() {
+        super.testAcceptImplementsBreadthFirstStrategy();
+    }
+
 }

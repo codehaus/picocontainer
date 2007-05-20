@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import org.jmock.Mock;
+import org.jmock.core.Constraint;
 import org.jruby.exceptions.RaiseException;
 import org.nanocontainer.TestHelper;
 import org.nanocontainer.integrationkit.PicoCompositionException;
@@ -26,6 +27,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
@@ -33,6 +35,7 @@ import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.adapters.SetterInjectionComponentAdapter;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.defaults.LifecycleStrategy;
 
 /**
  * @author Nick Sieger
@@ -228,7 +231,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         A a = new A();
         Mock cafMock = mock(ComponentAdapterFactory.class);
-        cafMock.expects(once()).method("createComponentAdapter").with(isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null))
+        Constraint[] cons = {isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)};
+        cafMock.expects(once()).method("createComponentAdapter").with(cons)
             .will(returnValue(new InstanceComponentAdapter(A.class, a)));
         PicoContainer pico = buildContainer(script, null, cafMock.proxy());
         assertSame(a, pico.getComponent(A.class));
@@ -419,7 +423,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     public void FAILING_testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance()));
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory());
         Reader script = new StringReader("container(:parent => $parent)\n");
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
@@ -430,7 +434,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance()));
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory());
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "B = org.nanocontainer.testmodel.B\n" +

@@ -14,6 +14,8 @@ import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 
@@ -37,7 +39,7 @@ public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
         final ComponentAdapterFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(
                 new ConstructorInjectionComponentAdapterFactory());
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
-                null, List.class, ArrayList.class, new Parameter[]{});
+                new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class, new Parameter[]{});
         final List list = (List)componentAdapter.getComponentInstance(null);
         list.add(this);
         final List list2 = new ArrayList();
@@ -65,7 +67,7 @@ public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
         final ComponentAdapterFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(
                 new ConstructorInjectionComponentAdapterFactory(), ThreadLocalComponentAdapterFactory.THREAD_ENSURES_LOCALITY);
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
-                null, List.class, ArrayList.class, new Parameter[]{});
+                new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class, new Parameter[]{});
         final List list = (List)componentAdapter.getComponentInstance(null);
         list.add(this);
         final List list2 = new ArrayList();
@@ -94,7 +96,7 @@ public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
         final ComponentAdapterFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(
                 new ConstructorInjectionComponentAdapterFactory(), ThreadLocalComponentAdapterFactory.THREAD_ENSURES_LOCALITY);
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
-                null, List.class, ArrayList.class, new Parameter[]{});
+                new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class, new Parameter[]{});
         final List list = (List)componentAdapter.getComponentInstance(null);
         list.add(this);
         final List list2 = new ArrayList();

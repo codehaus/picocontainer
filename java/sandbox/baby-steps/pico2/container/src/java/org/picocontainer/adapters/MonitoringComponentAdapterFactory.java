@@ -27,37 +27,10 @@ import org.picocontainer.defaults.DelegatingComponentMonitor;
  * @see org.picocontainer.defaults.ComponentMonitorStrategy
  * @since 1.2
  */
-public abstract class MonitoringComponentAdapterFactory implements ComponentAdapterFactory, ComponentMonitorStrategy, Serializable {
-    private ComponentMonitor componentMonitor;
+@Deprecated
+public abstract class MonitoringComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
 
-    /**
-     * Constructs a MonitoringComponentAdapterFactory with a custom monitor 
-     * @param monitor the ComponentMonitor used by the factory
-     */
-    protected MonitoringComponentAdapterFactory(ComponentMonitor monitor) {
-        if (monitor == null){
-            throw new NullPointerException("componentMonitor");
-        }
-        this.componentMonitor = monitor;
-    }
-
-    /**
-     * Constructs a  MonitoringComponentAdapterFactory with a {@link org.picocontainer.defaults.DelegatingComponentMonitor default monitor}.
-     */
     protected MonitoringComponentAdapterFactory() {
-        this(new DelegatingComponentMonitor());
-    }
-    
-    public void changeMonitor(ComponentMonitor monitor) {
-        this.componentMonitor = monitor;
-    }
-
-    /**
-     * Returns the monitor currently used
-     * @return The ComponentMonitor currently used
-     */
-    public ComponentMonitor currentMonitor(){
-        return componentMonitor;
     }
 
 }

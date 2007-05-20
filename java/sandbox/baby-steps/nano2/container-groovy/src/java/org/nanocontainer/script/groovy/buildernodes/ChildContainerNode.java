@@ -149,10 +149,9 @@ public class ChildContainerNode extends AbstractBuilderNode {
                 }
                 parent.addChildContainer(childContainer);
             } else if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
-                ComponentAdapterFactory componentAdapterFactory = new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory(
-                                                    createComponentMonitor(attributes)));
-                childContainer = new DefaultPicoContainer(
-                        getDecorationDelegate().decorate(componentAdapterFactory, attributes), parent);
+                ComponentAdapterFactory componentAdapterFactory = new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory());
+                childContainer = new DefaultPicoContainer(getDecorationDelegate().decorate(componentAdapterFactory, attributes), parent);
+                changeComponentMonitor(childContainer, createComponentMonitor(attributes));
             } else {
                 childContainer = parent.makeChildContainer();
             }

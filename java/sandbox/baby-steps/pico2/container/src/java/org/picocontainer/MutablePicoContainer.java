@@ -9,6 +9,9 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * This is the core interface used for registration of components with a container. It is possible to register
  * implementations and instances here

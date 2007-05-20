@@ -14,11 +14,13 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.defaults.LifecycleStrategy;
 
 /**
  * Produces addComponent adapters that apply aspects to components.
@@ -58,10 +60,9 @@ public class AspectsComponentAdapterFactory extends DecoratingComponentAdapterFa
         this(aspectsApplicator, new AnyInjectionComponentAdapterFactory());
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation,
-                                                   Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException,
-            NotConcreteRegistrationException {
-        return new AspectsComponentAdapter(aspectsApplicator, super.createComponentAdapter(registerationCharacteristic, componentKey,
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation,
+                                                   Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        return new AspectsComponentAdapter(aspectsApplicator, super.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey,
                 componentImplementation, parameters));
     }
 

@@ -59,7 +59,7 @@ public class BuildingBlocksTestCase extends TestCase {
         MutablePicoContainer picoContainer = new DefaultPicoContainer(
                 new SynchronizedComponentAdapterFactory(
                         new CachingComponentAdapterFactory(
-                                new SetterInjectionComponentAdapterFactory(NullLifecycleStrategy.getInstance()))));
+                                new SetterInjectionComponentAdapterFactory())));
         // END SNIPPET: register-different-caf
     }
 

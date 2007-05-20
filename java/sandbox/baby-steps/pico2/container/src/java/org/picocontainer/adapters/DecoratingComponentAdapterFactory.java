@@ -19,6 +19,7 @@ import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
+import org.picocontainer.defaults.LifecycleStrategy;
 
 public class DecoratingComponentAdapterFactory extends MonitoringComponentAdapterFactory {
     private ComponentAdapterFactory delegate;
@@ -27,16 +28,10 @@ public class DecoratingComponentAdapterFactory extends MonitoringComponentAdapte
         this.delegate = delegate;
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentCharacteristic registerationCharacteristic, Object componentKey,
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return delegate.createComponentAdapter(registerationCharacteristic, componentKey, componentImplementation, parameters);
+        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);
     }
 
-    public void changeMonitor(ComponentMonitor monitor) {
-        if (delegate instanceof ComponentMonitorStrategy) {
-            ((ComponentMonitorStrategy) delegate).changeMonitor(monitor);
-        }
-        super.changeMonitor(monitor);
-    }
 }

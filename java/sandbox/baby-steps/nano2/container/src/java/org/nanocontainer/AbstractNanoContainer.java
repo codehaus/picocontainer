@@ -161,12 +161,12 @@ public abstract class AbstractNanoContainer extends AbstractDelegatingMutablePic
         return classPathElement;
     }
 
-    public MutablePicoContainer addComponent(Object componentImplementationOrInstance) {
-        if(componentImplementationOrInstance instanceof ClassName) {
-            String className = ((ClassName) componentImplementationOrInstance).className;
+    public MutablePicoContainer addComponent(Object implOrInstance) {
+        if(implOrInstance instanceof ClassName) {
+            String className = ((ClassName) implOrInstance).className;
             return super.addComponent(loadClass(className));
         }
-        return super.addComponent(componentImplementationOrInstance);
+        return super.addComponent(implOrInstance);
     }
 
     public MutablePicoContainer addComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters) {

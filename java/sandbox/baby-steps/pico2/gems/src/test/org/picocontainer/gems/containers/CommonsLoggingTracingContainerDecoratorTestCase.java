@@ -155,7 +155,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		ComponentAdapter ca = tracingDecorator.getComponentAdapter((Object) String.class);
 		assertNotNull(ca);
 
-		verifyLog("Locating addComponent addAdapter with key ");
+		verifyLog("Locating component adapter with key ");
 
 		ca = tracingDecorator.getComponentAdapter(Map.class);
 		assertNull(ca);
@@ -164,7 +164,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 	}
 	
 	private void verifyKeyNotFound() {
-		verifyLog("Could not find addComponent ");
+		verifyLog("Could not find component ");
 	}
 	
 	private void verifyLog(String valueToExpect) {
@@ -183,7 +183,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		ComponentAdapter ca = tracingDecorator.getComponentAdapter(String.class);
 		assertNotNull(ca);
 
-		verifyLog("Locating addComponent addAdapter with type ");
+		verifyLog("Locating component adapter with type ");
 
 		ca = tracingDecorator.getComponentAdapter(Map.class);
 		assertNull(ca);
@@ -198,7 +198,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		Collection returnedAdapters = tracingDecorator.getComponentAdapters();
 		assertEquals(adapters,returnedAdapters);
 		
-		verifyLog("Grabbing all addComponent adapters for container: ");
+		verifyLog("Grabbing all component adapters for container: ");
 	}
 
 	public void testGetComponentAdaptersOfType() {
@@ -208,7 +208,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		List returnedAdapters = tracingDecorator.getComponentAdapters(String.class);
 		assertEquals(adapters,returnedAdapters);
 		
-		verifyLog("Grabbing all addComponent adapters for container: ");
+		verifyLog("Grabbing all component adapters for container: ");
 	}
 
 	public void testGetComponentInstance() {
@@ -218,7 +218,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		
 		Object result = tracingDecorator.getComponent("foo");
 		assertEquals(test, result);
-		verifyLog("Attempting to load addComponent instance with key: ");
+		verifyLog("Attempting to load component instance with key: ");
 		
 		assertNull(tracingDecorator.getComponent("bar"));
 		this.verifyKeyNotFound();
@@ -231,10 +231,10 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		
 		Object result = tracingDecorator.getComponent(String.class);
 		assertEquals(test, result);
-		verifyLog("Attempting to load addComponent instance with type: ");
+		verifyLog("Attempting to load component instance with type: ");
 		
 		assertNull(tracingDecorator.getComponent(Map.class));
-		verifyLog("Could not find addComponent " + Map.class.getName());
+		verifyLog("Could not find component " + Map.class.getName());
 	}
 
 	public void testGetComponentInstances() {
@@ -243,7 +243,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		
 		Object result = tracingDecorator.getComponents();
 		assertEquals(test, result);
-		verifyLog("Retrieving all addComponent instances for container ");
+		verifyLog("Retrieving all component instances for container ");
 	}
 
 	public void testGetComponentInstancesOfType() {
@@ -257,7 +257,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		
 		Object result = tracingDecorator.getComponents(String.class);
 		assertEquals(stringTest, result);
-		verifyLog("Loading all addComponent instances of type ");
+		verifyLog("Loading all component instances of type ");
 		
 		result = tracingDecorator.getComponents(Map.class);
 		assertEquals(test, result);
@@ -287,7 +287,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		
 		ComponentAdapter result = tracingDecorator.addAdapter(testAdapter).lastCA();
 		assertEquals(testAdapter, result);
-		verifyLog("Registering addComponent addAdapter ");
+		verifyLog("Registering component adapter ");
 	}
 
 	public void testRegisterComponentImplementationClass() {
@@ -296,7 +296,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		
 		ComponentAdapter result = tracingDecorator.addComponent(String.class).lastCA();
 		assertEquals(testAdapter, result);
-		verifyLog("Registering addComponent implementation ");
+		verifyLog("Registering component impl or instance ");
 	}
 
 	public void testRegisterComponentImplementationWithKeyAndClass() {
@@ -305,7 +305,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		
 		ComponentAdapter result = tracingDecorator.addComponent(String.class, String.class, Parameter.ZERO).lastCA();
 		assertEquals(testAdapter, result);
-		verifyLog("Registering addComponent implementation ");
+		verifyLog("Registering component implementation ");
 	}
 
 	public void testRegisterComponentInstanceWithKey() {
@@ -316,7 +316,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		ComponentAdapter result = tracingDecorator.addComponent(String.class, testString, Parameter.ZERO).lastCA();
 
 		assertTrue(result instanceof InstanceComponentAdapter);
-		verifyLog("Registering addComponent instance with key ");
+		verifyLog("Registering component instance with key ");
 	}
 
 
@@ -328,7 +328,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		ComponentAdapter result = tracingDecorator.addComponent(String.class, String.class, params).lastCA();
 		assertEquals(testAdapter, result);
 		
-		verifyLog("Registering addComponent implementation with key ");
+		verifyLog("Registering component implementation with key ");
 		verifyLog(" using parameters ");
 		
 	}
@@ -366,7 +366,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		
 		ComponentAdapter result = tracingDecorator.removeComponent(String.class);
 		assertEquals(testAdapter, result);
-		verifyLog("Unregistering addComponent ");
+		verifyLog("Unregistering component ");
 	}
 
 	public void testUnregisterComponentByInstance() {
@@ -377,7 +377,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		ComponentAdapter result = tracingDecorator.removeComponentByInstance(testString);
 		
 		assertEquals(testAdapter, result);
-		verifyLog("Unregistering addComponent by instance (");
+		verifyLog("Unregistering component by instance (");
 		
 	}
 	

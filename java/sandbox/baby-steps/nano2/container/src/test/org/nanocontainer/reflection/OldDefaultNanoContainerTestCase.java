@@ -194,8 +194,8 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
             return null;
         }
 
-        public MutablePicoContainer addComponent(Class compImpl) throws PicoRegistrationException {
-            assertEquals(HashMap.class, compImpl);
+        public MutablePicoContainer addComponent(Object implOrInstance) throws PicoRegistrationException {
+            assertEquals(HashMap.class, implOrInstance);
             return super.addComponent(ArrayList.class);
         }
     }
@@ -207,8 +207,8 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         public MutablePicoContainer makeChildContainer() {
             return null;
         }
-        public MutablePicoContainer addComponent(Class compImpl) throws PicoRegistrationException {
-            assertEquals(Vector.class, compImpl);
+        public MutablePicoContainer addComponent(Object implOrInstance) throws PicoRegistrationException {
+            assertEquals(Vector.class, implOrInstance);
             return super.addComponent(HashMap.class);
         }
     }

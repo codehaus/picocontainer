@@ -3,7 +3,7 @@ package org.picocontainer;
 import java.util.Properties;
 import java.io.Serializable;
 
-public class ComponentCharacteristic implements Serializable {
+public class ComponentCharacteristic implements Serializable, Cloneable {
 
     private Properties props = new Properties();
 
@@ -20,5 +20,16 @@ public class ComponentCharacteristic implements Serializable {
 
     public String getProperty(String name) {
         return props.getProperty(name);
+    }
+
+    public Object clone() {
+        ComponentCharacteristic cc = null;
+        try {
+            cc = (ComponentCharacteristic) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError(e.toString());
+        }
+        cc.props = (Properties) props.clone();
+        return cc;
     }
 }

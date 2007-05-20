@@ -464,56 +464,98 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         }
     }
 
-    public void testMixingOfSDIandCDI() {
-        MutablePicoContainer container = createPicoContainer(null);
+    public static class SdiRabbit {
+        public Horse horse;
+        public void setHorse(Horse horse) {
+            this.horse = horse;
+        }
+    }
 
+    public void testMixingOfSDIandCDI() {
+
+        MutablePicoContainer container = createPicoContainer(null);
         container.addComponent(Horse.class);
         container.change(SDI);
         container.addComponent(SdiDonkey.class);
+        container.addComponent(SdiRabbit.class);
         container.change(CDI);
         container.addComponent(CdiTurtle.class);
 
         SdiDonkey donkey = container.getComponent(SdiDonkey.class);
-        assertNotNull(donkey);
+        SdiRabbit rabbit = container.getComponent(SdiRabbit.class);
         CdiTurtle turtle = container.getComponent(CdiTurtle.class);
-        assertNotNull(turtle);
-        assertNotNull(turtle.horse);
-        assertNotNull(donkey.horse);
-        assertSame(container.getComponent(SdiDonkey.class).horse, container.getComponent(CdiTurtle.class).horse);
+
+        assertions(donkey, rabbit, turtle);
+    }
+
+    public void testMixingOfSDIandCDIDifferently() {
+
+        MutablePicoContainer container = createPicoContainer(null);
+        container.addComponent(Horse.class);
+        container.addComponent(CdiTurtle.class);
+        container.change(SDI);
+        container.addComponent(SdiDonkey.class);
+        container.addComponent(SdiRabbit.class);
+
+        SdiDonkey donkey = container.getComponent(SdiDonkey.class);
+        SdiRabbit rabbit = container.getComponent(SdiRabbit.class);
+        CdiTurtle turtle = container.getComponent(CdiTurtle.class);
+
+        assertions(donkey, rabbit, turtle);
     }
 
     public void testMixingOfSDIandCDIInBuilderStyle() {
 
         MutablePicoContainer container = createPicoContainer(null);
-
         container.addComponent(Horse.class).change(SDI)
-                .addComponent(SdiDonkey.class).change(CDI).addComponent(CdiTurtle.class);
+                .addComponent(SdiDonkey.class).addComponent(SdiRabbit.class).change(CDI).addComponent(CdiTurtle.class);
 
         SdiDonkey donkey = container.getComponent(SdiDonkey.class);
-        assertNotNull(donkey);
+        SdiRabbit rabbit = container.getComponent(SdiRabbit.class);
         CdiTurtle turtle = container.getComponent(CdiTurtle.class);
+
+        assertions(donkey, rabbit, turtle);
+    }
+
+    private void assertions(SdiDonkey donkey, SdiRabbit rabbit, CdiTurtle turtle) {
+        assertNotNull(rabbit);
+        assertNotNull(donkey);
         assertNotNull(turtle);
         assertNotNull(turtle.horse);
         assertNotNull(donkey.horse);
-        assertSame(container.getComponent(SdiDonkey.class).horse, container.getComponent(CdiTurtle.class).horse);
+        assertNotNull(rabbit.horse);
+        assertSame(donkey.horse, turtle.horse);
+        assertSame(rabbit.horse, turtle.horse);
     }
 
-    public void testMixingOfSDIandCDIDifferently() {
-        MutablePicoContainer container = createPicoContainer(null);
+    public void testMixingOfSDIandCDIWithTemporaryCharacterizations() {
 
+        MutablePicoContainer container = createPicoContainer(null);
         container.addComponent(Horse.class);
         container.addComponent(CdiTurtle.class);
-        container.change(SDI);
-        container.addComponent(SdiDonkey.class);
+        container.as(SDI).addComponent(SdiDonkey.class);
+        container.as(SDI).addComponent(SdiRabbit.class);
 
         SdiDonkey donkey = container.getComponent(SdiDonkey.class);
-        assertNotNull(donkey);
+        SdiRabbit rabbit = container.getComponent(SdiRabbit.class);
         CdiTurtle turtle = container.getComponent(CdiTurtle.class);
-        assertNotNull(turtle);
-        assertNotNull(turtle.horse);
-        assertNotNull(donkey.horse);
-        assertSame(container.getComponent(SdiDonkey.class).horse, container.getComponent(CdiTurtle.class).horse);
+
+        assertions(donkey, rabbit, turtle);
     }
 
+    public void testMixingOfSDIandCDIWithTemporaryCharacterizationsDifferently() {
+
+        MutablePicoContainer container = createPicoContainer(null);
+        container.as(SDI).addComponent(SdiDonkey.class);
+        container.as(SDI).addComponent(SdiRabbit.class);
+        container.addComponent(Horse.class);
+        container.addComponent(CdiTurtle.class);
+
+        SdiDonkey donkey = container.getComponent(SdiDonkey.class);
+        SdiRabbit rabbit = container.getComponent(SdiRabbit.class);
+        CdiTurtle turtle = container.getComponent(CdiTurtle.class);
+
+        assertions(donkey, rabbit, turtle);
+    }
 
 }

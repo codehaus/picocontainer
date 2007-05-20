@@ -113,7 +113,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 */
 	protected void onKeyOrTypeDoesNotExistInContainer(final Object componentKeyOrType, final Logger target) {
         String s = componentKeyOrType instanceof Class ? ((Class) componentKeyOrType).getName() : (String) componentKeyOrType;
-        logger.info("Could not find addComponent " + s
+        logger.info("Could not find component " + s
                 + " in container or parent container.");
 	}
 
@@ -165,7 +165,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 */
 	public ComponentAdapter getComponentAdapter(final Object componentKey) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Locating addComponent addAdapter with key " + componentKey);
+			logger.debug("Locating component adapter with key " + componentKey);
 		}
 
 		ComponentAdapter adapter = delegate.getComponentAdapter(componentKey);
@@ -184,7 +184,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 */
 	public ComponentAdapter getComponentAdapter(final Class componentType) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Locating addComponent addAdapter with type " + componentType);
+			logger.debug("Locating component adapter with type " + componentType);
 		}
 
 		ComponentAdapter ca = delegate.getComponentAdapter(componentType);
@@ -203,7 +203,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 */
 	public Collection<ComponentAdapter> getComponentAdapters() {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Grabbing all addComponent adapters for container: " + delegate);
+			logger.debug("Grabbing all component adapters for container: " + delegate);
 		}
 		return delegate.getComponentAdapters();
 	}
@@ -217,7 +217,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 */
 	public List<ComponentAdapter> getComponentAdapters(final Class componentType) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Grabbing all addComponent adapters for container: " + delegate + " of type: "
+			logger.debug("Grabbing all component adapters for container: " + delegate + " of type: "
 					+ componentType.getName());
 		}
 		return delegate.getComponentAdapters(componentType);
@@ -233,7 +233,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	public Object getComponent(final Object componentKeyOrType) {
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("Attempting to load addComponent instance with "
+			logger.debug("Attempting to load component instance with "
                     + (componentKeyOrType instanceof Class ? "type" : "key") 
                     + ": "
                     + (componentKeyOrType instanceof Class ? ((Class) componentKeyOrType).getName() : componentKeyOrType)
@@ -264,7 +264,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 */
 //	public Object getComponent(final Class componentType) {
 //		if (logger.isDebugEnabled()) {
-//			logger.debug("Attempting to load addComponent instance with type: " + componentType + " for container "
+//			logger.debug("Attempting to load component instance with type: " + componentType + " for container "
 //					+ delegate);
 //
 //		}
@@ -272,7 +272,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 //		Object result = delegate.getComponent(componentType);
 //		if (result == null) {
 //			if (logger.isInfoEnabled()) {
-//				logger.info("No addComponent of type " + componentType.getName() + " was found in container: " + delegate);
+//				logger.info("No component of type " + componentType.getName() + " was found in container: " + delegate);
 //			}
 //		}
 //
@@ -287,7 +287,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 */
 	public List getComponents() {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Retrieving all addComponent instances for container " + delegate);
+			logger.debug("Retrieving all component instances for container " + delegate);
 		}
 		return delegate.getComponents();
 	}
@@ -301,7 +301,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 */
 	public List getComponents(final Class componentType) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Loading all addComponent instances of type " + componentType + " for container " + delegate);
+			logger.debug("Loading all component instances of type " + componentType + " for container " + delegate);
 		}
 		List result = delegate.getComponents(componentType);
 		if (result == null || result.size() == 0) {
@@ -351,25 +351,10 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 */
 	public MutablePicoContainer addAdapter(final ComponentAdapter componentAdapter) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Registering addComponent addAdapter " + componentAdapter);
+			logger.debug("Registering component adapter " + componentAdapter);
 		}
 
 		return delegate.addAdapter(componentAdapter);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @param componentImplementation
-	 * @return
-	 * @see org.picocontainer.MutablePicoContainer#addComponent(java.lang.Class)
-	 */
-	public MutablePicoContainer addComponent(final Class componentImplementation) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Registering addComponent implementation " + componentImplementation.getName());
-		}
-
-		return delegate.addComponent(componentImplementation);
 	}
 
 	/**
@@ -384,7 +369,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 			final Object componentImplementationOrInstance, final Parameter... parameters) {
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("Registering addComponent "
+			logger.debug("Registering component "
                     + (componentImplementationOrInstance instanceof Class ? "implementation" : "instance") 
                     + " with key " + componentKey + " and implementation "
 					+ (componentImplementationOrInstance instanceof Class
@@ -398,17 +383,17 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @param componentInstance
+	 * @param implOrInstance
 	 * @return
 	 * @see org.picocontainer.MutablePicoContainer#addComponent(java.lang.Object)
 	 */
-	public MutablePicoContainer addComponent(final Object componentInstance) {
+	public MutablePicoContainer addComponent(final Object implOrInstance) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Registering addComponent instance " + componentInstance + "(class: "
-					+ ((componentInstance != null) ? componentInstance.getClass().getName() : " null "));
+			logger.debug("Registering component impl or instance " + implOrInstance + "(class: "
+					+ ((implOrInstance != null) ? implOrInstance.getClass().getName() : " null "));
 		}
 
-		return delegate.addComponent(componentInstance);
+		return delegate.addComponent(implOrInstance);
 	}
 
 	/**
@@ -459,7 +444,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 */
 	public ComponentAdapter removeComponent(final Object componentKey) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Unregistering addComponent " + componentKey + " from container " + delegate);
+			logger.debug("Unregistering component " + componentKey + " from container " + delegate);
 		}
 
 		return delegate.removeComponent(componentKey);
@@ -474,7 +459,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 */
 	public ComponentAdapter removeComponentByInstance(final Object componentInstance) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Unregistering addComponent by instance (" + componentInstance + ") from container " + delegate);
+			logger.debug("Unregistering component by instance (" + componentInstance + ") from container " + delegate);
 		}
 
 		return delegate.removeComponentByInstance(componentInstance);
@@ -505,7 +490,11 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         return null; 
     }
 
-    public MutablePicoContainer change(ComponentCharacteristic... rcs) {
-        return delegate.change(rcs);
+    public MutablePicoContainer change(ComponentCharacteristic... characteristics) {
+        return delegate.change(characteristics);
+    }
+
+    public MutablePicoContainer as(ComponentCharacteristic... characteristics) {
+        return delegate.as(characteristics);
     }
 }

@@ -42,12 +42,8 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return delegate.addComponent(componentKey, componentImplementationOrInstance, parameters);
     }
 
-    public MutablePicoContainer addComponent(Class componentImplementation) throws PicoRegistrationException {
-        return delegate.addComponent(componentImplementation);
-    }
-
-    public MutablePicoContainer addComponent(Object componentInstance) throws PicoRegistrationException {
-        return delegate.addComponent(componentInstance);
+    public MutablePicoContainer addComponent(Object implOrInstance) throws PicoRegistrationException {
+        return delegate.addComponent(implOrInstance);
     }
 
     public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) throws PicoRegistrationException {
@@ -133,5 +129,9 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
 
     public MutablePicoContainer change(ComponentCharacteristic... rc) {
         return delegate.change(rc); 
+    }
+
+    public MutablePicoContainer as(ComponentCharacteristic... characteristics) {
+        return delegate.as(characteristics);
     }
 }

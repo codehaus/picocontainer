@@ -25,6 +25,7 @@ import org.picocontainer.PicoContainer;
 public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     
+    
 
     public void testContainerScopedInterceptor() {
         String script = "" +

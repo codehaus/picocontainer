@@ -62,28 +62,16 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
     MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters);
 
     /**
-     * Register a addComponent using the componentImplementation as key. Calling this method is equivalent to calling
-     * <code>addAdapter(componentImplementation, componentImplementation)</code>.
-     *
-     * @param componentImplementation the concrete addComponent class.
-     * @return the ComponentAdapter that has been associated with this addComponent. In the majority of cases, this return
-     *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
-     *         {@link PicoContainer} interface can be used to retrieve a reference to the addComponent later on.
-     * @throws PicoRegistrationException if registration fails.
-     */
-    MutablePicoContainer addComponent(Class componentImplementation);
-
-    /**
      * Register an arbitrary object. The class of the object will be used as a key. Calling this method is equivalent to
      * calling     * <code>addAdapter(componentImplementation, componentImplementation)</code>.
      *
-     * @param componentInstance
+     * @param implOrInstance
      * @return the ComponentAdapter that has been associated with this addComponent. In the majority of cases, this return
      *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
      *         {@link PicoContainer} interface can be used to retrieve a reference to the addComponent later on.
      * @throws PicoRegistrationException if registration fails.
      */
-    MutablePicoContainer addComponent(Object componentInstance);
+    MutablePicoContainer addComponent(Object implOrInstance);
 
     /**
      * Register a addComponent via a ComponentAdapter. Use this if you need fine grained control over what
@@ -144,15 +132,25 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      */
     boolean removeChildContainer(PicoContainer child);
 
-
+    /**
+     * Following an addAdapter or addComponent, pico holds onto the last ComponentAdapter and return it if this
+     * method is immediately after the add operation. It will be null at all other times.
+     * @return the last ComponentAdapter to be made
+     */
     ComponentAdapter lastCA();
 
-
     /**
-     * You can change the characteristic of registration of a addComponent on the fly.
-     * @param rcs characteristics
+     * You can change the characteristic of registration of a component on the fly.
+     * @param characteristics characteristics
      * @return the same Pico instance with changed characteritics
      */
-    MutablePicoContainer change(ComponentCharacteristic... rcs);
+    MutablePicoContainer change(ComponentCharacteristic... characteristics);
+
+    /**
+     * You can set for the following operation only the characteristic of registration of a component on the fly.
+     * @param characteristics characteristics
+     * @return the same Pico instance with temporary characteritics
+     */
+    MutablePicoContainer as(ComponentCharacteristic... characteristics);    
 
 }

@@ -22,8 +22,11 @@ import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
+import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.DefaultComponentMonitor;
+
+import java.io.Serializable;
 
 /**
  * Creates instances of {@link ConstructorInjectionComponentAdapter} decorated by
@@ -33,7 +36,7 @@ import org.picocontainer.monitors.DefaultComponentMonitor;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class AnyInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
+public class AnyInjectionComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
 
 
     ConstructorInjectionComponentAdapterFactory cdiCaf = new ConstructorInjectionComponentAdapterFactory();

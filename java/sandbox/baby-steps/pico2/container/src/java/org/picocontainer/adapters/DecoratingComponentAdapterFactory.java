@@ -21,7 +21,9 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
 import org.picocontainer.defaults.LifecycleStrategy;
 
-public class DecoratingComponentAdapterFactory extends MonitoringComponentAdapterFactory {
+import java.io.Serializable;
+
+public class DecoratingComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
     private ComponentAdapterFactory delegate;
 
     public DecoratingComponentAdapterFactory(ComponentAdapterFactory delegate) {

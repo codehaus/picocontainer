@@ -18,7 +18,10 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.adapters.MonitoringComponentAdapterFactory;
+
+import java.io.Serializable;
 
 
 /**
@@ -28,7 +31,7 @@ import org.picocontainer.adapters.MonitoringComponentAdapterFactory;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class AnnotationInjectionComponentAdapterFactory extends MonitoringComponentAdapterFactory {
+public class AnnotationInjectionComponentAdapterFactory implements InstantiatingComponentAdapterFactory, Serializable {
 
     /**
      * Create a {@link org.picocontainer.adapters.SetterInjectionComponentAdapter}.

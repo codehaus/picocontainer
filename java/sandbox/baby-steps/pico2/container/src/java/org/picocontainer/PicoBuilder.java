@@ -7,6 +7,7 @@ import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
 import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.AnnotationInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.InstantiatingComponentAdapterFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -15,6 +16,8 @@ import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.alternatives.EmptyPicoContainer;
+
+import java.util.Stack;
 
 public class PicoBuilder {
 
@@ -31,8 +34,11 @@ public class PicoBuilder {
         parentContainer = new EmptyPicoContainer();
     }
 
-    private Class headComponentAdapterFactory;
-    private Class componentAdapterFactoryClass = AnyInjectionComponentAdapterFactory.class;
+    //private Class headComponentAdapterFactory;
+    //private Class componentAdapterFactoryClass = AnyInjectionComponentAdapterFactory.class;
+
+    Stack<Class> cafs = new Stack<Class>();
+
     private Class componentMonitorClass = NullComponentMonitor.class;
     private Class lifecycleStrategyClass = NullLifecycleStrategy.class;
 
@@ -66,41 +72,48 @@ public class PicoBuilder {
     public MutablePicoContainer build() {
 
         DefaultPicoContainer temp = new DefaultPicoContainer();
-
         temp.addComponent(PicoContainer.class, parentContainer);
+
+        ComponentAdapterFactory lastCaf = null;
+        if (cafs.empty() || !InstantiatingComponentAdapterFactory.class.isAssignableFrom(cafs.peek())) {
+            cafs.push(AnyInjectionComponentAdapterFactory.class);
+        }
+        while (!cafs.empty()) {
+            Class caf = cafs.pop();
+            DefaultPicoContainer temp2 = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory(), NullLifecycleStrategy.getInstance(), new EmptyPicoContainer());
+            temp2.addComponent("caf", caf);
+            if (lastCaf != null) {
+                temp2.addComponent(ComponentAdapterFactory.class, lastCaf);
+            }
+            lastCaf = (ComponentAdapterFactory) temp2.getComponent("caf");
+            
+        }
+        temp.addComponent(ComponentAdapterFactory.class, lastCaf);
         temp.addComponent(ComponentMonitor.class, componentMonitorClass);
         temp.addComponent(LifecycleStrategy.class, lifecycleStrategyClass);
-        if (headComponentAdapterFactory == null) {
-            temp.addComponent(ComponentAdapterFactory.class, componentAdapterFactoryClass);
-        } else {
-            DefaultPicoContainer temp2 = new DefaultPicoContainer(temp);
-            temp2.addComponent(ComponentAdapterFactory.class, componentAdapterFactoryClass);
-            temp2.addComponent("foo", headComponentAdapterFactory);
-            temp.addComponent(ComponentAdapterFactory.class, temp2.getComponent("foo"));
-        }
         temp.addComponent(MutablePicoContainer.class, DefaultPicoContainer.class);
 
 
-        return (MutablePicoContainer) temp.getComponent(MutablePicoContainer.class);
+        return temp.getComponent(MutablePicoContainer.class);
     }
 
     public PicoBuilder withHiddenImplementations() {
-        headComponentAdapterFactory = ImplementationHidingComponentAdapterFactory.class;
+        cafs.push(ImplementationHidingComponentAdapterFactory.class);
         return this;
     }
 
     public PicoBuilder withSetterInjection() {
-        headComponentAdapterFactory = SetterInjectionComponentAdapterFactory.class;
+        cafs.push(SetterInjectionComponentAdapterFactory.class);
         return this;
     }
 
     public PicoBuilder withAnnotationInjection() {
-        headComponentAdapterFactory = AnnotationInjectionComponentAdapterFactory.class;
+        cafs.push(AnnotationInjectionComponentAdapterFactory.class);
         return this;
     }
 
     public PicoBuilder withConstructorInjection() {
-        headComponentAdapterFactory = ConstructorInjectionComponentAdapterFactory.class;
+        cafs.push(ConstructorInjectionComponentAdapterFactory.class);
         return this;
     }
 }

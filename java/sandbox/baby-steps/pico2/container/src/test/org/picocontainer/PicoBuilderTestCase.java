@@ -148,5 +148,17 @@ public class PicoBuilderTestCase extends TestCase {
         assertTrue(foo.contains(EmptyPicoContainer.class.getName())); // parent
     }
 
+    public void testWithImplementationHidingAndSetterDI() {
+        MutablePicoContainer mpc = new PicoBuilder().withHiddenImplementations().withSetterInjection().build();
+        String foo = xs.toXML(mpc);
+        assertTrue(foo.contains(DefaultPicoContainer.class.getName()));
+        assertTrue(foo.contains(NullLifecycleStrategy.class.getName()));
+        assertTrue(foo.contains(ImplementationHidingComponentAdapterFactory.class.getName()));
+        assertTrue(foo.contains(SetterInjectionComponentAdapterFactory.class.getName()));
+        assertFalse(foo.contains(AnyInjectionComponentAdapterFactory.class.getName()));
+        assertTrue(foo.contains(NullComponentMonitor.class.getName()));
+        assertTrue(foo.contains(EmptyPicoContainer.class.getName())); // parent
+    }
+
 
 }

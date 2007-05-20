@@ -4,6 +4,8 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
+import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.AnnotationInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -86,4 +88,13 @@ public class PicoBuilder {
         return this;
     }
 
+    public PicoBuilder withSetterInjection() {
+        headComponentAdapterFactory = SetterInjectionComponentAdapterFactory.class;
+        return this;
+    }
+
+    public PicoBuilder withAnnotationInjection() {
+        headComponentAdapterFactory = AnnotationInjectionComponentAdapterFactory.class;
+        return this;
+    }
 }

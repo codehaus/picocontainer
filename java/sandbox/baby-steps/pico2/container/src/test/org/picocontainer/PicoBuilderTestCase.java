@@ -6,6 +6,8 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
+import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.AnnotationInjectionComponentAdapterFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
@@ -95,7 +97,6 @@ public class PicoBuilderTestCase extends TestCase {
     public void testWithCustomParentContainer() {
         MutablePicoContainer mpc = new PicoBuilder(new CustomParentcontainer()).build();
         String foo = xs.toXML(mpc);
-        System.out.println("--> " + foo);
         assertTrue(foo.contains(DefaultPicoContainer.class.getName()));
         assertTrue(foo.contains(NullLifecycleStrategy.class.getName()));
         assertTrue(foo.contains(AnyInjectionComponentAdapterFactory.class.getName()));
@@ -111,5 +112,29 @@ public class PicoBuilderTestCase extends TestCase {
             //expected
         }
     }
+
+
+    public void testWithSetterDI() {
+        MutablePicoContainer mpc = new PicoBuilder().withSetterInjection().build();
+        String foo = xs.toXML(mpc);
+        assertTrue(foo.contains(DefaultPicoContainer.class.getName()));
+        assertTrue(foo.contains(NullLifecycleStrategy.class.getName()));
+        assertTrue(foo.contains(SetterInjectionComponentAdapterFactory.class.getName()));
+        assertFalse(foo.contains(AnyInjectionComponentAdapterFactory.class.getName()));
+        assertTrue(foo.contains(NullComponentMonitor.class.getName()));
+        assertTrue(foo.contains(EmptyPicoContainer.class.getName())); // parent
+    }
+
+    public void testWithAnnotationDI() {
+        MutablePicoContainer mpc = new PicoBuilder().withAnnotationInjection().build();
+        String foo = xs.toXML(mpc);
+        assertTrue(foo.contains(DefaultPicoContainer.class.getName()));
+        assertTrue(foo.contains(NullLifecycleStrategy.class.getName()));
+        assertTrue(foo.contains(AnnotationInjectionComponentAdapterFactory.class.getName()));
+        assertFalse(foo.contains(AnyInjectionComponentAdapterFactory.class.getName()));
+        assertTrue(foo.contains(NullComponentMonitor.class.getName()));
+        assertTrue(foo.contains(EmptyPicoContainer.class.getName())); // parent
+    }
+
 
 }

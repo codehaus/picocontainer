@@ -12,9 +12,9 @@ public class ComponentCharacteristic implements Serializable, Cloneable {
     }
     
 
-    public void mergeInto(ComponentCharacteristic rc) {
+    public void mergeInto(ComponentCharacteristic characteristics) {
     }
-    public boolean isSoCharacterized(ComponentCharacteristic rc) {
+    public boolean isSoCharacterized(ComponentCharacteristic characteristics) {
         return false;
     }
 

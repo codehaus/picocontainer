@@ -127,8 +127,8 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return null; 
     }
 
-    public MutablePicoContainer change(ComponentCharacteristic... rc) {
-        return delegate.change(rc); 
+    public MutablePicoContainer change(ComponentCharacteristic... characteristics) {
+        return delegate.change(characteristics); 
     }
 
     public MutablePicoContainer as(ComponentCharacteristic... characteristics) {

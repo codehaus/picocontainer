@@ -124,7 +124,6 @@ public class PicoBuilderTestCase extends TestCase {
                 "    delegate=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
-                "    delegate\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -198,6 +197,20 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
+    public void testWithCachingImplementationHidingAndSetterDI() {
+        MutablePicoContainer mpc = new PicoBuilder().withCaching().withHiddenImplementations().withSetterInjection().build();
+        String foo = simplifyRepresentation(mpc);
+        assertEquals("PICO\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
+                "    delegate=org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory\n" +
+                "      delegate=org.picocontainer.adapters.SetterInjectionComponentAdapterFactory\n" +
+                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "PICO",foo);
+    }
+
+
     private String simplifyRepresentation(MutablePicoContainer mpc) {
         String foo = xs.toXML(mpc);
         foo = foo.replace('$','_');
@@ -212,6 +225,8 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  disposedfalsedisposed","");
         foo = foo.replaceAll("\n  handler","");
         foo = foo.replaceAll("\n  children","");
+        foo = foo.replaceAll("\n  delegate\n","\n");
+        foo = foo.replaceAll("\n    delegate\n","\n");
         foo = foo.replaceAll("\n    outer-class reference=\"/PICO\"","");
         foo = foo.replaceAll("\n  componentCharacteristic class=\"org.picocontainer.defaults.DefaultPicoContainer$1\"","");
         foo = foo.replaceAll("\n  componentCharacteristic","");

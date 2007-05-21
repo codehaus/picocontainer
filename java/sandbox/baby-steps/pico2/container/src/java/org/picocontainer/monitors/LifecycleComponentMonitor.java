@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoException;
+import org.picocontainer.PicoLifecycleException;
 
 /**
  * A {@link ComponentMonitor} which collects lifecycle failures
@@ -56,7 +57,11 @@ public class LifecycleComponentMonitor implements ComponentMonitor {
 
     public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
         lifecycleFailures.add(cause);
-        delegate.lifecycleInvocationFailed(method, instance, cause);
+        try {
+            delegate.lifecycleInvocationFailed(method, instance, cause);
+        } catch (PicoLifecycleException e) {
+            // do nothing, exception already logged for later rethrow.
+        }
     }
 
 

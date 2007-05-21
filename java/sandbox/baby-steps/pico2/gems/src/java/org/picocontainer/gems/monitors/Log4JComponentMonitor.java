@@ -19,7 +19,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.picocontainer.monitors.AbstractComponentMonitor;
-import org.picocontainer.monitors.DefaultComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.ComponentMonitor;
 
 
@@ -43,7 +43,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
      * at every invocation of the monitor.
      */
     public Log4JComponentMonitor() {
-        delegate = new DefaultComponentMonitor();
+        delegate = NullComponentMonitor.getInstance();
     }
     
     /**

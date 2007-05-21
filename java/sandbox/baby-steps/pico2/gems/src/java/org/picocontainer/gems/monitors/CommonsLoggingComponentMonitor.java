@@ -19,7 +19,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.monitors.AbstractComponentMonitor;
-import org.picocontainer.monitors.DefaultComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 
 /**
@@ -42,7 +42,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
      * at every invocation of the monitor.
      */
     public CommonsLoggingComponentMonitor() {
-        delegate = new DefaultComponentMonitor();
+        delegate = new NullComponentMonitor();
     }
 
     /**

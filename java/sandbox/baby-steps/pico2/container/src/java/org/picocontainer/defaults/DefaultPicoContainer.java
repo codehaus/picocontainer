@@ -38,7 +38,6 @@ import org.picocontainer.alternatives.EmptyPicoContainer;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.monitors.DefaultComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
@@ -114,7 +113,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent                  the parent container (used for addComponent dependency lookups).
      */
     public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
-        this(componentAdapterFactory, new StartableLifecycleStrategy(new DefaultComponentMonitor()), parent);
+        this(componentAdapterFactory, new StartableLifecycleStrategy(NullComponentMonitor.getInstance()), parent);
     }
 
     /**
@@ -188,7 +187,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
       * @param parent the parent container (used for addComponent dependency lookups).
       */
     public DefaultPicoContainer(LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new DefaultComponentMonitor(), lifecycleStrategy, parent);
+        this(NullComponentMonitor.getInstance(), lifecycleStrategy, parent);
     }
 
 

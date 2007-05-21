@@ -39,7 +39,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.Log4JComponentMonitor\n" +
-                "    delegate=org.picocontainer.monitors.DefaultComponentMonitor\n" +
+                "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
     }
 
@@ -53,7 +53,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor\n" +
-                "    delegate=org.picocontainer.monitors.DefaultComponentMonitor\n" +
+                "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
     }
 

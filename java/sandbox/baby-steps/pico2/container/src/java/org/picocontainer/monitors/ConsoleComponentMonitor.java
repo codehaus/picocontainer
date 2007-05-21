@@ -36,7 +36,7 @@ public class ConsoleComponentMonitor extends AbstractComponentMonitor {
     }
 
     public ConsoleComponentMonitor(OutputStream out) {
-        this(out, new DefaultComponentMonitor());
+        this(out, new NullComponentMonitor());
     }
 
     public ConsoleComponentMonitor(OutputStream out, ComponentMonitor delegate) {

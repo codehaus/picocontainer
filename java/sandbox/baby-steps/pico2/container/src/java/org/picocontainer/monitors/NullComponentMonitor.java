@@ -15,6 +15,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.PicoLifecycleException;
 
 /**
  * A {@link ComponentMonitor} which does nothing. 
@@ -46,6 +47,7 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
+        throw new PicoLifecycleException(method, instance, cause);
     }
 
     public static synchronized NullComponentMonitor getInstance() {

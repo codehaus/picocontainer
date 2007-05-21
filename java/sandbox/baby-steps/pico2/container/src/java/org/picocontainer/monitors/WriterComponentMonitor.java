@@ -32,7 +32,7 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
 
     public WriterComponentMonitor(Writer out) {
         this.out = new PrintWriter(out);
-        delegate = new DefaultComponentMonitor();
+        delegate = NullComponentMonitor.getInstance();
     }
 
     public WriterComponentMonitor(Writer out, ComponentMonitor delegate) {

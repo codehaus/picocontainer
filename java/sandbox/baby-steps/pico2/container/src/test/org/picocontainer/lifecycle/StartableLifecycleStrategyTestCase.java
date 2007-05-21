@@ -14,7 +14,7 @@ import org.jmock.MockObjectTestCase;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.monitors.DefaultComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
  * 
@@ -25,7 +25,7 @@ public class StartableLifecycleStrategyTestCase extends MockObjectTestCase {
     private StartableLifecycleStrategy strategy;
     
     public void setUp(){
-        strategy = new StartableLifecycleStrategy(new DefaultComponentMonitor());
+        strategy = new StartableLifecycleStrategy(NullComponentMonitor.getInstance());
     }
 
     public void testStartable(){

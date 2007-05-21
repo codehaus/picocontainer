@@ -356,7 +356,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
     }
 
 
-    public void testLifecycleDoesNotRecoverWithDefaultComponentMonitor() {
+    public void testLifecycleDoesNotRecoverWithNullComponentMonitor() {
 
         Mock s1 = mock(Startable.class, "s1");
         s1.expects(once()).method("start").will(throwException(new RuntimeException("I do not want to start myself")));

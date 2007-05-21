@@ -15,12 +15,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.monitors.DefaultComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
  * <p>
  * A {@link ComponentMonitor monitor} which delegates to another monitor.
- * It provides a {@link DefaultComponentMonitor default ComponentMonitor},
+ * It provides a {@link NullComponentMonitor default ComponentMonitor},
  * but does not allow to use <code>null</code> for the delegate.
  * </p>
  * <p>
@@ -47,10 +47,10 @@ public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMo
 
     /**
      * Creates a DelegatingComponentMonitor with an instance of 
-     * {@link DefaultComponentMonitor}.
+     * {@link NullComponentMonitor}.
      */
     public DelegatingComponentMonitor() {
-        this(DefaultComponentMonitor.getInstance());
+        this(NullComponentMonitor.getInstance());
     }
     
     public void instantiating(Constructor constructor) {

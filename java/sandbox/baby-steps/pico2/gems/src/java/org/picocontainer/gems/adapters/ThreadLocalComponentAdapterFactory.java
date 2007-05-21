@@ -59,7 +59,7 @@ public class ThreadLocalComponentAdapterFactory extends DecoratingComponentAdapt
 
     /**
      * <code>ENSURE_THREAD_LOCALITY</code> is the constant for created {@link ComponentAdapter} instances, that ensure
-     * unique instances of the addComponent by delivering a proxy for the addComponent.
+     * unique instances of the component by delivering a proxy for the addComponent.
      */
     public static final boolean ENSURE_THREAD_LOCALITY = true;
     /**

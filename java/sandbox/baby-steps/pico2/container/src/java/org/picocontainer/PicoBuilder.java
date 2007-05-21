@@ -122,4 +122,17 @@ public class PicoBuilder {
         cafs.push(CachingComponentAdapterFactory.class);
         return this;  
     }
+
+    public PicoBuilder withComponentAdapterFactory(Class cafClass) {
+        if (cafClass == null) {
+            throw new NullPointerException("CAF class cannot be null");
+        }
+        if (!ComponentAdapterFactory.class.isAssignableFrom(cafClass)) {
+            throw new AssignabilityRegistrationException(ComponentAdapterFactory.class, cafClass);
+        }
+        cafs.push(cafClass);
+        return this;
+    }
+
+
 }

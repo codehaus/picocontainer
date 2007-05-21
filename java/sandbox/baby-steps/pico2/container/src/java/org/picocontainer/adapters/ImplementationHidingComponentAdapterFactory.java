@@ -21,7 +21,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
 
 /**
  * @author Aslak Helles&oslash;y
- * @see org.picocontainer.gems.HotSwappingComponentAdapterFactory for a more feature-rich version of the class
+ * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapterFactory for a more feature-rich version of the class
  * @since 1.2, moved from package {@link org.picocontainer.alternatives}
  */
 public class ImplementationHidingComponentAdapterFactory extends DecoratingComponentAdapterFactory {

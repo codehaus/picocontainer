@@ -16,8 +16,6 @@ import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
 import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
 
 /**
- * This is a demonstration that functionality equivalent to {@link ImplementationHidingPicoContainer}
- * can be obtained by composing a DPC with a IHCAF.
  *
  * @author Aslak Helles&oslash;y
  */

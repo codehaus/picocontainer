@@ -73,21 +73,21 @@
     </pluginRepositories>
     <distributionManagement>
         <repository>
-            <id>codehaus-picocontainer-repository</id>
+            <id>codehaus.org</id>
             <name>Codehaus PicoContainer Repository</name>
             <url>
                 dav:https://dav.codehaus.org/repository/picocontainer/
             </url>
         </repository>
         <snapshotRepository>
-            <id>codehaus-picocontainer-snapshot-repository</id>
+            <id>codehaus.org</id>
             <name>Codehaus PicoContainer Snapshot Repository</name>
             <url>
                 dav:https://dav.codehaus.org/snapshots.repository/picocontainer/
             </url>
         </snapshotRepository>
         <site>
-            <id>picocontainer-site</id>
+            <id>codehaus.org</id>
             <url>dav:https://dav.codehaus.org/picocontainer/</url>
         </site>
     </distributionManagement>

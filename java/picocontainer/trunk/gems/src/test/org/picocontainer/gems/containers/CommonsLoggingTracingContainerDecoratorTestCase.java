@@ -125,7 +125,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		tracingDecorator.accept(visitor);
 		String result = logOutput.toString();
 		assertNotNull(result);
-		assertTrue(result.contains("Visiting Container "));
+		assertTrue(resultContains(result, "Visiting Container "));
 	}
 
 	public void testAddChildContainer() {
@@ -136,7 +136,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		assertTrue(tracingDecorator.addChildContainer(childPico));
 		String result = logOutput.toString();
 		assertNotNull(result);
-		assertTrue(result.contains("Adding child container: "));
+		assertTrue(resultContains(result, "Adding child container: "));
 	}
 
 	public void testDispose() {
@@ -144,7 +144,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		tracingDecorator.dispose();
 		String result = logOutput.toString();
 		assertNotNull(result);
-		assertTrue(result.contains("Disposing container "));
+		assertTrue(resultContains(result, "Disposing container "));
 		
 	}
 
@@ -173,7 +173,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		assertNotNull("Log output was null", result);
 		assertTrue("Could not find '" + valueToExpect + "' in log output.  Instead got '"
 				+ result + "'"
-				,result.contains(valueToExpect));
+				,resultContains(result, valueToExpect));
 	}
 
 	public void testGetComponentAdapterOfType() {
@@ -349,7 +349,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		tracingDecorator.start();
 		String result = logOutput.toString();
 		assertNotNull(result);
-		assertTrue(result.contains("Starting Container "));
+		assertTrue(resultContains(result, "Starting Container "));
 	}
 
 	public void testStop() {
@@ -357,7 +357,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		tracingDecorator.stop();
 		String result = logOutput.toString();
 		assertNotNull(result);
-		assertTrue(result.contains("Stopping Container "));
+		assertTrue(resultContains(result, "Stopping Container "));
 	}
 
 	public void testUnregisterComponent() {
@@ -406,8 +406,12 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		
 		Log4jTracingContainerDecorator result = (Log4jTracingContainerDecorator) ois.readObject();
 		assertNotNull(result);
-		assertEquals(logCategory, result.getLoggerUsed().getName());
-		
-		
+		assertEquals(logCategory, result.getLoggerUsed().getName());		
+		        
 	}
+    
+    private boolean resultContains(String result, String string) {
+        return result.indexOf(string.toString()) > -1;
+    }
+
 }

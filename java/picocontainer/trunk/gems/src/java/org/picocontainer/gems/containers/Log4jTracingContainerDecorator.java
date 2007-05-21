@@ -376,7 +376,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Registering component implementation with key " + componentKey + " and implementation "
-					+ componentImplementation.getCanonicalName() + " using parameters " + parameters);
+					+ componentImplementation.getName() + " using parameters " + parameters);
 		}
 
 		return delegate.registerComponentImplementation(componentKey, componentImplementation, parameters);
@@ -395,7 +395,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 			final Class componentImplementation) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Registering component implementation with key " + componentKey + " and implementation "
-					+ componentImplementation.getCanonicalName());
+					+ componentImplementation.getName());
 		}
 
 		return delegate.registerComponentImplementation(componentKey, componentImplementation);

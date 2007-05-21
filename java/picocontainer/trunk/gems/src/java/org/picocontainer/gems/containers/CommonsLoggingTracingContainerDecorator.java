@@ -332,7 +332,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 			log.debug("Registering component implementation with key " 
 					+ componentKey 
 					+ " and implementation " 
-					+ componentImplementation.getCanonicalName() 
+					+ componentImplementation.getName() 
 					+ " using parameters "
 					+ parameters);
 		}
@@ -352,7 +352,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 			log.debug("Registering component implementation with key " 
 					+ componentKey 
 					+ " and implementation " 
-					+ componentImplementation.getCanonicalName());
+					+ componentImplementation.getName());
 		}
 		
 		return delegate.registerComponentImplementation(componentKey, componentImplementation);

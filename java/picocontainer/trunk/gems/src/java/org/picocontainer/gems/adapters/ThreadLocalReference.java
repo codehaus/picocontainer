@@ -10,11 +10,9 @@
 
 package org.picocontainer.gems.adapters;
 
-import org.picocontainer.defaults.ObjectReference;
-
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
+import org.picocontainer.defaults.ObjectReference;
 
 
 /**
@@ -26,11 +24,16 @@ public class ThreadLocalReference extends ThreadLocal implements ObjectReference
 
     private static final long serialVersionUID = 1L;
 
-    private void writeObject(final ObjectOutputStream out) {
-        if(out != null); // eliminate warning because of unused parameter
+    private static class Marker implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private static final Marker INSTANCE = new Marker();
+
+        private Object readResolve() {
+            return new ThreadLocalReference();
+        }
     }
 
-    private void readObject(final ObjectInputStream in) {
-        if(in != null); // eliminate warning because of unused parameter
+    private Object writeReplace() {
+        return Marker.INSTANCE;
     }
 }

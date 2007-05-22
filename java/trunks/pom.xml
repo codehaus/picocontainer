@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.picocontainer.m2</groupId>
+	<artifactId>builder</artifactId>
+	<packaging>pom</packaging>
+	<name>Standard Builder</name>
+	<version>SNAPSHOT</version>
+
+	<modules>
+		<module>microcontainer</module>
+		<module>nanocontainer</module>
+		<module>nanowar</module>
+		<module>persistence</module>
+		<module>picocontainer</module>
+		<module>remoting</module>
+	</modules>
+</project>

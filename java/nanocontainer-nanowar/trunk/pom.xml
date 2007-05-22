@@ -41,13 +41,13 @@
 
     <scm>
         <connection>
-            scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-nanowar/tags/nanocontainer-nanowar-1_1
+            scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk
         </connection>
         <developerConnection>
-            scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-nanowar/tags/nanocontainer-nanowar-1_1
+            scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-nanowar/trunk
         </developerConnection>
         <url>
-            https://svn.codehaus.org/picocontainer/java/nanocontainer-nanowar/tags/nanocontainer-nanowar-1_1
+            http://fisheye.codehaus.org/browse/picocontainer/java/nanocontainer-nanowar/trunk
         </url>
     </scm>
 

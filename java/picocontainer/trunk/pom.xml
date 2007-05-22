@@ -33,9 +33,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/tags/picocontainer-1_3</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/tags/picocontainer-1_3</developerConnection>
-        <url>https://svn.codehaus.org/picocontainer/java/picocontainer/tags/picocontainer-1_3</url>
+        <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/trunk</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/trunk</developerConnection>
+        <url>http://fisheye.codehaus.org/browse/picocontainer/java/picocontainer/trunk</url>
     </scm>
     <repositories>
         <repository>
@@ -53,12 +53,6 @@
             <name>Codehaus Dist Repository</name>
             <url>http://dist.codehaus.org</url>
             <layout>legacy</layout>
-        </repository>
-        <repository>
-            <layout>legacy</layout>
-            <id>astrogrid.org-repository</id>
-            <name>Astrogrid Repository</name>
-            <url>http://www.astrogrid.org/maven</url>
         </repository>
     </repositories>
     <pluginRepositories>
@@ -265,7 +259,7 @@
                 <configuration>
                     <forkMode>once</forkMode>
                     <printSummary>true</printSummary>
-                    <useFile>true</useFile>
+                    <useFile>false</useFile>
                     <systemProperties>
                         <property>
                             <name>test.src.dir</name>

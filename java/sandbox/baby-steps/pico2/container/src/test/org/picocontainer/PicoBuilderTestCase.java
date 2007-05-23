@@ -2,10 +2,12 @@ package org.picocontainer;
 
 import junit.framework.TestCase;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.MarshallingStrategy;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.alternatives.EmptyPicoContainer;
+import org.picocontainer.gems.*;
 
 import java.util.HashMap;
 
@@ -200,6 +202,23 @@ public class PicoBuilderTestCase extends TestCase {
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
     }
+
+    public void testWithThreadSafety() {
+        MutablePicoContainer mpc = new PicoBuilder().withThreadSafety().build();
+        String foo = simplifyRepresentation(mpc);
+        assertEquals("PICO\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.SynchronizedComponentAdapterFactory\n" +
+                "    delegate=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "      cdiDelegate\n" +
+                "      sdiDelegate\n" +
+                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "PICO",foo);
+    }
+
+
+
 
 
     private String simplifyRepresentation(MutablePicoContainer mpc) {

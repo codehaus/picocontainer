@@ -9,6 +9,7 @@ import org.picocontainer.adapters.AnnotationInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.InstantiatingComponentAdapterFactory;
 import org.picocontainer.adapters.CachingComponentAdapterFactory;
+import org.picocontainer.adapters.SynchronizedComponentAdapterFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -131,6 +132,11 @@ public class PicoBuilder {
             throw new AssignabilityRegistrationException(ComponentAdapterFactory.class, cafClass);
         }
         cafs.push(cafClass);
+        return this;
+    }
+
+    public PicoBuilder withThreadSafety() {
+        cafs.push(SynchronizedComponentAdapterFactory.class);
         return this;
     }
 

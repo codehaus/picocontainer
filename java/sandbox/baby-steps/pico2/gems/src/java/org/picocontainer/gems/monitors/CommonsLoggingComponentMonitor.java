@@ -80,6 +80,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
      * The class name is used to retrieve the Log instance.
      *
      * @param logClass the class of the Log
+     * @param delegate the delegate
      */
     public CommonsLoggingComponentMonitor(Class logClass, ComponentMonitor delegate) {
         this(logClass.getName(), delegate);
@@ -90,6 +91,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
      * {@link LogFactory LogFactory} to create the Log instance.
      *
      * @param logName the name of the Log
+     * @param delegate the delegate
      */
     public CommonsLoggingComponentMonitor(String logName, ComponentMonitor delegate) {
         this(LogFactory.getLog(logName), delegate);
@@ -99,6 +101,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
      * Creates a CommonsLoggingComponentMonitor with a given Log instance
      *
      * @param log the Log to write to
+     * @param delegate the delegate
      */
     public CommonsLoggingComponentMonitor(Log log, ComponentMonitor delegate) {
         this.log = log;
@@ -109,7 +112,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void instantiating(Constructor constructor) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
-            log.debug(format(INSTANTIATING, new Object[]{toString(constructor)}));
+            log.debug(format(INSTANTIATING, toString(constructor)));
         }
         delegate.instantiating(constructor);
     }
@@ -117,7 +120,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
-            log.debug(format(INSTANTIATED2, new Object[]{toString(constructor), new Long(duration), instantiated.getClass().getName(), toString(parameters)}));
+            log.debug(format(INSTANTIATED2, toString(constructor), duration, instantiated.getClass().getName(), toString(parameters)));
         }
         delegate.instantiated(constructor, instantiated, parameters, duration);
     }
@@ -125,7 +128,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void instantiationFailed(Constructor constructor, Exception cause) {
         Log log = getLog(constructor);
         if (log.isWarnEnabled()) {
-            log.warn(format(INSTANTIATION_FAILED, new Object[]{toString(constructor), cause.getMessage()}), cause);
+            log.warn(format(INSTANTIATION_FAILED, toString(constructor), cause.getMessage()), cause);
         }
         delegate.instantiationFailed(constructor, cause);
     }
@@ -133,7 +136,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void invoking(Method method, Object instance) {
         Log log = getLog(method);
         if (log.isDebugEnabled()) {
-            log.debug(format(INVOKING, new Object[]{toString(method), instance}));
+            log.debug(format(INVOKING, toString(method), instance));
         }
         delegate.invoking(method, instance);
     }
@@ -141,7 +144,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void invoked(Method method, Object instance, long duration) {
         Log log = getLog(method);
         if (log.isDebugEnabled()) {
-            log.debug(format(INVOKED, new Object[]{toString(method), instance, new Long(duration)}));
+            log.debug(format(INVOKED, toString(method), instance, duration));
         }
         delegate.invoked(method, instance,  duration);
     }
@@ -149,7 +152,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void invocationFailed(Method method, Object instance, Exception cause) {
         Log log = getLog(method);
         if (log.isWarnEnabled()) {
-            log.warn(format(INVOCATION_FAILED, new Object[]{toString(method), instance, cause.getMessage()}), cause);
+            log.warn(format(INVOCATION_FAILED, toString(method), instance, cause.getMessage()), cause);
         }
         delegate.invocationFailed(method, instance, cause);
     }
@@ -157,9 +160,17 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
         Log log = getLog(method);
         if (log.isWarnEnabled()) {
-            log.warn(format(LIFECYCLE_INVOCATION_FAILED, new Object[]{toString(method), instance, cause.getMessage()}), cause);
+            log.warn(format(LIFECYCLE_INVOCATION_FAILED, toString(method), instance, cause.getMessage()), cause);
         }
         delegate.lifecycleInvocationFailed(method, instance, cause);
+    }
+
+    public void noComponent(Object componentKey) {
+        Log log = this.log != null ? this.log : LogFactory.getLog(ComponentMonitor.class);
+        if (log.isWarnEnabled()) {
+            log.warn(format(NO_COMPONENT, componentKey));
+        }
+        delegate.noComponent(componentKey);
     }
 
     protected Log getLog(Member member) {

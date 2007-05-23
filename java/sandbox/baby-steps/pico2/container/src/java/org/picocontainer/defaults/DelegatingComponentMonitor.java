@@ -81,6 +81,10 @@ public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMo
         delegate.lifecycleInvocationFailed(method,instance, cause);
     }
 
+    public void noComponent(Object componentKey) {
+        delegate.noComponent(componentKey); 
+    }
+
     /**
      * If the delegate supports a {@link ComponentMonitorStrategy monitor strategy},
      * this is used to changed the monitor while keeping the same delegate.

@@ -64,6 +64,10 @@ public class LifecycleComponentMonitor implements ComponentMonitor {
         }
     }
 
+    public void noComponent(Object componentKey) {
+        delegate.noComponent(componentKey);
+    }
+
 
     public void rethrowLifecycleFailuresException() {
         throw new LifecycleFailuresException(lifecycleFailures);

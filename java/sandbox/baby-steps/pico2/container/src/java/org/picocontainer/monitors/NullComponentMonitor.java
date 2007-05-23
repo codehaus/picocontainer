@@ -50,6 +50,9 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
         throw new PicoLifecycleException(method, instance, cause);
     }
 
+    public void noComponent(Object componentKey) {
+    }
+
     public static synchronized NullComponentMonitor getInstance() {
         if (instance == null) {
             instance = new NullComponentMonitor();

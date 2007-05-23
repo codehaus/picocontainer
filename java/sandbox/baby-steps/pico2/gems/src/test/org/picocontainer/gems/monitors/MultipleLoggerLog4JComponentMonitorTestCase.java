@@ -18,6 +18,9 @@ import org.picocontainer.ComponentMonitor;
  */
 public class MultipleLoggerLog4JComponentMonitorTestCase extends AbstractComponentMonitorTestCase {
 
+    String logPrefixName = String.class.getName();
+
+
     protected void setUp() throws Exception {
         super.setUp();
     }
@@ -27,7 +30,7 @@ public class MultipleLoggerLog4JComponentMonitorTestCase extends AbstractCompone
     }
 
     protected Method getMethod() throws NoSuchMethodException {
-        return String.class.getMethod("toString",new Class[0]);
+        return String.class.getMethod("toString");
     }
 
     protected Constructor getConstructor() {
@@ -35,7 +38,11 @@ public class MultipleLoggerLog4JComponentMonitorTestCase extends AbstractCompone
     }
 
     protected String getLogPrefix() {
-        return "[" + String.class.getName() + "] ";
+        return "[" + logPrefixName + "] ";
     }
 
+    public void testShouldTraceNoComponent() throws Exception {
+        logPrefixName = ComponentMonitor.class.getName();
+        super.testShouldTraceNoComponent();
+    }
 }

@@ -81,6 +81,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
      * The class name is used to retrieve the Logger instance.
      *
      * @param loggerClass the class of the Logger
+     * @param delegate the delegate
      */
     public Log4JComponentMonitor(Class loggerClass, ComponentMonitor delegate) {
         this(loggerClass.getName(), delegate);
@@ -91,6 +92,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
      * {@link org.apache.log4j.LogManager LogManager} to create the Logger instance.
      *
      * @param loggerName the name of the Log
+     * @param delegate the delegate
      */
     public Log4JComponentMonitor(String loggerName, ComponentMonitor delegate) {
         this(LogManager.getLogger(loggerName), delegate);
@@ -100,6 +102,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
      * Creates a Log4JComponentMonitor with a given Logger instance
      *
      * @param logger the Logger to write to
+     * @param delegate the delegate
      */
     public Log4JComponentMonitor(Logger logger, ComponentMonitor delegate) {
         this(delegate);
@@ -113,7 +116,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public void instantiating(Constructor constructor) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(INSTANTIATING, new Object[]{toString(constructor)}));
+            logger.debug(format(INSTANTIATING, toString(constructor)));
         }
         delegate.instantiating(constructor);
     }
@@ -121,7 +124,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(INSTANTIATED2, new Object[]{toString(constructor), new Long(duration), instantiated.getClass().getName(), toString(parameters)}));
+            logger.debug(format(INSTANTIATED2, toString(constructor), duration, instantiated.getClass().getName(), toString(parameters)));
         }
         delegate.instantiated(constructor, instantiated, parameters, duration);
     }
@@ -129,7 +132,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public void instantiationFailed(Constructor constructor, Exception cause) {
         Logger logger = getLogger(constructor);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(INSTANTIATION_FAILED, new Object[]{toString(constructor), cause.getMessage()}), cause);
+            logger.warn(format(INSTANTIATION_FAILED, toString(constructor), cause.getMessage()), cause);
         }
         delegate.instantiationFailed(constructor, cause);
     }
@@ -137,7 +140,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public void invoking(Method method, Object instance) {
         Logger logger = getLogger(method);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(INVOKING, new Object[]{toString(method), instance}));
+            logger.debug(format(INVOKING, toString(method), instance));
         }
         delegate.invoking(method, instance);
     }
@@ -145,7 +148,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public void invoked(Method method, Object instance, long duration) {
         Logger logger = getLogger(method);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(INVOKED, new Object[]{toString(method), instance, new Long(duration)}));
+            logger.debug(format(INVOKED, toString(method), instance, duration));
         }
         delegate.invoked(method, instance, duration);
     }
@@ -153,7 +156,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public void invocationFailed(Method method, Object instance, Exception cause) {
         Logger logger = getLogger(method);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(INVOCATION_FAILED, new Object[]{toString(method), instance, cause.getMessage()}), cause);
+            logger.warn(format(INVOCATION_FAILED, toString(method), instance, cause.getMessage()), cause);
         }
         delegate.invocationFailed(method, instance, cause);
     }
@@ -161,9 +164,18 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
         Logger logger = getLogger(method);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(LIFECYCLE_INVOCATION_FAILED, new Object[]{toString(method), instance, cause.getMessage()}), cause);
+            logger.warn(format(LIFECYCLE_INVOCATION_FAILED, toString(method), instance, cause.getMessage()), cause);
         }
         delegate.lifecycleInvocationFailed(method, instance, cause);
+    }
+
+    public void noComponent(Object componentKey) {
+        Logger logger = this.logger != null ? this.logger : LogManager.getLogger(ComponentMonitor.class);
+        if (logger.isEnabledFor(Priority.WARN)) {
+            logger.warn(format(NO_COMPONENT, componentKey));
+        }
+        delegate.noComponent(componentKey);
+
     }
 
     protected Logger getLogger(Member member) {

@@ -389,14 +389,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public Object getComponent(Object componentKeyOrType) {
+        Object retVal;
         if (componentKeyOrType instanceof Class) {
             final ComponentAdapter componentAdapter = getComponentAdapter((Class) componentKeyOrType);
-            return componentAdapter == null ? null : getInstance(componentAdapter);
-
+            retVal = componentAdapter == null ? null : getInstance(componentAdapter);
         } else {
             ComponentAdapter componentAdapter = getComponentAdapter(componentKeyOrType);
-            return componentAdapter == null ? null : getInstance(componentAdapter);
+            retVal = componentAdapter == null ? null : getInstance(componentAdapter);
         }
+        if (retVal == null) {
+            componentMonitor.noComponent(componentKeyOrType);
+        }
+        return retVal;
     }
 
     public <T> T getComponent(Class<T> componentType) {

@@ -53,39 +53,45 @@ public abstract class AbstractComponentMonitorTestCase extends TestCase {
 
     public void testShouldTraceInstantiating() throws Exception {
         componentMonitor.instantiating(constructor);        
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATING, new Object[]{AbstractComponentMonitor.toString(constructor)}));
+        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATING, AbstractComponentMonitor.toString(constructor)));
     }
 
     public void testShouldTraceInstantiatedWithInjected() throws Exception {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
         componentMonitor.instantiated(constructor, instantiated, injected, 543);
-        String s = AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATED2, new Object[]{AbstractComponentMonitor.toString(constructor), new Long(543), instantiated.getClass().getName(), AbstractComponentMonitor.toString(injected)});
+        String s = AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATED2, AbstractComponentMonitor.toString(constructor), (long) 543, instantiated.getClass().getName(), AbstractComponentMonitor.toString(injected));
         assertFileContent(getLogPrefix() + s);
     }
 
 
     public void testShouldTraceInstantiationFailed() throws Exception {
         componentMonitor.instantiationFailed(constructor, new RuntimeException("doh"));
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATION_FAILED, new Object[]{AbstractComponentMonitor.toString(constructor), "doh"}));
+        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATION_FAILED, AbstractComponentMonitor.toString(constructor), "doh"));
     }
 
     public void testShouldTraceInvoking() throws Exception {
         componentMonitor.invoking(method, this);
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOKING, new Object[]{AbstractComponentMonitor.toString(method), this}));
+        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOKING, AbstractComponentMonitor.toString(method), this));
     }
 
     public void testShouldTraceInvoked() throws Exception {
         componentMonitor.invoked(method, this, 543);
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOKED, new Object[]{AbstractComponentMonitor.toString(method), this, new Long(543)}));
+        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOKED, AbstractComponentMonitor.toString(method), this, (long) 543));
     }
 
     public void testShouldTraceInvocatiationFailed() throws Exception {
         componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOCATION_FAILED, new Object[]{AbstractComponentMonitor.toString(method), this, "doh"}));
+        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOCATION_FAILED, AbstractComponentMonitor.toString(method), this, "doh"));
     }
 
-    protected void assertFileContent(String line) throws IOException{        
+    public void testShouldTraceNoComponent() throws Exception {
+        componentMonitor.noComponent("doh");
+        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.NO_COMPONENT, "doh"));
+    }
+
+
+    protected void assertFileContent(String line) throws IOException{
         List lines = toLines( new StringReader( ForTestSakeAppender.CONTENT ) );
         String s = lines.toString();
         assertTrue("Line '" + line + "' not found", s.indexOf(line) > 0);

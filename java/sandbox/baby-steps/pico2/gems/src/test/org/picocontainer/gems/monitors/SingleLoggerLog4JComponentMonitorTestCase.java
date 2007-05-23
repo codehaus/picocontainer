@@ -39,4 +39,7 @@ public class SingleLoggerLog4JComponentMonitorTestCase extends AbstractComponent
         return "[" + Log4JComponentMonitor.class.getName() + "] ";
     }
 
+    public void testShouldTraceNoComponent() throws Exception {
+        super.testShouldTraceNoComponent();    
+    }
 }

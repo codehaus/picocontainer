@@ -21,9 +21,7 @@ import org.picocontainer.defaults.DelegatingComponentMonitor;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
-import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.adapters.AbstractComponentAdapter;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 
 import java.lang.reflect.Constructor;
@@ -71,7 +69,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @param parameters the parameters to use for the initialization
      * @param monitor the addComponent monitor used by this ComponentAdapter
      * @param lifecycleStrategy the lifecycle strategy used by this ComponentAdapter
-     * @throws org.picocontainer.defaults.AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
@@ -96,7 +94,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
      * @param monitor the addComponent monitor used by this ComponentAdapter
-     * @throws org.picocontainer.defaults.AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
@@ -111,7 +109,7 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
-     * @throws org.picocontainer.defaults.AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
+     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
@@ -172,8 +170,8 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
     public void accept(PicoVisitor visitor) {
         super.accept(visitor);
         if (parameters != null) {
-            for (int i = 0; i < parameters.length; i++) {
-                parameters[i].accept(visitor);
+            for (Parameter parameter : parameters) {
+                parameter.accept(visitor);
             }
         }
     }
@@ -214,10 +212,9 @@ public abstract class InstantiatingComponentAdapter extends AbstractComponentAda
      * @param container the PicoContainer to resolve dependencies.
      * @return the found constructor.
      * @throws PicoIntrospectionException
-     * @throws org.picocontainer.defaults.UnsatisfiableDependenciesException
-     * @throws org.picocontainer.defaults.AmbiguousComponentResolutionException
-     * @throws org.picocontainer.defaults.AssignabilityRegistrationException
+     * @throws UnsatisfiableDependenciesException
      * @throws NotConcreteRegistrationException
      */
-    protected abstract Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, UnsatisfiableDependenciesException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+    protected abstract Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+
 }

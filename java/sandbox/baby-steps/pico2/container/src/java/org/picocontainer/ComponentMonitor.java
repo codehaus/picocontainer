@@ -91,4 +91,5 @@ public interface ComponentMonitor {
     void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause);
 
 
+    void noComponent(Object componentKey);
 }

@@ -32,8 +32,9 @@ public abstract class AbstractComponentMonitor implements ComponentMonitor {
     public final static String INVOKED = "PicoContainer: invoked {0} on {1} [{2} ms]";
     public final static String INVOCATION_FAILED = "PicoContainer: invocation failed: {0} on {1}, reason: {2}";
     public final static String LIFECYCLE_INVOCATION_FAILED = "PicoContainer: lifecycle invocation failed: {0} on {1}, reason: {2}";
+    public final static String NO_COMPONENT = "PicoContainer: No component for key: {0}";
 
-    public static String format(String template, Object[] arguments) {
+    public static String format(String template, Object... arguments) {
         return MessageFormat.format(template, arguments);
     }
 
@@ -78,6 +79,5 @@ public abstract class AbstractComponentMonitor implements ComponentMonitor {
         sb.append(")");
         return sb.toString();
     }
-
 
 }

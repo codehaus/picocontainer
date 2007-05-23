@@ -57,8 +57,6 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-
-
     private String simplifyRepresentation(MutablePicoContainer mpc) {
         String foo = xs.toXML(mpc);
         foo = foo.replace('$','_');

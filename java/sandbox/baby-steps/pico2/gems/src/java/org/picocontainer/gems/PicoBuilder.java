@@ -2,6 +2,7 @@ package org.picocontainer.gems;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.adapters.SynchronizedComponentAdapterFactory;
 import org.picocontainer.gems.monitors.Log4JComponentMonitor;
 import org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor;
 import org.picocontainer.gems.adapters.HotSwappingComponentAdapterFactory;

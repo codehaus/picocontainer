@@ -24,6 +24,7 @@ import java.util.Stack;
 public class PicoBuilder {
 
     private PicoContainer parentContainer;
+    private Class mpcClass = DefaultPicoContainer.class;
 
     public PicoBuilder(PicoContainer parentContainer) {
         if (parentContainer == null) {
@@ -93,10 +94,10 @@ public class PicoBuilder {
         temp.addComponent(ComponentAdapterFactory.class, lastCaf);
         temp.addComponent(ComponentMonitor.class, componentMonitorClass);
         temp.addComponent(LifecycleStrategy.class, lifecycleStrategyClass);
-        temp.addComponent(MutablePicoContainer.class, DefaultPicoContainer.class);
+        temp.addComponent("mpc", mpcClass);
 
 
-        return temp.getComponent(MutablePicoContainer.class);
+        return (MutablePicoContainer) temp.getComponent("mpc");
     }
 
     public PicoBuilder withHiddenImplementations() {
@@ -141,4 +142,8 @@ public class PicoBuilder {
     }
 
 
+    public PicoBuilder thisMutablePicoContainer(Class containerClass) {
+        mpcClass = containerClass;
+        return this;
+    }
 }

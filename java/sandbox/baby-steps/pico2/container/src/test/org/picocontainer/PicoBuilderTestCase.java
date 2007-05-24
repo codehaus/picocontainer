@@ -3,13 +3,23 @@ package org.picocontainer;
 import junit.framework.TestCase;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.MarshallingStrategy;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.converters.Converter;
+import com.thoughtworks.xstream.converters.MarshallingContext;
+import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.DefaultPicoContainerTestCase;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.alternatives.EmptyPicoContainer;
 import org.picocontainer.gems.*;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.ArrayList;
 
 public class PicoBuilderTestCase extends TestCase {
 
@@ -18,6 +28,22 @@ public class PicoBuilderTestCase extends TestCase {
     protected void setUp() throws Exception {
         xs = new XStream();
         xs.alias("PICO", DefaultPicoContainer.class);
+        xs.registerConverter(new Converter() {
+            public boolean canConvert(Class aClass) {
+                return aClass.getName().equals("org.picocontainer.defaults.DefaultPicoContainer$OrderedComponentAdapterLifecycleManager") ||
+                       aClass.getName().equals("org.picocontainer.defaults.DefaultPicoContainer$1") ||
+                       aClass == Boolean.class ||
+                       aClass == HashSet.class ||
+                       aClass == ArrayList.class;
+            }
+
+            public void marshal(Object o, HierarchicalStreamWriter hierarchicalStreamWriter, MarshallingContext marshallingContext) {
+            }
+
+            public Object unmarshal(HierarchicalStreamReader hierarchicalStreamReader, UnmarshallingContext unmarshallingContext) {
+                return null;
+            }
+        });
         xs.setMode(XStream.XPATH_ABSOLUTE_REFERENCES);
     }
 
@@ -217,8 +243,25 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
+    public void testWithCustomPicoContainer() {
+        MutablePicoContainer mpc = new PicoBuilder().thisMutablePicoContainer(TestPicoContainer.class).build();
+        String foo = simplifyRepresentation(mpc);
+        assertEquals("org.picocontainer.PicoBuilderTestCase_-TestPicoContainer\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "    cdiDelegate\n" +
+                "    sdiDelegate\n" +
+                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "org.picocontainer.PicoBuilderTestCase_-TestPicoContainer",foo);
+    }
 
 
+    public static class TestPicoContainer extends DefaultPicoContainer {
+        public TestPicoContainer(ComponentAdapterFactory caf, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+            super(caf, monitor, lifecycleStrategy, parent);
+        }
+    }
 
 
     private String simplifyRepresentation(MutablePicoContainer mpc) {
@@ -231,8 +274,8 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  childrenStarted","");
         foo = foo.replaceAll("\n  componentAdapters","");
         foo = foo.replaceAll("\n  orderedComponentAdapters","");
-        foo = foo.replaceAll("\n  startedfalsestarted","");
-        foo = foo.replaceAll("\n  disposedfalsedisposed","");
+        foo = foo.replaceAll("\n  started","");
+        foo = foo.replaceAll("\n  disposed","");
         foo = foo.replaceAll("\n  handler","");
         foo = foo.replaceAll("\n  children","");
         foo = foo.replaceAll("\n  delegate\n","\n");

@@ -280,12 +280,10 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  children","");
         foo = foo.replaceAll("\n  delegate\n","\n");
         foo = foo.replaceAll("\n    delegate\n","\n");
-        foo = foo.replaceAll("\n    outer-class reference=\"/PICO\"","");
         foo = foo.replaceAll("\n  componentCharacteristic class=\"org.picocontainer.defaults.DefaultPicoContainer$1\"","");
         foo = foo.replaceAll("\n  componentCharacteristic","");
         foo = foo.replaceAll("\n  componentKeyToAdapterCache","");
         foo = foo.replaceAll("\n    startedComponentAdapters","");
-        foo = foo.replaceAll("\n    props","");
         foo = foo.replaceAll("\"class=","\"\nclass=");
         foo = foo.replaceAll("\n  componentAdapterFactory\n","\n");
         foo = foo.replaceAll("\n  lifecycleManager","");

@@ -153,7 +153,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
       * @param parent the parent container (used for addComponent dependency lookups).
       */
     public DefaultPicoContainer(ComponentMonitor monitor, PicoContainer parent) {
-        this(new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory()), parent);
+        this(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), parent);
         lifecycleStrategy = new StartableLifecycleStrategy(monitor);
         componentMonitor = monitor;
     }
@@ -167,7 +167,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
       * @param parent the parent container (used for addComponent dependency lookups).
       */
     public DefaultPicoContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory()), lifecycleStrategy,  parent);
+        this(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), lifecycleStrategy,  parent);
         componentMonitor = monitor;
 
     }
@@ -217,14 +217,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent the parent container (used for addComponent dependency lookups).
      */
     public DefaultPicoContainer(PicoContainer parent) {
-        this(new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory()), parent);
+        this(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), parent);
     }
 
     /**
      * Creates a new container with a (caching) {@link AnyInjectionComponentAdapterFactory} and no parent container.
      */
     public DefaultPicoContainer() {
-        this(new CachingComponentAdapterFactory(new AnyInjectionComponentAdapterFactory()), null);
+        this(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), null);
     }
 
     public Collection<ComponentAdapter> getComponentAdapters() {

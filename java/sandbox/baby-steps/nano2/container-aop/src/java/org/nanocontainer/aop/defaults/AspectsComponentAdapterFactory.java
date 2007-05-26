@@ -39,25 +39,9 @@ public class AspectsComponentAdapterFactory extends DecoratingComponentAdapterFa
      * by <code>delegate</code>.
      *
      * @param aspectsApplicator used to apply the aspects.
-     * @param delegate          the real addComponent addAdapter factory that this factory
-     *                          delegates to.
-     */
-    public AspectsComponentAdapterFactory(AspectsApplicator aspectsApplicator, ComponentAdapterFactory delegate) {
-        super(delegate);
-        this.aspectsApplicator = aspectsApplicator;
-    }
-
-    /**
-     * Creates a new <code>AspectsComponentAdapterFactory</code>. The factory
-     * will produce <code>AspectsComponentAdapter</code> objects that will use
-     * <code>aspectsApplicator</code> to apply aspects to components produced
-     * by a
-     * <code>org.picocontainer.adapters.AnyInjectionComponentAdapterFactory</code>.
-     *
-     * @param aspectsApplicator used to apply the aspects.
      */
     public AspectsComponentAdapterFactory(AspectsApplicator aspectsApplicator) {
-        this(aspectsApplicator, new AnyInjectionComponentAdapterFactory());
+        this.aspectsApplicator = aspectsApplicator;
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation,

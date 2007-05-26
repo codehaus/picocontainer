@@ -15,20 +15,16 @@ import java.util.Collection;
 import java.util.List;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
 
 
 public class ImplementationHidingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
 
-    private ImplementationHidingComponentAdapterFactory implementationHidingComponentAdapterFactory = new ImplementationHidingComponentAdapterFactory(
-            new AnyInjectionComponentAdapterFactory());
-    private CachingComponentAdapterFactory cachingComponentAdapterFactory = new CachingComponentAdapterFactory(
-            implementationHidingComponentAdapterFactory);
+    private ComponentAdapterFactory implementationHidingComponentAdapterFactory = new ImplementationHidingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory());
+    private ComponentAdapterFactory cachingComponentAdapterFactory = new CachingComponentAdapterFactory().forThis(implementationHidingComponentAdapterFactory);
 
     public void testComponentRegisteredWithInterfaceKeyOnlyImplementsThatInterfaceUsingStandardProxyfactory() {
 
-        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(
-                new ConstructorInjectionComponentAdapterFactory()));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory()));
         pico.addComponent(Collection.class, ArrayList.class);
         Object collection = pico.getComponent(Collection.class);
         assertTrue(collection instanceof Collection);
@@ -37,8 +33,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
     }
 
     public void testComponentRegisteredWithOtherKeyImplementsAllInterfacesUsingStandardProxyFactory() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(
-                new ConstructorInjectionComponentAdapterFactory()));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory()));
         pico.addComponent("list", ArrayList.class);
         Object collection = pico.getComponent("list");
         assertTrue(collection instanceof List);
@@ -46,8 +41,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
     }
 
     public void testComponentRegisteredWithOtherKeyImplementsAllInterfacesUsingCGLIBProxyFactory() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(
-                new ConstructorInjectionComponentAdapterFactory()));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory()));
         pico.addComponent("list", ArrayList.class);
         Object collection = pico.getComponent("list");
         assertTrue(collection instanceof Collection);

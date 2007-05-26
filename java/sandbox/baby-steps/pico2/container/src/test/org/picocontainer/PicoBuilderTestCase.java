@@ -2,7 +2,6 @@ package org.picocontainer;
 
 import junit.framework.TestCase;
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.MarshallingStrategy;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.converters.Converter;
@@ -10,12 +9,15 @@ import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.DefaultPicoContainerTestCase;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.alternatives.EmptyPicoContainer;
-import org.picocontainer.gems.*;
+import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
+
+import static org.picocontainer.PicoBuilder.SDI;
+import static org.picocontainer.PicoBuilder.IMPL_HIDING;
+import static org.picocontainer.PicoBuilder.CACHING;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -146,7 +148,36 @@ public class PicoBuilderTestCase extends TestCase {
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);    }
+                "PICO",foo);
+    }
+
+    public void testWithImplementationHidingInstance() {
+        MutablePicoContainer mpc = new PicoBuilder().withComponentAdapterFactory(new ImplementationHidingComponentAdapterFactory()).build();
+        String foo = simplifyRepresentation(mpc);
+        assertEquals("PICO\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory\n" +
+                "    delegate=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "      cdiDelegate\n" +
+                "      sdiDelegate\n" +
+                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "PICO",foo);
+    }
+
+    public void testWithCafsListChainThingy() {
+        MutablePicoContainer mpc = new PicoBuilder().withComponentAdapterFactories(CACHING(), IMPL_HIDING(), SDI()).build();
+        String foo = simplifyRepresentation(mpc);
+        assertEquals("PICO\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
+                "    delegate=org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory\n" +
+                "      delegate=org.picocontainer.adapters.SetterInjectionComponentAdapterFactory\n" +
+                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "PICO",foo);
+    }
+
 
     public static class CustomParentcontainer extends EmptyPicoContainer {}
 
@@ -160,7 +191,8 @@ public class PicoBuilderTestCase extends TestCase {
                 "  parent=org.picocontainer.PicoBuilderTestCase_CustomParentcontainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);    }
+                "PICO",foo);
+    }
 
     public void testWithBogusParentContainer() {
         try {
@@ -180,7 +212,8 @@ public class PicoBuilderTestCase extends TestCase {
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);    }
+                "PICO",foo);
+    }
 
     public void testWithAnnotationDI() {
         MutablePicoContainer mpc = new PicoBuilder().withAnnotationInjection().build();

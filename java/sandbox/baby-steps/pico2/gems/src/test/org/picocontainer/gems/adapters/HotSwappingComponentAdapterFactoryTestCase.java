@@ -15,8 +15,7 @@ import java.util.HashMap;
 
 
 public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
-    private HotSwappingComponentAdapterFactory implementationHidingComponentAdapterFactory = new HotSwappingComponentAdapterFactory(
-            new AnyInjectionComponentAdapterFactory());
+    private ComponentAdapterFactory implementationHidingComponentAdapterFactory = new HotSwappingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory());
 
     // START SNIPPET: man
     public static interface Man {
@@ -50,8 +49,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
 
 
     public void testHotSwappingNaturaelyCaches() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory(
-                new ConstructorInjectionComponentAdapterFactory()));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory()));
         pico.addComponent(Map.class, HashMap.class);
         Map firstMap = (Map)pico.getComponent(Map.class);
         Map secondMap = (Map)pico.getComponent(Map.class);

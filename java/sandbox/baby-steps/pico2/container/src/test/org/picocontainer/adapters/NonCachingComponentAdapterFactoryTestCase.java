@@ -31,7 +31,7 @@ public class NonCachingComponentAdapterFactoryTestCase extends AbstractComponent
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-        return new NonCachingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
+        return new NonCachingComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory());
     }
 
     public void testContainerReturnsSameInstanceEachCall() {

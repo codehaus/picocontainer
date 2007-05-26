@@ -46,9 +46,8 @@ public class JMXExposingComponentAdapterFactory extends DecoratingComponentAdapt
      * @since 1.0
      */
     public JMXExposingComponentAdapterFactory(
-            final ComponentAdapterFactory delegate, final MBeanServer mBeanServer,
+            final MBeanServer mBeanServer,
             final DynamicMBeanProvider[] providers) throws NullPointerException {
-        super(delegate);
         if (mBeanServer == null || providers == null) {
             throw new NullPointerException();
         }
@@ -66,9 +65,9 @@ public class JMXExposingComponentAdapterFactory extends DecoratingComponentAdapt
      *             instances is null.
      * @since 1.0
      */
-    public JMXExposingComponentAdapterFactory(final ComponentAdapterFactory delegate, final MBeanServer mBeanServer)
+    public JMXExposingComponentAdapterFactory(final MBeanServer mBeanServer)
             throws NullPointerException {
-        this(delegate, mBeanServer, new DynamicMBeanProvider[]{new DynamicMBeanComponentProvider()});
+        this(mBeanServer, new DynamicMBeanProvider[]{new DynamicMBeanComponentProvider()});
     }
 
     /**

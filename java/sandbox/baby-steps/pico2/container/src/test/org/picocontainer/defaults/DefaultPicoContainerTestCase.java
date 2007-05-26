@@ -572,5 +572,4 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
     }
 
-
 }

@@ -224,7 +224,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     public void testCustomComponentAdapterFactoryCanBeSpecified() {
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
+                                         "A = org.nanocontainer.testmodel.A\n" +                                               
                                          "container(:component_adapter_factory => $assembly_scope) {\n" +
                                          "    component(A)\n" +
                                          "}");

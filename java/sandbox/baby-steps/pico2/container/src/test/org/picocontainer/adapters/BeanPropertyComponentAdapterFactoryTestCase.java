@@ -152,7 +152,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-        return new BeanPropertyComponentAdapterFactory(new AnyInjectionComponentAdapterFactory());
+        return new BeanPropertyComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory());
     }
 
     public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {

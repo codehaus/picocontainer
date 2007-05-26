@@ -31,7 +31,7 @@ public class CachingComponentAdapterFactoryTestCase extends AbstractComponentAda
     }
 
     protected ComponentAdapterFactory createComponentAdapterFactory() {
-        return new CachingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory());
+        return new CachingComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory());
     }
 
     public void testContainerReturnsSameInstanceEachCall() {

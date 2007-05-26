@@ -41,23 +41,19 @@ public class AssimilatingComponentAdapterFactory extends DecoratingComponentAdap
      * Construct an AssimilatingComponentAdapterFactory. The instance will use the {@link StandardProxyFactory} using the JDK
      * implementation.
      * 
-     * @param delegate The delegated {@link ComponentAdapterFactory}.
      * @param type The assimilated type.
      */
-    public AssimilatingComponentAdapterFactory(final ComponentAdapterFactory delegate, final Class type) {
-        this(delegate, type, new StandardProxyFactory());
+    public AssimilatingComponentAdapterFactory(final Class type) {
+        this(type, new StandardProxyFactory());
     }
 
     /**
      * Construct an AssimilatingComponentAdapterFactory using a special {@link ProxyFactory}.
      * 
-     * @param delegate The delegated {@link ComponentAdapterFactory}.
      * @param type The assimilated type.
      * @param proxyFactory The proxy factory to use.
      */
-    public AssimilatingComponentAdapterFactory(
-            final ComponentAdapterFactory delegate, final Class type, final ProxyFactory proxyFactory) {
-        super(delegate);
+    public AssimilatingComponentAdapterFactory(final Class type, final ProxyFactory proxyFactory) {
         this.assimilationType = type;
         this.proxyFactory = proxyFactory;
     }

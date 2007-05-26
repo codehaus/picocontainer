@@ -30,10 +30,6 @@ import org.picocontainer.defaults.LifecycleStrategy;
  */
 public class NonCachingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
 
-    public NonCachingComponentAdapterFactory(ComponentAdapterFactory delegate) {
-        super(delegate);
-    }
-
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (ComponentCharacteristics.CACHE.isSoCharacterized(registerationCharacteristic)) {

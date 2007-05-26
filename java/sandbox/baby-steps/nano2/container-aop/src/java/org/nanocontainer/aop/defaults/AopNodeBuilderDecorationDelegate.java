@@ -108,7 +108,7 @@ public class AopNodeBuilderDecorationDelegate implements NodeBuilderDecorationDe
     private AspectsComponentAdapterFactory createAdapterFactory(AspectsApplicator aspectsApplicator,
                                                                 ComponentAdapterFactory delegateAdapterFactory) {
         if (delegateAdapterFactory != null) {
-            return new AspectsComponentAdapterFactory(aspectsApplicator, delegateAdapterFactory);
+            return (AspectsComponentAdapterFactory) new AspectsComponentAdapterFactory(aspectsApplicator).forThis(delegateAdapterFactory);
         } else {
             return new AspectsComponentAdapterFactory(aspectsApplicator);
         }

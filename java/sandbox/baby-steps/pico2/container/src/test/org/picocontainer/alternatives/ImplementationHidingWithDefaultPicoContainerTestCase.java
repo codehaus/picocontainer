@@ -26,7 +26,7 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
     }
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()), parent);
+        return new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory()), parent);
     }
     public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {
         // we're choosing a CAF for DPC, thus Caching (a default) not enabled.

@@ -36,13 +36,16 @@ import org.nanocontainer.TestHelper;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
+import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+import com.thoughtworks.xstream.XStream;
 
 /**
  * @author Paul Hammant
@@ -667,11 +670,76 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         assertNotSame("Instances for components registered with a CICA must not be the same", cfg1, cfg2);
     }
 
-    public void testComponentCanUsePredefinedNestedCAF() {
+
+    public static class MyCAF extends ConstructorInjectionComponentAdapterFactory {
+        public MyCAF() {
+            super();
+        }
+    }
+    public static class MyCAF2 extends DecoratingComponentAdapterFactory {
+        public MyCAF2(ComponentAdapterFactory delegate) {
+            forThis(delegate);
+        }
+    }
+    public static class MyCAF3 extends DecoratingComponentAdapterFactory {
+        public MyCAF3(ComponentAdapterFactory delegate) {
+            forThis(delegate);
+        }
+    }
+
+    public void BROKEN_testNestedCAFLooksRightinXml() {
+        Reader script = new StringReader("" +
+                "<container>" +
+                "  <component-adapter-factory class='"+MyCAF3.class.getName()+"' key='factory'>" +
+                "    <component-adapter-factory class='"+MyCAF2.class.getName()+"'>" +
+                "      <component-adapter-factory class='"+MyCAF.class.getName()+"'/>" +
+                "    </component-adapter-factory>" +
+                "  </component-adapter-factory>" +
+                "</container>");
+        PicoContainer pico = buildContainer(script);
+
+        String xml = new XStream().toXML(pico).replace('\"','\'');
+
+        assertEquals("<org.nanocontainer.DefaultNanoContainer>\n" +
+                "  <namedChildContainers/>\n" +
+                "  <delegate class='org.picocontainer.defaults.DefaultPicoContainer'>\n" +
+                "    <componentKeyToAdapterCache/>\n" +
+                "    <componentAdapterFactory class='"+MyCAF3.class.getName()+"'>\n" +
+                "      <delegate class='"+MyCAF2.class.getName()+"'>\n" +
+                "        <delegate class='"+MyCAF.class.getName()+"'>\n" +
+                "        </delegate>\n" +
+                "      </delegate>\n" +
+                "    </componentAdapterFactory>\n" +
+                "    <children/>\n" +
+                "    <componentAdapters/>\n" +
+                "    <orderedComponentAdapters/>\n" +
+                "    <started>true</started>\n" +
+                "    <disposed>false</disposed>\n" +
+                "    <childrenStarted/>\n" +
+                "    <lifecycleManager class='org.picocontainer.defaults.DefaultPicoContainer$OrderedComponentAdapterLifecycleManager'>\n" +
+                "      <startedComponentAdapters/>\n" +
+                "      <outer-class reference='../..'/>\n" +
+                "    </lifecycleManager>\n" +
+                "    <lifecycleStrategy class='org.picocontainer.lifecycle.StartableLifecycleStrategy'>\n" +
+                "      <componentMonitor class='org.picocontainer.monitors.NullComponentMonitor'/>\n" +
+                "    </lifecycleStrategy>\n" +
+                "    <componentCharacteristic class='org.picocontainer.defaults.DefaultPicoContainer$1'>\n" +
+                "      <outer-class reference='../..'/>\n" +
+                "      <props/>\n" +
+                "    </componentCharacteristic>\n" +
+                "    <componentMonitor class='org.picocontainer.monitors.NullComponentMonitor' reference='../lifecycleStrategy/componentMonitor'/>\n" +
+                "  </delegate>\n" +
+                "</org.nanocontainer.DefaultNanoContainer>", xml);
+
+        // This test suggests that testComponentCanUsePredefinedNestedCAF() is not testing what it hopes to test
+    }
+
+
+    public void BROKEN_testComponentCanUsePredefinedNestedCAF() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter-factory class='org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory' key='factory'>" +
-                "    <component-adapter-factory class='org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory'/>" +
+                "    <component-adapter-factory class='"+MyCAF.class.getName()+"'/>" +
                 "  </component-adapter-factory>" +
                 "  <component-adapter class-name-key='org.nanocontainer.testmodel.WebServerConfig' class='org.nanocontainer.testmodel.DefaultWebServerConfig' factory='factory'/>" +
                 "</container>");

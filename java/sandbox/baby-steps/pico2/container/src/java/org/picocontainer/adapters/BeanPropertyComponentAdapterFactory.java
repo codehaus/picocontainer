@@ -36,15 +36,6 @@ public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdap
     private Map<Object, BeanPropertyComponentAdapter> adapterCache = new HashMap<Object, BeanPropertyComponentAdapter>();
 
     /**
-     * Construct a BeanPropertyComponentAdapterFactory. 
-     * 
-     * @param delegate the wrapped factory.
-     */
-    public BeanPropertyComponentAdapterFactory(ComponentAdapterFactory delegate) {
-        super(delegate);
-    }
-
-    /**
      * {@inheritDoc}
      */
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {

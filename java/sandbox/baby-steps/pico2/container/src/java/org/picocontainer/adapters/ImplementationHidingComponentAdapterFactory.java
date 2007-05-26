@@ -26,17 +26,6 @@ import org.picocontainer.defaults.LifecycleStrategy;
  */
 public class ImplementationHidingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
 
-    /**
-     * For serialisation only. Do not use this constructor explicitly.
-     */
-    public ImplementationHidingComponentAdapterFactory() {
-        this(null);
-    }
-
-    public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate) {
-        super(delegate);
-    }
-
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);
         return new ImplementationHidingComponentAdapter(componentAdapter);

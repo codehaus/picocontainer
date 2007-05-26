@@ -84,7 +84,6 @@ public class Issue0199TestCase extends TestCase {
 
     private DefaultPicoContainer createContainer() {
         return new DefaultPicoContainer(
-                new SynchronizedComponentAdapterFactory(
-                        new ConstructorInjectionComponentAdapterFactory()));
+                new SynchronizedComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory()));
     }
 }

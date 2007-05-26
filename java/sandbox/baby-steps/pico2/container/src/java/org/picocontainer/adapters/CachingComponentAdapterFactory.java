@@ -17,7 +17,6 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
-import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
@@ -30,12 +29,9 @@ import org.picocontainer.defaults.LifecycleStrategy;
 public class CachingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
 
     public CachingComponentAdapterFactory() {
-        this(new AnyInjectionComponentAdapterFactory());
+        forThis(new AnyInjectionComponentAdapterFactory());
     }
 
-    public CachingComponentAdapterFactory(ComponentAdapterFactory delegate) {
-        super(delegate);
-    }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {

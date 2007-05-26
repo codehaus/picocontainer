@@ -40,7 +40,8 @@ public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCa
 
     public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
         final JMXExposingComponentAdapterFactory componentAdapterFactory = new JMXExposingComponentAdapterFactory(
-                new ConstructorInjectionComponentAdapterFactory(), (MBeanServer)mockMBeanServer.proxy());
+                (MBeanServer)mockMBeanServer.proxy());
+        componentAdapterFactory.forThis(new ConstructorInjectionComponentAdapterFactory());
 
         mockMBeanServer.expects(once()).method("registerMBean").with(
                 isA(DynamicMBeanPerson.class), isA(ObjectName.class));
@@ -53,7 +54,8 @@ public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCa
 
     public void testWillRegisterByDefaultComponentsThatAreMBeansUnlessNOJMX() throws NotCompliantMBeanException {
         final JMXExposingComponentAdapterFactory componentAdapterFactory = new JMXExposingComponentAdapterFactory(
-                new ConstructorInjectionComponentAdapterFactory(), (MBeanServer)mockMBeanServer.proxy());
+                (MBeanServer)mockMBeanServer.proxy());
+        componentAdapterFactory.forThis(new ConstructorInjectionComponentAdapterFactory());
 
         final ComponentCharacteristic rc = new ComponentCharacteristic() {
         };
@@ -69,13 +71,13 @@ public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCa
     public void testConstructorThrowsNPE() {
         try {
             new JMXExposingComponentAdapterFactory(
-                    new ConstructorInjectionComponentAdapterFactory(), null, new DynamicMBeanProvider[]{});
+                    null, new DynamicMBeanProvider[]{});
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
         }
         try {
             new JMXExposingComponentAdapterFactory(
-                    new ConstructorInjectionComponentAdapterFactory(), (MBeanServer)mockMBeanServer.proxy(), null);
+                    (MBeanServer)mockMBeanServer.proxy(), null);
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
         }

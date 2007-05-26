@@ -12,7 +12,7 @@ public class Issue0214TestCase extends TestCase {
 
     // This bug as described in the bug report, http://jira.codehaus.org/browse/PICO-214, cannot be reproduced.
     public void testTheBug() {
-        final MutablePicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory(new ConstructorInjectionComponentAdapterFactory()));
+        final MutablePicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory()));
         pico.addComponent(A.class);
 
         /* This is a workaround for the bug described further down. Normally

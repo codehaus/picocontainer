@@ -22,9 +22,6 @@ import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
  * @version $Revision$
  */
 public class SynchronizedComponentAdapterFactory extends DecoratingComponentAdapterFactory {
-    public SynchronizedComponentAdapterFactory(ComponentAdapterFactory delegate) {
-        super(delegate);
-    }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) {
         return new SynchronizedComponentAdapter(super.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters));

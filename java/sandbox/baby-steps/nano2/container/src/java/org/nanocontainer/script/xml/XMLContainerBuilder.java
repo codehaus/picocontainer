@@ -527,7 +527,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             monitorName = DEFAULT_COMPONENT_MONITOR;
         }
         try {
-            Class<?> monitorClass = getClassLoader().loadClass(monitorName);
+            Class monitorClass = getClassLoader().loadClass(monitorName);
             return (ComponentMonitor) monitorClass.newInstance();
         } catch (InstantiationException e) {
             throw new NanoContainerMarkupException(e);

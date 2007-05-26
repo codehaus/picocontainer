@@ -22,12 +22,13 @@ import org.picocontainer.defaults.LifecycleStrategy;
 import java.io.Serializable;
 
 public class DecoratingComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+
     private ComponentAdapterFactory delegate;
 
-    public DecoratingComponentAdapterFactory(ComponentAdapterFactory delegate) {
+    public DecoratingComponentAdapterFactory forThis(ComponentAdapterFactory delegate) {
         this.delegate = delegate;
+        return this;
     }
-
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {

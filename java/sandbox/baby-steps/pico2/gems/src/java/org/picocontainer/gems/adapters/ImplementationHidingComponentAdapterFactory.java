@@ -1,6 +1,5 @@
 package org.picocontainer.gems.adapters;
 
-import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
@@ -15,11 +14,7 @@ import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 public class ImplementationHidingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
 
     public ImplementationHidingComponentAdapterFactory() {
-        this(new AnyInjectionComponentAdapterFactory());
-    }
-
-    public ImplementationHidingComponentAdapterFactory(ComponentAdapterFactory delegate) {
-        super(delegate);
+        forThis(new AnyInjectionComponentAdapterFactory());
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)

@@ -4,8 +4,13 @@ import junit.framework.TestCase;
 import com.thoughtworks.xstream.XStream;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoBuilder;
 
-public class PicoBuilderTestCase extends TestCase {
+import static org.picocontainer.gems.PicoGemsBuilder.IMPL_HIDING;
+import org.picocontainer.gems.monitors.Log4JComponentMonitor;
+import org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor;
+
+public class PicoGemsBuilderTestCase extends TestCase {
 
     XStream xs;
 
@@ -16,7 +21,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithImplementationHiding() {
-        MutablePicoContainer mpc = new PicoBuilder().withHiddenImplementations().build();
+        MutablePicoContainer mpc = new PicoBuilder().withComponentAdapterFactories(IMPL_HIDING()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentAdapterFactory=org.picocontainer.gems.adapters.ImplementationHidingComponentAdapterFactory\n" +
@@ -30,7 +35,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithLog4JComponentMonitor() {
-        MutablePicoContainer mpc = new PicoBuilder().withLog4JMonitoring().build();
+        MutablePicoContainer mpc = new PicoBuilder().withMonitor(Log4JComponentMonitor.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
@@ -44,7 +49,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithCommonsLoggingComponentMonitor() {
-        MutablePicoContainer mpc = new PicoBuilder().withCommonsLoggingMonitoring().build();
+        MutablePicoContainer mpc = new PicoBuilder().withMonitor(CommonsLoggingComponentMonitor.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +

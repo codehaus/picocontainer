@@ -5,8 +5,10 @@ import com.thoughtworks.xstream.XStream;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.ComponentMonitor;
 
 import static org.picocontainer.gems.PicoGemsBuilder.IMPL_HIDING;
+import static org.picocontainer.gems.PicoGemsBuilder.LOG4J;
 import org.picocontainer.gems.monitors.Log4JComponentMonitor;
 import org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor;
 
@@ -36,6 +38,20 @@ public class PicoGemsBuilderTestCase extends TestCase {
 
     public void testWithLog4JComponentMonitor() {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(Log4JComponentMonitor.class).build();
+        String foo = simplifyRepresentation(mpc);
+        assertEquals("PICO\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "    cdiDelegate\n" +
+                "    sdiDelegate\n" +
+                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "  componentMonitor=org.picocontainer.gems.monitors.Log4JComponentMonitor\n" +
+                "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "PICO",foo);
+    }
+
+    public void testWithLog4JComponentMonitorByInstance() {
+        MutablePicoContainer mpc = new PicoBuilder().withMonitor(LOG4J()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +

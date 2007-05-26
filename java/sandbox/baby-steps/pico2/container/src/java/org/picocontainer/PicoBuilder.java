@@ -22,6 +22,8 @@ import org.picocontainer.alternatives.EmptyPicoContainer;
 
 import java.util.Stack;
 
+import com.sun.tools.doclets.internal.toolkit.builders.AbstractBuilder;
+
 public class PicoBuilder {
 
     public static ComponentAdapterFactory SDI() {
@@ -47,6 +49,7 @@ public class PicoBuilder {
 
     private PicoContainer parentContainer;
     private Class mpcClass = DefaultPicoContainer.class;
+    private ComponentMonitor componentMonitor;
 
     public PicoBuilder(PicoContainer parentContainer) {
         if (parentContainer == null) {
@@ -90,6 +93,7 @@ public class PicoBuilder {
             throw new AssignabilityRegistrationException(ComponentMonitor.class, cmClass);
         }
         componentMonitorClass = cmClass;
+        componentMonitor = null;
         return this;
     }
 
@@ -120,7 +124,11 @@ public class PicoBuilder {
             
         }
         temp.addComponent(ComponentAdapterFactory.class, lastCaf);
-        temp.addComponent(ComponentMonitor.class, componentMonitorClass);
+        if (componentMonitorClass == null) {
+            temp.addComponent(ComponentMonitor.class, componentMonitor);
+        } else {
+            temp.addComponent(ComponentMonitor.class, componentMonitorClass);
+        }
         temp.addComponent(LifecycleStrategy.class, lifecycleStrategyClass);
         temp.addComponent("mpc", mpcClass);
 
@@ -188,6 +196,12 @@ public class PicoBuilder {
 
     public PicoBuilder thisMutablePicoContainer(Class containerClass) {
         mpcClass = containerClass;
+        return this;
+    }
+
+    public PicoBuilder withMonitor(ComponentMonitor componentMonitor) {
+        this.componentMonitor = componentMonitor;
+        componentMonitorClass = null;
         return this;
     }
 }

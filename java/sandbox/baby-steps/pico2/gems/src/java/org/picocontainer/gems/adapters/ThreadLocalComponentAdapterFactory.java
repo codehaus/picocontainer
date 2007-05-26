@@ -20,7 +20,7 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.adapters.CachingComponentAdapter;
-import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.AbstractDecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
@@ -55,7 +55,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * </p>
  * @author J&ouml;rg Schaible
  */
-public class ThreadLocalComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+public class ThreadLocalComponentAdapterFactory extends AbstractDecoratingComponentAdapterFactory {
 
     /**
      * <code>ENSURE_THREAD_LOCALITY</code> is the constant for created {@link ComponentAdapter} instances, that ensure

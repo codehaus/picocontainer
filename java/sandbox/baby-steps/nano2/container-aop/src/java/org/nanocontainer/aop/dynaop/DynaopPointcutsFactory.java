@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
  * @author Stephen Molitor
  * @version $Revision$
  */
-public class DynaopPointcutsFactory extends AbstractPointcutsFactory {
+public class  DynaopPointcutsFactory extends AbstractPointcutsFactory {
 
     public ClassPointcut allClasses() {
         return new DynaopClassPointcut(Pointcuts.ALL_CLASSES);

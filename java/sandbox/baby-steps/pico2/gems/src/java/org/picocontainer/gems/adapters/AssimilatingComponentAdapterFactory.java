@@ -18,7 +18,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.AbstractDecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
@@ -32,7 +32,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * @author J&ouml;rg Schaible
  * @since 1.2
  */
-public class AssimilatingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+public class AssimilatingComponentAdapterFactory extends AbstractDecoratingComponentAdapterFactory {
 
     private final ProxyFactory proxyFactory;
     private final Class assimilationType;

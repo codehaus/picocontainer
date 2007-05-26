@@ -14,19 +14,25 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
 
-/**
- * @author Aslak Helles&oslash;y
- * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapterFactory for a more feature-rich version of the class
- * @since 1.2, moved from package {@link org.picocontainer.alternatives}
- */
-public class ImplementationHidingComponentAdapterFactory extends AbstractDecoratingComponentAdapterFactory {
+import java.io.Serializable;
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);
-        return new ImplementationHidingComponentAdapter(componentAdapter);
+public class AbstractDecoratingComponentAdapterFactory implements ComponentAdapterFactory, Serializable, DecoratingComponentAdapterFactory {
+
+    private ComponentAdapterFactory delegate;
+
+    public AbstractDecoratingComponentAdapterFactory forThis(ComponentAdapterFactory delegate) {
+        this.delegate = delegate;
+        return this;
     }
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey,
+                                                   Class componentImplementation,
+                                                   Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);
+    }
+
 }

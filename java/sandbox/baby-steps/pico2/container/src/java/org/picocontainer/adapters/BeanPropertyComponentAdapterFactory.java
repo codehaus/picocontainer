@@ -17,8 +17,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.adapters.AbstractDecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
@@ -31,7 +30,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * @version $Revision$
  * @since 1.0
  */
-public class BeanPropertyComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+public class BeanPropertyComponentAdapterFactory extends AbstractDecoratingComponentAdapterFactory {
     // var never used ? needed ?
     private Map<Object, BeanPropertyComponentAdapter> adapterCache = new HashMap<Object, BeanPropertyComponentAdapter>();
 

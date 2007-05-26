@@ -8,10 +8,10 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.AbstractDecoratingComponentAdapterFactory;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 
-public class ImplementationHidingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+public class ImplementationHidingComponentAdapterFactory extends AbstractDecoratingComponentAdapterFactory {
 
     public ImplementationHidingComponentAdapterFactory() {
         forThis(new AnyInjectionComponentAdapterFactory());

@@ -18,7 +18,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.AbstractDecoratingComponentAdapterFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
@@ -30,7 +30,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
-public class JMXExposingComponentAdapterFactory extends DecoratingComponentAdapterFactory {
+public class JMXExposingComponentAdapterFactory extends AbstractDecoratingComponentAdapterFactory {
 
     private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;

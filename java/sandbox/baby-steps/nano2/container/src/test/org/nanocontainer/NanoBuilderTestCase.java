@@ -8,12 +8,14 @@ import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 
 import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NanoBuilderTestCase extends TestCase {
 
@@ -83,6 +85,30 @@ public class NanoBuilderTestCase extends TestCase {
                 "      delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "",foo);
     }
+
+    public void testWithBogusCustomMonitorByClass() {
+        try {
+            new NanoBuilder().withMonitor(HashMap.class).build();
+            fail("should have barfed");
+        } catch (AssignabilityRegistrationException e) {
+            // expected
+        }
+    }
+
+    public void testWithImplementationHiding() {
+        NanoContainer nc = new NanoBuilder().withHiddenImplementations().build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
+                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
+                "    componentAdapterFactory=org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory\n" +
+                "      delegate=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "        cdiDelegate\n" +
+                "        sdiDelegate\n" +
+                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",foo);
+    }
+
 
     public void testWithStartableLifecycle() {
         NanoContainer nc = new NanoBuilder().withLifecycle().build();

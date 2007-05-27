@@ -40,4 +40,9 @@ public class NanoBuilder {
         picoBuilder.withMonitor(clazz);
         return this;
     }
+
+    public NanoBuilder withHiddenImplementations() {
+        picoBuilder.withHiddenImplementations();
+        return this;
+    }
 }

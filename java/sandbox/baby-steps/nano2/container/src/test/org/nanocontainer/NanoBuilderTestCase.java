@@ -10,6 +10,7 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
 
 import java.util.HashSet;
 import java.util.ArrayList;
@@ -55,6 +56,21 @@ public class NanoBuilderTestCase extends TestCase {
 
     public void testWithConsoleMonitor() {
         NanoContainer nc = new NanoBuilder().withConsoleMonitor().build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
+                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
+                "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "      cdiDelegate\n" +
+                "      sdiDelegate\n" +
+                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
+                "      delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "",foo);
+    }
+
+    public void testWithCustomMonitorByClass() {
+        NanoContainer nc = new NanoBuilder().withMonitor(ConsoleComponentMonitor.class).build();
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +

@@ -14,7 +14,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.util.Collections;
 
-import org.jruby.IRuby;
+import org.jruby.Ruby;
 import org.jruby.exceptions.RaiseException;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.runtime.builtin.IRubyObject;
@@ -23,6 +23,9 @@ import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.CachingComponentAdapterFactory;
+import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.alternatives.EmptyPicoContainer;
 
 /**
@@ -60,9 +63,9 @@ public class JRubyContainerBuilder extends ScriptedContainerBuilder {
         if (parentContainer == null) {
             parentContainer = new EmptyPicoContainer();
         }
-        parentContainer = new DefaultNanoContainer(getClassLoader(), parentContainer);
+        parentContainer = new DefaultNanoContainer(getClassLoader(), new DefaultPicoContainer(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), parentContainer));
 
-        IRuby ruby = JavaEmbedUtils.initialize(Collections.EMPTY_LIST);
+        Ruby ruby = JavaEmbedUtils.initialize(Collections.EMPTY_LIST);
         ruby.getLoadService().require("org/nanocontainer/script/jruby/nanobuilder");
         ruby.defineReadonlyVariable("$parent", JavaEmbedUtils.javaToRuby(ruby, parentContainer));
         ruby.defineReadonlyVariable("$assembly_scope", JavaEmbedUtils.javaToRuby(ruby, assemblyScope));
@@ -77,7 +80,7 @@ public class JRubyContainerBuilder extends ScriptedContainerBuilder {
             if (message.startsWith(MARKUP_EXCEPTION_PREFIX)) {
                 throw new NanoContainerMarkupException(message.substring(MARKUP_EXCEPTION_PREFIX.length()));
             } else {
-                throw new PicoCompositionException(message, re);
+                throw new PicoCompositionException(message, re);                                                       
             }
         }
     }

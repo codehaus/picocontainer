@@ -16,11 +16,13 @@
 module Nano
   Parameter = org.picocontainer.Parameter
   DefaultNanoContainer = org.nanocontainer.DefaultNanoContainer
+  DefaultPicoContainer = org.picocontainer.defaults.DefaultPicoContainer
   ComponentParameter = org.picocontainer.defaults.ComponentParameter
   ConstantParameter = org.picocontainer.defaults.ConstantParameter
   JRubyContainerBuilder = org.nanocontainer.script.jruby.JRubyContainerBuilder
   ClassPathElementHelper = org.nanocontainer.script.ClassPathElementHelper
   ComponentElementHelper = org.nanocontainer.script.ComponentElementHelper
+  ContainerElementHelper = org.nanocontainer.script.ContainerElementHelper
 
   MARKUP_EXCEPTION_PREFIX = JRubyContainerBuilder::MARKUP_EXCEPTION_PREFIX
 
@@ -156,7 +158,7 @@ module Nano
         args = [classloader, @caf]
         args.delete(nil)
         args << @parent if @parent || args.length == 2
-        container = @impl.new(*args)
+        container = ContainerElementHelper.makeNanoContainer(@caf, @parent, classloader)
         @parent.addChildContainer(container) if @parent
       end
       container.changeMonitor(@monitor) if @monitor && container.respond_to?(:changeMonitor)

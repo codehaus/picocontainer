@@ -129,15 +129,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/jruby/jruby/0.9.1-SNAPSHOT/jruby-0.9.1-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/groovy/groovy-all/1.0/groovy-all-1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -227,6 +218,15 @@
       <library>
         <CLASSES>
           <root url="jar://$M2_REPOSITORY$/com/thoughtworks/xstream/xstream/1.2.1/xstream-1.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/org/jruby/jruby-complete/1.0RC2/jruby-complete-1.0RC2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

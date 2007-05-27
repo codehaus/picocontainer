@@ -2,7 +2,11 @@ package org.nanocontainer.script.groovy;
 
 import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.alternatives.EmptyPicoContainer;
+import org.picocontainer.adapters.CachingComponentAdapterFactory;
+import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Paul Hammant
@@ -15,7 +19,7 @@ public class TestContainer extends DefaultNanoContainer {
     }
 
     public TestContainer(PicoContainer parent) {
-        super(TestContainer.class.getClassLoader(), parent);
+        super(TestContainer.class.getClassLoader(), new DefaultPicoContainer(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), parent));
     }
 
     public TestContainer() {

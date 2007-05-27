@@ -20,7 +20,6 @@ public class NanoBuilderTestCase extends TestCase {
 
     protected void setUp() throws Exception {
         xs = new XStream();
-        xs.alias("NANO", DefaultNanoContainer.class);
         xs.registerConverter(new Converter() {
             public boolean canConvert(Class aClass) {
                 return aClass.getName().equals("org.picocontainer.defaults.DefaultPicoContainer$OrderedComponentAdapterLifecycleManager") ||
@@ -41,27 +40,41 @@ public class NanoBuilderTestCase extends TestCase {
     }
 
     public void testBasic() {
-        NanoContainer mpc = new NanoBuilder().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("NANO\n" +
-                "  namedChildContainers\n" +
+        NanoContainer nc = new NanoBuilder().build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
-                "      delegate=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
-                "        cdiDelegate\n" +
-                "        sdiDelegate\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
-                "      componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "    lifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/NANO/delegate/lifecycleStrategy/componentMonitor\n" +
-                "NANO",foo);
+                "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "      cdiDelegate\n" +
+                "      sdiDelegate\n" +
+                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "",foo);
     }
+
+    public void testWithConsoleMonitor() {
+        NanoContainer nc = new NanoBuilder().withConsoleMonitor().build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
+                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
+                "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "      cdiDelegate\n" +
+                "      sdiDelegate\n" +
+                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
+                "      delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "",foo);
+    }
+
 
 
     private String simplifyRepresentation(MutablePicoContainer mpc) {
         String foo = xs.toXML(mpc);
         foo = foo.replace('$','_');
         foo = foo.replaceAll("/>","");
+        foo = foo.replaceAll("</org.nanocontainer.DefaultNanoContainer","");
         foo = foo.replaceAll("</","");
         foo = foo.replaceAll("<","");
         foo = foo.replaceAll(">","");
@@ -72,6 +85,7 @@ public class NanoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n    disposed","");
         foo = foo.replaceAll("\n    handler","");
         foo = foo.replaceAll("\n    children","");
+        foo = foo.replaceAll("\n  namedChildContainers","");
         foo = foo.replaceAll("\n  delegate\n","\n");
         foo = foo.replaceAll("\n    delegate\n","\n");
         foo = foo.replaceAll("\n      delegate\n","\n");
@@ -81,6 +95,7 @@ public class NanoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n    startedComponentAdapters","");
         foo = foo.replaceAll("\"class=","\"\nclass=");
         foo = foo.replaceAll("\n    componentAdapterFactory\n","\n");
+        foo = foo.replaceAll("\n    componentMonitor\n","\n");
         foo = foo.replaceAll("\n    lifecycleManager","");
         foo = foo.replaceAll("class=\"org.picocontainer.defaults.DefaultPicoContainer_1\"","");
         foo = foo.replaceAll("class=\"org.picocontainer.defaults.DefaultPicoContainer_OrderedComponentAdapterLifecycleManager\"","");

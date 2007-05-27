@@ -3,6 +3,7 @@ package org.nanocontainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.MutablePicoContainer;
+import com.thoughtworks.xstream.io.xml.xppdom.Xpp3DomBuilder;
 
 
 public class NanoBuilder {
@@ -21,6 +22,16 @@ public class NanoBuilder {
 
     public NanoBuilder withConsoleMonitor() {
         picoBuilder.withConsoleMonitor();
+        return this;
+    }
+
+    public NanoBuilder withLifecycle() {
+        picoBuilder.withLifecycle();
+        return this;
+    }
+
+    public NanoBuilder withReflectionLifecycle() {
+        picoBuilder.withReflectionLifecycle();
         return this;
     }
 }

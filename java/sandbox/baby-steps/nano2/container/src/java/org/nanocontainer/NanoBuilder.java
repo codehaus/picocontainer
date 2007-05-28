@@ -66,4 +66,19 @@ public class NanoBuilder {
         picoBuilder.withComponentAdapterFactories(factories);
         return this;
     }
+
+    public NanoBuilder withSetterInjection() {
+        picoBuilder.withSetterInjection();
+        return this;
+    }
+
+    public NanoBuilder withAnnotationInjection() {
+        picoBuilder.withAnnotationInjection();
+        return this;
+    }
+
+    public NanoBuilder withConstructorInjection() {
+        picoBuilder.withConstructorInjection();
+        return this;
+    }
 }

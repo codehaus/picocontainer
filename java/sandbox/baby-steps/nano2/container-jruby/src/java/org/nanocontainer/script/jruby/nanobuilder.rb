@@ -22,7 +22,7 @@ module Nano
   JRubyContainerBuilder = org.nanocontainer.script.jruby.JRubyContainerBuilder
   ClassPathElementHelper = org.nanocontainer.script.ClassPathElementHelper
   ComponentElementHelper = org.nanocontainer.script.ComponentElementHelper
-  ContainerElementHelper = org.nanocontainer.script.ContainerElementHelper
+  include_class 'org.nanocontainer.script.ContainerElementHelper'
 
   MARKUP_EXCEPTION_PREFIX = JRubyContainerBuilder::MARKUP_EXCEPTION_PREFIX
 
@@ -155,9 +155,6 @@ module Nano
       if @parent && !@caf && !@impl
         container = @parent.makeChildContainer
       else
-        args = [classloader, @caf]
-        args.delete(nil)
-        args << @parent if @parent || args.length == 2
         container = ContainerElementHelper.makeNanoContainer(@caf, @parent, classloader)
         @parent.addChildContainer(container) if @parent
       end

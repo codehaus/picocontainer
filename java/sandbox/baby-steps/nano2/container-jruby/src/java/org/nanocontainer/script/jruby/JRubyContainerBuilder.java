@@ -60,10 +60,10 @@ public class JRubyContainerBuilder extends ScriptedContainerBuilder {
     }
 
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
-
-        if ( parentContainer == null ){
-            parentContainer = new DefaultNanoContainer(getClassLoader(), new DefaultPicoContainer(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), new EmptyPicoContainer()));
+        if (parentContainer == null) {
+            parentContainer = new EmptyPicoContainer();
         }
+        parentContainer = new DefaultNanoContainer(getClassLoader(), new DefaultPicoContainer(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), parentContainer));
 
         Ruby ruby = JavaEmbedUtils.initialize(Collections.EMPTY_LIST);
         ruby.getLoadService().require("org/nanocontainer/script/jruby/nanobuilder");

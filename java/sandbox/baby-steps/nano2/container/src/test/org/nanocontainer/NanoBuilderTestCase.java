@@ -11,6 +11,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.alternatives.EmptyPicoContainer;
 import static org.picocontainer.PicoBuilder.CACHING;
 import static org.picocontainer.PicoBuilder.IMPL_HIDING;
 import static org.picocontainer.PicoBuilder.SDI;
@@ -143,7 +144,21 @@ public class NanoBuilderTestCase extends TestCase {
                 foo);
     }
 
+    public static class CustomParentcontainer extends EmptyPicoContainer {
+    }
 
+    public void testWithCustomParentContainer() {
+        NanoContainer nc = new NanoBuilder(new CustomParentcontainer()).build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
+                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
+                "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "      cdiDelegate\n" +
+                "      sdiDelegate\n" +
+                "    parent=org.nanocontainer.NanoBuilderTestCase_CustomParentcontainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n", foo);
+    }
 
     public void testWithStartableLifecycle() {
         NanoContainer nc = new NanoBuilder().withLifecycle().build();

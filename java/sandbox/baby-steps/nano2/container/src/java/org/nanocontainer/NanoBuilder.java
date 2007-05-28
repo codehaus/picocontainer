@@ -4,6 +4,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import com.thoughtworks.xstream.io.xml.xppdom.Xpp3DomBuilder;
@@ -12,8 +13,16 @@ import com.thoughtworks.xstream.io.xml.xppdom.Xpp3DomBuilder;
 public class NanoBuilder {
 
     private Class ncClass = DefaultNanoContainer.class;
-    private PicoBuilder picoBuilder = new PicoBuilder();
+    private PicoBuilder picoBuilder;
     private ClassLoader classLoader = DefaultNanoContainer.class.getClassLoader();
+
+    public NanoBuilder(PicoContainer parentcontainer) {
+        picoBuilder = new PicoBuilder(parentcontainer);
+    }
+
+    public NanoBuilder() {
+        picoBuilder = new PicoBuilder();
+    }
 
     public NanoContainer build() {
         DefaultPicoContainer temp = new DefaultPicoContainer();

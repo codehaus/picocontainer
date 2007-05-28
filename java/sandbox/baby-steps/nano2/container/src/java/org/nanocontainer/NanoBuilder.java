@@ -96,4 +96,9 @@ public class NanoBuilder {
         ncClass = nanoContainerClass;
         return this;
     }
+
+    public NanoBuilder thisPicoContainer(Class picoContainerClass) {
+        picoBuilder.thisMutablePicoContainer(picoContainerClass);
+        return this;
+    }
 }

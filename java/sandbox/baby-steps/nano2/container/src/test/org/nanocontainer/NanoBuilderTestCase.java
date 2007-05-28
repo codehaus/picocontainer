@@ -310,6 +310,26 @@ public class NanoBuilderTestCase extends TestCase {
         }
     }
 
+    public void testWithCustomNanoAndPicoContainer() {
+        NanoContainer nc = new NanoBuilder().thisNanoContainer(TestNanoContainer.class).thisPicoContainer(TestPicoContainer.class).build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.NanoBuilderTestCase_-TestNanoContainer\n" +
+                "  delegate=org.nanocontainer.NanoBuilderTestCase_TestPicoContainer\n" +
+                "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "      cdiDelegate\n" +
+                "      sdiDelegate\n" +
+                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "org.nanocontainer.NanoBuilderTestCase_-TestNanoContainer",
+                foo);
+    }
+
+    public static class TestPicoContainer extends DefaultPicoContainer {
+        public TestPicoContainer(ComponentAdapterFactory caf, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+            super(caf, monitor, lifecycleStrategy, parent);
+        }
+    }
 
 
     private String simplifyRepresentation(MutablePicoContainer mpc) {

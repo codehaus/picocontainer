@@ -91,4 +91,9 @@ public class NanoBuilder {
         picoBuilder.withThreadSafety();
         return this;
     }
+
+    public NanoBuilder thisNanoContainer(Class nanoContainerClass) {
+        ncClass = nanoContainerClass;
+        return this;
+    }
 }

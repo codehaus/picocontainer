@@ -9,8 +9,12 @@ import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.alternatives.EmptyPicoContainer;
 import static org.picocontainer.PicoBuilder.CACHING;
 import static org.picocontainer.PicoBuilder.IMPL_HIDING;
@@ -284,6 +288,27 @@ public class NanoBuilderTestCase extends TestCase {
                 foo);
     }
 
+    public void testWithCustomNanoContainer() {
+        NanoContainer nc = new NanoBuilder().thisNanoContainer(TestNanoContainer.class).build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.NanoBuilderTestCase_-TestNanoContainer\n" +
+                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
+                "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "      cdiDelegate\n" +
+                "      sdiDelegate\n" +
+                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "org.nanocontainer.NanoBuilderTestCase_-TestNanoContainer",
+                foo);
+    }
+
+
+    public static class TestNanoContainer extends DefaultNanoContainer {
+        public TestNanoContainer(ClassLoader classLoader, MutablePicoContainer delegate) {
+            super(classLoader, delegate);
+        }
+    }
 
 
 

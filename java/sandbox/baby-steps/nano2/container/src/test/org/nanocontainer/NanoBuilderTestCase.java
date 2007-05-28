@@ -218,6 +218,34 @@ public class NanoBuilderTestCase extends TestCase {
                 foo);
     }
 
+    public void testWithCachingImplementationHidingAndSetterDI() {
+        NanoContainer nc = new NanoBuilder().withCaching().withHiddenImplementations().withSetterInjection().build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
+                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
+                "    componentAdapterFactory=org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
+                "      delegate=org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory\n" +
+                "        delegate=org.picocontainer.adapters.SetterInjectionComponentAdapterFactory\n" +
+                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
+                foo);
+    }
+
+    public void testWithThreadSafety() {
+        NanoContainer nc = new NanoBuilder().withThreadSafety().build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
+                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
+                "    componentAdapterFactory=org.picocontainer.adapters.SynchronizedComponentAdapterFactory\n" +
+                "      delegate=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "        cdiDelegate\n" +
+                "        sdiDelegate\n" +
+                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
+                foo);
+    }
 
     public void testWithStartableLifecycle() {
         NanoContainer nc = new NanoBuilder().withLifecycle().build();

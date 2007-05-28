@@ -81,4 +81,14 @@ public class NanoBuilder {
         picoBuilder.withConstructorInjection();
         return this;
     }
+
+    public NanoBuilder withCaching() {
+        picoBuilder.withCaching();
+        return this;
+    }
+
+    public NanoBuilder withThreadSafety() {
+        picoBuilder.withThreadSafety();
+        return this;
+    }
 }

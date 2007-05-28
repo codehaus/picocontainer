@@ -61,6 +61,43 @@ public class NanoBuilderTestCase extends TestCase {
                 "",foo);
     }
 
+    public void testWithStartableLifecycle() {
+        NanoContainer nc = new NanoBuilder().withLifecycle().build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
+                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
+                "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "      cdiDelegate\n" +
+                "      sdiDelegate\n" +
+                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
+                "      componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "    lifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.nanocontainer.DefaultNanoContainer/delegate/lifecycleStrategy/componentMonitor\n",
+                foo);
+    }
+
+    public void testWithReflectionLifecycle() {
+        NanoContainer nc = new NanoBuilder().withReflectionLifecycle().build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
+                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
+                "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "      cdiDelegate\n" +
+                "      sdiDelegate\n" +
+                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.ReflectionLifecycleStrategy\n" +
+                "      methodNames\n" +
+                "        stringstartstring\n" +
+                "        stringstopstring\n" +
+                "        stringdisposestring\n" +
+                "      methodNames\n" +
+                "      componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "    lifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.nanocontainer.DefaultNanoContainer/delegate/lifecycleStrategy/componentMonitor\n",
+                foo);
+    }
+    
     public void testWithConsoleMonitor() {
         NanoContainer nc = new NanoBuilder().withConsoleMonitor().build();
         String foo = simplifyRepresentation(nc);
@@ -247,42 +284,7 @@ public class NanoBuilderTestCase extends TestCase {
                 foo);
     }
 
-    public void testWithStartableLifecycle() {
-        NanoContainer nc = new NanoBuilder().withLifecycle().build();
-        String foo = simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
-                "      cdiDelegate\n" +
-                "      sdiDelegate\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
-                "      componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "    lifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.nanocontainer.DefaultNanoContainer/delegate/lifecycleStrategy/componentMonitor\n",
-                foo);
-    }
 
-    public void testWithReflectionLifecycle() {
-        NanoContainer nc = new NanoBuilder().withReflectionLifecycle().build();
-        String foo = simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
-                "      cdiDelegate\n" +
-                "      sdiDelegate\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.ReflectionLifecycleStrategy\n" +
-                "      methodNames\n" +
-                "        stringstartstring\n" +
-                "        stringstopstring\n" +
-                "        stringdisposestring\n" +
-                "      methodNames\n" +
-                "      componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "    lifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.nanocontainer.DefaultNanoContainer/delegate/lifecycleStrategy/componentMonitor\n",
-                foo);
-    }
 
 
     private String simplifyRepresentation(MutablePicoContainer mpc) {

@@ -11,6 +11,10 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import static org.picocontainer.PicoBuilder.CACHING;
+import static org.picocontainer.PicoBuilder.IMPL_HIDING;
+import static org.picocontainer.PicoBuilder.SDI;
+import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 
 import java.util.HashSet;
@@ -108,6 +112,37 @@ public class NanoBuilderTestCase extends TestCase {
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",foo);
     }
+
+
+    public void testWithImplementationHidingInstance() {
+        NanoContainer nc = new NanoBuilder().withComponentAdapterFactory(new ImplementationHidingComponentAdapterFactory()).build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
+                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
+                "    componentAdapterFactory=org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory\n" +
+                "      delegate=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "        cdiDelegate\n" +
+                "        sdiDelegate\n" +
+                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
+                foo);
+    }
+
+    public void testWithCafsListChainThingy() {
+        NanoContainer nc = new NanoBuilder().withComponentAdapterFactories(CACHING(), IMPL_HIDING(), SDI()).build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
+                "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
+                "    componentAdapterFactory=org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
+                "      delegate=org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory\n" +
+                "        delegate=org.picocontainer.adapters.SetterInjectionComponentAdapterFactory\n" +
+                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
+                foo);
+    }
+
 
 
     public void testWithStartableLifecycle() {

@@ -58,7 +58,6 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         createGroovyClass();
     }
 
-    // TODO: This should really return NanoContainer using a nano variable in the script. --Aslak
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
 
         Binding binding = new Binding();

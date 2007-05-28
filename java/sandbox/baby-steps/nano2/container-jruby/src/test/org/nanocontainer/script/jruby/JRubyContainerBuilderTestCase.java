@@ -422,7 +422,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertNotNull(pico.getComponent(B.class));
     }
 
-    public void FAILING_testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
+    public void testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
         DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory());
         Reader script = new StringReader("container(:parent => $parent)\n");
 

@@ -491,8 +491,6 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     public void testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
         DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory() );
         Reader script = new StringReader("" +
-                "package org.nanocontainer.script.groovy\n" +
-                "import org.nanocontainer.testmodel.*\n" +
                 "nano = builder.container(parent:parent) {\n" +
                 "}\n");
 

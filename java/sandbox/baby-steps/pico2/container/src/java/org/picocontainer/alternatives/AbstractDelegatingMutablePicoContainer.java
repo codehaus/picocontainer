@@ -102,7 +102,7 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         delegate.dispose();
     }
 
-    public boolean addChildContainer(PicoContainer child) {
+    public MutablePicoContainer addChildContainer(PicoContainer child) {
         return delegate.addChildContainer(child);
     }
 

@@ -549,16 +549,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return pc;
     }
 
-    public boolean addChildContainer(PicoContainer child) {
+    public MutablePicoContainer addChildContainer(PicoContainer child) {
         if (children.add(child)) {
             // @todo Should only be added if child container has also be started
             if (started) {
                 childrenStarted.add(child.hashCode());
             }
-            return true;
-        } else {
-            return false;
         }
+        return this;
     }
 
     public boolean removeChildContainer(PicoContainer child) {

@@ -117,10 +117,10 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * as a consequence of calling this method.
      * 
      * @param child the child container
-     * @return <code>true</code> if the child container was not already in.
+     * @return the same instance of MutablePicoContainer
      * @since 1.1                                           
      */
-    boolean addChildContainer(PicoContainer child);
+    MutablePicoContainer addChildContainer(PicoContainer child);
 
     /**
      * Remove a child container from this container. It will not change the child's view of a parent.

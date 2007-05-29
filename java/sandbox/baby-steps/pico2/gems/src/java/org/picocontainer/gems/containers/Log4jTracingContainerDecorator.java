@@ -15,7 +15,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.picocontainer.ComponentAdapter;
@@ -137,7 +136,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 	 * @return
 	 * @see org.picocontainer.MutablePicoContainer#addChildContainer(org.picocontainer.PicoContainer)
 	 */
-	public boolean addChildContainer(final PicoContainer child) {
+	public MutablePicoContainer addChildContainer(final PicoContainer child) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Adding child container: " + child + " to container " + delegate);
 		}

@@ -130,9 +130,9 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 	public void testAddChildContainer() {
 		MutablePicoContainer childPico = new DefaultPicoContainer();
 		picoMock.expects(once()).method("addChildContainer")
-			.with(same(childPico)).will(returnValue(true));
+			.with(same(childPico)).will(returnValue(tracingDecorator));
 		
-		assertTrue(tracingDecorator.addChildContainer(childPico));
+		assertEquals(tracingDecorator, tracingDecorator.addChildContainer(childPico));
 		String result = logOutput.toString();
 		assertNotNull(result);
 		assertTrue(result.contains("Adding child container: "));

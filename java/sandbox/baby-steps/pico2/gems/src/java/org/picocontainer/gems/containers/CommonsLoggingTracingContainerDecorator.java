@@ -2,7 +2,6 @@ package org.picocontainer.gems.containers;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -98,7 +97,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	 * @return
 	 * @see org.picocontainer.MutablePicoContainer#addChildContainer(org.picocontainer.PicoContainer)
 	 */
-	public boolean addChildContainer(final PicoContainer child) {
+	public MutablePicoContainer addChildContainer(final PicoContainer child) {
 		if (log.isDebugEnabled()) {
 			log.debug("Adding child container: " + child + " to container " + delegate);
 		}

@@ -622,7 +622,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         StringBuffer sb = (StringBuffer) parent.getComponents(StringBuffer.class).get(0);
 
         final MutablePicoContainer child = createPicoContainer(parent);
-        assertTrue(parent.addChildContainer(child));
+        assertEquals(parent, parent.addChildContainer(child));
         child.addComponent(LifeCycleMonitoring.class);
         assertTrue(parent.removeChildContainer(child));
         parent.start();

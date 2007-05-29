@@ -271,12 +271,10 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         return componentClassLoader;
     }
 
-    public boolean addChildContainer(PicoContainer child) {
-        boolean result = getDelegate().addChildContainer(child);
-
-
+    public MutablePicoContainer addChildContainer(PicoContainer child) {
+        getDelegate().addChildContainer(child);
         namedChildContainers.put("containers" + namedChildContainers.size(), child);
-        return result;
+        return this;
     }
 
     public void addChildContainer(String name, PicoContainer child) {

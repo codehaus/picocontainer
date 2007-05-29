@@ -91,7 +91,14 @@ module Nano
   end
 
   class Container
-    def initialize(options = {}, &block)
+    def initialize(*cafs)
+      unless cafs.last.is_a?(Hash)
+        options = {}
+        cafs << options
+      else
+        options = cafs.last
+      end
+
       @impl     = DefaultNanoContainer
       @parent   = options[:parent]
       @caf      = options[:component_adapter_factory]
@@ -119,14 +126,21 @@ module Nano
       @comps << Component.new(options)
     end
 
-    def container(options = {}, &block)
+    def container(*cafs, &block)
+      unless cafs.last.is_a?(Hash)
+        options = {}
+        cafs << options
+      else
+        options = cafs.last
+      end
+
       if !options[:parent].nil? && options[:parent].equal?($parent)
           raise "#{MARKUP_EXCEPTION_PREFIX}You can't explicitly specify a parent in a child element."
       end
       if options[:parent].nil?
         options[:parent] = @container
       end
-      container = Container.new(options)
+      container = Container.new(*cafs)
       container.build(&block)
       container
     end

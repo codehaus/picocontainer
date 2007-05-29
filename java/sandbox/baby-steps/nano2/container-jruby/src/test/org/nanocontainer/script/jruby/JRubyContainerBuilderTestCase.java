@@ -251,7 +251,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "}");
 
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
-        StringWriter writer = (StringWriter) pico.getComponent(StringWriter.class);
+        StringWriter writer = pico.getComponent(StringWriter.class);
         assertTrue(writer.toString().length() > 0);
     }
 

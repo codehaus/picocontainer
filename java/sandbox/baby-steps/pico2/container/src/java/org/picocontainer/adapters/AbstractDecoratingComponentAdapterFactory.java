@@ -25,7 +25,7 @@ public class AbstractDecoratingComponentAdapterFactory implements ComponentAdapt
 
     private ComponentAdapterFactory delegate;
 
-    public AbstractDecoratingComponentAdapterFactory forThis(ComponentAdapterFactory delegate) {
+    public ComponentAdapterFactory forThis(ComponentAdapterFactory delegate) {
         this.delegate = delegate;
         return this;
     }

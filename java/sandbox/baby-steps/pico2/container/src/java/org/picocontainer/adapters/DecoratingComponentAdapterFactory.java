@@ -9,6 +9,6 @@ import org.picocontainer.defaults.ComponentAdapterFactory;
  * Time: 6:15:58 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface DecoratingComponentAdapterFactory {
-    AbstractDecoratingComponentAdapterFactory forThis(ComponentAdapterFactory delegate);
+public interface DecoratingComponentAdapterFactory extends ComponentAdapterFactory {
+    ComponentAdapterFactory forThis(ComponentAdapterFactory delegate);
 }

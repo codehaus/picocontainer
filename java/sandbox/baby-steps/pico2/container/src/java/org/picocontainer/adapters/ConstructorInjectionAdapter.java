@@ -23,7 +23,6 @@ import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
-import org.picocontainer.defaults.TooManySatisfiableConstructorsException;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 
 import java.lang.reflect.Constructor;
@@ -190,7 +189,7 @@ public class ConstructorInjectionAdapter extends InjectingAdapter {
             }
         }
         if (!conflicts.isEmpty()) {
-            throw new TooManySatisfiableConstructorsException(getComponentImplementation(), conflicts);
+            throw new PicoIntrospectionException(conflicts.size() + " satisfiable constructos is too many for '"+getComponentImplementation()+"'. Constructor List:" + conflicts.toString().replace(getComponentImplementation().getName(),"<init>").replace("public <i","<i"));
         } else if (greediestConstructor == null && !unsatisfiableDependencyTypes.isEmpty()) {
             throw new UnsatisfiableDependenciesException(this, unsatisfiedDependencyType, unsatisfiableDependencyTypes, container);
         } else if (greediestConstructor == null) {

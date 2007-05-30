@@ -14,9 +14,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.defaults.TooManySatisfiableConstructorsException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -72,13 +72,13 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
     }
 
 
-    public void testStringWorks() throws PicoException, PicoRegistrationException {
+    public void testStringWorks() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
         pico.addComponent(String.class);
         assertEquals("", pico.getComponent(String.class));
     }
 
-    public void testMultiWithOnlySmallSatisfiedDependencyWorks() throws PicoException, PicoRegistrationException {
+    public void testMultiWithOnlySmallSatisfiedDependencyWorks() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
         pico.addComponent(Multi.class);
         pico.addComponent(One.class);
@@ -88,18 +88,18 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
         assertEquals("three one", multi.message);
     }
 
-    public void testMultiWithBothSatisfiedDependencyWorks() throws PicoException, PicoRegistrationException {
+    public void testMultiWithBothSatisfiedDependencyWorks() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
         pico.addComponent(Multi.class);
         pico.addComponent(One.class);
         pico.addComponent(Two.class);
         pico.addComponent(Three.class);
 
-        Multi multi = (Multi) pico.getComponent(Multi.class);
+        Multi multi = pico.getComponent(Multi.class);
         assertEquals("one two three", multi.message);
     }
 
-    public void testMultiWithTwoEquallyBigSatisfiedDependenciesFails() throws PicoException, PicoRegistrationException {
+    public void testMultiWithTwoEquallyBigSatisfiedDependenciesFails() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
         pico.addComponent(Multi.class);
         pico.addComponent(One.class);
@@ -108,31 +108,22 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
         try {
             pico.getComponent(Multi.class);
             fail();
-        } catch (TooManySatisfiableConstructorsException e) {
-            assertTrue(e.getMessage().indexOf("Three") == -1);
-            assertEquals(3, e.getConstructors().size());
-            assertEquals(Multi.class, e.getForImplementationClass());
+        } catch (PicoIntrospectionException e) {
+            assertEquals("3 satisfiable constructos is too many for 'class org.picocontainer.tck.AbstractMultipleConstructorTestCase$Multi'. Constructor List:[<init>(), <init>(org.picocontainer.tck.AbstractMultipleConstructorTestCase$One,org.picocontainer.tck.AbstractMultipleConstructorTestCase$Two), <init>(org.picocontainer.tck.AbstractMultipleConstructorTestCase$Two,org.picocontainer.tck.AbstractMultipleConstructorTestCase$One)]",
+                    e.getMessage());
         }
     }
 
-    public void testMultiWithSatisfyingDependencyAndParametersWorks() throws PicoException, PicoRegistrationException {
+    public void testMultiWithSatisfyingDependencyAndParametersWorks() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
-        pico.addComponent("MultiOneTwo", Multi.class, new Parameter[]{
-            ComponentParameter.DEFAULT,
-            new ComponentParameter("Two"),
-        });
-        pico.addComponent("MultiTwoOne", Multi.class, new Parameter[]{
-            new ComponentParameter("Two"),
-            ComponentParameter.DEFAULT,
-        });
-        pico.addComponent("MultiOneString", Multi.class, new Parameter[]{
-            ComponentParameter.DEFAULT,
-            new ConstantParameter(""),
-        });
-        pico.addComponent("MultiOneInt", Multi.class, new Parameter[]{
-            ComponentParameter.DEFAULT,
-            new ConstantParameter(new Integer(5)),
-        });
+        pico.addComponent("MultiOneTwo", Multi.class, ComponentParameter.DEFAULT,
+                new ComponentParameter("Two"));
+        pico.addComponent("MultiTwoOne", Multi.class, new ComponentParameter("Two"),
+                ComponentParameter.DEFAULT);
+        pico.addComponent("MultiOneString", Multi.class, ComponentParameter.DEFAULT,
+                new ConstantParameter(""));
+        pico.addComponent("MultiOneInt", Multi.class, ComponentParameter.DEFAULT,
+                new ConstantParameter(5));
         pico.addComponent("MultiNone", Multi.class, Parameter.ZERO);
         pico.addComponent(One.class);
         pico.addComponent("Two", Two.class);

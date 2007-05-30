@@ -16,7 +16,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.AbstractDecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.AbstractBehaviorDecorator;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
@@ -26,7 +26,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Revision$
  */
-public class CachingComponentAdapterFactory extends AbstractDecoratingComponentAdapterFactory {
+public class CachingComponentAdapterFactory extends AbstractBehaviorDecorator {
 
     public CachingComponentAdapterFactory() {
         forThis(new AnyInjectionComponentAdapterFactory());

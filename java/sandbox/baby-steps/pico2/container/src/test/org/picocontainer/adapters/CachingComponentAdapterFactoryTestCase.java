@@ -15,7 +15,7 @@ import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.adapters.CachingComponentAdapterFactory;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.ComponentCharacteristics;
 
 import java.util.Map;
@@ -30,7 +30,7 @@ public class CachingComponentAdapterFactoryTestCase extends AbstractComponentAda
         picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
     }
 
-    protected ComponentAdapterFactory createComponentAdapterFactory() {
+    protected ComponentFactory createComponentAdapterFactory() {
         return new CachingComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory());
     }
 

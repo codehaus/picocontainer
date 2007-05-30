@@ -14,18 +14,18 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
 
 import java.io.Serializable;
 
-public class AbstractDecoratingComponentAdapterFactory implements ComponentAdapterFactory, Serializable, DecoratingComponentAdapterFactory {
+public class AbstractBehaviorDecorator implements ComponentFactory, Serializable, BehaviorDecorator {
 
-    private ComponentAdapterFactory delegate;
+    private ComponentFactory delegate;
 
-    public ComponentAdapterFactory forThis(ComponentAdapterFactory delegate) {
+    public ComponentFactory forThis(ComponentFactory delegate) {
         this.delegate = delegate;
         return this;
     }

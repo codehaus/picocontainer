@@ -4,7 +4,7 @@ package org.picocontainer.gems.adapters;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.CachingComponentAdapterFactory;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -19,8 +19,8 @@ import java.lang.reflect.InvocationTargetException;
 
 public class ImplementationHidingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
 
-    private ComponentAdapterFactory implementationHidingComponentAdapterFactory = new ImplementationHidingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory());
-    private ComponentAdapterFactory cachingComponentAdapterFactory = new CachingComponentAdapterFactory().forThis(implementationHidingComponentAdapterFactory);
+    private ComponentFactory implementationHidingComponentAdapterFactory = new ImplementationHidingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory());
+    private ComponentFactory cachingComponentAdapterFactory = new CachingComponentAdapterFactory().forThis(implementationHidingComponentAdapterFactory);
 
     public void testComponentRegisteredWithInterfaceKeyOnlyImplementsThatInterfaceUsingStandardProxyfactory() {
 
@@ -66,7 +66,7 @@ public class ImplementationHidingComponentAdapterFactoryTestCase extends Abstrac
         assertFalse(list2.contains("Hello"));
     }
 
-    protected ComponentAdapterFactory createComponentAdapterFactory() {
+    protected ComponentFactory createComponentAdapterFactory() {
         return cachingComponentAdapterFactory;
     }
 

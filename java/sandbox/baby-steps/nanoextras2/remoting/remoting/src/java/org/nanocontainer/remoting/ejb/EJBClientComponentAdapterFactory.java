@@ -21,7 +21,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.gems.adapters.ThreadLocalComponentAdapter;
 
@@ -30,10 +30,10 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 
 /**
- * {@link ComponentAdapterFactory}for EJB components. The instantiated components are cached for each {@link Thread}.
+ * {@link ComponentFactory}for EJB components. The instantiated components are cached for each {@link Thread}.
  * @author J&ouml;rg Schaible
  */
-public class EJBClientComponentAdapterFactory implements ComponentAdapterFactory {
+public class EJBClientComponentAdapterFactory implements ComponentFactory {
 
     private final Hashtable environment;
     private final boolean earlyBinding;
@@ -77,7 +77,7 @@ public class EJBClientComponentAdapterFactory implements ComponentAdapterFactory
      * Creates a {@link ComponentAdapter} for EJB objects.
      * @param componentKey the key used to lookup the {@link InitialContext}.
      * @param componentImplementation the home interface.
-     * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.defaults.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
+     * @see org.picocontainer.defaults.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.defaults.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
      * @return Returns the created {@link ComponentAdapter}
      * @throws PicoIntrospectionException if the home interface of the EJB could not instanciated
      * @throws AssignabilityRegistrationException if the <code>componentImplementation</code> does not extend

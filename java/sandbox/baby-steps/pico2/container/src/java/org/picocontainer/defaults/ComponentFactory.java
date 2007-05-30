@@ -19,7 +19,7 @@ import org.picocontainer.ComponentMonitor;
  * <p/>
  * A addComponent addAdapter factory is responsible for creating
  * {@link ComponentAdapter} addComponent adapters. The main use of the addComponent addAdapter factory is
- * inside {@link DefaultPicoContainer#DefaultPicoContainer(ComponentAdapterFactory)}, where it can
+ * inside {@link DefaultPicoContainer#DefaultPicoContainer(ComponentFactory)}, where it can
  * be used to customize the default addComponent addAdapter that is used when none is specified
  * explicitly.
  * </p>
@@ -28,7 +28,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public interface ComponentAdapterFactory {
+public interface ComponentFactory {
 
     /**
      * Create a new addComponent addAdapter based on the specified arguments.

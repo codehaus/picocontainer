@@ -20,7 +20,7 @@ import org.nanocontainer.aop.defaults.AspectsComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.CachingComponentAdapterFactory;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
@@ -33,23 +33,23 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 public class DynaopAspectablePicoContainerFactory implements AspectablePicoContainerFactory {
 
     public AspectablePicoContainer createContainer(Class containerClass, AspectsManager aspectsManager,
-                                                   ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
+                                                   ComponentFactory componentAdapterFactory, PicoContainer parent) {
 
-        ComponentAdapterFactory aspectsComponentAdapterFactory = new AspectsComponentAdapterFactory(aspectsManager).forThis(componentAdapterFactory);
+        ComponentFactory aspectsComponentAdapterFactory = new AspectsComponentAdapterFactory(aspectsManager).forThis(componentAdapterFactory);
         MutablePicoContainer pico = createMutablePicoContainer(containerClass, aspectsComponentAdapterFactory, parent);
         return mixinAspectablePicoContainer(aspectsManager, pico);
     }
 
     public AspectablePicoContainer createContainer(Class containerClass,
-                                                   ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
+                                                   ComponentFactory componentAdapterFactory, PicoContainer parent) {
         return createContainer(containerClass, new DynaopAspectsManager(), componentAdapterFactory, parent);
     }
 
-    public AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
+    public AspectablePicoContainer createContainer(ComponentFactory componentAdapterFactory, PicoContainer parent) {
         return createContainer(DefaultPicoContainer.class, componentAdapterFactory, parent);
     }
 
-    public AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory) {
+    public AspectablePicoContainer createContainer(ComponentFactory componentAdapterFactory) {
         return createContainer(componentAdapterFactory, null);
     }
 
@@ -69,11 +69,11 @@ public class DynaopAspectablePicoContainerFactory implements AspectablePicoConta
         return makeChildContainer(new DynaopAspectsManager(), parent);
     }
     
-    private MutablePicoContainer createMutablePicoContainer(Class containerClass, ComponentAdapterFactory caFactory,
+    private MutablePicoContainer createMutablePicoContainer(Class containerClass, ComponentFactory caFactory,
                                                       PicoContainer parent) {
         MutablePicoContainer temp = new DefaultPicoContainer();
         temp.addComponent(containerClass);
-        temp.addComponent(ComponentAdapterFactory.class, caFactory);
+        temp.addComponent(ComponentFactory.class, caFactory);
         if (parent != null) {
             temp.addComponent(PicoContainer.class, parent);
         }

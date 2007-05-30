@@ -16,7 +16,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
-import org.picocontainer.adapters.AbstractDecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.AbstractBehaviorDecorator;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
@@ -30,7 +30,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * @version $Revision$
  * @see HotSwappingComponentAdapter
  */
-public class HotSwappingComponentAdapterFactory extends AbstractDecoratingComponentAdapterFactory {
+public class HotSwappingComponentAdapterFactory extends AbstractBehaviorDecorator {
 
     public HotSwappingComponentAdapterFactory() {
         forThis(new AnyInjectionComponentAdapterFactory());

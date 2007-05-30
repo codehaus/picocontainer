@@ -18,26 +18,25 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.AbstractDecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.AbstractBehaviorDecorator;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
 
 
 /**
- * {@link ComponentAdapterFactory} that instantiates {@link JMXExposingComponentAdapter} instances.
+ * {@link ComponentFactory} that instantiates {@link JMXExposingComponentAdapter} instances.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
-public class JMXExposingComponentAdapterFactory extends AbstractDecoratingComponentAdapterFactory {
+public class JMXExposingComponentAdapterFactory extends AbstractBehaviorDecorator {
 
     private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;
 
     /**
      * Construct a JMXExposingComponentAdapterFactory.
-     * @param delegate The delegated {@link ComponentAdapterFactory}.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
      * @param providers An array with providers for converting the addComponent instance into a
      *            {@link javax.management.DynamicMBean}.
@@ -59,7 +58,6 @@ public class JMXExposingComponentAdapterFactory extends AbstractDecoratingCompon
      * Construct a JMXExposingComponentAdapterFactory. This instance uses a {@link DynamicMBeanComponentProvider} as
      * default to register any addComponent instance in the {@link MBeanServer}, that is already a
      * {@link javax.management.DynamicMBean}.
-     * @param delegate The delegated {@link ComponentAdapterFactory}.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
      *             instances is null.
@@ -73,7 +71,7 @@ public class JMXExposingComponentAdapterFactory extends AbstractDecoratingCompon
     /**
      * Retrieve a {@link ComponentAdapter}. Wrap the instance retrieved by the delegate with an instance of a
      * {@link JMXExposingComponentAdapter}.
-     * @see org.picocontainer.defaults.ComponentAdapterFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.defaults.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
+     * @see org.picocontainer.defaults.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.defaults.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
      */
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter[] parameters)

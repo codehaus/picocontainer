@@ -29,7 +29,7 @@ import org.picocontainer.adapters.BeanPropertyComponentAdapter;
 import org.picocontainer.adapters.BeanPropertyComponentAdapterFactory;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.DecoratingComponentAdapter;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -151,7 +151,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         }
     }
 
-    protected ComponentAdapterFactory createComponentAdapterFactory() {
+    protected ComponentFactory createComponentAdapterFactory() {
         return new BeanPropertyComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory());
     }
 

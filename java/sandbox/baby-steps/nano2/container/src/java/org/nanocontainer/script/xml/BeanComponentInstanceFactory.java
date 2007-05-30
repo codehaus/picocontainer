@@ -16,7 +16,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.BeanPropertyComponentAdapter;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -54,7 +54,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
 
     private ComponentAdapter createComponentAdapter(String className, ClassLoader classLoader)  {
         Class implementation = loadClass(classLoader, className);
-        ComponentAdapterFactory factory = new AnyInjectionComponentAdapterFactory();
+        ComponentFactory factory = new AnyInjectionComponentAdapterFactory();
         return factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new ComponentCharacteristic(), className, implementation);
     }
 

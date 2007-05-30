@@ -1,7 +1,7 @@
 package org.nanocontainer.script;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 
 import java.util.Map;
 
@@ -11,7 +11,7 @@ import java.util.Map;
  * @version $Revision$
  */
 public class NullNodeBuilderDecorationDelegate implements NodeBuilderDecorationDelegate {
-    public ComponentAdapterFactory decorate(ComponentAdapterFactory componentAdapterFactory, Map attributes) {
+    public ComponentFactory decorate(ComponentFactory componentAdapterFactory, Map attributes) {
         return componentAdapterFactory;
     }
 

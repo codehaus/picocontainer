@@ -9,10 +9,9 @@ import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoBuilder;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.alternatives.EmptyPicoContainer;
@@ -326,7 +325,7 @@ public class NanoBuilderTestCase extends TestCase {
     }
 
     public static class TestPicoContainer extends DefaultPicoContainer {
-        public TestPicoContainer(ComponentAdapterFactory caf, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+        public TestPicoContainer(ComponentFactory caf, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
             super(caf, monitor, lifecycleStrategy, parent);
         }
     }

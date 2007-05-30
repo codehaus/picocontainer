@@ -12,14 +12,13 @@ package org.picocontainer.adapters;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
 /**
  * @author Mauro Talevi
@@ -30,7 +29,7 @@ public class ConstructorInjectionComponentAdapterFactoryTestCase extends Abstrac
         picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
     }
 
-    protected ComponentAdapterFactory createComponentAdapterFactory() {
+    protected ComponentFactory createComponentAdapterFactory() {
         return new ConstructorInjectionComponentAdapterFactory();
     }
 

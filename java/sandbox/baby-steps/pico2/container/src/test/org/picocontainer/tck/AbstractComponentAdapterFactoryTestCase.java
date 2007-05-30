@@ -17,7 +17,7 @@ import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -31,7 +31,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
 
     protected DefaultPicoContainer picoContainer;
 
-    protected abstract ComponentAdapterFactory createComponentAdapterFactory();
+    protected abstract ComponentFactory createComponentAdapterFactory();
 
     protected void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer();

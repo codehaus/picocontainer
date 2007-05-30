@@ -29,9 +29,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.adapters.InstanceComponentAdapter;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.adapters.SetterInjectionComponentAdapter;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
@@ -230,7 +229,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "}");
 
         A a = new A();
-        Mock cafMock = mock(ComponentAdapterFactory.class);
+        Mock cafMock = mock(ComponentFactory.class);
         Constraint[] cons = {isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)};
         cafMock.expects(once()).method("createComponentAdapter").with(cons)
             .will(returnValue(new InstanceComponentAdapter(A.class, a)));

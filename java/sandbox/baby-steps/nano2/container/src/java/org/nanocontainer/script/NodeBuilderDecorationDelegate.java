@@ -11,7 +11,7 @@
 package org.nanocontainer.script;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 
 import java.util.Map;
 
@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public interface NodeBuilderDecorationDelegate {
 
-    ComponentAdapterFactory decorate(ComponentAdapterFactory componentAdapterFactory, Map attributes);
+    ComponentFactory decorate(ComponentFactory componentAdapterFactory, Map attributes);
 
     MutablePicoContainer decorate(MutablePicoContainer picoContainer);
 

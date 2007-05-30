@@ -1,12 +1,12 @@
 package org.nanocontainer;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
-import org.picocontainer.adapters.InstantiatingComponentAdapterFactory;
+import org.picocontainer.adapters.BehaviorDecorator;
+import org.picocontainer.adapters.InjectingFactory;
 
 
 public class NanoBuilder {
@@ -15,7 +15,7 @@ public class NanoBuilder {
     private PicoBuilder picoBuilder;
     private ClassLoader classLoader = DefaultNanoContainer.class.getClassLoader();
 
-    public NanoBuilder(PicoContainer parentcontainer, InstantiatingComponentAdapterFactory injectionType) {
+    public NanoBuilder(PicoContainer parentcontainer, InjectingFactory injectionType) {
         picoBuilder = new PicoBuilder(parentcontainer, injectionType);
     }
 
@@ -23,7 +23,7 @@ public class NanoBuilder {
         picoBuilder = new PicoBuilder(parentcontainer);
     }
 
-    public NanoBuilder(InstantiatingComponentAdapterFactory injectionType) {
+    public NanoBuilder(InjectingFactory injectionType) {
         picoBuilder = new PicoBuilder(injectionType);
     }
 
@@ -64,12 +64,12 @@ public class NanoBuilder {
         return this;
     }
 
-    public NanoBuilder withComponentAdapterFactory(ComponentAdapterFactory componentAdapterFactory) {
+    public NanoBuilder withComponentAdapterFactory(ComponentFactory componentAdapterFactory) {
         picoBuilder.withComponentAdapterFactory(componentAdapterFactory);
         return this;
     }
 
-    public NanoBuilder withComponentAdapterFactories(DecoratingComponentAdapterFactory... factories) {
+    public NanoBuilder withComponentAdapterFactories(BehaviorDecorator... factories) {
         picoBuilder.withBehaviors(factories);
         return this;
     }

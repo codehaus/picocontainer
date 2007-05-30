@@ -17,7 +17,7 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.adapters.CachingComponentAdapter;
-import org.picocontainer.adapters.AbstractDecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.AbstractBehaviorDecorator;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
@@ -27,7 +27,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Revision$
  */
-public class NonCachingComponentAdapterFactory extends AbstractDecoratingComponentAdapterFactory {
+public class NonCachingComponentAdapterFactory extends AbstractBehaviorDecorator {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {

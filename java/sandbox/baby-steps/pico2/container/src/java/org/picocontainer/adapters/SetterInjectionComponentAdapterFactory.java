@@ -23,13 +23,13 @@ import java.io.Serializable;
 
 
 /**
- * A {@link org.picocontainer.defaults.ComponentAdapterFactory} for JavaBeans.
+ * A {@link org.picocontainer.defaults.ComponentFactory} for JavaBeans.
  * The factory creates {@link SetterInjectionComponentAdapter}.
  *
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
-public class SetterInjectionComponentAdapterFactory implements InstantiatingComponentAdapterFactory, Serializable {
+public class SetterInjectionComponentAdapterFactory implements InjectingFactory, Serializable {
 
     /**
      * Create a {@link SetterInjectionComponentAdapter}.

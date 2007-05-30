@@ -36,10 +36,10 @@ import org.nanocontainer.TestHelper;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
-import org.picocontainer.adapters.AbstractDecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.AbstractBehaviorDecorator;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -676,13 +676,13 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
             super();
         }
     }
-    public static class MyCAF2 extends AbstractDecoratingComponentAdapterFactory {
-        public MyCAF2(ComponentAdapterFactory delegate) {
+    public static class MyCAF2 extends AbstractBehaviorDecorator {
+        public MyCAF2(ComponentFactory delegate) {
             forThis(delegate);
         }
     }
-    public static class MyCAF3 extends AbstractDecoratingComponentAdapterFactory {
-        public MyCAF3(ComponentAdapterFactory delegate) {
+    public static class MyCAF3 extends AbstractBehaviorDecorator {
+        public MyCAF3(ComponentFactory delegate) {
             forThis(delegate);
         }
     }

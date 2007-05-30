@@ -40,7 +40,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
@@ -152,7 +152,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     }
 
     private MutablePicoContainer createMutablePicoContainer(String cafName, String monitorName, PicoContainer parentContainer) throws PicoCompositionException {
-        ComponentAdapterFactory caf = createComponentAdapterFactory(cafName, new DefaultNanoContainer(getClassLoader()));
+        ComponentFactory caf = createComponentAdapterFactory(cafName, new DefaultNanoContainer(getClassLoader()));
         MutablePicoContainer container = new DefaultNanoContainer(getClassLoader(), caf, parentContainer);
         if ( !notSet(monitorName) ){
             ComponentMonitor monitor = createComponentMonitor(monitorName);
@@ -502,12 +502,12 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             }
         }
         Parameter[] parameters = createChildParameters(container, element);
-        ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory(element.getAttribute(FACTORY), metaContainer);
+        ComponentFactory componentAdapterFactory = createComponentAdapterFactory(element.getAttribute(FACTORY), metaContainer);
 
         container.addAdapter(componentAdapterFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new ComponentCharacteristic(), key, implementationClass, parameters));
     }
 
-    private ComponentAdapterFactory createComponentAdapterFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {
+    private ComponentFactory createComponentAdapterFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {
         if ( notSet(factoryName)) {
             factoryName = DEFAULT_COMPONENT_ADAPTER_FACTORY;
         }
@@ -515,10 +515,10 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         if (metaContainer.getComponentAdapter(factoryName) != null) {
             key = factoryName;
         } else {
-            metaContainer.addComponent(ComponentAdapterFactory.class, new ClassName(factoryName));
-            key = ComponentAdapterFactory.class;
+            metaContainer.addComponent(ComponentFactory.class, new ClassName(factoryName));
+            key = ComponentFactory.class;
         }
-        ComponentAdapterFactory factory = (ComponentAdapterFactory) metaContainer.getComponent(key);
+        ComponentFactory factory = (ComponentFactory) metaContainer.getComponent(key);
         return factory;
     }
 

@@ -73,7 +73,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
  */
 public class DefaultPicoContainer implements MutablePicoContainer, ComponentMonitorStrategy, Serializable {
     private Map<Object, ComponentAdapter> componentKeyToAdapterCache = new HashMap<Object, ComponentAdapter>();
-    private ComponentAdapterFactory componentAdapterFactory;
+    private ComponentFactory componentAdapterFactory;
     private PicoContainer parent;
     private Set<PicoContainer> children = new HashSet<PicoContainer>();
 
@@ -112,7 +112,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
      * @param parent                  the parent container (used for addComponent dependency lookups).
      */
-    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent) {
+    public DefaultPicoContainer(ComponentFactory componentAdapterFactory, PicoContainer parent) {
         this(componentAdapterFactory, new StartableLifecycleStrategy(NullComponentMonitor.getInstance()), parent);
     }
 
@@ -132,7 +132,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      *          instance (not implementations!)
      * @param parent                  the parent container (used for addComponent dependency lookups).
      */
-    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory,
+    public DefaultPicoContainer(ComponentFactory componentAdapterFactory,
                                 LifecycleStrategy lifecycleStrategyForInstanceRegistrations,
                                 PicoContainer parent) {
         if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
@@ -174,7 +174,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
     // to assist PicoBuilder
-    public DefaultPicoContainer(ComponentAdapterFactory caf, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+    public DefaultPicoContainer(ComponentFactory caf, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
         this(caf, lifecycleStrategy,  parent);
         componentMonitor = monitor;
     }
@@ -196,7 +196,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      *
      * @param componentAdapterFactory the ComponentAdapterFactory to use.
      */
-    public DefaultPicoContainer(ComponentAdapterFactory componentAdapterFactory) {
+    public DefaultPicoContainer(ComponentFactory componentAdapterFactory) {
         this(componentAdapterFactory, null);
     }
 
@@ -281,7 +281,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /**
      * {@inheritDoc}
-     * This method can be used to override the ComponentAdapter created by the {@link ComponentAdapterFactory}
+     * This method can be used to override the ComponentAdapter created by the {@link ComponentFactory}
      * passed to the constructor of this container.
      */
     public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) {
@@ -324,7 +324,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /**
      * {@inheritDoc}
-     * The returned ComponentAdapter will be instantiated by the {@link ComponentAdapterFactory}
+     * The returned ComponentAdapter will be instantiated by the {@link ComponentFactory}
      * passed to the container's constructor.
      */
     public MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) {

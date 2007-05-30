@@ -12,9 +12,8 @@ package org.picocontainer.adapters;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.SetterInjectionComponentAdapter;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
@@ -32,7 +31,7 @@ public class SetterInjectionComponentAdapterFactoryTestCase extends AbstractComp
         picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
     }
 
-    protected ComponentAdapterFactory createComponentAdapterFactory() {
+    protected ComponentFactory createComponentAdapterFactory() {
         return new SetterInjectionComponentAdapterFactory();
     }
 

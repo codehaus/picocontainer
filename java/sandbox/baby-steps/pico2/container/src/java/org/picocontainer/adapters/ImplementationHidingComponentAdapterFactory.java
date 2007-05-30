@@ -23,7 +23,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapterFactory for a more feature-rich version of the class
  * @since 1.2, moved from package {@link org.picocontainer.alternatives}
  */
-public class ImplementationHidingComponentAdapterFactory extends AbstractDecoratingComponentAdapterFactory {
+public class ImplementationHidingComponentAdapterFactory extends AbstractBehaviorDecorator {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);

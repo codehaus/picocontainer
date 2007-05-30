@@ -31,7 +31,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.adapters.CachingComponentAdapterFactory;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -75,7 +75,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     protected Map<String,PicoContainer> namedChildContainers = new HashMap<String,PicoContainer>();
 
 
-    public DefaultNanoContainer(ClassLoader classLoader, ComponentAdapterFactory caf, PicoContainer parent) {
+    public DefaultNanoContainer(ClassLoader classLoader, ComponentFactory caf, PicoContainer parent) {
         super(new DefaultPicoContainer(caf, parent));
         parentClassLoader = classLoader;
     }
@@ -92,7 +92,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         ((ComponentMonitorStrategy)getDelegate()).changeMonitor(componentMonitor);
     }
 
-    public DefaultNanoContainer(ComponentAdapterFactory caf) {
+    public DefaultNanoContainer(ComponentFactory caf) {
         super(new DefaultPicoContainer(caf, null));
         parentClassLoader = DefaultNanoContainer.class.getClassLoader();
     }
@@ -120,14 +120,14 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
 
     /**
      * Constructor that provides the same control over the nanocontainer lifecycle strategies
-     * as {@link DefaultPicoContainer(ComponentAdapterFactory, LifecycleStrategy, PicoContainer)}.
+     * as {@link DefaultPicoContainer( ComponentFactory , LifecycleStrategy, PicoContainer)}.
      * @param componentAdapterFactory ComponentAdapterFactory
      * @param lifecycleStrategy LifecycleStrategy
      * @param parent PicoContainer may be null if there is no parent.
      * @param cl the Classloader to use.  May be null, in which case DefaultNanoPicoContainer.class.getClassLoader()
      * will be called instead.
      */
-    public DefaultNanoContainer(ComponentAdapterFactory componentAdapterFactory,
+    public DefaultNanoContainer(ComponentFactory componentAdapterFactory,
         LifecycleStrategy lifecycleStrategy, PicoContainer parent, ClassLoader cl) {
 
         super(new DefaultPicoContainer(componentAdapterFactory, lifecycleStrategy, parent));

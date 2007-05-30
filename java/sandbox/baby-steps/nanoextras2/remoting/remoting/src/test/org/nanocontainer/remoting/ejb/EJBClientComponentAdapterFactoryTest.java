@@ -21,7 +21,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 
 import junit.framework.Test;
 
@@ -63,7 +63,7 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
      */
     public final void testSystemInitialContext() {
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
-        final ComponentAdapterFactory caf = new EJBClientComponentAdapterFactory();
+        final ComponentFactory caf = new EJBClientComponentAdapterFactory();
         final ComponentAdapter componentAdapter = caf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Hello", Hello.class, null);
         assertNotNull(componentAdapter);
         final Object hello1 = componentAdapter.getComponentInstance(null);
@@ -80,7 +80,7 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
     public final void testPreparedInitialContext() {
         final Hashtable env = new Hashtable();
         env.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
-        final ComponentAdapterFactory caf = new EJBClientComponentAdapterFactory(env);
+        final ComponentFactory caf = new EJBClientComponentAdapterFactory(env);
         final ComponentAdapter componentAdapter = caf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Hello", Hello.class, null);
         assertNotNull(componentAdapter);
         final Object hello1 = componentAdapter.getComponentInstance(null);
@@ -97,7 +97,7 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
     public void testClassNotFoundIsConverted() {
         final Hashtable env = new Hashtable();
         env.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
-        final ComponentAdapterFactory caf = new EJBClientComponentAdapterFactory(env, true);
+        final ComponentFactory caf = new EJBClientComponentAdapterFactory(env, true);
         try {
             caf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Foo", Test.class, null);
             fail("Should have thrown a PicoIntrospectionException");

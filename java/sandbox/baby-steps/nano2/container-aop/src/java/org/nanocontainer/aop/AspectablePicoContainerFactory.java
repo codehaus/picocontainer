@@ -10,7 +10,7 @@
 package org.nanocontainer.aop;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 
 /**
  * Produces <code>AspectablePicoContainer</code> objects. Mixes in an
@@ -36,7 +36,7 @@ public interface AspectablePicoContainerFactory {
      * @return a new <code>AspectablePicoContainer</code>.
      */
     public AspectablePicoContainer createContainer(Class containerClass, AspectsManager aspectsManager,
-                                                   ComponentAdapterFactory componentAdapterFactory, PicoContainer parent);
+                                                   ComponentFactory componentAdapterFactory, PicoContainer parent);
 
     /**
      * Creates a new <code>AspectablePicoContainer</code>.
@@ -47,7 +47,7 @@ public interface AspectablePicoContainerFactory {
      * @param parent                  the parent container.
      * @return a new <code>AspectablePicoContainer</code>.
      */
-    AspectablePicoContainer createContainer(Class containerClass, ComponentAdapterFactory componentAdapterFactory,
+    AspectablePicoContainer createContainer(Class containerClass, ComponentFactory componentAdapterFactory,
                                             PicoContainer parent);
 
     /**
@@ -60,7 +60,7 @@ public interface AspectablePicoContainerFactory {
      * @param parent                  the parent container.
      * @return a new <code>AspectablePicoContainer</code>.
      */
-    AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory, PicoContainer parent);
+    AspectablePicoContainer createContainer(ComponentFactory componentAdapterFactory, PicoContainer parent);
 
     /**
      * Creates a new <code>AspectablePicoContainer</code>. Uses
@@ -71,7 +71,7 @@ public interface AspectablePicoContainerFactory {
      *                                used to produce components.
      * @return a new <code>AspectablePicoContainer</code>.
      */
-    AspectablePicoContainer createContainer(ComponentAdapterFactory componentAdapterFactory);
+    AspectablePicoContainer createContainer(ComponentFactory componentAdapterFactory);
 
     /**
      * Creates a new <code>AspectablePicoContainer</code>. Uses

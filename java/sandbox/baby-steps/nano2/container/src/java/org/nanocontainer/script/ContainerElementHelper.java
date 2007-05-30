@@ -2,7 +2,7 @@ package org.nanocontainer.script;
 
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.DefaultNanoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.alternatives.EmptyPicoContainer;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ContainerElementHelper {
-    public static NanoContainer makeNanoContainer(ComponentAdapterFactory caf, PicoContainer parent, ClassLoader classLoader) {
+    public static NanoContainer makeNanoContainer(ComponentFactory caf, PicoContainer parent, ClassLoader classLoader) {
         if (parent == null) {
             parent = new EmptyPicoContainer();
         }

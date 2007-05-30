@@ -24,7 +24,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.AbstractPicoVisitor;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.DecoratingComponentAdapter;
@@ -71,7 +71,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         return SERIALIZABLE | VERIFYING | INSTANTIATING | RESOLVING;
     }
 
-    protected ComponentAdapterFactory createDefaultComponentAdapterFactory() {
+    protected ComponentFactory createDefaultComponentAdapterFactory() {
         return new AnyInjectionComponentAdapterFactory();
     }
 

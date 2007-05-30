@@ -57,7 +57,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
 
     public void testInstantiationWithNullComponentAdapterFactory(){
         try {
-            new DefaultPicoContainer((ComponentAdapterFactory)null, (PicoContainer)null);
+            new DefaultPicoContainer((ComponentFactory)null, (PicoContainer)null);
             fail("NPE expected");
         } catch (NullPointerException e) {
             // expected
@@ -292,7 +292,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertEquals(monitor2, pico.currentMonitor());
     }
    
-    private static class ComponentAdapterFactoryWithNoMonitor implements ComponentAdapterFactory {
+    private static class ComponentAdapterFactoryWithNoMonitor implements ComponentFactory {
         private ComponentAdapter adapter;
         public ComponentAdapterFactoryWithNoMonitor(ComponentAdapter adapter){
             this.adapter = adapter;

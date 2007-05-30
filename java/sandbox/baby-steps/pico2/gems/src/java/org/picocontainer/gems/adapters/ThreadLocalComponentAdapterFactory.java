@@ -20,14 +20,14 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.adapters.CachingComponentAdapter;
-import org.picocontainer.adapters.AbstractDecoratingComponentAdapterFactory;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.adapters.AbstractBehaviorDecorator;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
 
 
 /**
- * A {@link ComponentAdapterFactory} for components kept in {@link ThreadLocal} instances.
+ * A {@link ComponentFactory} for components kept in {@link ThreadLocal} instances.
  * <p>
  * This factory has two operating modes. By default it ensures, that every thread uses its own addComponent at any time.
  * This mode ({@link #ENSURE_THREAD_LOCALITY}) makes internal usage of a {@link ThreadLocalComponentAdapter}. If the
@@ -55,7 +55,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * </p>
  * @author J&ouml;rg Schaible
  */
-public class ThreadLocalComponentAdapterFactory extends AbstractDecoratingComponentAdapterFactory {
+public class ThreadLocalComponentAdapterFactory extends AbstractBehaviorDecorator {
 
     /**
      * <code>ENSURE_THREAD_LOCALITY</code> is the constant for created {@link ComponentAdapter} instances, that ensure

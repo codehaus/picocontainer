@@ -15,7 +15,7 @@ import org.nanocontainer.NanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import java.security.PrivilegedAction;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import java.security.AccessController;
 import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
 import org.picocontainer.adapters.CachingComponentAdapterFactory;
@@ -141,7 +141,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
         if (parent != null) {
             parentClassLoader = parent.getComponentClassLoader();
             if ( isAttribute(attributes, COMPONENT_ADAPTER_FACTORY) ) {
-                ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory(attributes);
+                ComponentFactory componentAdapterFactory = createComponentAdapterFactory(attributes);
                 childContainer = new DefaultPicoContainer(
                         getDecorationDelegate().decorate(componentAdapterFactory, attributes), parent);
                 if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
@@ -149,7 +149,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
                 }
                 parent.addChildContainer(childContainer);
             } else if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
-                ComponentAdapterFactory componentAdapterFactory = new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory());
+                ComponentFactory componentAdapterFactory = new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory());
                 childContainer = new DefaultPicoContainer(getDecorationDelegate().decorate(componentAdapterFactory, attributes), parent);
                 changeComponentMonitor(childContainer, createComponentMonitor(attributes));
             } else {
@@ -161,7 +161,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
                     return PicoContainer.class.getClassLoader();
                 }
             });
-            ComponentAdapterFactory componentAdapterFactory = createComponentAdapterFactory(attributes);
+            ComponentFactory componentAdapterFactory = createComponentAdapterFactory(attributes);
             childContainer = new DefaultPicoContainer(
                     getDecorationDelegate().decorate(componentAdapterFactory, attributes));
             if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
@@ -193,8 +193,8 @@ public class ChildContainerNode extends AbstractBuilderNode {
         return (NanoContainer) componentInstance;
     }
 
-    private ComponentAdapterFactory createComponentAdapterFactory(Map attributes) {
-        final ComponentAdapterFactory factory = (ComponentAdapterFactory) attributes.remove(COMPONENT_ADAPTER_FACTORY);
+    private ComponentFactory createComponentAdapterFactory(Map attributes) {
+        final ComponentFactory factory = (ComponentFactory) attributes.remove(COMPONENT_ADAPTER_FACTORY);
         if ( factory == null ){
             return new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory());
         }

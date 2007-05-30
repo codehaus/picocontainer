@@ -27,7 +27,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.adapters.CachingComponentAdapterFactory;
@@ -298,7 +298,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                 cafName = CachingComponentAdapterFactory.class.getName();
             }
             Class cafClass = getClassLoader().loadClass(cafName);
-            ComponentAdapterFactory componentAdapterFactory = (ComponentAdapterFactory) cafClass.newInstance();
+            ComponentFactory componentAdapterFactory = (ComponentFactory) cafClass.newInstance();
             MutablePicoContainer picoContainer = new DefaultPicoContainer(componentAdapterFactory);
             DefaultNanoContainer nano = new DefaultNanoContainer(getClassLoader(), picoContainer);
             populateContainer(nano);

@@ -1,14 +1,13 @@
 package org.picocontainer.gems;
 
-import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.gems.adapters.ImplementationHidingComponentAdapterFactory;
 import org.picocontainer.gems.monitors.Log4JComponentMonitor;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.BehaviorDecorator;
 
 public class PicoGemsBuilder {
 
-    public static DecoratingComponentAdapterFactory IMPL_HIDING() {
+    public static BehaviorDecorator IMPL_HIDING() {
         return new ImplementationHidingComponentAdapterFactory();
     }
 

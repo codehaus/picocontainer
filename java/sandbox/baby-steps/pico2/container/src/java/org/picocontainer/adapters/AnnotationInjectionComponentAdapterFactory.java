@@ -23,13 +23,13 @@ import java.io.Serializable;
 
 
 /**
- * A {@link org.picocontainer.defaults.ComponentAdapterFactory} for Guice style annotated methods.
+ * A {@link org.picocontainer.defaults.ComponentFactory} for Guice style annotated methods.
  * The factory creates {@link org.picocontainer.adapters.AnnotationInjectionComponentAdapter}.
  *
  * @author Paul Hammant
  * @version $Revision$
  */
-public class AnnotationInjectionComponentAdapterFactory implements InstantiatingComponentAdapterFactory, Serializable {
+public class AnnotationInjectionComponentAdapterFactory implements InjectingFactory, Serializable {
 
     /**
      * Create a {@link org.picocontainer.adapters.SetterInjectionComponentAdapter}.

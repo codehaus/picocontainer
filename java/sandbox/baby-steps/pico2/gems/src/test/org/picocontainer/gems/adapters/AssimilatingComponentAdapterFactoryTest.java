@@ -10,7 +10,7 @@
 
 package org.picocontainer.gems.adapters;
 
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
@@ -31,7 +31,7 @@ public class AssimilatingComponentAdapterFactoryTest extends AbstractComponentAd
     /**
      * @see org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase#createComponentAdapterFactory()
      */
-    protected ComponentAdapterFactory createComponentAdapterFactory() {
+    protected ComponentFactory createComponentAdapterFactory() {
         return new AssimilatingComponentAdapterFactory(Touchable.class).forThis(new ConstructorInjectionComponentAdapterFactory());
     }
 

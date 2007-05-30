@@ -18,7 +18,6 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.ComponentAdapterFactory;
 
 import java.io.Serializable;
 
@@ -26,7 +25,7 @@ import java.io.Serializable;
  * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
-public class ConstructorInjectionComponentAdapterFactory implements InstantiatingComponentAdapterFactory, Serializable {
+public class ConstructorInjectionComponentAdapterFactory implements InjectingFactory, Serializable {
 
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey,

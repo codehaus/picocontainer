@@ -25,7 +25,7 @@ import org.nanocontainer.aop.dynaop.InstanceMixinFactory;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.ComponentAdapterFactory;
+import org.picocontainer.defaults.ComponentFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -47,9 +47,8 @@ public class AopNodeBuilderDecorationDelegate implements NodeBuilderDecorationDe
         this.aspectsManager = aspectsManager;
     }
 
-    public ComponentAdapterFactory decorate(ComponentAdapterFactory componentAdapterFactory, Map attributes) {
-        AspectsComponentAdapterFactory aspectsComponentAdapterFactory = createAdapterFactory(aspectsManager, componentAdapterFactory);
-        return aspectsComponentAdapterFactory;
+    public ComponentFactory decorate(ComponentFactory componentAdapterFactory, Map attributes) {
+        return createAdapterFactory(aspectsManager, componentAdapterFactory);
     }
 
     public MutablePicoContainer decorate(MutablePicoContainer picoContainer) {
@@ -106,7 +105,7 @@ public class AopNodeBuilderDecorationDelegate implements NodeBuilderDecorationDe
 
 
     private AspectsComponentAdapterFactory createAdapterFactory(AspectsApplicator aspectsApplicator,
-                                                                ComponentAdapterFactory delegateAdapterFactory) {
+                                                                ComponentFactory delegateAdapterFactory) {
         if (delegateAdapterFactory != null) {
             return (AspectsComponentAdapterFactory) new AspectsComponentAdapterFactory(aspectsApplicator).forThis(delegateAdapterFactory);
         } else {

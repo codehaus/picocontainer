@@ -20,7 +20,6 @@ import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.ComponentAdapterFactory;
 
 import java.io.Serializable;
 
@@ -32,7 +31,7 @@ import java.io.Serializable;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class AnyInjectionComponentAdapterFactory implements InstantiatingComponentAdapterFactory, Serializable {
+public class AnyInjectionComponentAdapterFactory implements InjectingFactory, Serializable {
 
     private ConstructorInjectionComponentAdapterFactory cdiDelegate = new ConstructorInjectionComponentAdapterFactory();
     private SetterInjectionComponentAdapterFactory sdiDelegate = new SetterInjectionComponentAdapterFactory();

@@ -10,7 +10,7 @@
 package org.picocontainer.defaults.issues;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.VerifyingVisitor;
+import org.picocontainer.visitors.VerifyingVisitor;
 
 import junit.framework.TestCase;
 

@@ -5,7 +5,7 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.visitors;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +20,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.visitors.TraversalCheckingVisitor;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.SetterInjectionAdapter;
 

@@ -11,7 +11,7 @@
 package org.picocontainer.gems.monitors;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.defaults.DelegatingComponentMonitor;
+import org.picocontainer.monitors.DelegatingComponentMonitor;
 
 import java.lang.reflect.Constructor;
 import java.util.*;

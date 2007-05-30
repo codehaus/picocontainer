@@ -19,7 +19,7 @@ import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
-import org.picocontainer.defaults.DelegatingComponentMonitor;
+import org.picocontainer.monitors.DelegatingComponentMonitor;
 import static org.picocontainer.defaults.ComponentParameter.*;
 import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.adapters.SetterInjectionAdapter;

@@ -8,13 +8,14 @@
  * Original code by Mauro Talevi                                             *
  *****************************************************************************/
 
-package org.picocontainer.defaults;
+package org.picocontainer.monitors;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.defaults.ComponentMonitorStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
@@ -24,7 +25,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * but does not allow to use <code>null</code> for the delegate.
  * </p>
  * <p>
- * It also supports a {@link ComponentMonitorStrategy monitor strategy} 
+ * It also supports a {@link org.picocontainer.defaults.ComponentMonitorStrategy monitor strategy}
  * that allows to change the delegate.
  * </p>
  * 

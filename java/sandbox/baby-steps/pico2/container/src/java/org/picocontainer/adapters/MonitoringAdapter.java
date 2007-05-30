@@ -14,12 +14,12 @@ import java.io.Serializable;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
-import org.picocontainer.defaults.DelegatingComponentMonitor;
+import org.picocontainer.monitors.DelegatingComponentMonitor;
 
 /**
  * Abstract {@link ComponentAdapter ComponentAdapter} supporting a 
  * {@link org.picocontainer.defaults.ComponentMonitorStrategy ComponentMonitorStrategy}.
- * It provides a {@link org.picocontainer.defaults.DelegatingComponentMonitor default ComponentMonitor},
+ * It provides a {@link org.picocontainer.monitors.DelegatingComponentMonitor default ComponentMonitor},
  * but does not allow to use <code>null</code> for the addComponent monitor.
  *  
  * @author Mauro Talevi
@@ -43,7 +43,7 @@ public abstract class MonitoringAdapter implements ComponentAdapter, ComponentMo
     }
 
     /**
-     * Constructs a MonitoringComponentAdapter with a {@link org.picocontainer.defaults.DelegatingComponentMonitor default monitor}.
+     * Constructs a MonitoringComponentAdapter with a {@link org.picocontainer.monitors.DelegatingComponentMonitor default monitor}.
      */
     protected MonitoringAdapter() {
         this(new DelegatingComponentMonitor());

@@ -5,10 +5,11 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.visitors;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.visitors.TraversalCheckingVisitor;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;

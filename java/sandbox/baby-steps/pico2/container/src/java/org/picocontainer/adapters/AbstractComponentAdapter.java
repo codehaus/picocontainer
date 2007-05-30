@@ -13,7 +13,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.adapters.MonitoringAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.DelegatingComponentMonitor;
+import org.picocontainer.monitors.DelegatingComponentMonitor;
 
 /**
  * Base class for a ComponentAdapter with general functionality.

@@ -5,12 +5,15 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.PicoVisitorTraversalException;
+import org.picocontainer.visitors.VerifyingVisitor;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -33,7 +36,7 @@ public class PicoVisitorTestCase
         }
     }
 
-    private static class UnusualNode {
+    public static class UnusualNode {
         boolean visited;
 
         public void accept(PicoVisitor visit) {

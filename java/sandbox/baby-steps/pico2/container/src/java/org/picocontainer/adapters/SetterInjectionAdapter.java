@@ -94,7 +94,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
     }
 
     /**
-     * Constructs a SetterInjectionComponentAdapter with a {@link org.picocontainer.defaults.DelegatingComponentMonitor} as default.
+     * Constructs a SetterInjectionComponentAdapter with a {@link org.picocontainer.monitors.DelegatingComponentMonitor} as default.
      *
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation

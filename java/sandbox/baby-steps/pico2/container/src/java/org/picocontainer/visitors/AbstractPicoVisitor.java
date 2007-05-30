@@ -5,9 +5,10 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.visitors;
 
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.defaults.PicoVisitorTraversalException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,7 +19,7 @@ import java.security.PrivilegedAction;
  * Abstract PicoVisitor implementation. A generic traverse method is implemented, that 
  * accepts any object with a method named &quot;accept&quot;, that takes a 
  * {@link PicoVisitor}  as argument and and invokes it. Additionally it provides the 
- * {@link #checkTraversal()} method, that throws a {@link PicoVisitorTraversalException},
+ * {@link #checkTraversal()} method, that throws a {@link org.picocontainer.defaults.PicoVisitorTraversalException},
  * if currently no traversal is running.
  * 
  * @author J&ouml;rg Schaible
@@ -33,8 +34,7 @@ public abstract class AbstractPicoVisitor implements PicoVisitor {
                 AccessController.doPrivileged(new PrivilegedAction() {
                     public Object run() {
                         try {
-                            Method method = node.getClass().getMethod("accept", new Class[]{PicoVisitor.class});
-                            return method;
+                            return node.getClass().getMethod("accept", PicoVisitor.class);
                         } catch (NoSuchMethodException e) {
                             return e;
                         }
@@ -45,7 +45,7 @@ public abstract class AbstractPicoVisitor implements PicoVisitor {
                 throw (NoSuchMethodException) retval;
             }
             Method accept = (Method) retval;
-            accept.invoke(node, new Object[]{this});
+            accept.invoke(node, this);
             return Void.TYPE;
         } catch (NoSuchMethodException e) {
         } catch (IllegalAccessException e) {
@@ -64,7 +64,7 @@ public abstract class AbstractPicoVisitor implements PicoVisitor {
 
     /**
      * Checks the traversal flag, indicating a currently running traversal of the visitor.
-     * @throws PicoVisitorTraversalException if no traversal is active.
+     * @throws org.picocontainer.defaults.PicoVisitorTraversalException if no traversal is active.
      */
     protected void checkTraversal() {
         if (!traversal) {

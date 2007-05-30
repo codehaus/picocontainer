@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 
 /**
- * A {@link org.picocontainer.defaults.ComponentFactory} for JavaBeans.
+ * A {@link org.picocontainer.ComponentFactory} for JavaBeans.
  * The factory creates {@link SetterInjectionAdapter}.
  *
  * @author J&ouml;rg Schaible

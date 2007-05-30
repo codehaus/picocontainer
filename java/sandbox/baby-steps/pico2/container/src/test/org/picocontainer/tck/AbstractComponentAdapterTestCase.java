@@ -24,7 +24,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.visitors.AbstractPicoVisitor;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.adapters.BehaviorAdapter;

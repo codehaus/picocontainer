@@ -1,7 +1,7 @@
 package org.nanocontainer.script;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 
 import java.util.Map;
 

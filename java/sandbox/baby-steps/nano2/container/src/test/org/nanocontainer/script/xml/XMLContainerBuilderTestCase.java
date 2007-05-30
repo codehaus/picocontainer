@@ -36,7 +36,7 @@ import org.nanocontainer.TestHelper;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.adapters.AbstractBehaviorFactory;

@@ -15,7 +15,7 @@ import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentCharacteristics;
 
 import java.util.Map;

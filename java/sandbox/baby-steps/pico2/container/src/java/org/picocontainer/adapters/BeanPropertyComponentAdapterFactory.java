@@ -23,7 +23,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.LifecycleStrategy;
 
 /**
- * A {@link org.picocontainer.defaults.ComponentFactory} that creates
+ * A {@link org.picocontainer.ComponentFactory} that creates
  * {@link BeanPropertyComponentAdapter} instances.
  * 
  * @author Aslak Helles&oslash;y

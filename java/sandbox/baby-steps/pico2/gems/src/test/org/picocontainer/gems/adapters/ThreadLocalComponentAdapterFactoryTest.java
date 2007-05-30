@@ -14,10 +14,10 @@ import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
-import org.picocontainer.defaults.ComponentFactory;
 
 import java.util.ArrayList;
 import java.util.List;

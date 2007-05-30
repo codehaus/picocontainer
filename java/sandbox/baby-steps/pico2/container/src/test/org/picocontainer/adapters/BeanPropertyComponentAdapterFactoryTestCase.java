@@ -29,7 +29,7 @@ import org.picocontainer.adapters.BeanPropertyComponentAdapter;
 import org.picocontainer.adapters.BeanPropertyComponentAdapterFactory;
 import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.adapters.BehaviorAdapter;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;

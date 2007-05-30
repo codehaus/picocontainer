@@ -2,9 +2,9 @@ package org.nanocontainer.script.groovy;
 
 import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.adapters.AnyInjectionFactory;
-import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**

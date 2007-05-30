@@ -29,7 +29,7 @@ import org.nanocontainer.testmodel.OrderEntityImpl;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.lang.reflect.Method;

@@ -1,7 +1,7 @@
 package org.nanocontainer;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;

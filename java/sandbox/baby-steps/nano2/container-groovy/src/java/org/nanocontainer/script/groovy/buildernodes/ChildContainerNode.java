@@ -15,7 +15,7 @@ import org.nanocontainer.NanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import java.security.PrivilegedAction;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 import java.security.AccessController;
 import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.adapters.CachingBehaviorFactory;

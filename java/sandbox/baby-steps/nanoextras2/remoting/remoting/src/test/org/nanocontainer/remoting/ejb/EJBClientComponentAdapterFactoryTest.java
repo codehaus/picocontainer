@@ -19,9 +19,9 @@ import org.nanocontainer.remoting.ejb.testmodel.Hello;
 import org.nanocontainer.remoting.ejb.testmodel.HelloHomeImpl;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.defaults.ComponentFactory;
 
 import junit.framework.Test;
 

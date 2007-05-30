@@ -10,7 +10,7 @@
 package org.nanocontainer.aop;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 
 /**
  * Produces <code>AspectablePicoContainer</code> objects. Mixes in an

@@ -10,7 +10,7 @@
 
 package org.picocontainer.gems.adapters;
 
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;

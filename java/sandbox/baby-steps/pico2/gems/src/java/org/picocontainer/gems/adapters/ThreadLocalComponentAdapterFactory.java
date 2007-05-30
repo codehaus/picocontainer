@@ -21,7 +21,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.adapters.CachingBehaviorAdapter;
 import org.picocontainer.adapters.AbstractBehaviorFactory;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.LifecycleStrategy;
 

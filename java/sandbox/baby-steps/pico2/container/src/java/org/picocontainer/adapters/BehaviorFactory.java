@@ -1,6 +1,6 @@
 package org.picocontainer.adapters;
 
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 
 public interface BehaviorFactory extends ComponentFactory {
     ComponentFactory forThis(ComponentFactory delegate);

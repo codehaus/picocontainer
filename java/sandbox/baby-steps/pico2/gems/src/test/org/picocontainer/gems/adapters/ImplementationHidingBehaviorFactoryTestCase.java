@@ -2,9 +2,9 @@ package org.picocontainer.gems.adapters;
 
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.adapters.CachingBehaviorFactory;
-import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;

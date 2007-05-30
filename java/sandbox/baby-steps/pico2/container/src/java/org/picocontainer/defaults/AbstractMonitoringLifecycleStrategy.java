@@ -29,10 +29,7 @@ public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleSt
      * @throws NullPointerException if the monitor is <code>null</code>
      */
     public AbstractMonitoringLifecycleStrategy(ComponentMonitor monitor) {
-        if (monitor == null) {
-            throw new NullPointerException("Monitor is null");
-        }
-        this.componentMonitor = monitor;
+        changeMonitor(monitor);
     }
     
     public void changeMonitor(ComponentMonitor monitor) {

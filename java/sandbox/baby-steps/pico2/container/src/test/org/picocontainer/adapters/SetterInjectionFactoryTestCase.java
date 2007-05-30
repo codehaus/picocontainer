@@ -11,9 +11,9 @@ package org.picocontainer.adapters;
 
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.adapters.SetterInjectionFactory;
 import org.picocontainer.adapters.SetterInjectionAdapter;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;

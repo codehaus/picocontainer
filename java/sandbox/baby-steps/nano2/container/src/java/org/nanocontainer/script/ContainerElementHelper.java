@@ -2,7 +2,7 @@ package org.nanocontainer.script;
 
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.DefaultNanoContainer;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;

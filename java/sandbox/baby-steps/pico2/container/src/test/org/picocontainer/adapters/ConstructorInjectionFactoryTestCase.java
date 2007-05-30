@@ -12,7 +12,7 @@ package org.picocontainer.adapters;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;

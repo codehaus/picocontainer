@@ -61,14 +61,6 @@ public class ConstructorInjectionAdapter extends InjectingAdapter {
     private transient Guard instantiationGuard;
     private transient Paranamer paranamer = new AsmParanamer();
 
-    private static abstract class Guard extends ThreadLocalCyclicDependencyGuard {
-        protected PicoContainer guardedContainer;
-
-        private void setArguments(PicoContainer container) {
-            this.guardedContainer = container;
-        }
-    }
-
     /**
      * Creates a ConstructorInjectionComponentAdapter
      *

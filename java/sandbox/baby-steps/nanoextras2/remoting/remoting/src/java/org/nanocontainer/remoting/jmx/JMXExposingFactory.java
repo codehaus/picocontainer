@@ -21,12 +21,11 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.adapters.AbstractBehaviorFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 
 /**
- * {@link ComponentFactory} that instantiates {@link JMXExposingComponentAdapter} instances.
+ * {@link org.picocontainer.ComponentFactory} that instantiates {@link JMXExposingComponentAdapter} instances.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
@@ -71,7 +70,7 @@ public class JMXExposingFactory extends AbstractBehaviorFactory {
     /**
      * Retrieve a {@link ComponentAdapter}. Wrap the instance retrieved by the delegate with an instance of a
      * {@link JMXExposingComponentAdapter}.
-     * @see org.picocontainer.defaults.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
+     * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
      */
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter[] parameters)

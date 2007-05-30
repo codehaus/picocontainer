@@ -25,7 +25,7 @@ import org.nanocontainer.aop.dynaop.InstanceMixinFactory;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 
 import java.util.List;
 import java.util.Map;

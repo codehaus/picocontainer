@@ -1,7 +1,7 @@
 package org.picocontainer;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ComponentFactory;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.adapters.ImplementationHidingBehaviorFactory;
 import org.picocontainer.adapters.SetterInjectionFactory;

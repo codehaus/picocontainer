@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
@@ -15,13 +15,15 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.defaults.AssignabilityRegistrationException;
+import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * <p/>
  * A addComponent addAdapter factory is responsible for creating
- * {@link ComponentAdapter} addComponent adapters. The main use of the addComponent addAdapter factory is
- * inside {@link DefaultPicoContainer#DefaultPicoContainer(ComponentFactory)}, where it can
- * be used to customize the default addComponent addAdapter that is used when none is specified
+ * {@link ComponentAdapter} component adapters. The main use of the component adapter factory is
+ * inside {@link org.picocontainer.defaults.DefaultPicoContainer#DefaultPicoContainer(ComponentFactory)}, where it can
+ * be used to customize the default component adapter that is used when none is specified
  * explicitly.
  * </p>
  *
@@ -49,12 +51,12 @@ public interface ComponentFactory {
      *                                    may be ignored by some implementations. May be null, and may be of zero length. @return a new addComponent addAdapter based on the specified arguments. Should not return null. @throws PicoIntrospectionException if the creation of the addComponent addAdapter results in a
      *                                    {@link PicoIntrospectionException}.
      * @return The component adapter
-     * @throws AssignabilityRegistrationException
+     * @throws org.picocontainer.defaults.AssignabilityRegistrationException
      *          if the creation of the addComponent addAdapter results in a
-     *          {@link AssignabilityRegistrationException}.
-     * @throws NotConcreteRegistrationException
+     *          {@link org.picocontainer.defaults.AssignabilityRegistrationException}.
+     * @throws org.picocontainer.defaults.NotConcreteRegistrationException
      *          if the creation of the addComponent addAdapter results in a
-     *          {@link NotConcreteRegistrationException}.
+     *          {@link org.picocontainer.defaults.NotConcreteRegistrationException}.
      */
     ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic,
                                             Object componentKey,

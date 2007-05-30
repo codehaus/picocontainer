@@ -20,7 +20,7 @@ package org.picocontainer.defaults;
  * @author J&ouml;rg Schaible
  * @since 1.1
  */
-public abstract class ThreadLocalCyclicDependencyGuard extends ThreadLocal implements CyclicDependencyGuard {
+public abstract class ThreadLocalCyclicDependencyGuard extends ThreadLocal {
 
     protected Object initialValue() {
         return Boolean.FALSE;

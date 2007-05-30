@@ -21,7 +21,7 @@ public class CyclicDependencyGuardTestCase
     class ThreadLocalRunner implements Runnable {
         public CyclicDependencyException exception;
         private final Blocker blocker;
-        private final CyclicDependencyGuard guard;
+        private final ThreadLocalCyclicDependencyGuard guard;
 
         public ThreadLocalRunner() {
             this.blocker = new Blocker();

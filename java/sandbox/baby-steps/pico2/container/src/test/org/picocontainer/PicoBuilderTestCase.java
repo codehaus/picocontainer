@@ -16,8 +16,9 @@ import org.picocontainer.alternatives.EmptyPicoContainer;
 import org.picocontainer.adapters.ImplementationHidingBehaviorFactory;
 
 import static org.picocontainer.PicoBuilder.SDI;
-import static org.picocontainer.PicoBuilder.IMPL_HIDING;
-import static org.picocontainer.PicoBuilder.CACHING;
+import static org.picocontainer.PicoBuilder.implHiding;
+import static org.picocontainer.PicoBuilder.caching;
+import static org.picocontainer.PicoBuilder.threadSafe;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -166,12 +167,13 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithCafsListChainThingy() {
-        MutablePicoContainer mpc = new PicoBuilder(SDI()).withBehaviors(CACHING(), IMPL_HIDING()).build();
+        MutablePicoContainer mpc = new PicoBuilder(SDI()).withBehaviors(caching(), threadSafe(), implHiding()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentAdapterFactory=org.picocontainer.adapters.CachingBehaviorFactory\n" +
-                "    delegate=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
-                "      delegate=org.picocontainer.adapters.SetterInjectionFactory\n" +
+                "    delegate=org.picocontainer.adapters.SynchronizedBehaviorFactory\n" +
+                "      delegate=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
+                "        delegate=org.picocontainer.adapters.SetterInjectionFactory\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -313,6 +315,7 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  children","");
         foo = foo.replaceAll("\n  delegate\n","\n");
         foo = foo.replaceAll("\n    delegate\n","\n");
+        foo = foo.replaceAll("\n      delegate\n","\n");
         foo = foo.replaceAll("\n  componentCharacteristic class=\"org.picocontainer.defaults.DefaultPicoContainer$1\"","");
         foo = foo.replaceAll("\n  componentCharacteristic","");
         foo = foo.replaceAll("\n  componentKeyToAdapterCache","");

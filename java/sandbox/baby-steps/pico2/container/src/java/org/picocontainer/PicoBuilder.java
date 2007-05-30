@@ -24,7 +24,7 @@ import java.util.Stack;
 
 public class PicoBuilder {
 
-    public static InjectionFactory ANY_DI() {
+    public static InjectionFactory anyDI() {
         return new AnyInjectionFactory();
     }
 
@@ -40,14 +40,17 @@ public class PicoBuilder {
         return new AnnotationInjectionFactory();
     }
 
-    public static BehaviorFactory IMPL_HIDING() {
+    public static BehaviorFactory implHiding() {
         return new ImplementationHidingBehaviorFactory();
     }
     
-    public static BehaviorFactory CACHING() {
+    public static BehaviorFactory caching() {
         return new CachingBehaviorFactory();
     }
 
+    public static BehaviorFactory threadSafe() {
+        return new SynchronizedBehaviorFactory();
+    }
 
     private PicoContainer parentContainer;
     private Class mpcClass = DefaultPicoContainer.class;
@@ -62,7 +65,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder(PicoContainer parentContainer) {
-        this(parentContainer, ANY_DI());
+        this(parentContainer, anyDI());
     }
 
     public PicoBuilder(InjectionFactory injectionType) {
@@ -70,7 +73,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder() {
-        this(new EmptyPicoContainer(), ANY_DI());
+        this(new EmptyPicoContainer(), anyDI());
     }
 
     private final Stack cafs = new Stack();
@@ -142,7 +145,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withHiddenImplementations() {
-        cafs.push(IMPL_HIDING());
+        cafs.push(implHiding());
         return this;
     }
 
@@ -162,7 +165,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withCaching() {
-        cafs.push(CACHING());
+        cafs.push(caching());
         return this;  
     }
 

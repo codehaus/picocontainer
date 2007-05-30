@@ -166,7 +166,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithCafsListChainThingy() {
-        MutablePicoContainer mpc = new PicoBuilder().withComponentAdapterFactories(CACHING(), IMPL_HIDING(), SDI()).build();
+        MutablePicoContainer mpc = new PicoBuilder(SDI()).withBehaviors(CACHING(), IMPL_HIDING()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentAdapterFactory=org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
@@ -196,7 +196,7 @@ public class PicoBuilderTestCase extends TestCase {
 
     public void testWithBogusParentContainer() {
         try {
-            new PicoBuilder(null).build();
+            new PicoBuilder((PicoContainer)null).build();
             fail("should have barfed");
         } catch (NullPointerException e) {
             //expected

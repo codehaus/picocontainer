@@ -172,7 +172,7 @@ public class NanoBuilderTestCase extends TestCase {
     }
 
     public void testWithCafsListChainThingy() {
-        NanoContainer nc = new NanoBuilder().withComponentAdapterFactories(CACHING(), IMPL_HIDING(), SDI()).build();
+        NanoContainer nc = new NanoBuilder(SDI()).withComponentAdapterFactories(CACHING(), IMPL_HIDING()).build();
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
@@ -203,7 +203,7 @@ public class NanoBuilderTestCase extends TestCase {
 
     public void testWithBogusParentContainer() {
         try {
-            NanoContainer nc = new NanoBuilder(null).build();
+            NanoContainer nc = new NanoBuilder((PicoContainer)null).build();
             fail("should have barfed");
         } catch (NullPointerException e) {
             //expected

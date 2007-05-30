@@ -26,23 +26,27 @@ import com.sun.tools.doclets.internal.toolkit.builders.AbstractBuilder;
 
 public class PicoBuilder {
 
-    public static ComponentAdapterFactory SDI() {
+    public static InstantiatingComponentAdapterFactory ANY_DI() {
+        return new AnyInjectionComponentAdapterFactory();
+    }
+
+    public static InstantiatingComponentAdapterFactory SDI() {
         return new SetterInjectionComponentAdapterFactory();
     }
 
-    public static ComponentAdapterFactory CDI() {
+    public static InstantiatingComponentAdapterFactory CDI() {
         return new ConstructorInjectionComponentAdapterFactory();
     }
 
-    public static ComponentAdapterFactory ADI() {
-        return new ConstructorInjectionComponentAdapterFactory();
+    public static InstantiatingComponentAdapterFactory ADI() {
+        return new AnnotationInjectionComponentAdapterFactory();
     }
 
-    public static ComponentAdapterFactory IMPL_HIDING() {
+    public static DecoratingComponentAdapterFactory IMPL_HIDING() {
         return new ImplementationHidingComponentAdapterFactory();
     }
     
-    public static ComponentAdapterFactory CACHING() {
+    public static DecoratingComponentAdapterFactory CACHING() {
         return new CachingComponentAdapterFactory();
     }
 
@@ -51,21 +55,29 @@ public class PicoBuilder {
     private Class mpcClass = DefaultPicoContainer.class;
     private ComponentMonitor componentMonitor;
 
-    public PicoBuilder(PicoContainer parentContainer) {
+    public PicoBuilder(PicoContainer parentContainer, InstantiatingComponentAdapterFactory injectionType) {
+        this.injectionType = injectionType;
         if (parentContainer == null) {
             throw new NullPointerException("parentContainer class cannot be null");
         }
         this.parentContainer = parentContainer;
     }
 
-    public PicoBuilder() {
-        parentContainer = new EmptyPicoContainer();
+    public PicoBuilder(PicoContainer parentContainer) {
+        this(parentContainer, ANY_DI());
     }
 
-    //private Class headComponentAdapterFactory;
-    //private Class componentAdapterFactoryClass = AnyInjectionComponentAdapterFactory.class;
+    public PicoBuilder(InstantiatingComponentAdapterFactory injectionType) {
+        this(new EmptyPicoContainer(), injectionType);
+    }
 
-    Stack cafs = new Stack();
+    public PicoBuilder() {
+        this(new EmptyPicoContainer(), ANY_DI());
+    }
+
+    private final Stack cafs = new Stack();
+
+    private InstantiatingComponentAdapterFactory injectionType;
 
     private Class componentMonitorClass = NullComponentMonitor.class;
     private Class lifecycleStrategyClass = NullLifecycleStrategy.class;
@@ -103,12 +115,7 @@ public class PicoBuilder {
         DefaultPicoContainer temp = new DefaultPicoContainer();
         temp.addComponent(PicoContainer.class, parentContainer);
 
-        ComponentAdapterFactory lastCaf = null;
-        if (cafs.empty() ||
-            (cafs.peek() instanceof Class && !InstantiatingComponentAdapterFactory.class.isAssignableFrom((Class) cafs.peek())) ||
-                cafs.peek() instanceof ComponentAdapterFactory && !(cafs.peek() instanceof InstantiatingComponentAdapterFactory)) {
-            cafs.push(AnyInjectionComponentAdapterFactory.class);
-        }
+        ComponentAdapterFactory lastCaf = injectionType;
         while (!cafs.empty()) {
             Object caf = cafs.pop();
             DefaultPicoContainer temp2 = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory(), NullLifecycleStrategy.getInstance(), new EmptyPicoContainer());
@@ -121,8 +128,8 @@ public class PicoBuilder {
             if (lastCaf instanceof DecoratingComponentAdapterFactory) {
                 ((DecoratingComponentAdapterFactory) lastCaf).forThis(penultimateCaf);
             }
-            
         }
+
         temp.addComponent(ComponentAdapterFactory.class, lastCaf);
         if (componentMonitorClass == null) {
             temp.addComponent(ComponentMonitor.class, componentMonitor);
@@ -137,27 +144,27 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withHiddenImplementations() {
-        cafs.push(ImplementationHidingComponentAdapterFactory.class);
+        cafs.push(IMPL_HIDING());
         return this;
     }
 
     public PicoBuilder withSetterInjection() {
-        cafs.push(SetterInjectionComponentAdapterFactory.class);
+        injectionType = SDI();
         return this;
     }
 
     public PicoBuilder withAnnotationInjection() {
-        cafs.push(AnnotationInjectionComponentAdapterFactory.class);
+        injectionType = ADI();
         return this;
     }
 
     public PicoBuilder withConstructorInjection() {
-        cafs.push(ConstructorInjectionComponentAdapterFactory.class);
+        injectionType = CDI();
         return this;
     }
 
     public PicoBuilder withCaching() {
-        cafs.push(CachingComponentAdapterFactory.class);
+        cafs.push(CACHING());
         return this;  
     }
 
@@ -186,7 +193,7 @@ public class PicoBuilder {
     }
 
 
-    public PicoBuilder withComponentAdapterFactories(ComponentAdapterFactory... factories) {
+    public PicoBuilder withBehaviors(DecoratingComponentAdapterFactory... factories) {
         for (ComponentAdapterFactory caf : factories) {
             cafs.push(caf);
         }

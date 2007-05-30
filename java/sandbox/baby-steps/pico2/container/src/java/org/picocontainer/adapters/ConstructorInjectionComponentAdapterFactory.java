@@ -26,7 +26,7 @@ import java.io.Serializable;
  * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
-public class ConstructorInjectionComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+public class ConstructorInjectionComponentAdapterFactory implements InstantiatingComponentAdapterFactory, Serializable {
 
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey,

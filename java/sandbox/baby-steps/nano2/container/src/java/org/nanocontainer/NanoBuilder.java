@@ -5,9 +5,8 @@ import org.picocontainer.defaults.ComponentAdapterFactory;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
-import com.thoughtworks.xstream.io.xml.xppdom.Xpp3DomBuilder;
+import org.picocontainer.adapters.DecoratingComponentAdapterFactory;
+import org.picocontainer.adapters.InstantiatingComponentAdapterFactory;
 
 
 public class NanoBuilder {
@@ -16,8 +15,16 @@ public class NanoBuilder {
     private PicoBuilder picoBuilder;
     private ClassLoader classLoader = DefaultNanoContainer.class.getClassLoader();
 
+    public NanoBuilder(PicoContainer parentcontainer, InstantiatingComponentAdapterFactory injectionType) {
+        picoBuilder = new PicoBuilder(parentcontainer, injectionType);
+    }
+
     public NanoBuilder(PicoContainer parentcontainer) {
         picoBuilder = new PicoBuilder(parentcontainer);
+    }
+
+    public NanoBuilder(InstantiatingComponentAdapterFactory injectionType) {
+        picoBuilder = new PicoBuilder(injectionType);
     }
 
     public NanoBuilder() {
@@ -62,8 +69,8 @@ public class NanoBuilder {
         return this;
     }
 
-    public NanoBuilder withComponentAdapterFactories(ComponentAdapterFactory... factories) {
-        picoBuilder.withComponentAdapterFactories(factories);
+    public NanoBuilder withComponentAdapterFactories(DecoratingComponentAdapterFactory... factories) {
+        picoBuilder.withBehaviors(factories);
         return this;
     }
 

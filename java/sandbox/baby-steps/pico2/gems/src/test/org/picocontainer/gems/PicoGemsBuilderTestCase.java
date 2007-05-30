@@ -5,7 +5,6 @@ import com.thoughtworks.xstream.XStream;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
-import org.picocontainer.ComponentMonitor;
 
 import static org.picocontainer.gems.PicoGemsBuilder.IMPL_HIDING;
 import static org.picocontainer.gems.PicoGemsBuilder.LOG4J;
@@ -23,7 +22,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
     }
 
     public void testWithImplementationHiding() {
-        MutablePicoContainer mpc = new PicoBuilder().withComponentAdapterFactories(IMPL_HIDING()).build();
+        MutablePicoContainer mpc = new PicoBuilder().withBehaviors(IMPL_HIDING()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentAdapterFactory=org.picocontainer.gems.adapters.ImplementationHidingComponentAdapterFactory\n" +

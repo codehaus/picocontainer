@@ -32,7 +32,7 @@ import java.io.Serializable;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class AnyInjectionComponentAdapterFactory implements ComponentAdapterFactory, Serializable {
+public class AnyInjectionComponentAdapterFactory implements InstantiatingComponentAdapterFactory, Serializable {
 
     private ConstructorInjectionComponentAdapterFactory cdiDelegate = new ConstructorInjectionComponentAdapterFactory();
     private SetterInjectionComponentAdapterFactory sdiDelegate = new SetterInjectionComponentAdapterFactory();

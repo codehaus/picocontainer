@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 /**
  * Test the CyclicDependecy.
  */
-public class CyclicDependencyGuardTestCase
+public class ThreadLocalCyclicDependencyGuardTestCase
         extends TestCase {
     private Runnable[] runner = new Runnable[3];
     
@@ -61,19 +61,19 @@ public class CyclicDependencyGuardTestCase
             racer[i] =  new Thread(runner[i]);
         }
 
-        for(int i = 0; i < racer.length; ++i) {
-            racer[i].start();
+        for (Thread aRacer : racer) {
+            aRacer.start();
             Thread.sleep(200);
         }
-        
-        for(int i = 0; i < racer.length; ++i) {
-            synchronized (racer[i]) {
-                racer[i].notify();
+
+        for (Thread aRacer : racer) {
+            synchronized (aRacer) {
+                aRacer.notify();
             }
         }
 
-        for(int i = 0; i < racer.length; ++i) {
-            racer[i].join();
+        for (Thread aRacer : racer) {
+            aRacer.join();
         }
     }
     
@@ -84,8 +84,8 @@ public class CyclicDependencyGuardTestCase
         
         initTest(runner);
 
-        for(int i = 0; i < runner.length; ++i) {
-            assertNull(((ThreadLocalRunner)runner[i]).exception);
+        for (Runnable aRunner : runner) {
+            assertNull(((ThreadLocalRunner) aRunner).exception);
         }
     }
 }

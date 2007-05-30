@@ -15,13 +15,13 @@ package org.picocontainer;
  * The lifecycle manager is implemented by the addComponent adapters
  * which will resolve the dependencies of the addComponent instance and
  * delegate the implementation of the lifecycle control to the 
- * {@link org.picocontainer.defaults.LifecycleStrategy lifecycle strategy}.
+ * {@link LifecycleStrategy lifecycle strategy}.
  * 
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  * @version $Revision$
- * @see org.picocontainer.defaults.LifecycleStrategy 
+ * @see LifecycleStrategy
  * @since 1.2
  */
 public interface LifecycleManager {

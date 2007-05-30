@@ -10,7 +10,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.adapters.BehaviorAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 

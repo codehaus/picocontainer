@@ -16,7 +16,7 @@ import junit.framework.TestCase;
 
 import org.mortbay.util.IO;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.alternatives.EmptyPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 
 public class DependencyInjectionServletTestCase extends TestCase {
 

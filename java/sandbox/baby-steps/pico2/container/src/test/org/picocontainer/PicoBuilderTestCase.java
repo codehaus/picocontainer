@@ -10,9 +10,9 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentFactory;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
-import org.picocontainer.alternatives.EmptyPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.adapters.ImplementationHidingBehaviorFactory;
 
 import static org.picocontainer.PicoBuilder.SDI;
@@ -57,7 +57,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
@@ -70,7 +70,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "  lifecycleStrategy\n" +
@@ -85,7 +85,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.ReflectionLifecycleStrategy\n" +
                 "    methodNames\n" +
                 "      stringstartstring\n" +
@@ -106,7 +106,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
                 "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -121,7 +121,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
                 "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -146,7 +146,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "    delegate=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
@@ -160,7 +160,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "    delegate=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
@@ -174,7 +174,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "    delegate=org.picocontainer.adapters.SynchronizedBehaviorFactory\n" +
                 "      delegate=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
                 "        delegate=org.picocontainer.adapters.SetterInjectionFactory\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
@@ -211,7 +211,7 @@ public class PicoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentAdapterFactory=org.picocontainer.adapters.SetterInjectionFactory\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
@@ -222,7 +222,7 @@ public class PicoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentAdapterFactory=org.picocontainer.adapters.AnnotationInjectionFactory\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
@@ -233,7 +233,7 @@ public class PicoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentAdapterFactory=org.picocontainer.adapters.ConstructorInjectionFactory\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
@@ -245,7 +245,7 @@ public class PicoBuilderTestCase extends TestCase {
         assertEquals("PICO\n" +
                 "  componentAdapterFactory=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
                 "    delegate=org.picocontainer.adapters.SetterInjectionFactory\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
@@ -258,7 +258,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "  componentAdapterFactory=org.picocontainer.adapters.CachingBehaviorFactory\n" +
                 "    delegate=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
                 "      delegate=org.picocontainer.adapters.SetterInjectionFactory\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
@@ -272,7 +272,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "    delegate=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
@@ -285,7 +285,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "org.picocontainer.PicoBuilderTestCase_-TestPicoContainer",foo);

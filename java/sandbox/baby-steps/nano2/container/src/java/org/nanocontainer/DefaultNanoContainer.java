@@ -29,13 +29,13 @@ import org.picocontainer.PicoException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
+import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
 import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.CustomPermissionsURLClassLoader;
 
 /**
@@ -120,7 +120,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
 
     /**
      * Constructor that provides the same control over the nanocontainer lifecycle strategies
-     * as {@link DefaultPicoContainer( ComponentFactory , LifecycleStrategy, PicoContainer)}.
+     * as {@link DefaultPicoContainer( ComponentFactory , org.picocontainer.LifecycleStrategy , PicoContainer)}.
      * @param componentAdapterFactory ComponentAdapterFactory
      * @param lifecycleStrategy LifecycleStrategy
      * @param parent PicoContainer may be null if there is no parent.

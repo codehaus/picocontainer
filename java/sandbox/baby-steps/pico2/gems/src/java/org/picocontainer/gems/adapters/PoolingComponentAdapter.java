@@ -23,7 +23,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.BehaviorAdapter;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
@@ -398,7 +398,7 @@ public class PoolingComponentAdapter extends BehaviorAdapter implements Lifecycl
 
     /**
      * Stop of the container has no effect for the pool. Applies only if the delegated
-     * {@link ComponentAdapter} supports a lifecylce by implementing {@link LifecycleStrategy}.
+     * {@link ComponentAdapter} supports a lifecylce by implementing {@link org.picocontainer.LifecycleStrategy}.
      * 
      * @throws IllegalStateException if pool was already disposed
      */

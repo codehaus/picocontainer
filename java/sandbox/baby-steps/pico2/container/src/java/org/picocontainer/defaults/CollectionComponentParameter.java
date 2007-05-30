@@ -45,7 +45,6 @@ import java.util.TreeSet;
  */
 public class CollectionComponentParameter
         implements Parameter, Serializable {
-    private static final MapFactory mapFactory = new MapFactory();
 
     /**
      * Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements.
@@ -220,19 +219,17 @@ public class CollectionComponentParameter
      * @return a {@link Map} with the ComponentAdapter instances and their addComponent keys as map key.
      */
     protected Map getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter, Class keyType, Class valueType) {
-        final Map adapterMap = mapFactory.newInstance();
+        final Map adapterMap = newMapInstance();
         final PicoContainer parent = container.getParent();
         if (parent != null) {
             adapterMap.putAll(getMatchingComponentAdapters(parent, adapter, keyType, valueType));
         }
-        final Collection allAdapters = container.getComponentAdapters();
-        for (final Iterator iter = allAdapters.iterator(); iter.hasNext();) {
-            final ComponentAdapter componentAdapter = (ComponentAdapter) iter.next();
+        final Collection<ComponentAdapter> allAdapters = container.getComponentAdapters();
+        for (ComponentAdapter componentAdapter : allAdapters) {
             adapterMap.remove(componentAdapter.getComponentKey());
         }
-        final List adapterList = container.getComponentAdapters(valueType);
-        for (final Iterator iter = adapterList.iterator(); iter.hasNext();) {
-            final ComponentAdapter componentAdapter = (ComponentAdapter) iter.next();
+        final List<ComponentAdapter> adapterList = container.getComponentAdapters(valueType);
+        for (ComponentAdapter componentAdapter : adapterList) {
             final Object key = componentAdapter.getComponentKey();
             if (adapter != null && key.equals(adapter.getComponentKey())) {
                 continue;
@@ -264,18 +261,17 @@ public class CollectionComponentParameter
         return valueType;
     }
 
-    private Object[] getArrayInstance(final PicoContainer container, final Class expectedType, final Map adapterList) {
+    private Object[] getArrayInstance(final PicoContainer container, final Class expectedType, final Map<Object, ComponentAdapter> adapterList) {
         final Object[] result = (Object[]) Array.newInstance(expectedType.getComponentType(), adapterList.size());
         int i = 0;
-        for (final Iterator iterator = adapterList.values().iterator(); iterator.hasNext();) {
-            final ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+        for (ComponentAdapter componentAdapter : adapterList.values()) {
             result[i] = container.getComponent(componentAdapter.getComponentKey());
             i++;
         }
         return result;
     }
 
-    private Collection getCollectionInstance(final PicoContainer container, final Class expectedType, final Map adapterList) {
+    private Collection getCollectionInstance(final PicoContainer container, final Class expectedType, final Map<Object, ComponentAdapter> adapterList) {
         Class collectionType = expectedType;
         if (collectionType.isInterface()) {
             // The order of tests are significant. The least generic types last.
@@ -295,8 +291,7 @@ public class CollectionComponentParameter
         }
         try {
             Collection result = (Collection) collectionType.newInstance();
-            for (final Iterator iterator = adapterList.values().iterator(); iterator.hasNext();) {
-                final ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+            for (ComponentAdapter componentAdapter : adapterList.values()) {
                 result.add(container.getComponent(componentAdapter.getComponentKey()));
             }
             return result;
@@ -325,8 +320,8 @@ public class CollectionComponentParameter
         }
         try {
             Map result = (Map) collectionType.newInstance();
-            for (final Iterator iterator = adapterList.entrySet().iterator(); iterator.hasNext();) {
-                final Map.Entry entry = (Map.Entry) iterator.next();
+            for (Object o : adapterList.entrySet()) {
+                final Map.Entry entry = (Map.Entry) o;
                 final Object key = entry.getKey();
                 result.put(key, container.getComponent(key));
             }
@@ -341,5 +336,31 @@ public class CollectionComponentParameter
             ///CLOVER:ON
         }
     }
+
+
+    private static Class clazz;
+
+    {
+        try {
+            clazz = Class.forName("java.util.LinkedHashMap");
+        } catch (ClassNotFoundException e) {
+            try {
+                clazz = Class.forName("org.apache.commons.collections.map.LinkedMap");
+            } catch (ClassNotFoundException e1) {
+                clazz = HashMap.class;
+            }
+        }
+    }
+
+    private static Map newMapInstance() {
+        try {
+            return (Map) clazz.newInstance();
+        } catch (InstantiationException e) {
+            throw new RuntimeException("Could not instantiate " + clazz + " : " + e.getMessage());
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Could not instantiate " + clazz + " : " + e.getMessage());
+        }
+    }
+
 
 }

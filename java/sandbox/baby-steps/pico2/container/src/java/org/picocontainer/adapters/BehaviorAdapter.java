@@ -20,7 +20,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 
 /**
  * <p>
@@ -33,7 +33,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * </p>
  * <p>
  * This addAdapter also supports a {@link LifecycleManager lifecycle manager} and a
- * {@link org.picocontainer.defaults.LifecycleStrategy lifecycle strategy} if the delegate does.
+ * {@link org.picocontainer.LifecycleStrategy lifecycle strategy} if the delegate does.
  * </p>
  * 
  * @author Jon Tirsen

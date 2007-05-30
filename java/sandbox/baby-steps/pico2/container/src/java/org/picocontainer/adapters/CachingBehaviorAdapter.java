@@ -15,9 +15,9 @@ import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
@@ -27,7 +27,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * </p>
  * <p>
  * This adapter supports components with a lifecycle, as it is a {@link LifecycleManager lifecycle manager}
- * which will apply the delegate's {@link org.picocontainer.defaults.LifecycleStrategy lifecycle strategy} to the cached addComponent instance.
+ * which will apply the delegate's {@link org.picocontainer.LifecycleStrategy lifecycle strategy} to the cached addComponent instance.
  * The lifecycle state is maintained so that the component instance behaves in the expected way:
  * it can't be started if already started, it can't be started or stopped if disposed, it can't
  * be stopped if not started, it can't be disposed if already disposed.

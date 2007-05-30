@@ -1,6 +1,6 @@
 package org.picocontainer.lifecycle;
 
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 
 public class NullLifecycleStrategy implements LifecycleStrategy {
 

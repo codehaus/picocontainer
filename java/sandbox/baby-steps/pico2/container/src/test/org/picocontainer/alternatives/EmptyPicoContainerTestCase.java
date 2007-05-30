@@ -13,6 +13,7 @@ package org.picocontainer.alternatives;
 import junit.framework.TestCase;
 
 import org.picocontainer.PicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 
 /**
  * @author Mauro Talevi

@@ -25,12 +25,12 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.adapters.SetterInjectionAdapter;
 import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.adapters.SetterInjectionFactory;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
-import org.picocontainer.defaults.LifecycleStrategy;
 
 import java.io.File;
 import java.net.URLClassLoader;

@@ -22,7 +22,7 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentFactory;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.gems.adapters.ThreadLocalComponentAdapter;
 
 import com.thoughtworks.proxy.ProxyFactory;
@@ -77,7 +77,7 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
      * Creates a {@link ComponentAdapter} for EJB objects.
      * @param componentKey the key used to lookup the {@link InitialContext}.
      * @param componentImplementation the home interface.
-     * @see org.picocontainer.defaults.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.defaults.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
+     * @see org.picocontainer.defaults.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
      * @return Returns the created {@link ComponentAdapter}
      * @throws PicoIntrospectionException if the home interface of the EJB could not instanciated
      * @throws AssignabilityRegistrationException if the <code>componentImplementation</code> does not extend

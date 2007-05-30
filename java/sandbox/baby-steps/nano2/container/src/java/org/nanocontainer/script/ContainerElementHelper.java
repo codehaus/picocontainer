@@ -5,7 +5,7 @@ import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.alternatives.EmptyPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.adapters.AnyInjectionFactory;
 

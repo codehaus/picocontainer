@@ -13,7 +13,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.adapters.AbstractBehaviorFactory;
 
 /**

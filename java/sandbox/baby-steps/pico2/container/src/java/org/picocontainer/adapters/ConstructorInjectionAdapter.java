@@ -18,7 +18,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ParameterName;
 import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;

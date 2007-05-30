@@ -19,7 +19,7 @@ import org.mortbay.jetty.nio.BlockingChannelConnector;
 import org.mortbay.jetty.servlet.Context;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.alternatives.EmptyPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 
 public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer, Startable {
 

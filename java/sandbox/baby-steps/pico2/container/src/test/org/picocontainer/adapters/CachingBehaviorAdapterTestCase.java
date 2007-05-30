@@ -12,9 +12,9 @@ import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.adapters.CachingBehaviorAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 

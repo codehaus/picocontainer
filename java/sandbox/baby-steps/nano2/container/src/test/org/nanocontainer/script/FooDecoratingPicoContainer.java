@@ -1,6 +1,6 @@
 package org.nanocontainer.script;
 
-import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
+import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.Parameter;

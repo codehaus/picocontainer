@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by the committers                                           *
  *****************************************************************************/
-package org.picocontainer.alternatives;
+package org.picocontainer.containers;
 
 import java.io.Serializable;
 import java.util.Collection;

@@ -19,7 +19,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.adapters.AbstractBehaviorFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 
 /**
  * @author Aslak Helles&oslash;y

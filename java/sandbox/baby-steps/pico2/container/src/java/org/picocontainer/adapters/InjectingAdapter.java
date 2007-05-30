@@ -15,7 +15,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.ParameterName;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.defaults.NotConcreteRegistrationException;

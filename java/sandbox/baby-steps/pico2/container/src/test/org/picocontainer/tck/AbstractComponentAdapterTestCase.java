@@ -30,7 +30,7 @@ import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.adapters.BehaviorAdapter;
 import org.picocontainer.defaults.CyclicDependencyException;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 import org.picocontainer.defaults.SimpleReference;

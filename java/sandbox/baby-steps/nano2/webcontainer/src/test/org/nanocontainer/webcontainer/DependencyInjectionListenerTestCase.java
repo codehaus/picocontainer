@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.alternatives.EmptyPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.nanocontainer.webcontainer.PicoJettyServer;
 import org.nanocontainer.webcontainer.PicoContext;
 

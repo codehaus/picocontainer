@@ -10,11 +10,11 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentFactory;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.alternatives.EmptyPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 import static org.picocontainer.PicoBuilder.caching;
 import static org.picocontainer.PicoBuilder.implHiding;
 import static org.picocontainer.PicoBuilder.SDI;
@@ -58,7 +58,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "",foo);
@@ -72,7 +72,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
                 "      componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "    lifecycleStrategy\n" +
@@ -88,7 +88,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.ReflectionLifecycleStrategy\n" +
                 "      methodNames\n" +
                 "        stringstartstring\n" +
@@ -109,7 +109,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
                 "      delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -124,7 +124,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
                 "      delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -149,7 +149,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "      delegate=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "        cdiDelegate\n" +
                 "        sdiDelegate\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",foo);
     }
@@ -164,7 +164,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "      delegate=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "        cdiDelegate\n" +
                 "        sdiDelegate\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
                 foo);
@@ -178,7 +178,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "    componentAdapterFactory=org.picocontainer.adapters.CachingBehaviorFactory\n" +
                 "      delegate=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
                 "        delegate=org.picocontainer.adapters.SetterInjectionFactory\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
                 foo);
@@ -216,7 +216,7 @@ public class NanoBuilderTestCase extends TestCase {
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
                 "    componentAdapterFactory=org.picocontainer.adapters.SetterInjectionFactory\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
                 foo);
@@ -228,7 +228,7 @@ public class NanoBuilderTestCase extends TestCase {
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
                 "    componentAdapterFactory=org.picocontainer.adapters.AnnotationInjectionFactory\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
                 foo);
@@ -240,7 +240,7 @@ public class NanoBuilderTestCase extends TestCase {
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
                 "    componentAdapterFactory=org.picocontainer.adapters.ConstructorInjectionFactory\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",foo);
     }
@@ -252,7 +252,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +
                 "    componentAdapterFactory=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
                 "      delegate=org.picocontainer.adapters.SetterInjectionFactory\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
                 foo);
@@ -266,7 +266,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "    componentAdapterFactory=org.picocontainer.adapters.CachingBehaviorFactory\n" +
                 "      delegate=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
                 "        delegate=org.picocontainer.adapters.SetterInjectionFactory\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
                 foo);
@@ -281,7 +281,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "      delegate=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "        cdiDelegate\n" +
                 "        sdiDelegate\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
                 foo);
@@ -295,7 +295,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "org.nanocontainer.NanoBuilderTestCase_-TestNanoContainer",
@@ -317,7 +317,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "    componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
-                "    parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "org.nanocontainer.NanoBuilderTestCase_-TestNanoContainer",

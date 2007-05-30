@@ -11,14 +11,14 @@ import org.picocontainer.adapters.InjectionFactory;
 import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.adapters.SynchronizedBehaviorFactory;
 import org.picocontainer.adapters.BehaviorFactory;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
-import org.picocontainer.alternatives.EmptyPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 
 import java.util.Stack;
 

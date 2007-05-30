@@ -11,8 +11,8 @@ package org.picocontainer.adapters;
 
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.adapters.AbstractComponentAdapter;
-import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -24,7 +24,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * </p>
  * <p>
  * This addComponent addAdapter supports both a {@link LifecycleManager LifecycleManager} and a
- * {@link org.picocontainer.defaults.LifecycleStrategy LifecycleStrategy} to control the lifecycle of the addComponent.
+ * {@link org.picocontainer.LifecycleStrategy LifecycleStrategy} to control the lifecycle of the addComponent.
  * The lifecycle manager methods simply delegate to the lifecycle strategy methods 
  * on the addComponent instance.
  * </p>

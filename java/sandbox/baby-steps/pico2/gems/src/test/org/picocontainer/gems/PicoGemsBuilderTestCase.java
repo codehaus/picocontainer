@@ -29,7 +29,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
                 "    delegate=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
@@ -42,7 +42,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
                 "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.Log4JComponentMonitor\n" +
                 "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -56,7 +56,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
                 "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.Log4JComponentMonitor\n" +
                 "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -70,7 +70,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
                 "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
-                "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor\n" +
                 "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +

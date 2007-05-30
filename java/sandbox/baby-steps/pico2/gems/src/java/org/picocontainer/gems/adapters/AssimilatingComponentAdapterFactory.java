@@ -18,11 +18,11 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.adapters.AbstractBehaviorFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.LifecycleStrategy;
 
 
 /**
@@ -62,7 +62,7 @@ public class AssimilatingComponentAdapterFactory extends AbstractBehaviorFactory
      * Create a {@link AssimilatingComponentAdapter}. This addAdapter will wrap the returned {@link ComponentAdapter} of the
      * deleated {@link ComponentFactory}.
      * 
-     * @see org.picocontainer.defaults.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.defaults.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
+     * @see org.picocontainer.defaults.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
      */
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, final Object componentKey, final Class componentImplementation, final Parameter... parameters)

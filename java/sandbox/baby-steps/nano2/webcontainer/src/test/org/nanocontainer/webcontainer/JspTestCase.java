@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.mortbay.util.IO;
 import org.mortbay.jetty.handler.ErrorHandler;
 
-import org.picocontainer.alternatives.EmptyPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;

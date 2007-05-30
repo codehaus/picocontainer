@@ -8,6 +8,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
 
 import java.io.Serializable;
 

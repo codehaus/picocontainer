@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 
-import org.picocontainer.alternatives.EmptyPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.mortbay.util.IO;
 
 public class StaticFileTestCase extends TestCase {

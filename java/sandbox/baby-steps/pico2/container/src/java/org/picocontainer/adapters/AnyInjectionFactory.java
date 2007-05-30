@@ -16,8 +16,8 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.adapters.SetterInjectionFactory;
-import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 

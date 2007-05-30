@@ -18,13 +18,9 @@ import org.nanocontainer.TestHelper;
 import org.picocontainer.PicoClassNotFoundException;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.*;
-import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.Vector;
-import java.util.HashMap;
-import java.util.ArrayList;
 
 public class OldDefaultNanoContainerTestCase extends TestCase {
 

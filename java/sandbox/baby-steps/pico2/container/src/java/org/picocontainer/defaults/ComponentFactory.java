@@ -14,6 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
 
 /**
  * <p/>

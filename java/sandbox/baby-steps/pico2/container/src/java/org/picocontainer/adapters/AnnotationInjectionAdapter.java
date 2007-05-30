@@ -3,7 +3,7 @@ package org.picocontainer.adapters;
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Inject;
-import org.picocontainer.defaults.LifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
 
 import java.lang.reflect.Method;
 import java.io.Serializable;

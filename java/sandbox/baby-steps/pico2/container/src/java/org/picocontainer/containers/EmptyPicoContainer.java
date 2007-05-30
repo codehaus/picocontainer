@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Paul Hammant                                             *
  *****************************************************************************/
-package org.picocontainer.alternatives;
+package org.picocontainer.containers;
 
 import java.io.Serializable;
 import java.util.Collections;

@@ -24,7 +24,7 @@ import org.picocontainer.PicoContainer;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.defaults.DelegatingComponentMonitor;
+import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
 
 /**

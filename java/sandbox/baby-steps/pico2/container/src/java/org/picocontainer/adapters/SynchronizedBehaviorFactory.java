@@ -14,15 +14,15 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.defaults.LifecycleStrategy;
-import org.picocontainer.adapters.AbstractBehaviorDecoratorFactory;
+import org.picocontainer.adapters.AbstractBehaviorFactory;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class SynchronizedBehaviorFactory extends AbstractBehaviorDecoratorFactory {
+public class SynchronizedBehaviorFactory extends AbstractBehaviorFactory {
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) {
-        return new SynchronizedBehaviorAdapter(super.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters));
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) {
+        return new SynchronizedBehaviorAdapter(super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters));
     }
 }

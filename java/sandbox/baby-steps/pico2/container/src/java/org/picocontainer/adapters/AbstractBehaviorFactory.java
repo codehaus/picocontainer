@@ -21,7 +21,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
 
 import java.io.Serializable;
 
-public class AbstractBehaviorDecoratorFactory implements ComponentFactory, Serializable, BehaviorFactory {
+public class AbstractBehaviorFactory implements ComponentFactory, Serializable, BehaviorFactory {
 
     private ComponentFactory delegate;
 
@@ -29,10 +29,10 @@ public class AbstractBehaviorDecoratorFactory implements ComponentFactory, Seria
         this.delegate = delegate;
         return this;
     }
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey,
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);
+        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
     }
 
 }

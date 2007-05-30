@@ -15,7 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.AbstractBehaviorDecoratorFactory;
+import org.picocontainer.adapters.AbstractBehaviorFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
@@ -26,7 +26,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * @author Stephen Molitor
  * @version $Revision$
  */
-public class AspectsComponentAdapterFactory extends AbstractBehaviorDecoratorFactory {
+public class AspectsComponentAdapterFactory extends AbstractBehaviorFactory {
 
     private final AspectsApplicator aspectsApplicator;
 
@@ -42,9 +42,9 @@ public class AspectsComponentAdapterFactory extends AbstractBehaviorDecoratorFac
         this.aspectsApplicator = aspectsApplicator;
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation,
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation,
                                                    Parameter[] parameters) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
-        return new AspectsComponentAdapter(aspectsApplicator, super.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey,
+        return new AspectsComponentAdapter(aspectsApplicator, super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey,
                 componentImplementation, parameters));
     }
 

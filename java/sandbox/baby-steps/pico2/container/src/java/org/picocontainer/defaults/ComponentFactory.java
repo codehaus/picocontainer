@@ -35,7 +35,7 @@ public interface ComponentFactory {
      *
      * @param componentMonitor
      * @param lifecycleStrategy
-     * @param registerationCharacteristic
+     * @param componentCharacteristic
      * @param componentKey                the key to be associated with this addAdapter. This value should be returned
      *                                    from a call to {@link org.picocontainer.ComponentAdapter#getComponentKey()} on the created addAdapter.
      * @param componentImplementation     the implementation class to be associated with this addAdapter.
@@ -55,7 +55,7 @@ public interface ComponentFactory {
      *          if the creation of the addComponent addAdapter results in a
      *          {@link NotConcreteRegistrationException}.
      */
-    ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic,
+    ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic,
                                             Object componentKey,
                                             Class componentImplementation,
                                             Parameter... parameters) throws PicoIntrospectionException,

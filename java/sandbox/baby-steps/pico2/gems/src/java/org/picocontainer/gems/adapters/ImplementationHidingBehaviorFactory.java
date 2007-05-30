@@ -8,19 +8,19 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.AbstractBehaviorDecoratorFactory;
+import org.picocontainer.adapters.AbstractBehaviorFactory;
 import org.picocontainer.adapters.AnyInjectionFactory;
 
-public class ImplementationHidingBehaviorFactory extends AbstractBehaviorDecoratorFactory {
+public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory {
 
     public ImplementationHidingBehaviorFactory() {
         forThis(new AnyInjectionFactory());
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
 
-        ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, registerationCharacteristic, componentKey, componentImplementation, parameters);
+        ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
         return new ImplementationHidingBehaviorAdapter(componentAdapter);
     }
 }

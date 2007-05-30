@@ -15,8 +15,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.alternatives.EmptyPicoContainer;
-import static org.picocontainer.PicoBuilder.CACHING;
-import static org.picocontainer.PicoBuilder.IMPL_HIDING;
+import static org.picocontainer.PicoBuilder.caching;
+import static org.picocontainer.PicoBuilder.implHiding;
 import static org.picocontainer.PicoBuilder.SDI;
 import org.picocontainer.adapters.ImplementationHidingBehaviorFactory;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
@@ -171,7 +171,7 @@ public class NanoBuilderTestCase extends TestCase {
     }
 
     public void testWithCafsListChainThingy() {
-        NanoContainer nc = new NanoBuilder(SDI()).withComponentAdapterFactories(CACHING(), IMPL_HIDING()).build();
+        NanoContainer nc = new NanoBuilder(SDI()).withComponentAdapterFactories(caching(), implHiding()).build();
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.defaults.DefaultPicoContainer\n" +

@@ -21,7 +21,7 @@ import javax.management.ObjectName;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.TraversalCheckingVisitor;
+import org.picocontainer.visitors.TraversalCheckingVisitor;
 
 
 /**
@@ -74,7 +74,7 @@ public class JMXVisitor extends TraversalCheckingVisitor {
      * Entry point for the visitor traversal.
      * @return Returns a {@link Set} with all ObjectInstance instances retrieved from the {@link MBeanServer} for the
      *         registered MBeans.
-     * @see org.picocontainer.defaults.AbstractPicoVisitor#traverse(java.lang.Object)
+     * @see org.picocontainer.visitors.AbstractPicoVisitor#traverse(java.lang.Object)
      */
     public Object traverse(final Object node) {
         super.traverse(node);

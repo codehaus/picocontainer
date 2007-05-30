@@ -36,7 +36,7 @@ public class SetterInjectionFactory implements InjectionFactory, Serializable {
      *
      * @param componentMonitor
      * @param lifecycleStrategy
-     * @param registerationCharacteristic
+     * @param componentCharacteristic
      * @param componentKey                The addComponent's key
      * @param componentImplementation     The class of the bean.
      * @param parameters                  Any parameters for the setters. If null the addAdapter solves the
@@ -49,7 +49,7 @@ public class SetterInjectionFactory implements InjectionFactory, Serializable {
      *          if the implementation is an interface or an
      *          abstract class.
      */
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         return new SetterInjectionAdapter(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
     }

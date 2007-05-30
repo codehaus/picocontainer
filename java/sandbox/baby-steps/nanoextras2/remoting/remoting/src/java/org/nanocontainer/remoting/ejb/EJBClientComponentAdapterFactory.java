@@ -68,7 +68,7 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
     }
 
     public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic registerationCharacteristic, final Object componentKey, final Class componentImplementation, final Parameter[] parameters)
+            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, final Object componentKey, final Class componentImplementation, final Parameter[] parameters)
             throws PicoIntrospectionException, AssignabilityRegistrationException {
         return createComponentAdapter(componentKey.toString(), componentImplementation);
     }

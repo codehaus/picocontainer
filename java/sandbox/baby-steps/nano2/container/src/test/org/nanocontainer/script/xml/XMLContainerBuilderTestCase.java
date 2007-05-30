@@ -39,7 +39,7 @@ import org.picocontainer.PicoException;
 import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.adapters.AnyInjectionFactory;
-import org.picocontainer.adapters.AbstractBehaviorDecoratorFactory;
+import org.picocontainer.adapters.AbstractBehaviorFactory;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -676,12 +676,12 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
             super();
         }
     }
-    public static class MyCAF2 extends AbstractBehaviorDecoratorFactory {
+    public static class MyCAF2 extends AbstractBehaviorFactory {
         public MyCAF2(ComponentFactory delegate) {
             forThis(delegate);
         }
     }
-    public static class MyCAF3 extends AbstractBehaviorDecoratorFactory {
+    public static class MyCAF3 extends AbstractBehaviorFactory {
         public MyCAF3(ComponentFactory delegate) {
             forThis(delegate);
         }

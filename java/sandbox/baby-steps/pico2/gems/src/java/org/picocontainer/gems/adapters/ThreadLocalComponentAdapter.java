@@ -18,8 +18,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.adapters.CachingComponentAdapter;
-import org.picocontainer.adapters.DecoratingComponentAdapter;
+import org.picocontainer.adapters.CachingBehaviorAdapter;
+import org.picocontainer.adapters.BehaviorAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
@@ -43,7 +43,7 @@ import java.util.Set;
  * 
  * @author J&ouml;rg Schaible
  */
-public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
+public class ThreadLocalComponentAdapter extends BehaviorAdapter {
 
     private transient Class[] interfaces;
     private ProxyFactory proxyFactory;
@@ -57,7 +57,7 @@ public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
      */
     public ThreadLocalComponentAdapter(final ComponentAdapter delegate, final ProxyFactory proxyFactory)
             throws PicoIntrospectionException {
-        super(new CachingComponentAdapter(delegate, new ThreadLocalReference()));
+        super(new CachingBehaviorAdapter(delegate, new ThreadLocalReference()));
         this.proxyFactory = proxyFactory;
         interfaces = getInterfaces();
     }
@@ -69,7 +69,7 @@ public class ThreadLocalComponentAdapter extends DecoratingComponentAdapter {
      * @throws PicoIntrospectionException Thrown if the addComponent does not implement any interface.
      */
     public ThreadLocalComponentAdapter(final ComponentAdapter delegate) throws PicoIntrospectionException {
-        this(new CachingComponentAdapter(delegate, new ThreadLocalReference()), new StandardProxyFactory());
+        this(new CachingBehaviorAdapter(delegate, new ThreadLocalReference()), new StandardProxyFactory());
     }
 
     public Object getComponentInstance(final PicoContainer pico)

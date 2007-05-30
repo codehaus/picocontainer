@@ -32,10 +32,10 @@ import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.adapters.CachingComponentAdapterFactory;
+import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.alternatives.EmptyPicoContainer;
-import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -57,7 +57,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * </p>
  * <p/>
  * Another place where keys that are classes make a subtle difference is in
- * {@link org.picocontainer.adapters.ImplementationHidingComponentAdapter}.
+ * {@link org.picocontainer.adapters.ImplementationHidingBehaviorAdapter}.
  * </p>
  * <p/>
  * This implementation of {@link MutablePicoContainer} also supports
@@ -104,8 +104,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
-     * in a factory that creates {@link org.picocontainer.adapters.CachingComponentAdapter} instances, such as for example
-     * {@link org.picocontainer.adapters.CachingComponentAdapterFactory}. CachingComponentAdapterFactory can delegate to
+     * in a factory that creates {@link org.picocontainer.adapters.CachingBehaviorAdapter} instances, such as for example
+     * {@link org.picocontainer.adapters.CachingBehaviorFactory}. CachingBehaviorFactory can delegate to
      * other ComponentAdapterFactories.
      * </em>
      *
@@ -122,8 +122,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
-     * in a factory that creates {@link org.picocontainer.adapters.CachingComponentAdapter} instances, such as for example
-     * {@link org.picocontainer.adapters.CachingComponentAdapterFactory}. CachingComponentAdapterFactory can delegate to
+     * in a factory that creates {@link org.picocontainer.adapters.CachingBehaviorAdapter} instances, such as for example
+     * {@link org.picocontainer.adapters.CachingBehaviorFactory}. CachingBehaviorFactory can delegate to
      * other ComponentAdapterFactories.
      * </em>
      *
@@ -146,20 +146,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-      * Creates a new container with the AnyInjectionComponentAdapterFactory using a
+      * Creates a new container with the AnyInjectionFactory using a
       * custom ComponentMonitor
       *
       * @param monitor the ComponentMonitor to use
       * @param parent the parent container (used for addComponent dependency lookups).
       */
     public DefaultPicoContainer(ComponentMonitor monitor, PicoContainer parent) {
-        this(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), parent);
+        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), parent);
         lifecycleStrategy = new StartableLifecycleStrategy(monitor);
         componentMonitor = monitor;
     }
 
     /**
-      * Creates a new container with the AnyInjectionComponentAdapterFactory using a
+      * Creates a new container with the AnyInjectionFactory using a
       * custom ComponentMonitor and lifecycle strategy
       *
       * @param monitor the ComponentMonitor to use
@@ -167,7 +167,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
       * @param parent the parent container (used for addComponent dependency lookups).
       */
     public DefaultPicoContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), lifecycleStrategy,  parent);
+        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), lifecycleStrategy,  parent);
         componentMonitor = monitor;
 
     }
@@ -180,7 +180,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-      * Creates a new container with the AnyInjectionComponentAdapterFactory using a
+      * Creates a new container with the AnyInjectionFactory using a
       * custom lifecycle strategy
       *
       * @param lifecycleStrategy the lifecycle strategy to use.
@@ -201,7 +201,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-      * Creates a new container with the AnyInjectionComponentAdapterFactory using a
+      * Creates a new container with the AnyInjectionFactory using a
       * custom ComponentMonitor
       *
       * @param monitor the ComponentMonitor to use
@@ -211,20 +211,20 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with a (caching) {@link AnyInjectionComponentAdapterFactory}
+     * Creates a new container with a (caching) {@link AnyInjectionFactory}
      * and a parent container.
      *
      * @param parent the parent container (used for addComponent dependency lookups).
      */
     public DefaultPicoContainer(PicoContainer parent) {
-        this(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), parent);
+        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), parent);
     }
 
     /**
-     * Creates a new container with a (caching) {@link AnyInjectionComponentAdapterFactory} and no parent container.
+     * Creates a new container with a (caching) {@link AnyInjectionFactory} and no parent container.
      */
     public DefaultPicoContainer() {
-        this(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), null);
+        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), null);
     }
 
     public Collection<ComponentAdapter> getComponentAdapters() {

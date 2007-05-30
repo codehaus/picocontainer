@@ -23,7 +23,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
+import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.defaults.ConstantParameter;
@@ -125,7 +125,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 	}
 
 	public void testGetComponentAdapter() {
-		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
+		ConstructorInjectionAdapter testAdapter = new ConstructorInjectionAdapter(String.class, String.class);
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class)).will(returnValue(testAdapter));
 		picoMock.expects(once()).method("getComponentAdapter").with(same(Map.class)).will(this.returnValue(null));
 		
@@ -153,7 +153,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 	}
 
 	public void testGetComponentAdapterOfType() {
-		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
+		ConstructorInjectionAdapter testAdapter = new ConstructorInjectionAdapter(String.class, String.class);
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class)).will(returnValue(testAdapter));
 		picoMock.expects(once()).method("getComponentAdapter").with(same(Map.class)).will(this.returnValue(null));
 		
@@ -259,7 +259,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 	}
 
 	public void testRegisterComponent() {
-		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
+		ConstructorInjectionAdapter testAdapter = new ConstructorInjectionAdapter(String.class, String.class);
 		picoMock.expects(once()).method("addAdapter").with(same(testAdapter)).will(returnValue(new TicklePicoContainer(testAdapter)));
 		
 		ComponentAdapter result = tracingDecorator.addAdapter(testAdapter).lastCA();
@@ -268,7 +268,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 	}
 
 	public void testRegisterComponentImplementationClass() {
-		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
+		ConstructorInjectionAdapter testAdapter = new ConstructorInjectionAdapter(String.class, String.class);
 		picoMock.expects(once()).method("addComponent").with(same(String.class)).will(returnValue(new TicklePicoContainer(testAdapter)));
 		
 		ComponentAdapter result = tracingDecorator.addComponent(String.class).lastCA();
@@ -277,7 +277,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 	}
 
 	public void testRegisterComponentImplementationWithKeyAndClass() {
-		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
+		ConstructorInjectionAdapter testAdapter = new ConstructorInjectionAdapter(String.class, String.class);
 		picoMock.expects(once()).method("addComponent").with(same(String.class), same(String.class), eq(Parameter.ZERO)).will(returnValue(new TicklePicoContainer(testAdapter)));
 		
 		ComponentAdapter result = tracingDecorator.addComponent(String.class, String.class, Parameter.ZERO).lastCA();
@@ -299,7 +299,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 
 	public void testRegisterComponentImplementationObjectClassParameterArray() {
 		Parameter params[] = new Parameter []{new ConstantParameter("test")};
-		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class, params);
+		ConstructorInjectionAdapter testAdapter = new ConstructorInjectionAdapter(String.class, String.class, params);
 		picoMock.expects(once()).method("addComponent").with(same(String.class), same(String.class), same(params)).will(returnValue(new TicklePicoContainer(testAdapter)));
 	
 		ComponentAdapter result = tracingDecorator.addComponent(String.class, String.class, params).lastCA();
@@ -337,7 +337,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 	}
 
 	public void testUnregisterComponent() {
-		ConstructorInjectionComponentAdapter testAdapter = new ConstructorInjectionComponentAdapter(String.class, String.class);
+		ConstructorInjectionAdapter testAdapter = new ConstructorInjectionAdapter(String.class, String.class);
 		picoMock.expects(once()).method("removeComponent").with(same(String.class)).will(returnValue(testAdapter));
 		
 		

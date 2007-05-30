@@ -1,10 +1,10 @@
 package org.picocontainer.gems.adapters;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.defaults.ComponentFactory;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
-import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionAdapter;
+import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 
@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 
 public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
-    private ComponentFactory implementationHidingComponentAdapterFactory = new HotSwappingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory());
+    private ComponentFactory implementationHidingComponentAdapterFactory = new HotSwappingComponentAdapterFactory().forThis(new AnyInjectionFactory());
 
     // START SNIPPET: man
     public static interface Man {
@@ -49,7 +49,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
 
 
     public void testHotSwappingNaturaelyCaches() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory()));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory().forThis(new ConstructorInjectionFactory()));
         pico.addComponent(Map.class, HashMap.class);
         Map firstMap = (Map)pico.getComponent(Map.class);
         Map secondMap = (Map)pico.getComponent(Map.class);
@@ -60,7 +60,7 @@ public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponen
 
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        HotSwappingComponentAdapter hsca = (HotSwappingComponentAdapter) pico.addAdapter(new HotSwappingComponentAdapter(new ConstructorInjectionComponentAdapter("l", ArrayList.class))).lastCA();
+        HotSwappingComponentAdapter hsca = (HotSwappingComponentAdapter) pico.addAdapter(new HotSwappingComponentAdapter(new ConstructorInjectionAdapter("l", ArrayList.class))).lastCA();
         List l = (List)pico.getComponent("l");
         l.add("Hello");
         final ArrayList newList = new ArrayList();

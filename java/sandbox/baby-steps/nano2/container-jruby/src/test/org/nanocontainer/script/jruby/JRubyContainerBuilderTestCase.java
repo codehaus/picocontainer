@@ -29,10 +29,10 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.adapters.InstanceComponentAdapter;
-import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.SetterInjectionFactory;
 import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.adapters.SetterInjectionComponentAdapter;
+import org.picocontainer.adapters.SetterInjectionAdapter;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.LifecycleStrategy;
 
@@ -259,10 +259,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
-                                         "CachingComponentAdapterFactory = org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
+                                         "CachingBehaviorFactory = org.picocontainer.adapters.CachingBehaviorFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:component_adapter_factory => CachingComponentAdapterFactory.new, :component_monitor => monitor) {\n" +
+                                         "container(:component_adapter_factory => CachingBehaviorFactory.new, :component_monitor => monitor) {\n" +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +
                                          "}");
@@ -296,10 +296,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
-                                         "CachingComponentAdapterFactory = org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
+                                         "CachingBehaviorFactory = org.picocontainer.adapters.CachingBehaviorFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:parent => $parent, :component_adapter_factory => CachingComponentAdapterFactory.new, :component_monitor => monitor) {\n"
+                                         "container(:parent => $parent, :component_adapter_factory => CachingBehaviorFactory.new, :component_monitor => monitor) {\n"
                                          +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +
@@ -422,18 +422,18 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     public void FAILING_testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory());
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionFactory());
         Reader script = new StringReader("container(:parent => $parent)\n");
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
         ComponentAdapter componentAdapter = pico.addComponent(String.class).lastCA();
         assertTrue("ComponentAdapter should be originally defined by parent",
-                   componentAdapter instanceof SetterInjectionComponentAdapter);
+                   componentAdapter instanceof SetterInjectionAdapter);
     }
 
     public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory());
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionFactory());
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "B = org.nanocontainer.testmodel.B\n" +

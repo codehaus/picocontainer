@@ -18,7 +18,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.adapters.DecoratingComponentAdapter;
+import org.picocontainer.adapters.BehaviorAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
@@ -26,7 +26,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * Decorating addComponent addAdapter that can be used to set additional properties
  * on a addComponent in a bean style. These properties must be managed manually
  * by the user of the API, and will not be managed by PicoContainer. This class
- * is therefore <em>not</em> the same as {@link SetterInjectionComponentAdapter},
+ * is therefore <em>not</em> the same as {@link SetterInjectionAdapter},
  * which is a true Setter Injection addAdapter.
  * <p/>
  * This addAdapter is mostly handy for setting various primitive properties via setters;
@@ -35,14 +35,14 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
- * use a {@link CachingComponentAdapter} around this one.
+ * use a {@link CachingBehaviorAdapter} around this one.
  * </em>
  *
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  * @since 1.0
  */
-public class BeanPropertyComponentAdapter extends DecoratingComponentAdapter {
+public class BeanPropertyComponentAdapter extends BehaviorAdapter {
     private Map properties;
     private transient Map<String, Method> setters = null;
 

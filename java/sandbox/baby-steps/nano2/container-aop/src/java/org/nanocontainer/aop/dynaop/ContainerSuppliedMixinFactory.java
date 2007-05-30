@@ -13,7 +13,7 @@ import dynaop.MixinFactory;
 import dynaop.Proxy;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
+import org.picocontainer.adapters.ConstructorInjectionAdapter;
 
 import java.util.Properties;
 
@@ -55,7 +55,7 @@ class ContainerSuppliedMixinFactory implements MixinFactory {
     public Object create(Proxy proxy) throws NullPointerException {
         Object mixin = pico.getComponent(mixinClass);
         if (mixin == null) {
-            ComponentAdapter adapter = new ConstructorInjectionComponentAdapter(mixinClass, mixinClass);
+            ComponentAdapter adapter = new ConstructorInjectionAdapter(mixinClass, mixinClass);
             mixin = adapter.getComponentInstance(pico);
         }
         return mixin;

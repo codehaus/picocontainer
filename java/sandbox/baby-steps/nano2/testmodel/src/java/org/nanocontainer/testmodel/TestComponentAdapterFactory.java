@@ -5,7 +5,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
@@ -14,7 +14,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class TestComponentAdapterFactory extends AnyInjectionComponentAdapterFactory {
+public class TestComponentAdapterFactory extends AnyInjectionFactory {
 
     public StringBuffer sb;
 

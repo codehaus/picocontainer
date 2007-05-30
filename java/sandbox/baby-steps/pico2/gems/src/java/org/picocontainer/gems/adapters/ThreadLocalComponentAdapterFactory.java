@@ -19,8 +19,8 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.adapters.CachingComponentAdapter;
-import org.picocontainer.adapters.AbstractBehaviorDecorator;
+import org.picocontainer.adapters.CachingBehaviorAdapter;
+import org.picocontainer.adapters.AbstractBehaviorDecoratorFactory;
 import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
@@ -33,7 +33,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * This mode ({@link #ENSURE_THREAD_LOCALITY}) makes internal usage of a {@link ThreadLocalComponentAdapter}. If the
  * application architecture ensures, that the thread that creates the addComponent is always also the thread that is th
  * only user, you can set the mode {@link #THREAD_ENSURES_LOCALITY}. In this mode the factory uses a simple
- * {@link org.picocontainer.adapters.CachingComponentAdapter} that uses a {@link ThreadLocalReference} to cache the addComponent.
+ * {@link org.picocontainer.adapters.CachingBehaviorAdapter} that uses a {@link ThreadLocalReference} to cache the addComponent.
  * </p>
  * <p>
  * See the use cases for the subtile difference:
@@ -55,7 +55,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * </p>
  * @author J&ouml;rg Schaible
  */
-public class ThreadLocalComponentAdapterFactory extends AbstractBehaviorDecorator {
+public class ThreadLocalComponentAdapterFactory extends AbstractBehaviorDecoratorFactory {
 
     /**
      * <code>ENSURE_THREAD_LOCALITY</code> is the constant for created {@link ComponentAdapter} instances, that ensure
@@ -114,7 +114,7 @@ public class ThreadLocalComponentAdapterFactory extends AbstractBehaviorDecorato
             componentAdapter = new ThreadLocalComponentAdapter(super.createComponentAdapter(
                     componentMonitor, lifecycleStrategy, null, componentKey, componentImplementation, parameters), proxyFactory);
         } else {
-            componentAdapter = new CachingComponentAdapter(super.createComponentAdapter(
+            componentAdapter = new CachingBehaviorAdapter(super.createComponentAdapter(
                     componentMonitor, lifecycleStrategy, null, componentKey, componentImplementation, parameters), new ThreadLocalReference());
         }
         return componentAdapter;

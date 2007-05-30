@@ -17,8 +17,8 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoLifecycleException;
 import org.picocontainer.Startable;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionFactory;
+import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.monitors.LifecycleComponentMonitor;
 import org.picocontainer.monitors.LifecycleComponentMonitor.LifecycleFailuresException;
 import org.picocontainer.testmodel.RecordingLifecycle.FiveTriesToBeMalicious;
@@ -80,7 +80,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
 
     public void testLifecycleIsIgnoredIfAdaptersAreNotLifecycleManagers() {
-        DefaultPicoContainer parent = new DefaultPicoContainer(new ConstructorInjectionComponentAdapterFactory());
+        DefaultPicoContainer parent = new DefaultPicoContainer(new ConstructorInjectionFactory());
         MutablePicoContainer child = parent.makeChildContainer();
 
         parent.addComponent("recording", StringBuffer.class);
@@ -308,7 +308,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
                 return true;
             }
         };
-        MutablePicoContainer pico = new DefaultPicoContainer( new AnyInjectionComponentAdapterFactory(), strategy, null );
+        MutablePicoContainer pico = new DefaultPicoContainer( new AnyInjectionFactory(), strategy, null );
 
         StringBuffer sb = new StringBuffer();
 

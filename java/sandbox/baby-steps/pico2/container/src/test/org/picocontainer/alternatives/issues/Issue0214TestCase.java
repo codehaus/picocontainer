@@ -3,8 +3,8 @@ package org.picocontainer.alternatives.issues;
 import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.ImplementationHidingBehaviorFactory;
+import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.defaults.VerifyingVisitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -12,7 +12,7 @@ public class Issue0214TestCase extends TestCase {
 
     // This bug as described in the bug report, http://jira.codehaus.org/browse/PICO-214, cannot be reproduced.
     public void testTheBug() {
-        final MutablePicoContainer pico = new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory()));
+        final MutablePicoContainer pico = new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
         pico.addComponent(A.class);
 
         /* This is a workaround for the bug described further down. Normally

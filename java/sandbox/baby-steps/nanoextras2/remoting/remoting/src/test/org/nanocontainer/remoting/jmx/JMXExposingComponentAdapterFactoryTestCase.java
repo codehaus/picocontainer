@@ -20,7 +20,7 @@ import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionFactory;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -39,9 +39,9 @@ public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCa
     }
 
     public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
-        final JMXExposingComponentAdapterFactory componentAdapterFactory = new JMXExposingComponentAdapterFactory(
+        final JMXExposingFactory componentAdapterFactory = new JMXExposingFactory(
                 (MBeanServer)mockMBeanServer.proxy());
-        componentAdapterFactory.forThis(new ConstructorInjectionComponentAdapterFactory());
+        componentAdapterFactory.forThis(new ConstructorInjectionFactory());
 
         mockMBeanServer.expects(once()).method("registerMBean").with(
                 isA(DynamicMBeanPerson.class), isA(ObjectName.class));
@@ -53,9 +53,9 @@ public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCa
     }
 
     public void testWillRegisterByDefaultComponentsThatAreMBeansUnlessNOJMX() throws NotCompliantMBeanException {
-        final JMXExposingComponentAdapterFactory componentAdapterFactory = new JMXExposingComponentAdapterFactory(
+        final JMXExposingFactory componentAdapterFactory = new JMXExposingFactory(
                 (MBeanServer)mockMBeanServer.proxy());
-        componentAdapterFactory.forThis(new ConstructorInjectionComponentAdapterFactory());
+        componentAdapterFactory.forThis(new ConstructorInjectionFactory());
 
         final ComponentCharacteristic rc = new ComponentCharacteristic() {
         };
@@ -70,13 +70,13 @@ public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCa
 
     public void testConstructorThrowsNPE() {
         try {
-            new JMXExposingComponentAdapterFactory(
+            new JMXExposingFactory(
                     null, new DynamicMBeanProvider[]{});
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
         }
         try {
-            new JMXExposingComponentAdapterFactory(
+            new JMXExposingFactory(
                     (MBeanServer)mockMBeanServer.proxy(), null);
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {

@@ -30,10 +30,10 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.alternatives.AbstractDelegatingMutablePicoContainer;
-import org.picocontainer.adapters.CachingComponentAdapterFactory;
+import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
-import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.defaults.CustomPermissionsURLClassLoader;
@@ -87,7 +87,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     }
 
     public DefaultNanoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor componentMonitor) {
-        super(new DefaultPicoContainer(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), parent));
+        super(new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), parent));
         parentClassLoader = classLoader;
         ((ComponentMonitorStrategy)getDelegate()).changeMonitor(componentMonitor);
     }

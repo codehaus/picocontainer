@@ -27,8 +27,8 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.adapters.BeanPropertyComponentAdapter;
 import org.picocontainer.adapters.BeanPropertyComponentAdapterFactory;
-import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
-import org.picocontainer.adapters.DecoratingComponentAdapter;
+import org.picocontainer.adapters.AnyInjectionFactory;
+import org.picocontainer.adapters.BehaviorAdapter;
 import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -152,7 +152,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
     }
 
     protected ComponentFactory createComponentAdapterFactory() {
-        return new BeanPropertyComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory());
+        return new BeanPropertyComponentAdapterFactory().forThis(new AnyInjectionFactory());
     }
 
     public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
@@ -171,8 +171,8 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
 
 
     public void testDelegateIsAccessible() {
-        DecoratingComponentAdapter componentAdapter =
-                (DecoratingComponentAdapter) createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
+        BehaviorAdapter componentAdapter =
+                (BehaviorAdapter) createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
 
         assertNotNull(componentAdapter.getDelegate());
     }

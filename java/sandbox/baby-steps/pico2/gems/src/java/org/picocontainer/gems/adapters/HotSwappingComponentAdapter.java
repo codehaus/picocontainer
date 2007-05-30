@@ -20,13 +20,13 @@ import org.picocontainer.PicoContainer;
  * underlying subject. In any case, the proxy will also implement {@link com.thoughtworks.proxy.toys.hotswap.Swappable}, making
  * it possible to swap out the underlying subject at runtime. <p/> <em>
  * Note that this class doesn't cache instances. If you want caching,
- * use a {@link org.picocontainer.adapters.CachingComponentAdapter} around this one.
+ * use a {@link org.picocontainer.adapters.CachingBehaviorAdapter} around this one.
  * </em>
  * 
  * @author Paul Hammant
  * @version $Revision$
  */
-public class HotSwappingComponentAdapter extends ImplementationHidingComponentAdapter {
+public class HotSwappingComponentAdapter extends ImplementationHidingBehaviorAdapter {
 
     private final Swappable swappable = new Swappable();
     private Object instance;

@@ -30,7 +30,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.adapters.CachingComponentAdapterFactory;
+import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -295,7 +295,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         try {
             String cafName = rootElement.getAttribute("componentadapterfactory");
             if ("".equals(cafName) || cafName == null) {
-                cafName = CachingComponentAdapterFactory.class.getName();
+                cafName = CachingBehaviorFactory.class.getName();
             }
             Class cafClass = getClassLoader().loadClass(cafName);
             ComponentFactory componentAdapterFactory = (ComponentFactory) cafClass.newInstance();

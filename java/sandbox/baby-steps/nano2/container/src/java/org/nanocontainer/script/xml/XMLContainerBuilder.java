@@ -44,7 +44,7 @@ import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.ComponentMonitorStrategy;
 import org.picocontainer.defaults.ComponentParameter;
 import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.adapters.CachingComponentAdapterFactory;
+import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DelegatingComponentMonitor;
 import org.w3c.dom.Element;
@@ -64,7 +64,7 @@ import org.xml.sax.SAXException;
  */
 public class XMLContainerBuilder extends ScriptedContainerBuilder implements ContainerPopulator {
 
-    private final static String DEFAULT_COMPONENT_ADAPTER_FACTORY = CachingComponentAdapterFactory.class.getName();
+    private final static String DEFAULT_COMPONENT_ADAPTER_FACTORY = CachingBehaviorFactory.class.getName();
     private final static String DEFAULT_COMPONENT_INSTANCE_FACTORY = BeanComponentInstanceFactory.class.getName();
     private final static String DEFAULT_COMPONENT_MONITOR = DelegatingComponentMonitor.class.getName();
 

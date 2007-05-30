@@ -14,8 +14,8 @@ import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.CachingComponentAdapterFactory;
-import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.CachingBehaviorFactory;
+import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
@@ -26,7 +26,7 @@ import org.picocontainer.tck.AbstractPicoContainerTestCase;
 public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultNanoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), parent));
+        return new DefaultNanoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), parent));
     }
 
     // TODO - go to a Nano TCK?

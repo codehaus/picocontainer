@@ -5,7 +5,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
+import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -101,7 +101,7 @@ public class CollectionComponentParameterTestCase
 
     public void testCollectionsAreGeneratedOnTheFly() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new ConstructorInjectionComponentAdapter(Bowl.class, Bowl.class));
+        mpc.addAdapter(new ConstructorInjectionAdapter(Bowl.class, Bowl.class));
         mpc.addComponent(Cod.class);
         Bowl bowl = (Bowl) mpc.getComponent(Bowl.class);
         assertEquals(1, bowl.cods.length);

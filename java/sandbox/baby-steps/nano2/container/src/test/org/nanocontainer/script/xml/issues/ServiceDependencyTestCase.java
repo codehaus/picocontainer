@@ -6,12 +6,11 @@ import java.io.StringReader;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.SetterInjectionFactory;
 
 public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderTestCase {
 
-    public static class MySetterInjectionComponentAdapterFactory extends SetterInjectionComponentAdapterFactory {
+    public static class MySetterInjectionComponentAdapterFactory extends SetterInjectionFactory {
         public MySetterInjectionComponentAdapterFactory() {
         }
     }

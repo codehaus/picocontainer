@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.adapters.SynchronizedComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionFactory;
+import org.picocontainer.adapters.SynchronizedBehaviorFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class Issue0199TestCase extends TestCase {
@@ -84,6 +84,6 @@ public class Issue0199TestCase extends TestCase {
 
     private DefaultPicoContainer createContainer() {
         return new DefaultPicoContainer(
-                new SynchronizedComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory()));
+                new SynchronizedBehaviorFactory().forThis(new ConstructorInjectionFactory()));
     }
 }

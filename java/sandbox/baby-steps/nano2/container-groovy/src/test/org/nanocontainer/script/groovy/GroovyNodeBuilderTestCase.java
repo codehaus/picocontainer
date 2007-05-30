@@ -26,9 +26,9 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.adapters.InstanceComponentAdapter;
-import org.picocontainer.adapters.SetterInjectionComponentAdapter;
+import org.picocontainer.adapters.SetterInjectionAdapter;
 import org.picocontainer.defaults.ComponentFactory;
-import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.SetterInjectionFactory;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.LifecycleStrategy;
 
@@ -303,12 +303,12 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
-                "import org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
+                "import org.picocontainer.adapters.CachingBehaviorFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(componentAdapterFactory: new CachingComponentAdapterFactory(), componentMonitor: monitor) {\n" +
+                "nano = builder.container(componentAdapterFactory: new CachingBehaviorFactory(), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -344,12 +344,12 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
-                "import org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
+                "import org.picocontainer.adapters.CachingBehaviorFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(parent:parent, componentAdapterFactory: new CachingComponentAdapterFactory(), componentMonitor: monitor) {\n" +
+                "nano = builder.container(parent:parent, componentAdapterFactory: new CachingBehaviorFactory(), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -488,7 +488,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     public void testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory() );
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionFactory() );
         Reader script = new StringReader("" +
                 "nano = builder.container(parent:parent) {\n" +
                 "}\n");
@@ -496,13 +496,13 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         MutablePicoContainer pico = (MutablePicoContainer)buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
         ComponentAdapter componentAdapter = pico.addComponent(String.class).lastCA();
-        assertTrue("ComponentAdapter should be originally defined by parent" , componentAdapter instanceof SetterInjectionComponentAdapter);
+        assertTrue("ComponentAdapter should be originally defined by parent" , componentAdapter instanceof SetterInjectionAdapter);
     }
 
 
 
     public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory() );
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionFactory() );
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +
@@ -723,7 +723,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
         // LifecyleContainerBuilder starts the container
         Object one = pico.getComponents().get(1);
-        assertEquals("org.picocontainer.adapters.CachingComponentAdapter", one.toString());
+        assertEquals("org.picocontainer.adapters.CachingBehaviorAdapter", one.toString());
     }
 
 

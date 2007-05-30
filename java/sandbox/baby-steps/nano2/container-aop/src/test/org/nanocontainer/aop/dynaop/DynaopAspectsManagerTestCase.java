@@ -27,8 +27,8 @@ import org.nanocontainer.testmodel.IdentifiableMixin;
 import org.nanocontainer.testmodel.OrderEntity;
 import org.nanocontainer.testmodel.OrderEntityImpl;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.adapters.CachingComponentAdapterFactory;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.CachingBehaviorFactory;
+import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
@@ -40,7 +40,7 @@ import java.lang.reflect.Method;
 public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
 
     private AspectsManager aspects = new DynaopAspectsManager();
-    private ComponentFactory caFactory = new CachingComponentAdapterFactory().forThis(new AspectsComponentAdapterFactory(aspects).forThis(new ConstructorInjectionComponentAdapterFactory()));
+    private ComponentFactory caFactory = new CachingBehaviorFactory().forThis(new AspectsComponentAdapterFactory(aspects).forThis(new ConstructorInjectionFactory()));
     private MutablePicoContainer pico = new DefaultPicoContainer(caFactory);
     private PointcutsFactory cuts = aspects.getPointcutsFactory();
 

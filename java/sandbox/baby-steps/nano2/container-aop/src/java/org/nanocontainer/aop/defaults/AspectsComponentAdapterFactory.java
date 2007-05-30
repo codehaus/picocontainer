@@ -15,7 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.AbstractBehaviorDecorator;
+import org.picocontainer.adapters.AbstractBehaviorDecoratorFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.LifecycleStrategy;
@@ -26,7 +26,7 @@ import org.picocontainer.defaults.LifecycleStrategy;
  * @author Stephen Molitor
  * @version $Revision$
  */
-public class AspectsComponentAdapterFactory extends AbstractBehaviorDecorator {
+public class AspectsComponentAdapterFactory extends AbstractBehaviorDecoratorFactory {
 
     private final AspectsApplicator aspectsApplicator;
 

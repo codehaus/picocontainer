@@ -20,8 +20,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
-import org.picocontainer.adapters.SetterInjectionComponentAdapter;
+import org.picocontainer.adapters.ConstructorInjectionAdapter;
+import org.picocontainer.adapters.SetterInjectionAdapter;
 
 /**
  * @author Michael Rimov
@@ -40,10 +40,10 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
         super.setUp();
 
         pico = new DefaultPicoContainer();
-        SetterInjectionComponentAdapter componentAdapter = new SetterInjectionComponentAdapter(StringBuffer.class, StringBuffer.class);
+        SetterInjectionAdapter componentAdapter = new SetterInjectionAdapter(StringBuffer.class, StringBuffer.class);
         parentAdapter = pico.addAdapter(componentAdapter).lastCA();
         child = pico.makeChildContainer();
-        ConstructorInjectionComponentAdapter adapter = new ConstructorInjectionComponentAdapter(ArrayList.class, ArrayList.class, new ConstantParameter(3));
+        ConstructorInjectionAdapter adapter = new ConstructorInjectionAdapter(ArrayList.class, ArrayList.class, new ConstantParameter(3));
         childAdapter = child.addAdapter(adapter).lastCA();
     }
 

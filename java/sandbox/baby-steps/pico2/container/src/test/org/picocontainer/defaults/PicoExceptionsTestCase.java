@@ -25,7 +25,7 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
+import org.picocontainer.adapters.ConstructorInjectionAdapter;
 
 /**
  * Unit tests for the several PicoException classes.
@@ -37,7 +37,7 @@ public class PicoExceptionsTestCase
     final static public Throwable THROWABLE = new Throwable();
 
     final void executeTestOfStandardException(final Class clazz) {
-        final ComponentAdapter componentAdapter = new ConstructorInjectionComponentAdapter(clazz, clazz, null, new DelegatingComponentMonitor());
+        final ComponentAdapter componentAdapter = new ConstructorInjectionAdapter(clazz, clazz, null, new DelegatingComponentMonitor());
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(MESSAGE);
         try {

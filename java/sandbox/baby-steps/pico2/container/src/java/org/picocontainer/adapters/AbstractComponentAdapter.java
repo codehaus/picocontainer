@@ -11,7 +11,7 @@ package org.picocontainer.adapters;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.adapters.MonitoringComponentAdapter;
+import org.picocontainer.adapters.MonitoringAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.DelegatingComponentMonitor;
 
@@ -28,7 +28,7 @@ import org.picocontainer.defaults.DelegatingComponentMonitor;
  * @version $Revision$
  * @since 1.0
  */
-public abstract class AbstractComponentAdapter extends MonitoringComponentAdapter {
+public abstract class AbstractComponentAdapter extends MonitoringAdapter {
     private Object componentKey;
     private Class componentImplementation;
 

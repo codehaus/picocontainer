@@ -5,8 +5,8 @@ import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.BehaviorDecorator;
-import org.picocontainer.adapters.InjectingFactory;
+import org.picocontainer.adapters.BehaviorFactory;
+import org.picocontainer.adapters.InjectionFactory;
 
 
 public class NanoBuilder {
@@ -15,7 +15,7 @@ public class NanoBuilder {
     private PicoBuilder picoBuilder;
     private ClassLoader classLoader = DefaultNanoContainer.class.getClassLoader();
 
-    public NanoBuilder(PicoContainer parentcontainer, InjectingFactory injectionType) {
+    public NanoBuilder(PicoContainer parentcontainer, InjectionFactory injectionType) {
         picoBuilder = new PicoBuilder(parentcontainer, injectionType);
     }
 
@@ -23,7 +23,7 @@ public class NanoBuilder {
         picoBuilder = new PicoBuilder(parentcontainer);
     }
 
-    public NanoBuilder(InjectingFactory injectionType) {
+    public NanoBuilder(InjectionFactory injectionType) {
         picoBuilder = new PicoBuilder(injectionType);
     }
 
@@ -69,7 +69,7 @@ public class NanoBuilder {
         return this;
     }
 
-    public NanoBuilder withComponentAdapterFactories(BehaviorDecorator... factories) {
+    public NanoBuilder withComponentAdapterFactories(BehaviorFactory... factories) {
         picoBuilder.withBehaviors(factories);
         return this;
     }

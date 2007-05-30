@@ -186,32 +186,5 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         }
     }
 
-    public static class FooDecoratingPicoContainer extends AbstractDelegatingMutablePicoContainer {
-        public FooDecoratingPicoContainer(MutablePicoContainer delegate) {
-            super(delegate);
-        }
-        public MutablePicoContainer makeChildContainer() {
-            return null;
-        }
-
-        public MutablePicoContainer addComponent(Object implOrInstance) throws PicoRegistrationException {
-            assertEquals(HashMap.class, implOrInstance);
-            return super.addComponent(ArrayList.class);
-        }
-    }
-
-    public static class BarDecoratingPicoContainer extends AbstractDelegatingMutablePicoContainer {
-        public BarDecoratingPicoContainer(MutablePicoContainer delegate) {
-            super(delegate);
-        }
-        public MutablePicoContainer makeChildContainer() {
-            return null;
-        }
-        public MutablePicoContainer addComponent(Object implOrInstance) throws PicoRegistrationException {
-            assertEquals(Vector.class, implOrInstance);
-            return super.addComponent(HashMap.class);
-        }
-    }
-
 
 }

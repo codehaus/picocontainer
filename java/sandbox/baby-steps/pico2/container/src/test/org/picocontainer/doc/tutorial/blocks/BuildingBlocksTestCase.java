@@ -4,15 +4,15 @@ import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.adapters.CachingComponentAdapterFactory;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
-import org.picocontainer.adapters.CachingComponentAdapter;
+import org.picocontainer.adapters.CachingBehaviorFactory;
+import org.picocontainer.adapters.ConstructorInjectionAdapter;
+import org.picocontainer.adapters.CachingBehaviorAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
-import org.picocontainer.adapters.SetterInjectionComponentAdapter;
+import org.picocontainer.adapters.SetterInjectionAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.adapters.SetterInjectionComponentAdapterFactory;
-import org.picocontainer.adapters.SynchronizedComponentAdapter;
-import org.picocontainer.adapters.SynchronizedComponentAdapterFactory;
+import org.picocontainer.adapters.SetterInjectionFactory;
+import org.picocontainer.adapters.SynchronizedBehaviorAdapter;
+import org.picocontainer.adapters.SynchronizedBehaviorFactory;
 import org.picocontainer.doc.introduction.Apple;
 import org.picocontainer.doc.introduction.Juicer;
 import org.picocontainer.doc.introduction.Peeler;
@@ -47,8 +47,8 @@ public class BuildingBlocksTestCase extends TestCase {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         // START SNIPPET: register-equivalent-at-length
         picoContainer.addAdapter(
-                new CachingComponentAdapter(
-                        new ConstructorInjectionComponentAdapter(Juicer.class, Juicer.class)));
+                new CachingBehaviorAdapter(
+                        new ConstructorInjectionAdapter(Juicer.class, Juicer.class)));
         // END SNIPPET: register-equivalent-at-length
     }
 
@@ -56,7 +56,7 @@ public class BuildingBlocksTestCase extends TestCase {
 
         // START SNIPPET: register-different-caf
         MutablePicoContainer picoContainer = new DefaultPicoContainer(
-                new SynchronizedComponentAdapterFactory().forThis(new CachingComponentAdapterFactory().forThis(new SetterInjectionComponentAdapterFactory())));
+                new SynchronizedBehaviorFactory().forThis(new CachingBehaviorFactory().forThis(new SetterInjectionFactory())));
         // END SNIPPET: register-different-caf
     }
 
@@ -64,9 +64,9 @@ public class BuildingBlocksTestCase extends TestCase {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         // START SNIPPET: register-equivalent-at-length2
         picoContainer.addAdapter(
-                new SynchronizedComponentAdapter(
-                        new CachingComponentAdapter(
-                                new SetterInjectionComponentAdapter(
+                new SynchronizedBehaviorAdapter(
+                        new CachingBehaviorAdapter(
+                                new SetterInjectionAdapter(
                                         JuicerBean.class, JuicerBean.class, (Parameter[])null))));
         // END SNIPPET: register-equivalent-at-length2
     }

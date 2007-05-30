@@ -21,8 +21,8 @@ import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.ConstantParameter;
 import org.picocontainer.adapters.AbstractComponentAdapter;
-import org.picocontainer.adapters.InstantiatingComponentAdapter;
-import org.picocontainer.adapters.MonitoringComponentAdapter;
+import org.picocontainer.adapters.InjectingAdapter;
+import org.picocontainer.adapters.MonitoringAdapter;
 
 import java.lang.reflect.Constructor;
 
@@ -48,7 +48,7 @@ public class ComponentAdapterTestCase
         
     }
 
-    private static class TestMonitoringComponentAdapter extends MonitoringComponentAdapter {
+    private static class TestMonitoringComponentAdapter extends MonitoringAdapter {
         TestMonitoringComponentAdapter(ComponentMonitor componentMonitor) throws AssignabilityRegistrationException {
             super(componentMonitor);
         }
@@ -67,7 +67,7 @@ public class ComponentAdapterTestCase
         }        
     }
     
-    private static class TestInstantiatingComponentAdapter extends InstantiatingComponentAdapter {
+    private static class TestInstantiatingComponentAdapter extends InjectingAdapter {
         TestInstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
             super(componentKey, componentImplementation, parameters);
         }

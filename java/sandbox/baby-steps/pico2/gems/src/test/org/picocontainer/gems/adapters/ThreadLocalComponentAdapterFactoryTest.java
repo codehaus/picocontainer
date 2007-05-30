@@ -16,7 +16,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.defaults.ComponentFactory;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
      * @throws InterruptedException
      */
     public final void testCreateComponentAdapterEnsuringThreadLocal() throws InterruptedException {
-        final ComponentFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory());
+        final ComponentFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory().forThis(new ConstructorInjectionFactory());
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class, new Parameter[]{});
         final List list = (List)componentAdapter.getComponentInstance(null);
@@ -63,7 +63,7 @@ public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
      * @throws InterruptedException
      */
     public final void testCreateComponentAdapterFailingThreadLocal() throws InterruptedException {
-        final ComponentFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(ThreadLocalComponentAdapterFactory.THREAD_ENSURES_LOCALITY).forThis(new ConstructorInjectionComponentAdapterFactory());
+        final ComponentFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(ThreadLocalComponentAdapterFactory.THREAD_ENSURES_LOCALITY).forThis(new ConstructorInjectionFactory());
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class, new Parameter[]{});
         final List list = (List)componentAdapter.getComponentInstance(null);
@@ -91,7 +91,7 @@ public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
      * @throws InterruptedException
      */
     public final void testCreateComponentAdapterWorksForDifferentThreads() throws InterruptedException {
-        final ComponentFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(ThreadLocalComponentAdapterFactory.THREAD_ENSURES_LOCALITY).forThis(new ConstructorInjectionComponentAdapterFactory());
+        final ComponentFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(ThreadLocalComponentAdapterFactory.THREAD_ENSURES_LOCALITY).forThis(new ConstructorInjectionFactory());
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class, new Parameter[]{});
         final List list = (List)componentAdapter.getComponentInstance(null);

@@ -14,8 +14,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.adapters.CachingComponentAdapter;
-import org.picocontainer.adapters.DecoratingComponentAdapter;
+import org.picocontainer.adapters.CachingBehaviorAdapter;
+import org.picocontainer.adapters.BehaviorAdapter;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import javax.management.InstanceNotFoundException;
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
-public class JMXExposingComponentAdapter extends DecoratingComponentAdapter {
+public class JMXExposingComponentAdapter extends BehaviorAdapter {
 
     private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;
@@ -79,16 +79,16 @@ public class JMXExposingComponentAdapter extends DecoratingComponentAdapter {
      * Retrieve the addComponent instance. The implementation will automatically register it in the {@link MBeanServer},
      * if a provider can return a {@link javax.management.DynamicMBean} for it.
      * <p>
-     * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link org.picocontainer.adapters.CachingComponentAdapter} to avoid
+     * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link org.picocontainer.adapters.CachingBehaviorAdapter} to avoid
      * the registration of the same addComponent again.
      * </p>
      * @throws PicoInitializationException Thrown by the delegate or if the registering of the
      *             {@link javax.management.DynamicMBean} in the {@link MBeanServer } fails.
-     * @see org.picocontainer.adapters.DecoratingComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
+     * @see org.picocontainer.adapters.BehaviorAdapter#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(final PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException {
-        final ComponentAdapter componentAdapter = new CachingComponentAdapter(getDelegate());
+        final ComponentAdapter componentAdapter = new CachingBehaviorAdapter(getDelegate());
         final Object componentInstance = componentAdapter.getComponentInstance(container);
         for (int i = 0; i < providers.length; ++i) {
             final JMXRegistrationInfo info = providers[i].provide(container, componentAdapter);

@@ -40,7 +40,7 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapter;
+import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.defaults.AbstractPicoVisitor;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
@@ -307,8 +307,8 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
      */
     public void testComponentAdapterRegistrationOrderIsMaintained() {
 
-        ConstructorInjectionComponentAdapter c1 = new ConstructorInjectionComponentAdapter("1", Object.class);
-        ConstructorInjectionComponentAdapter c2 = new ConstructorInjectionComponentAdapter("2", String.class);
+        ConstructorInjectionAdapter c1 = new ConstructorInjectionAdapter("1", Object.class);
+        ConstructorInjectionAdapter c2 = new ConstructorInjectionAdapter("2", String.class);
 
         MutablePicoContainer picoContainer = createPicoContainer(null);
         picoContainer.addAdapter(c1);
@@ -714,13 +714,13 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
     public void testAcceptImplementsBreadthFirstStrategy() {
         final MutablePicoContainer parent = createPicoContainer(null);
         final MutablePicoContainer child = parent.makeChildContainer();
-        ComponentAdapter hashMapAdapter = parent.addAdapter(new ConstructorInjectionComponentAdapter(HashMap.class, HashMap.class)).lastCA();
-        ComponentAdapter hashSetAdapter = parent.addAdapter(new ConstructorInjectionComponentAdapter(HashSet.class, HashSet.class)).lastCA();
+        ComponentAdapter hashMapAdapter = parent.addAdapter(new ConstructorInjectionAdapter(HashMap.class, HashMap.class)).lastCA();
+        ComponentAdapter hashSetAdapter = parent.addAdapter(new ConstructorInjectionAdapter(HashSet.class, HashSet.class)).lastCA();
         ComponentAdapter stringAdapter = parent.addAdapter(new InstanceComponentAdapter(String.class, "foo")).lastCA();
-        ComponentAdapter arrayListAdapter = child.addAdapter(new ConstructorInjectionComponentAdapter(ArrayList.class, ArrayList.class)).lastCA();
+        ComponentAdapter arrayListAdapter = child.addAdapter(new ConstructorInjectionAdapter(ArrayList.class, ArrayList.class)).lastCA();
         Parameter componentParameter = BasicComponentParameter.BASIC_DEFAULT;
         Parameter throwableParameter = new ConstantParameter(new Throwable("bar"));
-        ComponentAdapter exceptionAdapter = child.addAdapter(new ConstructorInjectionComponentAdapter(Exception.class, Exception.class, new Parameter[]{
+        ComponentAdapter exceptionAdapter = child.addAdapter(new ConstructorInjectionAdapter(Exception.class, Exception.class, new Parameter[]{
             componentParameter,
             throwableParameter
         })).lastCA();

@@ -13,7 +13,7 @@ import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.LifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.alternatives.EmptyPicoContainer;
-import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
+import org.picocontainer.adapters.ImplementationHidingBehaviorFactory;
 
 import static org.picocontainer.PicoBuilder.SDI;
 import static org.picocontainer.PicoBuilder.IMPL_HIDING;
@@ -53,7 +53,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
@@ -66,7 +66,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withLifecycle().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
@@ -81,7 +81,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withReflectionLifecycle().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
@@ -102,7 +102,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withConsoleMonitor().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
@@ -117,7 +117,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(ConsoleComponentMonitor.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
@@ -141,8 +141,8 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withHiddenImplementations().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory\n" +
-                "    delegate=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
+                "    delegate=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
@@ -152,11 +152,11 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithImplementationHidingInstance() {
-        MutablePicoContainer mpc = new PicoBuilder().withComponentAdapterFactory(new ImplementationHidingComponentAdapterFactory()).build();
+        MutablePicoContainer mpc = new PicoBuilder().withComponentAdapterFactory(new ImplementationHidingBehaviorFactory()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory\n" +
-                "    delegate=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
+                "    delegate=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
@@ -169,9 +169,9 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder(SDI()).withBehaviors(CACHING(), IMPL_HIDING()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
-                "    delegate=org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory\n" +
-                "      delegate=org.picocontainer.adapters.SetterInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.CachingBehaviorFactory\n" +
+                "    delegate=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
+                "      delegate=org.picocontainer.adapters.SetterInjectionFactory\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -185,7 +185,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder(new CustomParentcontainer()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.PicoBuilderTestCase_CustomParentcontainer\n" +
@@ -208,7 +208,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withSetterInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.SetterInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.SetterInjectionFactory\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -219,7 +219,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withAnnotationInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.AnnotationInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.AnnotationInjectionFactory\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -230,7 +230,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withConstructorInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.ConstructorInjectionFactory\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -241,8 +241,8 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withHiddenImplementations().withSetterInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory\n" +
-                "    delegate=org.picocontainer.adapters.SetterInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
+                "    delegate=org.picocontainer.adapters.SetterInjectionFactory\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -253,9 +253,9 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withCaching().withHiddenImplementations().withSetterInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.CachingComponentAdapterFactory\n" +
-                "    delegate=org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory\n" +
-                "      delegate=org.picocontainer.adapters.SetterInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.CachingBehaviorFactory\n" +
+                "    delegate=org.picocontainer.adapters.ImplementationHidingBehaviorFactory\n" +
+                "      delegate=org.picocontainer.adapters.SetterInjectionFactory\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -266,8 +266,8 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withThreadSafety().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.SynchronizedComponentAdapterFactory\n" +
-                "    delegate=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.SynchronizedBehaviorFactory\n" +
+                "    delegate=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +
@@ -280,7 +280,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().thisMutablePicoContainer(TestPicoContainer.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("org.picocontainer.PicoBuilderTestCase_-TestPicoContainer\n" +
-                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionComponentAdapterFactory\n" +
+                "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.alternatives.EmptyPicoContainer\n" +

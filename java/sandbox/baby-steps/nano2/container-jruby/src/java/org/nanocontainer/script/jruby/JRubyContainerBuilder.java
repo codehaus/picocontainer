@@ -23,8 +23,8 @@ import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.CachingComponentAdapterFactory;
-import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.CachingBehaviorFactory;
+import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.alternatives.EmptyPicoContainer;
 
@@ -63,7 +63,7 @@ public class JRubyContainerBuilder extends ScriptedContainerBuilder {
         if (parentContainer == null) {
             parentContainer = new EmptyPicoContainer();
         }
-        parentContainer = new DefaultNanoContainer(getClassLoader(), new DefaultPicoContainer(new CachingComponentAdapterFactory().forThis(new AnyInjectionComponentAdapterFactory()), parentContainer));
+        parentContainer = new DefaultNanoContainer(getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), parentContainer));
 
         Ruby ruby = JavaEmbedUtils.initialize(Collections.EMPTY_LIST);
         ruby.getLoadService().require("org/nanocontainer/script/jruby/nanobuilder");

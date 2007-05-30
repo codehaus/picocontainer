@@ -37,9 +37,9 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.defaults.ComponentFactory;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
-import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
-import org.picocontainer.adapters.AbstractBehaviorDecorator;
+import org.picocontainer.adapters.ConstructorInjectionFactory;
+import org.picocontainer.adapters.AnyInjectionFactory;
+import org.picocontainer.adapters.AbstractBehaviorDecoratorFactory;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -231,7 +231,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
 
     public void testCreateContainerFromScriptThrowsSAXException() {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='" + ConstructorInjectionComponentAdapterFactory.class.getName() + "'>" +
+                "<container component-adapter-factory='" + ConstructorInjectionFactory.class.getName() + "'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
                 "<container>");
         try {
@@ -586,7 +586,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
                 "	</org.nanocontainer.script.xml.TestBean>" +
                 "  </component-instance>" +
                 "  <component-adapter key='beanKey' class='org.nanocontainer.script.xml.TestBeanComposer'" +
-                "					factory='" + AnyInjectionComponentAdapterFactory.class.getName() + "'>" +
+                "					factory='" + AnyInjectionFactory.class.getName() + "'>" +
                 " 		<parameter key='bean1'/>" +
                 " 		<parameter key='bean2'/>" +
                 "  </component-adapter>" +
@@ -624,7 +624,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
     // This is of little value given that nested adapters can't be specified in XML.
     public void testComponentAdapterClassCanBeSpecifiedInContainerElement() {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='" + ConstructorInjectionComponentAdapterFactory.class.getName() + "'>" +
+                "<container component-adapter-factory='" + ConstructorInjectionFactory.class.getName() + "'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");
 
@@ -648,7 +648,7 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
 
     public void testComponentMonitorCanBeSpecifiedIfCAFIsSpecified() {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='" + AnyInjectionComponentAdapterFactory.class.getName() +
+                "<container component-adapter-factory='" + AnyInjectionFactory.class.getName() +
                 "' component-monitor='" + StaticWriterComponentMonitor.class.getName() + "'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");
@@ -661,27 +661,27 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
     public void testComponentCanUsePredefinedCAF() {
         Reader script = new StringReader("" +
                 "<container>" +
-                "  <component-adapter-factory class='org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory' key='factory'/>" +
+                "  <component-adapter-factory class='org.picocontainer.adapters.ConstructorInjectionFactory' key='factory'/>" +
                 "  <component-adapter class='org.nanocontainer.testmodel.DefaultWebServerConfig' factory='factory'/>" +
                 "</container>");
         PicoContainer pico = buildContainer(script);
-        WebServerConfig cfg1 = (WebServerConfig)pico.getComponent(WebServerConfig.class);
-        WebServerConfig cfg2 = (WebServerConfig)pico.getComponent(WebServerConfig.class);
+        WebServerConfig cfg1 = pico.getComponent(WebServerConfig.class);
+        WebServerConfig cfg2 = pico.getComponent(WebServerConfig.class);
         assertNotSame("Instances for components registered with a CICA must not be the same", cfg1, cfg2);
     }
 
 
-    public static class MyCAF extends ConstructorInjectionComponentAdapterFactory {
+    public static class MyCAF extends ConstructorInjectionFactory {
         public MyCAF() {
             super();
         }
     }
-    public static class MyCAF2 extends AbstractBehaviorDecorator {
+    public static class MyCAF2 extends AbstractBehaviorDecoratorFactory {
         public MyCAF2(ComponentFactory delegate) {
             forThis(delegate);
         }
     }
-    public static class MyCAF3 extends AbstractBehaviorDecorator {
+    public static class MyCAF3 extends AbstractBehaviorDecoratorFactory {
         public MyCAF3(ComponentFactory delegate) {
             forThis(delegate);
         }

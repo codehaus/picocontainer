@@ -10,9 +10,9 @@ package org.picocontainer.alternatives;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.ConstructorInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory;
+import org.picocontainer.adapters.ImplementationHidingBehaviorFactory;
 import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
 
 /**
@@ -26,7 +26,7 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
     }
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultPicoContainer(new ImplementationHidingComponentAdapterFactory().forThis(new ConstructorInjectionComponentAdapterFactory()), parent);
+        return new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().forThis(new ConstructorInjectionFactory()), parent);
     }
     public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {
         // we're choosing a CAF for DPC, thus Caching (a default) not enabled.

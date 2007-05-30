@@ -14,14 +14,14 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.adapters.DecoratingComponentAdapter;
+import org.picocontainer.adapters.BehaviorAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * @author Stephen Molitor
  */
-public class AspectsComponentAdapter extends DecoratingComponentAdapter {
+public class AspectsComponentAdapter extends BehaviorAdapter {
 
     private final AspectsApplicator aspectsApplicator;
 

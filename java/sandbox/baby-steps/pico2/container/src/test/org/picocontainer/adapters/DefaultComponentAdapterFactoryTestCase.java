@@ -21,14 +21,14 @@ import org.picocontainer.defaults.ComponentFactory;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.adapters.AnyInjectionComponentAdapterFactory;
+import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     protected ComponentFactory createComponentAdapterFactory() {
-        return new AnyInjectionComponentAdapterFactory();
+        return new AnyInjectionFactory();
     }
 
     public void testInstantiateComponentWithNoDependencies() throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {

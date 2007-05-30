@@ -22,7 +22,7 @@ import java.util.List;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.DecoratingComponentAdapter;
+import org.picocontainer.adapters.BehaviorAdapter;
 import org.picocontainer.defaults.LifecycleStrategy;
 
 import com.thoughtworks.proxy.ProxyFactory;
@@ -69,7 +69,7 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * @author Aslak Helles&oslash;y
  * @since 1.2
  */
-public class PoolingComponentAdapter extends DecoratingComponentAdapter implements LifecycleManager {
+public class PoolingComponentAdapter extends BehaviorAdapter implements LifecycleManager {
 
     private static final long serialVersionUID = 1L;
 

@@ -174,8 +174,9 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         }
     }
 
-    public abstract class InstantiationExceptionThrowing {
+    public static class InstantiationExceptionThrowing {
         public InstantiationExceptionThrowing() {
+            throw new RuntimeException("Barf");
         }
     }
 
@@ -185,7 +186,8 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
             picoContainer.addComponent(InstantiationExceptionThrowing.class);
             picoContainer.getComponent(InstantiationExceptionThrowing.class);
             fail();
-        } catch (NotConcreteRegistrationException e) {
+        } catch (RuntimeException e) {
+            assertEquals("Barf", e.getMessage());
         }
     }
 

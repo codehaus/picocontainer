@@ -62,10 +62,8 @@ public class ConstantParameter
      */
     public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) throws PicoException {
         if (!checkPrimitive(expectedType) && !expectedType.isInstance(value)) {
-            throw new PicoIntrospectionException(
-                    ((expectedType != null) ? expectedType.getClass().getName() : "null")
-                    + " is not assignable from "
-                    + ((value != null) ? value.getClass().getName() : "null"));
+            throw new PicoIntrospectionException(expectedType.getClass().getName() + " is not assignable from " +
+                                                 (value != null ? value.getClass().getName() : "null"));
         }
     }
 
@@ -86,7 +84,9 @@ public class ConstantParameter
                 return expectedType.isAssignableFrom(type);
             }
         } catch (NoSuchFieldException e) {
+            //ignore
         } catch (IllegalAccessException e) {
+            //ignore
         }
         return false;
     }

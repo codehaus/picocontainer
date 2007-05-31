@@ -10,33 +10,33 @@
 
 package org.nanocontainer;
 
-import java.io.Serializable;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.security.PermissionCollection;
-
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
-import org.picocontainer.adapters.CachingBehaviorFactory;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
 import org.picocontainer.adapters.AnyInjectionFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.adapters.CachingBehaviorFactory;
+import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.defaults.CustomPermissionsURLClassLoader;
+import org.picocontainer.defaults.DefaultPicoContainer;
+
+import java.io.Serializable;
+import java.net.URL;
+import java.security.AccessController;
+import java.security.PermissionCollection;
+import java.security.PrivilegedAction;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a MutablePicoContainer that also supports soft composition. i.e. assembly by class name rather that class
@@ -50,9 +50,11 @@ import org.picocontainer.defaults.CustomPermissionsURLClassLoader;
  * @version $Revision$
  */
 public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer implements NanoContainer, Serializable,
-    ComponentMonitorStrategy {
+                                                                                            ComponentMonitorStrategy
+{
 
     private static transient Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
+
     static {
         primitiveNameToBoxedName.put("int", Integer.class.getName());
         primitiveNameToBoxedName.put("byte", Byte.class.getName());
@@ -71,8 +73,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     private transient boolean componentClassLoaderLocked;
 
 
-
-    protected Map<String,PicoContainer> namedChildContainers = new HashMap<String,PicoContainer>();
+    protected Map<String, PicoContainer> namedChildContainers = new HashMap<String, PicoContainer>();
 
 
     public DefaultNanoContainer(ClassLoader classLoader, ComponentFactory caf, PicoContainer parent) {
@@ -121,14 +122,16 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     /**
      * Constructor that provides the same control over the nanocontainer lifecycle strategies
      * as {@link DefaultPicoContainer( org.picocontainer.ComponentFactory , org.picocontainer.LifecycleStrategy , PicoContainer)}.
+     *
      * @param componentAdapterFactory ComponentAdapterFactory
-     * @param lifecycleStrategy LifecycleStrategy
-     * @param parent PicoContainer may be null if there is no parent.
-     * @param cl the Classloader to use.  May be null, in which case DefaultNanoPicoContainer.class.getClassLoader()
-     * will be called instead.
+     * @param lifecycleStrategy       LifecycleStrategy
+     * @param parent                  PicoContainer may be null if there is no parent.
+     * @param cl                      the Classloader to use.  May be null, in which case DefaultNanoPicoContainer.class.getClassLoader()
+     *                                will be called instead.
      */
     public DefaultNanoContainer(ComponentFactory componentAdapterFactory,
-        LifecycleStrategy lifecycleStrategy, PicoContainer parent, ClassLoader cl) {
+                                LifecycleStrategy lifecycleStrategy, PicoContainer parent, ClassLoader cl)
+    {
 
         super(new DefaultPicoContainer(componentAdapterFactory, lifecycleStrategy, parent));
         parentClassLoader = (cl != null) ? cl : DefaultNanoContainer.class.getClassLoader();
@@ -140,7 +143,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         DefaultNanoContainer container = new DefaultNanoContainer(getComponentClassLoader(), child);
         container.changeMonitor(currentMonitor());
         return container;
-     }
+    }
 
     public void changeMonitor(ComponentMonitor monitor) {
         ((ComponentMonitorStrategy)getDelegate()).changeMonitor(monitor);
@@ -153,7 +156,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     public final Object getComponent(Object componentKeyOrType) throws PicoException {
 
         if (componentKeyOrType instanceof ClassName) {
-            componentKeyOrType = loadClass(((ClassName) componentKeyOrType).className);
+            componentKeyOrType = loadClass(((ClassName)componentKeyOrType).className);
         }
 
         Object instance = getDelegate().getComponent(componentKeyOrType);
@@ -165,10 +168,10 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         ComponentAdapter componentAdapter = null;
         if (componentKeyOrType.toString().startsWith("*")) {
             String candidateClassName = componentKeyOrType.toString().substring(1);
-            Collection<ComponentAdapter> cas = getComponentAdapters();
+            Collection<ComponentAdapter<?>> cas = getComponentAdapters();
             for (ComponentAdapter ca : cas) {
                 Object key = ca.getComponentKey();
-                if (key instanceof Class && candidateClassName.equals(((Class) key).getName())) {
+                if (key instanceof Class && candidateClassName.equals(((Class)key).getName())) {
                     componentAdapter = ca;
                     break;
                 }
@@ -189,7 +192,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
             String remainder = componentKeyPath.substring(ix + 1, componentKeyPath.length());
             Object o = getNamedContainers().get(firstElement);
             if (o != null) {
-                MutablePicoContainer child = (MutablePicoContainer) o;
+                MutablePicoContainer child = (MutablePicoContainer)o;
                 return child.getComponent(remainder);
             }
         }
@@ -203,7 +206,9 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     /**
      * Makes a child container with the same basic characteristics of <tt>this</tt>
      * object (ComponentAdapterFactory, PicoContainer type, LifecycleManager, etc)
+     *
      * @param name the name of the child container
+     *
      * @return The child MutablePicoContainer
      */
     public MutablePicoContainer makeChildContainer(String name) {
@@ -217,9 +222,9 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
 
     public boolean removeChildContainer(PicoContainer child) {
         boolean result = getDelegate().removeChildContainer(child);
-        Iterator<Map.Entry<String,PicoContainer>> children = namedChildContainers.entrySet().iterator();
+        Iterator<Map.Entry<String, PicoContainer>> children = namedChildContainers.entrySet().iterator();
         while (children.hasNext()) {
-            Map.Entry<String,PicoContainer> e = children.next();
+            Map.Entry<String, PicoContainer> e = children.next();
             PicoContainer pc = e.getValue();
             if (pc == child) {
                 children.remove();
@@ -234,7 +239,9 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
 
 
     public ClassPathElement addClassLoaderURL(URL url) {
-        if (componentClassLoaderLocked) throw new IllegalStateException("ClassLoader URLs cannot be added once this instance is locked");
+        if (componentClassLoaderLocked) {
+            throw new IllegalStateException("ClassLoader URLs cannot be added once this instance is locked");
+        }
 
         ClassPathElement classPathElement = new ClassPathElement(url);
         classPathElements.add(classPathElement);
@@ -242,29 +249,35 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     }
 
     public MutablePicoContainer addComponent(Object implOrInstance) {
-        if(implOrInstance instanceof ClassName) {
-            String className = ((ClassName) implOrInstance).className;
+        if (implOrInstance instanceof ClassName) {
+            String className = ((ClassName)implOrInstance).className;
             return super.addComponent(loadClass(className));
         }
         return super.addComponent(implOrInstance);
     }
 
-    public MutablePicoContainer addComponent(Object key, Object componentImplementationOrInstance, Parameter... parameters) {
+    public MutablePicoContainer addComponent(Object key,
+                                             Object componentImplementationOrInstance,
+                                             Parameter... parameters)
+    {
         if (key instanceof ClassName) {
-            key = loadClass(((ClassName) key).getClassName());
+            key = loadClass(((ClassName)key).getClassName());
         }
         if (componentImplementationOrInstance instanceof ClassName) {
-            componentImplementationOrInstance = loadClass(((ClassName) componentImplementationOrInstance).getClassName());
+            componentImplementationOrInstance =
+                loadClass(((ClassName)componentImplementationOrInstance).getClassName());
         }
-        return super.addComponent(key,componentImplementationOrInstance, parameters);
+        return super.addComponent(key, componentImplementationOrInstance, parameters);
     }
 
     public ClassLoader getComponentClassLoader() {
         if (componentClassLoader == null) {
             componentClassLoaderLocked = true;
-            componentClassLoader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
-                    return new CustomPermissionsURLClassLoader(getURLs(classPathElements), makePermissions(), parentClassLoader);
+            componentClassLoader = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+                public ClassLoader run() {
+                    return new CustomPermissionsURLClassLoader(getURLs(classPathElements),
+                                                               makePermissions(),
+                                                               parentClassLoader);
                 }
             });
         }
@@ -305,7 +318,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
 
     private URL[] getURLs(List<ClassPathElement> classPathElemelements) {
         final URL[] urls = new URL[classPathElemelements.size()];
-        for(int i = 0; i < urls.length; i++) {
+        for (int i = 0; i < urls.length; i++) {
             urls[i] = (classPathElemelements.get(i)).getUrl();
         }
         return urls;
@@ -315,7 +328,6 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         String fromMap = primitiveNameToBoxedName.get(primitiveOrClass);
         return fromMap != null ? fromMap : primitiveOrClass;
     }
-
 
 
 }

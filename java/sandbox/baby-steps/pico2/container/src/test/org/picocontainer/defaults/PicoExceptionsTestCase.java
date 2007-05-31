@@ -9,24 +9,23 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import junit.framework.TestCase;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
+import org.picocontainer.monitors.DelegatingComponentMonitor;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import junit.framework.TestCase;
 
 /**
  * Unit tests for the several PicoException classes.
@@ -37,6 +36,7 @@ public class PicoExceptionsTestCase
     final static public String MESSAGE = "Message of the exception";
     final static public Throwable THROWABLE = new Throwable();
 
+    @SuppressWarnings({ "unchecked" })
     final void executeTestOfStandardException(final Class clazz) {
         final ComponentAdapter componentAdapter = new ConstructorInjectionAdapter(clazz, clazz, null, new DelegatingComponentMonitor());
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -45,9 +45,9 @@ public class PicoExceptionsTestCase
             final Exception exception = (Exception) componentAdapter.getComponentInstance(pico);
             assertEquals(MESSAGE, exception.getMessage());
         } catch (final UnsatisfiableDependenciesException ex) {
-            final Set set = new HashSet();
-            for (final Iterator iter = ex.getUnsatisfiableDependencies().iterator(); iter.hasNext();) {
-                final List list = (List) iter.next();
+            final Set<Object> set = new HashSet<Object>();
+            for (Object o : ex.getUnsatisfiableDependencies()) {
+                final List<Object> list = (List<Object>)o;
                 set.addAll(list);
             }
             assertTrue(set.contains(Throwable.class));
@@ -58,9 +58,9 @@ public class PicoExceptionsTestCase
             final PicoException exception = (PicoException) componentAdapter.getComponentInstance(pico);
             assertSame(THROWABLE, exception.getCause());
         } catch (final UnsatisfiableDependenciesException ex) {
-            final Set set = new HashSet();
-            for (final Iterator iter = ex.getUnsatisfiableDependencies().iterator(); iter.hasNext();) {
-                final List list = (List) iter.next();
+            final Set<Object> set = new HashSet<Object>();
+            for (Object o : ex.getUnsatisfiableDependencies()) {
+                final List<Object> list = (List<Object>)o;
                 set.addAll(list);
             }
             assertTrue(set.contains(String.class));
@@ -80,7 +80,7 @@ public class PicoExceptionsTestCase
         assertNull(e.getMessage());
         assertNull(e.getCause());
     }
-    
+
     private static class TestException extends PicoInitializationException {
         public TestException(final String message) {
             super(message);
@@ -90,7 +90,7 @@ public class PicoExceptionsTestCase
     public void testPicoIntrospectionException() {
         executeTestOfStandardException(PicoIntrospectionException.class);
     }
-    
+
     public void testPicoRegistrationException() {
         executeTestOfStandardException(PicoRegistrationException.class);
     }

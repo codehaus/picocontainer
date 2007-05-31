@@ -11,7 +11,6 @@ package org.picocontainer.adapters;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.adapters.MonitoringAdapter;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 
@@ -19,9 +18,9 @@ import org.picocontainer.monitors.DelegatingComponentMonitor;
  * Base class for a ComponentAdapter with general functionality.
  * This implementation provides basic checks for a healthy implementation of a ComponentAdapter.
  * It does not allow to use <code>null</code> for the addComponent key or the implementation,
- * ensures that the implementation is a concrete class and that the key is assignable from the 
- * implementation if the key represents a type.   
- *  
+ * ensures that the implementation is a concrete class and that the key is assignable from the
+ * implementation if the key represents a type.
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
@@ -33,7 +32,7 @@ public abstract class AbstractComponentAdapter extends MonitoringAdapter {
     private Class componentImplementation;
 
     /**
-     * Constructs a new ComponentAdapter for the given key and implementation. 
+     * Constructs a new ComponentAdapter for the given key and implementation.
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @throws org.picocontainer.defaults.AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
@@ -43,7 +42,7 @@ public abstract class AbstractComponentAdapter extends MonitoringAdapter {
     }
 
     /**
-     * Constructs a new ComponentAdapter for the given key and implementation. 
+     * Constructs a new ComponentAdapter for the given key and implementation.
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param monitor the addComponent monitor used by this ComponentAdapter
@@ -98,5 +97,5 @@ public abstract class AbstractComponentAdapter extends MonitoringAdapter {
     public void accept(PicoVisitor visitor) {
         visitor.visitComponentAdapter(this);
     }
-    
+
 }

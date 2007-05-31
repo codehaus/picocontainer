@@ -17,7 +17,7 @@ import java.util.List;
  * This is the core interface for PicoContainer. It is used to retrieve addComponent instances from the container; it only
  * has accessor methods (in addition to the {@link #accept(PicoVisitor)} method). In order to register components in a
  * PicoContainer, use a {@link MutablePicoContainer}, such as {@link org.picocontainer.defaults.DefaultPicoContainer}.
- * 
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
@@ -31,7 +31,7 @@ public interface PicoContainer {
     /**
      * Retrieve a addComponent instance registered with a specific key or type. If a addComponent cannot be found in this container,
      * the parent container (if one exists) will be searched.
-     * 
+     *
      * @param componentKeyOrType the key or Type that the addComponent was registered with.
      * @return an instantiated addComponent, or <code>null</code> if no addComponent has been registered for the specified
      *         key.
@@ -44,7 +44,7 @@ public interface PicoContainer {
     /**
      * Retrieve all the registered addComponent instances in the container, (not including those in the parent container).
      * The components are returned in their order of instantiation, which depends on the dependency order between them.
-     * 
+     *
      * @return all the components.
      * @throws PicoException if the instantiation of the addComponent fails
      */
@@ -52,7 +52,7 @@ public interface PicoContainer {
 
     /**
      * Retrieve the parent container of this container.
-     * 
+     *
      * @return a {@link PicoContainer} instance, or <code>null</code> if this container does not have a parent.
      */
     PicoContainer getParent();
@@ -60,58 +60,58 @@ public interface PicoContainer {
     /**
      * Find a addComponent addAdapter associated with the specified key. If a addComponent addAdapter cannot be found in this
      * container, the parent container (if one exists) will be searched.
-     * 
+     *
      * @param componentKey the key that the addComponent was registered with.
      * @return the addComponent addAdapter associated with this key, or <code>null</code> if no addComponent has been
      *         registered for the specified key.
      */
-    ComponentAdapter getComponentAdapter(Object componentKey);
+    ComponentAdapter<?> getComponentAdapter(Object componentKey);
 
     /**
      * Find a addComponent addAdapter associated with the specified type. If a addComponent addAdapter cannot be found in this
      * container, the parent container (if one exists) will be searched.
-     * 
+     *
      * @param componentType the type of the addComponent.
      * @return the addComponent addAdapter associated with this class, or <code>null</code> if no addComponent has been
      *         registered for the specified key.
      */
-    ComponentAdapter getComponentAdapter(Class componentType);
+    <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType);
 
     /**
      * Retrieve all the addComponent adapters inside this container. The addComponent adapters from the parent container are
      * not returned.
-     * 
+     *
      * @return a collection containing all the {@link ComponentAdapter}s inside this container. The collection will not
      *         be modifiable.
      * @see #getComponentAdapters(Class) a variant of this method which returns the addComponent adapters inside this
      *      container that are associated with the specified type.
      */
-    Collection<ComponentAdapter> getComponentAdapters();
+    Collection<ComponentAdapter<?>> getComponentAdapters();
 
     /**
      * Retrieve all addComponent adapters inside this container that are associated with the specified type. The addComponent
      * adapters from the parent container are not returned.
-     * 
+     *
      * @param componentType the type of the components.
      * @return a collection containing all the {@link ComponentAdapter}s inside this container that are associated with
      *         the specified type. Changes to this collection will not be reflected in the container itself.
      */
-    List<ComponentAdapter> getComponentAdapters(Class componentType);
+    <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType);
 
     /**
      * Returns a List of components of a certain componentType. The list is ordered by instantiation order, starting
      * with the components instantiated first at the beginning.
-     * 
+     *
      * @param componentType the searched type.
      * @return a List of components.
      * @throws PicoException if the instantiation of a addComponent fails
      * @since 1.1
      */
-    List getComponents(Class componentType);
+    <T> List<T> getComponents(Class<T> componentType);
 
     /**
      * Accepts a visitor that should visit the child containers, addComponent adapters and addComponent instances.
-     * 
+     *
      * @param visitor the visitor
      * @since 1.1
      */

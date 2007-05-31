@@ -16,7 +16,6 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,7 +42,7 @@ public class PicoMap implements Map {
 
     public boolean containsKey(Object o) {
         if (o instanceof Class) {
-            return mutablePicoContainer.getComponent((Class)o) != null;
+            return mutablePicoContainer.getComponent((Class<?>)o) != null;
         } else {
             return mutablePicoContainer.getComponent(o) != null;
         }
@@ -55,7 +54,7 @@ public class PicoMap implements Map {
 
     public Object get(Object o) {
         if (o instanceof Class) {
-            return mutablePicoContainer.getComponent((Class)o);
+            return mutablePicoContainer.getComponent((Class<?>)o);
         } else {
             return mutablePicoContainer.getComponent(o);
         }
@@ -63,11 +62,7 @@ public class PicoMap implements Map {
 
     public Object put(Object o, Object o1) {
         Object object = remove(o);
-        if (o1 instanceof Class) {
-            mutablePicoContainer.addComponent(o, (Class)o1);
-        } else {
-            mutablePicoContainer.addComponent(o, o1);
-        }
+        mutablePicoContainer.addComponent(o, o1);
         return object;
     }
 
@@ -92,32 +87,32 @@ public class PicoMap implements Map {
 
     public void clear() {
         Set adapters = keySet();
-        for (final Iterator iter = adapters.iterator(); iter.hasNext();) {
-            mutablePicoContainer.removeComponent(iter.next());
+        for (Object adapter : adapters) {
+            mutablePicoContainer.removeComponent(adapter);
         }
     }
 
     public Set keySet() {
         Set<Object> set = new HashSet<Object>();
-        Collection<ComponentAdapter> adapters = mutablePicoContainer.getComponentAdapters();
-        for (final Iterator<ComponentAdapter> iter = adapters.iterator(); iter.hasNext();) {
-            final ComponentAdapter adapter = iter.next();
+        Collection<ComponentAdapter<?>> adapters = mutablePicoContainer.getComponentAdapters();
+        for (final ComponentAdapter<?> adapter : adapters) {
             set.add(adapter.getComponentKey());
         }
         return Collections.unmodifiableSet(set);
     }
 
+    @SuppressWarnings({ "unchecked" })
     public Collection values() {
         return Collections.unmodifiableCollection(mutablePicoContainer.getComponents());
     }
 
     public Set entrySet() {
         Set<Entry> set = new HashSet<Entry>();
-        Collection<ComponentAdapter> adapters = mutablePicoContainer.getComponentAdapters();
-        for (final Iterator<ComponentAdapter> iter = adapters.iterator(); iter.hasNext();) {
-            final Object key = (iter.next()).getComponentKey();
+        Collection<ComponentAdapter<?>> adapters = mutablePicoContainer.getComponentAdapters();
+        for (ComponentAdapter<?> adapter : adapters) {
+            final Object key = adapter.getComponentKey();
             final Object component = mutablePicoContainer.getComponent(key);
-            set.add(new Map.Entry() {
+            set.add(new Entry() {
                 public Object getKey() {
                     return key;
                 }

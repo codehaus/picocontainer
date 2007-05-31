@@ -9,18 +9,18 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.ComponentCharacteristic;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Paul Hammant
@@ -38,7 +38,10 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return delegate;
     }
 
-    public MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws PicoRegistrationException {
+    public MutablePicoContainer addComponent(Object componentKey,
+                                             Object componentImplementationOrInstance,
+                                             Parameter... parameters) throws PicoRegistrationException
+    {
         return delegate.addComponent(componentKey, componentImplementationOrInstance, parameters);
     }
 
@@ -61,9 +64,9 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
     public Object getComponent(Object componentKeyOrType) {
         return delegate.getComponent(componentKeyOrType);
     }
-    
+
     public <T> T getComponent(Class<T> componentType) {
-        return (T) getComponent((Object) componentType);
+        return componentType.cast(getComponent((Object)componentType));
     }
 
     public List getComponents() {
@@ -74,19 +77,19 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return delegate.getParent();
     }
 
-    public ComponentAdapter getComponentAdapter(Object componentKey) {
+    public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
         return delegate.getComponentAdapter(componentKey);
     }
 
-    public ComponentAdapter getComponentAdapter(Class componentType) {
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
         return delegate.getComponentAdapter(componentType);
     }
 
-    public Collection<ComponentAdapter> getComponentAdapters() {
+    public Collection<ComponentAdapter<?>> getComponentAdapters() {
         return delegate.getComponentAdapters();
     }
 
-    public List<ComponentAdapter> getComponentAdapters(Class componentType) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
         return delegate.getComponentAdapters(componentType);
     }
 
@@ -114,7 +117,7 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         delegate.accept(visitor);
     }
 
-    public List getComponents(Class type) throws PicoException {
+    public <T> List<T> getComponents(Class<T> type) throws PicoException {
         return delegate.getComponents(type);
     }
 
@@ -124,11 +127,11 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
     }
 
     public ComponentAdapter lastCA() {
-        return null; 
+        return null;
     }
 
     public MutablePicoContainer change(ComponentCharacteristic... characteristics) {
-        return delegate.change(characteristics); 
+        return delegate.change(characteristics);
     }
 
     public MutablePicoContainer as(ComponentCharacteristic... characteristics) {

@@ -21,28 +21,28 @@ package org.picocontainer;
  *      container.
  * @since 1.0
  */
-public interface ComponentAdapter {
+public interface ComponentAdapter<T> {
     /**
      * Retrieve the key associated with the addComponent.
-     * 
+     *
      * @return the addComponent's key. Should either be a class type (normally an interface) or an identifier that is
      *         unique (within the scope of the current PicoContainer).
      */
-    Object getComponentKey();    
+    Object getComponentKey();
 
     /**
      * Retrieve the class of the addComponent.
-     * 
+     *
      * @return the addComponent's implementation class. Should normally be a concrete class (ie, a class that can be
      *         instantiated).
      */
-    Class getComponentImplementation();
+    Class<T> getComponentImplementation();
 
     /**
      * Retrieve the addComponent instance. This method will usually create a new instance each time it is called, but that
      * is not required. For example, {@link org.picocontainer.adapters.CachingBehaviorAdapter} will always return the
      * same instance.
-     * 
+     *
      * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.
      * @return the addComponent instance.
      * @throws PicoInitializationException if the addComponent could not be instantiated.
@@ -50,7 +50,7 @@ public interface ComponentAdapter {
      *                                     instantiation of the addComponent lead to an ambigous situation within the
      *                                     container.
      */
-    Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException;
+    T getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException;
 
     /**
      * Verify that all dependencies for this addAdapter can be satisifed. Normally, the addAdapter should verify this by
@@ -62,9 +62,9 @@ public interface ComponentAdapter {
     void verify(PicoContainer container) throws PicoIntrospectionException;
 
     /**
-     * Accepts a visitor for this ComponentAdapter. The method is normally called by visiting a {@link PicoContainer}, that 
+     * Accepts a visitor for this ComponentAdapter. The method is normally called by visiting a {@link PicoContainer}, that
      * cascades the visitor also down to all its ComponentAdapter instances.
-     * 
+     *
      * @param visitor the visitor.
      * @since 1.1
      */

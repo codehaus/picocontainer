@@ -9,11 +9,11 @@
 package org.picocontainer.gems.constraints;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.ParameterName;
-import org.picocontainer.parameters.CollectionComponentParameter;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
+import org.picocontainer.parameters.CollectionComponentParameter;
 
 import java.lang.reflect.Array;
 import java.util.Map;
@@ -26,39 +26,55 @@ import java.util.Map;
  */
 public abstract class AbstractConstraint extends CollectionComponentParameter implements Constraint {
 
-    /**
-     * Construct an AbstractContraint.
-     */
+    /** Construct an AbstractContraint. */
     protected AbstractConstraint() {
         super(false);
     }
-    
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) throws PicoIntrospectionException {
-        final Object[] array = (Object[]) super.resolveInstance(container, adapter, getArrayType(expectedType), expectedParameterName);
+
+    public Object resolveInstance(PicoContainer container,
+                                  ComponentAdapter adapter,
+                                  Class expectedType,
+                                  ParameterName expectedParameterName) throws PicoIntrospectionException
+    {
+        final Object[] array =
+            (Object[])super.resolveInstance(container, adapter, getArrayType(expectedType), expectedParameterName);
         if (array.length == 1) {
             return array[0];
         }
         return null;
     }
 
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) throws PicoIntrospectionException {
+    public boolean isResolvable(PicoContainer container,
+                                ComponentAdapter adapter,
+                                Class expectedType,
+                                ParameterName expectedParameterName) throws PicoIntrospectionException
+    {
         return super.isResolvable(container, adapter, getArrayType(expectedType), expectedParameterName);
     }
 
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) throws PicoIntrospectionException {
+    public void verify(PicoContainer container,
+                       ComponentAdapter adapter,
+                       Class expectedType,
+                       ParameterName expectedParameterName) throws PicoIntrospectionException
+    {
         super.verify(container, adapter, getArrayType(expectedType), expectedParameterName);
     }
-    
+
     public abstract boolean evaluate(ComponentAdapter adapter);
 
-    protected Map getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter, Class keyType, Class valueType) {
-        final Map map = super.getMatchingComponentAdapters(container, adapter, keyType, valueType);
+    protected Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(PicoContainer container,
+                                                                            ComponentAdapter adapter,
+                                                                            Class keyType,
+                                                                            Class valueType)
+    {
+        final Map<Object, ComponentAdapter<?>> map =
+            super.getMatchingComponentAdapters(container, adapter, keyType, valueType);
         if (map.size() > 1) {
             throw new AmbiguousComponentResolutionException(valueType, map.keySet().toArray(new Object[map.size()]));
         }
         return map;
     }
-    
+
     private Class getArrayType(Class expectedType) {
         return Array.newInstance(expectedType, 0).getClass();
     }

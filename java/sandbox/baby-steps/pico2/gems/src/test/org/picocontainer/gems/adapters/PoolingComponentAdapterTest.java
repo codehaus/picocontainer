@@ -1,12 +1,8 @@
 /*
- * Copyright (C) 2005 Jörg Schaible
- * Created on 29.08.2005 by Jörg Schaible
+ * Copyright (C) 2005 J&ouml;rg Schaible
+ * Created on 29.08.2005 by J&ouml;rg Schaible
  */
 package org.picocontainer.gems.adapters;
-
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.pool.Poolable;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleManager;
@@ -20,8 +16,11 @@ import org.picocontainer.testmodel.Touchable;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
+
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.pool.Poolable;
 
 
 /**
@@ -75,6 +74,7 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
         assertNotSame(borrowed0, borrowed1);
         assertNotSame(borrowed1, borrowed2);
 
+        //noinspection UnusedAssignment
         borrowed1 = null;
         System.gc();
 
@@ -181,7 +181,7 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
                     }
                 });
 
-        final Set set = new HashSet();
+        final Set<Object> set = new HashSet<Object>();
         try {
             final int max = 5;
             int i;
@@ -193,8 +193,8 @@ public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCas
             assertEquals(i, componentAdapter.size());
             assertEquals(i, set.size());
 
-            for (Iterator iter = set.iterator(); iter.hasNext();) {
-                Poolable object = (Poolable)iter.next();
+            for (Object aSet : set) {
+                Poolable object = (Poolable)aSet;
                 object.returnInstanceToPool();
                 assertEquals(max, componentAdapter.size());
             }

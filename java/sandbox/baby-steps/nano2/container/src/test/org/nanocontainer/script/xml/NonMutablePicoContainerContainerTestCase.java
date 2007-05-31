@@ -10,22 +10,23 @@
 
 package org.nanocontainer.script.xml;
 
-import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collection;
 import java.util.List;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.testmodel.DefaultWebServerConfig;
+import org.xml.sax.SAXException;
 
 /**
  * @author Maarten Grootendorst
@@ -52,30 +53,29 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        public ComponentAdapter getComponentAdapter(Object componentKey) {
+        public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
             return null;
         }
 
-        public ComponentAdapter getComponentAdapter(Class componentType) {
+        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
             return null;
         }
 
-        public Collection<ComponentAdapter> getComponentAdapters() {
+        public Collection<ComponentAdapter<?>> getComponentAdapters() {
             return null;
         }
-
 
         public void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
         }
 
-        public List getComponents(Class type) throws PicoException {
+        public <T> List<T> getComponents(Class<T> type) throws PicoException {
             return null;
         }
 
         public void accept(PicoVisitor containerVisitor) {
         }
 
-        public List<ComponentAdapter> getComponentAdapters(Class componentType) {
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
             return null;
         }
 
@@ -90,26 +90,34 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
 
     }
 
-    public void testCreateSimpleContainerWithPicoContainer() throws ParserConfigurationException, SAXException, IOException, PicoCompositionException {
+    public void testCreateSimpleContainerWithPicoContainer()
+        throws ParserConfigurationException, SAXException, IOException, PicoCompositionException
+    {
         Reader script = new StringReader("" +
-                "<container>" +
-                "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-                "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
-                "</container>");
+                                         "<container>" +
+                                         "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                                         "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                                         "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), new TestPicoContainer(), "SOME_SCOPE");
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()),
+                                            new TestPicoContainer(),
+                                            "SOME_SCOPE");
         assertEquals(2, pico.getComponents().size());
         assertNotNull(pico.getComponent(DefaultWebServerConfig.class));
     }
 
-    public void testCreateSimpleContainerWithMutablePicoContainer() throws ParserConfigurationException, SAXException, IOException, PicoCompositionException {
+    public void testCreateSimpleContainerWithMutablePicoContainer()
+        throws ParserConfigurationException, SAXException, IOException, PicoCompositionException
+    {
         Reader script = new StringReader("" +
-                "<container>" +
-                "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-                "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
-                "</container>");
+                                         "<container>" +
+                                         "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                                         "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                                         "</container>");
 
-        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), new DefaultPicoContainer(), "SOME_SCOPE");
+        PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()),
+                                            new DefaultPicoContainer(),
+                                            "SOME_SCOPE");
         assertEquals(2, pico.getComponents().size());
         assertNotNull(pico.getComponent(DefaultWebServerConfig.class));
         assertNotNull(pico.getParent());

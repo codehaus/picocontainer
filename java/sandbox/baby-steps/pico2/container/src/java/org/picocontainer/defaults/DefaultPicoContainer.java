@@ -9,6 +9,30 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.Disposable;
+import org.picocontainer.LifecycleManager;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.Startable;
+import org.picocontainer.adapters.AnyInjectionFactory;
+import org.picocontainer.adapters.CachingBehaviorFactory;
+import org.picocontainer.adapters.InstanceComponentAdapter;
+import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,30 +42,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleManager;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.Startable;
-import org.picocontainer.Disposable;
-import org.picocontainer.ComponentCharacteristic;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.ComponentMonitorStrategy;
-import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.adapters.CachingBehaviorFactory;
-import org.picocontainer.adapters.AnyInjectionFactory;
-import org.picocontainer.adapters.InstanceComponentAdapter;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
  * <p/>
@@ -80,9 +80,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private PicoContainer parent;
     private Set<PicoContainer> children = new HashSet<PicoContainer>();
 
-    private List<ComponentAdapter> componentAdapters = new ArrayList<ComponentAdapter>();
+    private List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>();
     // Keeps track of instantiation order.
-    private List<ComponentAdapter> orderedComponentAdapters = new ArrayList<ComponentAdapter>();
+    private List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
 
     // Keeps track of the container started status
     private boolean started = false;
@@ -96,6 +96,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private ComponentCharacteristic componentCharacteristic = new ComponentCharacteristic() {
         public void mergeInto(ComponentCharacteristic rc) {
         }
+
         public boolean isSoCharacterized(ComponentCharacteristic rc) {
             return false;
         }
@@ -121,7 +122,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory, LifecycleStrategy for instance registration,
-     *  and a parent container.
+     * and a parent container.
      * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
@@ -131,13 +132,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * </em>
      *
      * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
-     * @param lifecycleStrategyForInstanceRegistrations the lifecylce strategy chosen for regiered
-     *          instance (not implementations!)
+     * @param lifecycleStrategyForInstanceRegistrations
+     *                                the lifecylce strategy chosen for regiered
+     *                                instance (not implementations!)
      * @param parent                  the parent container (used for addComponent dependency lookups).
      */
     public DefaultPicoContainer(ComponentFactory componentAdapterFactory,
                                 LifecycleStrategy lifecycleStrategyForInstanceRegistrations,
-                                PicoContainer parent) {
+                                PicoContainer parent)
+    {
         if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
         if (lifecycleStrategyForInstanceRegistrations == null) throw new NullPointerException("lifecycleStrategy");
         this.componentAdapterFactory = componentAdapterFactory;
@@ -149,12 +152,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-      * Creates a new container with the AnyInjectionFactory using a
-      * custom ComponentMonitor
-      *
-      * @param monitor the ComponentMonitor to use
-      * @param parent the parent container (used for addComponent dependency lookups).
-      */
+     * Creates a new container with the AnyInjectionFactory using a
+     * custom ComponentMonitor
+     *
+     * @param monitor the ComponentMonitor to use
+     * @param parent  the parent container (used for addComponent dependency lookups).
+     */
     public DefaultPicoContainer(ComponentMonitor monitor, PicoContainer parent) {
         this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), parent);
         lifecycleStrategy = new StartableLifecycleStrategy(monitor);
@@ -162,33 +165,37 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-      * Creates a new container with the AnyInjectionFactory using a
-      * custom ComponentMonitor and lifecycle strategy
-      *
-      * @param monitor the ComponentMonitor to use
-      * @param lifecycleStrategy the lifecycle strategy to use.
-      * @param parent the parent container (used for addComponent dependency lookups).
-      */
+     * Creates a new container with the AnyInjectionFactory using a
+     * custom ComponentMonitor and lifecycle strategy
+     *
+     * @param monitor           the ComponentMonitor to use
+     * @param lifecycleStrategy the lifecycle strategy to use.
+     * @param parent            the parent container (used for addComponent dependency lookups).
+     */
     public DefaultPicoContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), lifecycleStrategy,  parent);
+        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), lifecycleStrategy, parent);
         componentMonitor = monitor;
 
     }
 
 
     // to assist PicoBuilder
-    public DefaultPicoContainer(ComponentFactory caf, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(caf, lifecycleStrategy,  parent);
+    public DefaultPicoContainer(ComponentFactory caf,
+                                ComponentMonitor monitor,
+                                LifecycleStrategy lifecycleStrategy,
+                                PicoContainer parent)
+    {
+        this(caf, lifecycleStrategy, parent);
         componentMonitor = monitor;
     }
 
     /**
-      * Creates a new container with the AnyInjectionFactory using a
-      * custom lifecycle strategy
-      *
-      * @param lifecycleStrategy the lifecycle strategy to use.
-      * @param parent the parent container (used for addComponent dependency lookups).
-      */
+     * Creates a new container with the AnyInjectionFactory using a
+     * custom lifecycle strategy
+     *
+     * @param lifecycleStrategy the lifecycle strategy to use.
+     * @param parent            the parent container (used for addComponent dependency lookups).
+     */
     public DefaultPicoContainer(LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
         this(NullComponentMonitor.getInstance(), lifecycleStrategy, parent);
     }
@@ -204,11 +211,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-      * Creates a new container with the AnyInjectionFactory using a
-      * custom ComponentMonitor
-      *
-      * @param monitor the ComponentMonitor to use
-      */
+     * Creates a new container with the AnyInjectionFactory using a
+     * custom ComponentMonitor
+     *
+     * @param monitor the ComponentMonitor to use
+     */
     public DefaultPicoContainer(ComponentMonitor monitor) {
         this(monitor, new StartableLifecycleStrategy(monitor), null);
     }
@@ -223,18 +230,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), parent);
     }
 
-    /**
-     * Creates a new container with a (caching) {@link AnyInjectionFactory} and no parent container.
-     */
+    /** Creates a new container with a (caching) {@link AnyInjectionFactory} and no parent container. */
     public DefaultPicoContainer() {
         this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), null);
     }
 
-    public Collection<ComponentAdapter> getComponentAdapters() {
+    public Collection<ComponentAdapter<?>> getComponentAdapters() {
         return Collections.unmodifiableList(componentAdapters);
     }
 
-    public final ComponentAdapter getComponentAdapter(Object componentKey) {
+    public final ComponentAdapter<?> getComponentAdapter(Object componentKey) {
         ComponentAdapter adapter = componentKeyToAdapterCache.get(componentKey);
         if (adapter == null && parent != null) {
             adapter = parent.getComponentAdapter(componentKey);
@@ -242,18 +247,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return adapter;
     }
 
-    public ComponentAdapter getComponentAdapter(Class componentType) {
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
         // See http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-115
-        ComponentAdapter adapterByKey = getComponentAdapter((Object) componentType);
+        ComponentAdapter<?> adapterByKey = getComponentAdapter((Object)componentType);
         if (adapterByKey != null) {
-            return adapterByKey;
+            return typeComponentAdapter(adapterByKey);
         }
 
-        List<ComponentAdapter> found = getComponentAdapters(componentType);
+        List<ComponentAdapter<T>> found = getComponentAdapters(componentType);
 
         if (found.size() == 1) {
-            return ((ComponentAdapter) found.get(0));
-        } else if (found.size() == 0) {
+            return found.get(0);
+        } else if (found.isEmpty()) {
             if (parent != null) {
                 return parent.getComponentAdapter(componentType);
             } else {
@@ -269,14 +274,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
     }
 
-    public List<ComponentAdapter> getComponentAdapters(Class componentType) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
         if (componentType == null) {
-            return (List<ComponentAdapter>) Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
-        List<ComponentAdapter> found = new ArrayList<ComponentAdapter>();
-        for (ComponentAdapter componentAdapter : getComponentAdapters()) {
+        List<ComponentAdapter<T>> found = new ArrayList<ComponentAdapter<T>>();
+        for (ComponentAdapter<?> componentAdapter : getComponentAdapters()) {
             if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
-                found.add(componentAdapter);
+                ComponentAdapter<T> typedComponentAdapter = typeComponentAdapter(componentAdapter);
+                found.add(typedComponentAdapter);
             }
         }
         return found;
@@ -290,7 +296,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) {
         Object componentKey = componentAdapter.getComponentKey();
         if (componentKeyToAdapterCache.containsKey(componentKey)) {
-            throw new PicoRegistrationException("Duplicate Keys not allowed. Duplicate for '"+componentKey+"'");
+            throw new PicoRegistrationException("Duplicate Keys not allowed. Duplicate for '" + componentKey + "'");
         }
         componentAdapters.add(componentAdapter);
         componentKeyToAdapterCache.put(componentKey, componentAdapter);
@@ -311,14 +317,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public MutablePicoContainer addComponent(Object implOrInstance) {
         Class clazz;
         if (implOrInstance instanceof CharacterizedObject) {
-            CharacterizedObject co = (CharacterizedObject) implOrInstance;
+            CharacterizedObject co = (CharacterizedObject)implOrInstance;
             if (co.implOrInst instanceof Class) {
-                clazz = (Class) co.implOrInst;
+                clazz = (Class)co.implOrInst;
             } else {
                 clazz = co.getClass();
             }
         } else if (implOrInstance instanceof Class) {
-            clazz = (Class) implOrInstance;
+            clazz = (Class)implOrInstance;
         } else {
             clazz = implOrInstance.getClass();
         }
@@ -330,21 +336,29 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The returned ComponentAdapter will be instantiated by the {@link ComponentFactory}
      * passed to the container's constructor.
      */
-    public MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) {
+    public MutablePicoContainer addComponent(Object componentKey,
+                                             Object componentImplementationOrInstance,
+                                             Parameter... parameters)
+    {
         ComponentCharacteristic characteristic = this.componentCharacteristic;
         if (componentImplementationOrInstance instanceof CharacterizedObject) {
-            characteristic = ((CharacterizedObject) componentImplementationOrInstance).characteristic;
-            componentImplementationOrInstance = ((CharacterizedObject) componentImplementationOrInstance).implOrInst;
+            characteristic = ((CharacterizedObject)componentImplementationOrInstance).characteristic;
+            componentImplementationOrInstance = ((CharacterizedObject)componentImplementationOrInstance).implOrInst;
         }
         if (parameters != null && parameters.length == 0 && parameters != Parameter.ZERO) {
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
         if (componentImplementationOrInstance instanceof Class) {
-            ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentMonitor, lifecycleStrategy, characteristic, componentKey,
-                    (Class) componentImplementationOrInstance, parameters);
+            ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentMonitor,
+                                                                                               lifecycleStrategy,
+                                                                                               characteristic,
+                                                                                               componentKey,
+                                                                                               (Class)componentImplementationOrInstance,
+                                                                                               parameters);
             return addAdapter(componentAdapter);
         } else {
-            ComponentAdapter componentAdapter = new InstanceComponentAdapter(componentKey, componentImplementationOrInstance, lifecycleStrategy);
+            ComponentAdapter componentAdapter =
+                new InstanceComponentAdapter(componentKey, componentImplementationOrInstance, lifecycleStrategy);
             return addAdapter(componentAdapter);
         }
     }
@@ -363,25 +377,23 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return getComponents(Object.class);
     }
 
-    public List getComponents(Class componentType) {
+    public <T> List<T> getComponents(Class<T> componentType) {
         if (componentType == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
-        Map<ComponentAdapter, Object> adapterToInstanceMap = new HashMap<ComponentAdapter, Object>();
-        for (ComponentAdapter componentAdapter : componentAdapters) {
+        Map<ComponentAdapter<T>, T> adapterToInstanceMap = new HashMap<ComponentAdapter<T>, T>();
+        for (ComponentAdapter<?> componentAdapter : componentAdapters) {
             if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
-                Object componentInstance = getInstance(componentAdapter);
-                adapterToInstanceMap.put(componentAdapter, componentInstance);
+                ComponentAdapter<T> typedComponentAdapter = typeComponentAdapter(componentAdapter);
+                T componentInstance = getLocalInstance(typedComponentAdapter);
 
-                // This is to ensure all are added. (Indirect dependencies will be added
-                // from InstantiatingComponentAdapter).
-                addOrderedComponentAdapter(componentAdapter);
+                adapterToInstanceMap.put(typedComponentAdapter, componentInstance);
             }
         }
-        List<Object> result = new ArrayList<Object>();
-        for (Object componentAdapter : orderedComponentAdapters) {
-            final Object componentInstance = adapterToInstanceMap.get(componentAdapter);
+        List<T> result = new ArrayList<T>();
+        for (ComponentAdapter componentAdapter : orderedComponentAdapters) {
+            final T componentInstance = adapterToInstanceMap.get(componentAdapter);
             if (componentInstance != null) {
                 // may be null in the case of the "implicit" addAdapter
                 // representing "this".
@@ -391,13 +403,28 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return result;
     }
 
+    private <T> T getLocalInstance(ComponentAdapter<T> typedComponentAdapter) {
+        T componentInstance = typedComponentAdapter.getComponentInstance(this);
+
+        // This is to ensure all are added. (Indirect dependencies will be added
+        // from InstantiatingComponentAdapter).
+        addOrderedComponentAdapter(typedComponentAdapter);
+
+        return componentInstance;
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    private static <T> ComponentAdapter<T> typeComponentAdapter(ComponentAdapter<?> componentAdapter) {
+        return (ComponentAdapter<T>)componentAdapter;
+    }
+
     public Object getComponent(Object componentKeyOrType) {
         Object retVal;
         if (componentKeyOrType instanceof Class) {
-            final ComponentAdapter componentAdapter = getComponentAdapter((Class) componentKeyOrType);
+            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType);
             retVal = componentAdapter == null ? null : getInstance(componentAdapter);
         } else {
-            ComponentAdapter componentAdapter = getComponentAdapter(componentKeyOrType);
+            ComponentAdapter<?> componentAdapter = getComponentAdapter(componentKeyOrType);
             retVal = componentAdapter == null ? null : getInstance(componentAdapter);
         }
         if (retVal == null) {
@@ -407,7 +434,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public <T> T getComponent(Class<T> componentType) {
-        return (T) getComponent((Object) componentType);
+        return componentType.cast(getComponent((Object)componentType));
     }
 
     private Object getInstance(ComponentAdapter componentAdapter) {
@@ -416,13 +443,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         final boolean isLocal = componentAdapters.contains(componentAdapter);
 
         if (isLocal) {
-            Object instance = null;
+            Object instance;
             try {
                 instance = componentAdapter.getComponentInstance(this);
             } catch (ThreadLocalCyclicDependencyGuard.CyclicDependencyException e) {
                 if (parent != null) {
                     instance = parent.getComponent(componentAdapter.getComponentKey());
-                    if( instance != null ) {
+                    if (instance != null) {
                         return instance;
                     }
                 }
@@ -444,9 +471,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public ComponentAdapter removeComponentByInstance(Object componentInstance) {
-        Collection<ComponentAdapter> componentAdapters = getComponentAdapters();
-        for (ComponentAdapter componentAdapter : componentAdapters) {
-            if (getInstance(componentAdapter).equals(componentInstance)) {
+        for (ComponentAdapter<?> componentAdapter : componentAdapters) {
+            if (getLocalInstance(componentAdapter).equals(componentInstance)) {
                 return removeComponent(componentAdapter.getComponentKey());
             }
         }
@@ -478,7 +504,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         for (PicoContainer child : children) {
             childrenStarted.add(child.hashCode());
             if (child instanceof Startable) {
-                ((Startable) child).start();
+                ((Startable)child).start();
             }
         }
     }
@@ -504,7 +530,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         for (PicoContainer child : children) {
             if (childStarted(child)) {
                 if (child instanceof Startable) {
-                    ((Startable) child).stop();
+                    ((Startable)child).stop();
                 }
             }
         }
@@ -515,7 +541,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     /**
      * Checks the status of the child container to see if it's been started
      * to prevent IllegalStateException upon stop
+     *
      * @param child the child PicoContainer
+     *
      * @return A boolean, <code>true</code> if the container is started
      */
     private boolean childStarted(PicoContainer child) {
@@ -539,7 +567,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (disposed) throw new IllegalStateException("Already disposed");
         for (PicoContainer child : children) {
             if (child instanceof MutablePicoContainer) {
-                ((Disposable) child).dispose();
+                ((Disposable)child).dispose();
             }
         }
         this.lifecycleManager.dispose(this);
@@ -569,7 +597,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public ComponentAdapter lastCA() {
-        return null; 
+        return null;
     }
 
     public MutablePicoContainer change(ComponentCharacteristic... characteristics) {
@@ -603,16 +631,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public void changeMonitor(ComponentMonitor monitor) {
         this.componentMonitor = monitor;
         if (lifecycleStrategy instanceof ComponentMonitorStrategy) {
-            ((ComponentMonitorStrategy) lifecycleStrategy).changeMonitor(monitor);
+            ((ComponentMonitorStrategy)lifecycleStrategy).changeMonitor(monitor);
         }
         for (ComponentAdapter adapter : componentAdapters) {
             if (adapter instanceof ComponentMonitorStrategy) {
-                ((ComponentMonitorStrategy) adapter).changeMonitor(monitor);
+                ((ComponentMonitorStrategy)adapter).changeMonitor(monitor);
             }
         }
         for (PicoContainer child : children) {
             if (child instanceof ComponentMonitorStrategy) {
-                ((ComponentMonitorStrategy) child).changeMonitor(monitor);
+                ((ComponentMonitorStrategy)child).changeMonitor(monitor);
             }
         }
     }
@@ -621,23 +649,24 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * Returns the first current monitor found in the ComponentAdapterFactory, the addComponent adapters
      * and the child containers, if these support a ComponentMonitorStrategy.
      * {@inheritDoc}
+     *
      * @throws PicoIntrospectionException if no addComponent monitor is found in container or its children
      */
     public ComponentMonitor currentMonitor() {
         return componentMonitor;
     }
 
-   /**
-    * <p>
-    * Implementation of lifecycle manager which delegates to the container's addComponent adapters.
-    * The addComponent adapters will be ordered by dependency as registered in the container.
-    * This LifecycleManager will delegate calls on the lifecycle methods to the addComponent adapters
-    * if these are themselves LifecycleManagers.
-    * </p>
-    *
-    * @author Mauro Talevi
-    * @since 1.2
-    */
+    /**
+     * <p>
+     * Implementation of lifecycle manager which delegates to the container's addComponent adapters.
+     * The addComponent adapters will be ordered by dependency as registered in the container.
+     * This LifecycleManager will delegate calls on the lifecycle methods to the addComponent adapters
+     * if these are themselves LifecycleManagers.
+     * </p>
+     *
+     * @author Mauro Talevi
+     * @since 1.2
+     */
     private class OrderedComponentAdapterLifecycleManager implements LifecycleManager, Serializable {
 
         /** List collecting the CAs which have been successfully started */
@@ -649,10 +678,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
          * start(PicoContainer) method on the ones which are LifecycleManagers
          */
         public void start(PicoContainer node) {
-            Collection<ComponentAdapter> adapters = getComponentAdapters();
+            Collection<ComponentAdapter<?>> adapters = getComponentAdapters();
             for (ComponentAdapter adapter : adapters) {
                 if (adapter instanceof LifecycleManager) {
-                    LifecycleManager manager = (LifecycleManager) adapter;
+                    LifecycleManager manager = (LifecycleManager)adapter;
                     if (manager.hasLifecycle()) {
                         // create an instance, it will be added to the ordered CA list
                         adapter.getComponentInstance(node);
@@ -665,7 +694,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             startedComponentAdapters.clear();
             for (final ComponentAdapter adapter : adapters) {
                 if (adapter instanceof LifecycleManager) {
-                    LifecycleManager manager = (LifecycleManager) adapter;
+                    LifecycleManager manager = (LifecycleManager)adapter;
                     manager.start(node);
                     startedComponentAdapters.add(adapter);
                 }
@@ -681,7 +710,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             List<ComponentAdapter> adapters = startedComponentAdapters;
             for (int i = adapters.size() - 1; 0 <= i; i--) {
                 ComponentAdapter adapter = adapters.get(i);
-                if ( adapter instanceof LifecycleManager ){
+                if (adapter instanceof LifecycleManager) {
                     LifecycleManager manager = (LifecycleManager)adapter;
                     manager.stop(node);
                 }
@@ -694,10 +723,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
          * dispose(PicoContainer) method on the ones which are LifecycleManagers
          */
         public void dispose(PicoContainer node) {
-            List<ComponentAdapter> adapters = orderedComponentAdapters;
+            List<ComponentAdapter<?>> adapters = orderedComponentAdapters;
             for (int i = adapters.size() - 1; 0 <= i; i--) {
                 ComponentAdapter adapter = adapters.get(i);
-                if ( adapter instanceof LifecycleManager ){
+                if (adapter instanceof LifecycleManager) {
                     LifecycleManager manager = (LifecycleManager)adapter;
                     manager.dispose(node);
                 }
@@ -739,8 +768,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return getDelegate().makeChildContainer();
         }
 
-        public MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws PicoRegistrationException {
-            return super.addComponent(componentKey, makeCharacterizedImplOrInstance(componentImplementationOrInstance), parameters);
+        public MutablePicoContainer addComponent(Object componentKey,
+                                                 Object componentImplementationOrInstance,
+                                                 Parameter... parameters) throws PicoRegistrationException
+        {
+            return super.addComponent(componentKey,
+                                      makeCharacterizedImplOrInstance(componentImplementationOrInstance),
+                                      parameters);
         }
 
         public MutablePicoContainer addComponent(Object implOrInstance) throws PicoRegistrationException {
@@ -749,7 +783,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
         private CharacterizedObject makeCharacterizedImplOrInstance(Object componentImplementationOrInstance) {
-            ComponentCharacteristic tempCharacteristic = (ComponentCharacteristic) componentCharacteristic.clone();
+            ComponentCharacteristic tempCharacteristic = (ComponentCharacteristic)componentCharacteristic.clone();
             for (ComponentCharacteristic c : characteristics) {
                 c.mergeInto(tempCharacteristic);
             }
@@ -762,7 +796,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         private final ComponentCharacteristic characteristic;
         private final Object implOrInst;
 
-        public CharacterizedObject(ComponentCharacteristic tempCharacteristic, Object componentImplementationOrInstance) {
+        public CharacterizedObject(ComponentCharacteristic tempCharacteristic,
+                                   Object componentImplementationOrInstance)
+        {
             characteristic = tempCharacteristic;
             implOrInst = componentImplementationOrInstance;
         }

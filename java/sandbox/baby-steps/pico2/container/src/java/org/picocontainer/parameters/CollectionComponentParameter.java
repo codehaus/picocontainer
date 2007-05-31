@@ -11,11 +11,11 @@ package org.picocontainer.parameters;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
+import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.ParameterName;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,17 +38,16 @@ import java.util.TreeSet;
  * {@link Collection}or {@link Map}of components automatically. The collection will contain
  * all components of a special type and additionally the type of the key may be specified. In
  * case of a map, the map's keys are the one of the addComponent addAdapter.
- * 
+ *
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @since 1.1
  */
 public class CollectionComponentParameter
-        implements Parameter, Serializable {
+    implements Parameter, Serializable
+{
 
-    /**
-     * Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements.
-     */
+    /** Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements. */
     public static final CollectionComponentParameter ARRAY = new CollectionComponentParameter();
     /**
      * Use <code>ARRAY_ALLOW_EMPTY</code> as {@link Parameter}for an Array that may have no
@@ -70,9 +69,9 @@ public class CollectionComponentParameter
 
     /**
      * Expect an {@link Array}of an appropriate type as parameter.
-     * 
+     *
      * @param emptyCollection <code>true</code> if an empty array also is a valid dependency
-     *                   resolution.
+     *                        resolution.
      */
     public CollectionComponentParameter(boolean emptyCollection) {
         this(Void.TYPE, emptyCollection);
@@ -81,10 +80,10 @@ public class CollectionComponentParameter
     /**
      * Expect any of the collection types {@link Array},{@link Collection}or {@link Map}as
      * parameter.
-     * 
+     *
      * @param componentValueType the type of the components (ignored in case of an Array)
-     * @param emptyCollection <code>true</code> if an empty collection resolves the
-     *                   dependency.
+     * @param emptyCollection    <code>true</code> if an empty collection resolves the
+     *                           dependency.
      */
     public CollectionComponentParameter(Class componentValueType, boolean emptyCollection) {
         this(Object.class, componentValueType, emptyCollection);
@@ -93,11 +92,11 @@ public class CollectionComponentParameter
     /**
      * Expect any of the collection types {@link Array},{@link Collection}or {@link Map}as
      * parameter.
-     * 
-     * @param componentKeyType the type of the addComponent's key
+     *
+     * @param componentKeyType   the type of the addComponent's key
      * @param componentValueType the type of the components (ignored in case of an Array)
-     * @param emptyCollection <code>true</code> if an empty collection resolves the
-     *                   dependency.
+     * @param emptyCollection    <code>true</code> if an empty collection resolves the
+     *                           dependency.
      */
     public CollectionComponentParameter(Class componentKeyType, Class componentValueType, boolean emptyCollection) {
         this.emptyCollection = emptyCollection;
@@ -110,26 +109,34 @@ public class CollectionComponentParameter
      * If the expected type is not one of the collection types {@link Array},
      * {@link Collection}or {@link Map}. An empty collection is only a valid resolution, if
      * the <code>emptyCollection</code> flag was set.
-     * 
-     * @param container {@inheritDoc}
-     * @param adapter {@inheritDoc}
-     * @param expectedType {@inheritDoc}
-     * @param expectedParameterName
+     *
+     * @param container             {@inheritDoc}
+     * @param adapter               {@inheritDoc}
+     * @param expectedType          {@inheritDoc}
+     * @param expectedParameterName {@inheritDoc}
+     *
      * @return the instance of the collection type or <code>null</code>
+     *
      * @throws PicoInitializationException {@inheritDoc}
      */
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
+    @SuppressWarnings({ "unchecked" })
+    public Object resolveInstance(PicoContainer container,
+                                  ComponentAdapter adapter,
+                                  Class expectedType,
+                                  ParameterName expectedParameterName)
+    {
         // type check is done in isResolvable
         Object result = null;
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
-            final Map adapterMap = getMatchingComponentAdapters(container, adapter, componentKeyType, getValueType(expectedType));
+            final Map<Object, ComponentAdapter<?>> adapterMap =
+                getMatchingComponentAdapters(container, adapter, componentKeyType, getValueType(expectedType));
             if (Array.class.isAssignableFrom(collectionType)) {
                 result = getArrayInstance(container, expectedType, adapterMap);
             } else if (Map.class.isAssignableFrom(collectionType)) {
                 result = getMapInstance(container, expectedType, adapterMap);
             } else if (Collection.class.isAssignableFrom(collectionType)) {
-                result = getCollectionInstance(container, expectedType, adapterMap);
+                result = getCollectionInstance(container, (Class<? extends Collection>)expectedType, adapterMap);
             } else {
                 throw new PicoIntrospectionException(expectedType.getName() + " is not a collective type");
             }
@@ -142,18 +149,26 @@ public class CollectionComponentParameter
      * dependency can only be satisfied if the expected type is one of the collection types
      * {@link Array},{@link Collection}or {@link Map}. An empty collection is only a valid
      * resolution, if the <code>emptyCollection</code> flag was set.
-     * 
-     * @param container {@inheritDoc}
-     * @param adapter {@inheritDoc}
-     * @param expectedType {@inheritDoc}
-     * @param expectedParameterName
+     *
+     * @param container             {@inheritDoc}
+     * @param adapter               {@inheritDoc}
+     * @param expectedType          {@inheritDoc}
+     * @param expectedParameterName {@inheritDoc}
+     *
      * @return <code>true</code> if matching components were found or an empty collective type
-     *               is allowed
+     *         is allowed
      */
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
+    public boolean isResolvable(PicoContainer container,
+                                ComponentAdapter adapter,
+                                Class expectedType,
+                                ParameterName expectedParameterName)
+    {
         final Class collectionType = getCollectionType(expectedType);
         final Class valueType = getValueType(expectedType);
-        return collectionType != null && (emptyCollection || getMatchingComponentAdapters(container, adapter, componentKeyType, valueType).size() > 0);
+        return collectionType != null && (emptyCollection || getMatchingComponentAdapters(container,
+                                                                                          adapter,
+                                                                                          componentKeyType,
+                                                                                          valueType).size() > 0);
     }
 
     /**
@@ -161,28 +176,34 @@ public class CollectionComponentParameter
      * method will only return if the expected type is one of the collection types {@link Array},
      * {@link Collection}or {@link Map}. An empty collection is only a valid resolution, if
      * the <code>emptyCollection</code> flag was set.
-     * 
-     * @param container {@inheritDoc}
-     * @param adapter {@inheritDoc}
-     * @param expectedType {@inheritDoc}
-     * @param expectedParameterName
+     *
+     * @param container             {@inheritDoc}
+     * @param adapter               {@inheritDoc}
+     * @param expectedType          {@inheritDoc}
+     * @param expectedParameterName {@inheritDoc}
+     *
      * @throws PicoIntrospectionException {@inheritDoc}
      */
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
+    public void verify(PicoContainer container,
+                       ComponentAdapter adapter,
+                       Class expectedType,
+                       ParameterName expectedParameterName)
+    {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
             final Class valueType = getValueType(expectedType);
-            final Collection componentAdapters = getMatchingComponentAdapters(container, adapter, componentKeyType, valueType).values();
+            final Collection componentAdapters =
+                getMatchingComponentAdapters(container, adapter, componentKeyType, valueType).values();
             if (componentAdapters.isEmpty()) {
                 if (!emptyCollection) {
                     throw new PicoIntrospectionException(expectedType.getName()
-                            + " not resolvable, no components of type "
-                            + getValueType(expectedType).getName()
-                            + " available");
+                                                         + " not resolvable, no components of type "
+                                                         + getValueType(expectedType).getName()
+                                                         + " available");
                 }
             } else {
-                for (final Iterator iter = componentAdapters.iterator(); iter.hasNext();) {
-                    final ComponentAdapter componentAdapter = (ComponentAdapter) iter.next();
+                for (Object componentAdapter1 : componentAdapters) {
+                    final ComponentAdapter componentAdapter = (ComponentAdapter)componentAdapter1;
                     componentAdapter.verify(container);
                 }
             }
@@ -193,7 +214,7 @@ public class CollectionComponentParameter
 
     /**
      * Visit the current {@link Parameter}.
-     * 
+     *
      * @see org.picocontainer.Parameter#accept(org.picocontainer.PicoVisitor)
      */
     public void accept(final PicoVisitor visitor) {
@@ -202,8 +223,9 @@ public class CollectionComponentParameter
 
     /**
      * Evaluate whether the given addComponent addAdapter will be part of the collective type.
-     * 
+     *
      * @param adapter a <code>ComponentAdapter</code> value
+     *
      * @return <code>true</code> if the addAdapter takes part
      */
     protected boolean evaluate(final ComponentAdapter adapter) {
@@ -212,19 +234,26 @@ public class CollectionComponentParameter
 
     /**
      * Collect the matching ComponentAdapter instances.
+     *
      * @param container container to use for dependency resolution
-     * @param adapter {@link ComponentAdapter} to exclude
-     * @param keyType the compatible type of the key
+     * @param adapter   {@link ComponentAdapter} to exclude
+     * @param keyType   the compatible type of the key
      * @param valueType the compatible type of the addComponent
+     *
      * @return a {@link Map} with the ComponentAdapter instances and their addComponent keys as map key.
      */
-    protected Map getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter, Class keyType, Class valueType) {
-        final Map adapterMap = newMapInstance();
+    @SuppressWarnings({ "unchecked" })
+    protected Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(PicoContainer container,
+                                                                            ComponentAdapter adapter,
+                                                                            Class keyType,
+                                                                            Class valueType)
+    {
+        final Map<Object, ComponentAdapter<?>> adapterMap = new LinkedHashMap<Object, ComponentAdapter<?>>();
         final PicoContainer parent = container.getParent();
         if (parent != null) {
             adapterMap.putAll(getMatchingComponentAdapters(parent, adapter, keyType, valueType));
         }
-        final Collection<ComponentAdapter> allAdapters = container.getComponentAdapters();
+        final Collection<ComponentAdapter<?>> allAdapters = container.getComponentAdapters();
         for (ComponentAdapter componentAdapter : allAdapters) {
             adapterMap.remove(componentAdapter.getComponentKey());
         }
@@ -261,8 +290,11 @@ public class CollectionComponentParameter
         return valueType;
     }
 
-    private Object[] getArrayInstance(final PicoContainer container, final Class expectedType, final Map<Object, ComponentAdapter> adapterList) {
-        final Object[] result = (Object[]) Array.newInstance(expectedType.getComponentType(), adapterList.size());
+    private Object[] getArrayInstance(final PicoContainer container,
+                                      final Class expectedType,
+                                      final Map<Object, ComponentAdapter<?>> adapterList)
+    {
+        final Object[] result = (Object[])Array.newInstance(expectedType.getComponentType(), adapterList.size());
         int i = 0;
         for (ComponentAdapter componentAdapter : adapterList.values()) {
             result[i] = container.getComponent(componentAdapter.getComponentKey());
@@ -271,8 +303,12 @@ public class CollectionComponentParameter
         return result;
     }
 
-    private Collection getCollectionInstance(final PicoContainer container, final Class expectedType, final Map<Object, ComponentAdapter> adapterList) {
-        Class collectionType = expectedType;
+    @SuppressWarnings({ "unchecked" })
+    private Collection getCollectionInstance(final PicoContainer container,
+                                             final Class<? extends Collection> expectedType,
+                                             final Map<Object, ComponentAdapter<?>> adapterList)
+    {
+        Class<? extends Collection> collectionType = expectedType;
         if (collectionType.isInterface()) {
             // The order of tests are significant. The least generic types last.
             if (List.class.isAssignableFrom(collectionType)) {
@@ -290,7 +326,7 @@ public class CollectionComponentParameter
             }
         }
         try {
-            Collection result = (Collection) collectionType.newInstance();
+            Collection result = collectionType.newInstance();
             for (ComponentAdapter componentAdapter : adapterList.values()) {
                 result.add(container.getComponent(componentAdapter.getComponentKey()));
             }
@@ -306,8 +342,12 @@ public class CollectionComponentParameter
         }
     }
 
-    private Map getMapInstance(final PicoContainer container, final Class expectedType, final Map adapterList) {
-        Class collectionType = expectedType;
+    @SuppressWarnings({ "unchecked" })
+    private Map getMapInstance(final PicoContainer container,
+                               final Class<? extends Map> expectedType,
+                               final Map<Object, ComponentAdapter<?>> adapterList)
+    {
+        Class<? extends Map> collectionType = expectedType;
         if (collectionType.isInterface()) {
             // The order of tests are significant. The least generic types last.
             if (SortedMap.class.isAssignableFrom(collectionType)) {
@@ -319,9 +359,8 @@ public class CollectionComponentParameter
             }
         }
         try {
-            Map result = (Map) collectionType.newInstance();
-            for (Object o : adapterList.entrySet()) {
-                final Map.Entry entry = (Map.Entry) o;
+            Map result = collectionType.newInstance();
+            for (Map.Entry<Object, ComponentAdapter<?>> entry : adapterList.entrySet()) {
                 final Object key = entry.getKey();
                 result.put(key, container.getComponent(key));
             }
@@ -336,31 +375,4 @@ public class CollectionComponentParameter
             ///CLOVER:ON
         }
     }
-
-
-    private static Class clazz;
-
-    {
-        try {
-            clazz = Class.forName("java.util.LinkedHashMap");
-        } catch (ClassNotFoundException e) {
-            try {
-                clazz = Class.forName("org.apache.commons.collections.map.LinkedMap");
-            } catch (ClassNotFoundException e1) {
-                clazz = HashMap.class;
-            }
-        }
-    }
-
-    private static Map newMapInstance() {
-        try {
-            return (Map) clazz.newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException("Could not instantiate " + clazz + " : " + e.getMessage());
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Could not instantiate " + clazz + " : " + e.getMessage());
-        }
-    }
-
-
 }

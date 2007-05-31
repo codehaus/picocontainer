@@ -29,43 +29,49 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * argument, Parameter[N] corresponds to the  N+1th constructor argument.
      * <h4>Tips for Parameter usage</h4>
      * <ul>
-     * <li><strong>Partial Autowiring: </strong>If you have two constructor args to match and you only wish to specify one of the constructors and 
-     * let PicoContainer wire the other one, you can use as parameters: 
+     * <li><strong>Partial Autowiring: </strong>If you have two constructor args to match and you only wish to specify one of the constructors and
+     * let PicoContainer wire the other one, you can use as parameters:
      * <code><strong>new ComponentParameter()</strong>, new ComponentParameter("someService")</code>
      * The default constructor for the addComponent parameter indicates auto-wiring should take place for
      * that parameter.
      * </li>
      * <li><strong>Force No-Arg constructor usage:</strong> If you wish to force a addComponent to be constructed with
-     * the no-arg constructor, use a zero length Parameter array.  Ex:  <code>new Parameter[0]</code> 
+     * the no-arg constructor, use a zero length Parameter array.  Ex:  <code>new Parameter[0]</code>
      * <ul>
-     * 
      *
-     * @param componentKey            a key that identifies the addComponent. Must be unique within the container. The type
-     *                                of the key object has no semantic significance unless explicitly specified in the
-     *                                documentation of the implementing container.
-     * @param componentImplementationOrInstance the addComponent's implementation class. This must be a concrete class (ie, a
-     *                                class that can be instantiated). Or an intance of the compoent.
-     * @param parameters              the parameters that gives the container hints about what arguments to pass
-     *                                to the constructor when it is instantiated. Container implementations may ignore
-     *                                one or more of these hints.
+     * @param componentKey a key that identifies the addComponent. Must be unique within the container. The type
+     *                     of the key object has no semantic significance unless explicitly specified in the
+     *                     documentation of the implementing container.
+     * @param componentImplementationOrInstance
+     *                     the addComponent's implementation class. This must be a concrete class (ie, a
+     *                     class that can be instantiated). Or an intance of the compoent.
+     * @param parameters   the parameters that gives the container hints about what arguments to pass
+     *                     to the constructor when it is instantiated. Container implementations may ignore
+     *                     one or more of these hints.
+     *
      * @return the ComponentAdapter that has been associated with this addComponent. In the majority of cases, this return
      *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
      *         {@link PicoContainer} interface can be used to retrieve a reference to the addComponent later on.
+     *
      * @throws PicoRegistrationException if registration of the addComponent fails.
      * @see org.picocontainer.Parameter
      * @see org.picocontainer.parameters.ConstantParameter
      * @see org.picocontainer.parameters.ComponentParameter
      */
-    MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters);
+    MutablePicoContainer addComponent(Object componentKey,
+                                      Object componentImplementationOrInstance,
+                                      Parameter... parameters);
 
     /**
      * Register an arbitrary object. The class of the object will be used as a key. Calling this method is equivalent to
-     * calling     * <code>addAdapter(componentImplementation, componentImplementation)</code>.
+     * calling  <code>addAdapter(componentImplementation, componentImplementation)</code>.
      *
-     * @param implOrInstance
+     * @param implOrInstance Component implementation or instance
+     *
      * @return the ComponentAdapter that has been associated with this addComponent. In the majority of cases, this return
      *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
      *         {@link PicoContainer} interface can be used to retrieve a reference to the addComponent later on.
+     *
      * @throws PicoRegistrationException if registration fails.
      */
     MutablePicoContainer addComponent(Object implOrInstance);
@@ -73,25 +79,29 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
     /**
      * Register a addComponent via a ComponentAdapter. Use this if you need fine grained control over what
      * ComponentAdapter to use for a specific addComponent.
-     * 
+     *
      * @param componentAdapter the addAdapter
+     *
      * @return the same addAdapter that was passed as an argument.
+     *
      * @throws PicoRegistrationException if registration fails.
      */
     MutablePicoContainer addAdapter(ComponentAdapter componentAdapter);
 
     /**
      * Unregister a addComponent by key.
-     * 
+     *
      * @param componentKey key of the addComponent to unregister.
+     *
      * @return the ComponentAdapter that was associated with this addComponent.
      */
     ComponentAdapter removeComponent(Object componentKey);
 
     /**
      * Unregister a addComponent by instance.
-     * 
+     *
      * @param componentInstance the addComponent instance to unregister.
+     *
      * @return the ComponentAdapter that was associated with this addComponent.
      */
     ComponentAdapter removeComponentByInstance(Object componentInstance);
@@ -101,8 +111,9 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * It will have a reference to this as parent.  This will list the resulting MPC as a child.
      * Lifecycle events will be cascaded from parent to child
      * as a consequence of this.
-     * 
+     *
      * @return the new child container.
+     *
      * @since 1.1
      */
     MutablePicoContainer makeChildContainer();
@@ -112,19 +123,23 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * It will not change the child's view of a parent.  That is determined by the constructor arguments of the child
      * itself. Lifecycle events will be cascaded from parent to child
      * as a consequence of calling this method.
-     * 
+     *
      * @param child the child container
+     *
      * @return the same instance of MutablePicoContainer
-     * @since 1.1                                           
+     *
+     * @since 1.1
      */
     MutablePicoContainer addChildContainer(PicoContainer child);
 
     /**
      * Remove a child container from this container. It will not change the child's view of a parent.
      * Lifecycle event will no longer be cascaded from the parent to the child.
-     * 
+     *
      * @param child the child container
+     *
      * @return <code>true</code> if the child container has been removed.
+     *
      * @since 1.1
      */
     boolean removeChildContainer(PicoContainer child);
@@ -132,22 +147,27 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
     /**
      * Following an addAdapter or addComponent, pico holds onto the last ComponentAdapter and return it if this
      * method is immediately after the add operation. It will be null at all other times.
+     *
      * @return the last ComponentAdapter to be made
      */
     ComponentAdapter lastCA();
 
     /**
      * You can change the characteristic of registration of a component on the fly.
+     *
      * @param characteristics characteristics
+     *
      * @return the same Pico instance with changed characteritics
      */
     MutablePicoContainer change(ComponentCharacteristic... characteristics);
 
     /**
      * You can set for the following operation only the characteristic of registration of a component on the fly.
+     *
      * @param characteristics characteristics
+     *
      * @return the same Pico instance with temporary characteritics
      */
-    MutablePicoContainer as(ComponentCharacteristic... characteristics);    
+    MutablePicoContainer as(ComponentCharacteristic... characteristics);
 
 }

@@ -5,7 +5,7 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by Leo Simmons & Jörg Schaible                              *
+ * Original code by Leo Simmons & J&ouml;rg Schaible                         *
  *****************************************************************************/
 package org.picocontainer.gems.adapters;
 
@@ -18,7 +18,7 @@ import org.picocontainer.adapters.AbstractComponentAdapter;
 
 /**
  * Component addAdapter that wrapps a static factory with the help of {@link StaticFactory}.
- * 
+ *
  * @author J&ouml;rg Schaible
  * @author Leo Simmons
  * @since 1.1
@@ -28,7 +28,7 @@ public class StaticFactoryComponentAdapter extends AbstractComponentAdapter {
 
     /**
      * Construct a ComponentAdapter accessing a static factory creating the addComponent.
-     * 
+     *
      * @param type The type of the created addComponent.
      * @param staticFactory Wrapper instance for the static factory.
      */
@@ -40,7 +40,7 @@ public class StaticFactoryComponentAdapter extends AbstractComponentAdapter {
     /**
      * Construct a ComponentAdapter accessing a static factory creating the addComponent using a special key for addComponent
      * registration.
-     * 
+     *
      * @param componentKey The key of the created addComponent.
      * @param type The type of the created addComponent.
      * @param staticFactory Wrapper instance for the static factory.
@@ -60,7 +60,7 @@ public class StaticFactoryComponentAdapter extends AbstractComponentAdapter {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see org.picocontainer.ComponentAdapter#verify(org.picocontainer.PicoContainer)
      */
     public void verify(PicoContainer container) throws PicoVerificationException {

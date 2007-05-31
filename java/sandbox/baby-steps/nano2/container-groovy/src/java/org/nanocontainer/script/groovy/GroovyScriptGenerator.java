@@ -23,7 +23,7 @@ public class GroovyScriptGenerator {
         StringBuffer groovy = new StringBuffer();
         groovy.append("pico = new org.nanocontainer.DefaultNanoContainer()\n");
 
-        Collection<ComponentAdapter> componentAdapters = pico.getComponentAdapters();
+        Collection<ComponentAdapter<?>> componentAdapters = pico.getComponentAdapters();
         for (ComponentAdapter componentAdapter : componentAdapters) {
             Object componentKey = componentAdapter.getComponentKey();
             String groovyKey = null;
@@ -36,9 +36,17 @@ public class GroovyScriptGenerator {
             Object componentInstance = componentAdapter.getComponentInstance(pico);
 
             if (componentInstance instanceof String) {
-                groovy.append("pico.addComponent(" + groovyKey + ", (Object) \"" + componentInstance + "\")\n");
+                groovy.append("pico.addComponent(")
+                    .append(groovyKey)
+                    .append(", (Object) \"")
+                    .append(componentInstance)
+                    .append("\")\n");
             } else {
-                groovy.append("pico.addComponent(" + groovyKey + ", " + componentInstance.getClass().getName() + ")\n");
+                groovy.append("pico.addComponent(")
+                    .append(groovyKey)
+                    .append(", ")
+                    .append(componentInstance.getClass().getName())
+                    .append(")\n");
             }
         }
         return groovy.toString();

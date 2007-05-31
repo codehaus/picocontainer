@@ -9,21 +9,23 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.Collection;
-import java.util.List;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.ComponentAdapter;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * empty pico container serving as recoil damper in situations where you 
- * do not like to check whether container reference suplpied to you 
+ * empty pico container serving as recoil damper in situations where you
+ * do not like to check whether container reference suplpied to you
  * is null or not
- * @author  Konstantin Pribluda 
+ *
+ * @author Konstantin Pribluda
  * @since 1.1
-*/
+ */
 public class EmptyPicoContainer implements PicoContainer, Serializable {
 
     public Object getComponent(Object componentKeyOrType) {
@@ -37,31 +39,32 @@ public class EmptyPicoContainer implements PicoContainer, Serializable {
     public List getComponents() {
         return Collections.EMPTY_LIST;
     }
-    
+
     public PicoContainer getParent() {
         return null;
     }
-    public ComponentAdapter getComponentAdapter(Object componentKey) {
+
+    public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
         return null;
     }
-    
-    public ComponentAdapter getComponentAdapter(Class componentType) {
+
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
         return null;
     }
-   
-    public Collection<ComponentAdapter> getComponentAdapters() {
-        return Collections.EMPTY_LIST;
+
+    public Collection<ComponentAdapter<?>> getComponentAdapters() {
+        return Collections.emptyList();
     }
-    
-    public List<ComponentAdapter> getComponentAdapters(Class componentType) {
-        return Collections.EMPTY_LIST;
+
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+        return Collections.emptyList();
     }
-    
-    
-    public void accept(PicoVisitor visitor) { }
-    
-    public List getComponents(Class componentType) {
-        return Collections.EMPTY_LIST;
+
+    public void accept(PicoVisitor visitor) {
+    }
+
+    public <T> List<T> getComponents(Class<T> componentType) {
+        return Collections.emptyList();
     }
 
 }

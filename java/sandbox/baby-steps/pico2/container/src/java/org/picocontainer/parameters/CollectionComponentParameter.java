@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.parameters;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;

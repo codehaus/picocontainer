@@ -11,6 +11,8 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.parameters.ConstantParameter;
+
 /**
  * test that constant parameter behaves well.
  * @author Konstantin Pribluda

@@ -21,7 +21,7 @@ import org.nanocontainer.testmodel.WilmaImpl;
 import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.defaults.ComponentParameter;
+import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**

@@ -18,7 +18,7 @@ import org.nanocontainer.NanoContainer;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.nanocontainer.script.ComponentElementHelper;
 import org.picocontainer.Parameter;
-import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.parameters.ConstantParameter;
 
 /**
  *

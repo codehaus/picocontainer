@@ -40,19 +40,19 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
+import org.picocontainer.parameters.BasicComponentParameter;
+import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.visitors.VerifyingVisitor;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
-import org.picocontainer.defaults.BasicComponentParameter;
-import org.picocontainer.defaults.ConstantParameter;
-import org.picocontainer.defaults.CyclicDependencyException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -281,7 +281,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         try {
             pico.getComponent(ComponentD.class);
             fail("CyclicDependencyException expected");
-        } catch (CyclicDependencyException e) {
+        } catch (ThreadLocalCyclicDependencyGuard.CyclicDependencyException e) {
             // CyclicDependencyException reports now the stack.
             //final List dependencies = Arrays.asList(ComponentD.class.getConstructors()[0].getParameterTypes());
             final List<Class> dependencies = Arrays.asList(new Class[]{ComponentD.class, ComponentE.class, ComponentD.class});

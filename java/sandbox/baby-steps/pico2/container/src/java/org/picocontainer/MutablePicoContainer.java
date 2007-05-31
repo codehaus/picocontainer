@@ -9,9 +9,6 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import java.util.List;
-import java.util.Set;
-
 /**
  * This is the core interface used for registration of components with a container. It is possible to register
  * implementations and instances here
@@ -56,8 +53,8 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *         {@link PicoContainer} interface can be used to retrieve a reference to the addComponent later on.
      * @throws PicoRegistrationException if registration of the addComponent fails.
      * @see org.picocontainer.Parameter
-     * @see org.picocontainer.defaults.ConstantParameter
-     * @see org.picocontainer.defaults.ComponentParameter
+     * @see org.picocontainer.parameters.ConstantParameter
+     * @see org.picocontainer.parameters.ComponentParameter
      */
     MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters);
 

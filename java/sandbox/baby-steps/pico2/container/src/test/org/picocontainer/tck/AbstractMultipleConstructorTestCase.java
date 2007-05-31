@@ -13,10 +13,9 @@ import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.ComponentParameter;
-import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.parameters.ConstantParameter;
 
 /**
  * @author Aslak Helles&oslash;y

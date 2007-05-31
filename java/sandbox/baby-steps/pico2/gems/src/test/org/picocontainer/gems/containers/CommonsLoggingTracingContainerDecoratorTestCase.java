@@ -37,7 +37,7 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.adapters.InstanceComponentAdapter;
-import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**

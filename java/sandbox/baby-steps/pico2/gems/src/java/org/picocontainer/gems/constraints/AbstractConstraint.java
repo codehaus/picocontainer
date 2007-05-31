@@ -12,8 +12,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ParameterName;
+import org.picocontainer.parameters.CollectionComponentParameter;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
-import org.picocontainer.defaults.CollectionComponentParameter;
 
 import java.lang.reflect.Array;
 import java.util.Map;

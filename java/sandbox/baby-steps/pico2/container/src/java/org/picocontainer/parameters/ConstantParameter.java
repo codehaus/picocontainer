@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by Jon Tirsen                        *
  *****************************************************************************/
 
-package org.picocontainer.defaults;
+package org.picocontainer.parameters;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;

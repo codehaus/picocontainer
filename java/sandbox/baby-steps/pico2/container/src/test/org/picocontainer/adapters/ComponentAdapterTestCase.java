@@ -19,7 +19,7 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.adapters.AbstractComponentAdapter;
 import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.adapters.MonitoringAdapter;

@@ -8,8 +8,8 @@
 package org.picocontainer.lifecycle;
 
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.monitors.AbstractMonitoringLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleException;
-import org.picocontainer.defaults.AbstractMonitoringLifecycleStrategy;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -25,15 +25,15 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.defaults.ConstantParameter;
+import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.adapters.BehaviorAdapter;
-import org.picocontainer.defaults.CyclicDependencyException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 import org.picocontainer.defaults.SimpleReference;
+import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 
 import org.jmock.MockObjectTestCase;
 
@@ -468,7 +468,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             try {
                 componentAdapter.verify(wrappedPicoContainer);
                 fail("Thrown PicoVerificationException excpected");
-            } catch (final CyclicDependencyException cycle) {
+            } catch (final ThreadLocalCyclicDependencyGuard.CyclicDependencyException cycle) {
                 final Class[] dependencies = cycle.getDependencies();
                 assertSame(dependencies[0], dependencies[dependencies.length - 1]);
             }
@@ -502,7 +502,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             try {
                 componentAdapter.getComponentInstance(wrappedPicoContainer);
                 fail("Thrown CyclicDependencyException excpected");
-            } catch (final CyclicDependencyException e) {
+            } catch (final ThreadLocalCyclicDependencyGuard.CyclicDependencyException e) {
                 final Class[] dependencies = e.getDependencies();
                 assertSame(dependencies[0], dependencies[dependencies.length - 1]);
             }

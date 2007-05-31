@@ -10,8 +10,8 @@
 
 package org.picocontainer;
 
-import static org.picocontainer.defaults.ComponentParameter.DEFAULT;
-import org.picocontainer.defaults.ComponentParameter;
+import static org.picocontainer.parameters.ComponentParameter.DEFAULT;
+import org.picocontainer.parameters.ComponentParameter;
 
 /**
  * This class provides control over the arguments that will be passed to a constructor. It can be used for finer control over
@@ -22,9 +22,9 @@ import org.picocontainer.defaults.ComponentParameter;
  * @author Thomas Heller
  * @see MutablePicoContainer#addComponent(Object,Class,Parameter...) a method on the
  *      {@link MutablePicoContainer} interface which allows passing in of an array of {@linkplain Parameter Parameters}.
- * @see org.picocontainer.defaults.ComponentParameter an implementation of this interface that allows you to specify the key
+ * @see org.picocontainer.parameters.ComponentParameter an implementation of this interface that allows you to specify the key
  *      used for resolving the parameter.
- * @see org.picocontainer.defaults.ConstantParameter an implementation of this interface that allows you to specify a constant
+ * @see org.picocontainer.parameters.ConstantParameter an implementation of this interface that allows you to specify a constant
  *      that will be used for resolving the parameter.
  * @since 1.0
  */

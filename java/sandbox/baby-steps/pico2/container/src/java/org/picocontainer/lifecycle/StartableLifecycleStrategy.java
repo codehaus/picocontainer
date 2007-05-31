@@ -10,7 +10,7 @@ package org.picocontainer.lifecycle;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
-import org.picocontainer.defaults.AbstractMonitoringLifecycleStrategy;
+import org.picocontainer.monitors.AbstractMonitoringLifecycleStrategy;
 
 import java.lang.reflect.Method;
 

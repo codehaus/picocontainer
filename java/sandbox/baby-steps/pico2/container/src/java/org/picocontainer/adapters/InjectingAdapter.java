@@ -14,12 +14,11 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.ParameterName;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.ComponentParameter;
+import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -27,9 +26,6 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-
-import com.thoughtworks.paranamer.Paranamer;
-import com.thoughtworks.paranamer.asm.AsmParanamer;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to

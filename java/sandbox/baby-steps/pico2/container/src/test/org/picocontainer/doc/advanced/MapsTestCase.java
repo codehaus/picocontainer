@@ -9,8 +9,8 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.defaults.CollectionComponentParameter;
-import org.picocontainer.defaults.ComponentParameter;
+import org.picocontainer.parameters.CollectionComponentParameter;
+import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 

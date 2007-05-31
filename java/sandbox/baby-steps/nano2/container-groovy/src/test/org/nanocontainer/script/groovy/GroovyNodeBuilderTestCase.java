@@ -92,7 +92,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
     public void testShouldAcceptConstantParametersForComponent() throws PicoCompositionException {
         Reader script = new StringReader("" +
-                "import org.picocontainer.defaults.ConstantParameter\n" +
+                "import org.picocontainer.parameters.ConstantParameter\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "" +
                 "nano = builder.container {\n" +
@@ -110,7 +110,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
     public void testShouldAcceptComponentParametersForComponent() throws PicoCompositionException {
         Reader script = new StringReader("" +
-                "import org.picocontainer.defaults.ComponentParameter\n" +
+                "import org.picocontainer.parameters.ComponentParameter\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "nano = builder.container {\n" +
                 "    component(key:'a1', class:A)\n" +
@@ -138,7 +138,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
     public void testShouldAcceptComponentParameter() throws PicoCompositionException {
         Reader script = new StringReader("" +
-                "import org.picocontainer.defaults.ComponentParameter\n" +
+                "import org.picocontainer.parameters.ComponentParameter\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "" +
                 "nano = builder.container {\n" +
@@ -174,7 +174,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
     public void testShouldAcceptComponentParameterWithClassNameKeyAndParameter() throws PicoCompositionException {
         Reader script = new StringReader("" +
-                "import org.picocontainer.defaults.ComponentParameter\n" +
+                "import org.picocontainer.parameters.ComponentParameter\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "nano = builder.container {\n" +
                 "    component(classNameKey:'org.nanocontainer.testmodel.A', class:A)\n" +
@@ -193,7 +193,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     public void testComponentParametersScript() {
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
-                "import org.picocontainer.defaults.ComponentParameter\n" +
+                "import org.picocontainer.parameters.ComponentParameter\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "nano = builder.container {\n" +
                 "    component(key:'a', class:A)\n" +

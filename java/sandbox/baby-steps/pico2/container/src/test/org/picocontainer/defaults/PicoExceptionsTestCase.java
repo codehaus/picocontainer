@@ -96,7 +96,7 @@ public class PicoExceptionsTestCase
     }
 
     public void testCyclicDependencyException() {
-        final CyclicDependencyException cdEx = new CyclicDependencyException(getClass());
+        final ThreadLocalCyclicDependencyGuard.CyclicDependencyException cdEx = new ThreadLocalCyclicDependencyGuard.CyclicDependencyException(getClass());
         cdEx.push(String.class);
         final Class[] classes = cdEx.getDependencies();
         assertEquals(2, classes.length);

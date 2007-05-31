@@ -19,7 +19,7 @@ public class ThreadLocalCyclicDependencyGuardTestCase
     private Runnable[] runner = new Runnable[3];
     
     class ThreadLocalRunner implements Runnable {
-        public CyclicDependencyException exception;
+        public ThreadLocalCyclicDependencyGuard.CyclicDependencyException exception;
         private final Blocker blocker;
         private final ThreadLocalCyclicDependencyGuard guard;
 
@@ -39,7 +39,7 @@ public class ThreadLocalCyclicDependencyGuardTestCase
         public void run() {
             try {
                 guard.observe(ThreadLocalRunner.class);
-            } catch (CyclicDependencyException e) {
+            } catch (ThreadLocalCyclicDependencyGuard.CyclicDependencyException e) {
                 exception = e;
             }
         }

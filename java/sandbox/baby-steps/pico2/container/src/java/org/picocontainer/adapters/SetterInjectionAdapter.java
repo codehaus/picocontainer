@@ -224,12 +224,11 @@ public class SetterInjectionAdapter extends InjectingAdapter {
                             });
                             setter.invoke(componentInstance, toInject);
                             injected[i] = toInject;
-                            //componentMonitor.invoked(setter, componentInstance, System.currentTimeMillis() - startTime);
                         }
                         componentMonitor.instantiated(constructor, componentInstance, injected, System.currentTimeMillis() - startTime);
                         return componentInstance;
                     } catch (InvocationTargetException e) {
-                        //componentMonitor.invocationFailed(setter, componentInstance, e);
+                        componentMonitor.invocationFailed(setter, componentInstance, e);
                         if (e.getTargetException() instanceof RuntimeException) {
                             throw (RuntimeException) e.getTargetException();
                         } else if (e.getTargetException() instanceof Error) {
@@ -237,7 +236,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
                         }
                         throw new PicoInvocationTargetInitializationException(e.getTargetException());
                     } catch (IllegalAccessException e) {
-                        //componentMonitor.invocationFailed(setter, componentInstance, e);
+                        componentMonitor.invocationFailed(setter, componentInstance, e);
                         throw new PicoInvocationTargetInitializationException(e);
                     }
 

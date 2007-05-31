@@ -11,6 +11,10 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoIntrospectionException;
+
+import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Abstract utility class to detect recursion cycles.
@@ -67,4 +71,34 @@ public abstract class ThreadLocalCyclicDependencyGuard extends ThreadLocal {
     public void setGuardedContainer(PicoContainer container) {
         this.guardedContainer = container;
     }
+
+    public static class CyclicDependencyException extends PicoIntrospectionException {
+        private final List stack;
+
+        /**
+         * @since 1.1
+         */
+        public CyclicDependencyException(Class element) {
+            super((Throwable)null);
+            this.stack = new LinkedList();
+            push(element);
+        }
+
+        /**
+         * @since 1.1
+         */
+        public void push(Class element) {
+            stack.add(element);
+        }
+
+        public Class[] getDependencies() {
+            return (Class[]) stack.toArray(new Class[stack.size()]);
+        }
+
+        public String getMessage() {
+            return "Cyclic dependency: " + stack.toString();
+        }
+    }
+
+
 }

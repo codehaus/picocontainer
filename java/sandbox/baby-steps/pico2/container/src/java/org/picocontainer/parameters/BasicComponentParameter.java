@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.parameters;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -19,6 +19,8 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.ParameterName;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 
 /**
  * A BasicComponentParameter should be used to pass in a particular addComponent as argument to a

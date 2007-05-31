@@ -10,7 +10,7 @@ package org.picocontainer.gems.constraints;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.CollectionComponentParameter;
+import org.picocontainer.parameters.CollectionComponentParameter;
 
 /**
  * Constraint that collects/aggregates dependencies to as many components

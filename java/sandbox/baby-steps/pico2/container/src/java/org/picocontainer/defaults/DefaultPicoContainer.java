@@ -34,6 +34,7 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.adapters.CachingBehaviorFactory;

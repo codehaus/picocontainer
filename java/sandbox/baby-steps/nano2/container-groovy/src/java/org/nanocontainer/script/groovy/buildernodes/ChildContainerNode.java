@@ -25,7 +25,7 @@ import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
-import org.picocontainer.defaults.ComponentMonitorStrategy;
+import org.picocontainer.ComponentMonitorStrategy;
 
 /**
  * Creates a new NanoContainer node.  There may or may not be a parent

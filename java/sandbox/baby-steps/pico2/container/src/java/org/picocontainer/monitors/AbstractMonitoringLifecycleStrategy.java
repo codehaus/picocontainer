@@ -9,7 +9,7 @@ package org.picocontainer.monitors;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.defaults.ComponentMonitorStrategy;
+import org.picocontainer.ComponentMonitorStrategy;
 
 import java.io.Serializable;
 

@@ -42,7 +42,7 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
-import org.picocontainer.defaults.ComponentMonitorStrategy;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.adapters.CachingBehaviorFactory;

@@ -32,7 +32,7 @@ import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.defaults.ComponentMonitorStrategy;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;

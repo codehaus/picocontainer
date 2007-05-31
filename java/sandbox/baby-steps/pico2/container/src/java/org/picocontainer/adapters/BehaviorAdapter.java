@@ -19,7 +19,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.ComponentMonitorStrategy;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.LifecycleStrategy;
 
 /**
@@ -27,7 +27,7 @@ import org.picocontainer.LifecycleStrategy;
  * Component addAdapter which decorates another addAdapter.
  * </p>
  * <p>
- * This addAdapter supports a {@link org.picocontainer.defaults.ComponentMonitorStrategy addComponent monitor strategy}
+ * This addAdapter supports a {@link org.picocontainer.ComponentMonitorStrategy addComponent monitor strategy}
  * and will propagate change of monitor to the delegate if the delegate itself
  * support the monitor strategy.
  * </p>

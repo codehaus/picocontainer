@@ -9,18 +9,17 @@
 
 package org.nanocontainer.webcontainer.groovy;
 
-import groovy.util.NodeBuilder;
+import org.picocontainer.MutablePicoContainer;
 
 import java.util.Map;
-
 import javax.servlet.Servlet;
 
+import groovy.util.NodeBuilder;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.nanocontainer.webcontainer.PicoContext;
 import org.nanocontainer.webcontainer.groovy.adapters.NodeBuilderAdapter;
 import org.nanocontainer.webcontainer.groovy.adapters.WaffleAdapter;
-import org.picocontainer.MutablePicoContainer;
 
 public class ContextBuilder extends NodeBuilder {
     private final MutablePicoContainer parentContainer;
@@ -53,46 +52,48 @@ public class ContextBuilder extends NodeBuilder {
     private void setStaticContent(Map map) {
 
         if (map.containsKey("welcomePage")) {
-            context.setStaticContext((String) map.remove("path"), (String) map.remove("welcomePage"));
+            context.setStaticContext((String)map.remove("path"), (String)map.remove("welcomePage"));
         } else {
-            context.setStaticContext((String) map.remove("path"));
+            context.setStaticContext((String)map.remove("path"));
         }
 
     }
 
     private Object makeAdapter(Map map) {
-        return new NodeBuilderAdapter((String) map.remove("nodeBuilder"), context, parentContainer, map).getNodeBuilder();
+        return new NodeBuilderAdapter((String)map.remove("nodeBuilder"),
+                                      context,
+                                      parentContainer,
+                                      map).getNodeBuilder();
     }
 
     private Object makeListener(Map map) {
-        return context.addListener((Class) map.remove("class"));
+        return context.addListener((Class)map.remove("class"));
     }
 
     private Object makeServlet(Map map) {
 
         if (map.containsKey("class")) {
-            ServletHolder servlet = context.addServletWithMapping((Class) map.remove("class"), (String) map
-                    .remove("path"));
+            ServletHolder servlet = context.addServletWithMapping((Class)map.remove("class"), (String)map
+                .remove("path"));
             return new ServletHolderBuilder(servlet);
         } else {
-            Servlet servlet = (Servlet) map.remove("instance");
-            context.addServletWithMapping(servlet, (String) map.remove("path"));
+            Servlet servlet = (Servlet)map.remove("instance");
+            context.addServletWithMapping(servlet, (String)map.remove("path"));
             return servlet;
         }
 
     }
 
     private Object makeFilter(Map map) {
-        FilterHolder filter = context.addFilterWithMapping((Class) map.remove("class"), (String) map.remove("path"),
-                extractDispatchers(map));
-        FilterHolderBuilder builder = new FilterHolderBuilder(filter);
-        return builder;
+        FilterHolder filter = context.addFilterWithMapping((Class)map.remove("class"), (String)map.remove("path"),
+                                                           extractDispatchers(map));
+        return new FilterHolderBuilder(filter);
     }
 
     private int extractDispatchers(Map map) {
         Object dispatchers = map.remove("dispatchers");
         if (dispatchers != null) {
-            return ((Integer) dispatchers).intValue();
+            return (Integer)dispatchers;
         }
         // default value
         return 0;

@@ -49,7 +49,6 @@ import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
@@ -167,12 +166,12 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             pico.addComponent(Object.class);
             pico.addComponent(Object.class);
             fail("Should have failed with duplicate registration");
-        } catch (DuplicateComponentKeyRegistrationException e) {
-            assertTrue("Wrong key", e.getDuplicateKey() == Object.class);
+        } catch (PicoRegistrationException e) {
+            assertTrue("Wrong key", e.getMessage().indexOf(Object.class.toString()) > -1 );
         }
     }
 
-    public void testExternallyInstantiatedObjectsCanBeRegistgeredAndLookedUp() throws PicoException, PicoInitializationException {
+    public void testExternallyInstantiatedObjectsCanBeRegistgeredAndLookedUp() throws PicoException {
         MutablePicoContainer pico = createPicoContainer(null);
         final HashMap map = new HashMap();
         pico.addComponent(Map.class, map);

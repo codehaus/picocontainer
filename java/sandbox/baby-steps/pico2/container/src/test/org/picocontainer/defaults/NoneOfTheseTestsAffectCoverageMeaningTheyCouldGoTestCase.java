@@ -13,7 +13,6 @@ package org.picocontainer.defaults;
 import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
@@ -30,7 +29,7 @@ import java.util.List;
 public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends TestCase {
 
     //TODO - move to AbstractComponentRegistryTestCase
-    public void testGetComponentSpecification() throws PicoRegistrationException, DuplicateComponentKeyRegistrationException, AssignabilityRegistrationException, AmbiguousComponentResolutionException, PicoIntrospectionException {
+    public void testGetComponentSpecification() throws PicoRegistrationException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         assertNull(pico.getComponentAdapter(Touchable.class));
@@ -42,14 +41,14 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
 
     //TODO move
     public void testMultipleImplementationsAccessedThroughKey()
-            throws PicoInitializationException, PicoRegistrationException, PicoInvocationTargetInitializationException {
+            throws PicoInitializationException, PicoRegistrationException {
         SimpleTouchable Touchable1 = new SimpleTouchable();
         SimpleTouchable Touchable2 = new SimpleTouchable();
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("Touchable1", Touchable1);
         pico.addComponent("Touchable2", Touchable2);
-        pico.addComponent("fred1", DependsOnTouchable.class, new Parameter[]{new ComponentParameter("Touchable1")});
-        pico.addComponent("fred2", DependsOnTouchable.class, new Parameter[]{new ComponentParameter("Touchable2")});
+        pico.addComponent("fred1", DependsOnTouchable.class, new ComponentParameter("Touchable1"));
+        pico.addComponent("fred2", DependsOnTouchable.class, new ComponentParameter("Touchable2"));
 
         DependsOnTouchable fred1 = (DependsOnTouchable) pico.getComponent("fred1");
         DependsOnTouchable fred2 = (DependsOnTouchable) pico.getComponent("fred2");
@@ -102,9 +101,9 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
         try {
             pico.addComponent(SimpleTouchable.class, new SimpleTouchable());
             fail("Should have barfed with dupe registration");
-        } catch (DuplicateComponentKeyRegistrationException e) {
+        } catch (PicoRegistrationException e) {
             // expected
-            assertTrue(e.getDuplicateKey() == SimpleTouchable.class);
+            assertTrue(e.getMessage().startsWith("Duplicate"));
             assertTrue(e.getMessage().indexOf(SimpleTouchable.class.getName()) > 0);
         }
     }
@@ -162,32 +161,28 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Animal.class,
                 Dino.class,
-                new Parameter[]{
-                    new ConstantParameter("bones")
-                });
+                new ConstantParameter("bones"));
 
-        Animal animal = (Animal) pico.getComponent(Animal.class);
+        Animal animal = pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
         assertEquals("bones", animal.getFood());
     }
 
     public void testParameterCanBePrimitive() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addComponent(Animal.class, Dino2.class, new Parameter[]{new ConstantParameter(new Integer(22))});
+        pico.addComponent(Animal.class, Dino2.class, new ConstantParameter(22));
 
-        Animal animal = (Animal) pico.getComponent(Animal.class);
+        Animal animal = pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
         assertEquals("22", animal.getFood());
     }
 
     public void testMultipleParametersCanBePassed() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addComponent(Animal.class, Dino3.class, new Parameter[]{
-            new ConstantParameter("a"),
-            new ConstantParameter("b")
-        });
+        pico.addComponent(Animal.class, Dino3.class, new ConstantParameter("a"),
+                new ConstantParameter("b"));
 
-        Animal animal = (Animal) pico.getComponent(Animal.class);
+        Animal animal = pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
         assertEquals("ab", animal.getFood());
 
@@ -196,14 +191,12 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
     public void testParametersCanBeMixedWithComponentsCanBePassed() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Touchable.class, SimpleTouchable.class);
-        pico.addComponent(Animal.class, Dino4.class, new Parameter[]{
-            new ConstantParameter("a"),
-            new ConstantParameter(new Integer(3)),
-            new ConstantParameter("b"),
-            ComponentParameter.DEFAULT
-        });
+        pico.addComponent(Animal.class, Dino4.class, new ConstantParameter("a"),
+                new ConstantParameter(3),
+                new ConstantParameter("b"),
+                ComponentParameter.DEFAULT);
 
-        Animal animal = (Animal) pico.getComponent(Animal.class);
+        Animal animal = pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
         assertEquals("a3b org.picocontainer.testmodel.SimpleTouchable", animal.getFood());
     }

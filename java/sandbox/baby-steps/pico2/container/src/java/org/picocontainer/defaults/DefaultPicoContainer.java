@@ -289,7 +289,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) {
         Object componentKey = componentAdapter.getComponentKey();
         if (componentKeyToAdapterCache.containsKey(componentKey)) {
-            throw new DuplicateComponentKeyRegistrationException(componentKey);
+            throw new PicoRegistrationException("Duplicate Keys not allowed. Duplicate for '"+componentKey+"'");
         }
         componentAdapters.add(componentAdapter);
         componentKeyToAdapterCache.put(componentKey, componentAdapter);

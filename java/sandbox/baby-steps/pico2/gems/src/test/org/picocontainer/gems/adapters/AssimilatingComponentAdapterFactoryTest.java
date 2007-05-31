@@ -11,9 +11,9 @@
 package org.picocontainer.gems.adapters;
 
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.CompatibleTouchable;
@@ -56,7 +56,8 @@ public class AssimilatingComponentAdapterFactoryTest extends AbstractComponentAd
         try {
             picoContainer.addComponent(CompatibleTouchable.class);
             fail("DuplicateComponentKeyRegistrationException expected");
-        } catch (final DuplicateComponentKeyRegistrationException e) {
+        } catch (final PicoRegistrationException e) {
+            assertTrue(e.getMessage().startsWith("Duplicate"));
             // fine
         }
     }

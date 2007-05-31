@@ -39,7 +39,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
 
-    public void testCannotInstantiateAnUnregisteredComponent() throws PicoRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoInvocationTargetInitializationException, PicoInitializationException {
+    public void testCannotInstantiateAnUnregisteredComponent() throws PicoRegistrationException, PicoInitializationException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -48,7 +48,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertTrue(picoContainer.getComponents().isEmpty());
     }
 
-    public void testCanInstantiateReplacedComponent() throws PicoRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoInvocationTargetInitializationException, PicoInitializationException {
+    public void testCanInstantiateReplacedComponent() throws PicoRegistrationException, PicoInitializationException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -60,7 +60,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
                 1, picoContainer.getComponents().size());
     }
 
-    public void testUnregisterAfterInstantiateComponents() throws PicoRegistrationException, AssignabilityRegistrationException, PicoInitializationException, DuplicateComponentKeyRegistrationException, PicoInvocationTargetInitializationException, AmbiguousComponentResolutionException {
+    public void testUnregisterAfterInstantiateComponents() throws PicoRegistrationException, PicoInitializationException, AmbiguousComponentResolutionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -68,7 +68,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertNull(picoContainer.getComponent(Touchable.class));
     }
 
-    public void testReplacedInstantiatedComponentHasCorrectClass() throws PicoRegistrationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoInvocationTargetInitializationException, PicoInitializationException {
+    public void testReplacedInstantiatedComponentHasCorrectClass() throws PicoRegistrationException, PicoInitializationException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();

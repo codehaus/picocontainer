@@ -22,7 +22,7 @@ public class Issue0214TestCase extends TestCase {
          * this is currently the only way to register a class/interface such
          * that the automatic resolution works.
          */
-        pico.addComponent(I1.class, B.class, null);
+        pico.addComponent(I1.class, B.class);
 
         /* The following addAdapter(Object, Class) of
          * ImplementationHidingPicoContainer is buggy, as it contains

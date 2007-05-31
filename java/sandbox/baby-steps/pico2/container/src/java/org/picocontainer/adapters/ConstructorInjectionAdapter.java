@@ -288,4 +288,33 @@ public class ConstructorInjectionAdapter extends InjectingAdapter {
             }
         });
     }
+
+    public void verify(final PicoContainer container) throws PicoIntrospectionException {
+        if (verifyingGuard == null) {
+            verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
+                public Object run() {
+                    final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
+                    final Class[] parameterTypes = constructor.getParameterTypes();
+                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                    for (int i = 0; i < currentParameters.length; i++) {
+                        final int i1 = i;
+                        currentParameters[i].verify(container, ConstructorInjectionAdapter.this, parameterTypes[i], new ParameterName() {
+                    public String getParameterName() {
+                        Paranamer dpn = new AsmParanamer();
+                        String[] names = dpn.lookupParameterNames(constructor);
+                        if (names.length != 0) {
+                            return names[i1];
+                        }
+                        return null;
+                    }
+                });
+                    }
+                    return null;
+                }
+            };
+        }
+        verifyingGuard.setGuardedContainer(container);
+        verifyingGuard.observe(getComponentImplementation());
+    }
+
 }

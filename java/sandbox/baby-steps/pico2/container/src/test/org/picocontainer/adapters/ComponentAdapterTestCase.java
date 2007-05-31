@@ -74,6 +74,10 @@ public class ComponentAdapterTestCase
         protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
             return null;
         }
+
+        public void verify(PicoContainer container) throws PicoIntrospectionException {
+        }
+
         public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
             return null;
         }

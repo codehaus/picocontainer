@@ -29,7 +29,7 @@ import org.jmock.MockObjectTestCase;
 /**
  * @author J&ouml;rg Schaible
  */
-public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCase {
+public class JMXExposingBehaviorFactoryTestCase extends MockObjectTestCase {
 
     private Mock mockMBeanServer;
 
@@ -39,7 +39,7 @@ public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCa
     }
 
     public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
-        final JMXExposingFactory componentAdapterFactory = new JMXExposingFactory(
+        final JMXExposingBehaviorFactory componentAdapterFactory = new JMXExposingBehaviorFactory(
                 (MBeanServer)mockMBeanServer.proxy());
         componentAdapterFactory.forThis(new ConstructorInjectionFactory());
 
@@ -53,7 +53,7 @@ public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCa
     }
 
     public void testWillRegisterByDefaultComponentsThatAreMBeansUnlessNOJMX() throws NotCompliantMBeanException {
-        final JMXExposingFactory componentAdapterFactory = new JMXExposingFactory(
+        final JMXExposingBehaviorFactory componentAdapterFactory = new JMXExposingBehaviorFactory(
                 (MBeanServer)mockMBeanServer.proxy());
         componentAdapterFactory.forThis(new ConstructorInjectionFactory());
 
@@ -70,13 +70,13 @@ public class JMXExposingComponentAdapterFactoryTestCase extends MockObjectTestCa
 
     public void testConstructorThrowsNPE() {
         try {
-            new JMXExposingFactory(
+            new JMXExposingBehaviorFactory(
                     null, new DynamicMBeanProvider[]{});
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
         }
         try {
-            new JMXExposingFactory(
+            new JMXExposingBehaviorFactory(
                     (MBeanServer)mockMBeanServer.proxy(), null);
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {

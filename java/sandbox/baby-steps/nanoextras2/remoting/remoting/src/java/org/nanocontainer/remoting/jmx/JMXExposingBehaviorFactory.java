@@ -25,11 +25,11 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 
 /**
- * {@link org.picocontainer.ComponentFactory} that instantiates {@link JMXExposingComponentAdapter} instances.
+ * {@link org.picocontainer.ComponentFactory} that instantiates {@link JMXExposingBehaviorAdapter} instances.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
-public class JMXExposingFactory extends AbstractBehaviorFactory {
+public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
 
     private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;
@@ -43,7 +43,7 @@ public class JMXExposingFactory extends AbstractBehaviorFactory {
      *             instances is null.
      * @since 1.0
      */
-    public JMXExposingFactory(
+    public JMXExposingBehaviorFactory(
             final MBeanServer mBeanServer,
             final DynamicMBeanProvider[] providers) throws NullPointerException {
         if (mBeanServer == null || providers == null) {
@@ -62,14 +62,14 @@ public class JMXExposingFactory extends AbstractBehaviorFactory {
      *             instances is null.
      * @since 1.0
      */
-    public JMXExposingFactory(final MBeanServer mBeanServer)
+    public JMXExposingBehaviorFactory(final MBeanServer mBeanServer)
             throws NullPointerException {
         this(mBeanServer, new DynamicMBeanProvider[]{new DynamicMBeanComponentProvider()});
     }
 
     /**
      * Retrieve a {@link ComponentAdapter}. Wrap the instance retrieved by the delegate with an instance of a
-     * {@link JMXExposingComponentAdapter}.
+     * {@link JMXExposingBehaviorAdapter}.
      * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
      */
     public ComponentAdapter createComponentAdapter(
@@ -80,7 +80,7 @@ public class JMXExposingFactory extends AbstractBehaviorFactory {
         if (ComponentCharacteristics.NOJMX.isSoCharacterized(componentCharacteristic)) {
             return componentAdapter;            
         } else {
-            return new JMXExposingComponentAdapter(componentAdapter, mBeanServer, providers);
+            return new JMXExposingBehaviorAdapter(componentAdapter, mBeanServer, providers);
         }
     }
 

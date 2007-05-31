@@ -33,7 +33,7 @@ import javax.management.InstanceNotFoundException;
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
-public class JMXExposingComponentAdapter extends BehaviorAdapter {
+public class JMXExposingBehaviorAdapter extends BehaviorAdapter {
 
     private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;
@@ -49,7 +49,7 @@ public class JMXExposingComponentAdapter extends BehaviorAdapter {
      *             instances is null.
      * @since 1.0
      */
-    public JMXExposingComponentAdapter(
+    public JMXExposingBehaviorAdapter(
             final ComponentAdapter delegate, final MBeanServer mBeanServer, final DynamicMBeanProvider[] providers)
             throws NullPointerException {
         super(delegate);
@@ -70,7 +70,7 @@ public class JMXExposingComponentAdapter extends BehaviorAdapter {
      *             instances is null.
      * @since 1.0
      */
-    public JMXExposingComponentAdapter(final ComponentAdapter delegate, final MBeanServer mBeanServer)
+    public JMXExposingBehaviorAdapter(final ComponentAdapter delegate, final MBeanServer mBeanServer)
             throws NullPointerException {
         this(delegate, mBeanServer, new DynamicMBeanProvider[]{new DynamicMBeanComponentProvider()});
     }

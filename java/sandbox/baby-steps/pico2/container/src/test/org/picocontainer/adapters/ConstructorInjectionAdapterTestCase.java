@@ -38,6 +38,8 @@ import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import javax.swing.*;
+
 
 public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapterTestCase {
 
@@ -217,7 +219,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         }
     }
 
-    public void testRegisterAbstractShouldFail() throws PicoRegistrationException, PicoIntrospectionException {
+    public void testRegisterInterfaceShouldFail() throws PicoRegistrationException, PicoIntrospectionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {
@@ -226,6 +228,18 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         } catch (NotConcreteRegistrationException e) {
             assertEquals(Runnable.class, e.getComponentImplementation());
             assertTrue(e.getMessage().indexOf(Runnable.class.getName()) > 0);
+        }
+    }
+
+    public void testRegisterAbstractShouldFail() throws PicoRegistrationException, PicoIntrospectionException {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+
+        try {
+            pico.addComponent(AbstractButton.class);
+            fail("Shouldn't be allowed to register abstract classes or interfaces.");
+        } catch (NotConcreteRegistrationException e) {
+            assertEquals(AbstractButton.class, e.getComponentImplementation());
+            assertTrue(e.getMessage().indexOf(AbstractButton.class.getName()) > 0);
         }
     }
 

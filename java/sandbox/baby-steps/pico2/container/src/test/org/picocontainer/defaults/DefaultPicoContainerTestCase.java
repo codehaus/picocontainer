@@ -377,7 +377,6 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         }
 
         public void start() {
-            System.out.println("");
         }
 
         public void stop() {

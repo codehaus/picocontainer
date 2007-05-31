@@ -53,10 +53,6 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
 
     /** The cycle guard for the verification. */
     protected static abstract class Guard extends ThreadLocalCyclicDependencyGuard {
-        protected PicoContainer guardedContainer;
-        protected void setArguments(PicoContainer container) {
-            this.guardedContainer = container;
-        }
     }
     
     /** The strategy used to control the lifecycle */
@@ -163,7 +159,7 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
                 }
             };
         }
-        verifyingGuard.setArguments(container);
+        verifyingGuard.setGuardedContainer(container);
         verifyingGuard.observe(getComponentImplementation());
     }
 

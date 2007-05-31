@@ -17,7 +17,6 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ParameterName;
 import org.picocontainer.adapters.InjectingAdapter;
-import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
@@ -240,7 +239,7 @@ public class ConstructorInjectionAdapter extends InjectingAdapter {
                 }
             };
         }
-        instantiationGuard.setArguments(container);
+        instantiationGuard.setGuardedContainer(container);
         return instantiationGuard.observe(getComponentImplementation());
     }
 

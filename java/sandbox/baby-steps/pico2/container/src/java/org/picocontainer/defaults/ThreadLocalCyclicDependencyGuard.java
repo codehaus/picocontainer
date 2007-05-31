@@ -10,6 +10,8 @@
 
 package org.picocontainer.defaults;
 
+import org.picocontainer.PicoContainer;
+
 /**
  * Abstract utility class to detect recursion cycles.
  * Derive from this class and implement {@link ThreadLocalCyclicDependencyGuard#run}. 
@@ -21,6 +23,8 @@ package org.picocontainer.defaults;
  * @since 1.1
  */
 public abstract class ThreadLocalCyclicDependencyGuard extends ThreadLocal {
+
+    protected PicoContainer guardedContainer;
 
     protected Object initialValue() {
         return Boolean.FALSE;
@@ -58,5 +62,9 @@ public abstract class ThreadLocalCyclicDependencyGuard extends ThreadLocal {
             set(Boolean.FALSE);
         }
         return result;
+    }
+
+    public void setGuardedContainer(PicoContainer container) {
+        this.guardedContainer = container;
     }
 }

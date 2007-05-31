@@ -243,7 +243,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
                 }
             };
         }
-        instantiationGuard.setArguments(container);
+        instantiationGuard.setGuardedContainer(container);
         return instantiationGuard.observe(getComponentImplementation());
     }
 
@@ -263,7 +263,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
                 }
             };
         }
-        verifyingGuard.setArguments(container);
+        verifyingGuard.setGuardedContainer(container);
         verifyingGuard.observe(getComponentImplementation());
     }
 

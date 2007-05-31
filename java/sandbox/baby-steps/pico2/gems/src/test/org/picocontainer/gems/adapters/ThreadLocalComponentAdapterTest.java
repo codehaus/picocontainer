@@ -13,8 +13,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
-import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -28,74 +28,78 @@ import java.util.Set;
 
 /**
  * Unit test for ThreadLocalComponentAdapter.
- * 
+ *
  * @author J&ouml;rg Schaible
  */
 public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTestCase {
 
+    @Override
     protected Class getComponentAdapterType() {
         return ThreadLocalComponentAdapter.class;
     }
 
+    @Override
     protected int getComponentAdapterNature() {
         return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING);
     }
 
     private ComponentAdapter createComponentAdapterWithSimpleTouchable() {
         return new ThreadLocalComponentAdapter(new ConstructorInjectionAdapter(
-                Touchable.class, SimpleTouchable.class));
+            Touchable.class, SimpleTouchable.class));
     }
 
+    @Override
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
         return createComponentAdapterWithSimpleTouchable();
     }
 
+    @Override
     protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
         return createComponentAdapterWithSimpleTouchable();
     }
 
+    @Override
     protected ComponentAdapter prepDEF_visitable() {
         return createComponentAdapterWithSimpleTouchable();
     }
 
+    @Override
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
         return new ThreadLocalComponentAdapter(new ConstructorInjectionAdapter(
-                List.class, ArrayList.class, new ConstantParameter(10)));
+            List.class, ArrayList.class, new ConstantParameter(10)));
     }
 
+    @Override
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
         return createComponentAdapterWithSimpleTouchable();
     }
 
+    @Override
     protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
         return createComponentAdapterWithSimpleTouchable();
     }
 
-    /**
-     * Helper class testing ThreadLocal cache.
-     */
+    /** Helper class testing ThreadLocal cache. */
     public static class Runner implements Runnable {
 
         private final Touchable m_touchable;
-        private final List m_list;
-        private final Set m_set;
+        private final List<Touchable> m_list;
+        private final Set<Touchable> m_set;
 
         /**
          * Constructs a Runner.
-         * 
+         *
          * @param touchable The instance
-         * @param list The list to which all instances are added
-         * @param set The set to which all instances are added
+         * @param list      The list to which all instances are added
+         * @param set       The set to which all instances are added
          */
-        public Runner(final Touchable touchable, final List list, final Set set) {
+        public Runner(final Touchable touchable, final List<Touchable> list, final Set<Touchable> set) {
             m_touchable = touchable;
             m_list = list;
             m_set = set;
         }
 
-        /**
-         * @see java.lang.Runnable#run()
-         */
+        /** @see java.lang.Runnable#run() */
         public void run() {
             final Thread thread = Thread.currentThread();
             while (!Thread.interrupted()) {
@@ -106,6 +110,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
                         thread.wait();
                     }
                 } catch (InterruptedException e) {
+                    //propagate interrupt
                     thread.interrupt();
                 }
             }
@@ -114,26 +119,27 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
 
     /**
      * Test usage from multiple threads.
-     * 
-     * @throws InterruptedException
+     *
+     * @throws InterruptedException if interrupted
      */
     public final void testInstancesUsedFromMultipleThreads() throws InterruptedException {
-        final Set set = Collections.synchronizedSet(new HashSet());
-        final List list = Collections.synchronizedList(new ArrayList());
+        final Set<Touchable> set = Collections.synchronizedSet(new HashSet<Touchable>());
+        final List<Touchable> list = Collections.synchronizedList(new ArrayList<Touchable>());
         final ComponentAdapter componentAdapter = new ThreadLocalComponentAdapter(new ConstructorInjectionAdapter(
-                Touchable.class, SimpleTouchable.class));
+            Touchable.class, SimpleTouchable.class));
         final Touchable touchable = (Touchable)componentAdapter.getComponentInstance(null);
 
         final Thread[] threads = {
-                new Thread(new Runner(touchable, list, set), "junit-1"), new Thread(new Runner(touchable, list, set), "junit-2"),
-                new Thread(new Runner(touchable, list, set), "junit-3"),};
+            new Thread(new Runner(touchable, list, set), "junit-1"),
+            new Thread(new Runner(touchable, list, set), "junit-2"),
+            new Thread(new Runner(touchable, list, set), "junit-3"), };
         for (int i = threads.length; i-- > 0;) {
             threads[i].start();
         }
         Thread.sleep(300);
         for (int i = threads.length; i-- > 0;) {
             synchronized (threads[i]) {
-                threads[i].notify();
+                threads[i].notifyAll();
             }
         }
         Thread.sleep(300);
@@ -145,39 +151,28 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
         assertEquals(3, set.size());
     }
 
-    /**
-     * Test if same proxy instance in equal.
-     * 
-     * @throws Exception
-     */
     public void testThreadLocalInstancesEqual() throws Exception {
         final ComponentAdapter componentAdapter = new ThreadLocalComponentAdapter(new ConstructorInjectionAdapter(
-                Touchable.class, SimpleTouchable.class));
+            Touchable.class, SimpleTouchable.class));
         final Touchable touchable = (Touchable)componentAdapter.getComponentInstance(null);
         assertEquals(touchable, touchable);
     }
 
-    /**
-     * Test instances from different containers.
-     */
+    @SuppressWarnings({ "unchecked" })
     public final void testInstancesAreNotSharedBetweenContainers() {
         final MutablePicoContainer picoA = new DefaultPicoContainer();
         final MutablePicoContainer picoB = new DefaultPicoContainer();
-        picoA.addAdapter(new ThreadLocalComponentAdapter(new ConstructorInjectionAdapter(
-                List.class, ArrayList.class, null)));
-        picoB.addAdapter(new ThreadLocalComponentAdapter(new ConstructorInjectionAdapter(
-                List.class, ArrayList.class, null)));
-        final List hello1 = (List)picoA.getComponent(List.class);
-        final List hello2 = (List)picoA.getComponent(List.class);
+        picoA.addAdapter(new ThreadLocalComponentAdapter(new ConstructorInjectionAdapter(List.class, ArrayList.class)));
+        picoB.addAdapter(new ThreadLocalComponentAdapter(new ConstructorInjectionAdapter(List.class, ArrayList.class)));
+        final List<String> hello1 = (List<String>)picoA.getComponent(List.class);
+        final List hello2 = picoA.getComponent(List.class);
         hello1.add("foo");
         assertEquals(hello1, hello2);
-        final List hello3 = (List)picoB.getComponent(List.class);
+        final List hello3 = picoB.getComponent(List.class);
         assertEquals(0, hello3.size());
     }
 
-    /**
-     * Test fail-fast for components without interface.
-     */
+    /** Test fail-fast for components without interface. */
     public void testComponentMustImplementInterface() {
         try {
             new ThreadLocalComponentAdapter(new ConstructorInjectionAdapter(Object.class, Object.class));
@@ -211,8 +206,9 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
 
     public void testExceptionHandling() {
         final ComponentAdapter componentAdapter = new ThreadLocalComponentAdapter(new ConstructorInjectionAdapter(
-                TargetInvocationExceptionTester.class, ThrowingComponent.class));
-        final TargetInvocationExceptionTester tester = (TargetInvocationExceptionTester)componentAdapter.getComponentInstance(null);
+            TargetInvocationExceptionTester.class, ThrowingComponent.class));
+        final TargetInvocationExceptionTester tester =
+            (TargetInvocationExceptionTester)componentAdapter.getComponentInstance(null);
         try {
             tester.throwsCheckedException();
             fail("ClassNotFoundException expected");
@@ -233,12 +229,10 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
         }
     }
 
-    /**
-     * Test ComponentAdapter using simple keys.
-     */
+    /** Test ComponentAdapter using simple keys. */
     public final void testSimpleKeys() {
         final ComponentAdapter componentAdapter = new ThreadLocalComponentAdapter(new ConstructorInjectionAdapter(
-                "List", ArrayList.class));
+            "List", ArrayList.class));
         final List hello = (List)componentAdapter.getComponentInstance(null);
         assertNotNull(hello);
     }

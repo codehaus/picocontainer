@@ -23,6 +23,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
+import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -57,7 +58,7 @@ import com.thoughtworks.paranamer.asm.AsmParanamer;
  */
 public class ConstructorInjectionAdapter extends InjectingAdapter {
     private transient List<Constructor> sortedMatchingConstructors;
-    private transient Guard instantiationGuard;
+    private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     private transient Paranamer paranamer = new AsmParanamer();
 
     /**
@@ -198,7 +199,7 @@ public class ConstructorInjectionAdapter extends InjectingAdapter {
 
     public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         if (instantiationGuard == null) {
-            instantiationGuard = new Guard() {
+            instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
                     final Constructor constructor;
                     try {

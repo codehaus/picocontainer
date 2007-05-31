@@ -47,14 +47,10 @@ import com.thoughtworks.paranamer.asm.AsmParanamer;
 public abstract class InjectingAdapter extends AbstractComponentAdapter
         implements LifecycleStrategy {
     /** The cycle guard for the verification. */ 
-    protected transient Guard verifyingGuard;
+    protected transient ThreadLocalCyclicDependencyGuard verifyingGuard;
     /** The parameters to use for initialization. */ 
     protected transient Parameter[] parameters;
-
-    /** The cycle guard for the verification. */
-    protected static abstract class Guard extends ThreadLocalCyclicDependencyGuard {
-    }
-    
+ 
     /** The strategy used to control the lifecycle */
     protected LifecycleStrategy lifecycleStrategy;
     
@@ -137,7 +133,7 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
 
     public void verify(final PicoContainer container) throws PicoIntrospectionException {
         if (verifyingGuard == null) {
-            verifyingGuard = new Guard() {
+            verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
                     final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
                     final Class[] parameterTypes = constructor.getParameterTypes();

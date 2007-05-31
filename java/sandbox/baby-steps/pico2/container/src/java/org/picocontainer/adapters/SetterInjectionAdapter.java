@@ -22,6 +22,7 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
+import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -53,7 +54,7 @@ import java.io.Serializable;
  * @version $Revision$
  */
 public class SetterInjectionAdapter extends InjectingAdapter {
-    private transient Guard instantiationGuard;
+    private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     private transient List<Method> injectionMethods;
     private transient Class[] injectionTypes;
 
@@ -180,7 +181,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
     public Object getComponentInstance(final PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
         final Constructor constructor = getConstructor();
         if (instantiationGuard == null) {
-            instantiationGuard = new Guard() {
+            instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
                     ComponentMonitor componentMonitor = currentMonitor();
@@ -249,7 +250,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
 
     public void verify(final PicoContainer container) throws PicoIntrospectionException {
         if (verifyingGuard == null) {
-            verifyingGuard = new Guard() {
+            verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
                     final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
                     for (int i = 0; i < currentParameters.length; i++) {

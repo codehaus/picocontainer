@@ -20,7 +20,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.gems.adapters.ThreadLocalComponentAdapter;
@@ -69,7 +68,7 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
 
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, final Object componentKey, final Class componentImplementation, final Parameter[] parameters)
-            throws PicoIntrospectionException, AssignabilityRegistrationException {
+            throws PicoIntrospectionException {
         return createComponentAdapter(componentKey.toString(), componentImplementation);
     }
 
@@ -84,7 +83,7 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
      *             {@link javax.ejb.EJBHome}
      */
     public ComponentAdapter createComponentAdapter(final String componentKey, final Class componentImplementation)
-            throws PicoIntrospectionException, AssignabilityRegistrationException {
+            throws PicoIntrospectionException {
         try {
             return new ThreadLocalComponentAdapter(new EJBClientComponentAdapter(
                     componentKey.toString(), componentImplementation, environment, earlyBinding), proxyFactory);

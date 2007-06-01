@@ -15,7 +15,6 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
@@ -51,9 +50,6 @@ public interface ComponentFactory {
      *                                    may be ignored by some implementations. May be null, and may be of zero length. @return a new addComponent addAdapter based on the specified arguments. Should not return null. @throws PicoIntrospectionException if the creation of the addComponent addAdapter results in a
      *                                    {@link PicoIntrospectionException}.
      * @return The component adapter
-     * @throws org.picocontainer.defaults.AssignabilityRegistrationException
-     *          if the creation of the addComponent addAdapter results in a
-     *          {@link org.picocontainer.defaults.AssignabilityRegistrationException}.
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException
      *          if the creation of the addComponent addAdapter results in a
      *          {@link org.picocontainer.defaults.NotConcreteRegistrationException}.
@@ -62,7 +58,7 @@ public interface ComponentFactory {
                                             Object componentKey,
                                             Class componentImplementation,
                                             Parameter... parameters) throws PicoIntrospectionException,
-            AssignabilityRegistrationException,
+
             NotConcreteRegistrationException;
 
 

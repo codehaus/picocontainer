@@ -24,7 +24,7 @@ public class UserQuestionTestCase extends TestCase {
     public static class CheeseComponentAdapter extends AbstractComponentAdapter {
         private Map bla;
 
-        public CheeseComponentAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+        public CheeseComponentAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws  NotConcreteRegistrationException {
             super(componentKey, componentImplementation);
             this.bla = cheeseMap;
         }

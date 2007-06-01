@@ -27,7 +27,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.adapters.AbstractComponentAdapter;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import com.thoughtworks.proxy.Invoker;
@@ -113,10 +112,10 @@ public class EJBClientComponentAdapter extends AbstractComponentAdapter {
             final boolean earlyBinding) {
         super(name, type);
         if (!EJBHome.class.isAssignableFrom(homeInterface)) {
-            throw new AssignabilityRegistrationException(EJBHome.class, homeInterface);
+            throw new ClassCastException(homeInterface.getName() + " is not a " + EJBHome.class.getName());
         }
         if (!EJBObject.class.isAssignableFrom(type)) {
-            throw new AssignabilityRegistrationException(EJBObject.class, type);
+            throw new ClassCastException(type.getName() + " is not a " + EJBObject.class.getName());
         }
         if (!type.isInterface()) {
             throw new PicoIntrospectionException(type.getName() + " must be an interface");

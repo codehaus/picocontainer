@@ -114,10 +114,10 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
 
         try {
             pico.addComponent(List.class, SimpleTouchable.class);
-        } catch (AssignabilityRegistrationException e) {
+        } catch (ClassCastException e) {
             // not worded in message
             assertTrue(e.getMessage().indexOf(List.class.getName()) > 0);
-            assertTrue(e.getMessage().indexOf(SimpleTouchable.class.getName()) > 0);
+            assertTrue(e.getMessage().indexOf(SimpleTouchable.class.getName()) == 0);
         }
 
     }

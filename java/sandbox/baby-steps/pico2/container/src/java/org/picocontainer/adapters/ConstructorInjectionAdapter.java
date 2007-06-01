@@ -18,7 +18,6 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ParameterName;
 import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
@@ -69,13 +68,11 @@ public class ConstructorInjectionAdapter extends InjectingAdapter {
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the addComponent monitor used by this addAdapter
      * @param lifecycleStrategy       the addComponent lifecycle strategy used by this addAdapter
-     * @throws org.picocontainer.defaults.AssignabilityRegistrationException
-     *                              if the key is a type and the implementation cannot be assigned to.
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ConstructorInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
     }
 
@@ -86,13 +83,11 @@ public class ConstructorInjectionAdapter extends InjectingAdapter {
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the addComponent monitor used by this addAdapter
-     * @throws AssignabilityRegistrationException
-     *                              if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ConstructorInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor);
     }
 
@@ -102,13 +97,11 @@ public class ConstructorInjectionAdapter extends InjectingAdapter {
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
-     * @throws AssignabilityRegistrationException
-     *                              if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter... parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ConstructorInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter... parameters) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters);
     }
 
@@ -117,17 +110,15 @@ public class ConstructorInjectionAdapter extends InjectingAdapter {
      *
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
-     * @throws AssignabilityRegistrationException
-     *                              if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public ConstructorInjectionAdapter(Object componentKey, Class componentImplementation) throws NotConcreteRegistrationException {
         this(componentKey, componentImplementation, (Parameter[])null);
     }
 
-    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, NotConcreteRegistrationException {
         final Set<Constructor> conflicts = new HashSet<Constructor>();
         final Set<List<Class>> unsatisfiableDependencyTypes = new HashSet<List<Class>>();
         if (sortedMatchingConstructors == null) {
@@ -197,7 +188,7 @@ public class ConstructorInjectionAdapter extends InjectingAdapter {
 
 
 
-    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, NotConcreteRegistrationException {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {

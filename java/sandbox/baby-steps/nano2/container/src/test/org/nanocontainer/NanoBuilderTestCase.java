@@ -8,7 +8,6 @@ import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
@@ -135,7 +134,7 @@ public class NanoBuilderTestCase extends TestCase {
         try {
             new NanoBuilder().withMonitor(HashMap.class).build();
             fail("should have barfed");
-        } catch (AssignabilityRegistrationException e) {
+        } catch (ClassCastException e) {
             // expected
         }
     }

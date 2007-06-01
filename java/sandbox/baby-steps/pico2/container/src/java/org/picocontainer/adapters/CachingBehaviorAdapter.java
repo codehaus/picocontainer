@@ -18,7 +18,6 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
@@ -57,7 +56,7 @@ public class CachingBehaviorAdapter extends BehaviorAdapter implements Lifecycle
     }
 
     public Object getComponentInstance(PicoContainer container)
-            throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+            throws PicoInitializationException, PicoIntrospectionException, NotConcreteRegistrationException {
         Object instance = instanceReference.get();
         if (instance == null) {
             instance = super.getComponentInstance(container);

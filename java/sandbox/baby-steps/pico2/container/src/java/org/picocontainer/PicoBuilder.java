@@ -12,7 +12,6 @@ import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.adapters.SynchronizedBehaviorFactory;
 import org.picocontainer.adapters.BehaviorFactory;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
@@ -103,7 +102,8 @@ public class PicoBuilder {
             throw new NullPointerException("monitor class cannot be null");
         }
         if (!ComponentMonitor.class.isAssignableFrom(cmClass)) {
-            throw new AssignabilityRegistrationException(ComponentMonitor.class, cmClass);
+            throw new ClassCastException(cmClass.getName() + " is not a " + ComponentMonitor.class.getName());
+
         }
         componentMonitorClass = cmClass;
         componentMonitor = null;
@@ -174,7 +174,8 @@ public class PicoBuilder {
             throw new NullPointerException("CAF class cannot be null");
         }
         if (!ComponentFactory.class.isAssignableFrom(cafClass)) {
-            throw new AssignabilityRegistrationException(ComponentFactory.class, cafClass);
+            throw new ClassCastException(cafClass.getName() + " is not a " + ComponentFactory.class.getName());
+
         }
         cafs.push(cafClass);
         return this;

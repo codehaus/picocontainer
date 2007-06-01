@@ -37,7 +37,6 @@ import org.nanocontainer.remoting.ejb.testmodel.HelloImpl;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 
 import junit.framework.Test;
 

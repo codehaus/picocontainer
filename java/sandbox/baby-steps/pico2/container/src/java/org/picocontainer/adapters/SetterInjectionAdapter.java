@@ -17,7 +17,6 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ParameterName;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.adapters.InjectingAdapter;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
@@ -66,13 +65,11 @@ public class SetterInjectionAdapter extends InjectingAdapter {
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the addComponent monitor used by this addAdapter
      * @param lifecycleStrategy       the addComponent lifecycle strategy used by this addAdapter
-     * @throws org.picocontainer.defaults.AssignabilityRegistrationException
-     *                              if the key is a type and the implementation cannot be assigned to.
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public SetterInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public SetterInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
     }
 
@@ -84,13 +81,11 @@ public class SetterInjectionAdapter extends InjectingAdapter {
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the addComponent monitor used by this addAdapter
-     * @throws AssignabilityRegistrationException
-     *                              if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public SetterInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public SetterInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor);
     }
 
@@ -100,18 +95,16 @@ public class SetterInjectionAdapter extends InjectingAdapter {
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
-     * @throws AssignabilityRegistrationException
-     *                              if the key is a type and the implementation cannot be assigned to.
      * @throws NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public SetterInjectionAdapter(final Serializable componentKey, final Class componentImplementation, Parameter... parameters) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public SetterInjectionAdapter(final Serializable componentKey, final Class componentImplementation, Parameter... parameters) throws NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters);
     }
 
 
-    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AmbiguousComponentResolutionException, NotConcreteRegistrationException {
         final Constructor constructor = getConstructor();
         getMatchingParameterListForSetters(container);
         return constructor;
@@ -178,7 +171,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
         return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
     }
 
-    public Object getComponentInstance(final PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+    public Object getComponentInstance(final PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, NotConcreteRegistrationException {
         final Constructor constructor = getConstructor();
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {

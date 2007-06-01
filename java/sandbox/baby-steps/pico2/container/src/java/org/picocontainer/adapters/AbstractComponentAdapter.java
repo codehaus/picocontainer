@@ -11,7 +11,6 @@ package org.picocontainer.adapters;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 
 /**
@@ -35,9 +34,8 @@ public abstract class AbstractComponentAdapter extends MonitoringAdapter {
      * Constructs a new ComponentAdapter for the given key and implementation.
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
-     * @throws org.picocontainer.defaults.AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      */
-    protected AbstractComponentAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException {
+    protected AbstractComponentAdapter(Object componentKey, Class componentImplementation) {
         this(componentKey, componentImplementation, new DelegatingComponentMonitor());
     }
 
@@ -46,9 +44,8 @@ public abstract class AbstractComponentAdapter extends MonitoringAdapter {
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param monitor the addComponent monitor used by this ComponentAdapter
-     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      */
-    protected AbstractComponentAdapter(Object componentKey, Class componentImplementation, ComponentMonitor monitor) throws AssignabilityRegistrationException {
+    protected AbstractComponentAdapter(Object componentKey, Class componentImplementation, ComponentMonitor monitor) {
         super(monitor);
         if (componentImplementation == null) {
             throw new NullPointerException("componentImplementation");
@@ -77,11 +74,11 @@ public abstract class AbstractComponentAdapter extends MonitoringAdapter {
         return componentImplementation;
     }
 
-    protected void checkTypeCompatibility() throws AssignabilityRegistrationException {
+    protected void checkTypeCompatibility() {
         if (componentKey instanceof Class) {
             Class componentType = (Class) componentKey;
             if (!componentType.isAssignableFrom(componentImplementation)) {
-                throw new AssignabilityRegistrationException(componentType, componentImplementation);
+                throw new ClassCastException(componentImplementation.getName() + " is not a " + componentType.getName());
             }
         }
     }

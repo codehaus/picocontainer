@@ -80,7 +80,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertEquals(AlternativeTouchable.class, component.getClass());
     }
 
-    private ComponentAdapter createComponentAdapter() throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+    private ComponentAdapter createComponentAdapter() throws NotConcreteRegistrationException {
         return new ConstructorInjectionAdapter(Touchable.class, SimpleTouchable.class);
     }
 }

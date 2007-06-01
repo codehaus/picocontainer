@@ -25,7 +25,6 @@ import org.picocontainer.Startable;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
@@ -196,7 +195,6 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
     public void testLookupWithUnregisteredKeyReturnsNull() throws PicoIntrospectionException,
                                                                   PicoInitializationException,
-                                                                  AssignabilityRegistrationException,
                                                                   NotConcreteRegistrationException
     {
         MutablePicoContainer pico = createPicoContainer(null);
@@ -205,7 +203,6 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
     public void testLookupWithUnregisteredTypeReturnsNull() throws PicoIntrospectionException,
                                                                    PicoInitializationException,
-                                                                   AssignabilityRegistrationException,
                                                                    NotConcreteRegistrationException
     {
         MutablePicoContainer pico = createPicoContainer(null);
@@ -379,7 +376,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             pico.addComponent(Serializable.class, new Object());
             fail("Shouldn't be able to register an Object.class as Serializable because it is not, " +
                  "it does not implement it, Object.class does not implement much.");
-        } catch (AssignabilityRegistrationException e) {
+        } catch (ClassCastException e) {
         }
 
     }

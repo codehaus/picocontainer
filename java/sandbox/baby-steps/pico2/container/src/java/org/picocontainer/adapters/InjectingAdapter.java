@@ -20,7 +20,6 @@ import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 
 import java.lang.reflect.Constructor;
@@ -177,6 +176,6 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
      * @throws UnsatisfiableDependenciesException
      * @throws NotConcreteRegistrationException
      */
-    protected abstract Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException;
+    protected abstract Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, NotConcreteRegistrationException;
 
 }

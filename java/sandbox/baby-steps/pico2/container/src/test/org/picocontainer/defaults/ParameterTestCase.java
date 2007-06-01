@@ -58,7 +58,7 @@ public class ParameterTestCase extends TestCase {
         assertNull(touchable);
     }
 
-    public void testConstantParameter() throws PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
+    public void testConstantParameter() throws PicoInitializationException, NotConcreteRegistrationException, PicoIntrospectionException {
         Object value = new Object();
         ConstantParameter parameter = new ConstantParameter(value);
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
@@ -107,7 +107,7 @@ public class ParameterTestCase extends TestCase {
         assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class, pn));
     }
 
-    public void testConstantParameterWithPrimitives() throws PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
+    public void testConstantParameterWithPrimitives() throws PicoInitializationException, NotConcreteRegistrationException, PicoIntrospectionException {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         Byte byteValue = new Byte((byte) 5);
         ConstantParameter parameter = new ConstantParameter(byteValue);
@@ -143,7 +143,7 @@ public class ParameterTestCase extends TestCase {
         assertSame(charValue, parameter.resolveInstance(picoContainer, null, Character.class, pn));
     }
 
-    public void testConstantParameterWithPrimitivesRejectsUnexpectedType() throws PicoInitializationException, AssignabilityRegistrationException, NotConcreteRegistrationException, PicoIntrospectionException {
+    public void testConstantParameterWithPrimitivesRejectsUnexpectedType() throws PicoInitializationException, NotConcreteRegistrationException, PicoIntrospectionException {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         Byte byteValue = new Byte((byte) 5);
         ConstantParameter parameter = new ConstantParameter(byteValue);

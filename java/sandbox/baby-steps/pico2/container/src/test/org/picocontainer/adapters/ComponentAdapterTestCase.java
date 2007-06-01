@@ -16,7 +16,6 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.parameters.ConstantParameter;
@@ -34,10 +33,10 @@ public class ComponentAdapterTestCase
         extends TestCase {
 
     private static class TestComponentAdapter extends AbstractComponentAdapter {
-        TestComponentAdapter(Object componentKey, Class componentImplementation, ComponentMonitor componentMonitor) throws AssignabilityRegistrationException {
+        TestComponentAdapter(Object componentKey, Class componentImplementation, ComponentMonitor componentMonitor) {
             super(componentKey, componentImplementation, componentMonitor);
         }
-        TestComponentAdapter(Object componentKey, Class componentImplementation) throws AssignabilityRegistrationException {
+        TestComponentAdapter(Object componentKey, Class componentImplementation) {
             super(componentKey, componentImplementation);
         }
         public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
@@ -49,7 +48,7 @@ public class ComponentAdapterTestCase
     }
 
     private static class TestMonitoringComponentAdapter extends MonitoringAdapter {
-        TestMonitoringComponentAdapter(ComponentMonitor componentMonitor) throws AssignabilityRegistrationException {
+        TestMonitoringComponentAdapter(ComponentMonitor componentMonitor) {
             super(componentMonitor);
         }
         public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
@@ -71,7 +70,7 @@ public class ComponentAdapterTestCase
         TestInstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
             super(componentKey, componentImplementation, parameters);
         }
-        protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AmbiguousComponentResolutionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+        protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AmbiguousComponentResolutionException, NotConcreteRegistrationException {
             return null;
         }
 

@@ -16,7 +16,6 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.defaults.AssignabilityRegistrationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 import java.io.Serializable;
@@ -50,7 +49,7 @@ public class SetterInjectionFactory implements InjectionFactory, Serializable {
      *          abstract class.
      */
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoIntrospectionException, AssignabilityRegistrationException, NotConcreteRegistrationException {
+            throws PicoIntrospectionException, NotConcreteRegistrationException {
         return new SetterInjectionAdapter(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
     }
 }

@@ -30,7 +30,6 @@ import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -127,7 +126,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         }
     }
 
-    protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(
+    protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInitializationException(
             MutablePicoContainer picoContainer) {
         return new ConstructorInjectionAdapter(NormalExceptionThrowing.class, NormalExceptionThrowing.class);
     }
@@ -169,7 +168,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         try {
             picoContainer.getComponent(NormalExceptionThrowing.class);
             fail();
-        } catch (PicoInvocationTargetInitializationException e) {
+        } catch (PicoInitializationException e) {
             assertEquals("test", e.getCause().getMessage());
         }
     }

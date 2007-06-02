@@ -31,7 +31,6 @@ import org.picocontainer.adapters.BehaviorAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 import org.picocontainer.defaults.SimpleReference;
 import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 
@@ -386,25 +385,25 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * 
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test with a addComponent that fails with a
-     *         {@link PicoInvocationTargetInitializationException} at instantiation. Registration in the pico is not
+     *         {@link PicoInitializationException} at instantiation. Registration in the pico is not
      *         necessary.
      */
-    protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(
+    protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInitializationException(
             MutablePicoContainer picoContainer) {
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final public void testINS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException() {
+    final public void testINS_normalExceptionIsRethrownInsidePicoInitializationException() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
-            final ComponentAdapter componentAdapter = prepINS_normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException(picoContainer);
+            final ComponentAdapter componentAdapter = prepINS_normalExceptionIsRethrownInsidePicoInitializationException(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             try {
                 componentAdapter.getComponentInstance(picoContainer);
-                fail("Thrown PicoInvocationTargetInitializationException excpected");
-            } catch (final PicoInvocationTargetInitializationException e) {
-                assertTrue(e.getMessage().endsWith("test"));
+                fail("Thrown PicoInitializationException excpected");
+            } catch (final PicoInitializationException e) {
                 assertTrue(e.getCause() instanceof Exception);
+                assertTrue(e.getCause().getMessage().endsWith("test"));
             }
         }
     }

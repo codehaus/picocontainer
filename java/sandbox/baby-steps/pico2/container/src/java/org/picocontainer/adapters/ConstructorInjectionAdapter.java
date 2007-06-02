@@ -21,7 +21,6 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
-import org.picocontainer.defaults.PicoInvocationTargetInitializationException;
 import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 
 import java.lang.reflect.Constructor;
@@ -214,7 +213,7 @@ public class ConstructorInjectionAdapter extends InjectingAdapter {
                         } else if (e.getTargetException() instanceof Error) {
                             throw (Error) e.getTargetException();
                         }
-                        throw new PicoInvocationTargetInitializationException(e.getTargetException());
+                        throw new PicoInitializationException(e.getTargetException());
                     } catch (InstantiationException e) {
                         // can't get here because checkConcrete() will catch it earlier, but see PICO-191
                         ///CLOVER:OFF

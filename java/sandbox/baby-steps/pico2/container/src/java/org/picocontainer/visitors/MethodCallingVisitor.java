@@ -9,14 +9,12 @@ package org.picocontainer.visitors;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.visitors.TraversalCheckingVisitor;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -77,8 +75,8 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
             if (!visitInInstantiationOrder) {
                 Collections.reverse(componentInstances);
             }
-            for (Iterator iterator = componentInstances.iterator(); iterator.hasNext();) {
-                invoke(iterator.next());
+            for (Object componentInstance : componentInstances) {
+                invoke(componentInstance);
             }
         } finally {
             componentInstances.clear();
@@ -100,12 +98,12 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
     }
 
     protected void invoke(final Object[] targets) {
-        for (int i = 0; i < targets.length; i++) {
-            invoke(targets[i]);
+        for (Object target : targets) {
+            invoke(target);
         }
     }
 
-    protected Object invoke(final Object target) {
+    protected Class<Void> invoke(final Object target) {
         final Method method = getMethod();
         try {
             method.invoke(target, getArguments());

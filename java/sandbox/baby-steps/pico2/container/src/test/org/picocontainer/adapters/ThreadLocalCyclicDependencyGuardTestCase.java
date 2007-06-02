@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.adapters;
 
 import junit.framework.TestCase;
 
@@ -19,13 +19,13 @@ public class ThreadLocalCyclicDependencyGuardTestCase
     private Runnable[] runner = new Runnable[3];
     
     class ThreadLocalRunner implements Runnable {
-        public ThreadLocalCyclicDependencyGuard.CyclicDependencyException exception;
+        public InjectingAdapter.CyclicDependencyException exception;
         private final Blocker blocker;
-        private final ThreadLocalCyclicDependencyGuard guard;
+        private final InjectingAdapter.ThreadLocalCyclicDependencyGuard guard;
 
         public ThreadLocalRunner() {
             this.blocker = new Blocker();
-            this.guard = new ThreadLocalCyclicDependencyGuard() {
+            this.guard = new InjectingAdapter.ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
                     try {
                         blocker.block();
@@ -39,7 +39,7 @@ public class ThreadLocalCyclicDependencyGuardTestCase
         public void run() {
             try {
                 guard.observe(ThreadLocalRunner.class);
-            } catch (ThreadLocalCyclicDependencyGuard.CyclicDependencyException e) {
+            } catch (InjectingAdapter.CyclicDependencyException e) {
                 exception = e;
             }
         }
@@ -88,4 +88,17 @@ public class ThreadLocalCyclicDependencyGuardTestCase
             assertNull(((ThreadLocalRunner) aRunner).exception);
         }
     }
+
+    public void testCyclicDependencyException() {
+        final InjectingAdapter.CyclicDependencyException cdEx = new InjectingAdapter.CyclicDependencyException(getClass());
+        cdEx.push(String.class);
+        final Class[] classes = cdEx.getDependencies();
+        assertEquals(2, classes.length);
+        assertSame(getClass(), classes[0]);
+        assertSame(String.class, classes[1]);
+        assertTrue(cdEx.getMessage().indexOf(getClass().getName()) >= 0);
+    }
+
+
+
 }

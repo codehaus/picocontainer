@@ -24,10 +24,10 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
+import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.parameters.BasicComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
@@ -290,7 +290,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         try {
             pico.getComponent(ComponentD.class);
             fail("CyclicDependencyException expected");
-        } catch (ThreadLocalCyclicDependencyGuard.CyclicDependencyException e) {
+        } catch (InjectingAdapter.CyclicDependencyException e) {
             // CyclicDependencyException reports now the stack.
             //final List dependencies = Arrays.asList(ComponentD.class.getConstructors()[0].getParameterTypes());
             final List<Class> dependencies = Arrays.<Class>asList(ComponentD.class, ComponentE.class, ComponentD.class);

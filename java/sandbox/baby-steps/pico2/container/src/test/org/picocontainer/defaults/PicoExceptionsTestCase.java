@@ -15,6 +15,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
+import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 
 import java.io.ByteArrayOutputStream;
@@ -95,15 +96,6 @@ public class PicoExceptionsTestCase
         executeTestOfStandardException(PicoRegistrationException.class);
     }
 
-    public void testCyclicDependencyException() {
-        final ThreadLocalCyclicDependencyGuard.CyclicDependencyException cdEx = new ThreadLocalCyclicDependencyGuard.CyclicDependencyException(getClass());
-        cdEx.push(String.class);
-        final Class[] classes = cdEx.getDependencies();
-        assertEquals(2, classes.length);
-        assertSame(getClass(), classes[0]);
-        assertSame(String.class, classes[1]);
-        assertTrue(cdEx.getMessage().indexOf(getClass().getName()) >= 0);
-    }
 
     public void testPrintStackTrace() throws IOException {
         PicoException nestedException = new PicoException("Outer", new Exception("Inner")) {

@@ -28,6 +28,7 @@ import org.picocontainer.Startable;
 import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.adapters.InstanceComponentAdapter;
+import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -438,7 +439,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     private Object getInstance(ComponentAdapter componentAdapter) {
-        // check wether this is our addAdapter
+        // check wether this is our adapter
         // we need to check this to ensure up-down dependencies cannot be followed
         final boolean isLocal = componentAdapters.contains(componentAdapter);
 
@@ -446,7 +447,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             Object instance;
             try {
                 instance = componentAdapter.getComponentInstance(this);
-            } catch (ThreadLocalCyclicDependencyGuard.CyclicDependencyException e) {
+            } catch (InjectingAdapter.CyclicDependencyException e) {
                 if (parent != null) {
                     instance = parent.getComponent(componentAdapter.getComponentKey());
                     if (instance != null) {

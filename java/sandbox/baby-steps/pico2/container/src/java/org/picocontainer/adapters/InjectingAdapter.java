@@ -15,7 +15,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.defaults.ThreadLocalCyclicDependencyGuard;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.parameters.ComponentParameter;
@@ -25,6 +24,8 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.List;
+import java.util.LinkedList;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
@@ -56,7 +57,6 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
      * @param parameters the parameters to use for the initialization
      * @param monitor the addComponent monitor used by this ComponentAdapter
      * @param lifecycleStrategy the lifecycle strategy used by this ComponentAdapter
-     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
@@ -81,7 +81,6 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
      * @param monitor the addComponent monitor used by this ComponentAdapter
-     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
@@ -96,7 +95,6 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
-     * @throws AssignabilityRegistrationException if the key is a type and the implementation cannot be assigned to.
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
@@ -177,5 +175,94 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
      * @throws NotConcreteRegistrationException
      */
     protected abstract Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, NotConcreteRegistrationException;
+
+
+    /**
+     * Abstract utility class to detect recursion cycles.
+     * Derive from this class and implement {@link ThreadLocalCyclicDependencyGuard#run}.
+     * The method will be called by  {@link ThreadLocalCyclicDependencyGuard#observe}. Select
+     * an appropriate guard for your scope. Any {@link org.picocontainer.defaults.ObjectReference} can be
+     * used as long as it is initialized with  <code>Boolean.FALSE</code>.
+     *
+     * @author J&ouml;rg Schaible
+     * @since 1.1
+     */
+    static abstract class ThreadLocalCyclicDependencyGuard extends ThreadLocal {
+
+        protected PicoContainer guardedContainer;
+
+        protected Object initialValue() {
+            return Boolean.FALSE;
+        }
+
+        /**
+         * Derive from this class and implement this function with the functionality
+         * to observe for a dependency cycle.
+         *
+         * @return a value, if the functionality result in an expression,
+         *      otherwise just return <code>null</code>
+         */
+        public abstract Object run();
+
+        /**
+         * Call the observing function. The provided guard will hold the {@link Boolean} value.
+         * If the guard is already <code>Boolean.TRUE</code> a {@link CyclicDependencyException}
+         * will be  thrown.
+         *
+         * @param stackFrame the current stack frame
+         * @return the result of the <code>run</code> method
+         */
+        public final Object observe(Class stackFrame) {
+            if (Boolean.TRUE.equals(get())) {
+                throw new CyclicDependencyException(stackFrame);
+            }
+            Object result = null;
+            try {
+                set(Boolean.TRUE);
+                result = run();
+            } catch (final CyclicDependencyException e) {
+                e.push(stackFrame);
+                throw e;
+            } finally {
+                set(Boolean.FALSE);
+            }
+            return result;
+        }
+
+        public void setGuardedContainer(PicoContainer container) {
+            this.guardedContainer = container;
+        }
+
+    }
+
+    public static class CyclicDependencyException extends PicoIntrospectionException {
+        private final List<Class> stack;
+
+        /**
+         * @since 1.1
+         */
+        public CyclicDependencyException(Class element) {
+            super((Throwable)null);
+            this.stack = new LinkedList<Class>();
+            push(element);
+        }
+
+        /**
+         * @since 1.1
+         */
+        public void push(Class element) {
+            stack.add(element);
+        }
+
+        public Class[] getDependencies() {
+            return stack.toArray(new Class[stack.size()]);
+        }
+
+        public String getMessage() {
+            return "Cyclic dependency: " + stack.toString();
+        }
+    }
+
+
 
 }

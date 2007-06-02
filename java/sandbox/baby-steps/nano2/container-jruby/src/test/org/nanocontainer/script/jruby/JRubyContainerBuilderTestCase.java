@@ -1,5 +1,18 @@
 package org.nanocontainer.script.jruby;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.InstanceComponentAdapter;
+import org.picocontainer.adapters.SetterInjectionAdapter;
+import org.picocontainer.adapters.SetterInjectionFactory;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -11,10 +24,10 @@ import java.net.URLClassLoader;
 import org.jmock.Mock;
 import org.jmock.core.Constraint;
 import org.jruby.exceptions.RaiseException;
-import org.nanocontainer.TestHelper;
-import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
+import org.nanocontainer.TestHelper;
+import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.testmodel.A;
@@ -23,18 +36,6 @@ import org.nanocontainer.testmodel.HasParams;
 import org.nanocontainer.testmodel.ParentAssemblyScope;
 import org.nanocontainer.testmodel.SomeAssemblyScope;
 import org.nanocontainer.testmodel.X;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentCharacteristic;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.adapters.InstanceComponentAdapter;
-import org.picocontainer.adapters.SetterInjectionFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.adapters.SetterInjectionAdapter;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 /**
  * @author Nick Sieger
@@ -86,7 +87,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals("foo", pico.getComponent("string"));
     }
 
-    // whoa - wrong addAdapter() being called.
+    // TODO whoa - wrong addAdapter() being called.
     public void do_NOT_testBuildingWithPicoSyntax() {
         Reader script = new StringReader(
                                          "$parent.addAdapter('foo', Java::JavaClass.for_name('java.lang.String'))\n"
@@ -198,8 +199,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "}");
 
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
-        A a = (A) pico.getComponent(A.class);
-        B b = (B) pico.getComponent(B.class);
+        A a = pico.getComponent(A.class);
+        B b = pico.getComponent(B.class);
 
         assertNotNull(a);
         assertNotNull(b);
@@ -223,7 +224,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     public void testCustomComponentAdapterFactoryCanBeSpecified() {
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +                                               
+                                         "A = org.nanocontainer.testmodel.A\n" +
                                          "container(:component_adapter_factory => $assembly_scope) {\n" +
                                          "    component(A)\n" +
                                          "}");
@@ -268,7 +269,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "}");
 
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
-        StringWriter writer = (StringWriter) pico.getComponent(StringWriter.class);
+        StringWriter writer = pico.getComponent(StringWriter.class);
         assertTrue(writer.toString().length() > 0);
     }
 
@@ -286,7 +287,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "}");
 
         PicoContainer pico = buildContainer(script, parent, ASSEMBLY_SCOPE);
-        StringWriter writer = (StringWriter) pico.getComponent(StringWriter.class);
+        StringWriter writer = pico.getComponent(StringWriter.class);
         assertTrue(writer.toString().length() > 0);
     }
 
@@ -306,7 +307,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "}");
 
         PicoContainer pico = buildContainer(script, parent, ASSEMBLY_SCOPE);
-        StringWriter writer = (StringWriter) pico.getComponent(StringWriter.class);
+        StringWriter writer = pico.getComponent(StringWriter.class);
         assertTrue(writer.toString().length() > 0);
     }
 
@@ -355,7 +356,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     public void testBuildContainerWithParentAttribute() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
-        parent.addComponent("hello", (Object) "world");
+        parent.addComponent("hello", "world");
 
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +

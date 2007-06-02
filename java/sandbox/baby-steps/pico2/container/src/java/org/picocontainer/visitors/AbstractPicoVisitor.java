@@ -8,7 +8,7 @@
 package org.picocontainer.visitors;
 
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.PicoVisitorTraversalException;
+import org.picocontainer.PicoException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,7 +19,7 @@ import java.security.PrivilegedAction;
  * Abstract PicoVisitor implementation. A generic traverse method is implemented, that 
  * accepts any object with a method named &quot;accept&quot;, that takes a 
  * {@link PicoVisitor}  as argument and and invokes it. Additionally it provides the 
- * {@link #checkTraversal()} method, that throws a {@link org.picocontainer.defaults.PicoVisitorTraversalException},
+ * {@link #checkTraversal()} method, that throws a {@link PicoVisitorTraversalException},
  * if currently no traversal is running.
  * 
  * @author J&ouml;rg Schaible
@@ -64,11 +64,32 @@ public abstract class AbstractPicoVisitor implements PicoVisitor {
 
     /**
      * Checks the traversal flag, indicating a currently running traversal of the visitor.
-     * @throws org.picocontainer.defaults.PicoVisitorTraversalException if no traversal is active.
+     * @throws PicoVisitorTraversalException if no traversal is active.
      */
     protected void checkTraversal() {
         if (!traversal) {
             throw new PicoVisitorTraversalException(this);
         }
     }
+
+    /**
+     * Exception for a PicoVisitor, that is dependent on a defined starting point of the traversal.
+     * If the traversal is not initiated with a call of {@link PicoVisitor#traverse}
+     *
+     * @author joehni
+     * @since 1.1
+     */
+    public static class PicoVisitorTraversalException
+            extends PicoException {
+
+        /**
+         * Construct the PicoVisitorTraversalException.
+         *
+         * @param visitor The visitor casing the exception.
+         */
+        public PicoVisitorTraversalException(PicoVisitor visitor) {
+            super("Traversal for PicoVisitor of type " + visitor.getClass().getName() + " must start with the visitor's traverse method");
+        }
+    }
+
 }

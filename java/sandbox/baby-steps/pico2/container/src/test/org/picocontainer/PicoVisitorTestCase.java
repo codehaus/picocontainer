@@ -12,8 +12,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.PicoVisitorTraversalException;
 import org.picocontainer.visitors.VerifyingVisitor;
+import org.picocontainer.visitors.AbstractPicoVisitor;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -31,7 +31,7 @@ public class PicoVisitorTestCase
         try {
             pico.accept(new VerifyingVisitor());
             fail("PicoVisitorTraversalException expected");
-        } catch (PicoVisitorTraversalException e) {
+        } catch (AbstractPicoVisitor.PicoVisitorTraversalException e) {
             assertTrue(e.getMessage().indexOf(VerifyingVisitor.class.getName()) >= 0);
         }
     }

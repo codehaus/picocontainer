@@ -15,6 +15,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
+import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -60,7 +61,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
                 1, picoContainer.getComponents().size());
     }
 
-    public void testUnregisterAfterInstantiateComponents() throws PicoRegistrationException, PicoInitializationException, AmbiguousComponentResolutionException {
+    public void testUnregisterAfterInstantiateComponents() throws PicoRegistrationException, PicoInitializationException, InjectingAdapter.AmbiguousComponentResolutionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();

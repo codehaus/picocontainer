@@ -14,7 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.AmbiguousComponentResolutionException;
+import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import java.io.Serializable;
@@ -197,7 +197,7 @@ public class BasicComponentParameter
                 for (int i = 0; i < foundClasses.length; i++) {
                     foundClasses[i] = found.get(i).getComponentImplementation();
                 }
-                throw new AmbiguousComponentResolutionException(expectedType, foundClasses);
+                throw new InjectingAdapter.AmbiguousComponentResolutionException(expectedType, foundClasses);
             }
         }
     }

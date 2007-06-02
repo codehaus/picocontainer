@@ -10,7 +10,7 @@ package org.picocontainer.gems.constraints;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.AmbiguousComponentResolutionException;
+import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.DecoratedTouchable;
@@ -81,7 +81,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
                     container.getComponentAdapter(DependsOnTouchable.class),
                     Touchable.class, null);
             fail("did not throw ambiguous resolution exception");
-        } catch (AmbiguousComponentResolutionException acre) {
+        } catch (InjectingAdapter.AmbiguousComponentResolutionException acre) {
             // success
         }
     }

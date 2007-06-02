@@ -12,8 +12,8 @@ import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.DecoratedTouchable;
@@ -57,7 +57,7 @@ public class ConstraintIntegrationTestCase
         try {
             container.getComponent(DecoratedTouchable.class);
             fail("AmbiguousComponentResolutionException expected");
-        } catch (AmbiguousComponentResolutionException acre) {
+        } catch (InjectingAdapter.AmbiguousComponentResolutionException acre) {
             // success
         }
     }

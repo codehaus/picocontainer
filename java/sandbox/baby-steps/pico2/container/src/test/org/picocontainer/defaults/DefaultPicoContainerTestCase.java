@@ -26,6 +26,7 @@ import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.adapters.SynchronizedBehaviorAdapter;
+import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
@@ -192,7 +193,7 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         try {
             pico.getComponent(DependsOnCollection.class);
             fail();
-        } catch (AmbiguousComponentResolutionException expected) {
+        } catch (InjectingAdapter.AmbiguousComponentResolutionException expected) {
             String doc = DependsOnCollection.class.getName();
             assertEquals("class " + doc + " has ambiguous dependency on interface java.util.Collection, resolves to multiple classes: [class java.util.ArrayList, class java.util.LinkedList]", expected.getMessage());
         }

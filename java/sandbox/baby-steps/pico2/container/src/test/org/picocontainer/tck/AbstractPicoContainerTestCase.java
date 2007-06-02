@@ -25,7 +25,6 @@ import org.picocontainer.Startable;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.adapters.InjectingAdapter;
-import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
@@ -188,7 +187,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         pico.addComponent("pong", "pang");
         try {
             pico.getComponent(String.class);
-        } catch (AmbiguousComponentResolutionException e) {
+        } catch (InjectingAdapter.AmbiguousComponentResolutionException e) {
             assertTrue(e.getMessage().indexOf("java.lang.String") != -1);
         }
     }
@@ -764,7 +763,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         try {
             pico.getComponent(DependsOnTouchable.class);
             fail("DependsOnTouchable should have been confused about the two Touchables");
-        } catch (AmbiguousComponentResolutionException e) {
+        } catch (InjectingAdapter.AmbiguousComponentResolutionException e) {
             List componentImplementations = Arrays.asList(e.getAmbiguousComponentKeys());
             assertTrue(componentImplementations.contains(DerivedTouchable.class));
             assertTrue(componentImplementations.contains(SimpleTouchable.class));

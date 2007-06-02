@@ -20,7 +20,6 @@ import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
-import org.picocontainer.defaults.AmbiguousComponentResolutionException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

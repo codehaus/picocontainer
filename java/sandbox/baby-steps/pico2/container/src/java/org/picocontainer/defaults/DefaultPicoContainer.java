@@ -271,7 +271,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 foundClasses[i] = found.get(i).getComponentImplementation();
             }
 
-            throw new AmbiguousComponentResolutionException(componentType, foundClasses);
+            throw new InjectingAdapter.AmbiguousComponentResolutionException(componentType, foundClasses);
         }
     }
 

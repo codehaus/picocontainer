@@ -26,6 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Arrays;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
@@ -260,6 +261,61 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
 
         public String getMessage() {
             return "Cyclic dependency: " + stack.toString();
+        }
+    }
+
+    /**
+     * Exception that is thrown as part of the introspection. Raised if a PicoContainer cannot resolve a
+     * type dependency because the registered {@link org.picocontainer.ComponentAdapter}s are not
+     * distinct.
+     *
+     * @author Paul Hammant
+     * @author Aslak Helles&oslash;y
+     * @author Jon Tirs&eacute;n
+     * @since 1.0
+     */
+    public static class AmbiguousComponentResolutionException extends PicoIntrospectionException {
+        private Class component;
+        private Class ambiguousDependency;
+        private final Object[] ambiguousComponentKeys;
+
+
+        /**
+         * Construct a new exception with the ambigous class type and the ambiguous addComponent keys.
+         *
+         * @param ambiguousDependency the unresolved dependency type
+         * @param componentKeys the ambiguous keys.
+         */
+        public AmbiguousComponentResolutionException(Class ambiguousDependency, Object[] componentKeys) {
+            super("");
+            this.ambiguousDependency = ambiguousDependency;
+            this.ambiguousComponentKeys = new Class[componentKeys.length];
+            System.arraycopy(componentKeys, 0, ambiguousComponentKeys, 0, componentKeys.length);
+        }
+
+        /**
+         * @return Returns a string containing the unresolved class type and the ambiguous keys.
+         */
+        public String getMessage() {
+            StringBuffer msg = new StringBuffer();
+            msg.append(component);
+            msg.append(" has ambiguous dependency on ");
+            msg.append(ambiguousDependency);
+            msg.append(", ");
+            msg.append("resolves to multiple classes: ");
+            msg.append(Arrays.asList(getAmbiguousComponentKeys()));
+            return msg.toString();
+        }
+
+        /**
+         * @return Returns the ambiguous addComponent keys as array.
+         */
+        public Object[] getAmbiguousComponentKeys() {
+            return ambiguousComponentKeys;
+        }
+
+        public void setComponent(Class component) {
+            this.component = component;
         }
     }
 

@@ -407,7 +407,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
         private final ComponentAdapter componentAdapter;
 
         public TicklePicoContainer(ComponentAdapter componentAdapter) {
-            super(null);
+            super(new DefaultPicoContainer());
             this.componentAdapter = componentAdapter;
         }
 

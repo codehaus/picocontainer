@@ -25,6 +25,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -384,7 +385,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
         private final ComponentAdapter componentAdapter;
 
         public TicklePicoContainer(ComponentAdapter componentAdapter) {
-            super(null);
+            super(new DefaultPicoContainer());
             this.componentAdapter = componentAdapter;
         }
 

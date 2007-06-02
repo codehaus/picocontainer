@@ -31,6 +31,9 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
     private MutablePicoContainer delegate;
 
     public AbstractDelegatingMutablePicoContainer(MutablePicoContainer delegate) {
+        if (delegate == null) {
+            throw new NullPointerException("MutablePicoContainer delegate must not be null");
+        }
         this.delegate = delegate;
     }
 

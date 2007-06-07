@@ -68,14 +68,14 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
     }
 
     protected ComponentAdapter prepDEF_visitable() {
-        return new ConstructorInjectionAdapter("bar", B.class, new Parameter[]{ComponentParameter.DEFAULT});
+        return new ConstructorInjectionAdapter("bar", B.class, ComponentParameter.DEFAULT);
     }
 
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
         picoContainer.addComponent(SimpleTouchable.class);
         return new ConstructorInjectionAdapter(
-                NamedDependsOnTouchable.class, NamedDependsOnTouchable.class, new Parameter[]{
-                        ComponentParameter.DEFAULT, new ConstantParameter("Name")});
+                NamedDependsOnTouchable.class, NamedDependsOnTouchable.class,
+                ComponentParameter.DEFAULT, new ConstantParameter("Name"));
     }
 
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {

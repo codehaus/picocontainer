@@ -442,12 +442,37 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     }
 
 
-    public void testPicoCanDifferentiateBetweenNamedElementsThatWouldOtherwiseBeAmbiguous() {
+    public void testPicoCanDifferentiateBetweenNamedStringsThatWouldOtherwiseBeAmbiguous() {
         MutablePicoContainer mpc = createPicoContainer(null);
         mpc.addComponent("greeting", "1");
         mpc.addComponent("message", "2");
         mpc.addComponent(PicoRegistrationException.class, PicoRegistrationException.class);
         assertEquals("2", mpc.getComponent(PicoRegistrationException.class).getMessage());
+    }
+
+    public void testPicoCanDifferentiateBetweenNamedObjectsThatWouldOtherwiseBeAmbiguous() {
+        MutablePicoContainer mpc = createPicoContainer(null);
+        Horse dobbin = new Horse();
+        Horse redRum = new Horse();
+        mpc.addComponent("dobbin", dobbin);
+        mpc.addComponent("horse", redRum);
+        mpc.addComponent(CdiTurtle.class);
+        assertEquals(redRum, mpc.getComponent(CdiTurtle.class).horse);
+    }
+
+    public void testPicoCanDifferentiateBetweenNamedIntsThatWouldOtherwiseBeAmbiguous() {
+        MutablePicoContainer mpc = createPicoContainer(null);
+        mpc.addComponent("one", 1);
+        mpc.addComponent("two", 2);
+        mpc.addComponent(NeedsTwo.class);
+        assertEquals(2, mpc.getComponent(NeedsTwo.class).two);
+    }
+
+    public static class NeedsTwo {
+        private final int two;
+        public NeedsTwo(Integer two) {
+            this.two = two;
+        }
     }
 
     public static class Horse {}

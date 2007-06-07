@@ -37,10 +37,8 @@ public class DefaultContainerRecorderTestCase extends TestCase {
         recorded.addComponent("int", new Integer(239));
         recorded.addComponent("thing",
                 ThingThatTakesParamsInConstructor.class,
-                new Parameter[]{
-                    ComponentParameter.DEFAULT,
-                    ComponentParameter.DEFAULT,
-                });
+                ComponentParameter.DEFAULT,
+                ComponentParameter.DEFAULT);
 
         MutablePicoContainer slave = new DefaultPicoContainer();
         recorder.replay(slave);

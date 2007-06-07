@@ -145,40 +145,36 @@ public class ParameterTestCase extends TestCase {
 
     public void testConstantParameterWithPrimitivesRejectsUnexpectedType() throws PicoInitializationException, NotConcreteRegistrationException, PicoIntrospectionException {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        Byte byteValue = new Byte((byte) 5);
+        Byte byteValue = (byte)5;
         ConstantParameter parameter = new ConstantParameter(byteValue);
         assertFalse(parameter.isResolvable(picoContainer, null, Integer.TYPE, pn));
-        Short shortValue = new Short((short) 5);
+        Short shortValue = (short)5;
         parameter = new ConstantParameter(shortValue);
         assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn));
-        Integer intValue = new Integer(5);
+        Integer intValue = 5;
         parameter = new ConstantParameter(intValue);
         assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn));
-        Long longValue = new Long(5);
+        Long longValue = (long)5;
         parameter = new ConstantParameter(longValue);
         assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn));
         Float floatValue = new Float(5.5);
         parameter = new ConstantParameter(floatValue);
         assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn));
-        Double doubleValue = new Double(5.5);
+        Double doubleValue = 5.5;
         parameter = new ConstantParameter(doubleValue);
         assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn));
-        Boolean booleanValue = new Boolean(true);
+        Boolean booleanValue = true;
         parameter = new ConstantParameter(booleanValue);
         assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn));
-        Character charValue = new Character('x');
+        Character charValue = 'x';
         parameter = new ConstantParameter(charValue);
         assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn));
     }
 
     public void testKeyClashBug118() throws PicoRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addComponent("A", String.class, new Parameter[]{
-            new ConstantParameter("A")
-        });
-        pico.addComponent("B", String.class, new Parameter[]{
-            new ConstantParameter("A")
-        });
+        pico.addComponent("A", String.class, new ConstantParameter("A"));
+        pico.addComponent("B", String.class, new ConstantParameter("A"));
         new VerifyingVisitor().traverse(pico);
     }
 

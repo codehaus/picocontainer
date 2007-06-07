@@ -76,7 +76,7 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
 
         // parameter fixes coverage of visitParameter !!
         final ComponentAdapter componentAdapter = picoContainer.addComponent(
-                Person.class, Person.class, new Parameter[]{new ConstantParameter("John Doe")}).lastCA();
+                Person.class, Person.class, new ConstantParameter("John Doe")).lastCA();
 
         dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter))
                 .will(returnValue(registrationInfo));

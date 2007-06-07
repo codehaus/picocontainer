@@ -55,8 +55,8 @@ public class CollectionsTestCase
 
         pico.addComponent(Shark.class);
         pico.addComponent(Cod.class);
-        pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-                new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false)});
+        pico.addComponent(Bowl.class, Bowl.class,
+                          new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false));
         //      END SNIPPET: usage
 
         Shark shark = (Shark) pico.getComponent(Shark.class);
@@ -80,8 +80,8 @@ public class CollectionsTestCase
         final Set set = new HashSet();
         pico.addComponent(Shark.class);
         pico.addComponent(Cod.class);
-        pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-                new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false)});
+        pico.addComponent(Bowl.class, Bowl.class,
+                          new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false));
         pico.addComponent(set);
 
         Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
@@ -110,8 +110,8 @@ public class CollectionsTestCase
 
         pico.addComponent(Shark.class);
         pico.addComponent(Cod.class);
-        pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-                new CollectionComponentParameter(Fish.class, false), new CollectionComponentParameter(Cod.class, false)});
+        pico.addComponent(Bowl.class, Bowl.class,
+                          new CollectionComponentParameter(Fish.class, false), new CollectionComponentParameter(Cod.class, false));
         // This addComponent will match both arguments of Bowl's constructor
         pico.addComponent(new LinkedList());
 
@@ -135,8 +135,8 @@ public class CollectionsTestCase
 
         //      START SNIPPET: emptyCollection
 
-        pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-                new ComponentParameter(Fish.class, true), new ComponentParameter(Cod.class, true)});
+        pico.addComponent(Bowl.class, Bowl.class,
+                          new ComponentParameter(Fish.class, true), new ComponentParameter(Cod.class, true));
 
         Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
         //      END SNIPPET: emptyCollection

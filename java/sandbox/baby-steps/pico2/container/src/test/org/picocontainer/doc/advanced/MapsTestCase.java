@@ -55,10 +55,8 @@ public class MapsTestCase
 
         pico.addComponent("Shark", Shark.class);
         pico.addComponent("Cod", Cod.class);
-        pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-            new ComponentParameter(Fish.class, false),
-            new ComponentParameter(Cod.class, false)
-        });
+        pico.addComponent(Bowl.class, Bowl.class, new ComponentParameter(Fish.class, false),
+                          new ComponentParameter(Cod.class, false));
         //      END SNIPPET: usage
 
         Shark shark = (Shark) pico.getComponent(Shark.class);
@@ -83,10 +81,8 @@ public class MapsTestCase
 
         pico.addComponent(Shark.class);
         pico.addComponent("Nemo", Cod.class);
-        pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-            new ComponentParameter(String.class, Fish.class, false),
-            new ComponentParameter(Cod.class, false)
-        });
+        pico.addComponent(Bowl.class, Bowl.class, new ComponentParameter(String.class, Fish.class, false),
+                          new ComponentParameter(Cod.class, false));
         
         Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
         //      END SNIPPET: useKeyType
@@ -112,10 +108,8 @@ public class MapsTestCase
         parent.addComponent("Harry", Cod.class);
         MutablePicoContainer child = new DefaultPicoContainer(parent);
         child.addComponent("Dick", Cod.class);
-        child.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-            new ComponentParameter(Fish.class, false),
-            new ComponentParameter(Cod.class, false)
-        });
+        child.addComponent(Bowl.class, Bowl.class, new ComponentParameter(Fish.class, false),
+                           new ComponentParameter(Cod.class, false));
         Bowl bowl = (Bowl) child.getComponent(Bowl.class);
         assertEquals(3, bowl.fishes.size());
         assertEquals(3, bowl.cods.size());
@@ -133,10 +127,8 @@ public class MapsTestCase
         parent.addComponent("Harry", Cod.class);
         MutablePicoContainer child = new DefaultPicoContainer(parent);
         child.addComponent("Dick", Shark.class);
-        child.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-            new ComponentParameter(Fish.class, false),
-            new ComponentParameter(Cod.class, false)
-        });
+        child.addComponent(Bowl.class, Bowl.class, new ComponentParameter(Fish.class, false),
+                           new ComponentParameter(Cod.class, false));
         Bowl bowl = (Bowl) child.getComponent(Bowl.class);
         assertEquals(3, bowl.fishes.size());
         assertEquals(2, bowl.cods.size());
@@ -153,14 +145,12 @@ public class MapsTestCase
         mpc.addComponent("Dick", Cod.class);
         mpc.addComponent("Harry", Cod.class);
         mpc.addComponent("Sharky", Shark.class);
-        mpc.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-            new CollectionComponentParameter(Fish.class, false),
-            new CollectionComponentParameter(Cod.class, false) {
-                protected boolean evaluate(ComponentAdapter adapter) {
-                    return !"Tom".equals(adapter.getComponentKey());
-                }
-            }
-        });
+        mpc.addComponent(Bowl.class, Bowl.class, new CollectionComponentParameter(Fish.class, false),
+                         new CollectionComponentParameter(Cod.class, false) {
+                             protected boolean evaluate(ComponentAdapter adapter) {
+                                 return !"Tom".equals(adapter.getComponentKey());
+                             }
+                         });
         Cod tom = (Cod) mpc.getComponent("Tom");
         Bowl bowl = (Bowl) mpc.getComponent(Bowl.class);
         assertTrue(bowl.fishes.values().contains(tom));

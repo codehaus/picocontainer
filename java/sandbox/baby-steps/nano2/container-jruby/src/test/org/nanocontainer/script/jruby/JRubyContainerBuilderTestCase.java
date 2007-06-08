@@ -7,6 +7,8 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.adapters.SetterInjectionAdapter;
 import org.picocontainer.adapters.SetterInjectionFactory;
@@ -233,7 +235,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         Mock cafMock = mock(ComponentFactory.class);
         Constraint[] cons = {isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)};
         cafMock.expects(once()).method("createComponentAdapter").with(cons)
-            .will(returnValue(new InstanceComponentAdapter(A.class, a)));
+            .will(returnValue(new InstanceComponentAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance())));
         PicoContainer pico = buildContainer(script, null, cafMock.proxy());
         assertSame(a, pico.getComponent(A.class));
     }

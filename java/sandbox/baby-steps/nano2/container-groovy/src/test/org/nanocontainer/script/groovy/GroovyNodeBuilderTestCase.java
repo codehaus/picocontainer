@@ -27,6 +27,8 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.adapters.SetterInjectionAdapter;
 import org.picocontainer.adapters.SetterInjectionFactory;
@@ -272,7 +274,8 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         A a = new A();
         Mock cafMock = mock(ComponentFactory.class);
-        cafMock.expects(once()).method("createComponentAdapter").with(new Constraint[] { isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)}).will(returnValue(new InstanceComponentAdapter(A.class, a)));
+        cafMock.expects(once()).method("createComponentAdapter").with(new Constraint[] { isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)}).will(returnValue(new InstanceComponentAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance())));
         ComponentFactory componentAdapterFactory = (ComponentFactory) cafMock.proxy();
         PicoContainer pico = buildContainer(script, null, componentAdapterFactory);
         assertSame(a, pico.getComponent(A.class));

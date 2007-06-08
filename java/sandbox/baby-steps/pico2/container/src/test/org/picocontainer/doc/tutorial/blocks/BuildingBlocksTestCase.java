@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.CachingBehaviorFactory;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.CachingBehaviorAdapter;
@@ -32,7 +34,8 @@ public class BuildingBlocksTestCase extends TestCase {
         picoContainer.addComponent(new Apple());
         // END SNIPPET: register-convenient
         // START SNIPPET: register-direct
-        picoContainer.addAdapter(new InstanceComponentAdapter("Another Apple", new Apple()));
+        picoContainer.addAdapter(new InstanceComponentAdapter("Another Apple", new Apple(), NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance()));
         // END SNIPPET: register-direct
     }
 

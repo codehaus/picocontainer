@@ -23,6 +23,8 @@ import org.nanocontainer.remoting.jmx.testmodel.Person;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -159,7 +161,8 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
      */
     public void testIllegalVisit() {
         final JMXVisitor jmxVisitor = createVisitor(1);
-        final ComponentAdapter componentAdapter = new InstanceComponentAdapter(this, this);
+        final ComponentAdapter componentAdapter = new InstanceComponentAdapter(this, this, NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance());
         try {
             jmxVisitor.traverse(componentAdapter);
             fail("JMXRegistrationException expected");

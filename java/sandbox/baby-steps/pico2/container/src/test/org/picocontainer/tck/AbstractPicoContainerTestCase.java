@@ -22,6 +22,8 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.adapters.InjectingAdapter;
@@ -724,7 +726,9 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             parent.addAdapter(new ConstructorInjectionAdapter(HashMap.class, HashMap.class)).lastCA();
         ComponentAdapter hashSetAdapter =
             parent.addAdapter(new ConstructorInjectionAdapter(HashSet.class, HashSet.class)).lastCA();
-        ComponentAdapter stringAdapter = parent.addAdapter(new InstanceComponentAdapter(String.class, "foo")).lastCA();
+        ComponentAdapter stringAdapter = parent.addAdapter(new InstanceComponentAdapter(String.class, "foo",
+                                                                        NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance())).lastCA();
         ComponentAdapter arrayListAdapter =
             child.addAdapter(new ConstructorInjectionAdapter(ArrayList.class, ArrayList.class)).lastCA();
         Parameter componentParameter = BasicComponentParameter.BASIC_DEFAULT;

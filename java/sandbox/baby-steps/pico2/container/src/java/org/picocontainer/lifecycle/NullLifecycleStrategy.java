@@ -2,7 +2,9 @@ package org.picocontainer.lifecycle;
 
 import org.picocontainer.LifecycleStrategy;
 
-public class NullLifecycleStrategy implements LifecycleStrategy {
+import java.io.Serializable;
+
+public class NullLifecycleStrategy implements LifecycleStrategy, Serializable {
 
     private static LifecycleStrategy instance;
     public static synchronized LifecycleStrategy getInstance() {

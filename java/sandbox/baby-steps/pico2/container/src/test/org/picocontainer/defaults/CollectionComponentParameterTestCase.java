@@ -5,6 +5,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.parameters.CollectionComponentParameter;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
@@ -42,7 +44,9 @@ public class CollectionComponentParameterTestCase
         Mock containerMock = mock(PicoContainer.class);
         containerMock.expects(once()).method("getComponentAdapters").withNoArguments().will(returnValue(new HashSet()));
         containerMock.expects(once()).method("getComponentAdapters").with(eq(String.class)).will(
-                returnValue(Arrays.asList(new InstanceComponentAdapter("y", "Hello"), new InstanceComponentAdapter("z", "World"))));
+                returnValue(Arrays.asList(new InstanceComponentAdapter("y", "Hello", NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance()), new InstanceComponentAdapter("z", "World", NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance()))));
         containerMock.expects(once()).method("getComponent").with(eq("z")).will(returnValue("World"));
         containerMock.expects(once()).method("getComponent").with(eq("y")).will(returnValue("Hello"));
         containerMock.expects(once()).method("getParent").withNoArguments().will(returnValue(null));

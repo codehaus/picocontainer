@@ -34,6 +34,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.adapters.InstanceComponentAdapter;
@@ -310,7 +312,8 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 
 	public void testRegisterComponentInstanceWithKey() {
 		String testString = "This is a test.";
-		ComponentAdapter testAdapter = new InstanceComponentAdapter(String.class, testString);
+		ComponentAdapter testAdapter = new InstanceComponentAdapter(String.class, testString, NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance());
 		picoMock.expects(once()).method("addComponent").with(same(String.class), same(testString), eq(Parameter.ZERO)).will(returnValue(new TicklePicoContainer(testAdapter)));
 
 		ComponentAdapter result = tracingDecorator.addComponent(String.class, testString, Parameter.ZERO).lastCA();
@@ -371,7 +374,8 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 
 	public void testUnregisterComponentByInstance() {
 		String testString = "This is a test.";
-		ComponentAdapter testAdapter = new InstanceComponentAdapter(String.class, testString);
+		ComponentAdapter testAdapter = new InstanceComponentAdapter(String.class, testString, NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance());
 		picoMock.expects(once()).method("removeComponentByInstance").with(same(testString)).will(returnValue(testAdapter));
 		
 		ComponentAdapter result = tracingDecorator.removeComponentByInstance(testString);

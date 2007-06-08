@@ -17,6 +17,8 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.CachingBehaviorAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
@@ -72,7 +74,8 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
      */
     public void testAvoidUnnecessaryProxy() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(TestCase.class, this)));
+        mpc.addAdapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance())));
         final TestCase self = (TestCase)mpc.getComponent(TestCase.class);
         assertFalse(Proxy.isProxyClass(self.getClass()));
         assertSame(this, self);
@@ -83,7 +86,8 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
      */
     public void testAvoidedProxyDoesNotChangeComponentKey() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(getClass(), this)));
+        mpc.addAdapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(getClass(), this, NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance())));
         final TestCase self = (TestCase)mpc.getComponent(getClass());
         assertNotNull(self);
         assertSame(this, self);
@@ -94,7 +98,8 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
      */
     public void testComponentMustImplementInterface() {
         try {
-            new AssimilatingComponentAdapter(SimpleTouchable.class, new InstanceComponentAdapter(TestCase.class, this));
+            new AssimilatingComponentAdapter(SimpleTouchable.class, new InstanceComponentAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance()));
             fail("PicoIntrospectionException expected");
         } catch (final PicoIntrospectionException e) {
             assertTrue(e.getMessage().endsWith(SimpleTouchable.class.getName()));
@@ -108,7 +113,8 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
     public void testComponentMustHaveMathichMethods() throws NoSuchMethodException {
         final Method touch = Touchable.class.getMethod("touch", (Class[])null);
         try {
-            new AssimilatingComponentAdapter(Touchable.class, new InstanceComponentAdapter(TestCase.class, this));
+            new AssimilatingComponentAdapter(Touchable.class, new InstanceComponentAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance()));
             fail("PicoIntrospectionException expected");
         } catch (final PicoIntrospectionException e) {
             assertTrue(e.getMessage().endsWith(touch.toString()));
@@ -144,7 +150,8 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
 
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
         return new AssimilatingComponentAdapter(Touchable.class, new InstanceComponentAdapter(
-                CompatibleTouchable.class, new CompatibleTouchable()), new CglibProxyFactory());
+                CompatibleTouchable.class, new CompatibleTouchable(), NullLifecycleStrategy.getInstance(),
+                                                                        NullComponentMonitor.getInstance()), new CglibProxyFactory());
     }
 
     protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {

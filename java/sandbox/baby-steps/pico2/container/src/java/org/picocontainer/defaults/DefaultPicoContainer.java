@@ -102,7 +102,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return false;
         }
     };
-    private ComponentMonitor componentMonitor = NullComponentMonitor.getInstance();
+    private ComponentMonitor componentMonitor;
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
@@ -118,7 +118,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent                  the parent container (used for addComponent dependency lookups).
      */
     public DefaultPicoContainer(ComponentFactory componentAdapterFactory, PicoContainer parent) {
-        this(componentAdapterFactory, new StartableLifecycleStrategy(NullComponentMonitor.getInstance()), parent);
+        this(componentAdapterFactory, new StartableLifecycleStrategy(NullComponentMonitor.getInstance()), parent, NullComponentMonitor.getInstance());
     }
 
     /**
@@ -142,6 +142,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                                 LifecycleStrategy lifecycleStrategyForInstanceRegistrations,
                                 PicoContainer parent)
     {
+        this(componentAdapterFactory, lifecycleStrategyForInstanceRegistrations, parent, NullComponentMonitor.getInstance() );
+    }
+
+    public DefaultPicoContainer(ComponentFactory componentAdapterFactory,
+                                LifecycleStrategy lifecycleStrategyForInstanceRegistrations,
+                                PicoContainer parent, ComponentMonitor componentMonitor)
+    {
         if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
         if (lifecycleStrategyForInstanceRegistrations == null) throw new NullPointerException("lifecycleStrategy");
         this.componentAdapterFactory = componentAdapterFactory;
@@ -150,7 +157,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (parent != null && !(parent instanceof EmptyPicoContainer)) {
             this.parent = ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
         }
+        this.componentMonitor = componentMonitor;
     }
+
 
     /**
      * Creates a new container with the AnyInjectionFactory using a
@@ -160,9 +169,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent  the parent container (used for addComponent dependency lookups).
      */
     public DefaultPicoContainer(ComponentMonitor monitor, PicoContainer parent) {
-        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), parent);
-        lifecycleStrategy = new StartableLifecycleStrategy(monitor);
-        componentMonitor = monitor;
+        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), new StartableLifecycleStrategy(monitor), parent, monitor);
     }
 
     /**
@@ -174,20 +181,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent            the parent container (used for addComponent dependency lookups).
      */
     public DefaultPicoContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), lifecycleStrategy, parent);
-        componentMonitor = monitor;
-
-    }
-
-
-    // to assist PicoBuilder
-    public DefaultPicoContainer(ComponentFactory caf,
-                                ComponentMonitor monitor,
-                                LifecycleStrategy lifecycleStrategy,
-                                PicoContainer parent)
-    {
-        this(caf, lifecycleStrategy, parent);
-        componentMonitor = monitor;
+        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), lifecycleStrategy, parent, monitor);
     }
 
     /**

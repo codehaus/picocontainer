@@ -108,7 +108,7 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
             pico.getComponent(Multi.class);
             fail();
         } catch (PicoIntrospectionException e) {
-            assertEquals("3 satisfiable constructos is too many for 'class org.picocontainer.tck.AbstractMultipleConstructorTestCase$Multi'. Constructor List:[<init>(), <init>(org.picocontainer.tck.AbstractMultipleConstructorTestCase$One,org.picocontainer.tck.AbstractMultipleConstructorTestCase$Two), <init>(org.picocontainer.tck.AbstractMultipleConstructorTestCase$Two,org.picocontainer.tck.AbstractMultipleConstructorTestCase$One)]",
+            assertEquals("3 satisfiable constructors is too many for 'class org.picocontainer.tck.AbstractMultipleConstructorTestCase$Multi'. Constructor List:[<init>(), <init>(org.picocontainer.tck.AbstractMultipleConstructorTestCase$One,org.picocontainer.tck.AbstractMultipleConstructorTestCase$Two), <init>(org.picocontainer.tck.AbstractMultipleConstructorTestCase$Two,org.picocontainer.tck.AbstractMultipleConstructorTestCase$One)]",
                     e.getMessage());
         }
     }

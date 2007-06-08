@@ -325,7 +325,7 @@ public class NanoBuilderTestCase extends TestCase {
 
     public static class TestPicoContainer extends DefaultPicoContainer {
         public TestPicoContainer(ComponentFactory caf, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-            super(caf, monitor, lifecycleStrategy, parent);
+            super(caf, lifecycleStrategy, parent, monitor);
         }
     }
 

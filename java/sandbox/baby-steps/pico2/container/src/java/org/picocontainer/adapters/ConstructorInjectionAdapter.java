@@ -169,7 +169,7 @@ public class ConstructorInjectionAdapter extends InjectingAdapter {
             }
         }
         if (!conflicts.isEmpty()) {
-            throw new PicoIntrospectionException(conflicts.size() + " satisfiable constructos is too many for '"+getComponentImplementation()+"'. Constructor List:" + conflicts.toString().replace(getComponentImplementation().getName(),"<init>").replace("public <i","<i"));
+            throw new PicoIntrospectionException(conflicts.size() + " satisfiable constructors is too many for '"+getComponentImplementation()+"'. Constructor List:" + conflicts.toString().replace(getComponentImplementation().getName(),"<init>").replace("public <i","<i"));
         } else if (greediestConstructor == null && !unsatisfiableDependencyTypes.isEmpty()) {
             throw new UnsatisfiableDependenciesException(this, unsatisfiedDependencyType, unsatisfiableDependencyTypes, container);
         } else if (greediestConstructor == null) {

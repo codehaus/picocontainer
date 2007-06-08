@@ -11,6 +11,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.adapters.ImplementationHidingBehaviorFactory;
 
@@ -63,6 +64,9 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithStartableLifecycle() {
+        
+        NullComponentMonitor.getInstance();
+
         MutablePicoContainer mpc = new PicoBuilder().withLifecycle().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -72,7 +76,6 @@ public class PicoBuilderTestCase extends TestCase {
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "  lifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/PICO/lifecycleStrategy/componentMonitor\n" +
                 "PICO",foo);
     }
@@ -92,7 +95,6 @@ public class PicoBuilderTestCase extends TestCase {
                 "      stringdisposestring\n" +
                 "    methodNames\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "  lifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/PICO/lifecycleStrategy/componentMonitor\n" +
                 "PICO",foo);
     }
@@ -109,9 +111,24 @@ public class PicoBuilderTestCase extends TestCase {
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
                 "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "  componentMonitor\n" +
                 "PICO",foo);
     }
+
+    public void testWithConsoleMonitorAndLifecycleUseTheSameUltimateMonitor() {
+        MutablePicoContainer mpc = new PicoBuilder().withLifecycle().withConsoleMonitor().build();
+        String foo = simplifyRepresentation(mpc);
+        assertEquals("PICO\n" +
+                     "  componentAdapterFactory=org.picocontainer.adapters.AnyInjectionFactory\n" +
+                     "    cdiDelegate\n" +
+                     "    sdiDelegate\n" +
+                     "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                     "  lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
+                     "    componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
+                     "      delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
+                     "  componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor reference=/PICO/lifecycleStrategy/componentMonitor\n" +
+                     "PICO",foo);
+    }
+
 
     public void testWithCustomMonitorByClass() {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(ConsoleComponentMonitor.class).build();
@@ -124,7 +141,6 @@ public class PicoBuilderTestCase extends TestCase {
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
                 "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "  componentMonitor\n" +
                 "PICO",foo);
     }
     
@@ -312,6 +328,9 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  disposed","");
         foo = foo.replaceAll("\n  handler","");
         foo = foo.replaceAll("\n  children","");
+        foo = foo.replaceAll("\n  lifecycleStrategy\n","\n");
+        foo = foo.replaceAll("\n  componentMonitor\n","\n");
+        foo = foo.replaceAll("\n    componentMonitor\n","\n");
         foo = foo.replaceAll("\n  delegate\n","\n");
         foo = foo.replaceAll("\n    delegate\n","\n");
         foo = foo.replaceAll("\n      delegate\n","\n");

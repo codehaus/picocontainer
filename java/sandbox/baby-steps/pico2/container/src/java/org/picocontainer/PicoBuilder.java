@@ -18,6 +18,7 @@ import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.containers.TransientPicoContainer;
 
 import java.util.Stack;
 
@@ -113,7 +114,7 @@ public class PicoBuilder {
 
     public MutablePicoContainer build() {
 
-        DefaultPicoContainer temp = new DefaultPicoContainer();
+        DefaultPicoContainer temp = new TransientPicoContainer();
         temp.addComponent(PicoContainer.class, parentContainer);
 
         ComponentFactory lastCaf = injectionType;

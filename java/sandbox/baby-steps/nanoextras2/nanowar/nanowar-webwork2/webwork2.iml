@@ -123,7 +123,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/opensymphony/webwork/2.1.7/webwork-2.1.7.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/opensymphony/webwork/2.2.5/webwork-2.2.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -168,7 +168,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/opensymphony/xwork/1.0.5/xwork-1.0.5.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/opensymphony/xwork/1.2.2/xwork-1.2.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

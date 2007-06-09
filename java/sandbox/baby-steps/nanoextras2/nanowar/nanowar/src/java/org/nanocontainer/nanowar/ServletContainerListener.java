@@ -86,15 +86,4 @@ public final class ServletContainerListener implements ServletContextListener, H
         sessionListener.sessionDestroyed(event);
     }
 
-    /**
-     * @deprecated Use NanoWarContextListener.buildContainer() instead.
-     * @param builder ScriptedContainerBuilder
-     * @return PicoContainer
-     */
-    protected PicoContainer buildContainer(ScriptedContainerBuilder builder) {
-        ObjectReference containerRef = new SimpleReference();
-        builder.buildContainer(containerRef, new SimpleReference(), new SimpleReference(), false);
-        return (PicoContainer) containerRef.get();
-    }
-
 }

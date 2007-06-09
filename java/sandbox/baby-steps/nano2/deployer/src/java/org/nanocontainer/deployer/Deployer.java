@@ -22,25 +22,6 @@ public interface Deployer {
 
     /**
      * Deploys some sort of application folder.  As far as NanoContainer deployment
-     * goes, there is a null assembly scope associated with this method.
-     * @param applicationFolder FileObject the base class of the 'archive'.  By
-     * archive, the format depends on the deployer instance, and it may even
-     * apply to things such remote URLs.  Must use Apache VFS
-     * @param parentClassLoader The parent classloader to attach this container to.
-     * @param parentContainerRef ObjectReference the parent container object reference.
-     * @return ObjectReference a new object reference that container the new
-     * container.
-     * @throws FileSystemException upon VFS-based errors.
-     * @throws ClassNotFoundException upon class instantiation error while running
-     * the composition script.
-     * @deprecated Since NanoContainer 1.2  (3/15/06).  Use the version of this
-     * method with an assembly scope instead and pass in a null argument instead.
-     */
-    ObjectReference deploy(FileObject applicationFolder, ClassLoader parentClassLoader, ObjectReference parentContainerRef) throws FileSystemException, ClassNotFoundException;
-
-
-    /**
-     * Deploys some sort of application folder.  As far as NanoContainer deployment
      * goes, there is a null assembly scope associated with this method, and
      * @param applicationFolder FileObject the base class of the 'archive'.  By
      * archive, the format depends on the deployer instance, and it may even

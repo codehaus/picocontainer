@@ -56,7 +56,7 @@ import org.picocontainer.defaults.SimpleReference;
  * </ol>
  * </p>
  * <p><b>Note:</b> if one is interested in both application-scoped and session-scoped components, the 
- * {@link org.nanocontainer.nanowar.ServletContainerLister} should be configured in the web.xml.
+ * {@link org.nanocontainer.nanowar.ServletContextListener} should be configured in the web.xml.
  * </p>
  * @see org.nanocontainer.nanowar.NanoWarSessionListener
  * @see org.nanocontainer.nanowar.ServletContainerListener

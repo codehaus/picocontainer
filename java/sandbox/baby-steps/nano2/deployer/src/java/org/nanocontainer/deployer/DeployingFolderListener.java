@@ -19,10 +19,8 @@ public class DeployingFolderListener implements FolderListener, Startable {
 
     public void folderAdded(FileObject folder) {
         try {
-            deployer.deploy(folder, getClass().getClassLoader(), null);
+            deployer.deploy(folder, getClass().getClassLoader(), null, null);
         } catch (FileSystemException e) {
-            throw new DeploymentException(e);
-        } catch (ClassNotFoundException e) {
             throw new DeploymentException(e);
         }
     }

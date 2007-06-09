@@ -45,7 +45,7 @@ import java.io.Serializable;
  * </ol>
  * </p>
  * <p><b>Note:</b> if one is interested in both application-scoped and session-scoped components, the 
- * {@link org.nanocontainer.nanowar.ServletContainerLister} should be configured in the web.xml.
+ * {@link org.nanocontainer.nanowar.ServletContextListener} should be configured in the web.xml.
  * </p>
  * <p><strong>Warning:</strong> session-level containers can be problematic on
  * many fronts including persisted sessions, clustering, etc.

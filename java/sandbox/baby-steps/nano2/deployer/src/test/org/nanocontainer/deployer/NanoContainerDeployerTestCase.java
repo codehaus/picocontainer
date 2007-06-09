@@ -25,12 +25,12 @@ public final class NanoContainerDeployerTestCase extends TestCase {
     private final String jarsDir = "target/deployer/apps";
     private final String folderPath = "src/deploytest";
 
-    public void testZipWithDeploymentScriptAndClassesCanBeDeployed() throws FileSystemException, MalformedURLException, ClassNotFoundException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+    public void testZipWithDeploymentScriptAndClassesCanBeDeployed() throws FileSystemException, MalformedURLException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         DefaultFileSystemManager manager = new DefaultFileSystemManager();
         FileObject applicationArchive = getApplicationArchive(manager, jarsDir + "/successful-deploy.jar");
 
         Deployer deployer = new NanoContainerDeployer(manager);
-        ObjectReference containerRef = deployer.deploy(applicationArchive, getClass().getClassLoader(), null);
+        ObjectReference containerRef = deployer.deploy(applicationArchive, getClass().getClassLoader(), null, null);
         PicoContainer pico = (PicoContainer) containerRef.get();
         Object zap = pico.getComponent("zap");
         assertEquals("Groovy Started", zap.toString());
@@ -89,7 +89,7 @@ public final class NanoContainerDeployerTestCase extends TestCase {
         applicationClassLoader.loadClass("foo.bar.Zap");
     }
 
-    public void testSettingDifferentBaseNameWillResultInChangeForWhatBuilderLooksFor() throws FileSystemException, MalformedURLException, ClassNotFoundException {
+    public void testSettingDifferentBaseNameWillResultInChangeForWhatBuilderLooksFor() throws FileSystemException, MalformedURLException {
         DefaultFileSystemManager manager = new DefaultFileSystemManager();
         FileObject applicationFolder = getApplicationFolder(manager, folderPath);
         NanoContainerDeployer deployer = new NanoContainerDeployer(manager);
@@ -99,7 +99,7 @@ public final class NanoContainerDeployerTestCase extends TestCase {
         assertEquals("foo", deployer.getFileBasename());
 
         try {
-            ObjectReference containerRef = deployer.deploy(applicationFolder, getClass().getClassLoader(), null);
+            ObjectReference containerRef = deployer.deploy(applicationFolder, getClass().getClassLoader(), null, null);
             fail("Deployer should have now thrown an exception after changing the base name. Instead got: " + containerRef.toString());
         }
         catch (FileSystemException ex) {

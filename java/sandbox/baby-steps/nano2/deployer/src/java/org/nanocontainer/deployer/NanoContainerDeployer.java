@@ -147,20 +147,6 @@ public class NanoContainerDeployer implements Deployer {
     }
 
 
-    /**
-     * Deploys an application.
-     *
-     * @param applicationFolder the root applicationFolder of the application.
-     * @param parentClassLoader the classloader that loads the application classes.
-     * @param parentContainerRef reference to the parent container (can be used to lookup components form a parent container).
-     * @return an ObjectReference holding a PicoContainer with the deployed components
-     * @throws org.apache.commons.vfs.FileSystemException if the file structure was bad.
-     * @throws org.nanocontainer.integrationkit.PicoCompositionException if the deployment failed for some reason.
-     */
-    public ObjectReference deploy(FileObject applicationFolder, ClassLoader parentClassLoader, ObjectReference parentContainerRef) throws FileSystemException, ClassNotFoundException {
-        return deploy(applicationFolder, parentClassLoader, parentContainerRef, null);
-    }
-
     public ObjectReference deploy(FileObject applicationFolder, ClassLoader parentClassLoader, ObjectReference parentContainerRef, Object assemblyScope) throws FileSystemException {
         ClassLoader applicationClassLoader = new VFSClassLoader(applicationFolder, fileSystemManager, parentClassLoader);
 

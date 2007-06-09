@@ -19,7 +19,7 @@ public class DeployingFolderListenerTestCase extends MockObjectTestCase {
         Mock deployerMock = mock(Deployer.class);
         deployerMock.expects(once())
                     .method("deploy")
-                    .with(same(folder), isA(ClassLoader.class), ANYTHING)
+                    .with(same(folder), isA(ClassLoader.class), ANYTHING, NULL)
                     .will(returnValue(null));
         Deployer deployer = (Deployer)deployerMock.proxy();
         DifferenceAnalysingFolderContentHandler handler = null;

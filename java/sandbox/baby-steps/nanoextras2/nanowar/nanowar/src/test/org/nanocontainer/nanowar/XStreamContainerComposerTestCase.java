@@ -52,7 +52,7 @@ public class XStreamContainerComposerTestCase extends MockObjectTestCase impleme
     }
     
 
-    public void testCompositionWithInvalidScope() throws ClassNotFoundException {
+    public void testCompositionWithInvalidScope() {
         XStreamContainerComposer composer = new XStreamContainerComposer();
 
         MutablePicoContainer applicationContainer = new DefaultPicoContainer();
@@ -60,7 +60,7 @@ public class XStreamContainerComposerTestCase extends MockObjectTestCase impleme
         assertNull(applicationContainer.getComponent("applicationScopedInstance"));
     }
         
-    public void testComposedHierarchy() throws ClassNotFoundException {
+    public void testComposedHierarchy() {
         XStreamContainerComposer composer = new XStreamContainerComposer();
 
         MutablePicoContainer applicationContainer = new DefaultPicoContainer();

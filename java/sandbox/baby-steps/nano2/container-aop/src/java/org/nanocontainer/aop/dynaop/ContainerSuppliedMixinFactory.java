@@ -35,7 +35,7 @@ class ContainerSuppliedMixinFactory implements MixinFactory {
      * using a given addComponent key.
      *
      * @param pico              the <code>PicoContainer</code> to retrieve the mixin from.
-     * @param mixinClass
+     * @param mixinClass    the mixin class
      */
     ContainerSuppliedMixinFactory(PicoContainer pico, Class mixinClass) {
         this.pico = pico;

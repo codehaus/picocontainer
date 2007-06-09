@@ -95,9 +95,8 @@ public final class ServletChainBuilder {
 	 *            selecting Application objects
      * @param parent the parent PicoContainer or <code>null</code>
 	 * @return The configured ContainerChain
-	 * @throws ClassNotFoundException
 	 */
-	public ContainerChain buildChain(Object[] pathElements, PicoContainer parent) throws ClassNotFoundException {
+	public ContainerChain buildChain(Object[] pathElements, PicoContainer parent) {
 		ContainerChain chain = new ContainerChain();
 		populateRecursively(chain, parent, Arrays.asList(pathElements).iterator());
 		return chain;
@@ -109,10 +108,9 @@ public final class ServletChainBuilder {
      * @param chain the ContainerChain to which the containers are added
 	 * @param parent the parent PicoContainer
      * @param pathElements the Iterator on the path elements
-	 * @throws ClassNotFoundException
 	 */
 	public void populateRecursively(ContainerChain chain, PicoContainer parent,
-			Iterator pathElements) throws ClassNotFoundException {
+			Iterator pathElements) {
 		if (pathElements.hasNext()) {
 			Object key = pathElements.next();
 			DefaultPicoContainer container = new DefaultPicoContainer(parent);
@@ -130,7 +128,6 @@ public final class ServletChainBuilder {
      * @param reader the Reader for the builder
      * @param classLoader the ClassLoader for the builder
      * @return An instance of ContainerPopulator
-     * @throws ClassNotFoundException
      */
     private ContainerPopulator createContainerPopulator(String containerBuilderClassName, Reader reader, ClassLoader classLoader) {
         NanoContainer nano = new DefaultNanoContainer(classLoader);

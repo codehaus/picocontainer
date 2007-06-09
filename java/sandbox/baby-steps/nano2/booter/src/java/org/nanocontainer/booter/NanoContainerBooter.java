@@ -33,7 +33,6 @@ public class NanoContainerBooter {
     /**
      * Static entry point to NanoContainerBooter
      * @param args the arguments passed on to Standalone
-     * @throws Exception
      * @throws InstantiationException
      * @throws MalformedURLException
      * @throws ClassNotFoundException

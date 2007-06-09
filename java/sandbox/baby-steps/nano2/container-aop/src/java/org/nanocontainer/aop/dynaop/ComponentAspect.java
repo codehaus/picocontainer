@@ -51,8 +51,8 @@ abstract class ComponentAspect {
     /**
      * Called by <code>registerAspect</code> to
      *
-     * @param componentKey
-     * @param aspects
+     * @param componentKey the component key
+     * @param aspects aspects to register
      */
     abstract void doRegisterAspect(Object componentKey, Aspects aspects);
 

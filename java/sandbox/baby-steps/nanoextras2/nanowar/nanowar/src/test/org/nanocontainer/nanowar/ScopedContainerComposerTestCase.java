@@ -33,18 +33,18 @@ import org.picocontainer.defaults.SimpleReference;
  */
 public class ScopedContainerComposerTestCase extends MockObjectTestCase {
 
-    public void testCompositionWithInvalidScope() throws ClassNotFoundException {
+    public void testCompositionWithInvalidScope() {
         ScopedContainerComposer composer = new ScopedContainerComposer();
         MutablePicoContainer applicationContainer = new DefaultPicoContainer();
         composer.composeContainer(applicationContainer, "invalid-scope");
         assertNull(applicationContainer.getComponent("applicationScopedInstance"));
     }
     
-    public void testComposedHierarchyWithDefaultConfiguration() throws ClassNotFoundException {
+    public void testComposedHierarchyWithDefaultConfiguration() {
         assertComposedHierarchy(new ScopedContainerComposer());
     }
     
-    public void testComposedHierarchyWithCustomMXLConfiguration() throws ClassNotFoundException {
+    public void testComposedHierarchyWithCustomMXLConfiguration() {
         String xmlConfig = 
             "<container>" +
             "<component-implementation class='org.nanocontainer.nanowar.ScopedContainerConfigurator'>"+
@@ -58,7 +58,7 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
     }
     
     //requires GroovyContainerBuilder to implement ContainerPopulator
-    public void TODO_testComposedHierarchyWithCustomGroovyConfiguration() throws ClassNotFoundException {
+    public void TODO_testComposedHierarchyWithCustomGroovyConfiguration() {
         String groovyConfig =
             "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
             "   addComponent(class:'org.nanocontainer.nanowar.ScopedContainerConfigurator', \n"+

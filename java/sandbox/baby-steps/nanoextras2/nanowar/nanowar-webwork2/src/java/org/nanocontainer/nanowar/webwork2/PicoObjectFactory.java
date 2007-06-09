@@ -74,7 +74,7 @@ public class PicoObjectFactory extends ObjectFactory {
      * Webwork-2.2 / XWork-1.1 method. Used to validate a class be loaded.
      * Using actionsContainerFactory for consistency with build methods.
      */
-    public Class getClassInstance(String className) throws ClassNotFoundException {
+    public Class getClassInstance(String className) {
         return actionsContainerFactory.getActionClass(className);
     }
 

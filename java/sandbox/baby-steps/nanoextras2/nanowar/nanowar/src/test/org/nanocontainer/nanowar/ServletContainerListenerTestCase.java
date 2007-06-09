@@ -285,7 +285,7 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
       assertGroovyContainerBuilderCanBeScopedWithInlinedScript(builderScript);
     }
     
-    public void assertGroovyContainerBuilderCanBeScopedWithInlinedScript(String script) throws ClassNotFoundException {
+    public void assertGroovyContainerBuilderCanBeScopedWithInlinedScript(String script) {
 
         Class<GroovyContainerBuilder> containerBuilder = GroovyContainerBuilder.class;
         PicoContainer applicationContainer = buildApplicationContainer(script, containerBuilder);
@@ -314,7 +314,7 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
 
     }    
 
-    private PicoContainer buildApplicationContainer(String script, Class<GroovyContainerBuilder> containerBuilderClass) throws ClassNotFoundException {
+    private PicoContainer buildApplicationContainer(String script, Class<GroovyContainerBuilder> containerBuilderClass) {
         Mock servletContextMock = mock(ServletContext.class);
         ServletContext context = (ServletContext)servletContextMock.proxy();
         ContainerBuilder containerBuilder = createContainerBuilder(script, containerBuilderClass);

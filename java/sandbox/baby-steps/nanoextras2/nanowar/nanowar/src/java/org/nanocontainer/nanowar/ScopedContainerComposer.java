@@ -73,18 +73,16 @@ public final class ScopedContainerComposer implements ContainerComposer {
 
     /**
      * Creates a default ScopedContainerComposer
-     * @throws ClassNotFoundException
      */
-    public ScopedContainerComposer() throws ClassNotFoundException {
+    public ScopedContainerComposer() {
     	    this(new DefaultPicoContainer());
     }
     
     /**
      * Creates a configurable ScopedContainerComposer 
 	 * @param configuration the PicoContainer holding the configuration
-     * @throws ClassNotFoundException
      */
-	public ScopedContainerComposer(PicoContainer configuration) throws ClassNotFoundException {
+	public ScopedContainerComposer(PicoContainer configuration) {
 	    ScopedContainerConfigurator config = getConfigurator(configuration);
 	    containerBuilderClassName = config.getContainerBuilder();
 
@@ -119,7 +117,7 @@ public final class ScopedContainerComposer implements ContainerComposer {
         return configurator;
     }
     
-	private void populateContainer(String resources, ContainerRecorder recorder, MutablePicoContainer parent) throws ClassNotFoundException {
+	private void populateContainer(String resources, ContainerRecorder recorder, MutablePicoContainer parent) {
 	    MutablePicoContainer container = recorder.getContainerProxy();
 	    String[] resourcePaths = toCSV(resources);
         for (String resourcePath : resourcePaths) {
@@ -130,11 +128,11 @@ public final class ScopedContainerComposer implements ContainerComposer {
 
 	private String[] toCSV(String resources){
 	    StringTokenizer st = new StringTokenizer(resources, COMMA);
-	    List tokens = new ArrayList();
+	    List<String> tokens = new ArrayList<String>();
 	    while ( st.hasMoreTokens() ){
 	        tokens.add(st.nextToken().trim());	        
 	    }
-	    return (String[])tokens.toArray(new String[tokens.size()]);
+	    return tokens.toArray(new String[tokens.size()]);
 	}
 	
 	private ContainerPopulator createContainerPopulator(Reader reader, MutablePicoContainer parent) {

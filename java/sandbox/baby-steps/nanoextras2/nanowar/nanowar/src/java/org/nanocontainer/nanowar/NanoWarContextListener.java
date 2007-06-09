@@ -90,7 +90,7 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
         }
     }
 
-    private ContainerBuilder createContainerBuilder(ServletContext context) throws ClassNotFoundException {
+    private ContainerBuilder createContainerBuilder(ServletContext context) {
         Enumeration initParameters = context.getInitParameterNames();
         while (initParameters.hasMoreElements()) {
             String initParameter = (String) initParameters.nextElement();

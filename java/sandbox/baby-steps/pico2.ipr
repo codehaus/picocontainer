@@ -319,7 +319,6 @@
       <module fileurl="file://$PROJECT_DIR$/nano2/NanoContainer.iml" filepath="$PROJECT_DIR$/nano2/NanoContainer.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/remoting/NanoContainer-Remoting.iml" filepath="$PROJECT_DIR$/nanoextras2/remoting/NanoContainer-Remoting.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/tools/NanoContainer-Tools.iml" filepath="$PROJECT_DIR$/nanoextras2/tools/NanoContainer-Tools.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pico2/PicoContainer.iml" filepath="$PROJECT_DIR$/pico2/PicoContainer.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-axis/axis.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-axis/axis.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-jsf/jsf.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-jsf/jsf.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar/nanowar.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar/nanowar.iml" />
@@ -328,6 +327,9 @@
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/persistence/persistence-hibernate-annotations/persistence-hibernate-annotations.iml" filepath="$PROJECT_DIR$/nanoextras2/persistence/persistence-hibernate-annotations/persistence-hibernate-annotations.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/persistence/persistence-hibernate2/persistence-hibernate2.iml" filepath="$PROJECT_DIR$/nanoextras2/persistence/persistence-hibernate2/persistence-hibernate2.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/persistence/persistence-hibernate3/persistence-hibernate3.iml" filepath="$PROJECT_DIR$/nanoextras2/persistence/persistence-hibernate3/persistence-hibernate3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pico2/container/picocontainer.iml" filepath="$PROJECT_DIR$/pico2/container/picocontainer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pico2/gems/picocontainer-gems.iml" filepath="$PROJECT_DIR$/pico2/gems/picocontainer-gems.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pico2/tck/picocontainer-tck.iml" filepath="$PROJECT_DIR$/pico2/tck/picocontainer-tck.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-struts/struts.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-struts/struts.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-webwork/webwork.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-webwork/webwork.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-webwork2/webwork2.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-webwork2/webwork2.iml" />

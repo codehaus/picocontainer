@@ -11,7 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="PicoContainer" />
+    <orderEntry type="module" module-name="picocontainer" />
     <orderEntry type="module" module-name="NanoContainer" />
     <orderEntry type="module-library">
       <library>

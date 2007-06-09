@@ -96,15 +96,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/picocontainer/picocontainer-tck/2.0-SNAPSHOT/picocontainer-tck-2.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/asm/asm/3.0/asm-3.0.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -222,15 +213,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/nanocontainer/nanocontainer-nanowar/2.0-SNAPSHOT/nanocontainer-nanowar-2.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/httpunit/httpunit/1.6/httpunit-1.6.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -276,15 +258,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/picocontainer/picocontainer/2.0-SNAPSHOT/picocontainer-2.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/antlr/antlr/2.7.2/antlr-2.7.2.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -300,6 +273,9 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="picocontainer-tck" />
+    <orderEntry type="module" module-name="nanowar" />
+    <orderEntry type="module" module-name="picocontainer" />
     <orderEntryProperties />
   </component>
 </module>

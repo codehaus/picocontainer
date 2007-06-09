@@ -141,6 +141,7 @@
     <orderEntry type="module" module-name="nanocontainer" />
     <orderEntry type="module" module-name="picocontainer" />
     <orderEntry type="module" module-name="picocontainer-tck" />
+    <orderEntry type="module" module-name="picocontainer-gems" />
     <orderEntryProperties />
   </component>
 </module>

@@ -78,15 +78,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/picocontainer/picocontainer-tck/2.0-SNAPSHOT/picocontainer-tck-2.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/qdox/qdox/1.6.1/qdox-1.6.1.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -97,24 +88,6 @@
       <library>
         <CLASSES>
           <root url="jar://$M2_REPOSITORY$/com/thoughtworks/paranamer/paranamer/1.0-RC-3-SNAPSHOT/paranamer-1.0-RC-3-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/nanocontainer/nanocontainer/2.0-SNAPSHOT/nanocontainer-2.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/nanocontainer/nanocontainer-groovy/2.0-SNAPSHOT/nanocontainer-groovy-2.0-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -147,15 +120,10 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/picocontainer/picocontainer/2.0-SNAPSHOT/picocontainer-2.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="module" module-name="picocontainer" />
+    <orderEntry type="module" module-name="picocontainer-tck" />
+    <orderEntry type="module" module-name="nano-groovy" />
+    <orderEntry type="module" module-name="nanocontainer" />
     <orderEntryProperties />
   </component>
 </module>

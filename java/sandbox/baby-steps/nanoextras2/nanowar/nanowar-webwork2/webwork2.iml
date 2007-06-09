@@ -51,15 +51,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/picocontainer/picocontainer-gems/2.0-SNAPSHOT/picocontainer-gems-2.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/asm/asm/3.0/asm-3.0.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -69,25 +60,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/picocontainer/picocontainer-tck/2.0-SNAPSHOT/picocontainer-tck-2.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/com/thoughtworks/paranamer/paranamer/1.0-RC-3-SNAPSHOT/paranamer-1.0-RC-3-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/nanocontainer/nanocontainer/2.0-SNAPSHOT/nanocontainer-2.0-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -177,15 +150,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/nanocontainer/nanocontainer-nanowar/2.0-SNAPSHOT/nanocontainer-nanowar-2.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/httpunit/httpunit/1.6/httpunit-1.6.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -222,21 +186,17 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/picocontainer/picocontainer/2.0-SNAPSHOT/picocontainer-2.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/xerces/xmlParserAPIs/2.2.1/xmlParserAPIs-2.2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="picocontainer" />
+    <orderEntry type="module" module-name="picocontainer-gems" />
+    <orderEntry type="module" module-name="picocontainer-tck" />
+    <orderEntry type="module" module-name="nanocontainer" />
+    <orderEntry type="module" module-name="nanowar" />
     <orderEntryProperties />
   </component>
 </module>

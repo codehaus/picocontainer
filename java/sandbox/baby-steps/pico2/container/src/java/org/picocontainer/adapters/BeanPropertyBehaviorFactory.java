@@ -29,7 +29,7 @@ import org.picocontainer.LifecycleStrategy;
  * @version $Revision$
  * @since 1.0
  */
-public final class BeanPropertyComponentAdapterFactory extends AbstractBehaviorFactory {
+public final class BeanPropertyBehaviorFactory extends AbstractBehaviorFactory {
     // var never used ? needed ?
     private final Map<Object, BeanPropertyComponentAdapter> adapterCache = new HashMap<Object, BeanPropertyComponentAdapter>();
 

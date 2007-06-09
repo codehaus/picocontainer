@@ -12,7 +12,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="NanoContainer" />
+    <orderEntry type="module" module-name="nanocontainer" />
     <orderEntry type="module" module-name="picocontainer" />
     <orderEntry type="module-library">
       <library>

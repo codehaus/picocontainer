@@ -2,8 +2,8 @@ package org.picocontainer.doc.tutorial.interfaces;
 
 // START SNIPPET: girl
 
-public class Girl {
-    Kissable kissable;
+public final class Girl {
+    final Kissable kissable;
 
     public Girl(Kissable kissable) {
         this.kissable = kissable;

@@ -14,9 +14,9 @@ import junit.framework.TestCase;
 /**
  * Test the CyclicDependecy.
  */
-public class ThreadLocalCyclicDependencyGuardTestCase
+public final class ThreadLocalCyclicDependencyGuardTestCase
         extends TestCase {
-    private Runnable[] runner = new Runnable[3];
+    private final Runnable[] runner = new Runnable[3];
     
     class ThreadLocalRunner implements Runnable {
         public InjectingAdapter.CyclicDependencyException exception;

@@ -16,9 +16,9 @@ import org.jmock.MockObjectTestCase;
 /**
  * @author Stephen Molitor
  */
-public class DynaopClassPointcutTestCase extends MockObjectTestCase {
+public final class DynaopClassPointcutTestCase extends MockObjectTestCase {
 
-    private Mock mockDelegate = mock(dynaop.ClassPointcut.class);
+    private final Mock mockDelegate = mock(dynaop.ClassPointcut.class);
 
     public void testPicks() {
         mockDelegate.expects(once()).method("picks").with(eq(String.class)).will(returnValue(false));

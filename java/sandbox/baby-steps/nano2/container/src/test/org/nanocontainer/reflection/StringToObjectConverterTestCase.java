@@ -13,8 +13,8 @@ import junit.framework.TestCase;
 
 import java.io.File;
 
-public class StringToObjectConverterTestCase extends TestCase {
-    private StringToObjectConverter converter = new StringToObjectConverter();
+public final class StringToObjectConverterTestCase extends TestCase {
+    private final StringToObjectConverter converter = new StringToObjectConverter();
 
     public void testConvertsToString() {
         assertEquals("hello", converter.convertTo(String.class, "hello"));

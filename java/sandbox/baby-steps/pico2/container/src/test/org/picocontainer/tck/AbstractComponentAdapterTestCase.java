@@ -59,10 +59,10 @@ import java.util.Set;
  */
 public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCase {
 
-    public static int SERIALIZABLE = 1;
-    public static int VERIFYING = 2;
-    public static int INSTANTIATING = 4;
-    public static int RESOLVING = 8;
+    public static final int SERIALIZABLE = 1;
+    public static final int VERIFYING = 2;
+    public static final int INSTANTIATING = 4;
+    public static final int RESOLVING = 8;
 
     protected abstract Class getComponentAdapterType();
 
@@ -579,8 +579,8 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         }
     }
 
-    public static class RecordingLifecycleStrategy implements LifecycleStrategy {
-        private StringBuffer recorder;
+    public static final class RecordingLifecycleStrategy implements LifecycleStrategy {
+        private final StringBuffer recorder;
         
         public RecordingLifecycleStrategy(StringBuffer recorder) {
             this.recorder = recorder;

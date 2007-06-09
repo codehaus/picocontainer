@@ -21,9 +21,9 @@ import org.picocontainer.Startable;
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
  * @version $Revision: 2043 $
  */
-public class SessionLifecycle implements Startable {
+public final class SessionLifecycle implements Startable {
 
-    private Session session;
+    private final Session session;
 
     public SessionLifecycle(Session session) {
         this.session = session;

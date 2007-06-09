@@ -18,10 +18,10 @@ import org.jmock.MockObjectTestCase;
 /**
  * @author Stephen Molitor
  */
-public class MethodInterceptorAdapterTestCase extends MockObjectTestCase {
+public final class MethodInterceptorAdapterTestCase extends MockObjectTestCase {
 
-    private Mock mockMethodInterceptor = mock(MethodInterceptor.class);
-    private Mock mockInvocation = mock(Invocation.class);
+    private final Mock mockMethodInterceptor = mock(MethodInterceptor.class);
+    private final Mock mockInvocation = mock(Invocation.class);
 
     public void testInvoke() throws Throwable {
         mockMethodInterceptor.expects(once()).method("invoke").with(isA(MethodInvocation.class)).will(returnValue("result"));

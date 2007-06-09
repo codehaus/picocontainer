@@ -35,10 +35,10 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  *
  * @author Nick Sieger
  */
-public class JRubyContainerBuilder extends ScriptedContainerBuilder {
+public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
     public static final String MARKUP_EXCEPTION_PREFIX = "nanobuilder: ";
 
-    private String script;
+    private final String script;
 
     public JRubyContainerBuilder(Reader script, ClassLoader classLoader) {
         super(script, classLoader);

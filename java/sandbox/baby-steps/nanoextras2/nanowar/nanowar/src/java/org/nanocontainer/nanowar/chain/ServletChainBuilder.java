@@ -42,13 +42,13 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  * @author Kontantin Pribluda
  * @author Mauro Talevi
  */
-public class ServletChainBuilder {
+public final class ServletChainBuilder {
 
-	private Map recorderCache;
-	private ServletContext context;
-    private String containerBuilderClassName;
-    private String containerScriptName;
-    private String emptyContainerScript;
+	private final Map recorderCache;
+	private final ServletContext context;
+    private final String containerBuilderClassName;
+    private final String containerScriptName;
+    private final String emptyContainerScript;
 
 	/**
 	 * Constructor for the ServletChainBuilder object
@@ -133,8 +133,7 @@ public class ServletChainBuilder {
      * @return An instance of ContainerPopulator
      * @throws ClassNotFoundException
      */
-    private ContainerPopulator createContainerPopulator(String containerBuilderClassName, Reader reader, ClassLoader classLoader)
-            throws ClassNotFoundException {
+    private ContainerPopulator createContainerPopulator(String containerBuilderClassName, Reader reader, ClassLoader classLoader) {
         NanoContainer nano = new DefaultNanoContainer(classLoader);
         Parameter[] parameters = new Parameter[] {
                 new ConstantParameter(reader),

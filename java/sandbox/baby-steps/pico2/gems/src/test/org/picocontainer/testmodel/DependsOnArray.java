@@ -12,8 +12,8 @@ package org.picocontainer.testmodel;
  * @author Nick Sieger
  * @version 1.1
  */
-public class DependsOnArray {
-    private Object[] array;
+public final class DependsOnArray {
+    private final Object[] array;
     public DependsOnArray(Object[] a) {
         this.array = a;
     }

@@ -6,9 +6,9 @@ package org.picocontainer.testmodel;
  * @author $Author: $ (last edit)
  * @version $Revision: $
  */
-public class CoupleBean {
-    private PersonBean personA;
-    private PersonBean personB;
+public final class CoupleBean {
+    private final PersonBean personA;
+    private final PersonBean personB;
 
     public CoupleBean(PersonBean a, PersonBean b) {
         this.personA = a;

@@ -19,10 +19,10 @@ import webwork.action.CommandDriven;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class CheeseAction extends ActionSupport implements CommandDriven {
+public final class CheeseAction extends ActionSupport implements CommandDriven {
 
     private final CheeseService cheeseService;
-    private Cheese cheese = new Cheese();
+    private final Cheese cheese = new Cheese();
 
     public CheeseAction(CheeseService cheeseService) {
         this.cheeseService = cheeseService;
@@ -55,7 +55,7 @@ public class CheeseAction extends ActionSupport implements CommandDriven {
     }
     
     
-    public String doRemove() throws Exception {
+    public String doRemove() {
         try {
         cheeseService.remove(cheeseService.find(cheese));
         return SUCCESS;

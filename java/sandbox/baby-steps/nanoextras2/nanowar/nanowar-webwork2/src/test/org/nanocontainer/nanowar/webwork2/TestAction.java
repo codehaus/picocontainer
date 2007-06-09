@@ -11,8 +11,8 @@ package org.nanocontainer.nanowar.webwork2;
 import com.opensymphony.xwork.Action;
 
 
-public class TestAction implements Action {
-    String foo;
+public final class TestAction implements Action {
+    final String foo;
     public TestAction(String foo) {
         this.foo = foo;
     }

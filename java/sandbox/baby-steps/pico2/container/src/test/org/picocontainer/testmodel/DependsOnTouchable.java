@@ -18,7 +18,7 @@ import java.io.Serializable;
  * @author steve.freeman@m3p.co.uk
  */
 public class DependsOnTouchable implements Serializable {
-    public Touchable touchable;
+    public final Touchable touchable;
 
     public DependsOnTouchable(Touchable touchable) {
         Assert.assertNotNull("Touchable cannot be passed in as null", touchable);

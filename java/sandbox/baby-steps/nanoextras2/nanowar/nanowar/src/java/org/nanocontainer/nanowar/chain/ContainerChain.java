@@ -21,9 +21,9 @@ import org.picocontainer.Startable;
  * 
  * @author Konstantin Pribluda
  */
-public class ContainerChain implements Startable {
+public final class ContainerChain implements Startable {
 
-	private List chain = new ArrayList();
+	private final List chain = new ArrayList();
 
 	private PicoContainer last;
 

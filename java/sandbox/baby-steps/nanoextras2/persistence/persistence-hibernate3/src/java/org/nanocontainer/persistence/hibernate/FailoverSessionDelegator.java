@@ -25,9 +25,9 @@ import org.nanocontainer.persistence.ExceptionHandler;
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
  * @version $Revision: 2043 $
  */
-public class FailoverSessionDelegator extends SessionDelegator {
+public final class FailoverSessionDelegator extends SessionDelegator {
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
     private Session session = null;
     private Interceptor interceptor = null;
     
@@ -85,7 +85,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
         return session;
     }
 
-    public Connection close() throws HibernateException {
+    public Connection close() {
         try {
             return getDelegatedSession().close();
         } catch (HibernateException ex) {
@@ -96,7 +96,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
         }
     }
 
-    public void invalidateDelegatedSession() throws HibernateException {
+    public void invalidateDelegatedSession() {
         if (this.session != null) {
             try {
                 session.clear();

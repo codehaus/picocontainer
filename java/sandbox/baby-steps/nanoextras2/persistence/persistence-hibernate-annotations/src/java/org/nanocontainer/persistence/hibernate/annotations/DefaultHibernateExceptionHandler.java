@@ -15,9 +15,9 @@ import org.nanocontainer.persistence.ExceptionHandler;
  * 
  * @version $Id: DefaultHibernateExceptionHandler.java 2510 2005-09-22 10:11:19Z mauro $
  */
-public class DefaultHibernateExceptionHandler implements ExceptionHandler {
+public final class DefaultHibernateExceptionHandler implements ExceptionHandler {
 
-    private ExceptionFactory exceptionFactory;
+    private final ExceptionFactory exceptionFactory;
 
     public DefaultHibernateExceptionHandler(ExceptionFactory exceptionFactory) {
         this.exceptionFactory = exceptionFactory;

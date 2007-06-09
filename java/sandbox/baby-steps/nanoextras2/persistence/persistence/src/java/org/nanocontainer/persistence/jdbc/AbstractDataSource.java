@@ -38,7 +38,7 @@ public abstract class AbstractDataSource implements DataSource {
 
 	protected abstract DataSource getDelegatedDataSource() throws Exception;
 
-	protected abstract void invalidateDelegatedDataSource() throws Exception;
+	protected abstract void invalidateDelegatedDataSource() throws SQLException;
 
 	/**
 	 * Invalidates the connection calling {@link #invalidateDelegatedConnection()} and convert the <code>cause</code>

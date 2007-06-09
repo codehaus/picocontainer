@@ -16,9 +16,9 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 
-public class PicoWebXmlConfiguration extends WebXmlConfiguration {
+public final class PicoWebXmlConfiguration extends WebXmlConfiguration {
 
-    private PicoContainer parentContainer;
+    private final PicoContainer parentContainer;
 
     public PicoWebXmlConfiguration(PicoContainer parentContainer) {
         this.parentContainer = parentContainer;

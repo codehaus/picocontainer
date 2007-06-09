@@ -21,7 +21,7 @@ import org.hibernate.SessionFactory;
  */
 public class ConstructableConfigurationTestCase extends TestCase {
 
-    public void fixme_testDefaultConstruction() throws Exception {
+    public void fixme_testDefaultConstruction() {
         ConstructableConfiguration config = new ConstructableConfiguration();
         //assertNotNull(config);
 		//Because of melding hibernate and hibernate-jpa, we're skipping this write for the hibernate-annotations

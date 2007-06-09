@@ -2,9 +2,9 @@ package org.nanocontainer.testmodel;
 
 import java.util.Map;
 
-public class MapSupport
+public final class MapSupport
 {
-    private Map<String, Entity> aMapOfEntities;
+    private final Map<String, Entity> aMapOfEntities;
 
     public MapSupport(Map<String, Entity> aMapOfEntities)
     {

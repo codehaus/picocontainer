@@ -34,9 +34,9 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class InstanceComponentAdapter extends AbstractComponentAdapter implements LifecycleManager, LifecycleStrategy {
-    private Object componentInstance;
-    private LifecycleStrategy lifecycleStrategy;
+public final class InstanceComponentAdapter extends AbstractComponentAdapter implements LifecycleManager, LifecycleStrategy {
+    private final Object componentInstance;
+    private final LifecycleStrategy lifecycleStrategy;
 
     public InstanceComponentAdapter(Object componentKey, Object componentInstance, LifecycleStrategy lifecycleStrategy, ComponentMonitor componentMonitor) throws NotConcreteRegistrationException {
         super(componentKey, getInstanceClass(componentInstance), componentMonitor);

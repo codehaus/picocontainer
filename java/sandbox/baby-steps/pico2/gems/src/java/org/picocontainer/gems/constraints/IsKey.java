@@ -16,9 +16,9 @@ import org.picocontainer.ComponentAdapter;
  * @author Nick Sieger
  * @version 1.1
  */
-public class IsKey extends AbstractConstraint {
+public final class IsKey extends AbstractConstraint {
 
-    private Object key;
+    private final Object key;
 
     /**
      * Creates a new <code>IsKey</code> instance.

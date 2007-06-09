@@ -19,10 +19,10 @@ import javax.servlet.http.HttpSession;
 /**
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
-public class ServletRequestContainerLauncher {
+public final class ServletRequestContainerLauncher {
 
-    private ContainerBuilder containerBuilder;
-    private ObjectReference containerRef;
+    private final ContainerBuilder containerBuilder;
+    private final ObjectReference containerRef;
     private final HttpServletRequest request;
     private final ServletContext context;
 

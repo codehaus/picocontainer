@@ -9,9 +9,9 @@ import webwork.action.ActionContext;
  *
  * @author Konstantin Pribluda
  */
-public class ActionContextScopeObjectReference implements ObjectReference {
+public final class ActionContextScopeObjectReference implements ObjectReference {
 
-    private String key;
+    private final String key;
 
     public ActionContextScopeObjectReference(String key) {
         this.key = key;

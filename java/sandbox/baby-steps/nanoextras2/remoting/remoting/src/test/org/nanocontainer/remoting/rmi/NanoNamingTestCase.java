@@ -22,15 +22,15 @@ import junit.framework.TestCase;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class NanoNamingTestCase extends TestCase {
-    private ProxyFactory proxyFactory;
+public final class NanoNamingTestCase extends TestCase {
+    private final ProxyFactory proxyFactory;
     private MutablePicoContainer pico;
 
     private NanoNaming naming;
     private ByRefKey thingKey;
     private ByRefKey thangKey;
 
-    public NanoNamingTestCase() throws Exception {
+    public NanoNamingTestCase() {
         proxyFactory = new CglibProxyFactory();
     }
 

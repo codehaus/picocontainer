@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jmock.MockObjectTestCase;
+import org.xml.sax.SAXException;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebRequest;
@@ -44,7 +45,9 @@ public class AbstractServletTestCase extends MockObjectTestCase {
         assertEquals("<-empty->", res);
     }
 
-    protected void initTest(String ctxScope, String sesScope, String reqScope, FilterDef[] filters) throws Exception {
+    protected void initTest(String ctxScope, String sesScope, String reqScope, FilterDef[] filters)
+        throws IOException, SAXException
+    {
         InputStream webXml = getWebXml(filters, ctxScope, sesScope, reqScope);
         sr = new ServletRunner(webXml);
         sr.registerServlet("empty", EmptyServlet.class.getName());
@@ -54,7 +57,7 @@ public class AbstractServletTestCase extends MockObjectTestCase {
         initTest(ctxScope, sesScope, reqScope, new FilterDef[]{filterDef});
     }
 
-    protected String doTest() throws Exception {
+    protected String doTest() throws IOException, SAXException {
         ServletUnitClient sc = sr.newClient();
         WebRequest request = new GetMethodWebRequest("http://incongru.net/empty");
         WebResponse response = sc.getResponse(request);
@@ -104,13 +107,13 @@ public class AbstractServletTestCase extends MockObjectTestCase {
         return new ByteArrayInputStream(sb.toString().getBytes());
     }
 
-    static class FilterDef {
-        private String filterName;
-        private Class filterClass;
-        private Class delegateClass;
-        private String delegateKey;
-        private String initType;
-        private boolean lookupOnlyOnce;
+    static final class FilterDef {
+        private final String filterName;
+        private final Class filterClass;
+        private final Class delegateClass;
+        private final String delegateKey;
+        private final String initType;
+        private final boolean lookupOnlyOnce;
 
         public FilterDef(String filterName, Class filterClass, Class delegateClass, String delegateKey, String initType, boolean lookupOnlyOnce) {
             this.filterName = filterName;

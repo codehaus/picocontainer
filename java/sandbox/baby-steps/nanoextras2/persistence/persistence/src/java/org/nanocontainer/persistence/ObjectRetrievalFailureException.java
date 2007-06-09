@@ -5,10 +5,10 @@ package org.nanocontainer.persistence;
  * 
  * @version $Revision: $
  */
-public class ObjectRetrievalFailureException extends PersistenceException implements EntityInfo {
+public final class ObjectRetrievalFailureException extends PersistenceException implements EntityInfo {
 
-	private String entityName;
-	private Object objectId;
+	private final String entityName;
+	private final Object objectId;
 
 	public ObjectRetrievalFailureException(Throwable cause, String entityName, Object objectId) {
 		super(cause);

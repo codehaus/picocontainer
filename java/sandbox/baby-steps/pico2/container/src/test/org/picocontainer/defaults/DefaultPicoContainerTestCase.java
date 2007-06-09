@@ -54,7 +54,7 @@ import java.util.List;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
+public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultPicoContainer(parent);
     }
@@ -163,8 +163,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
     public static class Service {
     }
 
-    public static class TransientComponent {
-        private Service service;
+    public static final class TransientComponent {
+        private final Service service;
 
         public TransientComponent(Service service) {
             this.service = service;
@@ -296,8 +296,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         assertEquals(monitor2, pico.currentMonitor());
     }
    
-    private static class ComponentAdapterFactoryWithNoMonitor implements ComponentFactory {
-        private ComponentAdapter adapter;
+    private static final class ComponentAdapterFactoryWithNoMonitor implements ComponentFactory {
+        private final ComponentAdapter adapter;
         public ComponentAdapterFactoryWithNoMonitor(ComponentAdapter adapter){
             this.adapter = adapter;
         }
@@ -306,8 +306,8 @@ public class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase 
         }        
     }
     
-    private static class ComponentAdapterWithNoMonitor implements ComponentAdapter {
-        private Object instance;
+    private static final class ComponentAdapterWithNoMonitor implements ComponentAdapter {
+        private final Object instance;
         public ComponentAdapterWithNoMonitor(Object instance){
             this.instance = instance;
         }

@@ -26,15 +26,15 @@ import com.thoughtworks.proxy.toys.pool.Poolable;
 /**
  * @author J&ouml;rg Schaible
  */
-public class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCase {
+public final class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCase {
 
     public static interface Identifiable {
         int getId();
     }
 
-    public static class InstanceCounter implements Identifiable, Serializable {
+    public static final class InstanceCounter implements Identifiable, Serializable {
         private static int counter = 0;
-        private int id;
+        private final int id;
 
         public InstanceCounter() {
             id = counter++;

@@ -10,6 +10,7 @@
 package org.nanocontainer.persistence.jdbc;
 
 import java.util.Properties;
+import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
@@ -89,7 +90,7 @@ public class DBCPDataSource extends AbstractDataSource implements Startable {
 	/**
 	 * @see org.nanocontainer.persistence.jdbc.AbstractDataSource#invalidateDelegatedDataSource()
 	 */
-	protected void invalidateDelegatedDataSource() throws Exception {
+	protected void invalidateDelegatedDataSource() throws SQLException {
 		dataSource.close();
 		dataSource = null;
 	}

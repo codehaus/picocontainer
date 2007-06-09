@@ -19,15 +19,15 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
-public class SessionScopeObjectReference implements ObjectReference, Serializable {
+public final class SessionScopeObjectReference implements ObjectReference, Serializable {
 
     //The only reason this class is Serializable and the 'session' field is transient
     //is so that if this class is used as a key in a PicoContainer (as it is in the
     //nanocontainer servlet framework), it won't break serializability of the
     //container. The deserialized class won't be reused for its actual purpose, but
     //discarded. As such, there is no need to resurrect the transient session field
-    private transient HttpSession session;
-    private String key;
+    private final transient HttpSession session;
+    private final String key;
 
     public SessionScopeObjectReference(HttpSession session, String key) {
         this.session = session;

@@ -26,10 +26,10 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  * 
  * @author Mauro Talevi
  */
-public class ActionsContainerFactory {
+public final class ActionsContainerFactory {
 
     private final ServletContainerFinder containerFinder = new ServletContainerFinder();
-    private Map classCache = new HashMap();
+    private final Map classCache = new HashMap();
     
     public MutablePicoContainer getActionsContainer(HttpServletRequest request) {
         MutablePicoContainer actionsContainer = 

@@ -29,12 +29,12 @@ import java.util.Map;
  * @see org.picocontainer.lifecycle.StartableLifecycleStrategy
  * @since 1.2
  */
-public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
+public final class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 
     private final static int START = 0;
     private final static int STOP = 1;
     private final static int DISPOSE = 2;
-    private String[] methodNames;
+    private final String[] methodNames;
     private final transient Map<Class, Method[]> methodMap = new HashMap<Class, Method[]>();
 
     /**

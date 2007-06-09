@@ -9,6 +9,7 @@ package org.picocontainer.gems.monitors;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.io.IOException;
 
 import org.picocontainer.ComponentMonitor;
 
@@ -39,7 +40,7 @@ public class SingleLoggerLog4JComponentMonitorTestCase extends AbstractComponent
         return "[" + Log4JComponentMonitor.class.getName() + "] ";
     }
 
-    public void testShouldTraceNoComponent() throws Exception {
+    public void testShouldTraceNoComponent() throws IOException {
         super.testShouldTraceNoComponent();    
     }
 }

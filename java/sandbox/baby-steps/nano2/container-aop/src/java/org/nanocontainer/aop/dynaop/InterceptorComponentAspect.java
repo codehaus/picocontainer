@@ -23,9 +23,9 @@ import org.nanocontainer.aop.ComponentPointcut;
  * @author Stephen Molitor
  * @version $Revision$
  */
-class InterceptorComponentAspect extends ComponentAspect {
+final class InterceptorComponentAspect extends ComponentAspect {
 
-    private MethodPointcut methodPointcut;
+    private final MethodPointcut methodPointcut;
     private Interceptor interceptor;
     private InterceptorFactory interceptorFactory;
 

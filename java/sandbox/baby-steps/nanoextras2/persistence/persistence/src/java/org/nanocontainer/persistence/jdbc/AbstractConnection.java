@@ -30,7 +30,7 @@ import org.nanocontainer.persistence.ExceptionHandler;
  */
 public abstract class AbstractConnection implements Connection {
 
-	private ExceptionHandler jdbcExceptionHandler;
+	private final ExceptionHandler jdbcExceptionHandler;
 
 	protected AbstractConnection(ExceptionHandler jdbcExceptionHandler) {
 		this.jdbcExceptionHandler = jdbcExceptionHandler;

@@ -274,9 +274,9 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
      * @author Jon Tirs&eacute;n
      * @since 1.0
      */
-    public static class AmbiguousComponentResolutionException extends PicoIntrospectionException {
+    public static final class AmbiguousComponentResolutionException extends PicoIntrospectionException {
         private Class component;
-        private Class ambiguousDependency;
+        private final Class ambiguousDependency;
         private final Object[] ambiguousComponentKeys;
 
 

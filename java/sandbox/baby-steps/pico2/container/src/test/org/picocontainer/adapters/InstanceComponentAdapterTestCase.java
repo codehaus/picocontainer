@@ -32,7 +32,7 @@ import java.util.Map;
  * @author J&ouml;rg Schaible
  * @since 1.1
  */
-public class InstanceComponentAdapterTestCase
+public final class InstanceComponentAdapterTestCase
         extends AbstractComponentAdapterTestCase {
 
     public void testComponentAdapterReturnsSame() {
@@ -58,8 +58,8 @@ public class InstanceComponentAdapterTestCase
         assertEquals("start>stop>dispose>start>stop>dispose>", component.buffer.toString());
     }
 
-    private static class LifecycleComponent implements Startable, Disposable {
-        StringBuffer buffer = new StringBuffer();
+    private static final class LifecycleComponent implements Startable, Disposable {
+        final StringBuffer buffer = new StringBuffer();
 
         public void start() {
             buffer.append("start>");

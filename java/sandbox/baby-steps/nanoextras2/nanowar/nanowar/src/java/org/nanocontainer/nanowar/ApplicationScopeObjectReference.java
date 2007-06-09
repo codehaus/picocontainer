@@ -18,10 +18,10 @@ import javax.servlet.ServletContext;
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
-public class ApplicationScopeObjectReference implements ObjectReference {
+public final class ApplicationScopeObjectReference implements ObjectReference {
 
-    private ServletContext context;
-    private String key;
+    private final ServletContext context;
+    private final String key;
 
     public ApplicationScopeObjectReference(ServletContext context, String key) {
         this.context = context;

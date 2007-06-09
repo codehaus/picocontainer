@@ -20,10 +20,10 @@ import java.io.File;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class NanoContainerDeployerTestCase extends TestCase {
+public final class NanoContainerDeployerTestCase extends TestCase {
 
-    private String jarsDir = "target/deployer/apps";
-    private String folderPath = "src/deploytest";
+    private final String jarsDir = "target/deployer/apps";
+    private final String folderPath = "src/deploytest";
 
     public void testZipWithDeploymentScriptAndClassesCanBeDeployed() throws FileSystemException, MalformedURLException, ClassNotFoundException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         DefaultFileSystemManager manager = new DefaultFileSystemManager();

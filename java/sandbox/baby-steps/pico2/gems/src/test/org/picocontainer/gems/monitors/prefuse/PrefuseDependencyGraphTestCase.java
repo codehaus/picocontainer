@@ -6,8 +6,8 @@ import junit.framework.TestCase;
 
 import org.picocontainer.gems.monitors.ComponentDependencyMonitor.Dependency;
 
-public class PrefuseDependencyGraphTestCase extends TestCase {
-    PrefuseDependencyGraph prefuseGraph = new PrefuseDependencyGraph();
+public final class PrefuseDependencyGraphTestCase extends TestCase {
+    final PrefuseDependencyGraph prefuseGraph = new PrefuseDependencyGraph();
 
     public void testAComponentWithoutAnyDependenciesShouldOnlyCreateOneNode2() throws Exception {
         prefuseGraph.addDependency(new Dependency(Object.class, null));

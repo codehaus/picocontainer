@@ -120,7 +120,7 @@ public class NanoWarDelegatingVariableResolver extends VariableResolver  {
      * @throws EvaluationException
      * @see javax.faces.el.VariableResolver#resolveVariable(javax.faces.context.FacesContext, java.lang.String)
      */
-    public Object resolveVariable(FacesContext facesContext, String name) throws EvaluationException {
+    public Object resolveVariable(FacesContext facesContext, String name) {
         
         PicoContainer nano = getPicoContainer(facesContext);
         
@@ -140,7 +140,7 @@ public class NanoWarDelegatingVariableResolver extends VariableResolver  {
      * @return NanoContainer instance.
      * @throws EvaluationException if it cannot find a NanoWAR instance.
      */
-    protected PicoContainer getPicoContainer(FacesContext facesContext) throws EvaluationException {
+    protected PicoContainer getPicoContainer(FacesContext facesContext) {
         Map requestAttributeMap = facesContext
             .getExternalContext()
             .getRequestMap();

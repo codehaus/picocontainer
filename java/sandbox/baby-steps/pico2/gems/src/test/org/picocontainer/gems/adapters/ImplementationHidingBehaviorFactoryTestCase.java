@@ -17,10 +17,10 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 
-public class ImplementationHidingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public final class ImplementationHidingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
 
-    private ComponentFactory implementationHidingComponentAdapterFactory = new ImplementationHidingBehaviorFactory().forThis(new AnyInjectionFactory());
-    private ComponentFactory cachingBehaviorFactory = new CachingBehaviorFactory().forThis(implementationHidingComponentAdapterFactory);
+    private final ComponentFactory implementationHidingComponentAdapterFactory = new ImplementationHidingBehaviorFactory().forThis(new AnyInjectionFactory());
+    private final ComponentFactory cachingBehaviorFactory = new CachingBehaviorFactory().forThis(implementationHidingComponentAdapterFactory);
 
     public void testComponentRegisteredWithInterfaceKeyOnlyImplementsThatInterfaceUsingStandardProxyfactory() {
 

@@ -22,7 +22,7 @@ public class BrownBear implements Startable {
 
     private MutablePicoContainer subContainer;
 
-    public BrownBear(Honey honey) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, MalformedURLException, ClassNotFoundException {
+    public BrownBear(Honey honey) throws NoSuchMethodException, IllegalAccessException, InstantiationException, MalformedURLException, ClassNotFoundException {
 
         try {
             new Socket("google.com", 80);
@@ -101,8 +101,6 @@ public class BrownBear implements Startable {
             System.out.println("BrownBear: Can instantiate new DefaultNanoContainer (sub-container) - wrong, DefaultNanoContainer should not be in the classpath");
         } catch (NoClassDefFoundError e) {
             System.out.println("BrownBear: Cannot instantiate new DefaultNanoContainer (sub-container) - correct, DefaultNanoContainer is not in the classpath");
-        } catch (ClassNotFoundException e) {
-            System.out.println("BrownBear: Cannot instantiate new HashMap (error!)");
         }
 
         String qdox = "http://www.ibiblio.org/maven/qdox/jars/qdox-1.5.jar";

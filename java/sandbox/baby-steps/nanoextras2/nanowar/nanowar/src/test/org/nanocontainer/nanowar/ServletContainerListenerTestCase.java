@@ -38,16 +38,16 @@ import org.picocontainer.defaults.SimpleReference;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class ServletContainerListenerTestCase extends MockObjectTestCase implements KeyConstants {
+public final class ServletContainerListenerTestCase extends MockObjectTestCase implements KeyConstants {
 
     private ServletContainerListener listener;
 
-    private String groovyScript =
+    private final String groovyScript =
         "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
         "   component(key:'string', instance:'A String')\n" +
         "}";
     
-    private String xmlScript =
+    private final String xmlScript =
             "<container>" +
             "<component-instance key='string'>" +
             "      <string>A String</string>" +
@@ -285,7 +285,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
       assertGroovyContainerBuilderCanBeScopedWithInlinedScript(builderScript);
     }
     
-    public void assertGroovyContainerBuilderCanBeScopedWithInlinedScript(String script) throws Exception {
+    public void assertGroovyContainerBuilderCanBeScopedWithInlinedScript(String script) throws ClassNotFoundException {
 
         Class<GroovyContainerBuilder> containerBuilder = GroovyContainerBuilder.class;
         PicoContainer applicationContainer = buildApplicationContainer(script, containerBuilder);
@@ -324,7 +324,7 @@ public class ServletContainerListenerTestCase extends MockObjectTestCase impleme
         return (PicoContainer) containerRef.get();
     }
 
-    private ContainerBuilder createContainerBuilder(String script, Class<GroovyContainerBuilder> containerBuilderClass) throws ClassNotFoundException {
+    private ContainerBuilder createContainerBuilder(String script, Class<GroovyContainerBuilder> containerBuilderClass) {
         ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = 
             new ScriptedContainerBuilderFactory(new StringReader(script), containerBuilderClass.getName(), 
                     Thread.currentThread().getContextClassLoader());

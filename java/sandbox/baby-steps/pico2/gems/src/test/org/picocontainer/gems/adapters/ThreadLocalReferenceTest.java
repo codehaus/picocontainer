@@ -24,7 +24,7 @@ import java.util.List;
  * 
  * @author J&ouml;rg Schaible
  */
-public class ThreadLocalReferenceTest extends TestCase {
+public final class ThreadLocalReferenceTest extends TestCase {
 
     private List m_exceptionList;
 
@@ -38,7 +38,7 @@ public class ThreadLocalReferenceTest extends TestCase {
 
     final class RunIt implements Runnable {
 
-        private ObjectReference m_reference;
+        private final ObjectReference m_reference;
 
         /**
          * Construct an instance.

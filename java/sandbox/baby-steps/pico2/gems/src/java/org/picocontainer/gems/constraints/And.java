@@ -18,8 +18,8 @@ import org.picocontainer.PicoVisitor;
  * @author Nick Sieger
  * @version 1.1
  */
-public class And extends AbstractConstraint {
-    private Constraint[] children;
+public final class And extends AbstractConstraint {
+    private final Constraint[] children;
 
     public And(Constraint c1, Constraint c2) {
         children = new Constraint[2];

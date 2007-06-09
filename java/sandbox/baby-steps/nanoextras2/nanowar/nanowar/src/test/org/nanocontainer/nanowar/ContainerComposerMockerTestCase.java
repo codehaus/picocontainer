@@ -22,7 +22,7 @@ public class ContainerComposerMockerTestCase extends TestCase implements KeyCons
 
     // TODO test what mock properly ?
     // Hmmm, a stop() is being called on DPC, when it already disposed.
-    public void doNot_testThatItMocksProperly() throws Exception {
+    public void doNot_testThatItMocksProperly() {
 
         ContainerComposerMocker mocker = new ContainerComposerMocker(XStreamContainerComposer.class);
         assertNull(mocker.getApplicationContainer());

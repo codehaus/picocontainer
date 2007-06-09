@@ -9,9 +9,9 @@ import java.lang.reflect.Method;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class Invocation implements Serializable {
-    private String methodName;
-    private Class[] parameterTypes;
+public final class Invocation implements Serializable {
+    private final String methodName;
+    private final Class[] parameterTypes;
     private Object[] args;
 
     public Invocation(String methodName, Class[] parameterTypes, Object[] args) {

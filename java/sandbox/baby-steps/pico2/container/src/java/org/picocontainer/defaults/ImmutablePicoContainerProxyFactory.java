@@ -26,7 +26,7 @@ import org.picocontainer.Startable;
  * @author J&ouml;rg Schaible
  * @since 1.2
  */
-public class ImmutablePicoContainerProxyFactory implements InvocationHandler, Serializable {
+public final class ImmutablePicoContainerProxyFactory implements InvocationHandler, Serializable {
 
     private static final Class[] interfaces = new Class[]{PicoContainer.class};
     protected static Method equalsMethod = null;

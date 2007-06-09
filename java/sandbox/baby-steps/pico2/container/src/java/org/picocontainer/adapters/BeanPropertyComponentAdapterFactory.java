@@ -29,9 +29,9 @@ import org.picocontainer.LifecycleStrategy;
  * @version $Revision$
  * @since 1.0
  */
-public class BeanPropertyComponentAdapterFactory extends AbstractBehaviorFactory {
+public final class BeanPropertyComponentAdapterFactory extends AbstractBehaviorFactory {
     // var never used ? needed ?
-    private Map<Object, BeanPropertyComponentAdapter> adapterCache = new HashMap<Object, BeanPropertyComponentAdapter>();
+    private final Map<Object, BeanPropertyComponentAdapter> adapterCache = new HashMap<Object, BeanPropertyComponentAdapter>();
 
     /**
      * {@inheritDoc}

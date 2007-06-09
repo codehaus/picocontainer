@@ -450,7 +450,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
     }
 
-    private Object createInstance(PicoContainer pico, Element element) throws ClassNotFoundException, MalformedURLException {
+    private Object createInstance(PicoContainer pico, Element element) throws MalformedURLException {
         XMLComponentInstanceFactory factory = createComponentInstanceFactory(element.getAttribute(FACTORY));
         Element instanceElement = getFirstChildElement(element, true);
         return factory.makeInstance(pico, instanceElement, getClassLoader());

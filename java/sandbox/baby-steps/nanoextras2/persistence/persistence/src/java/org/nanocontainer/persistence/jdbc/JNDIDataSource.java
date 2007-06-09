@@ -87,7 +87,7 @@ public class JNDIDataSource extends AbstractDataSource implements Startable {
 	/**
 	 * @see org.nanocontainer.persistence.jdbc.AbstractDataSource#invalidateDelegatedDataSource()
 	 */
-	protected void invalidateDelegatedDataSource() throws Exception {
+	protected void invalidateDelegatedDataSource() {
 		dataSource = null;
 	}
 

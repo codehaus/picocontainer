@@ -10,7 +10,7 @@ import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.adapters.SynchronizedBehaviorFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-public class Issue0199TestCase extends TestCase {
+public final class Issue0199TestCase extends TestCase {
 
     public static class A {
         public A(C c) {}
@@ -22,9 +22,9 @@ public class Issue0199TestCase extends TestCase {
 
     public static class C {}
 
-    class Runner extends Thread {
-        private PicoContainer container;
-        private Object componentKey;
+    final class Runner extends Thread {
+        private final PicoContainer container;
+        private final Object componentKey;
         private Throwable throwable;
         private boolean finished;
 

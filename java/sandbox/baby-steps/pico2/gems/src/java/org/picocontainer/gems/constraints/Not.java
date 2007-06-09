@@ -17,8 +17,8 @@ import org.picocontainer.PicoVisitor;
  * @author Nick Sieger
  * @version 1.1
  */
-public class Not extends AbstractConstraint {
-    private Constraint constraint;
+public final class Not extends AbstractConstraint {
+    private final Constraint constraint;
 
     /**
      * Creates a new <code>Not</code> instance.

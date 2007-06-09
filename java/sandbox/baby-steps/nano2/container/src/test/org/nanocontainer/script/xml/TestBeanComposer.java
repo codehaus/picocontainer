@@ -9,10 +9,10 @@
 
 package org.nanocontainer.script.xml;
 
-public class TestBeanComposer {
+public final class TestBeanComposer {
 
-    private TestBean bean1;
-    private TestBean bean2;
+    private final TestBean bean1;
+    private final TestBean bean2;
 
     public TestBeanComposer(TestBean bean1, TestBean bean2) {
         this.bean1 = bean1;

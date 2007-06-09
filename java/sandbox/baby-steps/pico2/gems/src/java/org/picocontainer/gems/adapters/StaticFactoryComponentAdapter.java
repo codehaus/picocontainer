@@ -23,8 +23,8 @@ import org.picocontainer.adapters.AbstractComponentAdapter;
  * @author Leo Simmons
  * @since 1.1
  */
-public class StaticFactoryComponentAdapter extends AbstractComponentAdapter {
-    private StaticFactory staticFactory;
+public final class StaticFactoryComponentAdapter extends AbstractComponentAdapter {
+    private final StaticFactory staticFactory;
 
     /**
      * Construct a ComponentAdapter accessing a static factory creating the addComponent.

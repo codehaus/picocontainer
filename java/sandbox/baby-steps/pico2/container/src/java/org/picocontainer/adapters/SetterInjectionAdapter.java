@@ -101,7 +101,8 @@ public class SetterInjectionAdapter extends InjectingAdapter {
     }
 
 
-    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AmbiguousComponentResolutionException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException,
+                                                                                             NotConcreteRegistrationException {
         final Constructor constructor = getConstructor();
         getMatchingParameterListForSetters(container);
         return constructor;

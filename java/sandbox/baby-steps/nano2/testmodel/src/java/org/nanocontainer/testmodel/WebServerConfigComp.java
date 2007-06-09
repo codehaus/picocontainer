@@ -10,10 +10,10 @@
 package org.nanocontainer.testmodel;
 
 
-public class WebServerConfigComp implements WebServerConfig {
+public final class WebServerConfigComp implements WebServerConfig {
 
-    private String host;
-    private int port;
+    private final String host;
+    private final int port;
 
     public WebServerConfigComp(String host, int port) {
         this.host = host;

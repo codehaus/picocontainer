@@ -21,12 +21,12 @@ import java.lang.reflect.Method;
 /**
  * @author Stephen Molitor
  */
-public class InvocationAdapterTestCase extends MockObjectTestCase {
+public final class InvocationAdapterTestCase extends MockObjectTestCase {
 
-    private Mock mockInvocation = mock(Invocation.class);
-    private MethodInvocation invocationAdapter = new InvocationAdapter((Invocation) mockInvocation.proxy());
-    private Mock mockProxy = mock(Proxy.class);
-    private Mock mockProxyContext = mock(ProxyContext.class);
+    private final Mock mockInvocation = mock(Invocation.class);
+    private final MethodInvocation invocationAdapter = new InvocationAdapter((Invocation) mockInvocation.proxy());
+    private final Mock mockProxy = mock(Proxy.class);
+    private final Mock mockProxyContext = mock(ProxyContext.class);
 
     public void testProceed() throws Throwable {
         mockInvocation.expects(once()).method("proceed").will(returnValue("result"));

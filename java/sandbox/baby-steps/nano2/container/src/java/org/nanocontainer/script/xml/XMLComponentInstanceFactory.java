@@ -30,5 +30,5 @@ public interface XMLComponentInstanceFactory {
      * @param classLoader
      * @return An Object instance
      */
-    Object makeInstance(PicoContainer container, Element element, ClassLoader classLoader) throws MalformedURLException;
+    Object makeInstance(PicoContainer container, Element element, ClassLoader classLoader);
 }

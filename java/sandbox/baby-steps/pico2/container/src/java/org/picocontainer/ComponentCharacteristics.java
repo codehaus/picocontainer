@@ -1,6 +1,6 @@
 package org.picocontainer;
 
-public class ComponentCharacteristics {
+public final class ComponentCharacteristics {
 
     private static final String _INJECTION = "injection";
     private static final String _CONSTRUCTOR = "constructor";
@@ -54,7 +54,7 @@ public class ComponentCharacteristics {
         }
     };
 
-    public static ComponentCharacteristic CACHE = new ComponentCharacteristic() {
+    public static final ComponentCharacteristic CACHE = new ComponentCharacteristic() {
         public void mergeInto(ComponentCharacteristic characteristic) {
             characteristic.setProperty(_CACHE, TRUE);
         }

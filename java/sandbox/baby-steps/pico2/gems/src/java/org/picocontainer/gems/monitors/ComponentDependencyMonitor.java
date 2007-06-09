@@ -12,7 +12,7 @@ import org.picocontainer.gems.monitors.prefuse.ComponentDependencyListener;
  * @author Peter Barry
  * @author Kent R. Spillner
  */
-public class ComponentDependencyMonitor extends DelegatingComponentMonitor {
+public final class ComponentDependencyMonitor extends DelegatingComponentMonitor {
 
     private final ComponentDependencyListener listener;
 
@@ -41,11 +41,11 @@ public class ComponentDependencyMonitor extends DelegatingComponentMonitor {
      * @author Peter Barry
      * @author Kent R. Spillner
      */
-    public static class Dependency {
+    public static final class Dependency {
 
-        private Class componentType;
+        private final Class componentType;
 
-        private Class dependencyType;
+        private final Class dependencyType;
 
         public Dependency(Class componentType, Class dependencyType) {
             this.componentType = componentType;

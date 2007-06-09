@@ -54,7 +54,7 @@ import org.picocontainer.LifecycleStrategy;
  * </p>
  * @author J&ouml;rg Schaible
  */
-public class ThreadLocalComponentAdapterFactory extends AbstractBehaviorFactory {
+public final class ThreadLocalComponentAdapterFactory extends AbstractBehaviorFactory {
 
     /**
      * <code>ENSURE_THREAD_LOCALITY</code> is the constant for created {@link ComponentAdapter} instances, that ensure
@@ -68,7 +68,7 @@ public class ThreadLocalComponentAdapterFactory extends AbstractBehaviorFactory 
     public static final boolean THREAD_ENSURES_LOCALITY = false;
 
     private final boolean ensureThreadLocal;
-    private ProxyFactory proxyFactory;
+    private final ProxyFactory proxyFactory;
 
     /**
      * Constructs a wrapping ThreadLocalComponentAdapterFactory, that ensures the usage of the ThreadLocal. The Proxy

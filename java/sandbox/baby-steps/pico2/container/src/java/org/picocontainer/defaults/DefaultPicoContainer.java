@@ -76,25 +76,25 @@ import java.util.Set;
  * @version $Revision: 1.8 $
  */
 public class DefaultPicoContainer implements MutablePicoContainer, ComponentMonitorStrategy, Serializable {
-    private Map<Object, ComponentAdapter> componentKeyToAdapterCache = new HashMap<Object, ComponentAdapter>();
+    private final Map<Object, ComponentAdapter> componentKeyToAdapterCache = new HashMap<Object, ComponentAdapter>();
     private ComponentFactory componentAdapterFactory;
     private PicoContainer parent;
-    private Set<PicoContainer> children = new HashSet<PicoContainer>();
+    private final Set<PicoContainer> children = new HashSet<PicoContainer>();
 
-    private List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>();
+    private final List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>();
     // Keeps track of instantiation order.
-    private List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
+    private final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
 
     // Keeps track of the container started status
     private boolean started = false;
     // Keeps track of the container disposed status
     private boolean disposed = false;
     // Keeps track of child containers started status
-    private Set<Integer> childrenStarted = new HashSet<Integer>();
+    private final Set<Integer> childrenStarted = new HashSet<Integer>();
 
-    private LifecycleManager lifecycleManager = new OrderedComponentAdapterLifecycleManager();
+    private final LifecycleManager lifecycleManager = new OrderedComponentAdapterLifecycleManager();
     private LifecycleStrategy lifecycleStrategy;
-    private ComponentCharacteristic componentCharacteristic = new ComponentCharacteristic() {
+    private final ComponentCharacteristic componentCharacteristic = new ComponentCharacteristic() {
         public void mergeInto(ComponentCharacteristic rc) {
         }
 
@@ -662,10 +662,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @author Mauro Talevi
      * @since 1.2
      */
-    private class OrderedComponentAdapterLifecycleManager implements LifecycleManager, Serializable {
+    private final class OrderedComponentAdapterLifecycleManager implements LifecycleManager, Serializable {
 
         /** List collecting the CAs which have been successfully started */
-        private List<ComponentAdapter> startedComponentAdapters = new ArrayList<ComponentAdapter>();
+        private final List<ComponentAdapter> startedComponentAdapters = new ArrayList<ComponentAdapter>();
 
         /**
          * {@inheritDoc}

@@ -22,9 +22,9 @@ import java.util.Map;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class Component implements DynamicConfigurator {
+public final class Component implements DynamicConfigurator {
     private String className;
-    private Map properties = new HashMap();
+    private final Map properties = new HashMap();
     private String key;
 
     public void setClassname(String className) {

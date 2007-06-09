@@ -56,5 +56,5 @@ public interface Deployer {
      * @throws ClassNotFoundException upon class instantiation error while running
      * the composition script.
      */
-    ObjectReference deploy(FileObject applicationFolder, ClassLoader parentClassLoader, ObjectReference parentContainerRef, Object assemblyScope) throws FileSystemException, ClassNotFoundException;
+    ObjectReference deploy(FileObject applicationFolder, ClassLoader parentClassLoader, ObjectReference parentContainerRef, Object assemblyScope) throws FileSystemException;
 }

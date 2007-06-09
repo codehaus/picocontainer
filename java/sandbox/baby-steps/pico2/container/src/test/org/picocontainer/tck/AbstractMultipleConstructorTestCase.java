@@ -25,8 +25,8 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
 
     protected abstract MutablePicoContainer createPicoContainer();
 
-    public static class Multi {
-        public String message;
+    public static final class Multi {
+        public final String message;
 
         public Multi(One one, Two two, Three three) {
             message = "one two three";

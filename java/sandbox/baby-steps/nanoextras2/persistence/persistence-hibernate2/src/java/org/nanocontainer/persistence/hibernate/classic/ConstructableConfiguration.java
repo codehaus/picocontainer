@@ -42,7 +42,7 @@ public class ConstructableConfiguration extends Configuration {
 	}
 	
 	
-	public ConstructableConfiguration(Document document)  throws HibernateException {
+	public ConstructableConfiguration(Document document) throws HibernateException {
 		configure(document);
 	}
 }

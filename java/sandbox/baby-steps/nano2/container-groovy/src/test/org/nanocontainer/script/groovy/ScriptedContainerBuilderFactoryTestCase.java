@@ -48,7 +48,7 @@ public class ScriptedContainerBuilderFactoryTestCase
     }
 
     // must use xml script
-    public void FIXMEtestBuildWithFile() throws ClassNotFoundException, IOException {
+    public void FIXMEtestBuildWithFile() throws IOException {
         File resource = new File("src/test/org/nanocontainer/script/xml/nanocontainer.xml");
         assertNotNull("Could not find script resource '+ TEST_SCRIPT_PATH + '.", resource);
 

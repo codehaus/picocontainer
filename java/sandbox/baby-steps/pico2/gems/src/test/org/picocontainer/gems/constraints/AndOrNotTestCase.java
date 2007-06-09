@@ -24,19 +24,19 @@ import org.picocontainer.gems.constraints.Or;
  * @author J&ouml;rg Schaible
  * @version 1.1
  */
-public class AndOrNotTestCase extends MockObjectTestCase {
+public final class AndOrNotTestCase extends MockObjectTestCase {
 
-    Mock             mockAdapter = mock(ComponentAdapter.class);
-    ComponentAdapter adapter     = (ComponentAdapter) mockAdapter.proxy();
-    Mock             mockVisior = mock(PicoVisitor.class);
-    PicoVisitor     visitor = (PicoVisitor) mockVisior.proxy();
+    final Mock             mockAdapter = mock(ComponentAdapter.class);
+    final ComponentAdapter adapter     = (ComponentAdapter) mockAdapter.proxy();
+    final Mock             mockVisior = mock(PicoVisitor.class);
+    final PicoVisitor     visitor = (PicoVisitor) mockVisior.proxy();
 
-    Mock       mockC1 = mock(Constraint.class, "constraint 1");
-    Mock       mockC2 = mock(Constraint.class, "constraint 2");
-    Mock       mockC3 = mock(Constraint.class, "constraint 3");
-    Constraint c1     = (Constraint) mockC1.proxy();
-    Constraint c2     = (Constraint) mockC2.proxy();
-    Constraint c3     = (Constraint) mockC3.proxy();
+    final Mock       mockC1 = mock(Constraint.class, "constraint 1");
+    final Mock       mockC2 = mock(Constraint.class, "constraint 2");
+    final Mock       mockC3 = mock(Constraint.class, "constraint 3");
+    final Constraint c1     = (Constraint) mockC1.proxy();
+    final Constraint c2     = (Constraint) mockC2.proxy();
+    final Constraint c3     = (Constraint) mockC3.proxy();
 
     public void testAndAllChildrenConstraintsTrueGivesTrue() {
         Constraint c = new And(c1, c2, c3);

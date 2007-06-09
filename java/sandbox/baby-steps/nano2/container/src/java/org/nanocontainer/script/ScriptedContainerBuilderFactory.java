@@ -63,7 +63,10 @@ public class ScriptedContainerBuilderFactory {
      * @throws UnsupportedScriptTypeException if the extension of the file
      * does not match that of any known script.
      */
-    public ScriptedContainerBuilderFactory(File compositionFile, ClassLoader classLoader, ScriptBuilderResolver builderClassResolver) throws IOException ,UnsupportedScriptTypeException {
+    public ScriptedContainerBuilderFactory(File compositionFile, ClassLoader classLoader, ScriptBuilderResolver builderClassResolver)
+        throws
+        UnsupportedScriptTypeException, FileNotFoundException
+    {
         this(new FileReader(fileExists(compositionFile)), builderClassResolver.getBuilderClassName(compositionFile), classLoader);
     }
 

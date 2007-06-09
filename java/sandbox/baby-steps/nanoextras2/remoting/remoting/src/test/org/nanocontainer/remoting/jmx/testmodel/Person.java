@@ -19,10 +19,10 @@ import org.picocontainer.testmodel.PersonBean;
 /**
  * @author J&ouml;rg Schaible
  */
-public class Person extends PersonBean implements PersonMBean {
+public final class Person extends PersonBean implements PersonMBean {
     // PersonBean already fulfills PersonMBean interface
 
-    private static MBeanAttributeInfo[] attributes;
+    private static final MBeanAttributeInfo[] attributes;
     static {
         attributes = new MBeanAttributeInfo[]{new MBeanAttributeInfo(
                 "Name", String.class.getName(), "desc", true, true, false)};

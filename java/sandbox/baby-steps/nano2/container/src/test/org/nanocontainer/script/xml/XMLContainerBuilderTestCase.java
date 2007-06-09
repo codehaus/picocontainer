@@ -54,7 +54,7 @@ import com.thoughtworks.xstream.XStream;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
+public final class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     //TODO some tests for XMLContainerBuilder that use a classloader that is retrieved at testtime.
     // i.e. not a programatic consequence of this.getClass().getClassLoader()
@@ -887,8 +887,8 @@ public class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilde
         return buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
     }
 
-    static public class StaticWriterComponentMonitor extends WriterComponentMonitor {
-        static Writer WRITER = new StringWriter();
+    static public final class StaticWriterComponentMonitor extends WriterComponentMonitor {
+        static final Writer WRITER = new StringWriter();
 
         public StaticWriterComponentMonitor() {
             super(WRITER);

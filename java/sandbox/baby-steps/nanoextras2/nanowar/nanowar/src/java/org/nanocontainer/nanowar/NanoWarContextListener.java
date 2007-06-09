@@ -121,7 +121,7 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
         return resolver.getBuilderClassName(extension);
     }
 
-    private ContainerComposer createContainerComposer(ServletContext context) throws ClassNotFoundException{
+    private ContainerComposer createContainerComposer(ServletContext context) {
         String containerComposerClassName = context.getInitParameter(CONTAINER_COMPOSER);
         // disposable container used to instantiate the ContainerComposer
         NanoContainer nanoContainer = new DefaultNanoContainer(Thread.currentThread().getContextClassLoader());

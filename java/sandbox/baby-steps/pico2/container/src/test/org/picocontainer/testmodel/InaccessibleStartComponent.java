@@ -17,8 +17,8 @@ import java.util.List;
  * @version $Revision$
  *          was UnaccessibleStartComponent
  */
-public class InaccessibleStartComponent {
-    private List messages;
+public final class InaccessibleStartComponent {
+    private final List messages;
 
     public InaccessibleStartComponent(List messages) {
         this.messages = messages;

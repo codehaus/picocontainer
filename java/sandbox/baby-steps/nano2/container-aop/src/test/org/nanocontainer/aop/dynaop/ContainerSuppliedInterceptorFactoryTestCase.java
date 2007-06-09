@@ -20,9 +20,9 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 /**
  * @author Stephen Molitor
  */
-public class ContainerSuppliedInterceptorFactoryTestCase extends MockObjectTestCase {
+public final class ContainerSuppliedInterceptorFactoryTestCase extends MockObjectTestCase {
 
-    private MutablePicoContainer pico = new DefaultPicoContainer();
+    private final MutablePicoContainer pico = new DefaultPicoContainer();
 
     public void testCreate() throws Throwable {
         Mock methodInterceptorMock = mock(MethodInterceptor.class);

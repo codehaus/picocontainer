@@ -51,13 +51,13 @@ import java.util.List;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class PicoContainerTask extends Task {
+public final class PicoContainerTask extends Task {
     private final List antSpecifiedComponents = new ArrayList();
 
     // for subclasses
-    protected ContainerComposer extraContainerComposer = null;
+    protected final ContainerComposer extraContainerComposer = null;
 
-    private ContainerComposer containerComposer = new ContainerComposer() {
+    private final ContainerComposer containerComposer = new ContainerComposer() {
         public void composeContainer(MutablePicoContainer picoContainer, Object assemblyScope) {
             if (extraContainerComposer != null) {
                 extraContainerComposer.composeContainer(picoContainer, assemblyScope);
@@ -73,15 +73,15 @@ public class PicoContainerTask extends Task {
         }
     };
 
-    private ObjectReference containerRef = new SimpleReference();
+    private final ObjectReference containerRef = new SimpleReference();
 
     public void addComponent(Component component) {
         antSpecifiedComponents.add(component);
     }
 
-    public void execute() {
+    public final void execute() {
         ContainerBuilder containerBuilder = new DefaultContainerBuilder(containerComposer) {
-            BeanPropertyComponentAdapterFactory propertyFactory =
+            final BeanPropertyComponentAdapterFactory propertyFactory =
                     new BeanPropertyComponentAdapterFactory(new AnyInjectionFactory());
 
             protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {

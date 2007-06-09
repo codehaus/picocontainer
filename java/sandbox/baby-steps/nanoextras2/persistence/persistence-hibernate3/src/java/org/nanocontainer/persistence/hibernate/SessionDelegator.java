@@ -37,7 +37,7 @@ import org.nanocontainer.persistence.ExceptionHandler;
  */
 public abstract class SessionDelegator implements Session {
 
-	protected ExceptionHandler hibernateExceptionHandler;
+	protected final ExceptionHandler hibernateExceptionHandler;
 
 	public SessionDelegator() {
 		hibernateExceptionHandler = new PingPongExceptionHandler();
@@ -55,13 +55,13 @@ public abstract class SessionDelegator implements Session {
 	/**
 	 * Perform actions to dispose "burned" session properly.
 	 */
-	public abstract void invalidateDelegatedSession() throws HibernateException;
+	public abstract void invalidateDelegatedSession();
 
 	/**
 	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
 	 * a {@link ExceptionHandler} if it's available otherwise just return the <code>cause</code> back.
 	 */
-	protected RuntimeException handleException(RuntimeException cause) throws HibernateException {
+	protected RuntimeException handleException(RuntimeException cause) {
 		try {
 			invalidateDelegatedSession();
 		} catch (RuntimeException e) {
@@ -71,7 +71,7 @@ public abstract class SessionDelegator implements Session {
 		return hibernateExceptionHandler.handle(cause);
 	}
 
-	public Transaction beginTransaction() throws HibernateException {
+	public Transaction beginTransaction() {
 		try {
 			return getDelegatedSession().beginTransaction();
 		} catch (RuntimeException ex) {
@@ -79,7 +79,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void cancelQuery() throws HibernateException {
+	public void cancelQuery() {
 		try {
 			getDelegatedSession().cancelQuery();
 		} catch (RuntimeException ex) {
@@ -95,7 +95,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Connection close() throws HibernateException {
+	public Connection close() {
 		try {
 			return getDelegatedSession().close();
 		} catch (RuntimeException ex) {
@@ -103,7 +103,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Connection connection() throws HibernateException {
+	public Connection connection() {
 		try {
 			return getDelegatedSession().connection();
 		} catch (RuntimeException ex) {
@@ -151,7 +151,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Query createFilter(Object collection, String queryString) throws HibernateException {
+	public Query createFilter(Object collection, String queryString) {
 		try {
 			return getDelegatedSession().createFilter(collection, queryString);
 		} catch (RuntimeException ex) {
@@ -159,7 +159,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Query createQuery(String queryString) throws HibernateException {
+	public Query createQuery(String queryString) {
 		try {
 			return getDelegatedSession().createQuery(queryString);
 		} catch (RuntimeException ex) {
@@ -167,7 +167,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public SQLQuery createSQLQuery(String queryString) throws HibernateException {
+	public SQLQuery createSQLQuery(String queryString) {
 		try {
 			return getDelegatedSession().createSQLQuery(queryString);
 		} catch (RuntimeException ex) {
@@ -175,7 +175,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void delete(Object object) throws HibernateException {
+	public void delete(Object object) {
 		try {
 			getDelegatedSession().delete(object);
 		} catch (RuntimeException ex) {
@@ -191,7 +191,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Connection disconnect() throws HibernateException {
+	public Connection disconnect() {
 		try {
 			return getDelegatedSession().disconnect();
 		} catch (RuntimeException ex) {
@@ -207,7 +207,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void evict(Object object) throws HibernateException {
+	public void evict(Object object) {
 		try {
 			getDelegatedSession().evict(object);
 		} catch (RuntimeException ex) {
@@ -215,7 +215,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void flush() throws HibernateException {
+	public void flush() {
 		try {
 			getDelegatedSession().flush();
 		} catch (RuntimeException ex) {
@@ -223,7 +223,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Object get(Class clazz, Serializable id) throws HibernateException {
+	public Object get(Class clazz, Serializable id) {
 		try {
 			return getDelegatedSession().get(clazz, id);
 		} catch (RuntimeException ex) {
@@ -231,7 +231,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Object get(Class clazz, Serializable id, LockMode lockMode) throws HibernateException {
+	public Object get(Class clazz, Serializable id, LockMode lockMode) {
 		try {
 			return getDelegatedSession().get(clazz, id, lockMode);
 		} catch (RuntimeException ex) {
@@ -239,7 +239,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Object get(String entityName, Serializable id) throws HibernateException {
+	public Object get(String entityName, Serializable id) {
 		try {
 			return getDelegatedSession().get(entityName, id);
 		} catch (RuntimeException ex) {
@@ -247,7 +247,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Object get(String entityName, Serializable id, LockMode lockMode) throws HibernateException {
+	public Object get(String entityName, Serializable id, LockMode lockMode) {
 		try {
 			return getDelegatedSession().get(entityName, id, lockMode);
 		} catch (RuntimeException ex) {
@@ -263,7 +263,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public LockMode getCurrentLockMode(Object object) throws HibernateException {
+	public LockMode getCurrentLockMode(Object object) {
 		try {
 			return getDelegatedSession().getCurrentLockMode(object);
 		} catch (RuntimeException ex) {
@@ -287,7 +287,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public String getEntityName(Object object) throws HibernateException {
+	public String getEntityName(Object object) {
 		try {
 			return getDelegatedSession().getEntityName(object);
 		} catch (RuntimeException ex) {
@@ -303,7 +303,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Serializable getIdentifier(Object object) throws HibernateException {
+	public Serializable getIdentifier(Object object) {
 		try {
 			return getDelegatedSession().getIdentifier(object);
 		} catch (RuntimeException ex) {
@@ -311,7 +311,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Query getNamedQuery(String queryName) throws HibernateException {
+	public Query getNamedQuery(String queryName) {
 		try {
 			return getDelegatedSession().getNamedQuery(queryName);
 		} catch (RuntimeException ex) {
@@ -351,7 +351,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public boolean isDirty() throws HibernateException {
+	public boolean isDirty() {
 		try {
 			return getDelegatedSession().isDirty();
 		} catch (RuntimeException ex) {
@@ -367,7 +367,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Object load(Class theClass, Serializable id) throws HibernateException {
+	public Object load(Class theClass, Serializable id) {
 		try {
 			return getDelegatedSession().load(theClass, id);
 		} catch (RuntimeException ex) {
@@ -375,7 +375,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Object load(Class theClass, Serializable id, LockMode lockMode) throws HibernateException {
+	public Object load(Class theClass, Serializable id, LockMode lockMode) {
 		try {
 			return getDelegatedSession().load(theClass, id, lockMode);
 		} catch (RuntimeException ex) {
@@ -383,7 +383,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void load(Object object, Serializable id) throws HibernateException {
+	public void load(Object object, Serializable id) {
 		try {
 			getDelegatedSession().load(object, id);
 		} catch (RuntimeException ex) {
@@ -391,7 +391,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Object load(String entityName, Serializable id) throws HibernateException {
+	public Object load(String entityName, Serializable id) {
 		try {
 			return getDelegatedSession().load(entityName, id);
 		} catch (RuntimeException ex) {
@@ -399,7 +399,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Object load(String entityName, Serializable id, LockMode lockMode) throws HibernateException {
+	public Object load(String entityName, Serializable id, LockMode lockMode) {
 		try {
 			return getDelegatedSession().load(entityName, id, lockMode);
 		} catch (RuntimeException ex) {
@@ -407,7 +407,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void lock(Object object, LockMode lockMode) throws HibernateException {
+	public void lock(Object object, LockMode lockMode) {
 		try {
 			getDelegatedSession().lock(object, lockMode);
 		} catch (RuntimeException ex) {
@@ -415,7 +415,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void lock(String entityEntity, Object object, LockMode lockMode) throws HibernateException {
+	public void lock(String entityEntity, Object object, LockMode lockMode) {
 		try {
 			getDelegatedSession().lock(entityEntity, object, lockMode);
 		} catch (RuntimeException ex) {
@@ -423,7 +423,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Object merge(Object object) throws HibernateException {
+	public Object merge(Object object) {
 		try {
 			return getDelegatedSession().merge(object);
 		} catch (RuntimeException ex) {
@@ -431,7 +431,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Object merge(String entityName, Object object) throws HibernateException {
+	public Object merge(String entityName, Object object) {
 		try {
 			return getDelegatedSession().merge(entityName, object);
 		} catch (RuntimeException ex) {
@@ -439,7 +439,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void persist(Object object) throws HibernateException {
+	public void persist(Object object) {
 		try {
 			getDelegatedSession().persist(object);
 		} catch (RuntimeException ex) {
@@ -447,7 +447,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void persist(String entityName, Object object) throws HibernateException {
+	public void persist(String entityName, Object object) {
 		try {
 			getDelegatedSession().persist(entityName, object);
 		} catch (RuntimeException ex) {
@@ -455,7 +455,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void reconnect() throws HibernateException {
+	public void reconnect() {
 		try {
 			getDelegatedSession().reconnect();
 		} catch (RuntimeException ex) {
@@ -463,7 +463,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void reconnect(Connection conn) throws HibernateException {
+	public void reconnect(Connection conn) {
 		try {
 			getDelegatedSession().reconnect(conn);
 		} catch (RuntimeException ex) {
@@ -471,7 +471,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void refresh(Object object) throws HibernateException {
+	public void refresh(Object object) {
 		try {
 			getDelegatedSession().refresh(object);
 		} catch (RuntimeException ex) {
@@ -479,7 +479,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void refresh(Object object, LockMode lockMode) throws HibernateException {
+	public void refresh(Object object, LockMode lockMode) {
 		try {
 			getDelegatedSession().refresh(object, lockMode);
 		} catch (RuntimeException ex) {
@@ -487,7 +487,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void replicate(Object object, ReplicationMode replicationMode) throws HibernateException {
+	public void replicate(Object object, ReplicationMode replicationMode) {
 		try {
 			getDelegatedSession().replicate(object, replicationMode);
 		} catch (RuntimeException ex) {
@@ -495,7 +495,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void replicate(String entityName, Object object, ReplicationMode replicationMode) throws HibernateException {
+	public void replicate(String entityName, Object object, ReplicationMode replicationMode) {
 		try {
 			getDelegatedSession().replicate(entityName, object, replicationMode);
 		} catch (RuntimeException ex) {
@@ -503,7 +503,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Serializable save(Object object) throws HibernateException {
+	public Serializable save(Object object) {
 		try {
 			return getDelegatedSession().save(object);
 		} catch (RuntimeException ex) {
@@ -511,7 +511,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void save(Object object, Serializable id) throws HibernateException {
+	public void save(Object object, Serializable id) {
 		try {
 			getDelegatedSession().save(object, id);
 		} catch (RuntimeException ex) {
@@ -519,7 +519,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public Serializable save(String entityName, Object object) throws HibernateException {
+	public Serializable save(String entityName, Object object) {
 		try {
 			return getDelegatedSession().save(entityName, object);
 		} catch (RuntimeException ex) {
@@ -527,7 +527,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void save(String entityName, Object object, Serializable id) throws HibernateException {
+	public void save(String entityName, Object object, Serializable id) {
 		try {
 			getDelegatedSession().save(entityName, object, id);
 		} catch (RuntimeException ex) {
@@ -535,7 +535,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void saveOrUpdate(Object object) throws HibernateException {
+	public void saveOrUpdate(Object object) {
 		try {
 			getDelegatedSession().saveOrUpdate(object);
 		} catch (RuntimeException ex) {
@@ -543,7 +543,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void saveOrUpdate(String entityName, Object object) throws HibernateException {
+	public void saveOrUpdate(String entityName, Object object) {
 		try {
 			getDelegatedSession().saveOrUpdate(entityName, object);
 		} catch (RuntimeException ex) {
@@ -567,7 +567,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void update(Object object) throws HibernateException {
+	public void update(Object object) {
 		try {
 			getDelegatedSession().update(object);
 		} catch (RuntimeException ex) {
@@ -575,7 +575,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void update(Object object, Serializable id) throws HibernateException {
+	public void update(Object object, Serializable id) {
 		try {
 			getDelegatedSession().update(object, id);
 		} catch (RuntimeException ex) {
@@ -583,7 +583,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void update(String entityName, Object object) throws HibernateException {
+	public void update(String entityName, Object object) {
 		try {
 			getDelegatedSession().update(entityName, object);
 		} catch (RuntimeException ex) {
@@ -591,7 +591,7 @@ public abstract class SessionDelegator implements Session {
 		}
 	}
 
-	public void update(String entityName, Object object, Serializable id) throws HibernateException {
+	public void update(String entityName, Object object, Serializable id) {
 		try {
 			getDelegatedSession().update(entityName, object, id);
 		} catch (RuntimeException ex) {

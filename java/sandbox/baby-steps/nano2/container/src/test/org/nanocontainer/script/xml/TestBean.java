@@ -9,10 +9,10 @@
 
 package org.nanocontainer.script.xml;
 
-public class TestBean {
+public final class TestBean {
     private int foo;
     private String bar;
-    private String constructorCalled;
+    private final String constructorCalled;
     
     public TestBean() {
         constructorCalled="default";

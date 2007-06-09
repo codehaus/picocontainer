@@ -14,9 +14,9 @@ package org.nanocontainer.tools.ant;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class Pung {
-    public String text;
-    public Pang pang;
+public final class Pung {
+    public final String text;
+    public final Pang pang;
 
     public Pung(Pang pang, String text) {
         this.pang = pang;

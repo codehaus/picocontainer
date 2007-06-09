@@ -5,8 +5,8 @@ import org.picocontainer.Startable;
 
 // START SNIPPET: girl
 
-public class Girl implements Startable {
-    Kissable kissable;
+public final class Girl implements Startable {
+    final Kissable kissable;
 
     public Girl(Kissable kissable) {
         this.kissable = kissable;

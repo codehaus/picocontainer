@@ -13,7 +13,7 @@ package org.nanocontainer.nanowar;
  * Configurator for the ScopedContainer
  * @author Mauro Talevi
  */
-public class ScopedContainerConfigurator {
+public final class ScopedContainerConfigurator {
 	public final static String CONTAINER_BUILDER_KEY = "containerBuilder";   
 	public final static String APPLICATION_CONFIG_KEY = "applicationConfig";   
 	public final static String SESSION_CONFIG_KEY = "sessionConfig";   
@@ -24,10 +24,10 @@ public class ScopedContainerConfigurator {
     public final static String DEFAULT_SESSION_CONFIG = "nanowar-session.xml";
     public final static String DEFAULT_REQUEST_CONFIG = "nanowar-request.xml";
 
-    private String containerBuilder;
-    private String applicationConfig;
-    private String sessionConfig;
-    private String requestConfig;
+    private final String containerBuilder;
+    private final String applicationConfig;
+    private final String sessionConfig;
+    private final String requestConfig;
 
     public ScopedContainerConfigurator(){
         this(DEFAULT_CONTAINER_BUILDER, DEFAULT_APPLICATION_CONFIG,

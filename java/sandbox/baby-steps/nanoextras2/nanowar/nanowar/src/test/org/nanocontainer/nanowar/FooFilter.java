@@ -21,9 +21,9 @@ import java.io.PrintWriter;
  * 
  * @author Gr&eacute;gory Joseph
  */
-public class FooFilter implements Filter {
+public final class FooFilter implements Filter {
     private static int initCounter;
-    private Foo foo;
+    private final Foo foo;
 
     public FooFilter(Foo foo) {
         this.foo = foo;

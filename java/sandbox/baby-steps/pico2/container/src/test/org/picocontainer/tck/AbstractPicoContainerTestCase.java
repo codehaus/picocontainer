@@ -165,7 +165,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testDuplicateRegistration() throws Exception {
+    public void testDuplicateRegistration() {
         try {
             MutablePicoContainer pico = createPicoContainer(null);
             pico.addComponent(Object.class);
@@ -343,16 +343,16 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
                     reversedPicoContainer.getComponents().get(1) instanceof String);
     }
 
-    public static class NeedsTouchable {
-        public Touchable touchable;
+    public static final class NeedsTouchable {
+        public final Touchable touchable;
 
         public NeedsTouchable(Touchable touchable) {
             this.touchable = touchable;
         }
     }
 
-    public static class NeedsWashable {
-        public Washable washable;
+    public static final class NeedsWashable {
+        public final Washable washable;
 
         public NeedsWashable(Washable washable) {
             this.washable = washable;
@@ -595,8 +595,8 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         // should hand to each LifecycleManager's start(..) at each appropriate node. See mail-list discussion.
     }
 
-    public static class TestLifecycleManager implements LifecycleManager {
-        public ArrayList<PicoContainer> started = new ArrayList<PicoContainer>();
+    public static final class TestLifecycleManager implements LifecycleManager {
+        public final ArrayList<PicoContainer> started = new ArrayList<PicoContainer>();
 
         public void start(PicoContainer node) {
             started.add(node);
@@ -676,8 +676,8 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         }
     }
 
-    public static class LifeCycleMonitoring implements Startable, Disposable {
-        StringBuffer sb;
+    public static final class LifeCycleMonitoring implements Startable, Disposable {
+        final StringBuffer sb;
 
         public LifeCycleMonitoring(StringBuffer sb) {
             this.sb = sb;
@@ -783,9 +783,9 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
     }
 
 
-    public static class NonGreedyClass {
+    public static final class NonGreedyClass {
 
-        public int value = 0;
+        public final int value = 0;
 
         public NonGreedyClass() {
             //Do nothing.

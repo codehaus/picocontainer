@@ -16,11 +16,11 @@ import org.picocontainer.adapters.AbstractComponentAdapter;
 /**
  * addComponent addAdapter to test script instantiation.
  */
-public class TestComponentAdapter extends AbstractComponentAdapter {
+public final class TestComponentAdapter extends AbstractComponentAdapter {
 
-    String foo;
-    String blurge;
-    int bar;
+    final String foo;
+    final String blurge;
+    final int bar;
 
     public TestComponentAdapter(String foo, int bar, String blurge) {
         super(TestComponentAdapter.class, TestComponentAdapter.class);

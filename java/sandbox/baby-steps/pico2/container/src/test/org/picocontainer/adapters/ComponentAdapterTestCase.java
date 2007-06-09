@@ -69,7 +69,8 @@ public class ComponentAdapterTestCase
         TestInstantiatingComponentAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
             super(componentKey, componentImplementation, parameters);
         }
-        protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, AmbiguousComponentResolutionException, NotConcreteRegistrationException {
+        protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException,
+                                                                                                 NotConcreteRegistrationException {
             return null;
         }
 

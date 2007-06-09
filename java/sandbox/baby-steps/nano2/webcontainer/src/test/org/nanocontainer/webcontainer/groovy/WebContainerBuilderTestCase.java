@@ -28,10 +28,10 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
-public class WebContainerBuilderTestCase extends TestCase {
+public final class WebContainerBuilderTestCase extends TestCase {
 
-    private ObjectReference containerRef = new SimpleReference();
-    private ObjectReference parentContainerRef = new SimpleReference();
+    private final ObjectReference containerRef = new SimpleReference();
+    private final ObjectReference parentContainerRef = new SimpleReference();
 
     private MutablePicoContainer pico;
 

@@ -70,13 +70,13 @@ public class GroovyNodeBuilder extends BuilderSupport {
     /**
      * Flag indicating that the attribute validation should be performed.
      */
-    public static boolean PERFORM_ATTRIBUTE_VALIDATION = true;
+    public static final boolean PERFORM_ATTRIBUTE_VALIDATION = true;
 
 
     /**
      * Flag indicating that attribute validation should be skipped.
      */
-    public static boolean SKIP_ATTRIBUTE_VALIDATION = false;
+    public static final boolean SKIP_ATTRIBUTE_VALIDATION = false;
 
 
     /**
@@ -88,8 +88,8 @@ public class GroovyNodeBuilder extends BuilderSupport {
     /**
      * Map of node handlers.
      */
-    private Map nodeBuilderHandlers = new HashMap();
-    private Map nodeBuilders = new HashMap();
+    private final Map nodeBuilderHandlers = new HashMap();
+    private final Map nodeBuilders = new HashMap();
 
     private final boolean performAttributeValidation;
 

@@ -22,9 +22,9 @@ import mx4j.MBeanDescriptionAdapter;
  * fails. The addComponent will still be exposed as bean, but no description for the exposed parts will be available.
  * @author J&ouml;rg Schaible
  */
-public class PersonMBeanDescription extends MBeanDescriptionAdapter {
+public final class PersonMBeanDescription extends MBeanDescriptionAdapter {
 
-    private static MBeanInfo MBEAN_INFO = Person.createMBeanInfo();
+    private static final MBeanInfo MBEAN_INFO = Person.createMBeanInfo();
 
     public String getAttributeDescription(final String attribute) {
         MBeanAttributeInfo[] attributes = MBEAN_INFO.getAttributes();

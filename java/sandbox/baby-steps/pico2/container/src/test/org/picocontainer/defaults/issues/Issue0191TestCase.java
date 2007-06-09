@@ -5,7 +5,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
-public class Issue0191TestCase extends TestCase {
+public final class Issue0191TestCase extends TestCase {
 
     static int sharkCount = 0 ;
     static int codCount = 0 ;
@@ -55,18 +55,18 @@ public class Issue0191TestCase extends TestCase {
     {
     }
 
-    class Cod implements Fish
+    final class Cod implements Fish
     {
-        int instanceNum ;
+        final int instanceNum ;
         public Cod( ) { instanceNum = codCount++ ; } ;
         public String toString( ) {
             return "Cod #" + instanceNum ;
         }
     }
 
-    class Shark implements Fish
+    final class Shark implements Fish
     {
-        int instanceNum ;
+        final int instanceNum ;
         public Shark( ) { instanceNum = sharkCount++ ; } ;
         public String toString( ) {
             return "Shark #" + instanceNum ;

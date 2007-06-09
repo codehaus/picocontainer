@@ -69,7 +69,7 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * @author Aslak Helles&oslash;y
  * @since 1.2
  */
-public class PoolingComponentAdapter extends BehaviorAdapter implements LifecycleManager {
+public final class PoolingComponentAdapter extends BehaviorAdapter implements LifecycleManager {
 
     private static final long serialVersionUID = 1L;
 
@@ -349,10 +349,10 @@ public class PoolingComponentAdapter extends BehaviorAdapter implements Lifecycl
         return pool.size();
     }
 
-    static class LifecycleResetter implements Resetter, Serializable {
+    static final class LifecycleResetter implements Resetter, Serializable {
         private static final long serialVersionUID = 1L;
-        private Resetter delegate;
-        private PoolingComponentAdapter adapter;
+        private final Resetter delegate;
+        private final PoolingComponentAdapter adapter;
 
         LifecycleResetter(final PoolingComponentAdapter adapter, final Resetter delegate) {
             this.adapter = adapter;

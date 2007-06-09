@@ -25,19 +25,19 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 /**
  * @author Stephen Molitor
  */
-public class ActionFactoryTestCase extends MockObjectTestCase {
+public final class ActionFactoryTestCase extends MockObjectTestCase {
 
-    private Mock requestMock = mock(HttpServletRequest.class);
-    private HttpServletRequest request = (HttpServletRequest) requestMock.proxy();
+    private final Mock requestMock = mock(HttpServletRequest.class);
+    private final HttpServletRequest request = (HttpServletRequest) requestMock.proxy();
 
-    private Mock sessionMock = mock(HttpSession.class);
-    private HttpSession session = (HttpSession) sessionMock.proxy();
+    private final Mock sessionMock = mock(HttpSession.class);
+    private final HttpSession session = (HttpSession) sessionMock.proxy();
 
-    private Mock servletContextMock = mock(ServletContext.class);
-    private ServletContext servletContext = (ServletContext) servletContextMock.proxy();
+    private final Mock servletContextMock = mock(ServletContext.class);
+    private final ServletContext servletContext = (ServletContext) servletContextMock.proxy();
 
-    private Mock servletMock = mock(ActionServlet.class);
-    private ActionServlet servlet = (ActionServlet) servletMock.proxy();
+    private final Mock servletMock = mock(ActionServlet.class);
+    private final ActionServlet servlet = (ActionServlet) servletMock.proxy();
 
     private ActionMapping mapping1;
     private ActionMapping mapping2;

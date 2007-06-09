@@ -25,7 +25,7 @@ import com.thoughtworks.xstream.io.xml.DomReader;
  */
 public class XStreamComponentInstanceFactory implements XMLComponentInstanceFactory {
 	/** The XStream used to unmarshal the DOM element */
-	private XStream xstream;
+	private final XStream xstream;
 
 	/**
 	 * Creates an XStreamComponentInstanceFactory with the default instance

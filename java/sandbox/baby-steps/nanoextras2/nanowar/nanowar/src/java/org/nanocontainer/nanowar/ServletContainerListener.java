@@ -58,17 +58,17 @@ import org.picocontainer.defaults.SimpleReference;
  * @author Mauro Talevi
  * @author Konstantin Pribluda
  */
-public class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants, Serializable {
+public final class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants, Serializable {
 
     /**
      * Implementation of the context listener.
      */
-    private NanoWarContextListener contextListener = new NanoWarContextListener();
+    private final NanoWarContextListener contextListener = new NanoWarContextListener();
 
     /**
      * Implementation of the session listener.
      */
-    private NanoWarSessionListener sessionListener = new NanoWarSessionListener();
+    private final NanoWarSessionListener sessionListener = new NanoWarSessionListener();
 
     public void contextInitialized(final ServletContextEvent event) {
         contextListener.contextInitialized(event);

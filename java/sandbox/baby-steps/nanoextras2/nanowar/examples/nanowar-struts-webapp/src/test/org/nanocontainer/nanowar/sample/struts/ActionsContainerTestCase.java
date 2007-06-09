@@ -16,11 +16,11 @@ import java.io.StringReader;
 /**
  * @author Mauro Talevi
  */
-public class ActionsContainerTestCase extends TestCase {
+public final class ActionsContainerTestCase extends TestCase {
 
-    private ObjectReference containerRef = new SimpleReference();
+    private final ObjectReference containerRef = new SimpleReference();
 
-    private ObjectReference parentContainerRef = new SimpleReference();
+    private final ObjectReference parentContainerRef = new SimpleReference();
 
     protected PicoContainer buildContainer(Reader script) {
         ScriptedContainerBuilder builder = new XStreamContainerBuilder(script,

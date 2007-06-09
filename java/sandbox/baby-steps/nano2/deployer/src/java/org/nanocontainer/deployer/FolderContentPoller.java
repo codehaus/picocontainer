@@ -9,11 +9,11 @@ import org.picocontainer.Startable;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class FolderContentPoller implements Startable {
-    private FolderContentHandler folderContentHandler;
-    private FileObject folder;
+public final class FolderContentPoller implements Startable {
+    private final FolderContentHandler folderContentHandler;
+    private final FileObject folder;
 
-    private Runnable poller = new Runnable() {
+    private final Runnable poller = new Runnable() {
         public void run() {
             while (!Thread.interrupted()) {
                 try {

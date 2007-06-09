@@ -160,7 +160,7 @@ public class NanoContainerDeployer implements Deployer {
         return deploy(applicationFolder, parentClassLoader, parentContainerRef, null);
     }
 
-    public ObjectReference deploy(FileObject applicationFolder, ClassLoader parentClassLoader, ObjectReference parentContainerRef, Object assemblyScope) throws FileSystemException, ClassNotFoundException {
+    public ObjectReference deploy(FileObject applicationFolder, ClassLoader parentClassLoader, ObjectReference parentContainerRef, Object assemblyScope) throws FileSystemException {
         ClassLoader applicationClassLoader = new VFSClassLoader(applicationFolder, fileSystemManager, parentClassLoader);
 
         FileObject deploymentScript = getDeploymentScript(applicationFolder);

@@ -24,12 +24,12 @@ import org.picocontainer.gems.adapters.ThreadLocalReference;
  * @author Mauro Talevi
  * @author Konstantin Pribluda
  */
-public class PicoObjectFactoryTestCase extends MockObjectTestCase {
+public final class PicoObjectFactoryTestCase extends MockObjectTestCase {
 
     private PicoObjectFactory factory;
     private DefaultPicoContainer container;
-    private Mock requestMock = mock(HttpServletRequest.class);
-    private HttpServletRequest request = (HttpServletRequest) requestMock.proxy();
+    private final Mock requestMock = mock(HttpServletRequest.class);
+    private final HttpServletRequest request = (HttpServletRequest) requestMock.proxy();
     
     public void setUp(){
         container = new DefaultPicoContainer();

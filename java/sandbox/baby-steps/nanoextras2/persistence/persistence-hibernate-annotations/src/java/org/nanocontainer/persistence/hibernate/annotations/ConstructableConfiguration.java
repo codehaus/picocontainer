@@ -27,23 +27,23 @@ import org.w3c.dom.Document;
  */
 public class ConstructableConfiguration extends Configuration {
 
-    public ConstructableConfiguration() throws HibernateException {
+    public ConstructableConfiguration() {
         this.configure();
     }
 
-    public ConstructableConfiguration(URL url) throws HibernateException {
+    public ConstructableConfiguration(URL url) {
         this.configure(url);
     }
 
-    public ConstructableConfiguration(String resource) throws HibernateException {
+    public ConstructableConfiguration(String resource) {
         this.configure(resource);
     }
 
-    public ConstructableConfiguration(File configFile) throws HibernateException {
+    public ConstructableConfiguration(File configFile) {
         this.configure(configFile);
     }
 
-    public ConstructableConfiguration(Document document) throws HibernateException {
+    public ConstructableConfiguration(Document document) {
         this.configure(document);
     }
 

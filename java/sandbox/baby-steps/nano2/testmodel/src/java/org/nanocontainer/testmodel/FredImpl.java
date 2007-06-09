@@ -12,8 +12,8 @@ package org.nanocontainer.testmodel;
 
 import junit.framework.Assert;
 
-public class FredImpl {
-    Wilma wilma;
+public final class FredImpl {
+    final Wilma wilma;
 
     public FredImpl(Wilma wilma) {
         this.wilma = wilma;

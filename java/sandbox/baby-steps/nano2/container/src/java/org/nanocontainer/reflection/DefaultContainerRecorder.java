@@ -32,10 +32,10 @@ import java.util.List;
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
  */
-public class DefaultContainerRecorder implements Serializable, ContainerRecorder {
+public final class DefaultContainerRecorder implements Serializable, ContainerRecorder {
 
     private final List<Invocation> invocations = new ArrayList<Invocation>();
-    private transient MutablePicoContainer container;
+    private final transient MutablePicoContainer container;
 
     private final InvocationHandler invocationRecorder = new InvocationRecorder();
 
@@ -63,9 +63,9 @@ public class DefaultContainerRecorder implements Serializable, ContainerRecorder
         }
     }
 
-    private class Invocation implements Serializable {
+    private final class Invocation implements Serializable {
         private transient Method method;
-        private Object[] args;
+        private final Object[] args;
 
         Invocation(Method method, Object[] args) {
             this.method = method;

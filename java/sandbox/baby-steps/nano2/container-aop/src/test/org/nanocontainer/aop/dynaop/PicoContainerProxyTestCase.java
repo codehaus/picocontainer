@@ -17,10 +17,10 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 /**
  * @author Stephen Molitor
  */
-public class PicoContainerProxyTestCase extends TestCase {
+public final class PicoContainerProxyTestCase extends TestCase {
 
-    private MutablePicoContainer container = new DefaultPicoContainer();
-    private ContainerLoader containerLoader = new ContainerLoader();
+    private final MutablePicoContainer container = new DefaultPicoContainer();
+    private final ContainerLoader containerLoader = new ContainerLoader();
 
     public void testProxy() {
         PicoContainer proxy = PicoContainerProxy.create(containerLoader);

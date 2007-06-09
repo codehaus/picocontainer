@@ -7,9 +7,9 @@ import java.util.List;
  *
  * @author Jeff Steward
  */
-public class ListSupport
+public final class ListSupport
 {
-    private List<Entity> aListOfEntityObjects;
+    private final List<Entity> aListOfEntityObjects;
 
     public ListSupport(List<Entity> aListOfEntityObjects)
     {

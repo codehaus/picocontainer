@@ -19,9 +19,9 @@ import java.util.Map;
  * @author Paul Hammant
  * @version $Revision: 3144 $
  */
-public class TestingChildBuilder extends NodeBuilder {
+public final class TestingChildBuilder extends NodeBuilder {
 
-    MutablePicoContainer toOperateOn;
+    final MutablePicoContainer toOperateOn;
 
     public TestingChildBuilder(MutablePicoContainer toOperateOn) {
         this.toOperateOn = toOperateOn;

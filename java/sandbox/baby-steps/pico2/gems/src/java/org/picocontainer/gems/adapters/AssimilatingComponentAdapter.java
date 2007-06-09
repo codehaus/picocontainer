@@ -54,11 +54,11 @@ import java.lang.reflect.Method;
  * @author Michael Ward
  * @since 1.2
  */
-public class AssimilatingComponentAdapter extends BehaviorAdapter {
+public final class AssimilatingComponentAdapter extends BehaviorAdapter {
 
-    private Class type;
-    private ProxyFactory proxyFactory;
-    private boolean isCompatible;
+    private final Class type;
+    private final ProxyFactory proxyFactory;
+    private final boolean isCompatible;
 
     /**
      * Construct an AssimilatingComponentAdapter. The <code>type</code> may not implement the type of the addComponent instance.

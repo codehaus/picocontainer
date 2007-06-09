@@ -18,11 +18,11 @@ import java.util.Map;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class UserQuestionTestCase extends TestCase {
+public final class UserQuestionTestCase extends TestCase {
 
     // From Scott Farquahsr
-    public static class CheeseComponentAdapter extends AbstractComponentAdapter {
-        private Map bla;
+    public static final class CheeseComponentAdapter extends AbstractComponentAdapter {
+        private final Map bla;
 
         public CheeseComponentAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws  NotConcreteRegistrationException {
             super(componentKey, componentImplementation);

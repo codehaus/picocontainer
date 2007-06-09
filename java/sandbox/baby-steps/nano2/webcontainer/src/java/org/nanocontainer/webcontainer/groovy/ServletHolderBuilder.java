@@ -6,9 +6,9 @@ import java.util.Map;
 
 import org.mortbay.jetty.servlet.ServletHolder;
 
-public class ServletHolderBuilder extends NodeBuilder {
+public final class ServletHolderBuilder extends NodeBuilder {
     
-    private ServletHolder servletHolder;
+    private final ServletHolder servletHolder;
 
     public ServletHolderBuilder(ServletHolder servlet) {
         this.servletHolder = servlet;

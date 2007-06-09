@@ -31,7 +31,7 @@ public class ConstructableAnnotationConfiguration extends AnnotationConfiguratio
     /**
      * @throws HibernateException
      */
-    public ConstructableAnnotationConfiguration() throws HibernateException {
+    public ConstructableAnnotationConfiguration() {
         this.configure();
     }
 
@@ -41,7 +41,7 @@ public class ConstructableAnnotationConfiguration extends AnnotationConfiguratio
      * @param url
      * @throws HibernateException
      */
-    public ConstructableAnnotationConfiguration(URL url) throws HibernateException {
+    public ConstructableAnnotationConfiguration(URL url) {
         this.configure(url);
     }
 
@@ -50,7 +50,7 @@ public class ConstructableAnnotationConfiguration extends AnnotationConfiguratio
      * @param resource
      * @throws HibernateException
      */
-    public ConstructableAnnotationConfiguration(String resource) throws HibernateException {
+    public ConstructableAnnotationConfiguration(String resource) {
         this.configure(resource);
     }
 
@@ -59,7 +59,7 @@ public class ConstructableAnnotationConfiguration extends AnnotationConfiguratio
      * @param configFile
      * @throws HibernateException
      */
-    public ConstructableAnnotationConfiguration(File configFile) throws HibernateException {
+    public ConstructableAnnotationConfiguration(File configFile) {
         this.configure(configFile);
     }
 
@@ -68,7 +68,7 @@ public class ConstructableAnnotationConfiguration extends AnnotationConfiguratio
      * @param document
      * @throws HibernateException
      */
-    public ConstructableAnnotationConfiguration(Document document) throws HibernateException {
+    public ConstructableAnnotationConfiguration(Document document) {
         this.configure(document);
     }
 

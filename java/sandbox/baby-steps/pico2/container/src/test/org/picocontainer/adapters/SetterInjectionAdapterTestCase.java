@@ -115,7 +115,7 @@ public class SetterInjectionAdapterTestCase
 
     public static class DeadBody
             extends PersonBean {
-        public DeadBody() throws Exception {
+        public DeadBody() {
             throw new RuntimeException("test");
         }
     }

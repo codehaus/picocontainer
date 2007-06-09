@@ -18,9 +18,9 @@ import java.lang.reflect.Method;
 /**
  * @author Stephen Molitor
  */
-public class DynaopMethodPointcutTestCase extends MockObjectTestCase {
+public final class DynaopMethodPointcutTestCase extends MockObjectTestCase {
 
-    private Mock mockDelegate = mock(dynaop.MethodPointcut.class);
+    private final Mock mockDelegate = mock(dynaop.MethodPointcut.class);
 
     public void testPicks() throws SecurityException, NoSuchMethodException {
         Method method1 = String.class.getMethod("length", new Class[]{});

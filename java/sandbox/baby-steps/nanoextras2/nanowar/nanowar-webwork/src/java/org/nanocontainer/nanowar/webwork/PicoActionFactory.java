@@ -27,11 +27,11 @@ import webwork.action.factory.ActionFactory;
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  * @author Mauro Talevi
  */
-public class PicoActionFactory extends ActionFactory {
+public final class PicoActionFactory extends ActionFactory {
 
-    private ActionsContainerFactory actionsContainerFactory = new ActionsContainerFactory();
+    private final ActionsContainerFactory actionsContainerFactory = new ActionsContainerFactory();
     
-    public Action getActionImpl(String className) throws Exception {
+    public Action getActionImpl(String className) {
         try {
             Class actionClass = actionsContainerFactory.getActionClass(className);
             Action action = null;

@@ -16,9 +16,9 @@ import org.picocontainer.monitors.DelegatingComponentMonitor;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
-public class DotDependencyGraphComponentMonitor extends DelegatingComponentMonitor implements ComponentMonitor {
+public final class DotDependencyGraphComponentMonitor extends DelegatingComponentMonitor implements ComponentMonitor {
 
-    ArrayList allInstantiated = new ArrayList();
+    final ArrayList allInstantiated = new ArrayList();
 
     public DotDependencyGraphComponentMonitor(ComponentMonitor delegate) {
         super(delegate);
@@ -93,11 +93,11 @@ public class DotDependencyGraphComponentMonitor extends DelegatingComponentMonit
 
     }
 
-    private static class Instantiation {
-        Constructor constructor;
-        Object instantiated;
-        Object[] injected;
-        long duration;
+    private static final class Instantiation {
+        final Constructor constructor;
+        final Object instantiated;
+        final Object[] injected;
+        final long duration;
         public Instantiation(Constructor constructor, Object instantiated, Object[] injected, long duration) {
             this.constructor = constructor;
             this.instantiated = instantiated;

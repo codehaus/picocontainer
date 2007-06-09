@@ -30,7 +30,7 @@ import org.picocontainer.testmodel.Touchable;
  * @author Jon Tirsen (tirsen@codehaus.org)
  * @version $Revision: 1.7 $
  */
-public class ParameterTestCase extends TestCase {
+public final class ParameterTestCase extends TestCase {
 
     public static class FooParameterName implements ParameterName {
         public String getParameterName() {
@@ -38,7 +38,7 @@ public class ParameterTestCase extends TestCase {
         }
     }
 
-    ParameterName pn = new FooParameterName();
+    final ParameterName pn = new FooParameterName();
 
     public void testComponentParameterFetches() throws PicoRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();

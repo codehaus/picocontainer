@@ -18,10 +18,10 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 /**
  * @author Stephen Molitor
  */
-public class ContainerSuppliedMixinFactoryTestCase extends MockObjectTestCase {
+public final class ContainerSuppliedMixinFactoryTestCase extends MockObjectTestCase {
 
-    private MutablePicoContainer pico = new DefaultPicoContainer();
-    private MixinFactory mixinFactory = new ContainerSuppliedMixinFactory(pico, IdentifiableMixin.class);
+    private final MutablePicoContainer pico = new DefaultPicoContainer();
+    private final MixinFactory mixinFactory = new ContainerSuppliedMixinFactory(pico, IdentifiableMixin.class);
 
     public void testCreate() {
         Object mixin = (IdentifiableMixin) mixinFactory.create(null);

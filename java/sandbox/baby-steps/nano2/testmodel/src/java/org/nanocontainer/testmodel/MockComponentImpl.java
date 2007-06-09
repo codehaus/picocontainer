@@ -13,10 +13,10 @@ package org.nanocontainer.testmodel;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class MockComponentImpl implements MockComponent {
+public final class MockComponentImpl implements MockComponent {
     private int port = 0;
     private String server = null;
-    private Collection registers = new ArrayList();
+    private final Collection registers = new ArrayList();
 
     public int getPort() {
         return port;

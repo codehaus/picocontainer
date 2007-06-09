@@ -41,7 +41,7 @@ abstract public class AbstractBuilderNode implements BuilderNode, Serializable {
     /**
      * A set of all possible supported attribute names.
      */
-    private Set supportedAttributes = new HashSet();
+    private final Set supportedAttributes = new HashSet();
 
 
 

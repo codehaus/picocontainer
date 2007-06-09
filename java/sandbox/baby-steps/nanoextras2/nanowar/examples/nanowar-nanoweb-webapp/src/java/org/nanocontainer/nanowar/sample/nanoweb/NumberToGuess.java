@@ -7,8 +7,8 @@ import java.util.Random;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class NumberToGuess implements Serializable {
-    private Random random;
+public final class NumberToGuess implements Serializable {
+    private final Random random;
     private int number;
 
     public NumberToGuess(Random random) {

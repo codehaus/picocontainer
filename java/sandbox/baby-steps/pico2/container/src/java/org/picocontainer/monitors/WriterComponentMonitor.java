@@ -27,7 +27,7 @@ import org.picocontainer.ComponentMonitor;
  */
 public class WriterComponentMonitor extends AbstractComponentMonitor {
 
-    private PrintWriter out;
+    private final PrintWriter out;
     private final ComponentMonitor delegate;
 
     public WriterComponentMonitor(Writer out) {

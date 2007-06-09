@@ -12,9 +12,9 @@ package org.nanocontainer.testmodel;
 /**
  * @author Stephen Molitor
  */
-public class HasParams {
+public final class HasParams {
 
-    private String params;
+    private final String params;
 
     public HasParams(String a, String b, String c) {
         params = a + b + c;

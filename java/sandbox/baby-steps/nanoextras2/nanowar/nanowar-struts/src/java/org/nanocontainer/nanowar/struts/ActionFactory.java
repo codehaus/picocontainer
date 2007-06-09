@@ -27,9 +27,9 @@ import org.picocontainer.PicoIntrospectionException;
  * @author Stephen Molitor
  * @author Mauro Talevi
  */
-public class ActionFactory {
+public final class ActionFactory {
     
-     private ActionsContainerFactory actionsContainerFactory = new ActionsContainerFactory();
+     private final ActionsContainerFactory actionsContainerFactory = new ActionsContainerFactory();
 
     /**
      * Gets the <code>Action</code> specified by the mapping type from a PicoContainer. 

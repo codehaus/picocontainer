@@ -23,9 +23,9 @@ import org.picocontainer.Startable;
  * 
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
  */
-public class FailoverDataSourceConnection extends AbstractConnection implements Startable {
+public final class FailoverDataSourceConnection extends AbstractConnection implements Startable {
 
-	private DataSource dataSource;
+	private final DataSource dataSource;
 
 	private Connection connection;
 

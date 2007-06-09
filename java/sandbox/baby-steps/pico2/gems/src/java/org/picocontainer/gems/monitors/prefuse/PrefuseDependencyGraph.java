@@ -11,10 +11,10 @@ import prefuse.data.Node;
 import prefuse.data.Schema;
 import prefuse.data.tuple.TupleSet;
 
-public class PrefuseDependencyGraph implements ComponentDependencyListener {
+public final class PrefuseDependencyGraph implements ComponentDependencyListener {
     private Graph graph;
 
-    private Map nodes;
+    private final Map nodes;
 
     public PrefuseDependencyGraph() {
         this.graph = initializeGraph();

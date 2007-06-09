@@ -62,8 +62,8 @@ public abstract class AbstractImplementationHidingPicoContainerTestCase extends 
         assertFalse(map instanceof HashMap);
     }
 
-    public void testSerializedContainerCanRetrieveImplementation() throws PicoException, PicoInitializationException,
-            IOException, ClassNotFoundException {
+    public void testSerializedContainerCanRetrieveImplementation() throws PicoException,
+                                                                          IOException, ClassNotFoundException {
         try {
             super.testSerializedContainerCanRetrieveImplementation();
             fail("The ImplementationHidingPicoContainer should not be able to retrieve the addComponent impl");

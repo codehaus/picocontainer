@@ -32,14 +32,14 @@ import org.picocontainer.adapters.SynchronizedBehaviorFactory;
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
-public class SynchronizedComponentAdapterTestCase extends TestCase {
-    private Runner[] runner = new Runner[3];
+public final class SynchronizedComponentAdapterTestCase extends TestCase {
+    private final Runner[] runner = new Runner[3];
     private int blockerCounter = 0;
 
-    class Runner implements Runnable {
+    final class Runner implements Runnable {
         public RuntimeException exception;
         public Blocker blocker;
-        private PicoContainer pico;
+        private final PicoContainer pico;
 
         public Runner(PicoContainer pico) {
             this.pico = pico;

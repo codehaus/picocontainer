@@ -14,8 +14,8 @@ import java.util.List;
  * @author Nick Sieger
  * @version 1.1
  */
-public class DependsOnList {
-    private List list;
+public final class DependsOnList {
+    private final List list;
 
     public DependsOnList(List l) {
         this.list = l;

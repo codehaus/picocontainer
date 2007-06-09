@@ -43,8 +43,8 @@ public abstract class Xxx implements Startable, Disposable {
     public static class A extends Xxx {
     }
 
-    public static class B extends Xxx {
-        A a;
+    public static final class B extends Xxx {
+        final A a;
 
         public B(A a) {
             Assert.assertNotNull(a);

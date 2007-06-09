@@ -17,7 +17,7 @@ package org.nanocontainer.remoting.jmx;
  */
 public abstract class AbstractObjectNameFactory implements ObjectNameFactory {
 
-    private String domain;
+    private final String domain;
 
     /**
      * Construct an AbstractObjectNameFactory.

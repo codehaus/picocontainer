@@ -11,11 +11,11 @@ import org.picocontainer.gems.monitors.ComponentDependencyMonitor.Dependency;
  * @author Peter Barry
  * @author Kent R. Spillner
  */
-public class DependencySet implements ComponentDependencyListener {
+public final class DependencySet implements ComponentDependencyListener {
 
-    private Set uniqueDependencies = new HashSet();
+    private final Set uniqueDependencies = new HashSet();
 
-    private ComponentDependencyListener listener;
+    private final ComponentDependencyListener listener;
 
     public DependencySet(ComponentDependencyListener listener) {
         this.listener = listener;

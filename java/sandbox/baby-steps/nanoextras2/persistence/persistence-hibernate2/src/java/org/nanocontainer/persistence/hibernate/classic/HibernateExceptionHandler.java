@@ -15,9 +15,9 @@ import org.nanocontainer.persistence.ExceptionFactory;
  * @version $Revision: $
  * @see org.nanocontainer.persistence.ExceptionHandler
  */
-public class HibernateExceptionHandler {
+public final class HibernateExceptionHandler {
 
-    private ExceptionFactory exceptionFactory;
+    private final ExceptionFactory exceptionFactory;
 
     public HibernateExceptionHandler(ExceptionFactory exceptionFactory) {
         this.exceptionFactory = exceptionFactory;

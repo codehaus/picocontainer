@@ -36,9 +36,9 @@ import org.picocontainer.PicoInitializationException;
  * 
  * @version $Id: SessionFactoryDelegator.java 2158 2005-07-08 02:13:36Z juze $
  */
-public class SessionFactoryDelegator implements SessionFactory {
+public final class SessionFactoryDelegator implements SessionFactory {
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public SessionFactoryDelegator(Configuration configuration) {
         try {
@@ -52,63 +52,63 @@ public class SessionFactoryDelegator implements SessionFactory {
         return this.sessionFactory;
     }
 
-    public void close() throws HibernateException {
+    public void close() {
         this.getDelegatedSessionFactory().close();
     }
 
-    public void evict(Class persistentClass) throws HibernateException {
+    public void evict(Class persistentClass) {
         this.getDelegatedSessionFactory().evict(persistentClass);
     }
 
-    public void evict(Class persistentClass, Serializable id) throws HibernateException {
+    public void evict(Class persistentClass, Serializable id) {
         this.getDelegatedSessionFactory().evict(persistentClass, id);
     }
 
-    public void evictCollection(String roleName) throws HibernateException {
+    public void evictCollection(String roleName) {
         this.getDelegatedSessionFactory().evictCollection(roleName);
     }
 
-    public void evictCollection(String roleName, Serializable id) throws HibernateException {
+    public void evictCollection(String roleName, Serializable id) {
         this.getDelegatedSessionFactory().evictCollection(roleName, id);
     }
 
-    public void evictEntity(String entityName) throws HibernateException {
+    public void evictEntity(String entityName) {
         this.getDelegatedSessionFactory().evictEntity(entityName);
     }
 
-    public void evictEntity(String entityName, Serializable id) throws HibernateException {
+    public void evictEntity(String entityName, Serializable id) {
         this.getDelegatedSessionFactory().evictEntity(entityName, id);
     }
 
-    public void evictQueries() throws HibernateException {
+    public void evictQueries() {
         this.getDelegatedSessionFactory().evictQueries();
     }
 
-    public void evictQueries(String cacheRegion) throws HibernateException {
+    public void evictQueries(String cacheRegion) {
         this.getDelegatedSessionFactory().evictQueries(cacheRegion);
     }
 
-    public Map getAllClassMetadata() throws HibernateException {
+    public Map getAllClassMetadata() {
         return this.getDelegatedSessionFactory().getAllClassMetadata();
     }
 
-    public Map getAllCollectionMetadata() throws HibernateException {
+    public Map getAllCollectionMetadata() {
         return this.getDelegatedSessionFactory().getAllCollectionMetadata();
     }
 
-    public ClassMetadata getClassMetadata(Class persistentClass) throws HibernateException {
+    public ClassMetadata getClassMetadata(Class persistentClass) {
         return this.getDelegatedSessionFactory().getClassMetadata(persistentClass);
     }
 
-    public ClassMetadata getClassMetadata(String entityName) throws HibernateException {
+    public ClassMetadata getClassMetadata(String entityName) {
         return this.getDelegatedSessionFactory().getClassMetadata(entityName);
     }
 
-    public CollectionMetadata getCollectionMetadata(String roleName) throws HibernateException {
+    public CollectionMetadata getCollectionMetadata(String roleName) {
         return this.getDelegatedSessionFactory().getCollectionMetadata(roleName);
     }
 
-	public Session getCurrentSession() throws HibernateException {
+	public Session getCurrentSession() {
 		return this.getDelegatedSessionFactory().getCurrentSession();
 	}
 
@@ -124,7 +124,7 @@ public class SessionFactoryDelegator implements SessionFactory {
 		return this.getDelegatedSessionFactory().isClosed();
 	}
 
-    public Session openSession() throws HibernateException {
+    public Session openSession() {
         return this.getDelegatedSessionFactory().openSession();
     }
 
@@ -136,7 +136,7 @@ public class SessionFactoryDelegator implements SessionFactory {
         return this.getDelegatedSessionFactory().openSession(connection, interceptor);
     }
 
-    public Session openSession(Interceptor interceptor) throws HibernateException {
+    public Session openSession(Interceptor interceptor) {
         return this.getDelegatedSessionFactory().openSession(interceptor);
     }
 
@@ -156,7 +156,7 @@ public class SessionFactoryDelegator implements SessionFactory {
      * @throws HibernateException
      * @see org.hibernate.SessionFactory#getFilterDefinition(java.lang.String)
      */
-    public FilterDefinition getFilterDefinition(String filterName) throws HibernateException {
+    public FilterDefinition getFilterDefinition(String filterName) {
         return this.getDelegatedSessionFactory().getFilterDefinition(filterName);
     }
 

@@ -19,8 +19,8 @@ import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
 public abstract class AbstractScriptedContainerBuilderTestCase extends MockObjectTestCase {
-    private ObjectReference containerRef = new SimpleReference();
-    private ObjectReference parentContainerRef = new SimpleReference();
+    private final ObjectReference containerRef = new SimpleReference();
+    private final ObjectReference parentContainerRef = new SimpleReference();
 
     protected PicoContainer buildContainer(ScriptedContainerBuilder builder, PicoContainer parentContainer, Object scope) {
         parentContainerRef.set(parentContainer);

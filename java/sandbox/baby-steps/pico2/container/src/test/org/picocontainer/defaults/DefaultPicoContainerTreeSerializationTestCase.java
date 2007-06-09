@@ -31,8 +31,8 @@ public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoC
         return new DefaultPicoContainer(parent);
     }
 
-    public void testContainerIsDeserializableWithParent() throws PicoException, PicoInitializationException,
-            IOException, ClassNotFoundException {
+    public void testContainerIsDeserializableWithParent() throws PicoException,
+                                                                 IOException, ClassNotFoundException {
 
         PicoContainer parent = createPicoContainer(null);
         MutablePicoContainer child = createPicoContainer(parent);

@@ -41,7 +41,8 @@ public class PicoRequestProcessor extends RequestProcessor {
      */
     protected Action processActionCreate(HttpServletRequest request,
                                          HttpServletResponse response,
-                                         ActionMapping mapping) throws IOException {
+                                         ActionMapping mapping)
+    {
         return actionFactory.getAction(request, mapping, this.servlet);
     }
 

@@ -70,7 +70,7 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
         assertComposedHierarchy(new ScopedContainerComposer(createConfigurationContainer(groovyConfig, GroovyContainerBuilder.class)));        
     }
     
-    private void assertComposedHierarchy(ScopedContainerComposer composer) throws ClassNotFoundException {
+    private void assertComposedHierarchy(ScopedContainerComposer composer) {
         MutablePicoContainer applicationContainer = new DefaultPicoContainer();
         Mock servletContextMock = mock(ServletContext.class);
 
@@ -94,7 +94,7 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
     }
     
 
-    private PicoContainer createConfigurationContainer(String script, Class containerBuilder) throws ClassNotFoundException{
+    private PicoContainer createConfigurationContainer(String script, Class containerBuilder) {
         ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(
                 new StringReader(script), containerBuilder.getName(), Thread.currentThread().getContextClassLoader());
         return buildContainer(scriptedContainerBuilderFactory.getContainerBuilder());        

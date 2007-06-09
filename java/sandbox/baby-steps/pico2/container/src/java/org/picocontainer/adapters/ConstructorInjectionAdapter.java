@@ -52,10 +52,10 @@ import com.thoughtworks.paranamer.asm.AsmParanamer;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class ConstructorInjectionAdapter extends InjectingAdapter {
+public final class ConstructorInjectionAdapter extends InjectingAdapter {
     private transient List<Constructor> sortedMatchingConstructors;
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
-    private transient Paranamer paranamer = new AsmParanamer();
+    private final transient Paranamer paranamer = new AsmParanamer();
 
     /**
      * Creates a ConstructorInjectionComponentAdapter

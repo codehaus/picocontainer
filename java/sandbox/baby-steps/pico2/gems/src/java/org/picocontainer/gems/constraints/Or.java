@@ -18,8 +18,8 @@ import org.picocontainer.PicoVisitor;
  * @author Nick Sieger
  * @version 1.1
  */
-public class Or extends AbstractConstraint {
-    private Constraint[] children;
+public final class Or extends AbstractConstraint {
+    private final Constraint[] children;
 
     public Or(Constraint c1, Constraint c2) {
         children = new Constraint[2];

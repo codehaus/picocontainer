@@ -35,12 +35,12 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class CachingBehaviorAdapter extends BehaviorAdapter implements LifecycleManager {
+public final class CachingBehaviorAdapter extends BehaviorAdapter implements LifecycleManager {
 
-    private ObjectReference instanceReference;
+    private final ObjectReference instanceReference;
     private boolean disposed;
     private boolean started;
-    private boolean delegateHasLifecylce;
+    private final boolean delegateHasLifecylce;
 
     public CachingBehaviorAdapter(ComponentAdapter delegate) {
         this(delegate, new SimpleReference());

@@ -21,9 +21,9 @@ import org.nanocontainer.aop.ComponentPointcut;
  * @author Stephen Molitor
  * @version $Revision$
  */
-class MixinComponentAspect extends ComponentAspect {
+final class MixinComponentAspect extends ComponentAspect {
 
-    private Class[] mixinInterfaces;
+    private final Class[] mixinInterfaces;
     private final MixinFactory mixinFactory;
 
     /**

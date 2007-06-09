@@ -18,7 +18,7 @@ import org.picocontainer.PicoLifecycleException;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
-public class LifecycleComponentMonitor implements ComponentMonitor {
+public final class LifecycleComponentMonitor implements ComponentMonitor {
 
     private final ComponentMonitor delegate;
     private final List lifecycleFailures = new ArrayList();
@@ -80,9 +80,9 @@ public class LifecycleComponentMonitor implements ComponentMonitor {
      * @author Paul Hammant
      * @author Mauro Talevi
      */
-    public class LifecycleFailuresException extends PicoException {
+    public final class LifecycleFailuresException extends PicoException {
 
-        private List lifecycleFailures;
+        private final List lifecycleFailures;
 
         public LifecycleFailuresException(List lifecycleFailures) {
             this.lifecycleFailures = lifecycleFailures;

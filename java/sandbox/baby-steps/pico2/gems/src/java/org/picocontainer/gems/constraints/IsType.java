@@ -17,8 +17,8 @@ import org.picocontainer.ComponentAdapter;
  * @author Nick Sieger
  * @version 1.1
  */
-public class IsType extends AbstractConstraint {
-    private Class type;
+public final class IsType extends AbstractConstraint {
+    private final Class type;
 
     /**
      * Creates a new <code>IsType</code> instance.

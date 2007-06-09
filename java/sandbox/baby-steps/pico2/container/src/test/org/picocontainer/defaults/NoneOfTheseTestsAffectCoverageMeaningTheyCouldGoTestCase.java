@@ -26,7 +26,7 @@ import org.picocontainer.testmodel.Webster;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends TestCase {
+public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends TestCase {
 
     //TODO - move to AbstractComponentRegistryTestCase
     public void testGetComponentSpecification() throws PicoRegistrationException, PicoIntrospectionException {
@@ -128,7 +128,7 @@ public class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends Te
     }
 
     public static class Dino implements Animal {
-        String food;
+        final String food;
 
         public Dino(String food) {
             this.food = food;

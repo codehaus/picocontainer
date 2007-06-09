@@ -7,10 +7,10 @@ package org.nanocontainer.persistence;
  * 
  * @version $Revision: $
  */
-public class StaleObjectStateException extends ConcurrencyFailureException {
+public final class StaleObjectStateException extends ConcurrencyFailureException {
 
-	private String entityName;
-	private Object objectId;
+	private final String entityName;
+	private final Object objectId;
 
 	public StaleObjectStateException(Throwable cause, String entityName, Object objectId) {
 		super(cause);

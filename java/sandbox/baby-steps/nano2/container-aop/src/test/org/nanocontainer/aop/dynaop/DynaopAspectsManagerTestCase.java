@@ -37,12 +37,12 @@ import java.lang.reflect.Method;
 /**
  * @author Stephen Molitor
  */
-public class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
+public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
 
-    private AspectsManager aspects = new DynaopAspectsManager();
-    private ComponentFactory caFactory = new CachingBehaviorFactory().forThis(new AspectsComponentAdapterFactory(aspects).forThis(new ConstructorInjectionFactory()));
-    private MutablePicoContainer pico = new DefaultPicoContainer(caFactory);
-    private PointcutsFactory cuts = aspects.getPointcutsFactory();
+    private final AspectsManager aspects = new DynaopAspectsManager();
+    private final ComponentFactory caFactory = new CachingBehaviorFactory().forThis(new AspectsComponentAdapterFactory(aspects).forThis(new ConstructorInjectionFactory()));
+    private final MutablePicoContainer pico = new DefaultPicoContainer(caFactory);
+    private final PointcutsFactory cuts = aspects.getPointcutsFactory();
 
     public void testInterceptor() {
         StringBuffer log = new StringBuffer();

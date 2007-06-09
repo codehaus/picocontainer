@@ -13,8 +13,8 @@ import org.picocontainer.testmodel.SimpleTouchable;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class XStreamSerialisationTestCase extends TestCase {
-    private XStream xStream = new XStream(new XppDriver());
+public final class XStreamSerialisationTestCase extends TestCase {
+    private final XStream xStream = new XStream(new XppDriver());
 
     public void testShouldBeAbleToSerialiseEmptyPico() {
         if (JVM.is14()) {

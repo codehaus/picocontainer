@@ -35,7 +35,10 @@ public class NanoContainerBooter {
      * @param args the arguments passed on to Standalone
      * @throws Exception
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args)
+        throws IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException,
+               MalformedURLException
+    {
         new NanoContainerBooter(args);
     }
 
@@ -50,7 +53,10 @@ public class NanoContainerBooter {
      * @throws InstantiationException
      * @throws IOException
      */
-    public NanoContainerBooter(String[] args) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
+    public NanoContainerBooter(String[] args) throws ClassNotFoundException, IllegalAccessException,
+                                                     InvocationTargetException, InstantiationException,
+                                                     MalformedURLException
+    {
 
         URLClassLoader commonClassLoader = new URLClassLoader(toURLs(COMMON_PATH),
                         NanoContainerBooter.class.getClassLoader().getParent() );

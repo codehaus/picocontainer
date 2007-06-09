@@ -6,8 +6,8 @@ import junit.framework.Assert;
 /**
  * @author Mauro Talevi
  */
-public class B extends X {
-    public A a;
+public final class B extends X {
+    public final A a;
 
     public B(A a) {
         Assert.assertNotNull(a);

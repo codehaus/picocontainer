@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 
-public class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
-    private ComponentFactory implementationHidingComponentAdapterFactory = new HotSwappingComponentAdapterFactory().forThis(new AnyInjectionFactory());
+public final class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+    private final ComponentFactory implementationHidingComponentAdapterFactory = new HotSwappingComponentAdapterFactory().forThis(new AnyInjectionFactory());
 
     // START SNIPPET: man
     public static interface Man {

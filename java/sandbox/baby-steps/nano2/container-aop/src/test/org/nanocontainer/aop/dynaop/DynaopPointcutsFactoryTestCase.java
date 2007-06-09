@@ -23,9 +23,9 @@ import java.lang.reflect.Method;
 /**
  * @author Stephen Molitor
  */
-public class DynaopPointcutsFactoryTestCase extends TestCase {
+public final class DynaopPointcutsFactoryTestCase extends TestCase {
 
-    private PointcutsFactory cuts = new DynaopPointcutsFactory();
+    private final PointcutsFactory cuts = new DynaopPointcutsFactory();
     private Method apple;
     private Method apricot;
     private Method banana;

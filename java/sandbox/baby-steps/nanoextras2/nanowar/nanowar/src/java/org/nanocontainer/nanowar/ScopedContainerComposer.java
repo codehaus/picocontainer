@@ -60,14 +60,14 @@ import org.picocontainer.defaults.SimpleReference;
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
  * @version $Revision$
  */
-public class ScopedContainerComposer implements ContainerComposer {
+public final class ScopedContainerComposer implements ContainerComposer {
 
 	private static final String COMMA = ",";
     
     // ContainerBuilder class name
-	private String containerBuilderClassName;
+	private final String containerBuilderClassName;
     // scoped container recorders
-	private ContainerRecorder applicationRecorder;
+	private final ContainerRecorder applicationRecorder;
     private ContainerRecorder requestRecorder;
     private ContainerRecorder sessionRecorder;
 
@@ -137,8 +137,7 @@ public class ScopedContainerComposer implements ContainerComposer {
 	    return (String[])tokens.toArray(new String[tokens.size()]);
 	}
 	
-	private ContainerPopulator createContainerPopulator(Reader reader, MutablePicoContainer parent)
-            throws ClassNotFoundException {
+	private ContainerPopulator createContainerPopulator(Reader reader, MutablePicoContainer parent) {
         NanoContainer nano = new DefaultNanoContainer(getClassLoader());
         Parameter[] parameters = new Parameter[] {
                 new ConstantParameter(reader),

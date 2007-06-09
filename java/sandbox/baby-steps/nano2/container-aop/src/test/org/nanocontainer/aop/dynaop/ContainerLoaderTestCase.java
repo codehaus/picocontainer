@@ -17,10 +17,10 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 /**
  * @author Stephen Molitor
  */
-public class ContainerLoaderTestCase extends TestCase {
+public final class ContainerLoaderTestCase extends TestCase {
 
-    private ContainerLoader loader = new ContainerLoader();
-    private PicoContainer container = new DefaultPicoContainer();
+    private final ContainerLoader loader = new ContainerLoader();
+    private final PicoContainer container = new DefaultPicoContainer();
 
     public void testContainerSet() {
         loader.setContainer(container);

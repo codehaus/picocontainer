@@ -29,7 +29,7 @@ import java.io.InputStreamReader;
  * @author Konstantin Pribluda ( konstantin[at]infodesire.com )
  * @version $Revision$
  */
-public class XStreamContainerComposer implements ContainerComposer {
+public final class XStreamContainerComposer implements ContainerComposer {
 
     // for now, we just use hardvired configuration files.
     public final static String APPLICATION_CONFIG = "nano-application.xml";
@@ -39,8 +39,8 @@ public class XStreamContainerComposer implements ContainerComposer {
 
     // request and session level container recorders.
     // we do not need one for application scope - this happens really seldom
-    private ContainerRecorder requestRecorder;
-    private ContainerRecorder sessionRecorder;
+    private final ContainerRecorder requestRecorder;
+    private final ContainerRecorder sessionRecorder;
 
     /**
      * Constructor for the ContainerAssembler object

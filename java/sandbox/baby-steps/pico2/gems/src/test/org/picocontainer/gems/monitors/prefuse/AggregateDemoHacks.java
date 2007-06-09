@@ -157,7 +157,7 @@ public class AggregateDemoHacks extends Display {
         return all;
     }
 
-    private void initDataGroups(Graph graph) throws IOException {
+    private void initDataGroups(Graph graph) {
         Graph g = graph;
 
         VisualGraph vg = m_vis.addGraph(GRAPH, g);
@@ -202,9 +202,9 @@ public class AggregateDemoHacks extends Display {
  * Layout algorithm that computes a convex hull surrounding aggregate items and
  * saves it in the "_polygon" field.
  */
-class AggregateLayout extends Layout {
+final class AggregateLayout extends Layout {
 
-    private int m_margin = 5; // convex hull pixel margin
+    private final int m_margin = 5; // convex hull pixel margin
 
     private double[] m_pts; // buffer for computing convex hulls
 
@@ -290,13 +290,13 @@ class AggregateLayout extends Layout {
 /**
  * Interactive drag control that is "aggregate-aware"
  */
-class AggregateDragControl extends ControlAdapter {
+final class AggregateDragControl extends ControlAdapter {
 
     private VisualItem activeItem;
 
-    protected Point2D down = new Point2D.Double();
+    protected final Point2D down = new Point2D.Double();
 
-    protected Point2D temp = new Point2D.Double();
+    protected final Point2D temp = new Point2D.Double();
 
     protected boolean dragged;
 

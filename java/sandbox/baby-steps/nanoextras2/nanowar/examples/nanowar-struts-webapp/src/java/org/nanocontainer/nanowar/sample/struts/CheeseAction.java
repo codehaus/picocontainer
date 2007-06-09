@@ -34,7 +34,8 @@ public class CheeseAction extends Action {
     }
 
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response)
+    {
         CheeseForm cheeseForm = (CheeseForm) form;
 
         if (!isEmpty(cheeseForm.getName())) {

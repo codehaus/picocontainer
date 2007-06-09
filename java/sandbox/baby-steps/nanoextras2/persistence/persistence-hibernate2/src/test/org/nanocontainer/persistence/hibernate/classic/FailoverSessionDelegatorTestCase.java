@@ -69,27 +69,26 @@ public class FailoverSessionDelegatorTestCase extends TestCase {
 
 		Interceptor interceptor = new Interceptor() {
 
-			public boolean onLoad(Object arg0, Serializable arg1, Object[] arg2, String[] arg3, Type[] arg4) throws CallbackException {
+			public boolean onLoad(Object arg0, Serializable arg1, Object[] arg2, String[] arg3, Type[] arg4) {
 				return false;
 			}
 
-			public boolean onFlushDirty(Object arg0, Serializable arg1, Object[] arg2, Object[] arg3, String[] arg4, Type[] arg5)
-					throws CallbackException {
+			public boolean onFlushDirty(Object arg0, Serializable arg1, Object[] arg2, Object[] arg3, String[] arg4, Type[] arg5) {
 				return false;
 			}
 
-			public boolean onSave(Object arg0, Serializable arg1, Object[] arg2, String[] arg3, Type[] arg4) throws CallbackException {
+			public boolean onSave(Object arg0, Serializable arg1, Object[] arg2, String[] arg3, Type[] arg4) {
 				return false;
 			}
 
-			public void onDelete(Object arg0, Serializable arg1, Object[] arg2, String[] arg3, Type[] arg4) throws CallbackException {
+			public void onDelete(Object arg0, Serializable arg1, Object[] arg2, String[] arg3, Type[] arg4) {
 			}
 
-			public void preFlush(Iterator arg0) throws CallbackException {
+			public void preFlush(Iterator arg0) {
 				wasFlushed = true;
 			}
 
-			public void postFlush(Iterator arg0) throws CallbackException {
+			public void postFlush(Iterator arg0) {
 			}
 
 			public Boolean isUnsaved(Object arg0) {
@@ -100,7 +99,7 @@ public class FailoverSessionDelegatorTestCase extends TestCase {
 				return null;
 			}
 
-			public Object instantiate(Class arg0, Serializable arg1) throws CallbackException {
+			public Object instantiate(Class arg0, Serializable arg1) {
 				return null;
 			}
 		};

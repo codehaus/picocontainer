@@ -42,10 +42,10 @@ import java.util.Set;
  * 
  * @author J&ouml;rg Schaible
  */
-public class ThreadLocalComponentAdapter extends BehaviorAdapter {
+public final class ThreadLocalComponentAdapter extends BehaviorAdapter {
 
     private transient Class[] interfaces;
-    private ProxyFactory proxyFactory;
+    private final ProxyFactory proxyFactory;
 
     /**
      * Construct a ThreadLocalComponentAdapter.

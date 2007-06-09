@@ -9,9 +9,9 @@
  *****************************************************************************/
 package org.nanocontainer.testmodel;
 
-public class ThingThatTakesParamsInConstructor {
-    private String value;
-    private Integer intValue;
+public final class ThingThatTakesParamsInConstructor {
+    private final String value;
+    private final Integer intValue;
 
     public ThingThatTakesParamsInConstructor(String value, Integer intValue) {
         this.value = value;

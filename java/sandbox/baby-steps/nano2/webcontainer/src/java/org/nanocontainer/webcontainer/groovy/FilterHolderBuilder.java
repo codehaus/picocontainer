@@ -6,9 +6,9 @@ import org.mortbay.jetty.servlet.FilterHolder;
 
 import groovy.util.NodeBuilder;
 
-public class FilterHolderBuilder extends NodeBuilder {
+public final class FilterHolderBuilder extends NodeBuilder {
 
-    private FilterHolder filterHolder;
+    private final FilterHolder filterHolder;
 
     public FilterHolderBuilder(FilterHolder filter) {
         this.filterHolder = filter;

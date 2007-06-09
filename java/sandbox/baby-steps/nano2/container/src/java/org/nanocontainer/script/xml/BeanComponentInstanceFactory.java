@@ -36,7 +36,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
     
     private static final String NAME_ATTRIBUTE = "name";
     
-    public Object makeInstance(PicoContainer pico, Element element, ClassLoader classLoader) throws MalformedURLException {
+    public Object makeInstance(PicoContainer pico, Element element, ClassLoader classLoader) {
         String className = element.getNodeName();
         Object instance = null;
 

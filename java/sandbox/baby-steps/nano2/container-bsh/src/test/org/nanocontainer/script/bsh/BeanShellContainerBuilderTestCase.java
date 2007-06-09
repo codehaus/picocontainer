@@ -21,6 +21,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.MalformedURLException;
 import java.util.Map;
 
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
@@ -60,7 +61,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
      * can run.
      * @throws IOException
      */
-    public void doNot_testWithParentClassPathPropagatesWithToBeanShellInterpreter()throws IOException {
+    public void doNot_testWithParentClassPathPropagatesWithToBeanShellInterpreter() throws MalformedURLException {
         Reader script = new StringReader("" +
             "try {\n" +
             "    getClass(\"TestComp\");\n" +

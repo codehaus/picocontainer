@@ -13,9 +13,9 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class TestComponentAdapterFactory extends AnyInjectionFactory {
+public final class TestComponentAdapterFactory extends AnyInjectionFactory {
 
-    public StringBuffer sb;
+    public final StringBuffer sb;
 
     public TestComponentAdapterFactory(StringBuffer sb) {
         this.sb = sb;

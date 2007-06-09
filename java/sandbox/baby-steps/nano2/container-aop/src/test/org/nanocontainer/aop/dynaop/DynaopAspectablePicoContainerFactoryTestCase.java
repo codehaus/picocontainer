@@ -31,11 +31,11 @@ import org.picocontainer.testmodel.SimpleTouchable;
 /**
  * @author Stephen Molitor
  */
-public class DynaopAspectablePicoContainerFactoryTestCase extends AbstractAopTestCase {
+public final class DynaopAspectablePicoContainerFactoryTestCase extends AbstractAopTestCase {
 
-    private AspectablePicoContainerFactory containerFactory = new DynaopAspectablePicoContainerFactory();
-    private AspectablePicoContainer pico = containerFactory.createContainer();
-    private PointcutsFactory cuts = pico.getPointcutsFactory();
+    private final AspectablePicoContainerFactory containerFactory = new DynaopAspectablePicoContainerFactory();
+    private final AspectablePicoContainer pico = containerFactory.createContainer();
+    private final PointcutsFactory cuts = pico.getPointcutsFactory();
 
     public void testInterceptor() {
         StringBuffer log = new StringBuffer();

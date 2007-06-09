@@ -26,9 +26,9 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public class ConsoleComponentMonitor extends AbstractComponentMonitor {
+public final class ConsoleComponentMonitor extends AbstractComponentMonitor {
 
-    private transient PrintStream out;
+    private final transient PrintStream out;
     private final ComponentMonitor delegate;
 
     public ConsoleComponentMonitor() {

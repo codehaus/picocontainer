@@ -2,8 +2,8 @@ package org.picocontainer.gems.adapters;
 
 import java.io.IOException;
 
-public class ElephantProxy implements Elephant {
-    private transient Elephant delegate;
+public final class ElephantProxy implements Elephant {
+    private final transient Elephant delegate;
 
     public ElephantProxy(Elephant delegate) {
         this.delegate = delegate;

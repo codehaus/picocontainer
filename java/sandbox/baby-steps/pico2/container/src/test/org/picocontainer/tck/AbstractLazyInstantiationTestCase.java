@@ -36,7 +36,7 @@ public abstract class AbstractLazyInstantiationTestCase extends TestCase {
         }
     }
 
-    public void testLazyInstantiation() throws PicoException, PicoRegistrationException {
+    public void testLazyInstantiation() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
 
         pico.addComponent(Kilroy.class);

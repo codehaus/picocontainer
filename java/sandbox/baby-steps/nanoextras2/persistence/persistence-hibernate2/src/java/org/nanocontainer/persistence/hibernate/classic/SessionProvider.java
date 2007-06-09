@@ -26,26 +26,26 @@ public interface SessionProvider {
      * @return The Session value
      * @throws HibernateException Description of Exception
      */
-    Session getSession() throws HibernateException;
+    Session getSession();
 
 
     /**
      * commit transaction currently underway, and start new one ( as side effect
      * hibernate session will be flushed )
      */
-    void commit() throws HibernateException;
+    void commit();
 
     /**
      * rollback active transaction if any was started. transaction will be reset
      *
      * @throws HibernateException if transaction can not be rolled back
      */
-    void rollback() throws HibernateException;
+    void rollback();
 
     /**
      * normal session close.  commit transaction is any
      */
-    void close() throws HibernateException;
+    void close();
 
     /**
      * reset and clean up everything. shall be used is something went

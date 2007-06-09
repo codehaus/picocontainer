@@ -29,7 +29,7 @@ import webwork.view.velocity.WebWorkUtil;
  * servlet does 
  * @author Konstantin Pribluda
  */ 
-public class WebWorkVelocityServlet extends VelocityViewServlet implements KeyConstants {
+public final class WebWorkVelocityServlet extends VelocityViewServlet implements KeyConstants {
 	
     static final String WEBWORK_UTIL = "webwork";
 	// those have to be removed once dependency problem is solved.
@@ -70,9 +70,9 @@ public class WebWorkVelocityServlet extends VelocityViewServlet implements KeyCo
       return getTemplate(servletPath);
    }
    
-   static class NanocontainerVelocityContext extends VelocityContext {
-	   	PicoContainer container;
-	    ServletValueStack stack;
+   static final class NanocontainerVelocityContext extends VelocityContext {
+	   	final PicoContainer container;
+	    final ServletValueStack stack;
 	   	NanocontainerVelocityContext(PicoContainer container, ServletValueStack stack) {
 			this.container = container != null ? container : emptyContainer;
 			this.stack = stack;

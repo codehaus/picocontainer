@@ -18,10 +18,10 @@ import javax.servlet.ServletRequest;
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
-public class RequestScopeObjectReference implements ObjectReference {
+public final class RequestScopeObjectReference implements ObjectReference {
 
-    private ServletRequest request;
-    private String key;
+    private final ServletRequest request;
+    private final String key;
 
     public RequestScopeObjectReference(ServletRequest request, String key) {
         this.request = request;

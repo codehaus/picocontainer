@@ -2,8 +2,8 @@ package org.picocontainer.doc.tutorial.simple;
 
 // START SNIPPET: girl
 
-public class Girl {
-    Boy boy;
+public final class Girl {
+    final Boy boy;
 
     public Girl(Boy boy) {
         this.boy = boy;

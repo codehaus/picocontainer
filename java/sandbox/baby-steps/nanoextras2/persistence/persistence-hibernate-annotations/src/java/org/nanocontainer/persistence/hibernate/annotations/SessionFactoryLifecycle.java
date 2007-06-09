@@ -20,9 +20,9 @@ import org.picocontainer.Startable;
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
  * @version $Revision: 2043 $
  */
-public class SessionFactoryLifecycle implements Startable {
+public final class SessionFactoryLifecycle implements Startable {
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public SessionFactoryLifecycle(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;

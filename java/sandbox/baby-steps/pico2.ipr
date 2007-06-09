@@ -317,10 +317,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/nano2/NanoContainer.iml" filepath="$PROJECT_DIR$/nano2/NanoContainer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras2/persistence/NanoContainer-Hibernate2.iml" filepath="$PROJECT_DIR$/nanoextras2/persistence/NanoContainer-Hibernate2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras2/persistence/NanoContainer-Hibernate3.iml" filepath="$PROJECT_DIR$/nanoextras2/persistence/NanoContainer-Hibernate3.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/NanoContainer-NanoWar.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/NanoContainer-NanoWar.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/persistence/NanoContainer-Persistence.iml" filepath="$PROJECT_DIR$/nanoextras2/persistence/NanoContainer-Persistence.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/remoting/NanoContainer-Remoting.iml" filepath="$PROJECT_DIR$/nanoextras2/remoting/NanoContainer-Remoting.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/tools/NanoContainer-Tools.iml" filepath="$PROJECT_DIR$/nanoextras2/tools/NanoContainer-Tools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras2/persistence/NanoContainer-annotations.iml" filepath="$PROJECT_DIR$/nanoextras2/persistence/NanoContainer-annotations.iml" />
       <module fileurl="file://$PROJECT_DIR$/pico2/PicoContainer.iml" filepath="$PROJECT_DIR$/pico2/PicoContainer.iml" />
     </modules>
   </component>

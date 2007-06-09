@@ -2,9 +2,9 @@
 <module version="4" relativePaths="true" type="JAVA_MODULE">
   <component name="ModuleRootManager" />
   <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/persistence-hibernate2/target/classes" />
+    <output url="file://$MODULE_DIR$/target/classes" />
     <exclude-output />
-    <output-test url="file://$MODULE_DIR$/persistence-hibernate2/target/test-classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="true" />
@@ -62,7 +62,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/net/sf/hibernate/hibernate/2.1.8/hibernate-2.1.8.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/hibernate/hibernate/3.0.5/hibernate-3.0.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

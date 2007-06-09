@@ -68,9 +68,7 @@ public final class ParameterTestCase extends TestCase {
     public void testDependsOnTouchableWithTouchableSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         SimpleTouchable touchable = new SimpleTouchable();
-        pico.addComponent(DependsOnTouchable.class, DependsOnTouchable.class, new Parameter[]{
-            new ConstantParameter(touchable)
-        });
+        pico.addComponent(DependsOnTouchable.class, DependsOnTouchable.class, new ConstantParameter(touchable));
         pico.getComponents();
         assertTrue(touchable.wasTouched);
     }

@@ -38,7 +38,7 @@ public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
     public final void testCreateComponentAdapterEnsuringThreadLocal() throws InterruptedException {
         final ComponentFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory().forThis(new ConstructorInjectionFactory());
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
-                new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class, new Parameter[]{});
+                new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class);
         final List list = (List)componentAdapter.getComponentInstance(null);
         list.add(this);
         final List list2 = new ArrayList();
@@ -65,7 +65,7 @@ public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
     public final void testCreateComponentAdapterFailingThreadLocal() throws InterruptedException {
         final ComponentFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(ThreadLocalComponentAdapterFactory.THREAD_ENSURES_LOCALITY).forThis(new ConstructorInjectionFactory());
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
-                new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class, new Parameter[]{});
+                new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class);
         final List list = (List)componentAdapter.getComponentInstance(null);
         list.add(this);
         final List list2 = new ArrayList();
@@ -93,7 +93,7 @@ public class ThreadLocalComponentAdapterFactoryTest extends TestCase {
     public final void testCreateComponentAdapterWorksForDifferentThreads() throws InterruptedException {
         final ComponentFactory componentAdapterFactory = new ThreadLocalComponentAdapterFactory(ThreadLocalComponentAdapterFactory.THREAD_ENSURES_LOCALITY).forThis(new ConstructorInjectionFactory());
         final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
-                new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class, new Parameter[]{});
+                new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class);
         final List list = (List)componentAdapter.getComponentInstance(null);
         list.add(this);
         final List list2 = new ArrayList();

@@ -34,7 +34,7 @@ public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase 
 
         PicoContainer pico = buildContainer(script);
         assertNotNull(pico);
-        List list = (List)pico.getComponent(List.class);
+        List list = pico.getComponent(List.class);
         assertNotNull(list);
 
         ComponentAdapter listCA = pico.getComponentAdapter(List.class);
@@ -44,7 +44,7 @@ public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase 
         ArrayList newList = new ArrayList();
         List oldList = (List) hsca.swapRealInstance(newList);
 
-        List list2 = (List)pico.getComponent(List.class);
+        List list2 = pico.getComponent(List.class);
 
         assertEquals(list, list2); // still the same 'end point'
 

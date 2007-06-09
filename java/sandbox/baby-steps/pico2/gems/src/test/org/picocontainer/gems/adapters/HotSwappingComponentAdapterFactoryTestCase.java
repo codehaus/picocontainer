@@ -51,8 +51,8 @@ public final class HotSwappingComponentAdapterFactoryTestCase extends AbstractCo
     public void testHotSwappingNaturaelyCaches() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory().forThis(new ConstructorInjectionFactory()));
         pico.addComponent(Map.class, HashMap.class);
-        Map firstMap = (Map)pico.getComponent(Map.class);
-        Map secondMap = (Map)pico.getComponent(Map.class);
+        Map firstMap = pico.getComponent(Map.class);
+        Map secondMap = pico.getComponent(Map.class);
         assertSame(firstMap, secondMap);
 
     }

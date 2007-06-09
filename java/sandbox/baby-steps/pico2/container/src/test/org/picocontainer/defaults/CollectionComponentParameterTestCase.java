@@ -96,8 +96,8 @@ public class CollectionComponentParameterTestCase
 
     public void testNativeArrays() {
         MutablePicoContainer mpc = getDefaultPicoContainer();
-        Cod cod = (Cod) mpc.getComponent(Cod.class);
-        Bowl bowl = (Bowl) mpc.getComponent(Bowl.class);
+        Cod cod = mpc.getComponent(Cod.class);
+        Bowl bowl = mpc.getComponent(Bowl.class);
         assertEquals(1, bowl.cods.length);
         assertEquals(2, bowl.fishes.length);
         assertSame(cod, bowl.cods[0]);
@@ -108,10 +108,10 @@ public class CollectionComponentParameterTestCase
         MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.addAdapter(new ConstructorInjectionAdapter(Bowl.class, Bowl.class));
         mpc.addComponent(Cod.class);
-        Bowl bowl = (Bowl) mpc.getComponent(Bowl.class);
+        Bowl bowl = mpc.getComponent(Bowl.class);
         assertEquals(1, bowl.cods.length);
         mpc.addComponent("Nemo", new Cod());
-        bowl = (Bowl) mpc.getComponent(Bowl.class);
+        bowl = mpc.getComponent(Bowl.class);
         assertEquals(2, bowl.cods.length);
         assertNotSame(bowl.cods[0], bowl.cods[1]);
     }
@@ -132,8 +132,8 @@ public class CollectionComponentParameterTestCase
                          new ComponentParameter(Cod.class, false), new ComponentParameter(Fish.class, false));
         mpc.addComponent(Cod.class);
         mpc.addComponent(Shark.class);
-        Cod cod = (Cod) mpc.getComponent(Cod.class);
-        CollectedBowl bowl = (CollectedBowl) mpc.getComponent(CollectedBowl.class);
+        Cod cod = mpc.getComponent(Cod.class);
+        CollectedBowl bowl = mpc.getComponent(CollectedBowl.class);
         assertEquals(1, bowl.cods.length);
         assertEquals(2, bowl.fishes.length);
         assertSame(cod, bowl.cods[0]);
@@ -155,7 +155,7 @@ public class CollectionComponentParameterTestCase
                 Fish.class, false));
         mpc.addComponent(Cod.class);
         mpc.addComponent(Shark.class);
-        MappedBowl bowl = (MappedBowl) mpc.getComponent(MappedBowl.class);
+        MappedBowl bowl = mpc.getComponent(MappedBowl.class);
         assertEquals(2, bowl.fishes.length);
         assertNotSame(bowl.fishes[0], bowl.fishes[1]);
     }
@@ -203,8 +203,8 @@ public class CollectionComponentParameterTestCase
         MutablePicoContainer pico = getDefaultPicoContainer();
         pico.addComponent(
                 AnotherGenericCollectionBowl.class, AnotherGenericCollectionBowl.class,
-                new Parameter[]{ComponentParameter.ARRAY_ALLOW_EMPTY});
-        AnotherGenericCollectionBowl bowl = (AnotherGenericCollectionBowl) pico
+                ComponentParameter.ARRAY_ALLOW_EMPTY);
+        AnotherGenericCollectionBowl bowl = pico
                 .getComponent(AnotherGenericCollectionBowl.class);
         assertNotNull(bowl);
         assertEquals(0, bowl.strings.length);
@@ -230,10 +230,10 @@ public class CollectionComponentParameterTestCase
         MutablePicoContainer pico = getDefaultPicoContainer();
         pico.addComponent(SimpleTouchable.class);
         pico.addComponent(TouchableObserver.class);
-        Touchable observer = (Touchable) pico.getComponent(TouchableObserver.class);
+        Touchable observer = pico.getComponent(TouchableObserver.class);
         assertNotNull(observer);
         observer.touch();
-        SimpleTouchable touchable = (SimpleTouchable) pico.getComponent(SimpleTouchable.class);
+        SimpleTouchable touchable = pico.getComponent(SimpleTouchable.class);
         assertTrue(touchable.wasTouched);
     }
 
@@ -245,7 +245,7 @@ public class CollectionComponentParameterTestCase
         MutablePicoContainer child = new DefaultPicoContainer(parent);
         child.addComponent("Dick", Shark.class);
         child.addComponent(Bowl.class);
-        Bowl bowl = (Bowl) child.getComponent(Bowl.class);
+        Bowl bowl = child.getComponent(Bowl.class);
         assertEquals(3, bowl.fishes.length);
         assertEquals(2, bowl.cods.length);
     }
@@ -262,7 +262,7 @@ public class CollectionComponentParameterTestCase
             }
         },
                          new CollectionComponentParameter(Fish.class, false));
-        CollectedBowl bowl = (CollectedBowl) mpc.getComponent(CollectedBowl.class);
+        CollectedBowl bowl = mpc.getComponent(CollectedBowl.class);
         Cod tom = (Cod) mpc.getComponent("Tom");
         assertEquals(4, bowl.fishes.length);
         assertEquals(2, bowl.cods.length);

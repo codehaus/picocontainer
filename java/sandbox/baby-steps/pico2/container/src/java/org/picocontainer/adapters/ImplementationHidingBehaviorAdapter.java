@@ -47,7 +47,7 @@ public class ImplementationHidingBehaviorAdapter extends BehaviorAdapter {
             throws PicoInitializationException, PicoIntrospectionException, NotConcreteRegistrationException {
 
         Object componentKey = getDelegate().getComponentKey();
-        Class[] classes = null;
+        Class[] classes;
         if (componentKey instanceof Class && ((Class) getDelegate().getComponentKey()).isInterface()) {
             classes = new Class[]{(Class) getDelegate().getComponentKey()};
         } else if (componentKey instanceof Class[]) {

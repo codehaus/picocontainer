@@ -59,7 +59,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     }
 
     private void initDispatcher(MutablePicoContainer applicationContainer) {
-        dispatcher = (Dispatcher) applicationContainer.getComponent(Dispatcher.class);
+        dispatcher = applicationContainer.getComponent(Dispatcher.class);
         if (dispatcher == null) {
             dispatcher = new ChainingDispatcher(".vm");
         }

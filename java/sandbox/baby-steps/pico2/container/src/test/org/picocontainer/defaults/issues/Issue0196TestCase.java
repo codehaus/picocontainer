@@ -27,7 +27,7 @@ public class Issue0196TestCase extends TestCase {
         pico.addComponent(datas);
         pico.addComponent(DescriptorDep.class);
 
-        DescriptorDep descriptorDep = (DescriptorDep) pico.getComponent(DescriptorDep.class);
+        DescriptorDep descriptorDep = pico.getComponent(DescriptorDep.class);
 
         assertNotNull(descriptorDep);
     }

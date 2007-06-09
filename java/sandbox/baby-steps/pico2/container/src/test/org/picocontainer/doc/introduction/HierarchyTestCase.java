@@ -24,11 +24,11 @@ public class HierarchyTestCase extends TestCase {
             z.addComponent(Peeler.class);
 
             // Instantiate components
-            Peeler peeler = (Peeler) z.getComponent(Peeler.class);
+            Peeler peeler = z.getComponent(Peeler.class);
             // WON'T WORK! peeler will be null
-            peeler = (Peeler) x.getComponent(Peeler.class);
+            peeler = x.getComponent(Peeler.class);
             // WON'T WORK! This will throw an exception
-            Juicer juicer = (Juicer) y.getComponent(Juicer.class);
+            Juicer juicer = y.getComponent(Juicer.class);
             // END SNIPPET: wontwork
         } catch (UnsatisfiableDependenciesException e) {
             // expected

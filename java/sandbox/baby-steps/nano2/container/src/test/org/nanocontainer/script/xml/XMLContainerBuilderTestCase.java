@@ -461,7 +461,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "</container>");
         PicoContainer pico = buildContainer(script);
         assertNotNull(pico.getComponent(WebServerConfigComp.class));
-        WebServerConfigComp config = (WebServerConfigComp) pico.getComponent(WebServerConfigComp.class);
+        WebServerConfigComp config = pico.getComponent(WebServerConfigComp.class);
         assertEquals("localhost", config.getHost());
         assertEquals(8080, config.getPort());
     }
@@ -486,7 +486,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "</container>");
         PicoContainer pico = buildContainer(script);
         assertNotNull(pico.getComponent(TestBeanComposer.class));
-        TestBeanComposer composer = (TestBeanComposer) pico.getComponent(TestBeanComposer.class);
+        TestBeanComposer composer = pico.getComponent(TestBeanComposer.class);
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
@@ -511,7 +511,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "</container>");
         PicoContainer pico = buildContainer(script);
         assertNotNull(pico.getComponent(TestBeanComposer.class));
-        TestBeanComposer composer = (TestBeanComposer) pico.getComponent(TestBeanComposer.class);
+        TestBeanComposer composer = pico.getComponent(TestBeanComposer.class);
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
@@ -538,7 +538,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "</container>");
         PicoContainer pico = buildContainer(script);
         assertNotNull(pico.getComponent(TestBeanComposer.class));
-        TestBeanComposer composer = (TestBeanComposer) pico.getComponent(TestBeanComposer.class);
+        TestBeanComposer composer = pico.getComponent(TestBeanComposer.class);
         assertEquals("bean1", "hello1", composer.getBean1().getBar());
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
@@ -604,7 +604,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "  <component-adapter class='org.nanocontainer.script.xml.TestBeanComposer'/>" +
                 "</container>");
         PicoContainer pico = buildContainer(script);
-        ComponentAdapter adapter = (ComponentAdapter)pico.getComponentAdapters().iterator().next();
+        ComponentAdapter adapter = pico.getComponentAdapters().iterator().next();
         assertSame(TestBeanComposer.class, adapter.getComponentImplementation());
     }
 
@@ -777,14 +777,14 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
          PicoContainer pico = buildContainer(script);
          
-         ListSupport listSupport = (ListSupport)pico.getComponent(ListSupport.class);
+         ListSupport listSupport = pico.getComponent(ListSupport.class);
 
          assertNotNull(listSupport);
          assertNotNull(listSupport.getAListOfEntityObjects());
          assertEquals(2, listSupport.getAListOfEntityObjects().size());
 
-         Entity entity1 = (Entity)listSupport.getAListOfEntityObjects().get(0);
-         Entity entity2 = (Entity)listSupport.getAListOfEntityObjects().get(1);
+         Entity entity1 = listSupport.getAListOfEntityObjects().get(0);
+         Entity entity2 = listSupport.getAListOfEntityObjects().get(1);
          
          assertNotNull(entity1);
          assertEquals(CustomerEntityImpl.class, entity1.getClass());

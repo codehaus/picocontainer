@@ -269,7 +269,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
                 String fileName = childElement.getAttribute(FILE);
                 String urlSpec = childElement.getAttribute(URL);
-                URL url = null;
+                URL url;
                 if (urlSpec != null && !EMPTY.equals(urlSpec)) {
                     url = new URL(urlSpec);
                 } else {
@@ -297,7 +297,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                 MutablePicoContainer mpc = new DefaultPicoContainer();
                 mpc.addComponent(Permission.class, Class.forName(permissionClassName), new ConstantParameter(action), new ConstantParameter(value));
 
-                Permission permission = (Permission) mpc.getComponent(Permission.class);
+                Permission permission = mpc.getComponent(Permission.class);
                 classPathElement.grantPermission(permission);
             }
         }

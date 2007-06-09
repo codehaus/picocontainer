@@ -180,7 +180,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         Thread.sleep(100);
         pico.stop();
 
-        FooRunnable foo = (FooRunnable) pico.getComponent(FooRunnable.class);
+        FooRunnable foo = pico.getComponent(FooRunnable.class);
         assertEquals(1, foo.runCount());
         pico.start();
         Thread.sleep(100);
@@ -280,7 +280,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         pico.addComponent(DefaultPicoContainer.class);
         pico.addComponent(HashMap.class);
         pico.start();
-        DefaultPicoContainer childContainer = (DefaultPicoContainer) pico.getComponent(DefaultPicoContainer.class);
+        DefaultPicoContainer childContainer = pico.getComponent(DefaultPicoContainer.class);
         // it should be started too
         try {
             childContainer.start();

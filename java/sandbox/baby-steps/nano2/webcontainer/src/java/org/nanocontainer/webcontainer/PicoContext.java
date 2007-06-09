@@ -29,7 +29,6 @@ public class PicoContext {
 
     private final Context context;
     private final PicoContainer parentContainer;
-    private final boolean withSessionHandler;
 
     public static final int DEFAULT = 0;
     public static final int REQUEST = 1;
@@ -41,7 +40,7 @@ public class PicoContext {
     public PicoContext(Context context, PicoContainer parentContainer, boolean withSessionHandler) {
         this.context = context;
         this.parentContainer = parentContainer;
-        this.withSessionHandler = withSessionHandler;
+        boolean withSessionHandler1 = withSessionHandler;
     }
 
     public PicoServletHolder addServletWithMapping(Class servletClass, String pathMapping) {
@@ -77,7 +76,7 @@ public class PicoContext {
     public EventListener addListener(Class listenerClass) {
         DefaultPicoContainer child = new DefaultPicoContainer(parentContainer);
         child.addComponent(EventListener.class, listenerClass);
-        EventListener instance = (EventListener) child.getComponent(EventListener.class);
+        EventListener instance = child.getComponent(EventListener.class);
         return addListener(instance);
     }
 

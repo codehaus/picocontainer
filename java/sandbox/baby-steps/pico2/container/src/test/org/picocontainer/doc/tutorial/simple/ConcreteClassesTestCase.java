@@ -14,7 +14,7 @@ public class ConcreteClassesTestCase extends TestCase {
         // END SNIPPET: assemble
 
         // START SNIPPET: instantiate-and-use
-        Girl girl = (Girl) pico.getComponent(Girl.class);
+        Girl girl = pico.getComponent(Girl.class);
         girl.kissSomeone();
         // END SNIPPET: instantiate-and-use
     }

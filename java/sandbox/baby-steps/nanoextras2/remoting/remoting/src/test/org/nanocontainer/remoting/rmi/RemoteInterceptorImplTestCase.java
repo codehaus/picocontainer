@@ -27,7 +27,7 @@ public class RemoteInterceptorImplTestCase extends TestCase {
         ByRefKey thangKey = new ByRefKey("thang");
         pico.addComponent(thangKey, Thang.class);
         pico.addComponent(ArrayList.class);
-        List serverList = (List) pico.getComponent(ArrayList.class);
+        List serverList = pico.getComponent(ArrayList.class);
 
         ProxyFactory proxyFactory = new CglibProxyFactory();
         RemotingInterceptor remoteInterceptor = new RemoteInterceptorImpl(RegistryHelper.getRegistry(), pico, thangKey, proxyFactory);

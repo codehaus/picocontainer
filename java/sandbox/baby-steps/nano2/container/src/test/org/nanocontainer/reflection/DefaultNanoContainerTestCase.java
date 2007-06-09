@@ -47,7 +47,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
         parent.addComponent(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.addComponent("lcm",LifeCycleMonitoring.class);
-        Object o = parent.getComponent((Object)"foo/lcm");
+        Object o = parent.getComponent("foo/lcm");
         assertNotNull(o);
         assertTrue(sb.toString().indexOf("-instantiated") != -1);
     }
@@ -59,14 +59,14 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
         parent.addComponent(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.addComponent(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
-        Object o = parent.getComponent((Object)("foo/*" + LifeCycleMonitoring.class.getName()));
+        Object o = parent.getComponent("foo/*" + LifeCycleMonitoring.class.getName());
         assertNotNull(o);
         assertTrue(sb.toString().indexOf("-instantiated") != -1);
     }
 
     public void testMakeRemoveChildContainer() {
         final NanoContainer parent = (NanoContainer) createPicoContainer(null);
-        parent.addComponent("java.lang.String", (Object)"This is a test");
+        parent.addComponent("java.lang.String", "This is a test");
         MutablePicoContainer pico = parent.makeChildContainer();
         // Verify they are indeed wired together.
         assertNotNull(pico.getComponent("java.lang.String"));

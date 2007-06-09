@@ -9,12 +9,10 @@ import org.nanocontainer.webcontainer.PicoContext;
 import org.picocontainer.PicoContainer;
 
 public class CustomNodeBuilder extends NodeBuilder {
-    private final PicoContainer parentContainer;
-    private final PicoContext context;
-    
+
     public CustomNodeBuilder(PicoContainer parentContainer, PicoContext context, Map attributes) {
-        this.parentContainer = parentContainer;
-        this.context = context;
+        PicoContainer parentContainer1 = parentContainer;
+        PicoContext context1 = context;
     }
 
     public Object createNode(Object name, Map attributes) throws NanoContainerMarkupException {        

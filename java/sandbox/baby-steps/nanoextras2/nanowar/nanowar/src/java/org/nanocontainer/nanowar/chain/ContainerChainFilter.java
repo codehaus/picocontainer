@@ -166,7 +166,7 @@ public class ContainerChainFilter implements Filter {
 		} else {
 			retriever = new DivertorRetriever() {
 				public Divertor getDivertor(PicoContainer container) {
-					return (Divertor) container
+					return container
 							.getComponent(Divertor.class);
 				}
 			};

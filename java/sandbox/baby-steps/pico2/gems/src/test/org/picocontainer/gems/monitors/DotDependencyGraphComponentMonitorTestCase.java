@@ -30,8 +30,8 @@ public class DotDependencyGraphComponentMonitorTestCase extends TestCase {
         DependsOnList dol = new DependsOnList(list);
         DependsOnDependsOnListAndVector dodolav = new DependsOnDependsOnListAndVector(vec, dol);
 
-        monitor.instantiated(Vector.class.getConstructor(new Class[0]), vec, new Object[]{}, 8);
-        monitor.instantiated(ArrayList.class.getConstructor(new Class[]{Collection.class}), list, new Object[]{vec}, 12);
+        monitor.instantiated(Vector.class.getConstructor(), vec, new Object[]{}, 8);
+        monitor.instantiated(ArrayList.class.getConstructor(Collection.class), list, new Object[]{vec}, 12);
         monitor.instantiated(DependsOnList.class.getConstructors()[0], dol, new Object[]{list}, 10);
         monitor.instantiated(DependsOnDependsOnListAndVector.class.getConstructors()[0], dodolav, new Object[]{vec, dol}, 16);
         monitor.instantiated(DependsOnDependsOnListAndVector.class.getConstructors()[0], dodolav, new Object[]{vec, dol}, 12);

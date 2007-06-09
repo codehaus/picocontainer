@@ -23,8 +23,8 @@ public final class DynaopMethodPointcutTestCase extends MockObjectTestCase {
     private final Mock mockDelegate = mock(dynaop.MethodPointcut.class);
 
     public void testPicks() throws SecurityException, NoSuchMethodException {
-        Method method1 = String.class.getMethod("length", new Class[]{});
-        Method method2 = String.class.getMethod("hashCode", new Class[]{});
+        Method method1 = String.class.getMethod("length");
+        Method method2 = String.class.getMethod("hashCode");
 
         mockDelegate.expects(once()).method("picks").with(eq(method1)).will(returnValue(false));
         mockDelegate.expects(once()).method("picks").with(eq(method2)).will(returnValue(true));

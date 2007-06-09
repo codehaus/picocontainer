@@ -38,7 +38,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
     
     public Object makeInstance(PicoContainer pico, Element element, ClassLoader classLoader) {
         String className = element.getNodeName();
-        Object instance = null;
+        Object instance;
 
         if (element.getChildNodes().getLength() == 1) {
             instance = BeanPropertyComponentAdapter.convert(className, element.getFirstChild().getNodeValue(), classLoader);

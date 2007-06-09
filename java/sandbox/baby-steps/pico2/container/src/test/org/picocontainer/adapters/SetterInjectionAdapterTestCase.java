@@ -412,8 +412,8 @@ public class SetterInjectionAdapterTestCase
         pico.addComponent(Yin.class);
         pico.addComponent(Yang.class);
 
-        Yin yin = (Yin) pico.getComponent(Yin.class);
-        Yang yang = (Yang) pico.getComponent(Yang.class);
+        Yin yin = pico.getComponent(Yin.class);
+        Yang yang = pico.getComponent(Yang.class);
 
         assertSame(yin, yang.getYin());
         assertSame(yang, yin.getYang());

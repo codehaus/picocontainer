@@ -29,7 +29,7 @@ public class DelegatingPicoContainerTestCase extends TestCase {
     public void testChildGetsFromParent() {
         parent.addComponent(SimpleTouchable.class);
         child.addComponent(DependsOnTouchable.class);
-        DependsOnTouchable dependsOnTouchable = (DependsOnTouchable) child.getComponent(DependsOnTouchable.class);
+        DependsOnTouchable dependsOnTouchable = child.getComponent(DependsOnTouchable.class);
 
         assertNotNull(dependsOnTouchable);
     }
@@ -48,8 +48,8 @@ public class DelegatingPicoContainerTestCase extends TestCase {
         parent.addComponent(SimpleTouchable.class);
         child.addComponent(SimpleTouchable.class);
 
-        SimpleTouchable parentTouchable = (SimpleTouchable) parent.getComponent(SimpleTouchable.class);
-        SimpleTouchable childTouchable = (SimpleTouchable) child.getComponent(SimpleTouchable.class);
+        SimpleTouchable parentTouchable = parent.getComponent(SimpleTouchable.class);
+        SimpleTouchable childTouchable = child.getComponent(SimpleTouchable.class);
         assertEquals(1, child.getComponents().size());
         assertNotSame(parentTouchable, childTouchable);
     }

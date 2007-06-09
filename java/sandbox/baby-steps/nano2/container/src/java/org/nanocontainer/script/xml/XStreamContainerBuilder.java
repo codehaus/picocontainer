@@ -168,7 +168,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                 Class clazz = getClassLoader().loadClass(klass);
                 container.addAdapter((ComponentAdapter) nested.getComponent(clazz));
             } else {
-                container.addAdapter((ComponentAdapter) nested.getComponent(ComponentAdapter.class));
+                container.addAdapter(nested.getComponent(ComponentAdapter.class));
             }
         } catch (ClassNotFoundException ex) {
             throw new NanoContainerMarkupException(ex);

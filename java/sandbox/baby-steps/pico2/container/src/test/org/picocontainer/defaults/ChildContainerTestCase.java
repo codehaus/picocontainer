@@ -34,7 +34,7 @@ public class ChildContainerTestCase extends TestCase {
         child.addComponent("key", SimpleTouchable.class);
         child.addComponent(DependsOnTouchable.class);
 
-        DependsOnTouchable dot = (DependsOnTouchable) child.getComponent(DependsOnTouchable.class);
+        DependsOnTouchable dot = child.getComponent(DependsOnTouchable.class);
         assertEquals(SimpleTouchable.class, dot.getTouchable().getClass());
     }
 
@@ -46,7 +46,7 @@ public class ChildContainerTestCase extends TestCase {
         child.addComponent("key", SimpleTouchable.class);
         child.addComponent(DependsOnTouchable.class);
 
-        DependsOnTouchable dot = (DependsOnTouchable) child.getComponent(DependsOnTouchable.class);
+        DependsOnTouchable dot = child.getComponent(DependsOnTouchable.class);
         assertEquals(AlternativeTouchable.class, dot.getTouchable().getClass());
     }
 

@@ -71,8 +71,6 @@ public class ImplementationHidingBehaviorAdapter extends BehaviorAdapter impleme
 
         ClassWriter cw = new ClassWriter(0);
         FieldVisitor fv;
-        MethodVisitor mv;
-        AnnotationVisitor av0;
 
         Class<Object> superclass = Object.class;
 

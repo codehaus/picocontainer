@@ -14,13 +14,12 @@ import org.picocontainer.ComponentMonitor;
  * @version $Revision: 2024 $
  */
 public class ConsoleComponentMonitorTestCase extends TestCase {
-    private PrintStream out;
     private ComponentMonitor componentMonitor;
     private Constructor constructor;
     private Method method;
 
     protected void setUp() throws Exception {
-        out = System.out;
+        PrintStream out = System.out;
         constructor = getClass().getConstructor((Class[])null);
         method = getClass().getDeclaredMethod("setUp", (Class[])null);
         componentMonitor = new ConsoleComponentMonitor(out);

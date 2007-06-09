@@ -317,7 +317,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
 
     public void testMonitoringHappensBeforeAndOnFailOfImpossibleComponentsInstantiation() throws NoSuchMethodException {
         Mock monitor = mock(ComponentMonitor.class);
-        Constructor barfingActionListenerCtor = BarfingActionListener.class.getConstructor(new Class[0]);
+        Constructor barfingActionListenerCtor = BarfingActionListener.class.getConstructor();
         monitor.expects(once()).method("instantiating").with(eq(barfingActionListenerCtor));
 
         Constraint isITE = new Constraint() {

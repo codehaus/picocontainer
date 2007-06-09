@@ -53,11 +53,11 @@ public class ContainerChainTest extends TestCase {
 		chain.stop();
 		
 		
-		MockStartable startable = (MockStartable) first.getComponent(MockStartable.class);
+		MockStartable startable = first.getComponent(MockStartable.class);
 		assertTrue(startable.isStarted());
 		assertTrue(startable.isStopped());
 		
-		startable = (MockStartable) second.getComponent(MockStartable.class);
+		startable = second.getComponent(MockStartable.class);
 		assertTrue(startable.isStarted());
 		assertTrue(startable.isStopped());
 		

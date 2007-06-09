@@ -64,7 +64,7 @@ public final class NanoNamingTestCase extends TestCase {
         thang.getList().add("onclientonly");
 
         // get the server side list
-        List list = (List) pico.getComponent(ArrayList.class);
+        List list = pico.getComponent(ArrayList.class);
         assertEquals(0, list.size());
     }
 

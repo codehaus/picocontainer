@@ -148,7 +148,6 @@ public class SetterInjectionAdapter extends InjectingAdapter {
                     failedDependency = false;
                     break;
                 }
-                int y = 0;
             }
             if (failedDependency) {
                 nonMatchingParameterPositions.add(i);

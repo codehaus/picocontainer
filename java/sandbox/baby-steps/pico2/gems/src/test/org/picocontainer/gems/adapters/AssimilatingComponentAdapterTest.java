@@ -46,7 +46,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
                 CompatibleTouchable.class, CompatibleTouchable.class));
         mpc.addAdapter(new AssimilatingComponentAdapter(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = (CompatibleTouchable)componentAdapter.getComponentInstance(mpc);
-        final Touchable touchable = (Touchable)mpc.getComponent(Touchable.class);
+        final Touchable touchable = mpc.getComponent(Touchable.class);
         assertFalse(compatibleTouchable.wasTouched());
         touchable.touch();
         assertTrue(compatibleTouchable.wasTouched());
@@ -76,7 +76,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.addAdapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance())));
-        final TestCase self = (TestCase)mpc.getComponent(TestCase.class);
+        final TestCase self = mpc.getComponent(TestCase.class);
         assertFalse(Proxy.isProxyClass(self.getClass()));
         assertSame(this, self);
     }
@@ -88,7 +88,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.addAdapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(getClass(), this, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance())));
-        final TestCase self = (TestCase)mpc.getComponent(getClass());
+        final TestCase self = mpc.getComponent(getClass());
         assertNotNull(self);
         assertSame(this, self);
     }

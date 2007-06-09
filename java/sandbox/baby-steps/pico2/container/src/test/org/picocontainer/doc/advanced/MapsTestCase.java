@@ -59,9 +59,9 @@ public class MapsTestCase
                           new ComponentParameter(Cod.class, false));
         //      END SNIPPET: usage
 
-        Shark shark = (Shark) pico.getComponent(Shark.class);
-        Cod cod = (Cod) pico.getComponent(Cod.class);
-        Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
+        Shark shark = pico.getComponent(Shark.class);
+        Cod cod = pico.getComponent(Cod.class);
+        Bowl bowl = pico.getComponent(Bowl.class);
         
         Map fishMap = bowl.getFishes();
         assertEquals(2, fishMap.size());
@@ -84,12 +84,12 @@ public class MapsTestCase
         pico.addComponent(Bowl.class, Bowl.class, new ComponentParameter(String.class, Fish.class, false),
                           new ComponentParameter(Cod.class, false));
         
-        Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
+        Bowl bowl = pico.getComponent(Bowl.class);
         //      END SNIPPET: useKeyType
         
         //      START SNIPPET: ensureKeyType
 
-        Cod cod = (Cod) pico.getComponent(Cod.class);
+        Cod cod = pico.getComponent(Cod.class);
         Map fishMap = bowl.getFishes();
         Map codMap = bowl.getCods();
         assertEquals(1, fishMap.size());
@@ -110,7 +110,7 @@ public class MapsTestCase
         child.addComponent("Dick", Cod.class);
         child.addComponent(Bowl.class, Bowl.class, new ComponentParameter(Fish.class, false),
                            new ComponentParameter(Cod.class, false));
-        Bowl bowl = (Bowl) child.getComponent(Bowl.class);
+        Bowl bowl = child.getComponent(Bowl.class);
         assertEquals(3, bowl.fishes.size());
         assertEquals(3, bowl.cods.size());
 
@@ -129,7 +129,7 @@ public class MapsTestCase
         child.addComponent("Dick", Shark.class);
         child.addComponent(Bowl.class, Bowl.class, new ComponentParameter(Fish.class, false),
                            new ComponentParameter(Cod.class, false));
-        Bowl bowl = (Bowl) child.getComponent(Bowl.class);
+        Bowl bowl = child.getComponent(Bowl.class);
         assertEquals(3, bowl.fishes.size());
         assertEquals(2, bowl.cods.size());
 
@@ -152,7 +152,7 @@ public class MapsTestCase
                              }
                          });
         Cod tom = (Cod) mpc.getComponent("Tom");
-        Bowl bowl = (Bowl) mpc.getComponent(Bowl.class);
+        Bowl bowl = mpc.getComponent(Bowl.class);
         assertTrue(bowl.fishes.values().contains(tom));
         assertFalse(bowl.cods.values().contains(tom));
 

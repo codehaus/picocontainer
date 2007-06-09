@@ -294,7 +294,7 @@ public final class PoolingComponentAdapter extends BehaviorAdapter implements Li
         if (delegateHasLifecylce) {
             if (disposed) throw new IllegalStateException("Already disposed");
         }
-        Object componentInstance = null;
+        Object componentInstance;
         long now = System.currentTimeMillis();
         boolean gc = autostartGC;
         while (true) {

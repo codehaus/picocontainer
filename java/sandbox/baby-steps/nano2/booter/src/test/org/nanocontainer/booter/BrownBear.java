@@ -63,25 +63,25 @@ public class BrownBear implements Startable {
         System.out.println("BrownBear: honey instance's class type - " + honey.getClass());
         Method nonInterfaceMethod = null;
         try {
-            nonInterfaceMethod = honey.getClass().getMethod("nonInterfaceMethod", new Class[0]);
+            nonInterfaceMethod = honey.getClass().getMethod("nonInterfaceMethod");
         } catch (NoSuchMethodException exception) {
         }
         System.out.println("BrownBear: Can see honey instance's 'nonInterfaceMethod'? - " + (nonInterfaceMethod != null));
         boolean invoked = false;
         try {
-            nonInterfaceMethod.invoke(honey, new Object[0]);
+            nonInterfaceMethod.invoke(honey);
             invoked = true;
         } catch (Exception e) {
         }
         System.out.println("BrownBear: Can invoke honey instance's 'nonInterfaceMethod'? - " + invoked);
         nonInterfaceMethod = null;
         if (clazz != null) {
-            nonInterfaceMethod = clazz.getMethod("nonInterfaceMethod", new Class[0]);
+            nonInterfaceMethod = clazz.getMethod("nonInterfaceMethod");
         }
         System.out.println("BrownBear: Can see HoneyBeeHoney.nonInterfaceMethod()? - " + (nonInterfaceMethod != null));
         invoked = false;
         try {
-            nonInterfaceMethod.invoke(honey, new Object[0]);
+            nonInterfaceMethod.invoke(honey);
             invoked = true;
         } catch (Exception e) {
         }

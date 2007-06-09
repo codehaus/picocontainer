@@ -38,7 +38,7 @@ public class WebContainerBuilder extends AbstractBuilderNode {
 
         MutablePicoContainer parentContainer = (NanoContainer) current;
 
-        PicoJettyServer server = null;
+        PicoJettyServer server;
         if (port != 0) {
             server = new PicoJettyServer(host, port, parentContainer);
         } else {

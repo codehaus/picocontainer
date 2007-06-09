@@ -136,8 +136,8 @@ public class ChildContainerNode extends AbstractBuilderNode {
      */
     protected NanoContainer createChildContainer(Map attributes, NanoContainer parent) {
 
-        ClassLoader parentClassLoader = null;
-        MutablePicoContainer childContainer = null;
+        ClassLoader parentClassLoader;
+        MutablePicoContainer childContainer;
         if (parent != null) {
             parentClassLoader = parent.getComponentClassLoader();
             if ( isAttribute(attributes, COMPONENT_ADAPTER_FACTORY) ) {

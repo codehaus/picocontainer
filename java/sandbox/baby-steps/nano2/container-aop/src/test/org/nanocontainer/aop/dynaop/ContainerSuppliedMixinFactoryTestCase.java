@@ -24,7 +24,7 @@ public final class ContainerSuppliedMixinFactoryTestCase extends MockObjectTestC
     private final MixinFactory mixinFactory = new ContainerSuppliedMixinFactory(pico, IdentifiableMixin.class);
 
     public void testCreate() {
-        Object mixin = (IdentifiableMixin) mixinFactory.create(null);
+        Object mixin = mixinFactory.create(null);
         assertTrue(mixin instanceof IdentifiableMixin);
     }
 

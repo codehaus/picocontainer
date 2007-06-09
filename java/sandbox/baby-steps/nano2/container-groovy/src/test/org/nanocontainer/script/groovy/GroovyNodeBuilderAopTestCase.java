@@ -70,8 +70,8 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "}\n";
 
         PicoContainer pico = buildContainer(script);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
-        StringBuffer log = (StringBuffer) pico.getComponent(StringBuffer.class);
+        Dao dao = pico.getComponent(Dao.class);
+        StringBuffer log = pico.getComponent(StringBuffer.class);
         verifyIntercepted(dao, log);
     }
 
@@ -90,7 +90,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "}\n";
 
         PicoContainer pico = buildContainer(script);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         StringBuffer log = (StringBuffer) pico.getComponent("log");
         verifyIntercepted(dao, log);
     }
@@ -135,7 +135,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "}";
 
         PicoContainer pico = buildContainer(script);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         verifyMixin(dao);
     }
 
@@ -154,7 +154,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "}";
 
         PicoContainer pico = buildContainer(script);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         verifyMixin(dao);
     }
 
@@ -177,7 +177,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "}";
 
         PicoContainer pico = buildContainer(script);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         StringBuffer intLog = (StringBuffer) pico.getComponent("intLog");
         verifyIntercepted(dao, intLog);
         StringBuffer cafLog = (StringBuffer) pico.getComponent("cafLog");

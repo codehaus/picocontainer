@@ -70,7 +70,7 @@ public class PicoVisitorTestCase
             fail("PicoIntrospectionException expected");
         } catch (RuntimeException e) {
             assertEquals("message", e.getMessage());
-            assertSame(exception, ((PicoIntrospectionException)e).getCause());
+            assertSame(exception, e.getCause());
         }
     }
 

@@ -41,7 +41,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         StringBuffer log = new StringBuffer();
         pico.registerInterceptor(cuts.instancesOf(Dao.class), cuts.allMethods(), new LoggingInterceptor(log));
         pico.addComponent(Dao.class, DaoImpl.class);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         verifyIntercepted(dao, log);
     }
 
@@ -52,7 +52,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         pico.addComponent(LoggingInterceptor.class);
         pico.addComponent(Dao.class, DaoImpl.class);
 
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         StringBuffer log = (StringBuffer) pico.getComponent("log");
         verifyIntercepted(dao, log);
     }
@@ -90,7 +90,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
     public void testMixin() {
         pico.registerMixin(cuts.instancesOf(Dao.class), IdentifiableMixin.class);
         pico.addComponent(Dao.class, DaoImpl.class);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         verifyMixin(dao);
         assertTrue(dao instanceof AnotherInterface);
     }
@@ -149,7 +149,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
     public void testMixinExplicitInterfaces() {
         pico.registerMixin(cuts.instancesOf(Dao.class), new Class[]{Identifiable.class}, IdentifiableMixin.class);
         pico.addComponent(Dao.class, DaoImpl.class);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         verifyMixin(dao);
         assertFalse(dao instanceof AnotherInterface);
     }
@@ -191,7 +191,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         pico.addComponent(Dao.class, DaoImpl.class);
         pico.registerMixin(cuts.instancesOf(Dao.class), IdentifiableMixin.class);
         pico.registerInterfaces(cuts.instancesOf(Dao.class), new Class[]{AnotherInterface.class});
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         assertTrue(dao instanceof Identifiable);
         assertTrue(dao instanceof AnotherInterface);
     }
@@ -199,7 +199,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
     public void testInterfacesWithClassPointcutNoAdvice() {
         pico.addComponent(Dao.class, DaoImpl.class);
         pico.registerInterfaces(cuts.instancesOf(Dao.class), new Class[]{AnotherInterface.class});
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
 
         // dynaop doesn't add any interfaces if there's no advice applied to the
         // object:
@@ -210,7 +210,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         pico.addComponent(Dao.class, DaoImpl.class);
         pico.registerMixin(cuts.component(Dao.class), IdentifiableMixin.class);
         pico.registerInterfaces(cuts.component(Dao.class), new Class[]{AnotherInterface.class});
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         assertTrue(dao instanceof Identifiable);
         assertTrue(dao instanceof AnotherInterface);
     }

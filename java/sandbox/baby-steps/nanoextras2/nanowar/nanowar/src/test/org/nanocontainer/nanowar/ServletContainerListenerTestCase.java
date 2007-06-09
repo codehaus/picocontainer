@@ -244,7 +244,7 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
         pico.addComponent(new StringReader(script));
         pico.addComponent(getClass().getClassLoader());
         pico.addComponent(containerBuilder);
-        return (ContainerBuilder)pico.getComponent(ContainerBuilder.class);
+        return pico.getComponent(ContainerBuilder.class);
     }
 
     public void testSessionDestroyedMethodIsIgnored() {
@@ -328,7 +328,7 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
         ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = 
             new ScriptedContainerBuilderFactory(new StringReader(script), containerBuilderClass.getName(), 
                     Thread.currentThread().getContextClassLoader());
-        return (ContainerBuilder)scriptedContainerBuilderFactory.getContainerBuilder();
+        return scriptedContainerBuilderFactory.getContainerBuilder();
     }
 
     public void testScopedContainerComposerIsCreatedWithDefaultConfiguration() {

@@ -20,7 +20,7 @@ public final class Issue0191TestCase extends TestCase {
         pico.addComponent(Cod.class);
         try {
             pico.addComponent(Bowl.class);
-            Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
+            Bowl bowl = pico.getComponent(Bowl.class);
             fail("Should have barfed here with UnsatisfiableDependenciesException");
             Fish[] fishes = bowl.getFishes( ) ;
             for( int i = 0 ; i < fishes.length ; i++ )

@@ -57,7 +57,7 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
     public void testActionInstantiationWhichHasAlreadyBeenRegistered() throws Exception {
         container.addComponent("foo");
         container.addComponent(TestAction.class);
-        TestAction action1 = (TestAction) container.getComponent(TestAction.class);
+        TestAction action1 = container.getComponent(TestAction.class);
         TestAction action2 = (TestAction) factory
                 .getActionImpl(TestAction.class.getName());
         assertSame(action1, action2);

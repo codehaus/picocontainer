@@ -84,7 +84,7 @@ public final class ThreadLocalComponentAdapter extends BehaviorAdapter {
         return proxyFactory.createProxy(interfaces, invoker);
     }
 
-    final private Class[] getInterfaces() {
+    private Class[] getInterfaces() {
         final Object componentKey = getComponentKey();
         final Class[] interfaces;
         if (componentKey instanceof Class && ((Class)componentKey).isInterface()) {

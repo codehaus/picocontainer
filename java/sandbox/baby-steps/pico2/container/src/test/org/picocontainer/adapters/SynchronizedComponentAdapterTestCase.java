@@ -187,10 +187,9 @@ public final class SynchronizedComponentAdapterTestCase extends TestCase {
         List differentInstances = new ArrayList();
 
         for (Object anOut : out) {
-            Object o = anOut;
 
-            if (!differentInstances.contains(o)) {
-                differentInstances.add(o);
+            if (!differentInstances.contains(anOut)) {
+                differentInstances.add(anOut);
             }
         }
 

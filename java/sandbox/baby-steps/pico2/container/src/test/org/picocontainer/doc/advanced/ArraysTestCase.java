@@ -69,11 +69,11 @@ public class ArraysTestCase
         pico.addComponent(Cod.class);
         pico.addComponent(Bowl.class);
 
-        Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
+        Bowl bowl = pico.getComponent(Bowl.class);
         //      END SNIPPET: usage
 
-        Shark shark = (Shark) pico.getComponent(Shark.class);
-        Cod cod = (Cod) pico.getComponent(Cod.class);
+        Shark shark = pico.getComponent(Shark.class);
+        Cod cod = pico.getComponent(Cod.class);
 
         List fishes = Arrays.asList(bowl.getFishes());
         assertEquals(2, fishes.size());
@@ -94,10 +94,10 @@ public class ArraysTestCase
         pico.addComponent(Bowl.class);
         pico.addComponent(new Fish[]{});
 
-        Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
+        Bowl bowl = pico.getComponent(Bowl.class);
         //      END SNIPPET: directUsage
 
-        Cod cod = (Cod) pico.getComponent(Cod.class);
+        Cod cod = pico.getComponent(Cod.class);
 
         //      START SNIPPET: directDemo
 
@@ -122,11 +122,11 @@ public class ArraysTestCase
         pico.addComponent(new Fish[]{});
         pico.addComponent(new Cod[]{});
 
-        Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
+        Bowl bowl = pico.getComponent(Bowl.class);
         //      END SNIPPET: ensureArray
 
-        Shark shark = (Shark) pico.getComponent(Shark.class);
-        Cod cod = (Cod) pico.getComponent(Cod.class);
+        Shark shark = pico.getComponent(Shark.class);
+        Cod cod = pico.getComponent(Cod.class);
 
         //      START SNIPPET: ensureDemo
 
@@ -149,7 +149,7 @@ public class ArraysTestCase
         Parameter parameter = CollectionComponentParameter.ARRAY_ALLOW_EMPTY;
         pico.addComponent(Bowl.class, Bowl.class, parameter, parameter);
 
-        Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
+        Bowl bowl = pico.getComponent(Bowl.class);
         //      END SNIPPET: emptyArray
 
         List fishes = Arrays.asList(bowl.getFishes());
@@ -167,7 +167,7 @@ public class ArraysTestCase
         pico.addComponent(Bowl.class, Bowl.class,
                           new ComponentParameter(String.class, Fish.class, false), new ComponentParameter(Cod.class, false));
 
-        Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
+        Bowl bowl = pico.getComponent(Bowl.class);
         //      END SNIPPET: useKeyType
 
         //      START SNIPPET: ensureKeyType

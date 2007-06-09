@@ -61,7 +61,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     public void testInstantiationWithNullComponentAdapterFactory(){
         try {
-            new DefaultPicoContainer((ComponentFactory)null, (PicoContainer)null);
+            new DefaultPicoContainer((ComponentFactory)null, null);
             fail("NPE expected");
         } catch (NullPointerException e) {
             // expected
@@ -91,7 +91,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         MutablePicoContainer pico = createPicoContainer(null);
         pico.addComponent(HashMap.class);
         pico.addComponent(ArrayList.class);
-        List list = (List) pico.getComponent(List.class);
+        List list = pico.getComponent(List.class);
         pico.removeComponentByInstance(list);
         assertEquals(1, pico.getComponentAdapters().size());
         assertEquals(1, pico.getComponents().size());
@@ -108,7 +108,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     public void testComponentsWithCommonSupertypeWhichIsAConstructorArgumentCanBeLookedUpByConcreteType() {
         MutablePicoContainer pico = createPicoContainer(null);
         pico.addComponent(LinkedList.class, LinkedList.class, Parameter.ZERO);
-        pico.addComponent((Class) ArrayList.class);
+        pico.addComponent(ArrayList.class);
         assertEquals(ArrayList.class, pico.getComponent((Class) ArrayList.class).getClass());
     }
 
@@ -175,8 +175,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         picoContainer.addComponent(Service.class);
         picoContainer.addAdapter(new ConstructorInjectionAdapter(TransientComponent.class, TransientComponent.class));
-        TransientComponent c1 = (TransientComponent) picoContainer.getComponent(TransientComponent.class);
-        TransientComponent c2 = (TransientComponent) picoContainer.getComponent(TransientComponent.class);
+        TransientComponent c1 = picoContainer.getComponent(TransientComponent.class);
+        TransientComponent c2 = picoContainer.getComponent(TransientComponent.class);
         assertNotSame(c1, c2);
         assertSame(c1.service, c2.service);
     }

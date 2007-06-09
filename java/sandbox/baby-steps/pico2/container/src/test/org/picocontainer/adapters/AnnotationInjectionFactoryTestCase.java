@@ -89,7 +89,7 @@ public class AnnotationInjectionFactoryTestCase extends AbstractComponentAdapter
     public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         AnnotationInjectionFactory caf = new AnnotationInjectionFactory();
-        AnnotationInjectionAdapter aica = (AnnotationInjectionAdapter)caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class, new Parameter[0]);
+        AnnotationInjectionAdapter aica = (AnnotationInjectionAdapter)caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
         One one = new One(new StringBuffer());
         aica.start(one);
         aica.stop(one);

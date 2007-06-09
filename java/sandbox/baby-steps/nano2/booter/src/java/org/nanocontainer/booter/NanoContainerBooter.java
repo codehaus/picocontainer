@@ -90,7 +90,7 @@ public class NanoContainerBooter {
     private void newStandalone(URLClassLoader classLoader, String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException {
         Class nanoStandalone = classLoader.loadClass("org.nanocontainer.Standalone");
         Constructor constructor = nanoStandalone.getConstructors()[0];
-        constructor.newInstance(new Object[]{args});
+        constructor.newInstance(args);
     }
 
     /**

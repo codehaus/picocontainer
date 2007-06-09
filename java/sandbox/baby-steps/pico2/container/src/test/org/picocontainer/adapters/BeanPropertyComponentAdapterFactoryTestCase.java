@@ -232,7 +232,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, A.class, A.class, (Parameter[])null);
         adapter.setProperties(properties);
         picoContainer.addAdapter(adapter);
-        A a = (A) picoContainer.getComponent(A.class);
+        A a = picoContainer.getComponent(A.class);
 
         assertNotNull(a);
         assertNotNull(a.b);
@@ -250,7 +250,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
       picoContainer.addAdapter(adapter);
 
 
-      SimpleDateFormat dateFormat = (SimpleDateFormat)picoContainer.getComponent(SimpleDateFormat.class);
+      SimpleDateFormat dateFormat = picoContainer.getComponent(SimpleDateFormat.class);
       assertNotNull(dateFormat);
       assertEquals(false, dateFormat.isLenient());
       assertEquals(new Date(0), dateFormat.get2DigitYearStart());
@@ -306,7 +306,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
 
 
         try {
-            SimpleDateFormat dateFormat = (SimpleDateFormat) picoContainer.getComponent(SimpleDateFormat.class);
+            SimpleDateFormat dateFormat = picoContainer.getComponent(SimpleDateFormat.class);
             fail("Getting a bad test result through BeanPropertyComponentAdapter should have thrown exception.  Instead got:" + dateFormat);
         } catch (ClassCastException ex) {
             //A-ok

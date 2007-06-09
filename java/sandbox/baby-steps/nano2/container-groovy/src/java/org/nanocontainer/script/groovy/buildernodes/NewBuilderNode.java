@@ -66,7 +66,7 @@ public class NewBuilderNode extends AbstractBuilderNode {
         if (builderClass instanceof String) {
             factory.addComponent(GroovyObject.class, new ClassName((String) builderClass));
         } else {
-            factory.addComponent(GroovyObject.class, (Class) builderClass);
+            factory.addComponent(GroovyObject.class, builderClass);
         }
         return factory.getComponent(GroovyObject.class);
     }

@@ -309,20 +309,20 @@ public final class DynaopPointcutsFactoryTestCase extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        apple = Foo.class.getMethod("apple", new Class[]{});
-        apricot = Foo.class.getMethod("apricot", new Class[]{});
-        banana = Foo.class.getMethod("banana", new Class[]{});
-        getA = Foo.class.getMethod("getA", new Class[]{});
-        misleadingGetA = Foo.class.getMethod("getA", new Class[]{String.class});
-        isA = Foo.class.getMethod("isA", new Class[]{});
-        getB = Foo.class.getMethod("getB", new Class[]{});
-        isB = Foo.class.getMethod("isB", new Class[]{});
-        setA = Foo.class.getMethod("setA", new Class[]{String.class});
-        setB = Foo.class.getMethod("setA", new Class[]{String.class});
-        equals = Object.class.getMethod("equals", new Class[]{Object.class});
-        hashCode = Object.class.getMethod("hashCode", new Class[]{});
-        toString = Object.class.getMethod("toString", new Class[]{});
-        subFooMethod = SubFoo.class.getMethod("subFooMethod", new Class[]{});
+        apple = Foo.class.getMethod("apple");
+        apricot = Foo.class.getMethod("apricot");
+        banana = Foo.class.getMethod("banana");
+        getA = Foo.class.getMethod("getA");
+        misleadingGetA = Foo.class.getMethod("getA", String.class);
+        isA = Foo.class.getMethod("isA");
+        getB = Foo.class.getMethod("getB");
+        isB = Foo.class.getMethod("isB");
+        setA = Foo.class.getMethod("setA", String.class);
+        setB = Foo.class.getMethod("setA", String.class);
+        equals = Object.class.getMethod("equals", Object.class);
+        hashCode = Object.class.getMethod("hashCode");
+        toString = Object.class.getMethod("toString");
+        subFooMethod = SubFoo.class.getMethod("subFooMethod");
     }
 
 }

@@ -36,8 +36,8 @@ public class NonCachingBehaviorFactoryTestCase extends AbstractComponentAdapterF
 
     public void testContainerReturnsSameInstanceEachCall() {
         picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
-        Touchable t1 = (Touchable) picoContainer.getComponent(Touchable.class);
-        Touchable t2 = (Touchable) picoContainer.getComponent(Touchable.class);
+        Touchable t1 = picoContainer.getComponent(Touchable.class);
+        Touchable t2 = picoContainer.getComponent(Touchable.class);
         assertNotSame(t1, t2);
     }
 

@@ -10,7 +10,7 @@ public class InterfacesTestCase extends TestCase {
         pico.addComponent(Boy.class);
         pico.addComponent(Girl.class);
 
-        Girl girl = (Girl) pico.getComponent(Girl.class);
+        Girl girl = pico.getComponent(Girl.class);
         girl.kissSomeone();
     }
 }

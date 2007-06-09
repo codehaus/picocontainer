@@ -58,7 +58,7 @@ public class NameMatchesComponentPointcut implements ComponentPointcut {
      *         against <code>componentKey</code>, else false.
      */
     public boolean picks(Object componentKey) {
-        String componentName = (String) componentKey.toString();
+        String componentName = componentKey.toString();
         return matcher.contains(componentName, pattern);
     }
 

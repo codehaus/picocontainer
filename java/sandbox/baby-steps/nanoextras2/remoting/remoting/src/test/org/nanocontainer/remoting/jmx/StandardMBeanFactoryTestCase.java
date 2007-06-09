@@ -40,7 +40,7 @@ public class StandardMBeanFactoryTestCase extends TestCase {
 
     public void testMBeanCreationWithoutMBeanInfo() {
         final DynamicMBeanFactory factory = new StandardMBeanFactory();
-        final DynamicMBean mBean = factory.create(new Person(), null, (MBeanInfo)null);
+        final DynamicMBean mBean = factory.create(new Person(), null, null);
         assertNotNull(mBean);
         assertNotNull(mBean.getMBeanInfo());
     }

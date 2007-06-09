@@ -42,14 +42,14 @@ public final class InvocationAdapterTestCase extends MockObjectTestCase {
     }
 
     public void testGetMethod() throws SecurityException, NoSuchMethodException {
-        Method method = String.class.getMethod("length", new Class[]{});
+        Method method = String.class.getMethod("length");
         mockInvocation.expects(once()).method("getMethod").will(returnValue(method));
         Method actualMethod = invocationAdapter.getMethod();
         assertEquals(method, actualMethod);
     }
 
     public void testGetStaticPart() throws SecurityException, NoSuchMethodException {
-        Method method = String.class.getMethod("length", new Class[]{});
+        Method method = String.class.getMethod("length");
         mockInvocation.expects(once()).method("getMethod").will(returnValue(method));
         Object staticPart = invocationAdapter.getStaticPart();
         assertEquals(method, staticPart);

@@ -255,7 +255,7 @@ public class BeanPropertyComponentAdapter extends BehaviorAdapter {
         //because the Setter introspector does that job for us earlier.
         Class setterParameter = setter.getParameterTypes()[0];
 
-        Object convertedValue = null;
+        Object convertedValue;
 
         Class<? extends Object> givenParameterClass = propertyValue.getClass();
 

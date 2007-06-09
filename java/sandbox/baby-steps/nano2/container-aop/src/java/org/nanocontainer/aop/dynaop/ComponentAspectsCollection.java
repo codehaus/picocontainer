@@ -69,7 +69,7 @@ class ComponentAspectsCollection {
         try {
             Constructor constructor = getAspectsCopyConstructor();
             constructor.setAccessible(true);
-            return (Aspects) constructor.newInstance(new Object[]{aspects});
+            return (Aspects) constructor.newInstance(aspects);
         } catch (SecurityException e) {
             throw new PicoInitializationException("security exception copying dynaop.Aspects", e);
         } catch (IllegalArgumentException e) {

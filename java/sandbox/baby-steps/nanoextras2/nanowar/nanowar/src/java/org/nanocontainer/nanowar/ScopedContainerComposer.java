@@ -112,7 +112,7 @@ public final class ScopedContainerComposer implements ContainerComposer {
     }
 
     private ScopedContainerConfigurator getConfigurator(PicoContainer pico){
-        ScopedContainerConfigurator configurator = (ScopedContainerConfigurator)pico.getComponent(ScopedContainerConfigurator.class);
+        ScopedContainerConfigurator configurator = pico.getComponent(ScopedContainerConfigurator.class);
         if ( configurator == null ){
             configurator = new ScopedContainerConfigurator();
         }

@@ -22,7 +22,7 @@ public class ClassPathElementHelper {
     public static final String HTTP = "http://";
 
     public static ClassPathElement addClassPathElement(final String path, NanoContainer nanoContainer) {
-        URL pathURL = null;
+        URL pathURL;
         try {
             if (path.toLowerCase().startsWith(HTTP)) {
                 pathURL = new URL(path);

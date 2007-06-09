@@ -80,7 +80,7 @@ public class ScriptBuilderResolver {
      * @throws UnsupportedScriptTypeException
      */
     public synchronized String getBuilderClassName(final String extension) throws UnsupportedScriptTypeException{
-        String resultingBuilderClassName = null;
+        String resultingBuilderClassName;
         resultingBuilderClassName = extensionToBuilders.get(extension);
         if (resultingBuilderClassName == null) {
             throw new UnsupportedScriptTypeException(extension, this.getAllSupportedExtensions());
@@ -130,7 +130,7 @@ public class ScriptBuilderResolver {
      * @return String[] of extensions including the period in the name.
      */
     public synchronized String[] getAllSupportedExtensions() {
-         return (String[]) extensionToBuilders.keySet().toArray(new String[extensionToBuilders.size()]);
+         return extensionToBuilders.keySet().toArray(new String[extensionToBuilders.size()]);
     }
 
 

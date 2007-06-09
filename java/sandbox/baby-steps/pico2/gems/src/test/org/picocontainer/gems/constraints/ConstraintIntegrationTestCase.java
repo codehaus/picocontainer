@@ -68,7 +68,7 @@ public class ConstraintIntegrationTestCase
                                                   DecoratedTouchable.class,
                                                   new ComponentParameter(SimpleTouchable.class));
 
-        Touchable t = (Touchable) container.getComponent(DecoratedTouchable.class);
+        Touchable t = container.getComponent(DecoratedTouchable.class);
         assertNotNull(t);
     }
 
@@ -77,7 +77,7 @@ public class ConstraintIntegrationTestCase
         container.addComponent(DecoratedTouchable.class,
                                                   DecoratedTouchable.class,
                                                   new Not(new IsType(SimpleTouchable.class)));
-        Touchable t = (Touchable) container.getComponent(DecoratedTouchable.class);
+        Touchable t = container.getComponent(DecoratedTouchable.class);
         assertNotNull(t);
     }
 
@@ -85,7 +85,7 @@ public class ConstraintIntegrationTestCase
         container.addComponent(DependsOnList.class,
                                                   DependsOnList.class,
                                                   new CollectionConstraint(Anything.ANYTHING));
-        DependsOnList dol = (DependsOnList) container.getComponent(DependsOnList.class);
+        DependsOnList dol = container.getComponent(DependsOnList.class);
         assertNotNull(dol);
         List dependencies = dol.getDependencies();
         assertEquals(5, dependencies.size());
@@ -98,8 +98,8 @@ public class ConstraintIntegrationTestCase
                                                   new Not(new IsType(SimpleTouchable.class)));
         container.addComponent(DependsOnList.class,
                                                   DependsOnList.class,
-                                                  new Parameter[] { new CollectionConstraint(new IsType(Touchable.class)) });
-        DependsOnList dol = (DependsOnList) container.getComponent(DependsOnList.class);
+                                                  new CollectionConstraint(new IsType(Touchable.class)));
+        DependsOnList dol = container.getComponent(DependsOnList.class);
         assertNotNull(dol);
         List dependencies = dol.getDependencies();
         assertEquals(3, dependencies.size());
@@ -115,9 +115,9 @@ public class ConstraintIntegrationTestCase
                                                   new CollectionConstraint(new Or(new IsType(AlternativeTouchable.class),
                                                                                   new IsType(DecoratedTouchable.class))));
 
-        DependsOnList dol = (DependsOnList) container.getComponent(DependsOnList.class);
-        AlternativeTouchable at = (AlternativeTouchable) container.getComponent(AlternativeTouchable.class);
-        DecoratedTouchable dt = (DecoratedTouchable) container.getComponent(DecoratedTouchable.class);
+        DependsOnList dol = container.getComponent(DependsOnList.class);
+        AlternativeTouchable at = container.getComponent(AlternativeTouchable.class);
+        DecoratedTouchable dt = container.getComponent(DecoratedTouchable.class);
         assertNotNull(dol);
         List dependencies = dol.getDependencies();
         assertEquals(2, dependencies.size());
@@ -129,7 +129,7 @@ public class ConstraintIntegrationTestCase
         container.addComponent(DependsOnArray.class,
                                                   DependsOnArray.class,
                                                   new CollectionConstraint(Anything.ANYTHING));
-        DependsOnArray doa = (DependsOnArray) container.getComponent(DependsOnArray.class);
+        DependsOnArray doa = container.getComponent(DependsOnArray.class);
         assertNotNull(doa);
         Object[] dependencies = doa.getDependencies();
         assertEquals(5, dependencies.length);

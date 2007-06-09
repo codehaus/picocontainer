@@ -83,7 +83,7 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
         pico.addComponent(One.class);
         pico.addComponent(Three.class);
 
-        Multi multi = (Multi) pico.getComponent(Multi.class);
+        Multi multi = pico.getComponent(Multi.class);
         assertEquals("three one", multi.message);
     }
 

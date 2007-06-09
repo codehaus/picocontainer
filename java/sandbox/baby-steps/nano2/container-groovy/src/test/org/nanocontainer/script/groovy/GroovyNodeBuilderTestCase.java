@@ -149,8 +149,8 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "}");
 
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
-        A a = (A) pico.getComponent(A.class);
-        B b = (B) pico.getComponent(B.class);
+        A a = pico.getComponent(A.class);
+        B b = pico.getComponent(B.class);
 
         assertNotNull(a);
         assertNotNull(b);
@@ -166,8 +166,8 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "}");
 
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
-        A a = (A) pico.getComponent(A.class);
-        B b = (B) pico.getComponent(B.class);
+        A a = pico.getComponent(A.class);
+        B b = pico.getComponent(B.class);
 
         assertNotNull(a);
         assertNotNull(b);
@@ -184,8 +184,8 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "}");
 
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
-        A a = (A) pico.getComponent(A.class);
-        B b = (B) pico.getComponent(B.class);
+        A a = pico.getComponent(A.class);
+        B b = pico.getComponent(B.class);
 
         assertNotNull(a);
         assertNotNull(b);
@@ -296,7 +296,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
         pico.getComponent(WebServerConfig.class);
-        StringWriter writer = (StringWriter)pico.getComponent(StringWriter.class);
+        StringWriter writer = pico.getComponent(StringWriter.class);
         String s = writer.toString();
         System.err.println("--> " + s);
         assertTrue(s.length() > 0);
@@ -338,7 +338,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         PicoContainer pico = buildContainer(script, parent, ASSEMBLY_SCOPE);
         pico.getComponent(WebServerConfig.class);
-        StringWriter writer = (StringWriter)pico.getComponent(StringWriter.class);
+        StringWriter writer = pico.getComponent(StringWriter.class);
         assertTrue(writer.toString().length() > 0);
     }
 
@@ -359,7 +359,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         PicoContainer pico = buildContainer(script, parent, ASSEMBLY_SCOPE);
         pico.getComponent(WebServerConfig.class);
-        StringWriter writer = (StringWriter)pico.getComponent(StringWriter.class);
+        StringWriter writer = pico.getComponent(StringWriter.class);
         assertTrue(writer.toString().length() > 0);
     }
 

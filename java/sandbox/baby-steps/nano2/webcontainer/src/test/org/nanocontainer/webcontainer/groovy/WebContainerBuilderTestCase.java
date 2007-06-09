@@ -166,7 +166,7 @@ public final class WebContainerBuilderTestCase extends TestCase {
 
         assertPageIsHostedWithContents(script, "", "http://localhost:8080/bar/");
 
-        StringBuffer stringBuffer = (StringBuffer) pico.getComponent(StringBuffer.class);
+        StringBuffer stringBuffer = pico.getComponent(StringBuffer.class);
 
         assertEquals("-contextInitialized", stringBuffer.toString());
 
@@ -249,7 +249,7 @@ public final class WebContainerBuilderTestCase extends TestCase {
         assertNotNull(pico);
         
         //Thread.sleep(2 * 1000);
-        String actual = null;
+        String actual;
         try {
             actual = IO.toString(new URL(url).openStream());
         } catch (ConnectException e) {

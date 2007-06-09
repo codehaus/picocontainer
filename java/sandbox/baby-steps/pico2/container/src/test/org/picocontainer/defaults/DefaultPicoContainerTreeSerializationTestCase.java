@@ -42,7 +42,6 @@ public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoC
 
         oos.writeObject(child);
 
-        child = null;
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
         child = (MutablePicoContainer) ois.readObject();
         assertNotNull(child.getParent());

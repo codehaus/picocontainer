@@ -40,10 +40,10 @@ public class MethodCallingVisitorTest extends MockObjectTestCase {
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = new DefaultPicoContainer();
         parent.addChildContainer(child);
-        parent.addComponent(List.class, LinkedList.class, new Parameter[0]);
-        child.addComponent(List.class, LinkedList.class, new Parameter[0]);
-        List parentList = (List)parent.getComponent(List.class);
-        List childList = (List)child.getComponent(List.class);
+        parent.addComponent(List.class, LinkedList.class);
+        child.addComponent(List.class, LinkedList.class);
+        List parentList = parent.getComponent(List.class);
+        List childList = child.getComponent(List.class);
 
         assertEquals(0, parentList.size());
         assertEquals(0, childList.size());

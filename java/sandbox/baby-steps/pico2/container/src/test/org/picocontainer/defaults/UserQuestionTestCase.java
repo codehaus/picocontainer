@@ -74,12 +74,12 @@ public final class UserQuestionTestCase extends TestCase {
 
         Cheese gouda = new Gouda();
         cheeseMap.put("cheese", gouda);
-        Omelette goudaOmelette = (Omelette) pico.getComponent(Omelette.class);
+        Omelette goudaOmelette = pico.getComponent(Omelette.class);
         assertSame(gouda, goudaOmelette.getCheese());
 
         Cheese roquefort = new Roquefort();
         cheeseMap.put("cheese", roquefort);
-        Omelette roquefortOmelette = (Omelette) pico.getComponent(Omelette.class);
+        Omelette roquefortOmelette = pico.getComponent(Omelette.class);
         assertSame(roquefort, roquefortOmelette.getCheese());
     }
 
@@ -141,7 +141,7 @@ public final class UserQuestionTestCase extends TestCase {
         pico.addComponent(Enabled.class);
         pico.addComponent(NeedsInterfaceX.class);
 
-        NeedsInterfaceX needsInterfaceX = (NeedsInterfaceX) pico.getComponent(NeedsInterfaceX.class);
+        NeedsInterfaceX needsInterfaceX = pico.getComponent(NeedsInterfaceX.class);
         assertEquals("Disabled", needsInterfaceX.getIt());
         map.put("enabled", "blah");
         assertEquals("Enabled", needsInterfaceX.getIt());
@@ -211,8 +211,8 @@ public final class UserQuestionTestCase extends TestCase {
         pico.addComponent(FooBar.class);
         pico.addComponent(NeedsFoo.class);
         pico.addComponent(NeedsBar.class);
-        NeedsFoo needsFoo = (NeedsFoo) pico.getComponent(NeedsFoo.class);
-        NeedsBar needsBar = (NeedsBar) pico.getComponent(NeedsBar.class);
+        NeedsFoo needsFoo = pico.getComponent(NeedsFoo.class);
+        NeedsBar needsBar = pico.getComponent(NeedsBar.class);
         assertSame(needsFoo.getFoo(), needsBar.getBar());
     }
 
@@ -223,14 +223,14 @@ public final class UserQuestionTestCase extends TestCase {
 
         Bar barOne = new FooBar();
         container.addComponent(Bar.class, barOne);
-        NeedsBar needsBarOne = (NeedsBar) container.getComponent(NeedsBar.class);
+        NeedsBar needsBarOne = container.getComponent(NeedsBar.class);
         assertSame(barOne, needsBarOne.getBar());
 
         // reuse the same container - just flip out the existing foo.
         Bar barTwo = new FooBar();
         container.removeComponent(Bar.class);
         container.addComponent(Bar.class, barTwo);
-        NeedsBar needsBarTwo = (NeedsBar) container.getComponent(NeedsBar.class);
+        NeedsBar needsBarTwo = container.getComponent(NeedsBar.class);
         assertSame(barTwo, needsBarTwo.getBar());
 
         assertNotSame(needsBarOne, needsBarTwo);

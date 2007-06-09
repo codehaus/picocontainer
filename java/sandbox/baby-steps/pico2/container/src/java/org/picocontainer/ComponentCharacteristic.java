@@ -23,7 +23,7 @@ public class ComponentCharacteristic implements Serializable, Cloneable {
     }
 
     public Object clone() {
-        ComponentCharacteristic cc = null;
+        ComponentCharacteristic cc;
         try {
             cc = (ComponentCharacteristic) super.clone();
         } catch (CloneNotSupportedException e) {

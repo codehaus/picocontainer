@@ -92,7 +92,7 @@ public class SetterInjectionFactoryTestCase extends AbstractComponentAdapterFact
     public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         SetterInjectionFactory caf = new SetterInjectionFactory();
-        SetterInjectionAdapter sica = (SetterInjectionAdapter)caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class, new Parameter[0]);
+        SetterInjectionAdapter sica = (SetterInjectionAdapter)caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
         One one = new RecordingLifecycle.One(new StringBuffer());
         sica.start(one);
         sica.stop(one);        

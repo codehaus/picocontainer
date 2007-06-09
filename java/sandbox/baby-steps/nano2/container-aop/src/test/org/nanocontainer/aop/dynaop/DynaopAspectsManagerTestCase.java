@@ -97,7 +97,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
     public void testMixin() {
         aspects.registerMixin(cuts.instancesOf(Dao.class), IdentifiableMixin.class);
         pico.addComponent(Dao.class, DaoImpl.class);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         verifyMixin(dao);
         assertTrue(dao instanceof AnotherInterface);
     }
@@ -183,7 +183,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
     public void testMixinExplicitInterfaces() {
         aspects.registerMixin(cuts.instancesOf(Dao.class), new Class[]{Identifiable.class}, IdentifiableMixin.class);
         pico.addComponent(Dao.class, DaoImpl.class);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         verifyMixin(dao);
         assertFalse(dao instanceof AnotherInterface);
     }
@@ -214,7 +214,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
 
         aspects.registerInterceptor(customCut, cuts.allMethods(), new LoggingInterceptor(log));
         pico.addComponent(Dao.class, DaoImpl.class);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         verifyIntercepted(dao, log);
     }
 
@@ -229,7 +229,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
 
         aspects.registerInterceptor(cuts.instancesOf(Dao.class), customCut, new LoggingInterceptor(log));
         pico.addComponent(Dao.class, DaoImpl.class);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         verifyIntercepted(dao, log);
     }
 
@@ -244,7 +244,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
 
         aspects.registerInterceptor(customCut, cuts.allMethods(), new LoggingInterceptor(log));
         pico.addComponent(Dao.class, DaoImpl.class);
-        Dao dao = (Dao) pico.getComponent(Dao.class);
+        Dao dao = pico.getComponent(Dao.class);
         verifyIntercepted(dao, log);
     }
 

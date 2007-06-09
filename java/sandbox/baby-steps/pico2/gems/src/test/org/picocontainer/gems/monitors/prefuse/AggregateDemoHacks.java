@@ -239,7 +239,7 @@ final class AggregateLayout extends Layout {
             int idx = 0;
             if (aitem.getAggregateSize() == 0)
                 continue;
-            VisualItem item = null;
+            VisualItem item;
             Iterator iter = aitem.items();
             while (iter.hasNext()) {
                 item = (VisualItem) iter.next();

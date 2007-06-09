@@ -44,8 +44,8 @@ public abstract class AbstractLazyInstantiationTestCase extends TestCase {
 
         assertSame(pico.getComponent(Havana.class), pico.getComponent(Havana.class));
         assertNotNull(pico.getComponent(Havana.class));
-        assertEquals("Clean wall", ((Havana) pico.getComponent(Havana.class)).paint);
+        assertEquals("Clean wall", pico.getComponent(Havana.class).paint);
         assertNotNull(pico.getComponent(Kilroy.class));
-        assertEquals("Kilroy was here", ((Havana) pico.getComponent(Havana.class)).paint);
+        assertEquals("Kilroy was here", pico.getComponent(Havana.class).paint);
     }
 }

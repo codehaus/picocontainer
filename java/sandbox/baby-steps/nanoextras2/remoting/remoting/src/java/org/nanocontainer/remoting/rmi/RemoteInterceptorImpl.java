@@ -80,8 +80,8 @@ public class RemoteInterceptorImpl extends UnicastRemoteObject implements Remote
 
     private ComponentAdapter getComponentAdapterByInstance(PicoContainer pico, Object componentInstance) {
         Collection componentAdapters = pico.getComponentAdapters();
-        for (Iterator iterator = componentAdapters.iterator(); iterator.hasNext();) {
-            ComponentAdapter componentAdapter = (ComponentAdapter) iterator.next();
+        for (Object componentAdapter1 : componentAdapters) {
+            ComponentAdapter componentAdapter = (ComponentAdapter)componentAdapter1;
             if (componentAdapter.getComponentInstance(pico).equals(componentInstance)) {
                 return componentAdapter;
             }

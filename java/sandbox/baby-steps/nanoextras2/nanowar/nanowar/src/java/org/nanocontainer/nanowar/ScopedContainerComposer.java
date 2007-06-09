@@ -122,11 +122,11 @@ public final class ScopedContainerComposer implements ContainerComposer {
 	private void populateContainer(String resources, ContainerRecorder recorder, MutablePicoContainer parent) throws ClassNotFoundException {
 	    MutablePicoContainer container = recorder.getContainerProxy();
 	    String[] resourcePaths = toCSV(resources);
-		for ( int i = 0; i < resourcePaths.length; i++ ){
-			ContainerPopulator populator = createContainerPopulator(getResource(resourcePaths[i]), parent);
-			populator.populateContainer(container);
-		}
-	}
+        for (String resourcePath : resourcePaths) {
+            ContainerPopulator populator = createContainerPopulator(getResource(resourcePath), parent);
+            populator.populateContainer(container);
+        }
+    }
 
 	private String[] toCSV(String resources){
 	    StringTokenizer st = new StringTokenizer(resources, COMMA);

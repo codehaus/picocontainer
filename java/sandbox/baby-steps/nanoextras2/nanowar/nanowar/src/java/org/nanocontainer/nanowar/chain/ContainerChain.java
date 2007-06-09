@@ -50,10 +50,10 @@ public final class ContainerChain implements Startable {
 	 * start each container in the chain
      */
 	public void start() {
-		for (Iterator iter = chain.iterator(); iter.hasNext();) {
-			((Startable) iter.next()).start();
-		}
-	}
+        for (Object aChain : chain) {
+            ((Startable)aChain).start();
+        }
+    }
 
 	/**
      * stop each container in the chain

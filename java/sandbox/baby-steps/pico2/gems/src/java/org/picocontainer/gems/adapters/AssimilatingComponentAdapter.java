@@ -81,15 +81,14 @@ public final class AssimilatingComponentAdapter extends BehaviorAdapter {
                 throw new PicoIntrospectionException("Cannot create proxy for type " + type.getName());
             }
             final Method[] methods = type.getMethods();
-            for (int i = 0; i < methods.length; i++) {
-                final Method method = methods[i];
+            for (final Method method : methods) {
                 try {
                     delegationType.getMethod(method.getName(), method.getParameterTypes());
                 } catch (final NoSuchMethodException e) {
                     throw new PicoIntrospectionException("Cannot create proxy for type "
-                            + type.getName()
-                            + ", because of incompatible method "
-                            + method.toString());
+                                                         + type.getName()
+                                                         + ", because of incompatible method "
+                                                         + method.toString());
                 }
             }
         }

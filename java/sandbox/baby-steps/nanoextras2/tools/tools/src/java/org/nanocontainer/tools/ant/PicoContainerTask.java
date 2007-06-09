@@ -66,9 +66,11 @@ public final class PicoContainerTask extends Task {
 
             // register components specified in Ant
             NanoContainer container = new DefaultNanoContainer(getClass().getClassLoader(), picoContainer);
-            for (Iterator iterator = antSpecifiedComponents.iterator(); iterator.hasNext();) {
-                Component component = (Component) iterator.next();
-                BeanPropertyComponentAdapter adapter = (BeanPropertyComponentAdapter) container.addComponent(component.getKey(), new ClassName(component.getClassname()));
+            for (Object antSpecifiedComponent : antSpecifiedComponents) {
+                Component component = (Component)antSpecifiedComponent;
+                BeanPropertyComponentAdapter adapter =
+                    (BeanPropertyComponentAdapter)container.addComponent(component.getKey(),
+                                                                         new ClassName(component.getClassname()));
                 adapter.setProperties(component.getProperties());
             }
         }

@@ -136,14 +136,14 @@ abstract public class AbstractBuilderNode implements BuilderNode, Serializable {
         StringBuffer result = new StringBuffer();
 
         boolean needComma = false;
-        for (Iterator i = specifiedSet.iterator(); i.hasNext();) {
+        for (Object aSpecifiedSet : specifiedSet) {
             if (needComma) {
                 result.append(",");
             } else {
                 needComma = true;
             }
 
-            result.append(i.next().toString());
+            result.append(aSpecifiedSet.toString());
         }
         return result.toString();
     }

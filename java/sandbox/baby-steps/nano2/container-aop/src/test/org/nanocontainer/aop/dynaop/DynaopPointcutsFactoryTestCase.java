@@ -103,8 +103,8 @@ public final class DynaopPointcutsFactoryTestCase extends TestCase {
     public void testAllMethods() {
         MethodPointcut cut = cuts.allMethods();
         Method[] methods = Foo.class.getMethods();
-        for (int i = 0; i < methods.length; ++i) {
-            assertTrue(cut.picks(methods[i]));
+        for (Method method : methods) {
+            assertTrue(cut.picks(method));
         }
     }
 

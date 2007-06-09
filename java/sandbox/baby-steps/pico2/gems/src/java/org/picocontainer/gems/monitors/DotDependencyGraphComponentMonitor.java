@@ -39,12 +39,13 @@ public final class DotDependencyGraphComponentMonitor extends DelegatingComponen
 
         HashSet lines = new HashSet();
 
-        for (int i = 0; i < allInstantiated.size(); i++) {
-            Instantiation instantiation = (Instantiation) allInstantiated.get(i);
+        for (Object anAllInstantiated : allInstantiated) {
+            Instantiation instantiation = (Instantiation)anAllInstantiated;
             for (int j = 0; j < instantiation.getInjected().length; j++) {
                 Object instantiated = instantiation.getInstantiated();
                 Object injected = instantiation.getInjected()[j];
-                lines.add("  '" + instantiated.getClass().getName() + "' -> '" + injected.getClass().getName() + "';\n");
+                lines.add(
+                    "  '" + instantiated.getClass().getName() + "' -> '" + injected.getClass().getName() + "';\n");
             }
         }
 
@@ -56,8 +57,8 @@ public final class DotDependencyGraphComponentMonitor extends DelegatingComponen
         Collections.sort(list);
 
         String dependencies = "";
-        for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-            String dep = (String) iterator.next();
+        for (Object aList : list) {
+            String dep = (String)aList;
             dependencies = dependencies + dep;
         }
         return dependencies.replaceAll("'","\"");
@@ -66,20 +67,25 @@ public final class DotDependencyGraphComponentMonitor extends DelegatingComponen
     public String getInterfaceDependencyGraph() {
         HashSet lines = new HashSet();
 
-        for (int i = 0; i < allInstantiated.size(); i++) {
-            Instantiation instantiation = (Instantiation) allInstantiated.get(i);
+        for (Object anAllInstantiated : allInstantiated) {
+            Instantiation instantiation = (Instantiation)anAllInstantiated;
             for (int j = 0; j < instantiation.getInjected().length; j++) {
                 Object injected = instantiation.getInjected()[j];
                 Class injectedType = instantiation.getConstructor().getParameterTypes()[j];
                 Object instantiated = instantiation.getInstantiated();
                 if (injected.getClass() != injectedType) {
-                    lines.add("  '" + instantiated.getClass().getName() + "' -> '" + injectedType.getName() + "' [style=dotted,label='needs'];\n");
-                    lines.add("  '" + injected.getClass().getName() + "' -> '" + injectedType.getName() + "' [style=dotted, color=red,label='isA'];\n");
-                    lines.add("  '" + injectedType.getName() + "' [shape=box, label=" + printClassName(injectedType) + "];\n");
+                    lines.add("  '" + instantiated.getClass().getName() + "' -> '" + injectedType.getName() +
+                              "' [style=dotted,label='needs'];\n");
+                    lines.add("  '" + injected.getClass().getName() + "' -> '" + injectedType.getName() +
+                              "' [style=dotted, color=red,label='isA'];\n");
+                    lines.add("  '" + injectedType.getName() + "' [shape=box, label=" + printClassName(injectedType) +
+                              "];\n");
                 } else {
-                    lines.add("  '" + instantiated.getClass().getName() + "' -> '" + injected.getClass().getName() + "' [label='needs'];\n");
+                    lines.add("  '" + instantiated.getClass().getName() + "' -> '" + injected.getClass().getName() +
+                              "' [label='needs'];\n");
                 }
-                lines.add("  '" + instantiated.getClass().getName() + "' [label=" + printClassName(instantiated.getClass()) + "];\n");
+                lines.add("  '" + instantiated.getClass().getName() + "' [label=" +
+                          printClassName(instantiated.getClass()) + "];\n");
 
             }
         }

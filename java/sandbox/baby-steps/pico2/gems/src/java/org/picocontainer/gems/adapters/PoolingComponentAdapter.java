@@ -386,8 +386,8 @@ public final class PoolingComponentAdapter extends BehaviorAdapter implements Li
         if (delegateHasLifecylce) {
             if (started) throw new IllegalStateException("Already started");
             if (disposed) throw new IllegalStateException("Already disposed");
-            for (final Iterator iter = components.iterator(); iter.hasNext();) {
-                start(iter.next());
+            for (Object component : components) {
+                start(component);
             }
             started = true;
             if (pool.size() == 0) {
@@ -406,8 +406,8 @@ public final class PoolingComponentAdapter extends BehaviorAdapter implements Li
         if (delegateHasLifecylce) {
             if (!started) throw new IllegalStateException("Not started yet");
             if (disposed) throw new IllegalStateException("Already disposed");
-            for (final Iterator iter = components.iterator(); iter.hasNext();) {
-                stop(iter.next());
+            for (Object component : components) {
+                stop(component);
             }
             started = false;
         }
@@ -425,8 +425,8 @@ public final class PoolingComponentAdapter extends BehaviorAdapter implements Li
             if (started) throw new IllegalStateException("Not stopped yet");
             if (disposed) throw new IllegalStateException("Already disposed");
             disposed = true;
-            for (final Iterator iter = components.iterator(); iter.hasNext();) {
-                dispose(iter.next());
+            for (Object component : components) {
+                dispose(component);
             }
             // @todo: Release pooled components and clear collection
         }

@@ -34,14 +34,14 @@ public class UnsupportedScriptTypeException extends PicoException {
 
         if (allSupportedFileExtensions != null) {
             boolean needPipe = false;
-            for (int i = 0; i < allSupportedFileExtensions.length; i++) {
+            for (String allSupportedFileExtension : allSupportedFileExtensions) {
                 if (needPipe) {
                     message.append("|");
                 } else {
                     needPipe = true;
                 }
 
-                message.append(allSupportedFileExtensions[i]);
+                message.append(allSupportedFileExtension);
             }
 
             message.append("].");

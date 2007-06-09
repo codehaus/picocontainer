@@ -106,8 +106,7 @@ public class JMXVisitor extends TraversalCheckingVisitor {
         }
         if (!visited.contains(componentAdapter.getComponentKey())) {
             visited.add(componentAdapter.getComponentKey());
-            for (int i = 0; i < mBeanProviders.length; i++) {
-                final DynamicMBeanProvider provider = mBeanProviders[i];
+            for (final DynamicMBeanProvider provider : mBeanProviders) {
                 final JMXRegistrationInfo info = provider.provide(picoContainer, componentAdapter);
                 if (info != null) {
                     registeredInfo.add(register(info.getMBean(), info.getObjectName()));

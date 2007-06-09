@@ -78,14 +78,14 @@ public final class ThreadLocalReferenceTest extends TestCase {
                 new Thread(new RunIt(reference), "junit-TLR-1"), new Thread(new RunIt(reference), "junit-TLR-2"),
                 new Thread(new RunIt(reference), "junit-TLR-3")};
         reference.set("Hello");
-        for (int i = 0; i < threads.length; i++) {
-            threads[i].start();
+        for (Thread thread1 : threads) {
+            thread1.start();
         }
         Thread.sleep(50);
         assertEquals("Hello", reference.get());
-        for (int i = 0; i < threads.length; i++) {
-            synchronized (threads[i]) {
-                threads[i].notify();
+        for (Thread thread : threads) {
+            synchronized (thread) {
+                thread.notify();
             }
         }
         Thread.sleep(50);

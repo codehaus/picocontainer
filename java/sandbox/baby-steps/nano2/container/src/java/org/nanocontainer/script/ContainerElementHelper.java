@@ -35,8 +35,7 @@ public class ContainerElementHelper {
         }
         Set keys = arg1.keySet();
         int i = 0;
-        for (Iterator iterator = keys.iterator(); iterator.hasNext();) {
-            Object o = iterator.next();
+        for (Object o : keys) {
             System.out.println("--> arg1[" + i++ + "] " + o + ", " + arg1.get(o));
 
         }

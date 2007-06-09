@@ -28,8 +28,7 @@ public final class PersonMBeanDescription extends MBeanDescriptionAdapter {
 
     public String getAttributeDescription(final String attribute) {
         MBeanAttributeInfo[] attributes = MBEAN_INFO.getAttributes();
-        for (int i = 0; i < attributes.length; i++) {
-            final MBeanAttributeInfo info = attributes[i];
+        for (final MBeanAttributeInfo info : attributes) {
             if (info.getName().equals(attribute)) {
                 return info.getDescription();
             }

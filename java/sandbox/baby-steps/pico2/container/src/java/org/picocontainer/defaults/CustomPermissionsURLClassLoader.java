@@ -74,8 +74,7 @@ public class CustomPermissionsURLClassLoader extends URLClassLoader {
     public String toString() {
         String result = CustomPermissionsURLClassLoader.class.getName() + " " + System.identityHashCode(this) + ":";
         URL[] urls = getURLs();
-        for (int i = 0; i < urls.length; i++) {
-            URL url = urls[i];
+        for (URL url : urls) {
             result += "\n\t" + url.toString();
         }
 

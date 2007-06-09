@@ -90,8 +90,8 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
 
         public String getMessage() {
             StringBuffer message = new StringBuffer();
-            for ( Iterator i = lifecycleFailures.iterator(); i.hasNext(); ) {
-                Exception failure = (Exception)  i.next();
+            for (Object lifecycleFailure : lifecycleFailures) {
+                Exception failure = (Exception)lifecycleFailure;
                 message.append(failure.getMessage()).append(";  ");
             }
             return message.toString();

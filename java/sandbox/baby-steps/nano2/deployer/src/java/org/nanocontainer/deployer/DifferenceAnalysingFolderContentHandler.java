@@ -40,8 +40,8 @@ public class DifferenceAnalysingFolderContentHandler implements FolderContentHan
         last = new ArrayList(last);
 
         current.removeAll(last);
-        for (Iterator iterator = current.iterator(); iterator.hasNext();) {
-            FileObject fileObject = (FileObject) iterator.next();
+        for (Object aCurrent : current) {
+            FileObject fileObject = (FileObject)aCurrent;
             FileObject folderObject = convertToFolder(fileObject);
             if (folderObject != null && folderListener != null) {
                 folderListener.folderAdded(folderObject);
@@ -54,8 +54,8 @@ public class DifferenceAnalysingFolderContentHandler implements FolderContentHan
         last = new ArrayList(last);
 
         last.removeAll(current);
-        for (Iterator iterator = last.iterator(); iterator.hasNext();) {
-            FileObject fileObject = (FileObject) iterator.next();
+        for (Object aLast : last) {
+            FileObject fileObject = (FileObject)aLast;
             FileObject folderObject = convertToFolder(fileObject);
             if (folderObject != null && folderListener != null) {
                 folderListener.folderRemoved(fileObject);

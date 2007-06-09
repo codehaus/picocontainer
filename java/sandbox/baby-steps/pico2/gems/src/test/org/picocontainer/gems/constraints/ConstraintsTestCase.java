@@ -95,8 +95,8 @@ public class ConstraintsTestCase extends MockObjectTestCase {
                 container.getComponentAdapter(DependsOnTouchable.class),
                 Touchable[].class, null);
         assertEquals(2, touchables.length);
-        for (int i = 0; i < touchables.length; i++) {
-            assertFalse(touchables[i] instanceof DecoratedTouchable);
+        for (Touchable touchable : touchables) {
+            assertFalse(touchable instanceof DecoratedTouchable);
         }
     }
     

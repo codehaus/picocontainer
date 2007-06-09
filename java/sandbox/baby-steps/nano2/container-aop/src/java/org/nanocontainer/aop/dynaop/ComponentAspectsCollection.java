@@ -86,8 +86,7 @@ class ComponentAspectsCollection {
     private static Constructor getAspectsCopyConstructor() {
         final Class[] params = new Class[]{Aspects.class};
         Constructor[] constructors = Aspects.class.getDeclaredConstructors();
-        for (int i = 0; i < constructors.length; ++i) {
-            Constructor constructor = constructors[i];
+        for (Constructor constructor : constructors) {
             if (Arrays.equals(params, constructor.getParameterTypes())) {
                 return constructor;
             }

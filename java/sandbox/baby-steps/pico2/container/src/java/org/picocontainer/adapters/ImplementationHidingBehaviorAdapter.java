@@ -83,9 +83,10 @@ public class ImplementationHidingBehaviorAdapter extends BehaviorAdapter {
     }
 
     private Class[] verifyInterfacesOnly(Class[] classes) {
-        for (int i = 0; i < classes.length; i++) {
-            if(!classes[i].isInterface()) {
-                throw new PicoIntrospectionException("Class keys must be interfaces. " + classes[i] + " is not an interface.");
+        for (Class aClass : classes) {
+            if (!aClass.isInterface()) {
+                throw new PicoIntrospectionException(
+                    "Class keys must be interfaces. " + aClass + " is not an interface.");
             }
         }
         return classes;

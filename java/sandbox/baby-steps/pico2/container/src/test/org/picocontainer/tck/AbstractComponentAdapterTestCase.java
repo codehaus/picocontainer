@@ -614,18 +614,18 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         final MutablePicoContainer mutablePicoContainer = new DefaultPicoContainer();
         final int size = (wrapperDependencies != null ? wrapperDependencies.length : 0) + 1;
         final Collection allComponentAdapters = picoContainer.getComponentAdapters();
-        for (final Iterator iter = allComponentAdapters.iterator(); iter.hasNext();) {
+        for (Object allComponentAdapter : allComponentAdapters) {
             final Parameter[] parameters = new Parameter[size];
-            parameters[0] = new ConstantParameter(iter.next());
+            parameters[0] = new ConstantParameter(allComponentAdapter);
             for (int i = 1; i < parameters.length; i++) {
                 parameters[i] = new ConstantParameter(wrapperDependencies[i - 1]);
             }
             final MutablePicoContainer instantiatingPicoContainer = new DefaultPicoContainer(
-                    new ConstructorInjectionFactory());
+                new ConstructorInjectionFactory());
             instantiatingPicoContainer.addComponent(
-                    "decorator", decoratingComponentAdapterClass, parameters);
+                "decorator", decoratingComponentAdapterClass, parameters);
             mutablePicoContainer.addAdapter((ComponentAdapter)instantiatingPicoContainer
-                    .getComponent("decorator"));
+                .getComponent("decorator"));
         }
         return mutablePicoContainer;
     }
@@ -636,11 +636,10 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         for (int i = 0; i < constructors.length && !hasParameters; i++) {
             final Constructor constructor = constructors[i];
             final Class[] parameterTypes = constructor.getParameterTypes();
-            for (int j = 0; j < parameterTypes.length; j++) {
-                final Class parameterType = parameterTypes[j];
+            for (final Class parameterType : parameterTypes) {
                 if (Parameter.class.isAssignableFrom(parameterType)
-                        || (parameterType.isArray() && Parameter.class.isAssignableFrom(parameterType
-                                .getComponentType()))) {
+                    || (parameterType.isArray() && Parameter.class.isAssignableFrom(parameterType
+                    .getComponentType()))) {
                     hasParameters = true;
                     break;
                 }

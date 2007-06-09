@@ -79,19 +79,19 @@ public final class SynchronizedComponentAdapterTestCase extends TestCase {
             racer[i] =  new Thread(runner[i]);
         }
 
-        for(int i = 0; i < racer.length; ++i) {
-            racer[i].start();
+        for (Thread aRacer2 : racer) {
+            aRacer2.start();
             Thread.sleep(250);
         }
-        
-        for(int i = 0; i < racer.length; ++i) {
-            synchronized (racer[i]) {
-                racer[i].notify();
+
+        for (Thread aRacer : racer) {
+            synchronized (aRacer) {
+                aRacer.notify();
             }
         }
 
-        for(int i = 0; i < racer.length; ++i) {
-            racer[i].join();
+        for (Thread aRacer1 : racer) {
+            aRacer1.join();
         }
     }
 
@@ -101,11 +101,11 @@ public final class SynchronizedComponentAdapterTestCase extends TestCase {
         initTest(synchronizedComponentAdapter);
 
         assertEquals(1, blockerCounter);
-        for(int i = 0; i < runner.length; ++i) {
-            assertNull(runner[i].exception);
+        for (Runner aRunner1 : runner) {
+            assertNull(aRunner1.exception);
         }
-        for(int i = 0; i < runner.length; ++i) {
-            assertNotNull(runner[i].blocker);
+        for (Runner aRunner : runner) {
+            assertNotNull(aRunner.blocker);
         }
         for(int i = 1; i < runner.length; ++i) {
             assertSame(runner[0].blocker, runner[i].blocker);
@@ -177,20 +177,21 @@ public final class SynchronizedComponentAdapterTestCase extends TestCase {
             });
         }
 
-        for (int i = 0; i < threads.length; i++) {
-            threads[i].start();
+        for (Thread thread1 : threads) {
+            thread1.start();
         }
-        for (int i = 0; i < threads.length; i++) {
-            threads[i].join();
+        for (Thread thread : threads) {
+            thread.join();
         }
 
         List differentInstances = new ArrayList();
 
-        for (int i = 0; i < out.size(); i++) {
-            Object o =  out.get(i);
+        for (Object anOut : out) {
+            Object o = anOut;
 
-            if (!differentInstances.contains(o))
+            if (!differentInstances.contains(o)) {
                 differentInstances.add(o);
+            }
         }
 
         assertTrue("Only one singleton instance was created [we have " + differentInstances.size() + "]", differentInstances.size() == 1);

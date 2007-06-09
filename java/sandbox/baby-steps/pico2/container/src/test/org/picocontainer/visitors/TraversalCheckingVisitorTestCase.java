@@ -76,8 +76,8 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
 
         assertEquals(numExpectedComponentAdapters, allAdapters.size());
 
-        for (Iterator<ComponentAdapter> i = allAdapters.iterator(); i.hasNext(); ) {
-            boolean knownAdapter = knownAdapters.remove(i.next());
+        for (ComponentAdapter allAdapter : allAdapters) {
+            boolean knownAdapter = knownAdapters.remove(allAdapter);
             assertTrue("Encountered unknown addAdapter in collection: " + allAdapters.toString(), knownAdapter);
         }
 
@@ -102,8 +102,7 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
         Set<MutablePicoContainer> knownContainers = new HashSet<MutablePicoContainer>();
         knownContainers.add(pico);
         knownContainers.add(child);
-        for (Iterator<PicoContainer> i = allContainers.iterator(); i.hasNext(); ) {
-            PicoContainer oneContainer = i.next();
+        for (PicoContainer oneContainer : allContainers) {
             boolean knownContainer = knownContainers.remove(oneContainer);
             assertTrue("Found a picocontainer that wasn't previously expected.", knownContainer);
         }

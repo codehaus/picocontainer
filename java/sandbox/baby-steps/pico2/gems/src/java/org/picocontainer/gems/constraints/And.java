@@ -40,8 +40,8 @@ public final class And extends AbstractConstraint {
     }
 
     public boolean evaluate(ComponentAdapter adapter) {
-        for (int i = 0; i < children.length; i++) {
-            if (!children[i].evaluate(adapter)) {
+        for (Constraint aChildren : children) {
+            if (!aChildren.evaluate(adapter)) {
                 return false;
             }
         }
@@ -50,8 +50,8 @@ public final class And extends AbstractConstraint {
     
     public void accept(PicoVisitor visitor) {
         super.accept(visitor);
-        for (int i = 0; i < children.length; i++) {
-            children[i].accept(visitor);
+        for (Constraint aChildren : children) {
+            aChildren.accept(visitor);
         }
     }
 }

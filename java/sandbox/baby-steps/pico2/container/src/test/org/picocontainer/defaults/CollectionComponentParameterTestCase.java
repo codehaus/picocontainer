@@ -220,8 +220,8 @@ public class CollectionComponentParameterTestCase
         }
 
         public void touch() {
-            for (int i = 0; i < touchables.length; i++) {
-                touchables[i].touch();
+            for (Touchable touchable : touchables) {
+                touchable.touch();
             }
         }
     }

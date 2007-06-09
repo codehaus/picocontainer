@@ -90,8 +90,8 @@ public class JMXExposingBehaviorAdapter extends BehaviorAdapter {
             throws PicoInitializationException, PicoIntrospectionException {
         final ComponentAdapter componentAdapter = new CachingBehaviorAdapter(getDelegate());
         final Object componentInstance = componentAdapter.getComponentInstance(container);
-        for (int i = 0; i < providers.length; ++i) {
-            final JMXRegistrationInfo info = providers[i].provide(container, componentAdapter);
+        for (DynamicMBeanProvider provider : providers) {
+            final JMXRegistrationInfo info = provider.provide(container, componentAdapter);
             if (info != null) {
                 Exception exception = null;
                 try {

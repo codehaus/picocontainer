@@ -53,6 +53,7 @@ public interface ComponentFactory {
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException
      *          if the creation of the addComponent addAdapter results in a
      *          {@link org.picocontainer.defaults.NotConcreteRegistrationException}.
+     * @throws PicoIntrospectionException
      */
     ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic,
                                             Object componentKey,

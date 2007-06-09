@@ -159,7 +159,7 @@ public class Standalone {
         final ObjectReference containerRef = new SimpleReference();
         scriptedContainerBuilderFactory.getContainerBuilder().buildContainer(containerRef, null, null, true);
 
-        if (nowait == false) {
+        if (!nowait) {
             setShutdownHook(quiet, scriptedContainerBuilderFactory, containerRef);
         } else {
 //            shuttingDown(quiet, scriptedContainerBuilderFactory, containerRef);

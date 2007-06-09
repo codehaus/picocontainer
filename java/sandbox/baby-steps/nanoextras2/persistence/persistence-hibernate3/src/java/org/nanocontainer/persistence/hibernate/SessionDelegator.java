@@ -49,7 +49,8 @@ public abstract class SessionDelegator implements Session {
 
 	/**
 	 * Obtain hibernate session.
-	 */
+     * @return
+     */
 	public abstract Session getDelegatedSession();
 
 	/**
@@ -60,7 +61,9 @@ public abstract class SessionDelegator implements Session {
 	/**
 	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
 	 * a {@link ExceptionHandler} if it's available otherwise just return the <code>cause</code> back.
-	 */
+     * @return
+     * @param cause
+     */
 	protected RuntimeException handleException(RuntimeException cause) {
 		try {
 			invalidateDelegatedSession();

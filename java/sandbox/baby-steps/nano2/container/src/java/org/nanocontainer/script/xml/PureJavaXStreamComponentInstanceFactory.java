@@ -17,7 +17,7 @@ import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider
  * In PureJava mode objects are instantiated using standard Java 
  * reflection, which is garanteed to be valid for all JVM vendors, 
  * but the types of objects that can be constructed are limited.
- * See {@link http://xstream.codehaus.org/faq.html} for details 
+ * See XStream's FAQ for details
  * on the differences between PureJava and Advanced mode.
  *
  * @author Mauro Talevi

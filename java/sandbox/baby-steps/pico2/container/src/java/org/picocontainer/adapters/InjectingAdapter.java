@@ -241,6 +241,7 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
 
         /**
          * @since 1.1
+         * @param element
          */
         public CyclicDependencyException(Class element) {
             super((Throwable)null);
@@ -250,6 +251,7 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
 
         /**
          * @since 1.1
+         * @param element
          */
         public void push(Class element) {
             stack.add(element);

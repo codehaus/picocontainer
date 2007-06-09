@@ -47,7 +47,10 @@ public abstract class AbstractConnection implements Connection {
 	/**
 	 * Invalidates the connection calling {@link #invalidateDelegatedConnection()} and convert the <code>cause</code>
 	 * using a {@link ExceptionHandler}. if it's available otherwise just return the <code>cause</code> back.
-	 */
+     * @throws RuntimeException
+     * @param cause
+     * @return
+     */
 	protected SQLException handleException(Exception cause) throws RuntimeException {
 		try {
 			invalidateDelegatedConnection();

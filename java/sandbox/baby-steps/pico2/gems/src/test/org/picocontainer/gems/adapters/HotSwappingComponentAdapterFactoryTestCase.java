@@ -65,7 +65,7 @@ public final class HotSwappingComponentAdapterFactoryTestCase extends AbstractCo
         l.add("Hello");
         final ArrayList newList = new ArrayList();
 
-        ArrayList oldSubject = (ArrayList) hsca.swapRealInstance(newList);;
+        ArrayList oldSubject = (ArrayList) hsca.swapRealInstance(newList);
         assertEquals("Hello", oldSubject.get(0));
         assertTrue(l.isEmpty());
         l.add("World");

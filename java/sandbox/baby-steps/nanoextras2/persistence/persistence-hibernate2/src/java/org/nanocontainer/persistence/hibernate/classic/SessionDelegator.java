@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.nanocontainer.persistence.hibernate.classic.HibernateExceptionHandler;
+import org.nanocontainer.persistence.ExceptionHandler;
 
 import net.sf.hibernate.Criteria;
 import net.sf.hibernate.FlushMode;
@@ -54,18 +55,23 @@ public abstract class SessionDelegator implements Session {
 
 	/**
 	 * obtain hibernate session.
-	 */
+     * @return
+     */
 	protected abstract Session getDelegatedSession();
 
 	/**
 	 * perform actions to dispose "burned" session properly
-	 */
+     * @throws HibernateException
+     */
 	protected abstract void invalidateDelegatedSession() throws HibernateException;
 
 	/**
 	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
 	 * a {@link ExceptionHandler} if it's available otherwise throws the <code>cause</code> back.
-	 */
+     * @param cause
+     * @return
+     * @throws HibernateException
+     */
 	protected RuntimeException handleException(HibernateException cause) throws HibernateException {
 		try {
 			invalidateDelegatedSession();
@@ -83,7 +89,9 @@ public abstract class SessionDelegator implements Session {
 	/**
 	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
 	 * a {@link ExceptionHandler} if it's available otherwise just return the <code>cause</code> back.
-	 */
+     * @return
+     * @param cause
+     */
 	protected RuntimeException handleException(RuntimeException cause) {
 		try {
 			invalidateDelegatedSession();

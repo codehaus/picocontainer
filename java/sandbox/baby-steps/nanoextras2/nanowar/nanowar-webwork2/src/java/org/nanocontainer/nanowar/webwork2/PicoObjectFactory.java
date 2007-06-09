@@ -50,6 +50,10 @@ public class PicoObjectFactory extends ObjectFactory {
 
     /**
      * Webwork-2.2 / XWork-1.1 method. ExtraContext can be ignored.
+     * @throws Exception
+     * @param clazz
+     * @param extraContext
+     * @return
      */
     public Object buildBean(Class clazz, Map extraContext) throws Exception {
         return buildBean(clazz);
@@ -57,6 +61,10 @@ public class PicoObjectFactory extends ObjectFactory {
 
     /**
      * Webwork-2.2 / XWork-1.1 method. ExtraContext can be ignored.
+     * @return
+     * @param extraContext
+     * @throws Exception
+     * @param className
      */
     public Object buildBean(String className, Map extraContext) throws Exception {
         return buildBean(className);

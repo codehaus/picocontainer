@@ -60,6 +60,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
      * @todo Get this working again ! - PH
      * can run.
      * @throws IOException
+     * @throws MalformedURLException
      */
     public void doNot_testWithParentClassPathPropagatesWithToBeanShellInterpreter() throws MalformedURLException {
         Reader script = new StringReader("" +

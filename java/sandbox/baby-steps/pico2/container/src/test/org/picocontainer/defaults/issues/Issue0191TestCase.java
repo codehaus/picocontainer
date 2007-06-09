@@ -58,7 +58,8 @@ public final class Issue0191TestCase extends TestCase {
     final class Cod implements Fish
     {
         final int instanceNum ;
-        public Cod( ) { instanceNum = codCount++ ; } ;
+        public Cod( ) { instanceNum = codCount++ ; }
+
         public String toString( ) {
             return "Cod #" + instanceNum ;
         }
@@ -67,7 +68,8 @@ public final class Issue0191TestCase extends TestCase {
     final class Shark implements Fish
     {
         final int instanceNum ;
-        public Shark( ) { instanceNum = sharkCount++ ; } ;
+        public Shark( ) { instanceNum = sharkCount++ ; }
+
         public String toString( ) {
             return "Shark #" + instanceNum ;
         }

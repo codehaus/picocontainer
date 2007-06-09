@@ -26,6 +26,7 @@ public interface ContainerBuilder {
      * @param containerRef       Where to store the new container.
      * @param parentContainerRef reference to a container that may be used as a parent to the new container (may be null).
      * @param compositionScope   Hint about the scope for composition.
+     * @param addChildToParent
      */
     void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object compositionScope, boolean addChildToParent);
 

@@ -66,13 +66,16 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 
     /**
     * construct with just reader, use context classloader
-    */
+     * @param script
+     */
     public XStreamContainerBuilder(Reader script) {
         this(script,Thread.currentThread().getContextClassLoader());
     }
     
     /**
      * construct with given script and specified classloader
+     * @param classLoader
+     * @param script
      */
     public XStreamContainerBuilder(Reader script, ClassLoader classLoader) {
         this(script, classLoader, new DomDriver());

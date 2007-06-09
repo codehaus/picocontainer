@@ -29,7 +29,6 @@ public class JNDIDataSource extends AbstractDataSource implements Startable {
 
 	/**
 	 * @param name JNDI name where the original DataSource is.
-	 * @param jdbcExceptionHandler The ExceptionHandler addComponent instance.
 	 */
 	public JNDIDataSource(final String name) {
 		this.name = name;

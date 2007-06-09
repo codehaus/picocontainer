@@ -62,6 +62,7 @@ public final class PicoActionFactory extends ActionFactory {
     /**
      *  Return actions container, first try using the ActionsContainerFactory, 
      *  than in WebWork ActionContext.
+     * @return
      */
     private MutablePicoContainer getActionsContainer() {
         HttpServletRequest request = ServletActionContext.getRequest();

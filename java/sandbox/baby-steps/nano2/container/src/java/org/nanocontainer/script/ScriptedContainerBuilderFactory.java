@@ -62,6 +62,7 @@ public class ScriptedContainerBuilderFactory {
      * the specified builder using the specified classloader.
      * @throws UnsupportedScriptTypeException if the extension of the file
      * does not match that of any known script.
+     * @throws FileNotFoundException
      */
     public ScriptedContainerBuilderFactory(File compositionFile, ClassLoader classLoader, ScriptBuilderResolver builderClassResolver)
         throws

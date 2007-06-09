@@ -34,6 +34,11 @@ public class NanoContainerBooter {
      * Static entry point to NanoContainerBooter
      * @param args the arguments passed on to Standalone
      * @throws Exception
+     * @throws InstantiationException
+     * @throws MalformedURLException
+     * @throws ClassNotFoundException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
      */
     public static void main(String[] args)
         throws IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException,
@@ -52,6 +57,7 @@ public class NanoContainerBooter {
      * @throws InvocationTargetException
      * @throws InstantiationException
      * @throws IOException
+     * @throws MalformedURLException
      */
     public NanoContainerBooter(String[] args) throws ClassNotFoundException, IllegalAccessException,
                                                      InvocationTargetException, InstantiationException,

@@ -95,6 +95,7 @@ public class NanoWarDelegatingVariableResolver extends VariableResolver  {
     
     /**
      * Decorated Variable resolver.
+     * @param decorated
      */
     public NanoWarDelegatingVariableResolver(VariableResolver decorated) {
         super();

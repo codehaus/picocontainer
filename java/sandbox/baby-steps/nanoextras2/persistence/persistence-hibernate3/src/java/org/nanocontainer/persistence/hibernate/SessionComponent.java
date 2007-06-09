@@ -70,8 +70,10 @@ public final class SessionComponent implements Session, Startable {
 	}
 
 	/**
-	 * Obtain hibernate session.  
-	 */
+	 * Obtain hibernate session.
+     * @return
+     * @param create
+     */
 	protected final Session getDelegatedSession(boolean create) {
         if (create && (session == null)) {
             try {
@@ -86,7 +88,8 @@ public final class SessionComponent implements Session, Startable {
 
 	/**
 	 * Calls getDelegatedSession(true)
-	 */
+     * @return
+     */
 	protected final Session getDelegatedSession() {
         return getDelegatedSession(true);
 	}
@@ -110,7 +113,9 @@ public final class SessionComponent implements Session, Startable {
 	/**
 	 * Invalidates the session calling {@link #invalidateDelegatedSession()} and convert the <code>cause</code> using
 	 * a {@link ExceptionHandler} if it's available otherwise just return the <code>cause</code> back.
-	 */
+     * @return
+     * @param cause
+     */
 	protected RuntimeException handleException(RuntimeException cause) {
 		try {
 			invalidateDelegatedSession();

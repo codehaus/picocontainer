@@ -53,7 +53,7 @@ public final class ComponentDependencyMonitor extends DelegatingComponentMonitor
         }
 
         public boolean dependsOn(Class type) {
-            return (type == null) ? false : type.equals(dependencyType);
+            return (type != null) && type.equals(dependencyType);
         }
 
         public boolean equals(Object other) {

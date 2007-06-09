@@ -38,7 +38,7 @@ public final class FailoverDataSourceConnection extends AbstractConnection imple
 
 	/**
 	 * @param dataSource The DataSource instance where connections will be requested.
-	 * @param jdbcExceptionHandler The ExceptionHandler addComponent instance.
+     * @param exceptionHandler
 	 */
 	public FailoverDataSourceConnection(DataSource dataSource, ExceptionHandler exceptionHandler) {
 		super(exceptionHandler);

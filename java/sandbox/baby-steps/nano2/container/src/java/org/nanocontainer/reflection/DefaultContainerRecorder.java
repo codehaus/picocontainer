@@ -112,6 +112,6 @@ public final class DefaultContainerRecorder implements Serializable, ContainerRe
             invocations.add(new Invocation(method, args));
             return method.invoke(container, args);
         }
-    };
+    }
 
 }

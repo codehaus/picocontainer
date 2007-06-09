@@ -61,8 +61,6 @@ public class BeanPropertyComponentAdapter extends BehaviorAdapter {
      * @return the addComponent instance with any properties of the properties map set.
      * @throws PicoInitializationException {@inheritDoc}
      * @throws PicoIntrospectionException  {@inheritDoc}
-     * @throws org.picocontainer.defaults.AssignabilityRegistrationException
-     *                                     {@inheritDoc}
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException
      *                                     {@inheritDoc}
      * @see #setProperties(Map)

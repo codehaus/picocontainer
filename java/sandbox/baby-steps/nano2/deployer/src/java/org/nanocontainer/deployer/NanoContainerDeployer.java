@@ -138,6 +138,7 @@ public class NanoContainerDeployer implements Deployer {
      * @todo Deprecate this and replace 'base file name' with the concept
      * of a ArchiveLayout that defines where jars are stored, where the composition
      * script is stored, etc.
+     * @param baseFileName
      */
     public NanoContainerDeployer(final FileSystemManager fileSystemManager, String baseFileName) {
         this.fileSystemManager = fileSystemManager;

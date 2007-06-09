@@ -212,7 +212,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                     addComponentAdapterFactory(childElement, metaContainer);
                 } else if (CLASSLOADER.equals(name)) {
                     registerClassLoader(parentContainer, childElement, metaContainer);
-                } else if (CLASSPATH.equals(name) != true) {
+                } else if (!CLASSPATH.equals(name)) {
                     throw new NanoContainerMarkupException("Unsupported element:" + name);
                 }
             }
@@ -379,7 +379,12 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
      *    In this case, the <code>emptyCollection</code> attribute must be non-null/empty.
      * 4) If the <code>emptyCollection</code> attribute is not null/empty, the second constructor will be used.
      * 5) If there is no child element of the parameter, the first constructor will be used.
-     * 6) Otherwise, the return value will be a ConstantParameter with the return from the createInstance value. 
+     * 6) Otherwise, the return value will be a ConstantParameter with the return from the createInstance value.
+     * @param element
+     * @param pico
+     * @return
+     * @throws ClassNotFoundException
+     * @throws MalformedURLException
      */
     private Parameter createParameter(PicoContainer pico, Element element) throws ClassNotFoundException, MalformedURLException {
         final Parameter parameter;

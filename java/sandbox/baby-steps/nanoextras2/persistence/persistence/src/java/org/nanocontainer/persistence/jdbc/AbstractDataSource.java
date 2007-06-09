@@ -43,7 +43,10 @@ public abstract class AbstractDataSource implements DataSource {
 	/**
 	 * Invalidates the connection calling {@link #invalidateDelegatedConnection()} and convert the <code>cause</code>
 	 * using a {@link ExceptionHandler}. if it's available otherwise just return the <code>cause</code> back.
-	 */
+     * @throws RuntimeException
+     * @return
+     * @param cause
+     */
 	protected SQLException handleException(final Exception cause) throws RuntimeException {
 		try {
 			invalidateDelegatedDataSource();

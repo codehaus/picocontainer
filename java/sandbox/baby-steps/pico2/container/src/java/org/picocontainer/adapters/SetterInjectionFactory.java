@@ -41,9 +41,6 @@ public class SetterInjectionFactory implements InjectionFactory, Serializable {
      * @param parameters                  Any parameters for the setters. If null the addAdapter solves the
      *                                    dependencies for all setters internally. Otherwise the number parameters must match
      *                                    the number of the setter. @return Returns a new {@link org.picocontainer.adapters.SetterInjectionAdapter}. @throws PicoIntrospectionException if dependencies cannot be solved
-     * @throws org.picocontainer.defaults.AssignabilityRegistrationException
-     *          if  the <code>componentKey</code> is a type
-     *          that does not match the implementation
      * @throws org.picocontainer.defaults.NotConcreteRegistrationException
      *          if the implementation is an interface or an
      *          abstract class.

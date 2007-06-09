@@ -79,8 +79,6 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
      * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
      * @return Returns the created {@link ComponentAdapter}
      * @throws PicoIntrospectionException if the home interface of the EJB could not instanciated
-     * @throws AssignabilityRegistrationException if the <code>componentImplementation</code> does not extend
-     *             {@link javax.ejb.EJBHome}
      */
     public ComponentAdapter createComponentAdapter(final String componentKey, final Class componentImplementation)
             throws PicoIntrospectionException {

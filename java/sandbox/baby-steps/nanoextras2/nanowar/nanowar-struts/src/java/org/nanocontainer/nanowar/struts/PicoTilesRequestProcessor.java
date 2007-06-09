@@ -18,12 +18,12 @@ import java.io.IOException;
 
 /**
  * Uses Pico to produce Actions and inject dependencies into them.  Use this class if
- * you are using the Tiles library.  If not, you can use the {@link org.nanocontainer.nanowar.sample.struts.PicoRequestProcessor}
+ * you are using the Tiles library.  If not, you can use the {@link org.nanocontainer.nanowar.struts.PicoRequestProcessor}
  * instead.
  *
  * @author Stephen Molitor
  * @see ActionFactory
- * @see org.nanocontainer.nanowar.sample.struts.PicoRequestProcessor
+ * @see org.nanocontainer.nanowar.struts.PicoRequestProcessor
  */
 public class PicoTilesRequestProcessor extends TilesRequestProcessor {
 

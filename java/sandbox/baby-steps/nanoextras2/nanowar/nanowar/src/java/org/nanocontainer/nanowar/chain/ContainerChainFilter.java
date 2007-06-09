@@ -50,7 +50,7 @@ import org.picocontainer.defaults.ObjectReference;
  * You may specify divertor to provide URL to redirect in cause of failures. it
  * has to implement
  * 
- * @see Divertor#divert(org.nanocontainer.nanowar.chain.Divertor) it will be
+ * @see org.nanocontainer.nanowar.chain.Divertor#divert(java.lang.Throwable) it will be
  *      looked up in container either based on divertorKey or directorClass
  *      parameters, or looked up by class name. If no divertor can be found,
  *      servlet exception will be passed back.

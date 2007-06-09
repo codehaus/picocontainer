@@ -39,14 +39,14 @@ public class ServerBuilder extends NodeBuilder {
     }
 
     protected Object createBlockingChannelConnector(Map map) {
-        int port = ((Integer) map.remove("port")).intValue();
+        int port = (Integer)map.remove("port");
         return server.createBlockingChannelConnector((String) map.remove("host"), port);
     }
 
     protected Object createContext(Map map) {
         boolean sessions = false;
         if (map.containsKey("sessions")) {
-            sessions = Boolean.valueOf((String) map.remove("sessions")).booleanValue();
+            sessions = Boolean.valueOf((String)map.remove("sessions"));
         }
         PicoContext context = server.createContext((String) map.remove("path"), sessions);
         return new ContextBuilder(parentContainer, context);

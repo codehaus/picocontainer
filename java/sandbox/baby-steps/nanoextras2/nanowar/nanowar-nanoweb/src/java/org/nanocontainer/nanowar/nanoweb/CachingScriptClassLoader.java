@@ -21,7 +21,7 @@ import java.util.Map;
 public class CachingScriptClassLoader {
     private final Map scriptLoadTimestamps = Collections.synchronizedMap(new HashMap());
     private final Map scriptClasses = Collections.synchronizedMap(new HashMap());
-    private static final Long NEVER = new Long(Long.MIN_VALUE);
+    private static final Long NEVER = Long.MIN_VALUE;
 
     public Class getClass(URL scriptURL) throws IOException, ScriptException {
         // Find the timestamp of the scriptURL
@@ -34,7 +34,7 @@ public class CachingScriptClassLoader {
 
         // Reload the class or reuse the cached class if the scriptURL hasn't changed.
         Class scriptClass;
-        if (lastLoaded.longValue() < urlConnection.getLastModified()) {
+        if (lastLoaded < urlConnection.getLastModified()) {
             scriptClass = loadAndCache(scriptURL, urlConnection);
         } else {
             scriptClass = (Class) scriptClasses.get(urlAsString);

@@ -22,14 +22,14 @@ public final class StringToObjectConverterTestCase extends TestCase {
     }
 
     public void testConvertsToInts() {
-        assertEquals(new Integer(22), converter.convertTo(Integer.class, "22"));
-        assertEquals(new Integer(-9), converter.convertTo(Integer.class, "-9"));
+        assertEquals(22, converter.convertTo(Integer.class, "22"));
+        assertEquals(-9, converter.convertTo(Integer.class, "-9"));
     }
 
     public void testConvertsToLong() {
-        assertEquals(new Long(123456789012L), converter.convertTo(Long.class, "123456789012"));
-        assertEquals(new Long(-123456789012L), converter.convertTo(Long.class, "-123456789012"));
-        assertEquals(new Long(0), converter.convertTo(Long.class, "0"));
+        assertEquals(123456789012L, converter.convertTo(Long.class, "123456789012"));
+        assertEquals(-123456789012L, converter.convertTo(Long.class, "-123456789012"));
+        assertEquals((long)0, converter.convertTo(Long.class, "0"));
     }
 
     public void testConvertsToBooleanUsingBestGuess() {
@@ -63,8 +63,8 @@ public final class StringToObjectConverterTestCase extends TestCase {
 
     public void testNullsMapToDefaultValues() {
         assertNull(converter.convertTo(String.class, null));
-        assertEquals(new Integer(0), converter.convertTo(Integer.class, null));
-        assertEquals(new Long(0), converter.convertTo(Long.class, null));
+        assertEquals(0, converter.convertTo(Integer.class, null));
+        assertEquals((long)0, converter.convertTo(Long.class, null));
         assertEquals(Boolean.FALSE, converter.convertTo(Boolean.class, null));
     }
 

@@ -83,7 +83,7 @@ public final class ParameterTestCase extends TestCase {
 	
 	public void testComponentParameterResolvesPrimitiveType() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        ComponentAdapter adapter = picoContainer.addComponent("glarch", new Integer(239)).lastCA();
+        ComponentAdapter adapter = picoContainer.addComponent("glarch", 239).lastCA();
         assertNotNull(adapter);
 		Parameter parameter = new ComponentParameter("glarch");
 		assertNotNull(parameter.resolveInstance(picoContainer,null,Integer.TYPE, pn));
@@ -109,19 +109,19 @@ public final class ParameterTestCase extends TestCase {
 
     public void testConstantParameterWithPrimitives() throws PicoInitializationException, NotConcreteRegistrationException, PicoIntrospectionException {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        Byte byteValue = new Byte((byte) 5);
+        Byte byteValue = (byte)5;
         ConstantParameter parameter = new ConstantParameter(byteValue);
         assertSame(byteValue, parameter.resolveInstance(picoContainer, null, Byte.TYPE, pn));
         assertSame(byteValue, parameter.resolveInstance(picoContainer, null, Byte.class, pn));
-        Short shortValue = new Short((short) 5);
+        Short shortValue = (short)5;
         parameter = new ConstantParameter(shortValue);
         assertSame(shortValue, parameter.resolveInstance(picoContainer, null, Short.TYPE, pn));
         assertSame(shortValue, parameter.resolveInstance(picoContainer, null, Short.class, pn));
-        Integer intValue = new Integer(5);
+        Integer intValue = 5;
         parameter = new ConstantParameter(intValue);
         assertSame(intValue, parameter.resolveInstance(picoContainer, null, Integer.TYPE, pn));
         assertSame(intValue, parameter.resolveInstance(picoContainer, null, Integer.class, pn));
-        Long longValue = new Long(5);
+        Long longValue = (long)5;
         parameter = new ConstantParameter(longValue);
         assertSame(longValue, parameter.resolveInstance(picoContainer, null, Long.TYPE, pn));
         assertSame(longValue, parameter.resolveInstance(picoContainer, null, Long.class, pn));

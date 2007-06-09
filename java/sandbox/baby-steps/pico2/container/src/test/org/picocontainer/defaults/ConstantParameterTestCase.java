@@ -25,7 +25,7 @@ public class ConstantParameterTestCase extends TestCase {
      * @throws Exception
      */
     public void testThatInstaceTypeAcceptedForPrimitives() throws Exception {
-        ConstantParameter param = new ConstantParameter(new Integer(239));
+        ConstantParameter param = new ConstantParameter(239);
         try{
             param.verify(null,null,Integer.TYPE, null);
         } catch(PicoIntrospectionException ex) {

@@ -186,7 +186,7 @@ public class BeanPropertyComponentAdapter extends BehaviorAdapter {
         } else if (typeName.equals(Double.class.getName()) || typeName.equals(double.class.getName())) {
             return Double.valueOf(value);
         } else if (typeName.equals(Character.class.getName()) || typeName.equals(char.class.getName())) {
-            return new Character(value.toCharArray()[0]);
+            return value.toCharArray()[0];
         } else if (typeName.equals(String.class.getName()) || typeName.equals("string")) {
             return value;
         } else if (typeName.equals(File.class.getName()) || typeName.equals("file")) {

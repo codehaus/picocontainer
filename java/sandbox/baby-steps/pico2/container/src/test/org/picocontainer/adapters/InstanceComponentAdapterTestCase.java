@@ -144,7 +144,7 @@ public final class InstanceComponentAdapterTestCase
      */
     protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(
             MutablePicoContainer picoContainer) {
-        return new InstanceComponentAdapter("Key", new Integer(4711), NullLifecycleStrategy.getInstance(),
+        return new InstanceComponentAdapter("Key", 4711, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance());
     }
 
@@ -153,7 +153,7 @@ public final class InstanceComponentAdapterTestCase
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepDEF_visitable()
      */
     protected ComponentAdapter prepDEF_visitable() {
-        return new InstanceComponentAdapter("Key", new Integer(4711), NullLifecycleStrategy.getInstance(),
+        return new InstanceComponentAdapter("Key", 4711, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance());
     }
 
@@ -162,7 +162,7 @@ public final class InstanceComponentAdapterTestCase
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isSerializable(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
-        return new InstanceComponentAdapter("Key", new Integer(4711), NullLifecycleStrategy.getInstance(),
+        return new InstanceComponentAdapter("Key", 4711, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance());
     }
 
@@ -171,7 +171,7 @@ public final class InstanceComponentAdapterTestCase
      * @see org.picocontainer.tck.AbstractComponentAdapterTestCase#prepSER_isXStreamSerializable(org.picocontainer.MutablePicoContainer)
      */
     protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
-        return new InstanceComponentAdapter("Key", new Integer(4711), NullLifecycleStrategy.getInstance(),
+        return new InstanceComponentAdapter("Key", 4711, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance());
     }
 

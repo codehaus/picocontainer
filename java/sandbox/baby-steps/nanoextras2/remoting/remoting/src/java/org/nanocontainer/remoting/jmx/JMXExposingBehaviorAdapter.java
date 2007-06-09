@@ -118,12 +118,12 @@ public class JMXExposingBehaviorAdapter extends BehaviorAdapter {
     public void dispose(Object component) {
         if( null != registeredObjectNames ) {
             Iterator i = registeredObjectNames.iterator();
-            while( i.hasNext()) {
+            for (Object registeredObjectName : registeredObjectNames) {
                 try {
-                    mBeanServer.unregisterMBean((ObjectName) i.next());
-                } catch(InstanceNotFoundException e) {
+                    mBeanServer.unregisterMBean((ObjectName)registeredObjectName);
+                } catch (InstanceNotFoundException e) {
                     throw new JMXRegistrationException(e);
-                } catch(MBeanRegistrationException e) {
+                } catch (MBeanRegistrationException e) {
                     throw new JMXRegistrationException(e);
                 }
             }

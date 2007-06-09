@@ -113,15 +113,15 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         Identifiable order1 = (Identifiable) pico.getComponent("order1");
         Identifiable order2 = (Identifiable) pico.getComponent("order2");
 
-        assertEquals(new Integer(1), order1.getId());
-        assertEquals(new Integer(2), order2.getId());
+        assertEquals(1, order1.getId());
+        assertEquals(2, order2.getId());
 
         // order1 and order2 do NOT share the same mixin instance (usually a
         // good thing),
         // although their mixin instances do share the same IdGenerator
-        order1.setId(new Integer(42));
-        assertEquals(new Integer(42), order1.getId());
-        assertEquals(new Integer(2), order2.getId());
+        order1.setId(42);
+        assertEquals(42, order1.getId());
+        assertEquals(2, order2.getId());
     }
 
     public void testContainerSuppliedMixinWithMixinExplicitlyRegistered() {
@@ -133,14 +133,14 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         Identifiable order1 = (Identifiable) pico.getComponent("order1");
         Identifiable order2 = (Identifiable) pico.getComponent("order2");
 
-        assertEquals(new Integer(1), order1.getId());
-        assertEquals(new Integer(1), order2.getId());
+        assertEquals(1, order1.getId());
+        assertEquals(1, order2.getId());
 
         // order1 and order2 share the same IdentifiableMixin object (not
         // usually what you want!)
-        order1.setId(new Integer(42));
-        assertEquals(new Integer(42), order1.getId());
-        assertEquals(new Integer(42), order2.getId());
+        order1.setId(42);
+        assertEquals(42, order1.getId());
+        assertEquals(42, order2.getId());
     }
 
     public void testComponentMixin() {
@@ -172,12 +172,12 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         OrderEntity noMixin = (OrderEntity) pico.getComponent("noMixin");
 
         assertFalse(noMixin instanceof Identifiable);
-        assertEquals(new Integer(1), hasMixin1.getId());
-        assertEquals(new Integer(2), hasMixin2.getId());
+        assertEquals(1, hasMixin1.getId());
+        assertEquals(2, hasMixin2.getId());
 
-        hasMixin1.setId(new Integer(42));
-        assertEquals(new Integer(42), hasMixin1.getId());
-        assertEquals(new Integer(2), hasMixin2.getId());
+        hasMixin1.setId(42);
+        assertEquals(42, hasMixin1.getId());
+        assertEquals(2, hasMixin2.getId());
     }
 
     public void testMixinExplicitInterfaces() {

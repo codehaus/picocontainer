@@ -34,7 +34,7 @@ public class DefaultContainerRecorderTestCase extends TestCase {
         MutablePicoContainer recorded = recorder.getContainerProxy();
 
         recorded.addComponent("fruit", "apple");
-        recorded.addComponent("int", new Integer(239));
+        recorded.addComponent("int", 239);
         recorded.addComponent("thing",
                 ThingThatTakesParamsInConstructor.class,
                 ComponentParameter.DEFAULT,

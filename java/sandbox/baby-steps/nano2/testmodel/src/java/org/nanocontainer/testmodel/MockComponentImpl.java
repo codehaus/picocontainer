@@ -43,6 +43,6 @@ public final class MockComponentImpl implements MockComponent {
     }
 
     public boolean hasRegister(int i) {
-        return registers.contains(new Integer(i));
+        return registers.contains(i);
     }
 }

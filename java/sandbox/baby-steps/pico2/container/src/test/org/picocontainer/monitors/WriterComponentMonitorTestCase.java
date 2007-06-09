@@ -37,7 +37,8 @@ public class WriterComponentMonitorTestCase extends TestCase {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
         componentMonitor.instantiated(constructor, instantiated, injected, 543);
-        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATED2, new Object[]{AbstractComponentMonitor.toString(constructor), new Long(543), instantiated.getClass().getName(), WriterComponentMonitor.toString(injected)}) +NL,  out.toString());
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATED2, new Object[]{AbstractComponentMonitor.toString(constructor),
+                                                                                                      (long)543, instantiated.getClass().getName(), WriterComponentMonitor.toString(injected)}) +NL,  out.toString());
     }
 
 
@@ -53,7 +54,8 @@ public class WriterComponentMonitorTestCase extends TestCase {
 
     public void testShouldTraceInvoked() {
         componentMonitor.invoked(method, this, 543);
-        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOKED, new Object[]{AbstractComponentMonitor.toString(method), this, new Long(543)}) +NL,  out.toString());
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOKED, new Object[]{AbstractComponentMonitor.toString(method), this,
+                                                                                                (long)543 }) +NL,  out.toString());
     }
 
     public void testShouldTraceInvocatiationFailed() {

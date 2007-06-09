@@ -409,7 +409,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             Class<?> componentKeyType = getClassLoader().loadClass(componentKeyTypeString);
             Class<?> componentValueType = getClassLoader().loadClass(componentValueTypeString);
             
-            boolean emptyCollection = Boolean.valueOf(emptyCollectionString).booleanValue();
+            boolean emptyCollection = Boolean.valueOf(emptyCollectionString);
             
             parameter = new ComponentParameter(componentKeyType, componentValueType, emptyCollection);
         } else if (componentValueTypeString != null && !EMPTY.equals(componentValueTypeString)) {
@@ -422,11 +422,11 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             
             Class<?> componentValueType = getClassLoader().loadClass(componentValueTypeString);
             
-            boolean emptyCollection = Boolean.valueOf(emptyCollectionString).booleanValue();
+            boolean emptyCollection = Boolean.valueOf(emptyCollectionString);
             
             parameter = new ComponentParameter(componentValueType, emptyCollection);
         } else if (emptyCollectionString != null && !EMPTY.equals(emptyCollectionString)) {
-            boolean emptyCollection = Boolean.valueOf(emptyCollectionString).booleanValue();
+            boolean emptyCollection = Boolean.valueOf(emptyCollectionString);
             
             parameter = new ComponentParameter(emptyCollection);
         }

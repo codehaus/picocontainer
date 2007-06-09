@@ -62,7 +62,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
 
     public void testIsKeyTypeConstraint() {
         container.addComponent("Simple", SimpleTouchable.class);
-        container.addComponent(new Integer(5), SimpleTouchable.class);
+        container.addComponent(5, SimpleTouchable.class);
         container.addComponent(Boolean.TRUE, SimpleTouchable.class);
         Touchable t = (Touchable) container.getComponent(Boolean.TRUE);
         

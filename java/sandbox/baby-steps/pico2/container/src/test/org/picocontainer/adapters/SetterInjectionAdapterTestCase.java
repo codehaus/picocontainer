@@ -71,7 +71,7 @@ public class SetterInjectionAdapterTestCase
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class);
         SetterInjectionAdapter componentAdapter = new SetterInjectionAdapter(
-                PurseBean.class, MoneyPurse.class, DEFAULT, new ConstantParameter(new Double(100.0)));
+                PurseBean.class, MoneyPurse.class, DEFAULT, new ConstantParameter(100.0));
         return picoContainer.addAdapter(componentAdapter).lastCA();
     }
 

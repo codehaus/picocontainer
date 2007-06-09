@@ -23,7 +23,7 @@ public class DependencyInjectionTestFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         String servletPath = req.getServletPath();
         if (servletPath.equals("/foo2")) {
-            request.setAttribute("foo2", " Filtered!(int= " + integer.intValue() + (foo != null? " " + foo : "" ) + ")");
+            request.setAttribute("foo2", " Filtered!(int= " + integer + (foo != null? " " + foo : "" ) + ")");
 
         }
         chain.doFilter(request, response);

@@ -377,7 +377,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
         PicoContainer pico = buildContainer(script);
         assertEquals("Hello", pico.getComponent("aString"));
-        assertEquals(new Long(22), pico.getComponent("aLong"));
+        assertEquals((long)22, pico.getComponent("aLong"));
         JButton button = (JButton) pico.getComponent("aButton");
         assertEquals("Hello", button.getText());
         assertEquals(0.88, button.getAlignmentX(), 0.01);

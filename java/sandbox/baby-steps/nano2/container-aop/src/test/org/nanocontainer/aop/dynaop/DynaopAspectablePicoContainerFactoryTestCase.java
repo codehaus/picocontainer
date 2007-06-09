@@ -105,12 +105,12 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         Identifiable i1 = (Identifiable) pico.getComponent("order1");
         Identifiable i2 = (Identifiable) pico.getComponent("order2");
 
-        assertEquals(new Integer(1), i1.getId());
-        assertEquals(new Integer(2), i2.getId());
+        assertEquals(1, i1.getId());
+        assertEquals(2, i2.getId());
 
-        i1.setId(new Integer(3));
-        assertEquals(new Integer(3), i1.getId());
-        assertEquals(new Integer(2), i2.getId());
+        i1.setId(3);
+        assertEquals(3, i1.getId());
+        assertEquals(2, i2.getId());
     }
 
     public void testComponentMixin() {
@@ -142,8 +142,8 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         assertTrue(hasMixin2 instanceof Identifiable);
         assertFalse(noMixin instanceof Identifiable);
 
-        assertEquals(new Integer(1), ((Identifiable) hasMixin1).getId());
-        assertEquals(new Integer(2), ((Identifiable) hasMixin2).getId());
+        assertEquals(1, ((Identifiable) hasMixin1).getId());
+        assertEquals(2, ((Identifiable) hasMixin2).getId());
     }
 
     public void testMixinExplicitInterfaces() {

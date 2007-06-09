@@ -49,7 +49,8 @@ public class DependencyInjectionFilterTestCase extends TestCase {
 
         server = new PicoJettyServer("localhost", 8080, parentContainer);
         PicoContext barContext = server.createContext("/bar", false);
-        DependencyInjectionTestFilter filter = (DependencyInjectionTestFilter) barContext.addFilterWithMapping(new DependencyInjectionTestFilter(new Integer(5)), "/*", 0);
+        DependencyInjectionTestFilter filter = (DependencyInjectionTestFilter) barContext.addFilterWithMapping(new DependencyInjectionTestFilter(
+            5), "/*", 0);
         filter.setFoo("bau");
         barContext.addServletWithMapping(DependencyInjectionTestServlet.class, "/foo2");
         server.start();

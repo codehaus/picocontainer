@@ -27,7 +27,7 @@ public class WebContainerBuilder extends AbstractBuilderNode {
     public Object createNewNode(Object current, Map map) {
         int port = 0;
         if (map.containsKey("port")) {
-            port = ((Integer) map.remove("port")).intValue();
+            port = (Integer)map.remove("port");
         }
         String host;
         if (map.containsKey("host")) {

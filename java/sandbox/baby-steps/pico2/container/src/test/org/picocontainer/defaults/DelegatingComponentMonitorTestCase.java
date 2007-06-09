@@ -80,7 +80,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
         Constraint durationIsGreaterThanOrEqualToZero = new Constraint() {
             public boolean eval(Object o) {
                 Long duration = (Long)o;
-                return 0 <= duration.longValue();
+                return 0 <= duration;
             }
 
             public StringBuffer describeTo(StringBuffer stringBuffer) {

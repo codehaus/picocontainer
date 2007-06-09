@@ -20,7 +20,7 @@ public class IdGeneratorImpl implements IdGenerator {
     private int nextId = 0;
 
     public Integer nextId() {
-        return new Integer(++nextId);
+        return ++nextId;
     }
 
 }

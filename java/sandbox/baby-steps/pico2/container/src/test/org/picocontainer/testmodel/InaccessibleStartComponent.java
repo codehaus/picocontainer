@@ -17,7 +17,7 @@ import java.util.List;
  * @version $Revision$
  *          was UnaccessibleStartComponent
  */
-public class InaccessibleStartComponent extends Object {
+public class InaccessibleStartComponent {
     private List messages;
 
     public InaccessibleStartComponent(List messages) {

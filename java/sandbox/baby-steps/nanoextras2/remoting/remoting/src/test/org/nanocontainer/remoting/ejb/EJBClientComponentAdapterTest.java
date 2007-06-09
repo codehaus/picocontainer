@@ -87,13 +87,13 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
         try {
             new EJBClientComponentAdapter("Bar", FooBar.class, FooBar.class, m_environment, false);
             fail("Should have thrown a AssignabilityRegistrationException");
-        } catch (AssignabilityRegistrationException e) {
+        } catch (ClassCastException e) {
             assertTrue(e.getMessage().indexOf(EJBHome.class.getName()) > 0);
         }
         try {
             new EJBClientComponentAdapter("Bar", FooBarHome.class, FooBarHome.class, m_environment, false);
             fail("Should have thrown a AssignabilityRegistrationException");
-        } catch (AssignabilityRegistrationException e) {
+        } catch (ClassCastException e) {
             assertTrue(e.getMessage().indexOf(EJBObject.class.getName()) > 0);
         }
         try {

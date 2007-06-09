@@ -28,8 +28,7 @@ import org.picocontainer.tck.AbstractPicoContainerTestCase;
  */
 public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoContainerTestCase {
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        DefaultPicoContainer child = new DefaultPicoContainer(parent);
-        return child;
+        return new DefaultPicoContainer(parent);
     }
 
     public void testContainerIsDeserializableWithParent() throws PicoException, PicoInitializationException,

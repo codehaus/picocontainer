@@ -47,7 +47,7 @@ public class CachingScriptClassLoader {
         String urlAsString = scriptURL.toExternalForm();
         scriptClasses.put(urlAsString, scriptClass);
         long lastChanged = urlConnection.getLastModified();
-        scriptLoadTimestamps.put(urlAsString, new Long(lastChanged));
+        scriptLoadTimestamps.put(urlAsString, lastChanged);
         return scriptClass;
     }
 
@@ -56,8 +56,7 @@ public class CachingScriptClassLoader {
     private Class loadGroovyClass(URLConnection urlConnection, URL scriptURL) throws IOException, ScriptException {
         GroovyClassLoader loader = new GroovyClassLoader(getClass().getClassLoader());
         try {
-            Class scriptClass = loader.parseClass(urlConnection.getInputStream(), scriptURL.getFile());
-            return scriptClass;
+            return loader.parseClass(urlConnection.getInputStream(), scriptURL.getFile());
         } catch (CompilationFailedException e) {
             throw new ScriptException(scriptURL, e);
         }

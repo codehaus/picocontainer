@@ -19,11 +19,11 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 /**
  * @author Stephen Molitor
  */
-public class AspectsComponentAdapterTestCase extends MockObjectTestCase {
+public final class AspectsComponentAdapterTestCase extends MockObjectTestCase {
 
-    private Mock mockApplicator = mock(AspectsApplicator.class);
-    private Mock mockComponentAdapterDelegate = mock(ComponentAdapter.class);
-    private PicoContainer container = new DefaultPicoContainer();
+    private final Mock mockApplicator = mock(AspectsApplicator.class);
+    private final Mock mockComponentAdapterDelegate = mock(ComponentAdapter.class);
+    private final PicoContainer container = new DefaultPicoContainer();
 
     public void testGetComponentInstance() {
         mockComponentAdapterDelegate.expects(once()).method("getComponentInstance").with(same(container)).will(returnValue("addComponent"));

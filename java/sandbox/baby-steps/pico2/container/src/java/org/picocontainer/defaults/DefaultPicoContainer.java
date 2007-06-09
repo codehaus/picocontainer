@@ -133,26 +133,26 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * </em>
      *
      * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
-     * @param lifecycleStrategyForInstanceRegistrations
+     * @param lifecycleStrategy
      *                                the lifecylce strategy chosen for regiered
      *                                instance (not implementations!)
      * @param parent                  the parent container (used for addComponent dependency lookups).
      */
     public DefaultPicoContainer(ComponentFactory componentAdapterFactory,
-                                LifecycleStrategy lifecycleStrategyForInstanceRegistrations,
+                                LifecycleStrategy lifecycleStrategy,
                                 PicoContainer parent)
     {
-        this(componentAdapterFactory, lifecycleStrategyForInstanceRegistrations, parent, NullComponentMonitor.getInstance() );
+        this(componentAdapterFactory, lifecycleStrategy, parent, NullComponentMonitor.getInstance() );
     }
 
     public DefaultPicoContainer(ComponentFactory componentAdapterFactory,
-                                LifecycleStrategy lifecycleStrategyForInstanceRegistrations,
+                                LifecycleStrategy lifecycleStrategy,
                                 PicoContainer parent, ComponentMonitor componentMonitor)
     {
         if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
-        if (lifecycleStrategyForInstanceRegistrations == null) throw new NullPointerException("lifecycleStrategy");
+        if (lifecycleStrategy == null) throw new NullPointerException("lifecycleStrategy");
         this.componentAdapterFactory = componentAdapterFactory;
-        this.lifecycleStrategy = lifecycleStrategyForInstanceRegistrations;
+        this.lifecycleStrategy = lifecycleStrategy;
         this.parent = parent;
         if (parent != null && !(parent instanceof EmptyPicoContainer)) {
             this.parent = ImmutablePicoContainerProxyFactory.newProxyInstance(parent);

@@ -64,8 +64,7 @@ public class ChainingDispatcher implements Dispatcher {
 
     private String getActionFolderPathResultView(String scriptPathWithoutExtension, String result) {
         String actionFolderPath = scriptPathWithoutExtension.substring(0, scriptPathWithoutExtension.lastIndexOf("/") + 1);
-        String view = actionFolderPath + result + extension;
-        return view;
+        return actionFolderPath + result + extension;
     }
 
     private String getActionRootResultView(String result) {

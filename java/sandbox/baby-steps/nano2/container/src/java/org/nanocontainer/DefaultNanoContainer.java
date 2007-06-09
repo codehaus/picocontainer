@@ -53,7 +53,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
                                                                                             ComponentMonitorStrategy
 {
 
-    private static transient Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
+    private static final transient Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
 
     static {
         primitiveNameToBoxedName.put("int", Integer.class.getName());
@@ -66,14 +66,14 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     }
 
 
-    private transient List<ClassPathElement> classPathElements = new ArrayList<ClassPathElement>();
-    private transient ClassLoader parentClassLoader;
+    private final transient List<ClassPathElement> classPathElements = new ArrayList<ClassPathElement>();
+    private final transient ClassLoader parentClassLoader;
 
     private transient ClassLoader componentClassLoader;
     private transient boolean componentClassLoaderLocked;
 
 
-    protected Map<String, PicoContainer> namedChildContainers = new HashMap<String, PicoContainer>();
+    protected final Map<String, PicoContainer> namedChildContainers = new HashMap<String, PicoContainer>();
 
 
     public DefaultNanoContainer(ClassLoader classLoader, ComponentFactory caf, PicoContainer parent) {

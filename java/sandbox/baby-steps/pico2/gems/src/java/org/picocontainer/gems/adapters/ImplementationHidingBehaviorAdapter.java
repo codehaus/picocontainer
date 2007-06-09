@@ -64,8 +64,7 @@ public class ImplementationHidingBehaviorAdapter extends BehaviorAdapter impleme
     }
 
     protected Swappable getSwappable() {
-        final Swappable swappable = new Swappable();
-        return swappable;
+        return new Swappable();
     }
 
     public byte[] makeProxy(String proxyName, Class[] interfaces, boolean setter) {

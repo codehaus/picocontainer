@@ -75,8 +75,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         parentContainer.addComponent("parentTestComp", new ClassName("TestComp"));
         parentContainer.addComponent(new ClassName("java.lang.StringBuffer"));
 
-        PicoContainer parentContainerAdapterPico = parentContainer;
-        Object parentTestComp = parentContainerAdapterPico.getComponent("parentTestComp");
+        Object parentTestComp = parentContainer.getComponent("parentTestComp");
         assertEquals("TestComp", parentTestComp.getClass().getName());
 
         // Set up child
@@ -86,8 +85,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         childContainer.addClassLoaderURL(testCompJar2.toURL());
         childContainer.addComponent("childTestComp", new ClassName("TestComp2"));
 
-        PicoContainer childContainerAdapterPico = childContainer;
-        Object childTestComp = childContainerAdapterPico.getComponent("childTestComp");
+        Object childTestComp = childContainer.getComponent("childTestComp");
 
         assertEquals("TestComp2", childTestComp.getClass().getName());
 
@@ -101,7 +99,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
             fail("parentTestComp classloader should be parent of childTestComp classloader");
         }
         //PicoContainer.getParent() is now ImmutablePicoContainer
-        assertNotSame(parentContainerAdapterPico, childContainerAdapterPico.getParent());
+        assertNotSame(parentContainer, childContainer.getParent());
     }
 
     private void printClassLoader(ClassLoader classLoader) {

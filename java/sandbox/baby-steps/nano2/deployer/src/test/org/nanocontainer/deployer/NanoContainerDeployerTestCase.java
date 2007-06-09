@@ -141,8 +141,7 @@ public class NanoContainerDeployerTestCase extends TestCase {
         if (url.endsWith("/")) {
             url = url.substring(0, url.length() - 1);
         }
-        FileObject applicationFolder = manager.resolveFile(url);
-        return applicationFolder;
+        return manager.resolveFile(url);
     }
 
     private FileObject getApplicationArchive(final DefaultFileSystemManager manager, final String jarPath) throws FileSystemException {
@@ -150,8 +149,7 @@ public class NanoContainerDeployerTestCase extends TestCase {
         manager.addProvider("zip", new ZipFileProvider());
         manager.init();
         File src = new File(jarPath);
-        FileObject applicationFolder = manager.resolveFile("zip:/" + src.getAbsolutePath());
-        return applicationFolder;
+        return manager.resolveFile("zip:/" + src.getAbsolutePath());
     }
 
 

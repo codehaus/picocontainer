@@ -518,8 +518,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             metaContainer.addComponent(ComponentFactory.class, new ClassName(factoryName));
             key = ComponentFactory.class;
         }
-        ComponentFactory factory = (ComponentFactory) metaContainer.getComponent(key);
-        return factory;
+        return (ComponentFactory) metaContainer.getComponent(key);
     }
 
     private ComponentMonitor createComponentMonitor(String monitorName) throws PicoCompositionException {

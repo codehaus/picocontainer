@@ -212,11 +212,7 @@ public class NanoContainerDeployer implements Deployer {
               //nanocontainer.* can easily be deep inside a directory tree and
               //we end up not picking up our desired script.
               //
-              if (fileSelectInfo.getDepth() > 1) {
-                return false;
-              } else {
-                return true;
-              }
+                return fileSelectInfo.getDepth() <= 1;
             }
         });
 

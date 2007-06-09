@@ -46,8 +46,7 @@ public class StandaloneTestCase extends TestCase {
         URL classURL = Standalone.class.getResource(relativeClassPath);
         String absoluteClassPath = classURL.getFile();
         File absoluteDirPath = new File(absoluteClassPath).getParentFile();
-        File absoluteScriptPath = new File(absoluteDirPath, "nanocontainer.xml");
-        return absoluteScriptPath;
+        return new File(absoluteDirPath, "nanocontainer.xml");
     }
 
     public void testCommandLineWithHelp() throws Exception {

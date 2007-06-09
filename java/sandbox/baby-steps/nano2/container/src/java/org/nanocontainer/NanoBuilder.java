@@ -9,11 +9,11 @@ import org.picocontainer.adapters.BehaviorFactory;
 import org.picocontainer.adapters.InjectionFactory;
 
 
-public class NanoBuilder {
+public final class NanoBuilder {
 
     private Class ncClass = DefaultNanoContainer.class;
-    private PicoBuilder picoBuilder;
-    private ClassLoader classLoader = DefaultNanoContainer.class.getClassLoader();
+    private final PicoBuilder picoBuilder;
+    private final ClassLoader classLoader = DefaultNanoContainer.class.getClassLoader();
 
     public NanoBuilder(PicoContainer parentcontainer, InjectionFactory injectionType) {
         picoBuilder = new PicoBuilder(parentcontainer, injectionType);

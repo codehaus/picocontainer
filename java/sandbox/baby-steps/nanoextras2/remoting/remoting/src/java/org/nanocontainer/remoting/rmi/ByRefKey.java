@@ -19,9 +19,8 @@ public class ByRefKey implements Serializable {
         if (!(o instanceof ByRefKey)) return false;
 
         final ByRefKey byRefKey = (ByRefKey) o;
-        if (value != null ? !value.equals(byRefKey.value) : byRefKey.value != null) return false;
+        return !(value != null ? !value.equals(byRefKey.value) : byRefKey.value != null);
 
-        return true;
     }
 
     public int hashCode() {

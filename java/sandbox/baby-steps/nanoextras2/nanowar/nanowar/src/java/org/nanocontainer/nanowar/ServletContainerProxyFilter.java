@@ -66,7 +66,7 @@ public class ServletContainerProxyFilter implements Filter {
         if ( initType == null ){
             initType = CONTEXT_INIT_TYPE;
         }
-        lookupOnlyOnce = new Boolean(filterConfig.getInitParameter("lookup-only-once")).booleanValue();
+        lookupOnlyOnce = Boolean.valueOf(filterConfig.getInitParameter("lookup-only-once"));
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {

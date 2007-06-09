@@ -86,7 +86,7 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
             throws PicoIntrospectionException {
         try {
             return new ThreadLocalComponentAdapter(new EJBClientComponentAdapter(
-                    componentKey.toString(), componentImplementation, environment, earlyBinding), proxyFactory);
+                componentKey, componentImplementation, environment, earlyBinding), proxyFactory);
         } catch (final ClassNotFoundException e) {
             throw new PicoIntrospectionException("Home interface not found", e);
         }

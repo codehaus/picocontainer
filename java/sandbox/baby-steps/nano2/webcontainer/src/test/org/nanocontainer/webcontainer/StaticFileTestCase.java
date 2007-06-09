@@ -38,7 +38,7 @@ public class StaticFileTestCase extends TestCase {
                 " </body>\n" +
                 "</html>", IO.toString(url.openStream()));
 
-        Thread.sleep(1 * 1000);
+        Thread.sleep(1000);
 
     }
 
@@ -61,7 +61,7 @@ public class StaticFileTestCase extends TestCase {
                 " </body>\n" +
                 "</html>", IO.toString(url.openStream()));
 
-        Thread.sleep(1 * 1000);
+        Thread.sleep(1000);
 
     }
 
@@ -85,7 +85,7 @@ public class StaticFileTestCase extends TestCase {
             // expected
         }
 
-        Thread.sleep(1 * 1000);
+        Thread.sleep(1000);
 
     }
 

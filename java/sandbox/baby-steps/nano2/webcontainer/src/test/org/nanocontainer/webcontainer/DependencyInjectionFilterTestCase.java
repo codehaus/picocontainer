@@ -15,7 +15,7 @@ public class DependencyInjectionFilterTestCase extends TestCase {
         if (server != null) {
             server.stop();
         }
-        Thread.sleep(1 * 1000);
+        Thread.sleep(1000);
     }
 
     public void testCanInstantiateWebContainerContextAndFilter() throws InterruptedException, IOException {

@@ -17,7 +17,7 @@ public class DependencyInjectionListenerTestCase extends TestCase {
         if (server != null) {
             server.stop();
         }
-        Thread.sleep(1 * 1000);
+        Thread.sleep(1000);
     }
 
     public void testCanInstantiateWebContainerContextAndListener() throws InterruptedException, IOException {

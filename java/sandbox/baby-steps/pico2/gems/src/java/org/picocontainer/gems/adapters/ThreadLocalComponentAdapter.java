@@ -114,7 +114,7 @@ public final class ThreadLocalComponentAdapter extends BehaviorAdapter {
         public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
             final Object delegatedInstance = delegate.getComponentInstance(pico);
             if (method.equals(ReflectionUtils.equals)) { // necessary for JDK 1.3
-                return new Boolean(args[0] != null && args[0].equals(delegatedInstance));
+                return args[0] != null && args[0].equals(delegatedInstance);
             } else {
                 try {
                     return method.invoke(delegatedInstance, args);

@@ -19,7 +19,7 @@ public class JspTestCase extends TestCase {
         if (server != null) {
             server.stop();
         }
-        Thread.sleep(1 * 1000);
+        Thread.sleep(1000);
     }
 
 
@@ -53,7 +53,7 @@ public class JspTestCase extends TestCase {
                 "  </BODY>\n" +
                 "</HTML>", IO.toString(url.openStream()));
 
-        Thread.sleep(1 * 1000);
+        Thread.sleep(1000);
 
 
     }
@@ -91,7 +91,7 @@ public class JspTestCase extends TestCase {
         assertTrue(result.indexOf("Banzai") != -1);
         assertTrue(result.indexOf("HTTP/1.1 500") != -1);
 
-        Thread.sleep(1 * 1000);
+        Thread.sleep(1000);
 
 
     }

@@ -269,19 +269,19 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Component201.class);
         pico.addComponent(new Integer(2));
-        pico.addComponent(new Boolean(true));
+        pico.addComponent(Boolean.TRUE);
         pico.addComponent("Hello");
         assertNotNull(pico.getComponent(Component201.class));
     }
 
     public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
         Mock monitor = mock(ComponentMonitor.class);
-        Constructor emptyHashMapCtor = HashMap.class.getConstructor(new Class[0]);
+        Constructor emptyHashMapCtor = HashMap.class.getConstructor();
         monitor.expects(once()).method("instantiating").with(eq(emptyHashMapCtor));
         Constraint durationIsGreaterThanOrEqualToZero = new Constraint() {
             public boolean eval(Object o) {
                 Long duration = (Long)o;
-                return 0 <= duration.longValue();
+                return 0 <= duration;
             }
 
             public StringBuffer describeTo(StringBuffer stringBuffer) {

@@ -65,15 +65,14 @@ public class AbstractServletTestCase extends MockObjectTestCase {
     }
 
     private InputStream getWebXml(FilterDef[] filters, String ctxScope, String sesScope, String reqScope) {
-        StringBuffer sb = new StringBuffer();
-        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-        sb.append("\n");
-        sb.append("<web-app version=\"2.4\"\n");
-        sb.append("    xmlns=\"http://java.sun.com/xml/ns/j2ee\"\n");
-        sb.append("    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n");
-        sb.append("    xsi:schemaLocation=\"http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd\">\n");
-        sb.append("\n");
-        sb.append("<context-param>\n" +
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "\n" +
+                "<web-app version=\"2.4\"\n" +
+                "    xmlns=\"http://java.sun.com/xml/ns/j2ee\"\n" +
+                "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
+                "    xsi:schemaLocation=\"http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd\">\n" +
+                "\n" +
+                "<context-param>\n" +
                 "  <param-name>nanocontainer.groovy</param-name>\n" +
                 "  <param-value>" + //<![CDATA[\n" +
                 "    caf = new org.picocontainer.adapters.AnyInjectionFactory()\n" +
@@ -99,12 +98,12 @@ public class AbstractServletTestCase extends MockObjectTestCase {
                 "    <filter-mapping>\n" +
                 "        <filter-name>NanoWar</filter-name>\n" +
                 "        <url-pattern>/*</url-pattern>\n" +
-                "    </filter-mapping>");
-        for (int i = 0; i < filters.length; i++) {
-            sb.append(filters[i].toString());
+                "    </filter-mapping>";
+        for (FilterDef filter : filters) {
+            xml = xml + filter.toString();
         }
-        sb.append("</web-app>");
-        return new ByteArrayInputStream(sb.toString().getBytes());
+        xml = xml + "</web-app>";
+        return new ByteArrayInputStream(xml.getBytes());
     }
 
     static final class FilterDef {

@@ -80,7 +80,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
 
         
 
-        File testCompJar = new TestHelper().getTestCompJarFile();
+        File testCompJar = TestHelper.getTestCompJarFile();
         System.err.println("--> " + testCompJar.getAbsolutePath());
         URLClassLoader classLoader = new URLClassLoader(new URL[] {testCompJar.toURL()}, this.getClass().getClassLoader());
         Class testComp = null;

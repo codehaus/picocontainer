@@ -23,13 +23,12 @@ public final class GroovyCompilationException extends NanoContainerMarkupExcepti
 
     public String getMessage() {
         StringBuffer sb = new StringBuffer();
-        sb.append(super.getMessage() + "\n");
+        sb.append(super.getMessage()).append("\n");
         List errors = getErrors(compilationFailedException);
-        for (int i = 0; i < errors.size(); i++) {
-            Object o = errors.get(i);
-            if (o instanceof ExceptionMessage) {
-                ExceptionMessage em = (ExceptionMessage) o;
-                sb.append(em.getCause().getMessage() + "\n");
+        for (Object error : errors) {
+            if (error instanceof ExceptionMessage) {
+                ExceptionMessage em = (ExceptionMessage) error;
+                sb.append(em.getCause().getMessage()).append("\n");
             }
         }
         return sb.toString();

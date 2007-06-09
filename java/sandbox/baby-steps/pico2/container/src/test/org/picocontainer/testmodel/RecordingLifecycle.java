@@ -24,15 +24,15 @@ public abstract class RecordingLifecycle implements Startable, Disposable {
     }
 
     public void start() {
-        recording.append("<" + code());
+        recording.append("<").append(code());
     }
 
     public void stop() {
-        recording.append(code() + ">");
+        recording.append(code()).append(">");
     }
 
     public void dispose() {
-        recording.append("!" + code());
+        recording.append("!").append(code());
     }
     
     public String recording() {

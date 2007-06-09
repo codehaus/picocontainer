@@ -129,15 +129,15 @@ public final class ParameterTestCase extends TestCase {
         parameter = new ConstantParameter(floatValue);
         assertSame(floatValue, parameter.resolveInstance(picoContainer, null, Float.TYPE, pn));
         assertSame(floatValue, parameter.resolveInstance(picoContainer, null, Float.class, pn));
-        Double doubleValue = new Double(5.5);
+        Double doubleValue = 5.5;
         parameter = new ConstantParameter(doubleValue);
         assertSame(doubleValue, parameter.resolveInstance(picoContainer, null, Double.TYPE, pn));
         assertSame(doubleValue, parameter.resolveInstance(picoContainer, null, Double.class, pn));
-        Boolean booleanValue = new Boolean(true);
+        Boolean booleanValue = true;
         parameter = new ConstantParameter(booleanValue);
         assertSame(booleanValue, parameter.resolveInstance(picoContainer, null, Boolean.TYPE, pn));
         assertSame(booleanValue, parameter.resolveInstance(picoContainer, null, Boolean.class, pn));
-        Character charValue = new Character('x');
+        Character charValue = 'x';
         parameter = new ConstantParameter(charValue);
         assertSame(charValue, parameter.resolveInstance(picoContainer, null, Character.TYPE, pn));
         assertSame(charValue, parameter.resolveInstance(picoContainer, null, Character.class, pn));

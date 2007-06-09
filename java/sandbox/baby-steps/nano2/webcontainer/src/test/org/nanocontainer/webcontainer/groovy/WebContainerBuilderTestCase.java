@@ -253,7 +253,7 @@ public final class WebContainerBuilderTestCase extends TestCase {
         try {
             actual = IO.toString(new URL(url).openStream());
         } catch (ConnectException e) {
-            Thread.sleep(1 * 1000);
+            Thread.sleep(1000);
             actual = IO.toString(new URL(url).openStream());
         } catch (FileNotFoundException e) {
             actual = "";

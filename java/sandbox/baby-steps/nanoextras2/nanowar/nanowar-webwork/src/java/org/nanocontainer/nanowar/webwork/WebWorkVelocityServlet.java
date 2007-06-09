@@ -96,7 +96,7 @@ public final class WebWorkVelocityServlet extends VelocityViewServlet implements
 			if(super.internalContainsKey(key))
 				return 	super.internalGet(key);
 					
-			if(stack.test(key.toString())) 
+			if(stack.test(key))
 				return stack.findValue(key);
 				
 			return container.getComponent(key);

@@ -316,7 +316,6 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/remoting/NanoContainer-Remoting.iml" filepath="$PROJECT_DIR$/nanoextras2/remoting/NanoContainer-Remoting.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/tools/NanoContainer-Tools.iml" filepath="$PROJECT_DIR$/nanoextras2/tools/NanoContainer-Tools.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-axis/axis.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-axis/axis.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-jsf/jsf.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-jsf/jsf.iml" />
@@ -327,6 +326,7 @@
       <module fileurl="file://$PROJECT_DIR$/nano2/container-groovy/nano-groovy.iml" filepath="$PROJECT_DIR$/nano2/container-groovy/nano-groovy.iml" />
       <module fileurl="file://$PROJECT_DIR$/nano2/container-jruby/nano-jruby.iml" filepath="$PROJECT_DIR$/nano2/container-jruby/nano-jruby.iml" />
       <module fileurl="file://$PROJECT_DIR$/nano2/container-jython/nano-jython.iml" filepath="$PROJECT_DIR$/nano2/container-jython/nano-jython.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras2/remoting/remoting/nano-remoting.iml" filepath="$PROJECT_DIR$/nanoextras2/remoting/remoting/nano-remoting.iml" />
       <module fileurl="file://$PROJECT_DIR$/nano2/container-rhino/nano-rhino.iml" filepath="$PROJECT_DIR$/nano2/container-rhino/nano-rhino.iml" />
       <module fileurl="file://$PROJECT_DIR$/nano2/container-tck/nano-tck.iml" filepath="$PROJECT_DIR$/nano2/container-tck/nano-tck.iml" />
       <module fileurl="file://$PROJECT_DIR$/nano2/testmodel/nano-testmodel.iml" filepath="$PROJECT_DIR$/nano2/testmodel/nano-testmodel.iml" />

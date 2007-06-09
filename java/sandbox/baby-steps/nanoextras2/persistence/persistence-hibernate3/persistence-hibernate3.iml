@@ -68,6 +68,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="persistence" />
     <orderEntryProperties />
   </component>
   <component name="copyright">

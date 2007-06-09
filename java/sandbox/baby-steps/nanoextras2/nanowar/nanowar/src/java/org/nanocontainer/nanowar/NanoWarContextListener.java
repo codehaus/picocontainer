@@ -133,7 +133,7 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
             ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(scriptReader, builderClassName, Thread.currentThread().getContextClassLoader());
             picoConfiguration = buildContainer(scriptedContainerBuilderFactory.getContainerBuilder());
         }
-        ComponentAdapter componentAdapter = null;
+        ComponentAdapter componentAdapter;
         if ( picoConfiguration != null ){
             componentAdapter = nanoContainer.addComponent(containerComposerClassName, new ClassName(containerComposerClassName), new ConstantParameter(picoConfiguration)).lastCA();
         } else {

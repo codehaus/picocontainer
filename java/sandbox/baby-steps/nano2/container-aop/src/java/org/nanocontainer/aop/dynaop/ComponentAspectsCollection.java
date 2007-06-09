@@ -56,7 +56,6 @@ class ComponentAspectsCollection {
      */
     Aspects registerAspects(Object componentKey, Aspects containerAspects) {
         Aspects aspects = copyAspects(containerAspects);
-        Iterator iterator = componentsAspects.iterator();
         for (Object componentsAspect : componentsAspects) {
             ComponentAspect componentAspect = (ComponentAspect)componentsAspect;
             componentAspect.registerAspect(componentKey, aspects);

@@ -81,7 +81,7 @@ public final class ComponentDependencyMonitor extends DelegatingComponentMonitor
             if (type != null) {
                 return type.equals(otherType);
             }
-            return (type == null && otherType == null);
+            return (otherType == null);
         }
     }
 }

@@ -40,7 +40,6 @@ public class PicoContext {
     public PicoContext(Context context, PicoContainer parentContainer, boolean withSessionHandler) {
         this.context = context;
         this.parentContainer = parentContainer;
-        boolean withSessionHandler1 = withSessionHandler;
     }
 
     public PicoServletHolder addServletWithMapping(Class servletClass, String pathMapping) {

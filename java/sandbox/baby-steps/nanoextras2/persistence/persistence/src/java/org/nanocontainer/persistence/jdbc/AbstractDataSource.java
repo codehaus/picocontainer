@@ -59,11 +59,6 @@ public abstract class AbstractDataSource implements DataSource {
 				return (SQLException) cause;
 			}
 
-			if (cause instanceof Exception) {
-				// TODO Figure out how to deal with it.
-				throw new RuntimeException(cause);
-			}
-
 			throw (RuntimeException) cause;
 		}
 

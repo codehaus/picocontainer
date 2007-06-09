@@ -164,7 +164,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     }
 
     private String execute(Object actionObject, String actionMethodName) throws ServletException {
-        Method actionMethod = null;
+        Method actionMethod;
         try {
             actionMethod = actionObject.getClass().getMethod(actionMethodName, (Class[])null);
         } catch (NoSuchMethodException e) {

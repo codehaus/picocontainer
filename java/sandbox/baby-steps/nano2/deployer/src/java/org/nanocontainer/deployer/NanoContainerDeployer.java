@@ -156,7 +156,7 @@ public class NanoContainerDeployer implements Deployer {
 
         String extension = "." + deploymentScript.getName().getExtension();
         Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());
-        String builderClassName = null;
+        String builderClassName;
         try {
             builderClassName = resolver.getBuilderClassName(extension);
         } catch (UnsupportedScriptTypeException ex) {

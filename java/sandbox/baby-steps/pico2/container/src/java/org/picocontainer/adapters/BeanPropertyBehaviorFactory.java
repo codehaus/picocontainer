@@ -9,15 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.adapters;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.AbstractBehaviorFactory;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.LifecycleStrategy;
 
@@ -30,17 +27,13 @@ import org.picocontainer.LifecycleStrategy;
  * @since 1.0
  */
 public final class BeanPropertyBehaviorFactory extends AbstractBehaviorFactory {
-    // var never used ? needed ?
-    private final Map<Object, BeanPropertyComponentAdapter> adapterCache = new HashMap<Object, BeanPropertyComponentAdapter>();
 
     /**
      * {@inheritDoc}
      */
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, NotConcreteRegistrationException {
         ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
-        BeanPropertyComponentAdapter propertyAdapter = new BeanPropertyComponentAdapter(decoratedAdapter);
-        adapterCache.put(componentKey, propertyAdapter);
-        return propertyAdapter;
+        return new BeanPropertyComponentAdapter(decoratedAdapter);
     }
 
 }

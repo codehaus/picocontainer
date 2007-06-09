@@ -34,8 +34,6 @@ public interface Deployer {
      * @return ObjectReference a new object reference that container the new
      * container.
      * @throws FileSystemException upon VFS-based errors.
-     * @throws ClassNotFoundException upon class instantiation error while running
-     * the composition script.
      */
     ObjectReference deploy(FileObject applicationFolder, ClassLoader parentClassLoader, ObjectReference parentContainerRef, Object assemblyScope) throws FileSystemException;
 }

@@ -45,7 +45,7 @@ public class Standalone {
 
     private static final String DEFAULT_COMPOSITION_FILE = "composition.groovy";
 
-    static final Options createOptions() {
+    static Options createOptions() {
         Options options = new Options();
         options.addOption(String.valueOf(HELP_OPT), "help", false,
                 "print this message and exit");

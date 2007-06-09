@@ -71,10 +71,9 @@ public final class ServletChainBuilder {
 	 * 
 	 * @param container the MutablePicoContainer used by the recorder
 	 * @param path the String representing the servlet path used as key for the recorder cache
-	 * @throws ClassNotFoundException if the container builder class is not found
 	 */
 	public void populateContainerForPath(MutablePicoContainer container,
-			String path) throws ClassNotFoundException {
+			String path) {
 		ContainerRecorder recorder;
 		synchronized (recorderCache) {
 			recorder = (ContainerRecorder) recorderCache.get(path);

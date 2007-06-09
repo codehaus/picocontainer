@@ -8,7 +8,9 @@ public class NullLifecycleStrategy implements LifecycleStrategy, Serializable {
 
     private static LifecycleStrategy instance;
     public static synchronized LifecycleStrategy getInstance() {
-        instance = new NullLifecycleStrategy();
+        if (instance == null) {
+            instance = new NullLifecycleStrategy();
+        }
         return instance;
     }
 

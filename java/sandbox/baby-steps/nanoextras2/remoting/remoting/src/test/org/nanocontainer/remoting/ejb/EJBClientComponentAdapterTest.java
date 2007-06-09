@@ -196,7 +196,7 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
         try {
             hello.getHelloWorld();
             fail("Should have thrown a RemoteException");
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             assertSame(t, e);
         }
         t = new NoSuchObjectException("junit");
@@ -205,7 +205,7 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
         try {
             hello.getHelloWorld();
             fail("Should have thrown a NoSuchObjectException");
-        } catch (NoSuchObjectException e) {
+        } catch (Exception e) {
             assertSame(t, e);
         }
     }

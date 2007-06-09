@@ -3,104 +3,81 @@ package org.picocontainer.containers;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.ComponentCharacteristic;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Collections;
 import java.util.Collection;
+import java.io.Serializable;
 
 /**
- * empty pico container serving as recoil damper in situations where you
+ * Empty pico container serving as recoil damper in situations where you
  * do not like to check whether container reference suplpied to you
  * is null or not
+ *
+ * Typically its used to merk a parent container.
  *
  * @author Konstantin Pribluda
  * @since 1.1
  */
-public class ImmutablePicoContainer extends AbstractDelegatingMutablePicoContainer {
+public class ImmutablePicoContainer implements PicoContainer, Serializable {
 
-    public ImmutablePicoContainer(MutablePicoContainer delegate) {
-        super(delegate);
+    private final PicoContainer delegate;
+
+    public ImmutablePicoContainer(PicoContainer delegate) {
+        if (delegate == null) {
+            throw new NullPointerException();
+        }
+        this.delegate = delegate;
     }
 
-    public MutablePicoContainer makeChildContainer() {
-        throw new UnsupportedOperationException();
+    public Object getComponent(Object componentKeyOrType) {
+        return delegate.getComponent(componentKeyOrType);
     }
 
-
-    public MutablePicoContainer addComponent(Object componentKey,
-                                             Object componentImplementationOrInstance,
-                                             Parameter... parameters) throws PicoRegistrationException
-    {
-        throw new UnsupportedOperationException();
+    public <T> T getComponent(Class<T> componentType) {
+        return delegate.getComponent(componentType);
     }
 
-    public MutablePicoContainer addComponent(Object implOrInstance) throws PicoRegistrationException {
-        throw new UnsupportedOperationException();
+    public List getComponents() {
+        return delegate.getComponents();
     }
 
-    public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) throws PicoRegistrationException {
-        throw new UnsupportedOperationException();
+    public PicoContainer getParent() {
+        return delegate.getParent();
     }
 
-    public ComponentAdapter removeComponent(Object componentKey) {
-        throw new UnsupportedOperationException();
+    public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
+        return delegate.getComponentAdapter(componentKey);
     }
 
-    public ComponentAdapter removeComponentByInstance(Object componentInstance) {
-        throw new UnsupportedOperationException();
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
+        return delegate.getComponentAdapter(componentType);
     }
 
-    public void start() {
-        throw new UnsupportedOperationException();
+    public Collection<ComponentAdapter<?>> getComponentAdapters() {
+        return delegate.getComponentAdapters();
     }
 
-    public void stop() {
-        throw new UnsupportedOperationException();
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+        return delegate.getComponentAdapters(componentType);
     }
 
-    public void dispose() {
-        throw new UnsupportedOperationException();
-    }
-
-    public MutablePicoContainer addChildContainer(PicoContainer child) {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean removeChildContainer(PicoContainer child) {
-        throw new UnsupportedOperationException();
-    }
-
-    public MutablePicoContainer change(ComponentCharacteristic... characteristics) {
-        throw new UnsupportedOperationException();
-    }
-
-    public MutablePicoContainer as(ComponentCharacteristic... characteristics) {
-        throw new UnsupportedOperationException();
-    }
-
-    public ComponentAdapter lastCA() {
-        throw new UnsupportedOperationException();
+    public <T> List<T> getComponents(Class<T> componentType) {
+        return delegate.getComponents(componentType);
     }
 
     public void accept(PicoVisitor visitor) {
-        getDelegate().accept(visitor);
+        delegate.accept(visitor);
     }
-
 
     public boolean equals(Object obj) {
         return obj == this
-               || (obj != null && obj == getDelegate())
-               || (obj instanceof ImmutablePicoContainer && ((ImmutablePicoContainer) obj).getDelegate() == getDelegate())
+               || (obj != null && obj == delegate)
+               || (obj instanceof ImmutablePicoContainer && ((ImmutablePicoContainer) obj).delegate == delegate)
             ;
     }
 
 
     public int hashCode() {
-        return getDelegate().hashCode();   
+        return delegate.hashCode();
     }
 }

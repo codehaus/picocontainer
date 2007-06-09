@@ -13,7 +13,6 @@ package org.picocontainer.containers;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.ImmutablePicoContainerProxyFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import org.jmock.Mock;
@@ -57,8 +56,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
 
     public void testHashCodeIsSame() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        PicoContainer ipc = ImmutablePicoContainerProxyFactory.newProxyInstance(pico);
-        assertEquals(ipc.hashCode(), new ImmutablePicoContainer(pico).hashCode());
+        assertEquals(pico.hashCode(), new ImmutablePicoContainer(pico).hashCode());
     }
     
     public void testDoesNotEqualsToNull() {

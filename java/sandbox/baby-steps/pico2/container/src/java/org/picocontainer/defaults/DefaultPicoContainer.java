@@ -31,6 +31,7 @@ import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -155,7 +156,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         this.lifecycleStrategy = lifecycleStrategy;
         this.parent = parent;
         if (parent != null && !(parent instanceof EmptyPicoContainer)) {
-            this.parent = ImmutablePicoContainerProxyFactory.newProxyInstance(parent);
+            this.parent = new ImmutablePicoContainer(parent);
         }
         this.componentMonitor = componentMonitor;
     }

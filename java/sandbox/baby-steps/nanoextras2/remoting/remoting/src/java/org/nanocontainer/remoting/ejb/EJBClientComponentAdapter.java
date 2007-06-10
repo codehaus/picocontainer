@@ -27,7 +27,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.adapters.AbstractComponentAdapter;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
@@ -139,7 +138,7 @@ public class EJBClientComponentAdapter extends AbstractComponentAdapter {
      * This implementation has nothing to verify.
      * @see org.picocontainer.ComponentAdapter#verify(PicoContainer)
      */
-    public void verify(final PicoContainer pico) throws UnsatisfiableDependenciesException {
+    public void verify(final PicoContainer pico) {
         // cannot do anything here
     }
 

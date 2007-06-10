@@ -79,8 +79,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
         try {
             child.getComponent(ComponentF.class);
-            fail("Thrown " + UnsatisfiableDependenciesException.class.getName() + " expected");
-        } catch (final UnsatisfiableDependenciesException e) {
+            fail("Thrown " + InjectingAdapter.UnsatisfiableDependenciesException.class.getName() + " expected");
+        } catch (final InjectingAdapter.UnsatisfiableDependenciesException e) {
             assertEquals(ComponentB.class, e.getUnsatisfiedDependencyType());
         }
     }

@@ -18,7 +18,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 import static org.picocontainer.parameters.ComponentParameter.*;
 import org.picocontainer.adapters.CachingBehaviorFactory;
@@ -248,7 +247,7 @@ public class SetterInjectionAdapterTestCase
 
         try {
             aAdapter.getComponentInstance(pico);
-        } catch (UnsatisfiableDependenciesException e) {
+        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
             assertTrue(e.getUnsatisfiableDependencies().contains(List.class));
             assertTrue(e.getUnsatisfiableDependencies().contains(String.class));
         }

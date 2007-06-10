@@ -16,7 +16,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.adapters.AbstractComponentAdapter;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -108,6 +107,6 @@ public class BeanShellComponentAdapter extends AbstractComponentAdapter {
         return instance;
     }
 
-    public void verify(PicoContainer pico) throws UnsatisfiableDependenciesException {
+    public void verify(PicoContainer pico) {
     }
 }

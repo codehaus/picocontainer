@@ -14,8 +14,8 @@ import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -48,7 +48,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
             PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
             pico.getComponent(WebServer.class);
             fail();
-        } catch (UnsatisfiableDependenciesException expected) {
+        } catch (InjectingAdapter.UnsatisfiableDependenciesException expected) {
         }
     }
 

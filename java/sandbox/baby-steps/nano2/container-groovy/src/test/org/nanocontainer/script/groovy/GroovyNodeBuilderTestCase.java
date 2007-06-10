@@ -32,7 +32,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.adapters.SetterInjectionAdapter;
 import org.picocontainer.adapters.SetterInjectionFactory;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.adapters.InjectingAdapter;
 
 import java.io.File;
 import java.net.URLClassLoader;
@@ -379,7 +379,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         try {
             buildContainer(script, null, ASSEMBLY_SCOPE);
             fail("Should not have been able to instansiate component tree due to visibility/parent reasons.");
-        } catch (UnsatisfiableDependenciesException expected) {
+        } catch (InjectingAdapter.UnsatisfiableDependenciesException expected) {
         }
     }
 
@@ -485,7 +485,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         try {
             buildContainer(script, parent, new SomeAssemblyScope());
             fail("UnsatisfiableDependenciesException expected");
-        } catch (UnsatisfiableDependenciesException e) {
+        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
             // expected
         }
     }

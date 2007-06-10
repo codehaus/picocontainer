@@ -45,7 +45,7 @@ public class PicoExceptionsTestCase
         try {
             final Exception exception = (Exception) componentAdapter.getComponentInstance(pico);
             assertEquals(MESSAGE, exception.getMessage());
-        } catch (final UnsatisfiableDependenciesException ex) {
+        } catch (final InjectingAdapter.UnsatisfiableDependenciesException ex) {
             final Set<Object> set = new HashSet<Object>();
             for (Object o : ex.getUnsatisfiableDependencies()) {
                 final List<Object> list = (List<Object>)o;
@@ -58,7 +58,7 @@ public class PicoExceptionsTestCase
         try {
             final PicoException exception = (PicoException) componentAdapter.getComponentInstance(pico);
             assertSame(THROWABLE, exception.getCause());
-        } catch (final UnsatisfiableDependenciesException ex) {
+        } catch (final InjectingAdapter.UnsatisfiableDependenciesException ex) {
             final Set<Object> set = new HashSet<Object>();
             for (Object o : ex.getUnsatisfiableDependencies()) {
                 final List<Object> list = (List<Object>)o;

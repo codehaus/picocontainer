@@ -20,6 +20,7 @@ import org.picocontainer.Startable;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.adapters.AnyInjectionFactory;
+import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.monitors.LifecycleComponentMonitor;
 import org.picocontainer.monitors.LifecycleComponentMonitor.LifecycleFailuresException;
 import org.picocontainer.testmodel.RecordingLifecycle.FiveTriesToBeMalicious;
@@ -218,16 +219,16 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         child.addComponent(FiveTriesToBeMalicious.class);
         try {
             parent.start();
-            fail("Thrown " + UnsatisfiableDependenciesException.class.getName() + " expected");
-        } catch ( UnsatisfiableDependenciesException e) {
+            fail("Thrown " + InjectingAdapter.UnsatisfiableDependenciesException.class.getName() + " expected");
+        } catch ( InjectingAdapter.UnsatisfiableDependenciesException e) {
             // FiveTriesToBeMalicious can't get instantiated as there is no PicoContainer in any addComponent set
         }
         String recording = parent.getComponent("recording").toString();
         assertEquals("<One<Two<Three", recording);
         try {
             child.getComponent(FiveTriesToBeMalicious.class);
-            fail("Thrown " + UnsatisfiableDependenciesException.class.getName() + " expected");
-        } catch (final UnsatisfiableDependenciesException e) {
+            fail("Thrown " + InjectingAdapter.UnsatisfiableDependenciesException.class.getName() + " expected");
+        } catch (final InjectingAdapter.UnsatisfiableDependenciesException e) {
             // can't get instantiated as there is no PicoContainer in any addComponent set
         }
         recording = parent.getComponent("recording").toString();

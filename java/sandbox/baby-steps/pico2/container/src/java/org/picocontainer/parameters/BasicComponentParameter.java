@@ -15,7 +15,6 @@ import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.adapters.InjectingAdapter;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -99,7 +98,7 @@ public class BasicComponentParameter
         if (componentAdapter == null) {
             final Set<Class> set = new HashSet<Class>();
             set.add(expectedType);
-            throw new UnsatisfiableDependenciesException(adapter, set, container);
+            throw new InjectingAdapter.UnsatisfiableDependenciesException(adapter, null, set, container);
         }
         componentAdapter.verify(container);
     }

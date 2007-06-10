@@ -15,10 +15,10 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 
 import java.lang.reflect.Constructor;
@@ -27,6 +27,7 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
@@ -320,6 +321,51 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
             this.component = component;
         }
     }
+
+    /**
+     * Exception thrown when some of the addComponent's dependencies are not satisfiable.
+     *
+     * @author Aslak Helles&oslash;y
+     * @author Mauro Talevi
+     * @version $Revision$
+     */
+    public static class UnsatisfiableDependenciesException extends PicoIntrospectionException {
+
+        private final ComponentAdapter instantiatingComponentAdapter;
+        private final Set unsatisfiableDependencies;
+        private final Class unsatisfiedDependencyType;
+        private final PicoContainer leafContainer;
+
+        public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter,
+                                                  Class unsatisfiedDependencyType, Set unsatisfiableDependencies,
+                                                  PicoContainer leafContainer) {
+            super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfied dependency: " + unsatisfiedDependencyType
+                    +" among unsatisfiable dependencies: "+unsatisfiableDependencies + " where " + leafContainer
+                    + " was the leaf container being asked for dependencies.");
+            this.instantiatingComponentAdapter = instantiatingComponentAdapter;
+            this.unsatisfiableDependencies = unsatisfiableDependencies;
+            this.unsatisfiedDependencyType = unsatisfiedDependencyType;
+            this.leafContainer = leafContainer;
+        }
+
+        public ComponentAdapter getUnsatisfiableComponentAdapter() {
+            return instantiatingComponentAdapter;
+        }
+
+        public Set getUnsatisfiableDependencies() {
+            return unsatisfiableDependencies;
+        }
+
+        public Class getUnsatisfiedDependencyType() {
+            return unsatisfiedDependencyType;
+        }
+
+        public PicoContainer getLeafContainer() {
+            return leafContainer;
+        }
+
+    }
+
 
 
 

@@ -15,9 +15,9 @@ import org.jmock.MockObjectTestCase;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.gems.adapters.ThreadLocalReference;
 
 /**
@@ -64,7 +64,7 @@ public final class PicoObjectFactoryTestCase extends MockObjectTestCase {
             action = (TestAction) factory
                             .buildBean(TestAction.class.getName());
             fail("should have barfed");
-        } catch (UnsatisfiableDependenciesException e) {
+        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
             // expected
         }
         assertNull(action);

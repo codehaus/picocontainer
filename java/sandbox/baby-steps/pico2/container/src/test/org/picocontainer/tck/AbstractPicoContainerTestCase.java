@@ -29,7 +29,6 @@ import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 import org.picocontainer.parameters.BasicComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -152,7 +151,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         try {
             picoContainer.getComponent(DependsOnTouchable.class);
             fail("should need a Touchable");
-        } catch (UnsatisfiableDependenciesException e) {
+        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
             assertSame(picoContainer.getComponentAdapter(DependsOnTouchable.class).getComponentImplementation(),
                        e.getUnsatisfiableComponentAdapter().getComponentImplementation());
             final Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
@@ -222,7 +221,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
         try {
             pico.getComponent(ComponentD.class);
-        } catch (UnsatisfiableDependenciesException e) {
+        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
 
@@ -245,7 +244,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         // should yield first unsatisfied dependency
         try {
             pico.getComponent(ComponentD.class);
-        } catch (UnsatisfiableDependenciesException e) {
+        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
             List list = (List)unsatisfiableDependencies.iterator().next();
@@ -264,7 +263,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         pico.addComponent(ComponentE.class);
         try {
             pico.getComponent(ComponentD.class);
-        } catch (UnsatisfiableDependenciesException e) {
+        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
             List list = (List)unsatisfiableDependencies.iterator().next();

@@ -2,7 +2,6 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -11,6 +10,7 @@ import org.picocontainer.parameters.CollectionComponentParameter;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
+import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -171,7 +171,7 @@ public class CollectionComponentParameterTestCase
         try {
             pico.getComponent(UngenericCollectionBowl.class);
             fail();
-        } catch (UnsatisfiableDependenciesException e) {
+        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
             // expected
         }
     }
@@ -194,7 +194,7 @@ public class CollectionComponentParameterTestCase
         try {
             pico.getComponent(AnotherGenericCollectionBowl.class);
             fail();
-        } catch (UnsatisfiableDependenciesException e) {
+        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
             // expected
         }
     }

@@ -33,7 +33,7 @@ public final class UserQuestionTestCase extends TestCase {
             return bla.get("cheese");
         }
 
-        public void verify(PicoContainer pico) throws UnsatisfiableDependenciesException {
+        public void verify(PicoContainer pico) {
         }
     }
 

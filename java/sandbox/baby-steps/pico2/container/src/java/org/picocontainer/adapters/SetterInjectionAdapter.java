@@ -18,7 +18,6 @@ import org.picocontainer.ParameterName;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.defaults.NotConcreteRegistrationException;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -161,7 +160,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
             }
         }
         if (unsatisfiableDependencyTypes.size() > 0) {
-            throw new UnsatisfiableDependenciesException(this, unsatisfiableDependencyTypes, container);
+            throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
         } else if (nonMatchingParameterPositions.size() > 0) {
             throw new PicoInitializationException("Following parameters do not match any of the injectionMethods for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
         }

@@ -14,7 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.ParameterName;
-import org.picocontainer.defaults.UnsatisfiableDependenciesException;
+import org.picocontainer.adapters.InjectingAdapter;
 
 
 /**
@@ -133,7 +133,7 @@ public class ComponentParameter
     public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
         try {
             super.verify(container, adapter, expectedType, expectedParameterName);
-        } catch (UnsatisfiableDependenciesException e) {
+        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
             if (collectionParameter != null) {
                 collectionParameter.verify(container, adapter, expectedType, expectedParameterName);
                 return;

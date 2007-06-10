@@ -18,8 +18,8 @@ import java.util.Map;
 
 
 /**
- * Reflection lifecycle strategy. Starts, stops, disposes of addComponent if appropriate methods are
- * present. The addComponent may implement only one of the three methods.
+ * Reflection lifecycle strategy. Starts, stops, disposes of component if appropriate methods are
+ * present. The component may implement only one of the three methods.
  * 
  * @author Paul Hammant
  * @author Mauro Talevi
@@ -99,7 +99,7 @@ public final class ReflectionLifecycleStrategy extends AbstractMonitoringLifecyc
     }
 
     /**
-     * {@inheritDoc} The addComponent has a lifecylce if at least one of the three methods is present.
+     * {@inheritDoc} The component has a lifecylce if at least one of the three methods is present.
      */
     public boolean hasLifecycle(Class type) {
         Method[] methods = init(type);

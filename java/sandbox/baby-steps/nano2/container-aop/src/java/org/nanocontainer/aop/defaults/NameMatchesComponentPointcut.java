@@ -17,7 +17,7 @@ import org.nanocontainer.aop.ComponentPointcut;
 import org.nanocontainer.aop.MalformedRegularExpressionException;
 
 /**
- * Component pointcut that matches the addComponent name against a regular
+ * Component pointcut that matches the component name against a regular
  * expression.
  *
  * @author Stephen Molitor
@@ -30,12 +30,12 @@ public class NameMatchesComponentPointcut implements ComponentPointcut {
 
     /**
      * Creates a new <code>NameMatchesComponentPointcut</code> that will match
-     * the addComponent key against the given regular expression. The regular
+     * the component key against the given regular expression. The regular
      * expression must be an <a
      * href="http://jakarta.apache.org/oro/index.html">ORO </a> Perl5 regular
      * expression.
      *
-     * @param regex the regular expression to match against the addComponent name.
+     * @param regex the regular expression to match against the component name.
      * @throws org.nanocontainer.aop.MalformedRegularExpressionException
      *          if the regular expression is
      *          invalid.
@@ -45,15 +45,15 @@ public class NameMatchesComponentPointcut implements ComponentPointcut {
         try {
             pattern = compiler.compile(regex);
         } catch (MalformedPatternException e) {
-            throw new MalformedRegularExpressionException("malformed addComponent name regular expression", e);
+            throw new MalformedRegularExpressionException("malformed component name regular expression", e);
         }
     }
 
     /**
-     * Tests to see if the addComponent key's toString() value matches the regular expression passed
+     * Tests to see if the component key's toString() value matches the regular expression passed
      * to the constructor.
      *
-     * @param componentKey the addComponent key to match against.
+     * @param componentKey the component key to match against.
      * @return true if the regular expression passed to the constructor matches
      *         against <code>componentKey</code>, else false.
      */

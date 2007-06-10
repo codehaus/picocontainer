@@ -26,7 +26,7 @@ public abstract class AbstractComponentMonitor implements ComponentMonitor {
 
     public final static String INSTANTIATING = "PicoContainer: instantiating {0}";
     public final static String INSTANTIATED = "PicoContainer: instantiated {0} [{1} ms]";
-    public final static String INSTANTIATED2 = "PicoContainer: instantiated {0} [{1} ms], addComponent {2}, injected [{3}]";
+    public final static String INSTANTIATED2 = "PicoContainer: instantiated {0} [{1} ms], component {2}, injected [{3}]";
     public final static String INSTANTIATION_FAILED = "PicoContainer: instantiation failed: {0}, reason: {1}";
     public final static String INVOKING = "PicoContainer: invoking {0} on {1}";
     public final static String INVOKED = "PicoContainer: invoked {0} on {1} [{2} ms]";

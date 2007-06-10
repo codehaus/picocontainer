@@ -12,8 +12,8 @@ package org.picocontainer;
 
 /**
  * A manager for the lifecycle of a container's components.  
- * The lifecycle manager is implemented by the addComponent adapters
- * which will resolve the dependencies of the addComponent instance and
+ * The lifecycle manager is implemented by the component adapters
+ * which will resolve the dependencies of the component instance and
  * delegate the implementation of the lifecycle control to the 
  * {@link LifecycleStrategy lifecycle strategy}.
  * 
@@ -45,8 +45,8 @@ public interface LifecycleManager {
     void dispose(PicoContainer container);
 
     /**
-     * Test if a container's addComponent has a lifecycle.
-     * @return <code>true</code> if the addComponent has a lifecycle
+     * Test if a container's component has a lifecycle.
+     * @return <code>true</code> if the component has a lifecycle
      */
     boolean hasLifecycle();
 }

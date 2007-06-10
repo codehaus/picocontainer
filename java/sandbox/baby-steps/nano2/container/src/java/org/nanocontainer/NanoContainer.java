@@ -21,7 +21,7 @@ import java.net.URL;
  * <p/>
  * A NanoContainer adapts a {@link MutablePicoContainer} through a similar API that
  * is based only on Strings. (It uses reflection to look up classes before registering them
- * with the adapted PicoContainer). This addAdapter API is used primarily by the various
+ * with the adapted PicoContainer). This adapter API is used primarily by the various
  * {@link org.nanocontainer.script.ScriptedContainerBuilder} implementations in the
  * org.nanocontainer.script.[scripting engine] packages.
  *

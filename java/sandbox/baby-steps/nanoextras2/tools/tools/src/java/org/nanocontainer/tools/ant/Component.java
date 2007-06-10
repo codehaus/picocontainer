@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * Instantiated by ant when the PicoContainer task element has a &lt;addComponent&gt;
- * element. Holds class name of the addComponent and additional properties.
+ * element. Holds class name of the component and additional properties.
  *
  * @author Aslak Helles&oslash;y
  * @version $Revision$

@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Base class for a ComponentAdapter with general functionality.
  * This implementation provides basic checks for a healthy implementation of a ComponentAdapter.
- * It does not allow to use <code>null</code> for the addComponent key or the implementation,
+ * It does not allow to use <code>null</code> for the component key or the implementation,
  * ensures that the implementation is a concrete class and that the key is assignable from the
  * implementation if the key represents a type.
  *

@@ -39,7 +39,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
 
 	/**
 	 * @param sessionFactory session factory to obtain session from 
-	 * @param exceptionHandler Exception handler addComponent to use with created session
+	 * @param exceptionHandler Exception handler component to use with created session
 	 */
 	public FailoverSessionDelegator(SessionFactory sessionFactory, HibernateExceptionHandler exceptionHandler) {
 		super(exceptionHandler);
@@ -58,7 +58,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
 	/**
 	 * @param sessionFactory sessionf actory to obtain session from
 	 * @param interceptor interceptor to use with created session
-	 * @param exceptionHandler Exception handler addComponent to use with created session
+	 * @param exceptionHandler Exception handler component to use with created session
 	 */
 	public FailoverSessionDelegator(SessionFactory sessionFactory, Interceptor interceptor, HibernateExceptionHandler exceptionHandler) {
 		this(sessionFactory, exceptionHandler);

@@ -8,9 +8,9 @@
 package org.picocontainer;
 
 /**
- * An interface which specifies the lifecyle strategy on the addComponent instance.
- * Lifecycle strategies are used by addComponent adapters to delegate the lifecyle
- * operations on the addComponent instances.
+ * An interface which specifies the lifecyle strategy on the component instance.
+ * Lifecycle strategies are used by component adapters to delegate the lifecyle
+ * operations on the component instances.
  *
  * @author Paul Hammant
  * @author Peter Royal
@@ -22,34 +22,34 @@ package org.picocontainer;
 public interface LifecycleStrategy {
     
     /**
-     * Invoke the "start" method on the addComponent instance if this is startable.
+     * Invoke the "start" method on the component instance if this is startable.
      * It is up to the implementation of the strategy what "start" and "startable" means.
      * 
-     * @param component the instance of the addComponent to start
+     * @param component the instance of the component to start
      */
     void start(Object component);
     
     /**
-     * Invoke the "stop" method on the addComponent instance if this is stoppable.
+     * Invoke the "stop" method on the component instance if this is stoppable.
      * It is up to the implementation of the strategy what "stop" and "stoppable" means.
      * 
-     * @param component the instance of the addComponent to stop
+     * @param component the instance of the component to stop
      */
     void stop(Object component);
 
     /**
-     * Invoke the "dispose" method on the addComponent instance if this is disposable.
+     * Invoke the "dispose" method on the component instance if this is disposable.
      * It is up to the implementation of the strategy what "dispose" and "disposable" means.
      * 
-     * @param component the instance of the addComponent to dispose
+     * @param component the instance of the component to dispose
      */
     void dispose(Object component);
 
     /**
-     * Test if a addComponent instance has a lifecycle.
+     * Test if a component instance has a lifecycle.
      * @param type the addComponent's type
      * 
-     * @return <code>true</code> if the addComponent has a lifecycle
+     * @return <code>true</code> if the component has a lifecycle
      */
     boolean hasLifecycle(Class type);
 

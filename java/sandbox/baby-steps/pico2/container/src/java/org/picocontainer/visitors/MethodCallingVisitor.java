@@ -56,7 +56,7 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
     }
 
     /**
-     * Construct a MethodCallingVisitor for standard methods visiting the addComponent in instantiation order.
+     * Construct a MethodCallingVisitor for standard methods visiting the component in instantiation order.
      * 
      * @param method the method to invoke
      * @param ofType the type of the components, that will be invoked

@@ -15,7 +15,7 @@ import net.sf.hibernate.HibernateException;
 import org.picocontainer.Startable;
 
 /**
- * addComponent organising lifecycle for session factory
+ * component organising lifecycle for session factory
  * @author Konstanti Pribluda
  * @version $Revision: 2043 $ 
  */

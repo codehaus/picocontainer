@@ -37,7 +37,7 @@ import java.util.TreeSet;
  * A CollectionComponentParameter should be used to support inject an {@link Array}, a
  * {@link Collection}or {@link Map}of components automatically. The collection will contain
  * all components of a special type and additionally the type of the key may be specified. In
- * case of a map, the map's keys are the one of the addComponent addAdapter.
+ * case of a map, the map's keys are the one of the component addAdapter.
  *
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
@@ -60,8 +60,8 @@ public class CollectionComponentParameter
     private final Class componentValueType;
 
     /**
-     * Expect an {@link Array}of an appropriate type as parameter. At least one addComponent of
-     * the array's addComponent type must exist.
+     * Expect an {@link Array}of an appropriate type as parameter. At least one component of
+     * the array's component type must exist.
      */
     public CollectionComponentParameter() {
         this(false);
@@ -222,11 +222,11 @@ public class CollectionComponentParameter
     }
 
     /**
-     * Evaluate whether the given addComponent addAdapter will be part of the collective type.
+     * Evaluate whether the given component adapter will be part of the collective type.
      *
      * @param adapter a <code>ComponentAdapter</code> value
      *
-     * @return <code>true</code> if the addAdapter takes part
+     * @return <code>true</code> if the adapter takes part
      */
     protected boolean evaluate(final ComponentAdapter adapter) {
         return adapter != null; // use parameter, prevent compiler warning
@@ -240,7 +240,7 @@ public class CollectionComponentParameter
      * @param keyType   the compatible type of the key
      * @param valueType the compatible type of the addComponent
      *
-     * @return a {@link Map} with the ComponentAdapter instances and their addComponent keys as map key.
+     * @return a {@link Map} with the ComponentAdapter instances and their component keys as map key.
      */
     @SuppressWarnings({ "unchecked" })
     protected Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(PicoContainer container,

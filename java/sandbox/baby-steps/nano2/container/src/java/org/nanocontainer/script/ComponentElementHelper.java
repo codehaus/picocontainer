@@ -32,7 +32,7 @@ public class ComponentElementHelper {
             key = key == null ? instance.getClass() : key;
             return current.addComponent(key, instance);
         } else {
-            throw new NanoContainerMarkupException("Must specify a 'class' attribute for a addComponent as a class name (string) or Class.");
+            throw new NanoContainerMarkupException("Must specify a 'class' attribute for a component as a class name (string) or Class.");
         }
     }
 

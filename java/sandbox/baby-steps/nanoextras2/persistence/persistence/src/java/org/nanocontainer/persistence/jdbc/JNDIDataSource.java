@@ -37,7 +37,7 @@ public class JNDIDataSource extends AbstractDataSource implements Startable {
 
 	/**
 	 * @param name JNDI name where the original DataSource is.
-	 * @param jdbcExceptionHandler The ExceptionHandler addComponent instance.
+	 * @param jdbcExceptionHandler The ExceptionHandler component instance.
 	 */
 	public JNDIDataSource(final String name, final ExceptionHandler jdbcExceptionHandler) {
 		super(jdbcExceptionHandler);
@@ -57,7 +57,7 @@ public class JNDIDataSource extends AbstractDataSource implements Startable {
 	/**
 	 * @param name JNDI name where the original DataSource is.
 	 * @param context JNDI context.
-	 * @param jdbcExceptionHandler The ExceptionHandler addComponent instance.
+	 * @param jdbcExceptionHandler The ExceptionHandler component instance.
 	 */
 	public JNDIDataSource(final String name, final Context context, final ExceptionHandler jdbcExceptionHandler) {
 		super(jdbcExceptionHandler);

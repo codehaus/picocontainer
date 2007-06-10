@@ -330,7 +330,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         try {
             buildContainer(script, null, ASSEMBLY_SCOPE);
-            fail("Should not have been able to instansiate addComponent tree due to visibility/parent reasons.");
+            fail("Should not have been able to instansiate component tree due to visibility/parent reasons.");
         } catch(AbstractInjector.UnsatisfiableDependenciesException expected) {
         }
     }
@@ -556,7 +556,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         try {
             testComp = classLoader.loadClass("TestComp");
         } catch(ClassNotFoundException ex) {
-            fail("Unable to load test addComponent from the jar using a url classloader");
+            fail("Unable to load test component from the jar using a url classloader");
         }
         Reader script = new StringReader(
             "container(:parent => $parent) {\n"

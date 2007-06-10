@@ -11,7 +11,7 @@ package org.picocontainer.gems.constraints;
 import org.picocontainer.ComponentAdapter;
 
 /**
- * Constraint that only accepts an addAdapter whose implementation is the same
+ * Constraint that only accepts an adapter whose implementation is the same
  * class instance as the type represented by this object.
  *
  * @author Nick Sieger

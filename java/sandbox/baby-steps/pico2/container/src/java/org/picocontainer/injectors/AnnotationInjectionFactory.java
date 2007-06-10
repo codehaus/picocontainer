@@ -39,7 +39,7 @@ public class AnnotationInjectionFactory implements InjectionFactory, Serializabl
      * @param componentCharacteristic
      * @param componentKey            The addComponent's key
      * @param componentImplementation The class of the bean.
-     * @param parameters              Any parameters for the setters. If null the addAdapter solves the
+     * @param parameters              Any parameters for the setters. If null the adapter solves the
 *                                dependencies for all setters internally. Otherwise the number parameters must match
 *                                the number of the setter. @return Returns a new {@link SetterInjector}. @throws org.picocontainer.PicoIntrospectionException if dependencies cannot be solved
      * @throws org.picocontainer.PicoRegistrationException

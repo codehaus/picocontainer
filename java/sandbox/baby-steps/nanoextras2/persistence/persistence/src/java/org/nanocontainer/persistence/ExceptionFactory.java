@@ -1,7 +1,7 @@
 package org.nanocontainer.persistence;
 
 /**
- * Factory addComponent used by ExceptionHandler in order to create exceptions.
+ * Factory component used by ExceptionHandler in order to create exceptions.
  * 
  * @version $Revision: $
  */

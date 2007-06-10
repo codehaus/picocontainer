@@ -60,8 +60,8 @@ public class SetterInjector extends AbstractInjector {
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
-     * @param monitor                 the addComponent monitor used by this addAdapter
-     * @param lifecycleStrategy       the addComponent lifecycle strategy used by this addAdapter
+     * @param monitor                 the component monitor used by this addAdapter
+     * @param lifecycleStrategy       the component lifecycle strategy used by this addAdapter
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
@@ -77,7 +77,7 @@ public class SetterInjector extends AbstractInjector {
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
-     * @param monitor                 the addComponent monitor used by this addAdapter
+     * @param monitor                 the component monitor used by this addAdapter
      * @throws NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>

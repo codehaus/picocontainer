@@ -19,7 +19,7 @@ import org.nanocontainer.remoting.jmx.StandardMBeanFactory;
 /**
  * This is the a factory for creating DynamicMBean instances. However it is tied specifically to MX4J. Those not
  * interested in being dependent on MX4J should implement another Factory and register it to the container. The single
- * difference to the StandardMBeanFactory is, that it does not need a special management interface for a addComponent to
+ * difference to the StandardMBeanFactory is, that it does not need a special management interface for a component to
  * expose.
  * @author Michael Ward
  * @version $Revision$

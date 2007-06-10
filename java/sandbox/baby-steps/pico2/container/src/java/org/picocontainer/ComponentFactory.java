@@ -18,7 +18,7 @@ import org.picocontainer.LifecycleStrategy;
 
 /**
  * <p/>
- * A addComponent addAdapter factory is responsible for creating
+ * A component adapter factory is responsible for creating
  * {@link ComponentAdapter} component adapters. The main use of the component adapter factory is
  * inside {@link DefaultPicoContainer#DefaultPicoContainer(ComponentFactory)}, where it can
  * be used to customize the default component adapter that is used when none is specified
@@ -32,7 +32,7 @@ import org.picocontainer.LifecycleStrategy;
 public interface ComponentFactory {
 
     /**
-     * Create a new addComponent addAdapter based on the specified arguments.
+     * Create a new component adapter based on the specified arguments.
      *
      * @param componentMonitor
      * @param lifecycleStrategy
@@ -43,10 +43,10 @@ public interface ComponentFactory {
      *                                    This value should be returned from a call to
      *                                    {@link org.picocontainer.ComponentAdapter#getComponentImplementation()} on the created addAdapter. Should not
      *                                    be null.
-     * @param parameters                  additional parameters to use by the addComponent addAdapter in constructing
-     *                                    addComponent instances. These may be used, for example, to make decisions about the
-     *                                    arguments passed into the addComponent constructor. These should be considered hints; they
-     *                                    may be ignored by some implementations. May be null, and may be of zero length. @return a new addComponent addAdapter based on the specified arguments. Should not return null. @throws PicoIntrospectionException if the creation of the addComponent addAdapter results in a
+     * @param parameters                  additional parameters to use by the component adapter in constructing
+     *                                    component instances. These may be used, for example, to make decisions about the
+     *                                    arguments passed into the component constructor. These should be considered hints; they
+     *                                    may be ignored by some implementations. May be null, and may be of zero length. @return a new component adapter based on the specified arguments. Should not return null. @throws PicoIntrospectionException if the creation of the component adapter results in a
      *                                    {@link PicoIntrospectionException}.
      * @return The component adapter
      * @throws org.picocontainer.PicoRegistrationException

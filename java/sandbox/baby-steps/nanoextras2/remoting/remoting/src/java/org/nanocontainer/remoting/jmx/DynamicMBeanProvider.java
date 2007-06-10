@@ -24,7 +24,7 @@ import org.picocontainer.PicoContainer;
 public interface DynamicMBeanProvider {
 
     /**
-     * Provide a {@link DynamicMBean} from the addComponent delivered by the ComponentAdapter.
+     * Provide a {@link DynamicMBean} from the component delivered by the ComponentAdapter.
      * @param picoContainer The {@link PicoContainer} to resolve dependencies.
      * @param componentAdapter The {@link ComponentAdapter} referring the addComponent.
      * @return Returns the registration information.

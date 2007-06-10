@@ -23,11 +23,11 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * A BasicComponentParameter should be used to pass in a particular addComponent as argument to a
+ * A BasicComponentParameter should be used to pass in a particular component as argument to a
  * different addComponent's constructor. This is particularly useful in cases where several
  * components of the same type have been registered, but with a different key. Passing a
- * ComponentParameter as a parameter when registering a addComponent will give PicoContainer a hint
- * about what other addComponent to use in the constructor. This Parameter will never resolve
+ * ComponentParameter as a parameter when registering a component will give PicoContainer a hint
+ * about what other component to use in the constructor. This Parameter will never resolve
  * against a collecting type, that is not directly registered in the PicoContainer itself.
  *
  * @author Jon Tirs&eacute;n
@@ -46,7 +46,7 @@ public class BasicComponentParameter
     private Object componentKey;
 
     /**
-     * Expect a parameter matching a addComponent of a specific key.
+     * Expect a parameter matching a component of a specific key.
      *
      * @param componentKey the key of the desired addComponent
      */

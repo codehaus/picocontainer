@@ -27,7 +27,7 @@ abstract class ComponentAspect {
      * Creates a new <code>ComponentAspect</code> with the given addComponent
      * pointcut.
      *
-     * @param componentPointcut the addComponent pointcut.
+     * @param componentPointcut the component pointcut.
      */
     ComponentAspect(ComponentPointcut componentPointcut) {
         this.componentPointcut = componentPointcut;
@@ -37,9 +37,9 @@ abstract class ComponentAspect {
      * Registers this aspect with <code>aspects</code> if the addComponent
      * pointcut passed to the constructor picks the <code>componentKey</code>.
      * Template method that calls <code>doRegisterAspect</code> if the
-     * addComponent key matches.
+     * component key matches.
      *
-     * @param componentKey the addComponent key to match against.
+     * @param componentKey the component key to match against.
      * @param aspects      the <code>dynaop.Aspects</code> collection.
      */
     final void registerAspect(Object componentKey, Aspects aspects) {

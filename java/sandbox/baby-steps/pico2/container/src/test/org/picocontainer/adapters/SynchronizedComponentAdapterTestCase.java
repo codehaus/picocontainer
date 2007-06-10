@@ -135,7 +135,7 @@ public final class SynchronizedComponentAdapterTestCase extends TestCase {
         runConcurrencyTest(pico);
     }
 
-    // This is overkill - an outer sync addAdapter is enough
+    // This is overkill - an outer sync adapter is enough
     public void testSingletonCreationWithSynchronizedAdapterAndDoubleLocking() throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new SynchronizedBehavior(new CachingBehavior(new SynchronizedBehavior(new ConstructorInjector("slow", SlowCtor.class)))));

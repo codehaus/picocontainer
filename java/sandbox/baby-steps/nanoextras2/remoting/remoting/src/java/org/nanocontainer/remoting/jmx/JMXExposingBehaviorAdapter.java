@@ -28,7 +28,7 @@ import javax.management.InstanceNotFoundException;
 
 
 /**
- * {@link ComponentAdapter} that is exposing a addComponent as MBean in a MBeanServer.
+ * {@link ComponentAdapter} that is exposing a component as MBean in a MBeanServer.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
@@ -42,7 +42,7 @@ public class JMXExposingBehaviorAdapter extends AbstractBehavior {
      * Construct a JMXExposingComponentAdapter.
      * @param delegate The delegated {@link ComponentAdapter}.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
-     * @param providers An array with providers for converting the addComponent instance into a
+     * @param providers An array with providers for converting the component instance into a
      *            {@link javax.management.DynamicMBean}.
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
      *             instances is null.
@@ -61,7 +61,7 @@ public class JMXExposingBehaviorAdapter extends AbstractBehavior {
 
     /**
      * Construct a JMXExposingComponentAdapter. This instance uses a {@link DynamicMBeanComponentProvider} as default to
-     * register any addComponent instance in the {@link MBeanServer}, that is already a
+     * register any component instance in the {@link MBeanServer}, that is already a
      * {@link javax.management.DynamicMBean}.
      * @param delegate The delegated {@link ComponentAdapter}.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
@@ -75,11 +75,11 @@ public class JMXExposingBehaviorAdapter extends AbstractBehavior {
     }
 
     /**
-     * Retrieve the addComponent instance. The implementation will automatically register it in the {@link MBeanServer},
+     * Retrieve the component instance. The implementation will automatically register it in the {@link MBeanServer},
      * if a provider can return a {@link javax.management.DynamicMBean} for it.
      * <p>
      * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link CachingBehavior} to avoid
-     * the registration of the same addComponent again.
+     * the registration of the same component again.
      * </p>
      * @throws PicoInitializationException Thrown by the delegate or if the registering of the
      *             {@link javax.management.DynamicMBean} in the {@link MBeanServer } fails.

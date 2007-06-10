@@ -12,9 +12,9 @@ package org.picocontainer;
 
 /**
  * <p>An interface which is implemented by components that can be started and stopped. The {@link Startable#start()}
- * must be called at the begin of the addComponent lifecycle. It can be called again only after a call to
- * {@link Startable#stop()}. The {@link Startable#stop()} method must be called at the end of the addComponent lifecycle,
- * and can further be called after every {@link Startable#start()}. If a addComponent implements the {@link Disposable}
+ * must be called at the begin of the component lifecycle. It can be called again only after a call to
+ * {@link Startable#stop()}. The {@link Startable#stop()} method must be called at the end of the component lifecycle,
+ * and can further be called after every {@link Startable#start()}. If a component implements the {@link Disposable}
  * interface as well, {@link Startable#stop()} should be called before {@link Disposable#dispose()}.</p>
  * <p/>
  * <p>For more advanced and pluggable lifecycle support, see the functionality offered by picocontainer-gems

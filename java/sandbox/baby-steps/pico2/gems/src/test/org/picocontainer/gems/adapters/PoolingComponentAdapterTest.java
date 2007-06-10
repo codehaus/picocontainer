@@ -262,7 +262,7 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
      * The recorded String in the buffer must result in <strong>&qout;&lt;OneOne&gt;!One&qout;</strong>. The addAdapter
      * top test should be registered in the container and delivered as return value.
      * @param picoContainer the container
-     * @return the addAdapter to test
+     * @return the adapter to test
      */
     private ComponentAdapter prepDEF_lifecycleManagerSupport(MutablePicoContainer picoContainer) {
         picoContainer.addComponent(RecordingLifecycle.One.class);
@@ -295,10 +295,10 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
      * Prepare the test <em>lifecycleManagerHonorsInstantiationSequence</em>. Prepare the delivered PicoContainer
      * with addAdapter(s), that have dependend components, have a lifecycle and use a StringBuffer registered in the
      * container to record the lifecycle method invocations. The recorded String in the buffer must result in
-     * <strong>&qout;&lt;One&lt;TwoTwo&gt;One&gt;!Two!One&qout;</strong>. The addAdapter top test should be registered in
+     * <strong>&qout;&lt;One&lt;TwoTwo&gt;One&gt;!Two!One&qout;</strong>. The adapter top test should be registered in
      * the container and delivered as return value.
      * @param picoContainer the container
-     * @return the addAdapter to test
+     * @return the adapter to test
      */
     private ComponentAdapter prepRES_lifecycleManagerHonorsInstantiationSequence(MutablePicoContainer picoContainer) {
         picoContainer.addComponent(RecordingLifecycle.One.class);

@@ -29,9 +29,9 @@ import java.util.Set;
 
 
 /**
- * A {@link ComponentAdapter} that realizes a {@link ThreadLocal} addComponent instance.
+ * A {@link ComponentAdapter} that realizes a {@link ThreadLocal} component instance.
  * <p>
- * The addAdapter creates proxy instances, that will create the necessary instances on-the-fly invoking the methods of the
+ * The adapter creates proxy instances, that will create the necessary instances on-the-fly invoking the methods of the
  * instance. Use this addAdapter, if you are instantiating your components in a single thread, but should be different when
  * accessed from different threads. See {@link ThreadLocalComponentAdapterFactory} for details.
  * </p>
@@ -52,7 +52,7 @@ public final class ThreadLocalComponentAdapter extends AbstractBehavior {
      * 
      * @param delegate The {@link ComponentAdapter} to delegate.
      * @param proxyFactory The {@link ProxyFactory} to use.
-     * @throws PicoIntrospectionException Thrown if the addComponent does not implement any interface.
+     * @throws PicoIntrospectionException Thrown if the component does not implement any interface.
      */
     public ThreadLocalComponentAdapter(final ComponentAdapter delegate, final ProxyFactory proxyFactory)
             throws PicoIntrospectionException {
@@ -65,7 +65,7 @@ public final class ThreadLocalComponentAdapter extends AbstractBehavior {
      * Construct a ThreadLocalComponentAdapter using {@link Proxy} instances.
      * 
      * @param delegate The {@link ComponentAdapter} to delegate.
-     * @throws PicoIntrospectionException Thrown if the addComponent does not implement any interface.
+     * @throws PicoIntrospectionException Thrown if the component does not implement any interface.
      */
     public ThreadLocalComponentAdapter(final ComponentAdapter delegate) throws PicoIntrospectionException {
         this(new CachingBehavior(delegate, new ThreadLocalReference()), new StandardProxyFactory());

@@ -23,7 +23,7 @@ package org.picocontainer;
 public interface MutablePicoContainer extends PicoContainer, Startable, Disposable {
 
     /**
-     * Register a addComponent and creates specific instructions on which constructor to use, along with
+     * Register a component and creates specific instructions on which constructor to use, along with
      * which components and/or constants to provide as constructor arguments.  These &quot;directives&quot; are
      * provided through an array of <tt>Parameter</tt> objects.  Parameter[0] correspondes to the first constructor
      * argument, Parameter[N] corresponds to the  N+1th constructor argument.
@@ -32,10 +32,10 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * <li><strong>Partial Autowiring: </strong>If you have two constructor args to match and you only wish to specify one of the constructors and
      * let PicoContainer wire the other one, you can use as parameters:
      * <code><strong>new ComponentParameter()</strong>, new ComponentParameter("someService")</code>
-     * The default constructor for the addComponent parameter indicates auto-wiring should take place for
+     * The default constructor for the component parameter indicates auto-wiring should take place for
      * that parameter.
      * </li>
-     * <li><strong>Force No-Arg constructor usage:</strong> If you wish to force a addComponent to be constructed with
+     * <li><strong>Force No-Arg constructor usage:</strong> If you wish to force a component to be constructed with
      * the no-arg constructor, use a zero length Parameter array.  Ex:  <code>new Parameter[0]</code>
      * <ul>
      *
@@ -51,9 +51,9 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @return the ComponentAdapter that has been associated with this addComponent. In the majority of cases, this return
      *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
-     *         {@link PicoContainer} interface can be used to retrieve a reference to the addComponent later on.
+     *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
      *
-     * @throws PicoRegistrationException if registration of the addComponent fails.
+     * @throws PicoRegistrationException if registration of the component fails.
      * @see org.picocontainer.Parameter
      * @see org.picocontainer.parameters.ConstantParameter
      * @see org.picocontainer.parameters.ComponentParameter
@@ -70,37 +70,37 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @return the ComponentAdapter that has been associated with this addComponent. In the majority of cases, this return
      *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
-     *         {@link PicoContainer} interface can be used to retrieve a reference to the addComponent later on.
+     *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
      *
      * @throws PicoRegistrationException if registration fails.
      */
     MutablePicoContainer addComponent(Object implOrInstance);
 
     /**
-     * Register a addComponent via a ComponentAdapter. Use this if you need fine grained control over what
+     * Register a component via a ComponentAdapter. Use this if you need fine grained control over what
      * ComponentAdapter to use for a specific addComponent.
      *
      * @param componentAdapter the addAdapter
      *
-     * @return the same addAdapter that was passed as an argument.
+     * @return the same adapter that was passed as an argument.
      *
      * @throws PicoRegistrationException if registration fails.
      */
     MutablePicoContainer addAdapter(ComponentAdapter componentAdapter);
 
     /**
-     * Unregister a addComponent by key.
+     * Unregister a component by key.
      *
-     * @param componentKey key of the addComponent to unregister.
+     * @param componentKey key of the component to unregister.
      *
      * @return the ComponentAdapter that was associated with this addComponent.
      */
     ComponentAdapter removeComponent(Object componentKey);
 
     /**
-     * Unregister a addComponent by instance.
+     * Unregister a component by instance.
      *
-     * @param componentInstance the addComponent instance to unregister.
+     * @param componentInstance the component instance to unregister.
      *
      * @return the ComponentAdapter that was associated with this addComponent.
      */
@@ -145,7 +145,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
     boolean removeChildContainer(PicoContainer child);
 
     /**
-     * Following an addAdapter or addComponent, pico holds onto the last ComponentAdapter and return it if this
+     * Following an adapter or addComponent, pico holds onto the last ComponentAdapter and return it if this
      * method is immediately after the add operation. It will be null at all other times.
      *
      * @return the last ComponentAdapter to be made

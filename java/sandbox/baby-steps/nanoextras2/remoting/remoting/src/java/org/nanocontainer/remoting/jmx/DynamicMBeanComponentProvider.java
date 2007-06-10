@@ -19,7 +19,7 @@ import org.picocontainer.PicoContainer;
 
 
 /**
- * DynamicMBeanProvider, that will provide a addComponent directly if it is already a {@link DynamicMBean}.
+ * DynamicMBeanProvider, that will provide a component directly if it is already a {@link DynamicMBean}.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
@@ -47,7 +47,7 @@ public class DynamicMBeanComponentProvider implements DynamicMBeanProvider {
     }
 
     /**
-     * Provide the addComponent itself as {@link DynamicMBean} if it is one and if an {@link ObjectName} can be created.
+     * Provide the component itself as {@link DynamicMBean} if it is one and if an {@link ObjectName} can be created.
      * @see org.nanocontainer.remoting.jmx.DynamicMBeanProvider#provide(org.picocontainer.PicoContainer,
      *      org.picocontainer.ComponentAdapter)
      */
@@ -60,7 +60,7 @@ public class DynamicMBeanComponentProvider implements DynamicMBeanProvider {
                     return new JMXRegistrationInfo(objectName, mBean);
                 }
             } catch (final MalformedObjectNameException e) {
-                throw new JMXRegistrationException("Cannot create ObjectName for addComponent '"
+                throw new JMXRegistrationException("Cannot create ObjectName for component '"
                         + componentAdapter.getComponentKey()
                         + "'", e);
             }

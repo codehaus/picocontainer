@@ -32,7 +32,7 @@ import org.picocontainer.PicoInitializationException;
 
 /**
  * Delegates everything to session factory obtained from confiuration. this class is necessary
- * because addComponent adapters are really ugly when it comes to scripting.
+ * because component adapters are really ugly when it comes to scripting.
  * 
  * @version $Id: SessionFactoryDelegator.java 2158 2005-07-08 02:13:36Z juze $
  */

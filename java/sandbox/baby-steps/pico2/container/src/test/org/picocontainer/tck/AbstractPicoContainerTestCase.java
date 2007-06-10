@@ -445,7 +445,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         }
     }
 
-    // An addAdapter has no longer a hosting container.
+    // An adapter has no longer a hosting container.
 
 //    public void testRegistrationOfAdapterSetsHostingContainerAsSelf() {
 //        final InstanceAdapter componentAdapter = new InstanceAdapter("", new Object());

@@ -18,13 +18,13 @@ import org.picocontainer.adapters.AbstractAdapter;
 
 /**
  * <p>
- * Component addAdapter which wraps a addComponent instance.
+ * Component adapter which wraps a component instance.
  * </p>
  * <p>
- * This addComponent addAdapter supports both a {@link LifecycleManager LifecycleManager} and a
+ * This component adapter supports both a {@link LifecycleManager LifecycleManager} and a
  * {@link org.picocontainer.LifecycleStrategy LifecycleStrategy} to control the lifecycle of the addComponent.
  * The lifecycle manager methods simply delegate to the lifecycle strategy methods 
- * on the addComponent instance.
+ * on the component instance.
  * </p>
  * 
  * @author Aslak Helles&oslash;y

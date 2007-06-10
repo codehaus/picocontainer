@@ -24,15 +24,15 @@ import org.picocontainer.LifecycleStrategy;
 
 /**
  * <p>
- * Component addAdapter which decorates another addAdapter.
+ * Component adapter which decorates another addAdapter.
  * </p>
  * <p>
- * This addAdapter supports a {@link org.picocontainer.ComponentMonitorStrategy addComponent monitor strategy}
+ * This adapter supports a {@link org.picocontainer.ComponentMonitorStrategy component monitor strategy}
  * and will propagate change of monitor to the delegate if the delegate itself
  * support the monitor strategy.
  * </p>
  * <p>
- * This addAdapter also supports a {@link LifecycleManager lifecycle manager} and a
+ * This adapter also supports a {@link LifecycleManager lifecycle manager} and a
  * {@link org.picocontainer.LifecycleStrategy lifecycle strategy} if the delegate does.
  * </p>
  * 
@@ -77,7 +77,7 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
 
     /**
      * Delegates change of monitor if the delegate supports 
-     * a addComponent monitor strategy.
+     * a component monitor strategy.
      * {@inheritDoc}
      */
     public void changeMonitor(ComponentMonitor monitor) {
@@ -88,15 +88,15 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
 
     /**
      * Returns delegate's current monitor if the delegate supports 
-     * a addComponent monitor strategy.
+     * a component monitor strategy.
      * {@inheritDoc}
-     * @throws PicoIntrospectionException if no addComponent monitor is found in delegate
+     * @throws PicoIntrospectionException if no component monitor is found in delegate
      */
     public ComponentMonitor currentMonitor() {
         if ( delegate instanceof ComponentMonitorStrategy ){
             return ((ComponentMonitorStrategy)delegate).currentMonitor();
         }
-        throw new PicoIntrospectionException("No addComponent monitor found in delegate");
+        throw new PicoIntrospectionException("No component monitor found in delegate");
     }
 
     // ~~~~~~~~ LifecylceManager ~~~~~~~~

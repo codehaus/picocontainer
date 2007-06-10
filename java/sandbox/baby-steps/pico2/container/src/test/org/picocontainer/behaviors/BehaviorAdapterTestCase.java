@@ -33,7 +33,7 @@ public class BehaviorAdapterTestCase extends MockObjectTestCase {
             adapter.currentMonitor();
             fail("PicoIntrospectionException expected");
         } catch (PicoIntrospectionException e) {
-            assertEquals("No addComponent monitor found in delegate", e.getMessage());
+            assertEquals("No component monitor found in delegate", e.getMessage());
         }
     }
     

@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * <p>
- * XWork ObjectFactory which uses a PicoContainer to create addComponent instances.
+ * XWork ObjectFactory which uses a PicoContainer to create component instances.
  * </p>
  * 
  * @author Cyrille Le Clerc

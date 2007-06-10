@@ -28,11 +28,11 @@ final class MixinComponentAspect extends ComponentAspect {
 
     /**
      * Creates a new <code>MixinComponentAspect</code> from the given
-     * addComponent pointcut and mixin class. The aspected addComponent will implement
+     * component pointcut and mixin class. The aspected component will implement
      * the provided set of mixin interfaces.
      *
      * @param componentPointcut the components to introduce the mixin to.
-     * @param mixinInterfaces   the mixin interfaces the aspected addComponent will
+     * @param mixinInterfaces   the mixin interfaces the aspected component will
      *                          implement.
      * @param mixinFactory      the mixin factory.
      */

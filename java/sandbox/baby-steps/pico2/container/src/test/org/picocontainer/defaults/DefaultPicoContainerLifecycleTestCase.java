@@ -222,7 +222,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
             parent.start();
             fail("Thrown " + AbstractInjector.UnsatisfiableDependenciesException.class.getName() + " expected");
         } catch ( AbstractInjector.UnsatisfiableDependenciesException e) {
-            // FiveTriesToBeMalicious can't get instantiated as there is no PicoContainer in any addComponent set
+            // FiveTriesToBeMalicious can't get instantiated as there is no PicoContainer in any component set
         }
         String recording = parent.getComponent("recording").toString();
         assertEquals("<One<Two<Three", recording);
@@ -230,7 +230,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
             child.getComponent(FiveTriesToBeMalicious.class);
             fail("Thrown " + AbstractInjector.UnsatisfiableDependenciesException.class.getName() + " expected");
         } catch (final AbstractInjector.UnsatisfiableDependenciesException e) {
-            // can't get instantiated as there is no PicoContainer in any addComponent set
+            // can't get instantiated as there is no PicoContainer in any component set
         }
         recording = parent.getComponent("recording").toString();
         assertEquals("<One<Two<Three", recording); // still the same

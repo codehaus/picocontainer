@@ -15,7 +15,7 @@ import org.picocontainer.lifecycle.AbstractMonitoringLifecycleStrategy;
 import java.lang.reflect.Method;
 
 /**
- * Startable lifecycle strategy.  Starts and stops addComponent if Startable,
+ * Startable lifecycle strategy.  Starts and stops component if Startable,
  * and disposes it if Disposable.
  *
  * @author Mauro Talevi

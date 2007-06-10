@@ -222,7 +222,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         });
         dpc.addComponent(DefaultPicoContainer.class);
         dpc.start();
-        assertEquals("ComponentMonitor should have been notified that the addComponent had been started",
+        assertEquals("ComponentMonitor should have been notified that the component had been started",
                 "public abstract void org.picocontainer.Startable.start()", sb.toString());
     }
 

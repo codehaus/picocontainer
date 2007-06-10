@@ -91,7 +91,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
             testComp = classLoader.loadClass("TestComp");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            fail("Unable to load test addComponent from the jar using a url classloader");
+            fail("Unable to load test component from the jar using a url classloader");
         }
 
         PicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, classLoader), parent, "SOME_SCOPE");

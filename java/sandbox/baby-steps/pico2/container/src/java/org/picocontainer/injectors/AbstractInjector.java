@@ -59,7 +59,7 @@ public abstract class AbstractInjector extends AbstractAdapter
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
-     * @param monitor the addComponent monitor used by this ComponentAdapter
+     * @param monitor the component monitor used by this ComponentAdapter
      * @param lifecycleStrategy the lifecycle strategy used by this ComponentAdapter
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
@@ -84,7 +84,7 @@ public abstract class AbstractInjector extends AbstractAdapter
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
-     * @param monitor the addComponent monitor used by this ComponentAdapter
+     * @param monitor the component monitor used by this ComponentAdapter
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
@@ -107,7 +107,7 @@ public abstract class AbstractInjector extends AbstractAdapter
     }
     
     private void checkConcrete() throws NotConcreteRegistrationException {
-        // Assert that the addComponent class is concrete.
+        // Assert that the component class is concrete.
         boolean isAbstract = (getComponentImplementation().getModifiers() & Modifier.ABSTRACT) == Modifier.ABSTRACT;
         if (getComponentImplementation().isInterface() || isAbstract) {
             throw new NotConcreteRegistrationException(getComponentImplementation());
@@ -286,7 +286,7 @@ public abstract class AbstractInjector extends AbstractAdapter
 
 
         /**
-         * Construct a new exception with the ambigous class type and the ambiguous addComponent keys.
+         * Construct a new exception with the ambigous class type and the ambiguous component keys.
          *
          * @param ambiguousDependency the unresolved dependency type
          * @param componentKeys the ambiguous keys.
@@ -313,7 +313,7 @@ public abstract class AbstractInjector extends AbstractAdapter
         }
 
         /**
-         * @return Returns the ambiguous addComponent keys as array.
+         * @return Returns the ambiguous component keys as array.
          */
         public Object[] getAmbiguousComponentKeys() {
             return ambiguousComponentKeys;

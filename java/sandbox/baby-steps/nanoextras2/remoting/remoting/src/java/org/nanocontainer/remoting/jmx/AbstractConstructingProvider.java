@@ -28,11 +28,11 @@ import javax.management.ObjectName;
 public abstract class AbstractConstructingProvider implements DynamicMBeanProvider {
 
     /**
-     * Create a StandardMBean from the addComponent provided by the ComponentAdapter. One of the registered
-     * {@link MBeanInfoProvider} instances must provide a {@link MBeanInfo} for the addComponent and the registered
+     * Create a StandardMBean from the component provided by the ComponentAdapter. One of the registered
+     * {@link MBeanInfoProvider} instances must provide a {@link MBeanInfo} for the component and the registered
      * {@link ObjectNameFactory} has to provide a proper {@link ObjectName}.
      * <p>
-     * Note: An instance of the addComponent is only created, if a management interface is available.
+     * Note: An instance of the component is only created, if a management interface is available.
      * </p>
      * @see org.nanocontainer.remoting.jmx.DynamicMBeanProvider#provide(org.picocontainer.PicoContainer,
      *      org.picocontainer.ComponentAdapter)
@@ -64,7 +64,7 @@ public abstract class AbstractConstructingProvider implements DynamicMBeanProvid
 					return new JMXRegistrationInfo(objectName, mBean);
 				}
 			} catch (final MalformedObjectNameException e) {
-				throw new JMXRegistrationException("Cannot create ObjectName for addComponent '"
+				throw new JMXRegistrationException("Cannot create ObjectName for component '"
 						+ componentAdapter.getComponentKey()
 						+ "'", e);
 			}
@@ -91,7 +91,7 @@ public abstract class AbstractConstructingProvider implements DynamicMBeanProvid
     protected abstract MBeanInfoProvider[] getMBeanInfoProviders();
 
     /**
-     * Determin the management interface from the addComponent implementation type and an optional MBeanInfo instance.
+     * Determin the management interface from the component implementation type and an optional MBeanInfo instance.
      * @param implementation The type of the addComponent's implementation.
      * @param mBeanInfo The {@link MBeanInfo} to expose the addComponent. May be <code>null</code>.
      * @return Returns the management interface.

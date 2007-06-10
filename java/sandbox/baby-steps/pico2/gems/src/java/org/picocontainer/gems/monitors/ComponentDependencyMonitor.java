@@ -6,7 +6,7 @@ import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.gems.monitors.prefuse.ComponentDependencyListener;
 
 /**
- * Understands how to capture addComponent dependency information from
+ * Understands how to capture component dependency information from
  * picocontainer.
  * 
  * @author Peter Barry

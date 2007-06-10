@@ -20,7 +20,7 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 /**
- * Produces addComponent adapters that apply aspects to components.
+ * Produces component adapters that apply aspects to components.
  *
  * @author Stephen Molitor
  * @version $Revision$

@@ -248,7 +248,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                 }
             }
         }
-        // handle CAF now as standard addComponent in the metaContainer
+        // handle CAF now as standard component in the metaContainer
         registerComponent(metaContainer, node);
     }
 

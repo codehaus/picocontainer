@@ -54,7 +54,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
     }
 
     /**
-     * Test if the addComponent key is preserved if it is not a class type.
+     * Test if the component key is preserved if it is not a class type.
      */
     public void testComponentKeyIsPreserved() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
@@ -82,7 +82,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
     }
 
     /**
-     * Test if proxy generation is omitted, if types are compatible and that the addComponent key is not changed.
+     * Test if proxy generation is omitted, if types are compatible and that the component key is not changed.
      */
     public void testAvoidedProxyDoesNotChangeComponentKey() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();

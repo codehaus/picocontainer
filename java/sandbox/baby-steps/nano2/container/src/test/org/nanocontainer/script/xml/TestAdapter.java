@@ -14,7 +14,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.AbstractAdapter;
 
 /**
- * addComponent addAdapter to test script instantiation.
+ * component adapter to test script instantiation.
  */
 public final class TestAdapter extends AbstractAdapter {
 

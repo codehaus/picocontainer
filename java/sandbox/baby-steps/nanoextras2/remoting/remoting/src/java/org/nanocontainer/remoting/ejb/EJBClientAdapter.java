@@ -36,14 +36,14 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 /**
  * {@link ComponentAdapter}, that is able to lookup and instantiate an EJB as client.
  * <p>
- * The default mode for this addAdapter is late binding i.e. the addAdapter returns a proxy object for the requested type as
+ * The default mode for this adapter is late binding i.e. the adapter returns a proxy object for the requested type as
  * instance. The lookup for the EJB is started with the first call of the proxy and the stub is created. Any further
  * call will do the same, if the last call was aborted by a remote exception. With early binding the stub wiill be
- * created in the constructor and the initialization of the addAdapter may fail.
+ * created in the constructor and the initialization of the adapter may fail.
  * </p>
  * <p>
- * The addAdapter is using internally an own proxy for the stub object. This enables a failover in case of a temporary
- * unavailability of the application server providing the EJB. With every call to a methof of the EJB, the addAdapter is
+ * The adapter is using internally an own proxy for the stub object. This enables a failover in case of a temporary
+ * unavailability of the application server providing the EJB. With every call to a methof of the EJB, the adapter is
  * able to reestablish the connection, if the last call had been failed. In this case you might try a call at some
  * minutes later again, but you should give up after some trials.
  * </p>
@@ -61,7 +61,7 @@ public class EJBClientAdapter extends AbstractAdapter {
 
     /**
      * Construct a {@link ComponentAdapter} for an EJB. This constructor implies the home interface follows normal
-     * naming conventions. The addAdapter will use the default {@link InitialContext} and will also do late binding.
+     * naming conventions. The adapter will use the default {@link InitialContext} and will also do late binding.
      * @param name the EJB's JNDI name
      * @param type the implemented interface of the EJB
      * @throws ClassNotFoundException if the home interface could not be found

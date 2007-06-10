@@ -151,7 +151,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     }
 
     /**
-     * process addAdapter node
+     * process adapter node
      * @param container
      * @param rootElement
      */
@@ -187,7 +187,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         String klass = rootElement.getAttribute(CLASS);
         String constructor = rootElement.getAttribute(CONSTRUCTOR);
         if (klass == null || "".equals(klass)) {
-            throw new NanoContainerMarkupException("class specification is required for addComponent implementation");
+            throw new NanoContainerMarkupException("class specification is required for component implementation");
         }
 
         Class clazz = getClassLoader().loadClass(klass);

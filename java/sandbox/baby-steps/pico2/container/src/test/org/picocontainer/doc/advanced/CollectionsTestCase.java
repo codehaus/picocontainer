@@ -111,7 +111,7 @@ public class CollectionsTestCase
         pico.addComponent(Cod.class);
         pico.addComponent(Bowl.class, Bowl.class,
                           new CollectionComponentParameter(Fish.class, false), new CollectionComponentParameter(Cod.class, false));
-        // This addComponent will match both arguments of Bowl's constructor
+        // This component will match both arguments of Bowl's constructor
         pico.addComponent(new LinkedList());
 
         Bowl bowl = pico.getComponent(Bowl.class);

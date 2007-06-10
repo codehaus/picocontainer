@@ -66,7 +66,7 @@ public abstract class AbstractImplementationHidingPicoContainerTestCase extends 
                                                                           IOException, ClassNotFoundException {
         try {
             super.testSerializedContainerCanRetrieveImplementation();
-            fail("The ImplementationHidingPicoContainer should not be able to retrieve the addComponent impl");
+            fail("The ImplementationHidingPicoContainer should not be able to retrieve the component impl");
         } catch (ClassCastException cce) {
             // expected.
         }

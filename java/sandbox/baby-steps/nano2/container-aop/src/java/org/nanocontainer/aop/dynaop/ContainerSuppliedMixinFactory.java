@@ -32,7 +32,7 @@ class ContainerSuppliedMixinFactory implements MixinFactory {
     /**
      * Creates a new <code>ContainerSuppliedMixinFactory</code> that will
      * manufacture mixins by retrieving them from the <code>PicoContainer</code>
-     * using a given addComponent key.
+     * using a given component key.
      *
      * @param pico              the <code>PicoContainer</code> to retrieve the mixin from.
      * @param mixinClass    the mixin class

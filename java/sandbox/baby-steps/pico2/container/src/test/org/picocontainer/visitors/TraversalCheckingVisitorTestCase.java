@@ -77,7 +77,7 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
 
         for (ComponentAdapter allAdapter : allAdapters) {
             boolean knownAdapter = knownAdapters.remove(allAdapter);
-            assertTrue("Encountered unknown addAdapter in collection: " + allAdapters.toString(), knownAdapter);
+            assertTrue("Encountered unknown adapter in collection: " + allAdapters.toString(), knownAdapter);
         }
 
         assertTrue("All adapters should match known adapters.", knownAdapters.size() == 0);

@@ -95,7 +95,7 @@ public final class PicoObjectFactoryTestCase extends MockObjectTestCase {
     }
 
     /**
-     * if addComponent was not registered explicitely,  there shall be different instance for
+     * if component was not registered explicitely,  there shall be different instance for
      * next invocation.  not only actions are instantiated via factory,  but also important stuff like filters,
      * validators, interceptors etc - they shall not be shared. 
      * @throws Exception

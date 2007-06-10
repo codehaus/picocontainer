@@ -43,7 +43,7 @@ public final class ActionFactory {
      * or if that container can not be found, the application container. If no
      * parent container can be found, a <code>PicoInitializationException</code>
      * will be thrown. The action path specified in the mapping is used as
-     * the addComponent key for the action.
+     * the component key for the action.
      * 
      * @param request the Http servlet request.
      * @param mapping the Struts mapping object, whose type property tells us what

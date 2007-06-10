@@ -17,7 +17,7 @@ import org.picocontainer.adapters.AbstractAdapter;
 
 
 /**
- * Component addAdapter that wrapps a static factory with the help of {@link StaticFactory}.
+ * Component adapter that wrapps a static factory with the help of {@link StaticFactory}.
  *
  * @author J&ouml;rg Schaible
  * @author Leo Simmons
@@ -38,7 +38,7 @@ public final class StaticFactoryAdapter extends AbstractAdapter {
     }
 
     /**
-     * Construct a ComponentAdapter accessing a static factory creating the addComponent using a special key for addComponent
+     * Construct a ComponentAdapter accessing a static factory creating the component using a special key for addComponent
      * registration.
      *
      * @param componentKey The key of the created addComponent.
@@ -51,7 +51,7 @@ public final class StaticFactoryAdapter extends AbstractAdapter {
     }
 
     /**
-     * @return Returns the addComponent created by the static factory.
+     * @return Returns the component created by the static factory.
      * @see org.picocontainer.ComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {

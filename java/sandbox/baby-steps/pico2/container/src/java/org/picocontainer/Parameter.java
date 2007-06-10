@@ -42,7 +42,7 @@ public interface Parameter {
      *
      * @return the instance or <code>null</code> if no suitable instance can be found.
      *
-     * @throws PicoInitializationException if a referenced addComponent could not be instantiated.
+     * @throws PicoInitializationException if a referenced component could not be instantiated.
      * @since 1.1
      */
     Object resolveInstance(PicoContainer container,
@@ -58,7 +58,7 @@ public interface Parameter {
      * @param expectedType          the required type
      * @param expectedParameterName Expected parameter name
      *
-     * @return <code>true</code> if the addComponent parameter can be resolved.
+     * @return <code>true</code> if the component parameter can be resolved.
      *
      * @since 1.1
      */

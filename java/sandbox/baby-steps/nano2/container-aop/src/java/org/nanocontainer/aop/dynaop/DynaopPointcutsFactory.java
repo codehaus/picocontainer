@@ -120,10 +120,10 @@ public class  DynaopPointcutsFactory extends AbstractPointcutsFactory {
     }
 
     private static dynaop.ClassPointcut toDynaopClassCut(final ClassPointcut nanoCut) {
-        // The purpose of the anonymous inner class addAdapter below is to allow
+        // The purpose of the anonymous inner class adapter below is to allow
         // users to use union, intersection and not with custom pointcuts (not
         // instances of dynaop.ClassPointcut). Now we could just wrap nanoCut
-        // with the addAdapter every time, even if it is already a
+        // with the adapter every time, even if it is already a
         // dynaop.ClassPointcut. But the extra level of indirection gets a
         // little
         // confusing when debugging. Thus the instanceof check.

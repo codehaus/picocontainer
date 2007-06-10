@@ -54,7 +54,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "    componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -68,7 +68,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "    componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -84,7 +84,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "    componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -105,7 +105,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "    componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -120,7 +120,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "    componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -144,7 +144,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "    componentFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
                 "      delegate=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "        cdiDelegate\n" +
                 "        sdiDelegate\n" +
@@ -159,7 +159,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "    componentFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
                 "      delegate=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "        cdiDelegate\n" +
                 "        sdiDelegate\n" +
@@ -174,7 +174,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                "    componentFactory=org.picocontainer.behaviors.CachingBehaviorFactory\n" +
                 "      delegate=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
                 "        delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -191,7 +191,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "    componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
                 "    parent=org.nanocontainer.NanoBuilderTestCase_CustomParentcontainer\n" +
@@ -214,7 +214,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.injectors.SetterInjectionFactory\n" +
+                "    componentFactory=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
@@ -226,7 +226,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.injectors.AnnotationInjectionFactory\n" +
+                "    componentFactory=org.picocontainer.injectors.AnnotationInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
@@ -238,7 +238,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.injectors.ConstructorInjectionFactory\n" +
+                "    componentFactory=org.picocontainer.injectors.ConstructorInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",foo);
@@ -249,7 +249,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "    componentFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
                 "      delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
@@ -262,7 +262,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                "    componentFactory=org.picocontainer.behaviors.CachingBehaviorFactory\n" +
                 "      delegate=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
                 "        delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -276,7 +276,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.behaviors.SynchronizedBehaviorFactory\n" +
+                "    componentFactory=org.picocontainer.behaviors.SynchronizedBehaviorFactory\n" +
                 "      delegate=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "        cdiDelegate\n" +
                 "        sdiDelegate\n" +
@@ -291,7 +291,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.NanoBuilderTestCase_-TestNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "    componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -313,7 +313,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.NanoBuilderTestCase_-TestNanoContainer\n" +
                 "  delegate=org.nanocontainer.NanoBuilderTestCase_TestPicoContainer\n" +
-                "    componentAdapterFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "    componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -354,7 +354,7 @@ public class NanoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n    componentKeyToAdapterCache","");
         foo = foo.replaceAll("\n    startedComponentAdapters","");
         foo = foo.replaceAll("\"class=","\"\nclass=");
-        foo = foo.replaceAll("\n    componentAdapterFactory\n","\n");
+        foo = foo.replaceAll("\n    componentFactory\n","\n");
         foo = foo.replaceAll("\n    componentMonitor\n","\n");
         foo = foo.replaceAll("\n    lifecycleManager","");
         foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_1\"","");

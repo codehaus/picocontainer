@@ -508,9 +508,9 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             }
         }
         Parameter[] parameters = createChildParameters(container, element);
-        ComponentFactory componentAdapterFactory = createComponentAdapterFactory(element.getAttribute(FACTORY), metaContainer);
+        ComponentFactory componentFactory = createComponentAdapterFactory(element.getAttribute(FACTORY), metaContainer);
 
-        container.addAdapter(componentAdapterFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new ComponentCharacteristic(), key, implementationClass, parameters));
+        container.addAdapter(componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new ComponentCharacteristic(), key, implementationClass, parameters));
     }
 
     private ComponentFactory createComponentAdapterFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {

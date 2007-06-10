@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public interface NodeBuilderDecorationDelegate {
 
-    ComponentFactory decorate(ComponentFactory componentAdapterFactory, Map attributes);
+    ComponentFactory decorate(ComponentFactory componentFactory, Map attributes);
 
     MutablePicoContainer decorate(MutablePicoContainer picoContainer);
 

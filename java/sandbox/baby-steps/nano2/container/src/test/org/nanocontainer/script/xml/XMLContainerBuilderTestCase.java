@@ -704,12 +704,12 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "  <namedChildContainers/>\n" +
                 "  <delegate class='org.picocontainer.DefaultPicoContainer'>\n" +
                 "    <componentKeyToAdapterCache/>\n" +
-                "    <componentAdapterFactory class='"+MyCAF3.class.getName()+"'>\n" +
+                "    <componentFactory class='"+MyCAF3.class.getName()+"'>\n" +
                 "      <delegate class='"+MyCAF2.class.getName()+"'>\n" +
                 "        <delegate class='"+MyCAF.class.getName()+"'>\n" +
                 "        </delegate>\n" +
                 "      </delegate>\n" +
-                "    </componentAdapterFactory>\n" +
+                "    </componentFactory>\n" +
                 "    <children/>\n" +
                 "    <componentAdapters/>\n" +
                 "    <orderedComponentAdapters/>\n" +

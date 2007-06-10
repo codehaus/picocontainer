@@ -39,30 +39,30 @@ public class JMXExposingBehaviorFactoryTestCase extends MockObjectTestCase {
     }
 
     public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
-        final JMXExposingBehaviorFactory componentAdapterFactory = new JMXExposingBehaviorFactory(
+        final JMXExposingBehaviorFactory componentFactory = new JMXExposingBehaviorFactory(
                 (MBeanServer)mockMBeanServer.proxy());
-        componentAdapterFactory.forThis(new ConstructorInjectionFactory());
+        componentFactory.forThis(new ConstructorInjectionFactory());
 
         mockMBeanServer.expects(once()).method("registerMBean").with(
                 isA(DynamicMBeanPerson.class), isA(ObjectName.class));
 
-        final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
+        final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, PersonMBean.class, DynamicMBeanPerson.class, null);
         assertNotNull(componentAdapter);
         assertNotNull(componentAdapter.getComponentInstance(null));
     }
 
     public void testWillRegisterByDefaultComponentsThatAreMBeansUnlessNOJMX() throws NotCompliantMBeanException {
-        final JMXExposingBehaviorFactory componentAdapterFactory = new JMXExposingBehaviorFactory(
+        final JMXExposingBehaviorFactory componentFactory = new JMXExposingBehaviorFactory(
                 (MBeanServer)mockMBeanServer.proxy());
-        componentAdapterFactory.forThis(new ConstructorInjectionFactory());
+        componentFactory.forThis(new ConstructorInjectionFactory());
 
         final ComponentCharacteristic rc = new ComponentCharacteristic() {
         };
 
         ComponentCharacteristics.NOJMX.mergeInto(rc);
 
-        final ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(
+        final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), rc, PersonMBean.class, DynamicMBeanPerson.class, null);
         assertNotNull(componentAdapter);
         assertNotNull(componentAdapter.getComponentInstance(null));

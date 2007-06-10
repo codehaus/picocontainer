@@ -301,8 +301,8 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                 cafName = CachingBehaviorFactory.class.getName();
             }
             Class cafClass = getClassLoader().loadClass(cafName);
-            ComponentFactory componentAdapterFactory = (ComponentFactory) cafClass.newInstance();
-            MutablePicoContainer picoContainer = new DefaultPicoContainer(componentAdapterFactory);
+            ComponentFactory componentFactory = (ComponentFactory) cafClass.newInstance();
+            MutablePicoContainer picoContainer = new DefaultPicoContainer(componentFactory);
             DefaultNanoContainer nano = new DefaultNanoContainer(getClassLoader(), picoContainer);
             populateContainer(nano);
             return nano;

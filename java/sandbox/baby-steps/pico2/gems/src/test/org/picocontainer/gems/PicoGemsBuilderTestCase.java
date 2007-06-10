@@ -25,7 +25,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withBehaviors(IMPL_HIDING()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.gems.adapters.ImplementationHidingBehaviorFactory\n" +
+                "  componentFactory=org.picocontainer.gems.adapters.ImplementationHidingBehaviorFactory\n" +
                 "    delegate=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
@@ -39,7 +39,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(Log4JComponentMonitor.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "  componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -53,7 +53,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(LOG4J()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "  componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -67,7 +67,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(CommonsLoggingComponentMonitor.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentAdapterFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "  componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -100,7 +100,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n    startedComponentAdapters","");
         foo = foo.replaceAll("\n    props","");
         foo = foo.replaceAll("\"class=","\"\nclass=");
-        foo = foo.replaceAll("\n  componentAdapterFactory\n","\n");
+        foo = foo.replaceAll("\n  componentFactory\n","\n");
         foo = foo.replaceAll("\n  componentMonitor\n","\n");
         foo = foo.replaceAll("\n  lifecycleManager","");
         foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_1\"","");

@@ -123,17 +123,17 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
      * Constructor that provides the same control over the nanocontainer lifecycle strategies
      * as {@link DefaultPicoContainer ( org.picocontainer.ComponentFactory , org.picocontainer.LifecycleStrategy , PicoContainer)}.
      *
-     * @param componentAdapterFactory ComponentAdapterFactory
+     * @param componentFactory ComponentAdapterFactory
      * @param lifecycleStrategy       LifecycleStrategy
      * @param parent                  PicoContainer may be null if there is no parent.
      * @param cl                      the Classloader to use.  May be null, in which case DefaultNanoPicoContainer.class.getClassLoader()
      *                                will be called instead.
      */
-    public DefaultNanoContainer(ComponentFactory componentAdapterFactory,
+    public DefaultNanoContainer(ComponentFactory componentFactory,
                                 LifecycleStrategy lifecycleStrategy, PicoContainer parent, ClassLoader cl)
     {
 
-        super(new DefaultPicoContainer(componentAdapterFactory, lifecycleStrategy, parent));
+        super(new DefaultPicoContainer(componentFactory, lifecycleStrategy, parent));
         parentClassLoader = (cl != null) ? cl : DefaultNanoContainer.class.getClassLoader();
     }
 

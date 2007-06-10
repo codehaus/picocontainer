@@ -64,7 +64,7 @@ import java.util.Set;
  */
 public class DefaultPicoContainer implements MutablePicoContainer, ComponentMonitorStrategy, Serializable {
     private final Map<Object, ComponentAdapter> componentKeyToAdapterCache = new HashMap<Object, ComponentAdapter>();
-    private ComponentFactory componentAdapterFactory;
+    private ComponentFactory componentFactory;
     private PicoContainer parent;
     private final Set<PicoContainer> children = new HashSet<PicoContainer>();
 
@@ -101,11 +101,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * other ComponentAdapterFactories.
      * </em>
      *
-     * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
+     * @param componentFactory the factory to use for creation of ComponentAdapters.
      * @param parent                  the parent container (used for component dependency lookups).
      */
-    public DefaultPicoContainer(ComponentFactory componentAdapterFactory, PicoContainer parent) {
-        this(componentAdapterFactory, new StartableLifecycleStrategy(NullComponentMonitor.getInstance()), parent, NullComponentMonitor.getInstance());
+    public DefaultPicoContainer(ComponentFactory componentFactory, PicoContainer parent) {
+        this(componentFactory, new StartableLifecycleStrategy(NullComponentMonitor.getInstance()), parent, NullComponentMonitor.getInstance());
     }
 
     /**
@@ -119,26 +119,26 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * other ComponentAdapterFactories.
      * </em>
      *
-     * @param componentAdapterFactory the factory to use for creation of ComponentAdapters.
+     * @param componentFactory the factory to use for creation of ComponentAdapters.
      * @param lifecycleStrategy
      *                                the lifecylce strategy chosen for regiered
      *                                instance (not implementations!)
      * @param parent                  the parent container (used for component dependency lookups).
      */
-    public DefaultPicoContainer(ComponentFactory componentAdapterFactory,
+    public DefaultPicoContainer(ComponentFactory componentFactory,
                                 LifecycleStrategy lifecycleStrategy,
                                 PicoContainer parent)
     {
-        this(componentAdapterFactory, lifecycleStrategy, parent, NullComponentMonitor.getInstance() );
+        this(componentFactory, lifecycleStrategy, parent, NullComponentMonitor.getInstance() );
     }
 
-    public DefaultPicoContainer(ComponentFactory componentAdapterFactory,
+    public DefaultPicoContainer(ComponentFactory componentFactory,
                                 LifecycleStrategy lifecycleStrategy,
                                 PicoContainer parent, ComponentMonitor componentMonitor)
     {
-        if (componentAdapterFactory == null) throw new NullPointerException("componentAdapterFactory");
+        if (componentFactory == null) throw new NullPointerException("componentFactory");
         if (lifecycleStrategy == null) throw new NullPointerException("lifecycleStrategy");
-        this.componentAdapterFactory = componentAdapterFactory;
+        this.componentFactory = componentFactory;
         this.lifecycleStrategy = lifecycleStrategy;
         this.parent = parent;
         if (parent != null && !(parent instanceof EmptyPicoContainer)) {
@@ -186,10 +186,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     /**
      * Creates a new container with a custom ComponentAdapterFactory and no parent container.
      *
-     * @param componentAdapterFactory the ComponentAdapterFactory to use.
+     * @param componentFactory the ComponentAdapterFactory to use.
      */
-    public DefaultPicoContainer(ComponentFactory componentAdapterFactory) {
-        this(componentAdapterFactory, null);
+    public DefaultPicoContainer(ComponentFactory componentFactory) {
+        this(componentFactory, null);
     }
 
     /**
@@ -331,7 +331,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
         if (componentImplementationOrInstance instanceof Class) {
-            ComponentAdapter componentAdapter = componentAdapterFactory.createComponentAdapter(componentMonitor,
+            ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(componentMonitor,
                                                                                                lifecycleStrategy,
                                                                                                characteristic,
                                                                                                componentKey,
@@ -557,7 +557,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public MutablePicoContainer makeChildContainer() {
-        DefaultPicoContainer pc = new DefaultPicoContainer(componentAdapterFactory, lifecycleStrategy, this);
+        DefaultPicoContainer pc = new DefaultPicoContainer(componentFactory, lifecycleStrategy, this);
         addChildContainer(pc);
         return pc;
     }

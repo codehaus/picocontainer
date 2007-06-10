@@ -47,8 +47,8 @@ public class AopNodeBuilderDecorationDelegate implements NodeBuilderDecorationDe
         this.aspectsManager = aspectsManager;
     }
 
-    public ComponentFactory decorate(ComponentFactory componentAdapterFactory, Map attributes) {
-        return createAdapterFactory(aspectsManager, componentAdapterFactory);
+    public ComponentFactory decorate(ComponentFactory componentFactory, Map attributes) {
+        return createAdapterFactory(aspectsManager, componentFactory);
     }
 
     public MutablePicoContainer decorate(MutablePicoContainer picoContainer) {

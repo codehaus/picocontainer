@@ -64,8 +64,8 @@ public final class NanoBuilder {
         return this;
     }
 
-    public NanoBuilder withComponentAdapterFactory(ComponentFactory componentAdapterFactory) {
-        picoBuilder.withComponentAdapterFactory(componentAdapterFactory);
+    public NanoBuilder withComponentAdapterFactory(ComponentFactory componentFactory) {
+        picoBuilder.withComponentAdapterFactory(componentFactory);
         return this;
     }
 

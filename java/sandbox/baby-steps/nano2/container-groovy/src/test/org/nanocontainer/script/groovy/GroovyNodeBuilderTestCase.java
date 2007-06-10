@@ -268,7 +268,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +
-                "nano = builder.container(componentAdapterFactory:assemblyScope) {\n" +
+                "nano = builder.container(componentFactory:assemblyScope) {\n" +
                 "    component(A)\n" +
                 "}");
 
@@ -276,8 +276,8 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Mock cafMock = mock(ComponentFactory.class);
         cafMock.expects(once()).method("createComponentAdapter").with(new Constraint[] { isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)}).will(returnValue(new InstanceAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance())));
-        ComponentFactory componentAdapterFactory = (ComponentFactory) cafMock.proxy();
-        PicoContainer pico = buildContainer(script, null, componentAdapterFactory);
+        ComponentFactory componentFactory = (ComponentFactory) cafMock.proxy();
+        PicoContainer pico = buildContainer(script, null, componentFactory);
         assertSame(a, pico.getComponent(A.class));
     }
 
@@ -311,7 +311,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.nanocontainer.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(componentAdapterFactory: new CachingBehaviorFactory(), componentMonitor: monitor) {\n" +
+                "nano = builder.container(componentFactory: new CachingBehaviorFactory(), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -352,7 +352,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.nanocontainer.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(parent:parent, componentAdapterFactory: new CachingBehaviorFactory(), componentMonitor: monitor) {\n" +
+                "nano = builder.container(parent:parent, componentFactory: new CachingBehaviorFactory(), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");

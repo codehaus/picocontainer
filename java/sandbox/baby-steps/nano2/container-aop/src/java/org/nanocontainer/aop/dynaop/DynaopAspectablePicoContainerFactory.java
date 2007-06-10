@@ -33,24 +33,24 @@ import org.picocontainer.behaviors.CachingBehaviorFactory;
 public class DynaopAspectablePicoContainerFactory implements AspectablePicoContainerFactory {
 
     public AspectablePicoContainer createContainer(Class containerClass, AspectsManager aspectsManager,
-                                                   ComponentFactory componentAdapterFactory, PicoContainer parent) {
+                                                   ComponentFactory componentFactory, PicoContainer parent) {
 
-        ComponentFactory aspectsComponentAdapterFactory = new AspectsComponentAdapterFactory(aspectsManager).forThis(componentAdapterFactory);
+        ComponentFactory aspectsComponentAdapterFactory = new AspectsComponentAdapterFactory(aspectsManager).forThis(componentFactory);
         MutablePicoContainer pico = createMutablePicoContainer(containerClass, aspectsComponentAdapterFactory, parent);
         return mixinAspectablePicoContainer(aspectsManager, pico);
     }
 
     public AspectablePicoContainer createContainer(Class containerClass,
-                                                   ComponentFactory componentAdapterFactory, PicoContainer parent) {
-        return createContainer(containerClass, new DynaopAspectsManager(), componentAdapterFactory, parent);
+                                                   ComponentFactory componentFactory, PicoContainer parent) {
+        return createContainer(containerClass, new DynaopAspectsManager(), componentFactory, parent);
     }
 
-    public AspectablePicoContainer createContainer(ComponentFactory componentAdapterFactory, PicoContainer parent) {
-        return createContainer(DefaultPicoContainer.class, componentAdapterFactory, parent);
+    public AspectablePicoContainer createContainer(ComponentFactory componentFactory, PicoContainer parent) {
+        return createContainer(DefaultPicoContainer.class, componentFactory, parent);
     }
 
-    public AspectablePicoContainer createContainer(ComponentFactory componentAdapterFactory) {
-        return createContainer(componentAdapterFactory, null);
+    public AspectablePicoContainer createContainer(ComponentFactory componentFactory) {
+        return createContainer(componentFactory, null);
     }
 
     public AspectablePicoContainer createContainer(PicoContainer parent) {

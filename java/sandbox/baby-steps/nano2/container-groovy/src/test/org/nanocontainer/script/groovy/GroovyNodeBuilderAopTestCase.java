@@ -169,7 +169,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "caf = new TestComponentAdapterFactory(cafLog)\n" +
                 "cuts = new DynaopPointcutsFactory()\n" +
                 "builder = new DynaopGroovyNodeBuilder()\n" +
-                "nano = builder.container(componentAdapterFactory:caf) {\n" +
+                "nano = builder.container(componentFactory:caf) {\n" +
                 "    aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)\n" +
                 "    component(key:Dao, class:DaoImpl)\n" +
                 "    component(key:'intLog', instance:intLog)\n" +

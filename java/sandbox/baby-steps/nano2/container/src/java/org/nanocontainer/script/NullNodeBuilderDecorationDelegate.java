@@ -11,8 +11,8 @@ import java.util.Map;
  * @version $Revision$
  */
 public class NullNodeBuilderDecorationDelegate implements NodeBuilderDecorationDelegate {
-    public ComponentFactory decorate(ComponentFactory componentAdapterFactory, Map attributes) {
-        return componentAdapterFactory;
+    public ComponentFactory decorate(ComponentFactory componentFactory, Map attributes) {
+        return componentFactory;
     }
 
     public MutablePicoContainer decorate(MutablePicoContainer picoContainer) {

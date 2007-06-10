@@ -71,7 +71,7 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
 
         def builder = new GroovyNodeBuilder()
         def caf = new TestComponentAdapterFactory(sb)
-        def nano = builder.container(componentAdapterFactory:caf) {
+        def nano = builder.container(componentFactory:caf) {
             component(key:WebServerConfig, class:DefaultWebServerConfig)
             component(key:WebServer, class:WebServerImpl)
         }

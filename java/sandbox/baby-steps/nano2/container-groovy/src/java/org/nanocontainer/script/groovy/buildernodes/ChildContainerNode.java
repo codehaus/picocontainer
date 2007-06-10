@@ -56,10 +56,10 @@ public class ChildContainerNode extends AbstractBuilderNode {
     private final NodeBuilderDecorationDelegate decorationDelegate;
 
     /**
-     * Attribute: 'componentAdapterFactory' a reference to an instance of a
-     * component adapter factory.
+     * Attribute: 'componentFactory' a reference to an instance of a
+     * component factory.
      */
-    private static final String COMPONENT_ADAPTER_FACTORY = "componentAdapterFactory";
+    private static final String COMPONENT_ADAPTER_FACTORY = "componentFactory";
 
     /**
      * Attribute: 'componentMonitor' a reference to an instance of a component monitor.
@@ -127,7 +127,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
      * Creates a new container.  There may or may not be a parent to this container.
      * Supported attributes are:
      * <ul>
-     *  <li><tt>componentAdapterFactory</tt>: The ComponentAdapterFactory used for new container</li>
+     *  <li><tt>componentFactory</tt>: The ComponentAdapterFactory used for new container</li>
      *  <li><tt>componentMonitor</tt>: The ComponentMonitor used for new container</li>
      * </ul>
      * @param attributes Map Attributes defined by the builder in the script.
@@ -141,16 +141,16 @@ public class ChildContainerNode extends AbstractBuilderNode {
         if (parent != null) {
             parentClassLoader = parent.getComponentClassLoader();
             if ( isAttribute(attributes, COMPONENT_ADAPTER_FACTORY) ) {
-                ComponentFactory componentAdapterFactory = createComponentAdapterFactory(attributes);
+                ComponentFactory componentFactory = createComponentAdapterFactory(attributes);
                 childContainer = new DefaultPicoContainer(
-                        getDecorationDelegate().decorate(componentAdapterFactory, attributes), parent);
+                        getDecorationDelegate().decorate(componentFactory, attributes), parent);
                 if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
                     changeComponentMonitor(childContainer, createComponentMonitor(attributes));
                 }
                 parent.addChildContainer(childContainer);
             } else if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
-                ComponentFactory componentAdapterFactory = new CachingBehaviorFactory().forThis(new AnyInjectionFactory());
-                childContainer = new DefaultPicoContainer(getDecorationDelegate().decorate(componentAdapterFactory, attributes), parent);
+                ComponentFactory componentFactory = new CachingBehaviorFactory().forThis(new AnyInjectionFactory());
+                childContainer = new DefaultPicoContainer(getDecorationDelegate().decorate(componentFactory, attributes), parent);
                 changeComponentMonitor(childContainer, createComponentMonitor(attributes));
             } else {
                 childContainer = parent.makeChildContainer();
@@ -161,9 +161,9 @@ public class ChildContainerNode extends AbstractBuilderNode {
                     return PicoContainer.class.getClassLoader();
                 }
             });
-            ComponentFactory componentAdapterFactory = createComponentAdapterFactory(attributes);
+            ComponentFactory componentFactory = createComponentAdapterFactory(attributes);
             childContainer = new DefaultPicoContainer(
-                    getDecorationDelegate().decorate(componentAdapterFactory, attributes));
+                    getDecorationDelegate().decorate(componentFactory, attributes));
             if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
                 changeComponentMonitor(childContainer, createComponentMonitor(attributes));
             }

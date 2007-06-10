@@ -30,8 +30,9 @@ public interface ComponentMonitor {
      * Event thrown as the component is being instantiated using the given constructor
      * 
      * @param constructor the Constructor used to instantiate the addComponent
+     * @return the constructor to use in instantiation (nearly always the same one as passed in)
      */
-    void instantiating(Constructor constructor);
+    Constructor instantiating(Constructor constructor);
 
     /**
      * Event thrown after the component has been instantiated using the given constructor.

@@ -28,7 +28,8 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
 
     private static NullComponentMonitor instance;
 
-    public void instantiating(Constructor constructor) {
+    public Constructor instantiating(Constructor constructor) {
+        return constructor;
     }
 
     public void instantiationFailed(Constructor constructor, Exception e) {

@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.picocontainer.ComponentMonitor;
@@ -31,8 +30,8 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
         delegate = new NullComponentMonitor();
     }
 
-    public void instantiating(Constructor constructor) {
-        delegate.instantiating(constructor);
+    public Constructor instantiating(Constructor constructor) {
+        return delegate.instantiating(constructor);
     }
 
     public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {

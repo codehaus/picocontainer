@@ -276,7 +276,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
     public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
         Mock monitor = mock(ComponentMonitor.class);
         Constructor emptyHashMapCtor = HashMap.class.getConstructor();
-        monitor.expects(once()).method("instantiating").with(eq(emptyHashMapCtor));
+        monitor.expects(once()).method("instantiating").with(eq(emptyHashMapCtor)).will(returnValue(emptyHashMapCtor));
         Constraint durationIsGreaterThanOrEqualToZero = new Constraint() {
             public boolean eval(Object o) {
                 Long duration = (Long)o;
@@ -317,7 +317,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
     public void testMonitoringHappensBeforeAndOnFailOfImpossibleComponentsInstantiation() throws NoSuchMethodException {
         Mock monitor = mock(ComponentMonitor.class);
         Constructor barfingActionListenerCtor = BarfingActionListener.class.getConstructor();
-        monitor.expects(once()).method("instantiating").with(eq(barfingActionListenerCtor));
+        monitor.expects(once()).method("instantiating").with(eq(barfingActionListenerCtor)).will(returnValue(barfingActionListenerCtor));
 
         Constraint isITE = new Constraint() {
             public boolean eval(Object o) {

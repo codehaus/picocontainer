@@ -77,7 +77,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
         final String ourIntendedInjectee1 = "hullo";
         Mock monitor = mock(ComponentMonitor.class);
         Constructor nacotCtor = NeedsACoupleOfThings.class.getConstructors()[0];
-        monitor.expects(once()).method("instantiating").with(eq(nacotCtor));
+        monitor.expects(once()).method("instantiating").with(eq(nacotCtor)).will(returnValue(nacotCtor));
         Constraint durationIsGreaterThanOrEqualToZero = new Constraint() {
             public boolean eval(Object o) {
                 Long duration = (Long)o;

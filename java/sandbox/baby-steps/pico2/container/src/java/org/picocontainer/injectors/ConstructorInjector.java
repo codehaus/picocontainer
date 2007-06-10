@@ -188,7 +188,7 @@ public final class ConstructorInjector extends AbstractInjector {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
-                    final Constructor constructor;
+                    Constructor constructor;
                     try {
                         constructor = getGreediestSatisfiableConstructor(guardedContainer);
                     } catch (AmbiguousComponentResolutionException e) {
@@ -198,7 +198,7 @@ public final class ConstructorInjector extends AbstractInjector {
                     ComponentMonitor componentMonitor = currentMonitor();
                     try {
                         Object[] parameters = getConstructorArguments(guardedContainer, constructor);
-                        componentMonitor.instantiating(constructor);
+                        constructor = componentMonitor.instantiating(constructor);
                         long startTime = System.currentTimeMillis();
                         Object inst = newInstance(constructor, parameters);
                         componentMonitor.instantiated(constructor, inst, parameters, System.currentTimeMillis() - startTime);

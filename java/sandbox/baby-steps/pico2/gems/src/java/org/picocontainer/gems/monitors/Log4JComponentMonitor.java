@@ -113,12 +113,12 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
         this.delegate = delegate;
     }
 
-    public void instantiating(Constructor constructor) {
+    public Constructor instantiating(Constructor constructor) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
             logger.debug(format(INSTANTIATING, toString(constructor)));
         }
-        delegate.instantiating(constructor);
+        return delegate.instantiating(constructor);
     }
 
     public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {

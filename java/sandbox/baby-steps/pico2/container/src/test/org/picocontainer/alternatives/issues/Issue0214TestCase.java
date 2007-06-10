@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.visitors.VerifyingVisitor;
-import org.picocontainer.adapters.ImplementationHidingBehaviorFactory;
-import org.picocontainer.adapters.ConstructorInjectionFactory;
+import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class Issue0214TestCase extends TestCase {

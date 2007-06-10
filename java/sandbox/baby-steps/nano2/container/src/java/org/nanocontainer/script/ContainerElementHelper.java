@@ -5,12 +5,11 @@ import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.injectors.AnyInjectionFactory;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.adapters.CachingBehaviorFactory;
-import org.picocontainer.adapters.AnyInjectionFactory;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
 
 import java.util.Set;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 

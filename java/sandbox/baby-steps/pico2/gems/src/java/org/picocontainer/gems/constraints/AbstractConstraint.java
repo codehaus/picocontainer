@@ -12,7 +12,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.adapters.InjectingAdapter;
+import org.picocontainer.injectors.InjectingAdapter;
 import org.picocontainer.parameters.CollectionComponentParameter;
 
 import java.lang.reflect.Array;

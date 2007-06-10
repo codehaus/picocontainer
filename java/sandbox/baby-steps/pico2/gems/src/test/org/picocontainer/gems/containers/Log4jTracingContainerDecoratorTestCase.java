@@ -23,13 +23,12 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.injectors.ConstructorInjectionAdapter;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.adapters.ConstructorInjectionAdapter;
-import org.picocontainer.adapters.InstanceComponentAdapter;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
@@ -290,13 +289,13 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 
 	public void testRegisterComponentInstanceWithKey() {
 		String testString = "This is a test.";
-		ComponentAdapter testAdapter = new InstanceComponentAdapter(String.class, testString, NullLifecycleStrategy.getInstance(),
+		ComponentAdapter testAdapter = new InstanceAdapter(String.class, testString, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance());
 		picoMock.expects(once()).method("addComponent").with(same(String.class), same(testString), eq(Parameter.ZERO)).will(returnValue(new TicklePicoContainer(testAdapter)));
 
 		ComponentAdapter result = tracingDecorator.addComponent(String.class, testString, Parameter.ZERO).lastCA();
 
-		assertTrue(result instanceof InstanceComponentAdapter);
+		assertTrue(result instanceof InstanceAdapter);
 		verifyLog("Registering component instance with key ");
 	}
 
@@ -352,7 +351,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 
 	public void testUnregisterComponentByInstance() {
 		String testString = "This is a test.";
-		ComponentAdapter testAdapter = new InstanceComponentAdapter(String.class, testString, NullLifecycleStrategy.getInstance(),
+		ComponentAdapter testAdapter = new InstanceAdapter(String.class, testString, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance());
 		picoMock.expects(once()).method("removeComponentByInstance").with(same(testString)).will(returnValue(testAdapter));
 		

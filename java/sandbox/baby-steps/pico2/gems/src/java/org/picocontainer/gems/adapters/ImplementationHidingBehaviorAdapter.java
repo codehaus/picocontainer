@@ -11,11 +11,12 @@ package org.picocontainer.gems.adapters;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.BehaviorAdapter;
+import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehaviorAdapter;
+
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.AnnotationVisitor;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
@@ -30,7 +31,7 @@ import org.objectweb.asm.*;
  * This addComponent addAdapter makes it possible to hide the implementation of a real subject (behind a proxy).
  * The proxy will implement all the interfaces of the
  * underlying subject. If you want caching,
- * use a {@link org.picocontainer.adapters.CachingBehaviorAdapter} around this one.
+ * use a {@link CachingBehaviorAdapter} around this one.
  * </em>
  *
  * @author Paul Hammant

@@ -27,8 +27,8 @@ import org.nanocontainer.testmodel.IdentifiableMixin;
 import org.nanocontainer.testmodel.OrderEntity;
 import org.nanocontainer.testmodel.OrderEntityImpl;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.adapters.CachingBehaviorFactory;
-import org.picocontainer.adapters.ConstructorInjectionFactory;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 

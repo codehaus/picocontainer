@@ -18,7 +18,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.adapters.BehaviorAdapter;
+import org.picocontainer.behaviors.BehaviorAdapter;
 
 import java.lang.reflect.Method;
 
@@ -44,7 +44,7 @@ import java.lang.reflect.Method;
  *     }
  * }
  *        
- * new AssimilatingComponentAdapter(Foo.class, new InstanceComponentAdapter(new Bar()));
+ * new AssimilatingComponentAdapter(Foo.class, new InstanceAdapter(new Bar()));
  * </pre></code>
  * <p>
  * Notice how Bar does not implement the interface Foo. But Bar does have an identical <code>size()</code> method.
@@ -110,7 +110,7 @@ public final class AssimilatingComponentAdapter extends BehaviorAdapter {
      * Create and return a addComponent instance. If the addComponent instance and the type to assimilate is not compatible, a proxy
      * for the instance is generated, that implements the assimilated type.
      * 
-     * @see org.picocontainer.adapters.BehaviorAdapter#getComponentInstance(org.picocontainer.PicoContainer)
+     * @see BehaviorAdapter#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(final PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException {
@@ -122,7 +122,7 @@ public final class AssimilatingComponentAdapter extends BehaviorAdapter {
      * Return the type of the addComponent. If the addComponent type is not compatible with the type to assimilate, the assimilated
      * type is returned.
      * 
-     * @see org.picocontainer.adapters.BehaviorAdapter#getComponentImplementation()
+     * @see BehaviorAdapter#getComponentImplementation()
      */
     public Class getComponentImplementation() {
         return isCompatible ? super.getComponentImplementation() : type;
@@ -132,7 +132,7 @@ public final class AssimilatingComponentAdapter extends BehaviorAdapter {
      * Return the key of the addComponent. If the key of the delegated addComponent is a type, that is not compatible with the type to
      * assimilate, then the assimilated type replaces the original type.
      * 
-     * @see org.picocontainer.adapters.BehaviorAdapter#getComponentKey()
+     * @see BehaviorAdapter#getComponentKey()
      */
     public Object getComponentKey() {
         final Object key = super.getComponentKey();

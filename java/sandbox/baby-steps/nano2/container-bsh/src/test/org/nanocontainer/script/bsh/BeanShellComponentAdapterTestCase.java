@@ -20,7 +20,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 /**
  * <a href="http://www.junit.org/">JUnit</a>
  * {@link junit.framework.TestCase testcase} for
- * BeanShellComponentAdapter.
+ * BeanShellAdapter.
  *
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
  * @author Nick Sieger
@@ -34,7 +34,7 @@ public class BeanShellComponentAdapterTestCase extends TestCase {
         pico = new DefaultPicoContainer();
         pico.addComponent("whatever", ArrayList.class);
 
-        ComponentAdapter adapter = new BeanShellComponentAdapter("thekey", implementation, null);
+        ComponentAdapter adapter = new BeanShellAdapter("thekey", implementation, null);
         pico.addAdapter(adapter);
         return adapter;
     }

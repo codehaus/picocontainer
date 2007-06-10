@@ -57,7 +57,7 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
      * Construct an EJBClientComponentAdapterFactory using an {@link InitialContext} with a special environment and
      * binding.
      * @param environment the environment.
-     * @param earlyBinding <code>true</code> for early binding of the {@link EJBClientComponentAdapter}.
+     * @param earlyBinding <code>true</code> for early binding of the {@link EJBClientAdapter}.
      */
     public EJBClientComponentAdapterFactory(final Hashtable environment, final boolean earlyBinding) {
         super();
@@ -83,7 +83,7 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
     public ComponentAdapter createComponentAdapter(final String componentKey, final Class componentImplementation)
             throws PicoIntrospectionException {
         try {
-            return new ThreadLocalComponentAdapter(new EJBClientComponentAdapter(
+            return new ThreadLocalComponentAdapter(new EJBClientAdapter(
                 componentKey, componentImplementation, environment, earlyBinding), proxyFactory);
         } catch (final ClassNotFoundException e) {
             throw new PicoIntrospectionException("Home interface not found", e);

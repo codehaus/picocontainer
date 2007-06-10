@@ -16,13 +16,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.BehaviorAdapter;
+import org.picocontainer.behaviors.BehaviorAdapter;
 import org.picocontainer.LifecycleStrategy;
 
 import com.thoughtworks.proxy.ProxyFactory;

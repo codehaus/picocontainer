@@ -1,7 +1,6 @@
 package org.nanocontainer.booter;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -15,7 +14,7 @@ import java.util.Map;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.defaults.CustomPermissionsURLClassLoader;
+import org.picocontainer.CustomPermissionsURLClassLoader;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class BrownBear implements Startable {

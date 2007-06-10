@@ -14,12 +14,11 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.adapters.CachingBehaviorAdapter;
-import org.picocontainer.adapters.BehaviorAdapter;
+import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehaviorAdapter;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
@@ -79,12 +78,12 @@ public class JMXExposingBehaviorAdapter extends BehaviorAdapter {
      * Retrieve the addComponent instance. The implementation will automatically register it in the {@link MBeanServer},
      * if a provider can return a {@link javax.management.DynamicMBean} for it.
      * <p>
-     * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link org.picocontainer.adapters.CachingBehaviorAdapter} to avoid
+     * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link CachingBehaviorAdapter} to avoid
      * the registration of the same addComponent again.
      * </p>
      * @throws PicoInitializationException Thrown by the delegate or if the registering of the
      *             {@link javax.management.DynamicMBean} in the {@link MBeanServer } fails.
-     * @see org.picocontainer.adapters.BehaviorAdapter#getComponentInstance(org.picocontainer.PicoContainer)
+     * @see BehaviorAdapter#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(final PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException {

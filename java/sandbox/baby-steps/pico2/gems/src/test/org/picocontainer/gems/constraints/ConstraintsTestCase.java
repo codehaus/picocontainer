@@ -10,7 +10,7 @@ package org.picocontainer.gems.constraints;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.adapters.InjectingAdapter;
+import org.picocontainer.injectors.InjectingAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.DecoratedTouchable;

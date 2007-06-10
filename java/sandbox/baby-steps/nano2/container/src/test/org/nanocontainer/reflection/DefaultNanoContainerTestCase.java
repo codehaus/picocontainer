@@ -14,8 +14,8 @@ import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.CachingBehaviorFactory;
-import org.picocontainer.adapters.AnyInjectionFactory;
+import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 

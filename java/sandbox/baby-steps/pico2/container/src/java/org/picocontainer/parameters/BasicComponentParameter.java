@@ -14,7 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.adapters.InjectingAdapter;
+import org.picocontainer.injectors.InjectingAdapter;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;

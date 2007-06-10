@@ -10,9 +10,9 @@ package org.picocontainer.alternatives;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.ConstructorInjectionFactory;
+import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.adapters.ImplementationHidingBehaviorFactory;
 import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
 
 /**

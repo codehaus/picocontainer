@@ -9,7 +9,6 @@ package org.picocontainer.visitors;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -20,11 +19,11 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.injectors.ConstructorInjectionAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.visitors.TraversalCheckingVisitor;
-import org.picocontainer.adapters.ConstructorInjectionAdapter;
-import org.picocontainer.adapters.SetterInjectionAdapter;
+import org.picocontainer.injectors.SetterInjectionAdapter;
 
 /**
  * @author Michael Rimov

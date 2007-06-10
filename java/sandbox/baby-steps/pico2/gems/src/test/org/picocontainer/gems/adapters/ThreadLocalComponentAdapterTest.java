@@ -12,7 +12,7 @@ package org.picocontainer.gems.adapters;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.adapters.ConstructorInjectionAdapter;
+import org.picocontainer.injectors.ConstructorInjectionAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;

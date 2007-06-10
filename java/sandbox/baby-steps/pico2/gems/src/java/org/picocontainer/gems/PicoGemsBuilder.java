@@ -3,7 +3,7 @@ package org.picocontainer.gems;
 import org.picocontainer.gems.adapters.ImplementationHidingBehaviorFactory;
 import org.picocontainer.gems.monitors.Log4JComponentMonitor;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.adapters.BehaviorFactory;
+import org.picocontainer.BehaviorFactory;
 
 public class PicoGemsBuilder {
 

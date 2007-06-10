@@ -5,8 +5,8 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.BehaviorFactory;
-import org.picocontainer.adapters.InjectionFactory;
+import org.picocontainer.BehaviorFactory;
+import org.picocontainer.InjectionFactory;
 
 
 public final class NanoBuilder {

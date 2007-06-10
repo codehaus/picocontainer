@@ -25,10 +25,12 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
-import org.picocontainer.adapters.AnyInjectionFactory;
-import org.picocontainer.adapters.CachingBehaviorFactory;
-import org.picocontainer.adapters.InstanceComponentAdapter;
-import org.picocontainer.adapters.InjectingAdapter;
+import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.ImplementationHidingBehaviorAdapter;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
@@ -62,7 +64,7 @@ import java.util.Set;
  * </p>
  * <p/>
  * Another place where keys that are classes make a subtle difference is in
- * {@link org.picocontainer.adapters.ImplementationHidingBehaviorAdapter}.
+ * {@link ImplementationHidingBehaviorAdapter}.
  * </p>
  * <p/>
  * This implementation of {@link MutablePicoContainer} also supports
@@ -110,8 +112,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
-     * in a factory that creates {@link org.picocontainer.adapters.CachingBehaviorAdapter} instances, such as for example
-     * {@link org.picocontainer.adapters.CachingBehaviorFactory}. CachingBehaviorFactory can delegate to
+     * in a factory that creates {@link CachingBehaviorAdapter} instances, such as for example
+     * {@link CachingBehaviorFactory}. CachingBehaviorFactory can delegate to
      * other ComponentAdapterFactories.
      * </em>
      *
@@ -128,8 +130,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
-     * in a factory that creates {@link org.picocontainer.adapters.CachingBehaviorAdapter} instances, such as for example
-     * {@link org.picocontainer.adapters.CachingBehaviorFactory}. CachingBehaviorFactory can delegate to
+     * in a factory that creates {@link CachingBehaviorAdapter} instances, such as for example
+     * {@link CachingBehaviorFactory}. CachingBehaviorFactory can delegate to
      * other ComponentAdapterFactories.
      * </em>
      *
@@ -308,7 +310,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /**
      * {@inheritDoc}
-     * The returned ComponentAdapter will be an {@link org.picocontainer.adapters.InstanceComponentAdapter}.
+     * The returned ComponentAdapter will be an {@link org.picocontainer.adapters.InstanceAdapter}.
      */
     public MutablePicoContainer addComponent(Object implOrInstance) {
         Class clazz;
@@ -354,7 +356,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return addAdapter(componentAdapter);
         } else {
             ComponentAdapter componentAdapter =
-                new InstanceComponentAdapter(componentKey, componentImplementationOrInstance, lifecycleStrategy, componentMonitor);
+                new InstanceAdapter(componentKey, componentImplementationOrInstance, lifecycleStrategy, componentMonitor);
             return addAdapter(componentAdapter);
         }
     }

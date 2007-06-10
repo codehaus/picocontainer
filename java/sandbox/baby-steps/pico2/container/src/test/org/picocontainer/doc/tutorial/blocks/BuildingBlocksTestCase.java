@@ -6,15 +6,15 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.adapters.CachingBehaviorFactory;
-import org.picocontainer.adapters.ConstructorInjectionAdapter;
-import org.picocontainer.adapters.CachingBehaviorAdapter;
-import org.picocontainer.adapters.InstanceComponentAdapter;
-import org.picocontainer.adapters.SetterInjectionAdapter;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.injectors.SetterInjectionAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.adapters.SetterInjectionFactory;
-import org.picocontainer.adapters.SynchronizedBehaviorAdapter;
-import org.picocontainer.adapters.SynchronizedBehaviorFactory;
+import org.picocontainer.injectors.SetterInjectionFactory;
+import org.picocontainer.behaviors.SynchronizedBehaviorAdapter;
+import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
 import org.picocontainer.doc.introduction.Apple;
 import org.picocontainer.doc.introduction.Juicer;
 import org.picocontainer.doc.introduction.Peeler;
@@ -34,7 +34,7 @@ public class BuildingBlocksTestCase extends TestCase {
         picoContainer.addComponent(new Apple());
         // END SNIPPET: register-convenient
         // START SNIPPET: register-direct
-        picoContainer.addAdapter(new InstanceComponentAdapter("Another Apple", new Apple(), NullLifecycleStrategy.getInstance(),
+        picoContainer.addAdapter(new InstanceAdapter("Another Apple", new Apple(), NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance()));
         // END SNIPPET: register-direct
     }

@@ -24,8 +24,8 @@ import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.adapters.CachingBehaviorFactory;
-import org.picocontainer.adapters.AnyInjectionFactory;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.injectors.AnyInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**

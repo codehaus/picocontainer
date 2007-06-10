@@ -37,9 +37,9 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.adapters.ConstructorInjectionFactory;
-import org.picocontainer.adapters.AnyInjectionFactory;
-import org.picocontainer.adapters.AbstractBehaviorFactory;
+import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -661,7 +661,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     public void testComponentCanUsePredefinedCAF() {
         Reader script = new StringReader("" +
                 "<container>" +
-                "  <component-adapter-factory class='org.picocontainer.adapters.ConstructorInjectionFactory' key='factory'/>" +
+                "  <component-adapter-factory class='org.picocontainer.injectors.ConstructorInjectionFactory' key='factory'/>" +
                 "  <component-adapter class='org.nanocontainer.testmodel.DefaultWebServerConfig' factory='factory'/>" +
                 "</container>");
         PicoContainer pico = buildContainer(script);

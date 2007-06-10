@@ -19,8 +19,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.adapters.CachingBehaviorAdapter;
-import org.picocontainer.adapters.BehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.behaviors.BehaviorAdapter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

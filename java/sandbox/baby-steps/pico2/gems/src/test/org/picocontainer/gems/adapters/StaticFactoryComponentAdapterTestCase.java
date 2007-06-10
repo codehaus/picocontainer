@@ -25,7 +25,7 @@ import java.rmi.registry.Registry;
 public class StaticFactoryComponentAdapterTestCase extends TestCase {
 
     public void testStaticFactoryInAction() {
-        ComponentAdapter componentAdapter = new StaticFactoryComponentAdapter(Registry.class, new StaticFactory() {
+        ComponentAdapter componentAdapter = new StaticFactoryAdapter(Registry.class, new StaticFactory() {
             public Object get() {
                 try {
                     return LocateRegistry.getRegistry();

@@ -7,7 +7,7 @@ package org.picocontainer.gems.adapters;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.adapters.ConstructorInjectionAdapter;
+import org.picocontainer.injectors.ConstructorInjectionAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.RecordingLifecycle;

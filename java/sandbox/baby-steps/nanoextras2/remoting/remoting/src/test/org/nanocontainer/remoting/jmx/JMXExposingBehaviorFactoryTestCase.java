@@ -18,9 +18,9 @@ import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.adapters.ConstructorInjectionFactory;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;

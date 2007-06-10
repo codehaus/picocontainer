@@ -15,7 +15,7 @@ import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.adapters.BehaviorAdapter;
+import org.picocontainer.behaviors.BehaviorAdapter;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -76,7 +76,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
                 "<instance key='justInt'>" +
                 "<int>777</int>" +
                 "</instance>" +
-                "<implementation key='testAdapter' class='org.nanocontainer.script.xml.TestComponentAdapter'>" +
+                "<implementation key='testAdapter' class='org.nanocontainer.script.xml.TestAdapter'>" +
                 "<dependency key='firstString'/>" +
                 "<dependency key='justInt'/>" +
                 "<dependency key='secondString'/>" +
@@ -85,7 +85,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
                 "</container>");
 
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
-        TestComponentAdapter tca = (TestComponentAdapter) pico.getComponentAdapter(TestComponentAdapter.class);
+        TestAdapter tca = (TestAdapter) pico.getComponentAdapter(TestAdapter.class);
         assertNotNull(tca);
     }
 

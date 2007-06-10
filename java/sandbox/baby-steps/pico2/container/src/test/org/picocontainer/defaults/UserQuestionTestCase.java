@@ -6,8 +6,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.adapters.ConstructorInjectionFactory;
-import org.picocontainer.adapters.AbstractComponentAdapter;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.adapters.AbstractAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +22,10 @@ import java.util.Map;
 public final class UserQuestionTestCase extends TestCase {
 
     // From Scott Farquahsr
-    public static final class CheeseComponentAdapter extends AbstractComponentAdapter {
+    public static final class CheeseAdapter extends AbstractAdapter {
         private final Map bla;
 
-        public CheeseComponentAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws PicoRegistrationException
+        public CheeseAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws PicoRegistrationException
         {
             super(componentKey, componentImplementation);
             this.bla = cheeseMap;
@@ -72,7 +72,7 @@ public final class UserQuestionTestCase extends TestCase {
 
         MutablePicoContainer pico = new DefaultPicoContainer(new ConstructorInjectionFactory());
         pico.addComponent(Omelette.class);
-        pico.addAdapter(new CheeseComponentAdapter("scott", Gouda.class, cheeseMap));
+        pico.addAdapter(new CheeseAdapter("scott", Gouda.class, cheeseMap));
 
         Cheese gouda = new Gouda();
         cheeseMap.put("cheese", gouda);

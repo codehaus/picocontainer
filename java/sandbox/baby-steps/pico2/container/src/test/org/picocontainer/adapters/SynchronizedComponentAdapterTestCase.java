@@ -18,13 +18,13 @@ import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.SynchronizedBehaviorAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.adapters.CachingBehaviorAdapter;
-import org.picocontainer.adapters.CachingBehaviorFactory;
-import org.picocontainer.adapters.ConstructorInjectionAdapter;
-import org.picocontainer.adapters.ConstructorInjectionFactory;
-import org.picocontainer.adapters.SynchronizedBehaviorAdapter;
-import org.picocontainer.adapters.SynchronizedBehaviorFactory;
+import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
 
 /**
  * @author Thomas Heller

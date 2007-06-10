@@ -14,7 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.ParameterName;
-import org.picocontainer.adapters.InjectingAdapter;
+import org.picocontainer.injectors.InjectingAdapter;
 
 
 /**

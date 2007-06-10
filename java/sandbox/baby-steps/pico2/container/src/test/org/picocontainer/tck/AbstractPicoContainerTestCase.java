@@ -22,11 +22,11 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
+import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.injectors.InjectingAdapter;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.adapters.ConstructorInjectionAdapter;
-import org.picocontainer.adapters.InstanceComponentAdapter;
-import org.picocontainer.adapters.InjectingAdapter;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.parameters.BasicComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
@@ -448,7 +448,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
     // An addAdapter has no longer a hosting container.
 
 //    public void testRegistrationOfAdapterSetsHostingContainerAsSelf() {
-//        final InstanceComponentAdapter componentAdapter = new InstanceComponentAdapter("", new Object());
+//        final InstanceAdapter componentAdapter = new InstanceAdapter("", new Object());
 //        final MutablePicoContainer picoContainer = createPicoContainer(null);
 //        picoContainer.addAdapter(componentAdapter);
 //        assertSame(picoContainer, componentAdapter.getContainer());
@@ -722,7 +722,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             parent.addAdapter(new ConstructorInjectionAdapter(HashMap.class, HashMap.class)).lastCA();
         ComponentAdapter hashSetAdapter =
             parent.addAdapter(new ConstructorInjectionAdapter(HashSet.class, HashSet.class)).lastCA();
-        ComponentAdapter stringAdapter = parent.addAdapter(new InstanceComponentAdapter(String.class, "foo",
+        ComponentAdapter stringAdapter = parent.addAdapter(new InstanceAdapter(String.class, "foo",
                                                                         NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance())).lastCA();
         ComponentAdapter arrayListAdapter =

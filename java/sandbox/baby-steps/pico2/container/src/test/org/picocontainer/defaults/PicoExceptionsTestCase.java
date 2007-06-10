@@ -14,8 +14,8 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.adapters.ConstructorInjectionAdapter;
-import org.picocontainer.adapters.InjectingAdapter;
+import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.injectors.InjectingAdapter;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 
 import java.io.ByteArrayOutputStream;

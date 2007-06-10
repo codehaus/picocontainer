@@ -27,12 +27,12 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.injectors.InjectingAdapter;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.adapters.InstanceComponentAdapter;
-import org.picocontainer.adapters.SetterInjectionAdapter;
-import org.picocontainer.adapters.SetterInjectionFactory;
-import org.picocontainer.adapters.InjectingAdapter;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.injectors.SetterInjectionAdapter;
+import org.picocontainer.injectors.SetterInjectionFactory;
 
 import java.io.File;
 import java.net.URLClassLoader;
@@ -274,7 +274,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         A a = new A();
         Mock cafMock = mock(ComponentFactory.class);
-        cafMock.expects(once()).method("createComponentAdapter").with(new Constraint[] { isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)}).will(returnValue(new InstanceComponentAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
+        cafMock.expects(once()).method("createComponentAdapter").with(new Constraint[] { isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)}).will(returnValue(new InstanceAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance())));
         ComponentFactory componentAdapterFactory = (ComponentFactory) cafMock.proxy();
         PicoContainer pico = buildContainer(script, null, componentAdapterFactory);
@@ -306,7 +306,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
-                "import org.picocontainer.adapters.CachingBehaviorFactory\n" +
+                "import org.picocontainer.behaviors.CachingBehaviorFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
@@ -347,7 +347,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
-                "import org.picocontainer.adapters.CachingBehaviorFactory\n" +
+                "import org.picocontainer.behaviors.CachingBehaviorFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
@@ -726,7 +726,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
         // LifecyleContainerBuilder starts the container
         Object one = pico.getComponents().get(1);
-        assertEquals("org.picocontainer.adapters.CachingBehaviorAdapter", one.toString());
+        assertEquals("org.picocontainer.behaviors.CachingBehaviorAdapter", one.toString());
     }
 
 

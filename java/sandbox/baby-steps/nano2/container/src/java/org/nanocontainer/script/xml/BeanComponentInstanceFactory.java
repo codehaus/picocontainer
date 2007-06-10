@@ -14,14 +14,14 @@ import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.adapters.AnyInjectionFactory;
-import org.picocontainer.adapters.BeanPropertyComponentAdapter;
+import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.BeanPropertyComponentAdapter;
 import org.picocontainer.ComponentFactory;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.net.MalformedURLException;
 import java.util.Properties;
 
 /**

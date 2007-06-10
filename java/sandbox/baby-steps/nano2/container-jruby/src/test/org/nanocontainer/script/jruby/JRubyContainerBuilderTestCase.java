@@ -9,10 +9,10 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.adapters.InstanceComponentAdapter;
-import org.picocontainer.adapters.SetterInjectionAdapter;
-import org.picocontainer.adapters.SetterInjectionFactory;
-import org.picocontainer.adapters.InjectingAdapter;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.injectors.SetterInjectionAdapter;
+import org.picocontainer.injectors.SetterInjectionFactory;
+import org.picocontainer.injectors.InjectingAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
@@ -235,7 +235,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         Mock cafMock = mock(ComponentFactory.class);
         Constraint[] cons = {isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)};
         cafMock.expects(once()).method("createComponentAdapter").with(cons)
-            .will(returnValue(new InstanceComponentAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
+            .will(returnValue(new InstanceAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance())));
         PicoContainer pico = buildContainer(script, null, cafMock.proxy());
         assertSame(a, pico.getComponent(A.class));
@@ -263,7 +263,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
-                                         "CachingBehaviorFactory = org.picocontainer.adapters.CachingBehaviorFactory\n" +
+                                         "CachingBehaviorFactory = org.picocontainer.behaviors.CachingBehaviorFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
                                          "container(:component_adapter_factory => CachingBehaviorFactory.new, :component_monitor => monitor) {\n" +
@@ -300,7 +300,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
-                                         "CachingBehaviorFactory = org.picocontainer.adapters.CachingBehaviorFactory\n" +
+                                         "CachingBehaviorFactory = org.picocontainer.behaviors.CachingBehaviorFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
                                          "container(:parent => $parent, :component_adapter_factory => CachingBehaviorFactory.new, :component_monitor => monitor) {\n"

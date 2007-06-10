@@ -17,11 +17,11 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.behaviors.CachingBehaviorAdapter;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.adapters.ConstructorInjectionAdapter;
-import org.picocontainer.adapters.CachingBehaviorAdapter;
-import org.picocontainer.adapters.InstanceComponentAdapter;
+import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.CompatibleTouchable;
@@ -74,7 +74,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
      */
     public void testAvoidUnnecessaryProxy() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
+        mpc.addAdapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance())));
         final TestCase self = mpc.getComponent(TestCase.class);
         assertFalse(Proxy.isProxyClass(self.getClass()));
@@ -86,7 +86,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
      */
     public void testAvoidedProxyDoesNotChangeComponentKey() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceComponentAdapter(getClass(), this, NullLifecycleStrategy.getInstance(),
+        mpc.addAdapter(new AssimilatingComponentAdapter(TestCase.class, new InstanceAdapter(getClass(), this, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance())));
         final TestCase self = mpc.getComponent(getClass());
         assertNotNull(self);
@@ -98,7 +98,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
      */
     public void testComponentMustImplementInterface() {
         try {
-            new AssimilatingComponentAdapter(SimpleTouchable.class, new InstanceComponentAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
+            new AssimilatingComponentAdapter(SimpleTouchable.class, new InstanceAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance()));
             fail("PicoIntrospectionException expected");
         } catch (final PicoIntrospectionException e) {
@@ -113,7 +113,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
     public void testComponentMustHaveMathichMethods() throws NoSuchMethodException {
         final Method touch = Touchable.class.getMethod("touch", (Class[])null);
         try {
-            new AssimilatingComponentAdapter(Touchable.class, new InstanceComponentAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
+            new AssimilatingComponentAdapter(Touchable.class, new InstanceAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance()));
             fail("PicoIntrospectionException expected");
         } catch (final PicoIntrospectionException e) {
@@ -149,7 +149,7 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
     }
 
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
-        return new AssimilatingComponentAdapter(Touchable.class, new InstanceComponentAdapter(
+        return new AssimilatingComponentAdapter(Touchable.class, new InstanceAdapter(
                 CompatibleTouchable.class, new CompatibleTouchable(), NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance()), new CglibProxyFactory());
     }

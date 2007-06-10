@@ -10,7 +10,7 @@ package org.picocontainer.gems.util;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.adapters.InstanceComponentAdapter;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.util.Collection;
@@ -70,7 +70,7 @@ public class PicoMap implements Map {
         ComponentAdapter adapter = mutablePicoContainer.removeComponent(o);
         if (adapter != null) {
             // if previously an instance was registered, return it, otherwise return the type
-            return adapter instanceof InstanceComponentAdapter ? adapter
+            return adapter instanceof InstanceAdapter ? adapter
                     .getComponentInstance(mutablePicoContainer) : adapter
                     .getComponentImplementation();
         } else {

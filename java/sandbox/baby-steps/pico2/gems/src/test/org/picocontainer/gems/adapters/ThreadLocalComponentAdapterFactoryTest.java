@@ -13,11 +13,10 @@ package org.picocontainer.gems.adapters;
 import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.adapters.ConstructorInjectionFactory;
 
 import java.util.ArrayList;
 import java.util.List;

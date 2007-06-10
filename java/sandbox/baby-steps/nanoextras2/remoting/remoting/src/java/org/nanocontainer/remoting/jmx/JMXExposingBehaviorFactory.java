@@ -20,7 +20,7 @@ import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.adapters.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 
 /**

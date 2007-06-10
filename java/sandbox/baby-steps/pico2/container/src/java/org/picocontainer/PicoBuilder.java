@@ -1,56 +1,25 @@
 package org.picocontainer;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.adapters.AnyInjectionFactory;
-import org.picocontainer.adapters.ImplementationHidingBehaviorFactory;
-import org.picocontainer.adapters.SetterInjectionFactory;
-import org.picocontainer.adapters.AnnotationInjectionFactory;
-import org.picocontainer.adapters.ConstructorInjectionFactory;
-import org.picocontainer.adapters.InjectionFactory;
-import org.picocontainer.adapters.CachingBehaviorFactory;
-import org.picocontainer.adapters.SynchronizedBehaviorFactory;
-import org.picocontainer.adapters.BehaviorFactory;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
+import static org.picocontainer.behaviors.Behaviors.caching;
+import static org.picocontainer.behaviors.Behaviors.implHiding;
+import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
+import org.picocontainer.defaults.DefaultPicoContainer;
+import static org.picocontainer.injectors.Injectors.ADI;
+import static org.picocontainer.injectors.Injectors.CDI;
+import static org.picocontainer.injectors.Injectors.SDI;
+import static org.picocontainer.injectors.Injectors.anyDI;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.util.Stack;
 
 public class PicoBuilder {
-
-    public static InjectionFactory anyDI() {
-        return new AnyInjectionFactory();
-    }
-
-    public static InjectionFactory SDI() {
-        return new SetterInjectionFactory();
-    }
-
-    public static InjectionFactory CDI() {
-        return new ConstructorInjectionFactory();
-    }
-
-    public static InjectionFactory ADI() {
-        return new AnnotationInjectionFactory();
-    }
-
-    public static BehaviorFactory implHiding() {
-        return new ImplementationHidingBehaviorFactory();
-    }
-    
-    public static BehaviorFactory caching() {
-        return new CachingBehaviorFactory();
-    }
-
-    public static BehaviorFactory threadSafe() {
-        return new SynchronizedBehaviorFactory();
-    }
 
     private PicoContainer parentContainer;
     private Class mpcClass = DefaultPicoContainer.class;

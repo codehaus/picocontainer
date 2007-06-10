@@ -2,7 +2,7 @@ package org.picocontainer.adapters;
 
 import junit.framework.TestCase;
 import org.picocontainer.testmodel.CoupleBean;
-import org.picocontainer.adapters.BeanPropertyComponentAdapter;
+import org.picocontainer.BeanPropertyComponentAdapter;
 
 /**
  *

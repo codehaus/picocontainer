@@ -2,7 +2,7 @@ package org.picocontainer.defaults.issues;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.adapters.InjectingAdapter;
+import org.picocontainer.injectors.InjectingAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 public final class Issue0191TestCase extends TestCase {

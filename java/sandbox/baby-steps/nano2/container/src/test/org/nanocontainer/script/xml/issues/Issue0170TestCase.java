@@ -1,7 +1,5 @@
 package org.nanocontainer.script.xml.issues;
 
-import com.thoughtworks.proxy.toys.hotswap.Swappable;
-
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
@@ -25,8 +23,8 @@ public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase 
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter-factory key='factory' class='org.picocontainer.gems.adapters.HotSwappingComponentAdapterFactory'>"+
-                "    <component-adapter-factory class='org.picocontainer.adapters.CachingBehaviorFactory'>"+
-                "      <component-adapter-factory class='org.picocontainer.adapters.ConstructorInjectionFactory'/>"+
+                "    <component-adapter-factory class='org.picocontainer.behaviors.CachingBehaviorFactory'>"+
+                "      <component-adapter-factory class='org.picocontainer.injectors.ConstructorInjectionFactory'/>"+
                 "    </component-adapter-factory>"+
                 "  </component-adapter-factory>"+
                 "  <component-adapter class-name-key='java.util.List' class='java.util.ArrayList' factory='factory'/>"+

@@ -10,7 +10,7 @@ package org.picocontainer.gems.adapters;
  * Original code by Leo Simmons & Jörg Schaible                              *
  *****************************************************************************/
 /**
- * Interface for a static factory wrapper used by the {@link StaticFactoryComponentAdapter}.
+ * Interface for a static factory wrapper used by the {@link StaticFactoryAdapter}.
  * 
  * @author J&ouml;rg Schaible
  * @author Leo Simmons

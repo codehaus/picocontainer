@@ -6,7 +6,7 @@ import java.io.StringReader;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.SetterInjectionFactory;
+import org.picocontainer.injectors.SetterInjectionFactory;
 
 public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderTestCase {
 

@@ -1,8 +1,8 @@
 package org.picocontainer.containers;
 
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.adapters.ConstructorInjectionFactory;
-import org.picocontainer.adapters.CachingBehaviorFactory;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 

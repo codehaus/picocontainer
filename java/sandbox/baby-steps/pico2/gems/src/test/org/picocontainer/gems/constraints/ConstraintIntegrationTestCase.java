@@ -11,8 +11,7 @@ package org.picocontainer.gems.constraints;
 import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.adapters.InjectingAdapter;
+import org.picocontainer.injectors.InjectingAdapter;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.AlternativeTouchable;

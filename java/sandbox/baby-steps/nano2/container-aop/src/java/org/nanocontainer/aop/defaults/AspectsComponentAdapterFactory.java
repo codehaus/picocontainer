@@ -17,7 +17,7 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.adapters.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 /**
  * Produces addComponent adapters that apply aspects to components.

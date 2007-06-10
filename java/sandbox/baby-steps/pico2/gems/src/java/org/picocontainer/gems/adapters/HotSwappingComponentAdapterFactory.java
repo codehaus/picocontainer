@@ -17,8 +17,8 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.adapters.AnyInjectionFactory;
-import org.picocontainer.adapters.AbstractBehaviorFactory;
+import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 
 /**

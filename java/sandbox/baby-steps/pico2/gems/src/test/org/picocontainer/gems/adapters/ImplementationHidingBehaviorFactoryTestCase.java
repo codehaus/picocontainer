@@ -3,10 +3,10 @@ package org.picocontainer.gems.adapters;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.adapters.ConstructorInjectionFactory;
-import org.picocontainer.adapters.CachingBehaviorFactory;
-import org.picocontainer.adapters.ConstructorInjectionAdapter;
-import org.picocontainer.adapters.AnyInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.injectors.AnyInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 

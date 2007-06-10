@@ -20,7 +20,7 @@ import org.nanocontainer.aop.defaults.AspectsComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.adapters.CachingBehaviorFactory;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**

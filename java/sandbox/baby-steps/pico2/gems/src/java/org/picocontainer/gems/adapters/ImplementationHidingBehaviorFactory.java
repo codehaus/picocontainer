@@ -7,8 +7,8 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.adapters.AbstractBehaviorFactory;
-import org.picocontainer.adapters.AnyInjectionFactory;
+import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory {
 

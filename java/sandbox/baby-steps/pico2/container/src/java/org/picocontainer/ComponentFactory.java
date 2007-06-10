@@ -54,12 +54,13 @@ public interface ComponentFactory {
      *          {@link org.picocontainer.PicoRegistrationException}.
      * @throws PicoIntrospectionException
      */
-    ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic,
+    ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
+                                            LifecycleStrategy lifecycleStrategy,
+                                            ComponentCharacteristic componentCharacteristic,
                                             Object componentKey,
                                             Class componentImplementation,
                                             Parameter... parameters) throws PicoIntrospectionException,
-
-            PicoRegistrationException;
+                                                                            PicoRegistrationException;
 
 
 }

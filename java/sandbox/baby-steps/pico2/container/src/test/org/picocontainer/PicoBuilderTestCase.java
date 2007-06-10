@@ -292,6 +292,37 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
+    public void testWithCustomComponentFactory() {
+        MutablePicoContainer mpc = new PicoBuilder().withCustomContainerComponent(new SomeContainerDependency()).withComponentFactory(CustomComponentFactory.class).build();
+        String foo = simplifyRepresentation(mpc);
+        assertEquals("PICO\n" +
+                     "  componentAdapterFactory=org.picocontainer.PicoBuilderTestCase_CustomComponentFactory\n" +
+                     "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                     "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                     "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                     "PICO",foo);
+    }
+
+    public static class SomeContainerDependency {
+    }
+    public static class CustomComponentFactory implements ComponentFactory {
+
+        public CustomComponentFactory(SomeContainerDependency someDependency) {
+        }
+
+        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
+                                                       LifecycleStrategy lifecycleStrategy,
+                                                       ComponentCharacteristic componentCharacteristic,
+                                                       Object componentKey,
+                                                       Class componentImplementation,
+                                                       Parameter... parameters) throws PicoIntrospectionException,
+                                                                                       PicoRegistrationException
+        {
+            return null;
+        }
+    }
+
+
     public void testWithCustomPicoContainer() {
         MutablePicoContainer mpc = new PicoBuilder().thisMutablePicoContainer(TestPicoContainer.class).build();
         String foo = simplifyRepresentation(mpc);

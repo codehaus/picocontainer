@@ -18,12 +18,14 @@ import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.util.Stack;
+import java.util.ArrayList;
 
 public class PicoBuilder {
 
     private PicoContainer parentContainer;
     private Class mpcClass = DefaultPicoContainer.class;
     private ComponentMonitor componentMonitor;
+    private ArrayList containerComps = new ArrayList();
 
     public PicoBuilder(PicoContainer parentContainer, InjectionFactory injectionType) {
         this.injectionType = injectionType;
@@ -86,10 +88,14 @@ public class PicoBuilder {
         DefaultPicoContainer temp = new TransientPicoContainer();
         temp.addComponent(PicoContainer.class, parentContainer);
 
+        for (Object containerComp : containerComps) {
+            temp.addComponent(containerComp);
+        }
+
         ComponentFactory lastCaf = injectionType;
         while (!cafs.empty()) {
             Object caf = cafs.pop();
-            DefaultPicoContainer temp2 = new DefaultPicoContainer(new ConstructorInjectionFactory(), NullLifecycleStrategy.getInstance(), new EmptyPicoContainer());
+            DefaultPicoContainer temp2 = new TransientPicoContainer(temp);
             temp2.addComponent("caf", caf);
             if (lastCaf != null) {
                 temp2.addComponent(ComponentFactory.class, lastCaf);
@@ -181,6 +187,16 @@ public class PicoBuilder {
     public PicoBuilder withMonitor(ComponentMonitor componentMonitor) {
         this.componentMonitor = componentMonitor;
         componentMonitorClass = null;
+        return this;
+    }
+
+    public PicoBuilder withComponentFactory(Class componentFactoryClass) {
+        cafs.push(componentFactoryClass);
+        return this;
+    }
+
+    public PicoBuilder withCustomContainerComponent(Object containerDependency) {
+        containerComps.add(containerDependency);
         return this;
     }
 }

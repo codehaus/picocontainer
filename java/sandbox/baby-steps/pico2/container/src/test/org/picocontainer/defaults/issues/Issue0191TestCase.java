@@ -2,7 +2,7 @@ package org.picocontainer.defaults.issues;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 public final class Issue0191TestCase extends TestCase {
@@ -25,7 +25,7 @@ public final class Issue0191TestCase extends TestCase {
             Fish[] fishes = bowl.getFishes( ) ;
             for( int i = 0 ; i < fishes.length ; i++ )
                 System.out.println( "fish["+i+"]="+fishes[i] ) ;
-        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             // expected, well except that there is supposed to be a different bug here.
         }
     }

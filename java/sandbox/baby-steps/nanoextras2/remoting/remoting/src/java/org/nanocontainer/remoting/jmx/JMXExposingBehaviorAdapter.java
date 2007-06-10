@@ -14,7 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.CachingBehavior;
 
 import java.util.List;
@@ -32,7 +32,7 @@ import javax.management.InstanceNotFoundException;
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
-public class JMXExposingBehaviorAdapter extends BehaviorAdapter {
+public class JMXExposingBehaviorAdapter extends AbstractBehavior {
 
     private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;
@@ -83,7 +83,7 @@ public class JMXExposingBehaviorAdapter extends BehaviorAdapter {
      * </p>
      * @throws PicoInitializationException Thrown by the delegate or if the registering of the
      *             {@link javax.management.DynamicMBean} in the {@link MBeanServer } fails.
-     * @see BehaviorAdapter#getComponentInstance(org.picocontainer.PicoContainer)
+     * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(final PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException {

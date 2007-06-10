@@ -18,7 +18,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.defaults.SimpleReference;
 
 /**
@@ -36,7 +36,7 @@ import org.picocontainer.defaults.SimpleReference;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public final class CachingBehavior extends BehaviorAdapter implements LifecycleManager {
+public final class CachingBehavior extends AbstractBehavior implements LifecycleManager {
 
     private final ObjectReference instanceReference;
     private boolean disposed;

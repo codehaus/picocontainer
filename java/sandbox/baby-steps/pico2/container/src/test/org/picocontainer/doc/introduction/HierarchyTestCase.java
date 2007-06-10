@@ -2,7 +2,7 @@ package org.picocontainer.doc.introduction;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
@@ -30,7 +30,7 @@ public class HierarchyTestCase extends TestCase {
             // WON'T WORK! This will throw an exception
             Juicer juicer = y.getComponent(Juicer.class);
             // END SNIPPET: wontwork
-        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             // expected
         }
     }

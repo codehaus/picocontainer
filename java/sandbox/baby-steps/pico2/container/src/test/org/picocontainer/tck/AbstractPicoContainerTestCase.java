@@ -23,7 +23,7 @@ import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
@@ -150,7 +150,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         try {
             picoContainer.getComponent(DependsOnTouchable.class);
             fail("should need a Touchable");
-        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             assertSame(picoContainer.getComponentAdapter(DependsOnTouchable.class).getComponentImplementation(),
                        e.getUnsatisfiableComponentAdapter().getComponentImplementation());
             final Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
@@ -187,7 +187,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         pico.addComponent("pong", "pang");
         try {
             pico.getComponent(String.class);
-        } catch (InjectingAdapter.AmbiguousComponentResolutionException e) {
+        } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
             assertTrue(e.getMessage().indexOf("java.lang.String") != -1);
         }
     }
@@ -218,7 +218,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
         try {
             pico.getComponent(ComponentD.class);
-        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
 
@@ -241,7 +241,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         // should yield first unsatisfied dependency
         try {
             pico.getComponent(ComponentD.class);
-        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
             List list = (List)unsatisfiableDependencies.iterator().next();
@@ -260,7 +260,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         pico.addComponent(ComponentE.class);
         try {
             pico.getComponent(ComponentD.class);
-        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
             List list = (List)unsatisfiableDependencies.iterator().next();
@@ -287,7 +287,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         try {
             pico.getComponent(ComponentD.class);
             fail("CyclicDependencyException expected");
-        } catch (InjectingAdapter.CyclicDependencyException e) {
+        } catch (AbstractInjector.CyclicDependencyException e) {
             // CyclicDependencyException reports now the stack.
             //final List dependencies = Arrays.asList(ComponentD.class.getConstructors()[0].getParameterTypes());
             final List<Class> dependencies = Arrays.<Class>asList(ComponentD.class, ComponentE.class, ComponentD.class);
@@ -763,7 +763,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         try {
             pico.getComponent(DependsOnTouchable.class);
             fail("DependsOnTouchable should have been confused about the two Touchables");
-        } catch (InjectingAdapter.AmbiguousComponentResolutionException e) {
+        } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
             List componentImplementations = Arrays.asList(e.getAmbiguousComponentKeys());
             assertTrue(componentImplementations.contains(DerivedTouchable.class));
             assertTrue(componentImplementations.contains(SimpleTouchable.class));

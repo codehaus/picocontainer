@@ -28,7 +28,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.BeanPropertyComponentAdapter;
 import org.picocontainer.behaviors.BeanPropertyBehaviorFactory;
 import org.picocontainer.injectors.AnyInjectionFactory;
-import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -171,8 +171,8 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
 
 
     public void testDelegateIsAccessible() {
-        BehaviorAdapter componentAdapter =
-                (BehaviorAdapter) createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
+        AbstractBehavior componentAdapter =
+                (AbstractBehavior) createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
 
         assertNotNull(componentAdapter.getDelegate());
     }

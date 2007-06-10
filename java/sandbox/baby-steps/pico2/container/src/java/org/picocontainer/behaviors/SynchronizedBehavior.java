@@ -14,14 +14,14 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
  * @author Aslak Helles&oslash;y
  * @author Manish Shah
  * @version $Revision$
  */
-public class SynchronizedBehavior extends BehaviorAdapter {
+public class SynchronizedBehavior extends AbstractBehavior {
     public SynchronizedBehavior(ComponentAdapter delegate) {
         super(delegate);
     }

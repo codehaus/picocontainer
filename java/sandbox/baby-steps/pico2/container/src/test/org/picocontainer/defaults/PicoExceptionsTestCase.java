@@ -15,7 +15,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 
 import java.io.ByteArrayOutputStream;
@@ -45,7 +45,7 @@ public class PicoExceptionsTestCase
         try {
             final Exception exception = (Exception) componentAdapter.getComponentInstance(pico);
             assertEquals(MESSAGE, exception.getMessage());
-        } catch (final InjectingAdapter.UnsatisfiableDependenciesException ex) {
+        } catch (final AbstractInjector.UnsatisfiableDependenciesException ex) {
             final Set<Object> set = new HashSet<Object>();
             for (Object o : ex.getUnsatisfiableDependencies()) {
                 final List<Object> list = (List<Object>)o;
@@ -58,7 +58,7 @@ public class PicoExceptionsTestCase
         try {
             final PicoException exception = (PicoException) componentAdapter.getComponentInstance(pico);
             assertSame(THROWABLE, exception.getCause());
-        } catch (final InjectingAdapter.UnsatisfiableDependenciesException ex) {
+        } catch (final AbstractInjector.UnsatisfiableDependenciesException ex) {
             final Set<Object> set = new HashSet<Object>();
             for (Object o : ex.getUnsatisfiableDependencies()) {
                 final List<Object> list = (List<Object>)o;

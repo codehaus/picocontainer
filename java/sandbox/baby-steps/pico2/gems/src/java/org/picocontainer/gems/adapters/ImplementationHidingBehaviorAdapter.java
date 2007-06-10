@@ -11,7 +11,7 @@ package org.picocontainer.gems.adapters;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.CachingBehavior;
 
 import org.objectweb.asm.ClassWriter;
@@ -37,7 +37,7 @@ import org.objectweb.asm.*;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class ImplementationHidingBehaviorAdapter extends BehaviorAdapter implements Opcodes {
+public class ImplementationHidingBehaviorAdapter extends AbstractBehavior implements Opcodes {
 
     public ImplementationHidingBehaviorAdapter(final ComponentAdapter delegate) {
         super(delegate);

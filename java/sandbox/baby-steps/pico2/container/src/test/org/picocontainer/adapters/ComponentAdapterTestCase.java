@@ -18,7 +18,7 @@ import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.adapters.AbstractAdapter;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 
 import java.lang.reflect.Constructor;
 
@@ -63,7 +63,7 @@ public class ComponentAdapterTestCase
         }        
     }
     
-    private static class TestInstantiatingAdapter extends InjectingAdapter {
+    private static class TestInstantiatingAdapter extends AbstractInjector {
         TestInstantiatingAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
             super(componentKey, componentImplementation, parameters);
         }

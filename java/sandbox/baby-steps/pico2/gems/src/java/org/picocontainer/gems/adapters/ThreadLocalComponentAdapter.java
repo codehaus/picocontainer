@@ -20,7 +20,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.behaviors.CachingBehavior;
-import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -42,7 +42,7 @@ import java.util.Set;
  * 
  * @author J&ouml;rg Schaible
  */
-public final class ThreadLocalComponentAdapter extends BehaviorAdapter {
+public final class ThreadLocalComponentAdapter extends AbstractBehavior {
 
     private transient Class[] interfaces;
     private final ProxyFactory proxyFactory;

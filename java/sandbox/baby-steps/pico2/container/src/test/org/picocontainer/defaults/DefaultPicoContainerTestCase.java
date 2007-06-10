@@ -22,7 +22,7 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -79,8 +79,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
         try {
             child.getComponent(ComponentF.class);
-            fail("Thrown " + InjectingAdapter.UnsatisfiableDependenciesException.class.getName() + " expected");
-        } catch (final InjectingAdapter.UnsatisfiableDependenciesException e) {
+            fail("Thrown " + AbstractInjector.UnsatisfiableDependenciesException.class.getName() + " expected");
+        } catch (final AbstractInjector.UnsatisfiableDependenciesException e) {
             assertEquals(ComponentB.class, e.getUnsatisfiedDependencyType());
         }
     }
@@ -194,7 +194,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         try {
             pico.getComponent(DependsOnCollection.class);
             fail();
-        } catch (InjectingAdapter.AmbiguousComponentResolutionException expected) {
+        } catch (AbstractInjector.AmbiguousComponentResolutionException expected) {
             String doc = DependsOnCollection.class.getName();
             assertEquals("class " + doc + " has ambiguous dependency on interface java.util.Collection, resolves to multiple classes: [class java.util.ArrayList, class java.util.LinkedList]", expected.getMessage());
         }

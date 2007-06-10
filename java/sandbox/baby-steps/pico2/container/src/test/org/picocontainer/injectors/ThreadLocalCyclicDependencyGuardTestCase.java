@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 
 import junit.framework.TestCase;
 
@@ -21,13 +21,13 @@ public final class ThreadLocalCyclicDependencyGuardTestCase
     private final Runnable[] runner = new Runnable[3];
     
     class ThreadLocalRunner implements Runnable {
-        public InjectingAdapter.CyclicDependencyException exception;
+        public AbstractInjector.CyclicDependencyException exception;
         private final Blocker blocker;
-        private final InjectingAdapter.ThreadLocalCyclicDependencyGuard guard;
+        private final AbstractInjector.ThreadLocalCyclicDependencyGuard guard;
 
         public ThreadLocalRunner() {
             this.blocker = new Blocker();
-            this.guard = new InjectingAdapter.ThreadLocalCyclicDependencyGuard() {
+            this.guard = new AbstractInjector.ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
                     try {
                         blocker.block();
@@ -41,7 +41,7 @@ public final class ThreadLocalCyclicDependencyGuardTestCase
         public void run() {
             try {
                 guard.observe(ThreadLocalRunner.class);
-            } catch (InjectingAdapter.CyclicDependencyException e) {
+            } catch (AbstractInjector.CyclicDependencyException e) {
                 exception = e;
             }
         }
@@ -92,7 +92,7 @@ public final class ThreadLocalCyclicDependencyGuardTestCase
     }
 
     public void testCyclicDependencyException() {
-        final InjectingAdapter.CyclicDependencyException cdEx = new InjectingAdapter.CyclicDependencyException(getClass());
+        final AbstractInjector.CyclicDependencyException cdEx = new AbstractInjector.CyclicDependencyException(getClass());
         cdEx.push(String.class);
         final Class[] classes = cdEx.getDependencies();
         assertEquals(2, classes.length);

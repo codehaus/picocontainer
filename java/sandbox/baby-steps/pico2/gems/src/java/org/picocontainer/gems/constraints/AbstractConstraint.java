@@ -12,7 +12,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.parameters.CollectionComponentParameter;
 
 import java.lang.reflect.Array;
@@ -70,7 +70,7 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
         final Map<Object, ComponentAdapter<?>> map =
             super.getMatchingComponentAdapters(container, adapter, keyType, valueType);
         if (map.size() > 1) {
-            throw new InjectingAdapter.AmbiguousComponentResolutionException(valueType, map.keySet().toArray(new Object[map.size()]));
+            throw new AbstractInjector.AmbiguousComponentResolutionException(valueType, map.keySet().toArray(new Object[map.size()]));
         }
         return map;
     }

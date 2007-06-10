@@ -20,7 +20,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.CachingBehavior;
 
 /**
@@ -43,7 +43,7 @@ import org.picocontainer.behaviors.CachingBehavior;
  * @version $Revision$
  * @since 1.0
  */
-public class BeanPropertyComponentAdapter extends BehaviorAdapter {
+public class BeanPropertyComponentAdapter extends AbstractBehavior {
     private Map properties;
     private transient Map<String, Method> setters = null;
 

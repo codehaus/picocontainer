@@ -4,7 +4,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -171,7 +171,7 @@ public class CollectionComponentParameterTestCase
         try {
             pico.getComponent(UngenericCollectionBowl.class);
             fail();
-        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             // expected
         }
     }
@@ -194,7 +194,7 @@ public class CollectionComponentParameterTestCase
         try {
             pico.getComponent(AnotherGenericCollectionBowl.class);
             fail();
-        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             // expected
         }
     }

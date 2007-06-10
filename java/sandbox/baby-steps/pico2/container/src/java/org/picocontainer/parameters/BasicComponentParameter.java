@@ -14,7 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -98,7 +98,7 @@ public class BasicComponentParameter
         if (componentAdapter == null) {
             final Set<Class> set = new HashSet<Class>();
             set.add(expectedType);
-            throw new InjectingAdapter.UnsatisfiableDependenciesException(adapter, null, set, container);
+            throw new AbstractInjector.UnsatisfiableDependenciesException(adapter, null, set, container);
         }
         componentAdapter.verify(container);
     }
@@ -196,7 +196,7 @@ public class BasicComponentParameter
                 for (int i = 0; i < foundClasses.length; i++) {
                     foundClasses[i] = found.get(i).getComponentImplementation();
                 }
-                throw new InjectingAdapter.AmbiguousComponentResolutionException(expectedType, foundClasses);
+                throw new AbstractInjector.AmbiguousComponentResolutionException(expectedType, foundClasses);
             }
         }
     }

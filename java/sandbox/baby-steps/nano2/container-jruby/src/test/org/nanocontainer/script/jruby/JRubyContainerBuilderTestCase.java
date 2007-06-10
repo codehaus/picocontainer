@@ -12,7 +12,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.injectors.SetterInjectionFactory;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
@@ -331,7 +331,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         try {
             buildContainer(script, null, ASSEMBLY_SCOPE);
             fail("Should not have been able to instansiate addComponent tree due to visibility/parent reasons.");
-        } catch(InjectingAdapter.UnsatisfiableDependenciesException expected) {
+        } catch(AbstractInjector.UnsatisfiableDependenciesException expected) {
         }
     }
 

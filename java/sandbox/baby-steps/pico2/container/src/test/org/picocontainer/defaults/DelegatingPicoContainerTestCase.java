@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 
@@ -41,7 +41,7 @@ public class DelegatingPicoContainerTestCase extends TestCase {
         try {
             parent.getComponent(DependsOnTouchable.class);
             fail();
-        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
         }
     }
 

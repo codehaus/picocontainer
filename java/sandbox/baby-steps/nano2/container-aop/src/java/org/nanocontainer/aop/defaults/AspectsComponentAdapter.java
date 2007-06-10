@@ -15,12 +15,12 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
  * @author Stephen Molitor
  */
-public class AspectsComponentAdapter extends BehaviorAdapter {
+public class AspectsComponentAdapter extends AbstractBehavior {
 
     private final AspectsApplicator aspectsApplicator;
 

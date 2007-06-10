@@ -23,7 +23,7 @@ import org.picocontainer.monitors.DelegatingComponentMonitor;
 import static org.picocontainer.parameters.ComponentParameter.*;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.injectors.SetterInjectionFactory;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.PersonBean;
@@ -248,7 +248,7 @@ public class SetterInjectionAdapterTestCase
 
         try {
             aAdapter.getComponentInstance(pico);
-        } catch (InjectingAdapter.UnsatisfiableDependenciesException e) {
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             assertTrue(e.getUnsatisfiableDependencies().contains(List.class));
             assertTrue(e.getUnsatisfiableDependencies().contains(String.class));
         }

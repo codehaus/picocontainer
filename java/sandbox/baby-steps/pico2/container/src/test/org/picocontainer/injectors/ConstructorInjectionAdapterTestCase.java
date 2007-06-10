@@ -25,7 +25,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
@@ -226,7 +226,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         try {
             pico.addComponent(Runnable.class);
             fail("Shouldn't be allowed to register abstract classes or interfaces.");
-        } catch (InjectingAdapter.NotConcreteRegistrationException e) {
+        } catch (AbstractInjector.NotConcreteRegistrationException e) {
             assertEquals(Runnable.class, e.getComponentImplementation());
             assertTrue(e.getMessage().indexOf(Runnable.class.getName()) > 0);
         }
@@ -238,7 +238,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         try {
             pico.addComponent(AbstractButton.class);
             fail("Shouldn't be allowed to register abstract classes or interfaces.");
-        } catch (InjectingAdapter.NotConcreteRegistrationException e) {
+        } catch (AbstractInjector.NotConcreteRegistrationException e) {
             assertEquals(AbstractButton.class, e.getComponentImplementation());
             assertTrue(e.getMessage().indexOf(AbstractButton.class.getName()) > 0);
         }

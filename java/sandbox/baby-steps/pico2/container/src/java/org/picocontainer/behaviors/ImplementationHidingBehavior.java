@@ -20,7 +20,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
  * This addComponent addAdapter makes it possible to hide the implementation
@@ -34,7 +34,7 @@ import org.picocontainer.behaviors.BehaviorAdapter;
  * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapter for a more feature-rich version of this class.
  * @since 1.2, moved from package {@link org.picocontainer.alternatives}
  */
-public class ImplementationHidingBehavior extends BehaviorAdapter {
+public class ImplementationHidingBehavior extends AbstractBehavior {
 
     /**
      * Creates an ImplementationHidingComponentAdapter with a delegate 

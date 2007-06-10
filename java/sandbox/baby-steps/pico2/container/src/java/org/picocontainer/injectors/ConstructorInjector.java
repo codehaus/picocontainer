@@ -16,7 +16,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ParameterName;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.CachingBehavior;
 
@@ -51,7 +51,7 @@ import com.thoughtworks.paranamer.asm.AsmParanamer;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public final class ConstructorInjector extends InjectingAdapter {
+public final class ConstructorInjector extends AbstractInjector {
     private transient List<Constructor> sortedMatchingConstructors;
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     private final transient Paranamer paranamer = new AsmParanamer();

@@ -18,7 +18,7 @@ import org.picocontainer.ParameterName;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.BeanPropertyComponentAdapter;
 import org.picocontainer.behaviors.CachingBehavior;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -49,7 +49,7 @@ import java.io.Serializable;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class SetterInjector extends InjectingAdapter {
+public class SetterInjector extends AbstractInjector {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     private transient List<Method> injectionMethods;
     private transient Class[] injectionTypes;

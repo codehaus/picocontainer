@@ -27,8 +27,8 @@ import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.injectors.InjectingAdapter;
-import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ObjectReference;
@@ -467,7 +467,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             try {
                 componentAdapter.verify(wrappedPicoContainer);
                 fail("Thrown PicoVerificationException excpected");
-            } catch (final InjectingAdapter.CyclicDependencyException cycle) {
+            } catch (final AbstractInjector.CyclicDependencyException cycle) {
                 final Class[] dependencies = cycle.getDependencies();
                 assertSame(dependencies[0], dependencies[dependencies.length - 1]);
             }
@@ -501,7 +501,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             try {
                 componentAdapter.getComponentInstance(wrappedPicoContainer);
                 fail("Thrown CyclicDependencyException excpected");
-            } catch (final InjectingAdapter.CyclicDependencyException e) {
+            } catch (final AbstractInjector.CyclicDependencyException e) {
                 final Class[] dependencies = e.getDependencies();
                 assertSame(dependencies[0], dependencies[dependencies.length - 1]);
             }
@@ -532,7 +532,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         }
     }
 
-    static public class NotInstantiatableComponentAdapter extends BehaviorAdapter {
+    static public class NotInstantiatableComponentAdapter extends AbstractBehavior {
         public NotInstantiatableComponentAdapter(final ComponentAdapter delegate) {
             super(delegate);
         }
@@ -543,7 +543,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         }
     }
 
-    static public class CollectingComponentAdapter extends BehaviorAdapter {
+    static public class CollectingComponentAdapter extends AbstractBehavior {
         final List list;
 
         public CollectingComponentAdapter(final ComponentAdapter delegate, final List list) {
@@ -558,7 +558,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         }
     }
 
-    static public class CycleDetectorComponentAdapter extends BehaviorAdapter {
+    static public class CycleDetectorComponentAdapter extends AbstractBehavior {
         private final Set set;
         private final ObjectReference reference;
 
@@ -610,7 +610,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
     final protected PicoContainer wrapComponentInstances(
             final Class decoratingComponentAdapterClass, final PicoContainer picoContainer,
             final Object[] wrapperDependencies) {
-        assertTrue(BehaviorAdapter.class.isAssignableFrom(decoratingComponentAdapterClass));
+        assertTrue(AbstractBehavior.class.isAssignableFrom(decoratingComponentAdapterClass));
         final MutablePicoContainer mutablePicoContainer = new DefaultPicoContainer();
         final int size = (wrapperDependencies != null ? wrapperDependencies.length : 0) + 1;
         final Collection allComponentAdapters = picoContainer.getComponentAdapters();

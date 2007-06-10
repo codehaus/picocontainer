@@ -26,7 +26,7 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.injectors.AnyInjectionFactory;
-import org.picocontainer.injectors.InjectingAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.behaviors.ImplementationHidingBehavior;
@@ -268,7 +268,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 foundClasses[i] = found.get(i).getComponentImplementation();
             }
 
-            throw new InjectingAdapter.AmbiguousComponentResolutionException(componentType, foundClasses);
+            throw new AbstractInjector.AmbiguousComponentResolutionException(componentType, foundClasses);
         }
     }
 
@@ -444,7 +444,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             Object instance;
             try {
                 instance = componentAdapter.getComponentInstance(this);
-            } catch (InjectingAdapter.CyclicDependencyException e) {
+            } catch (AbstractInjector.CyclicDependencyException e) {
                 if (parent != null) {
                     instance = parent.getComponent(componentAdapter.getComponentKey());
                     if (instance != null) {

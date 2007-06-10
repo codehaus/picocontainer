@@ -15,7 +15,7 @@ import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.behaviors.BehaviorAdapter;
+import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -129,7 +129,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         
        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,null);
         ComponentAdapter componentAdapter = pico.getComponentAdapter("foo");
-        BehaviorAdapter adapter = (BehaviorAdapter) componentAdapter;
+        AbstractBehavior adapter = (AbstractBehavior) componentAdapter;
        assertNotNull(adapter);
     }
     

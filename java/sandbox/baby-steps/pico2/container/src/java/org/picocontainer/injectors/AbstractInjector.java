@@ -44,7 +44,7 @@ import java.util.Set;
  * @version $Revision$
  * @since 1.0
  */
-public abstract class InjectingAdapter extends AbstractAdapter
+public abstract class AbstractInjector extends AbstractAdapter
     implements LifecycleStrategy {
     /** The cycle guard for the verification. */ 
     protected transient ThreadLocalCyclicDependencyGuard verifyingGuard;
@@ -61,10 +61,10 @@ public abstract class InjectingAdapter extends AbstractAdapter
      * @param parameters the parameters to use for the initialization
      * @param monitor the addComponent monitor used by this ComponentAdapter
      * @param lifecycleStrategy the lifecycle strategy used by this ComponentAdapter
-     * @throws org.picocontainer.defaults.NotConcreteRegistrationException if the implementation is not a concrete class
+     * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    protected InjectingAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters,
+    protected AbstractInjector(Object componentKey, Class componentImplementation, Parameter[] parameters,
                                             ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
         super(componentKey, componentImplementation, monitor);
         checkConcrete();
@@ -85,10 +85,10 @@ public abstract class InjectingAdapter extends AbstractAdapter
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
      * @param monitor the addComponent monitor used by this ComponentAdapter
-     * @throws org.picocontainer.defaults.NotConcreteRegistrationException if the implementation is not a concrete class
+     * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    protected InjectingAdapter(Object componentKey, Class componentImplementation,
+    protected AbstractInjector(Object componentKey, Class componentImplementation,
                                             Parameter[] parameters,
                                             ComponentMonitor monitor) {
         this(componentKey, componentImplementation, parameters, monitor, new StartableLifecycleStrategy(monitor));
@@ -99,10 +99,10 @@ public abstract class InjectingAdapter extends AbstractAdapter
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
-     * @throws org.picocontainer.defaults.NotConcreteRegistrationException if the implementation is not a concrete class.
+     * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    protected InjectingAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
+    protected AbstractInjector(Object componentKey, Class componentImplementation, Parameter[] parameters) {
         this(componentKey, componentImplementation, parameters, new DelegatingComponentMonitor());
     }
     

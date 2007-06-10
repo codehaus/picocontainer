@@ -3,7 +3,7 @@ package org.picocontainer.gems.adapters;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.AnyInjectionFactory;
-import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
@@ -60,7 +60,7 @@ public final class HotSwappingComponentAdapterFactoryTestCase extends AbstractCo
 
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        HotSwappingComponentAdapter hsca = (HotSwappingComponentAdapter) pico.addAdapter(new HotSwappingComponentAdapter(new ConstructorInjectionAdapter("l", ArrayList.class))).lastCA();
+        HotSwappingComponentAdapter hsca = (HotSwappingComponentAdapter) pico.addAdapter(new HotSwappingComponentAdapter(new ConstructorInjector("l", ArrayList.class))).lastCA();
         List l = (List)pico.getComponent("l");
         l.add("Hello");
         final ArrayList newList = new ArrayList();

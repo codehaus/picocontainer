@@ -19,15 +19,15 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.injectors.SetterInjectionAdapter;
+import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.behaviors.BehaviorAdapter;
-import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehavior;
 
 /**
  * Decorating addComponent addAdapter that can be used to set additional properties
  * on a addComponent in a bean style. These properties must be managed manually
  * by the user of the API, and will not be managed by PicoContainer. This class
- * is therefore <em>not</em> the same as {@link SetterInjectionAdapter},
+ * is therefore <em>not</em> the same as {@link SetterInjector},
  * which is a true Setter Injection addAdapter.
  * <p/>
  * This addAdapter is mostly handy for setting various primitive properties via setters;
@@ -36,7 +36,7 @@ import org.picocontainer.behaviors.CachingBehaviorAdapter;
  * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
- * use a {@link CachingBehaviorAdapter} around this one.
+ * use a {@link CachingBehavior} around this one.
  * </em>
  *
  * @author Aslak Helles&oslash;y

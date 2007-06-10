@@ -5,7 +5,7 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *****************************************************************************/
-package org.picocontainer.monitors;
+package org.picocontainer.lifecycle;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;

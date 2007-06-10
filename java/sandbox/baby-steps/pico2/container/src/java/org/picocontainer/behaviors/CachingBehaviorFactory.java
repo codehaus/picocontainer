@@ -38,7 +38,7 @@ public class CachingBehaviorFactory extends AbstractBehaviorFactory {
         if (ComponentCharacteristics.NOCACHE.isSoCharacterized(componentCharacteristic)) {
             return super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
         }
-        return new CachingBehaviorAdapter(super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters));
+        return new CachingBehavior(super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters));
 
     }
 }

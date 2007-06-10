@@ -32,7 +32,7 @@ public class ConstructorInjectionFactory implements InjectionFactory, Serializab
                                                    Class componentImplementation,
                                                    Parameter... parameters)
             throws PicoIntrospectionException, PicoRegistrationException {
-        return new ConstructorInjectionAdapter(componentKey, componentImplementation, parameters,
+        return new ConstructorInjector(componentKey, componentImplementation, parameters,
                     componentMonitor, lifecycleStrategy);
     }
 }

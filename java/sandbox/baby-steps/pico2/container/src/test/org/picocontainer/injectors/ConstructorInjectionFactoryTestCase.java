@@ -13,7 +13,7 @@ import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
 import org.picocontainer.testmodel.NullLifecycle;
@@ -37,7 +37,7 @@ public class ConstructorInjectionFactoryTestCase extends AbstractComponentAdapte
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         ConstructorInjectionFactory caf =
             new ConstructorInjectionFactory();
-        ConstructorInjectionAdapter cica =  (ConstructorInjectionAdapter)
+        ConstructorInjector cica =  (ConstructorInjector)
         caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
         One one = new RecordingLifecycle.One(new StringBuffer());
         cica.start(one);

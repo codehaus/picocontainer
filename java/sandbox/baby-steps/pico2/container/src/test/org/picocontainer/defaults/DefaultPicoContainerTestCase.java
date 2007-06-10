@@ -23,11 +23,11 @@ import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.InjectingAdapter;
-import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.behaviors.SynchronizedBehaviorAdapter;
+import org.picocontainer.behaviors.SynchronizedBehavior;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
@@ -174,7 +174,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     public void testDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientComponentAdapter() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         picoContainer.addComponent(Service.class);
-        picoContainer.addAdapter(new ConstructorInjectionAdapter(TransientComponent.class, TransientComponent.class));
+        picoContainer.addAdapter(new ConstructorInjector(TransientComponent.class, TransientComponent.class));
         TransientComponent c1 = picoContainer.getComponent(TransientComponent.class);
         TransientComponent c2 = picoContainer.getComponent(TransientComponent.class);
         assertNotSame(c1, c2);
@@ -430,17 +430,17 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     public static class MyPicoContainer extends DefaultPicoContainer {
 
         public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) {
-            return super.addAdapter(new SynchronizedBehaviorAdapter(componentAdapter));
+            return super.addAdapter(new SynchronizedBehavior(componentAdapter));
         }
         
     }
     
     public void testDerivedPicoContainerCanOverloadRegisterComponentForAllCreatedComponentAdapters() {
         MutablePicoContainer mpc = new MyPicoContainer();
-        assertEquals(SynchronizedBehaviorAdapter.class, mpc.addAdapter(new InstanceAdapter("foo", "bar", NullLifecycleStrategy.getInstance(),
+        assertEquals(SynchronizedBehavior.class, mpc.addAdapter(new InstanceAdapter("foo", "bar", NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance())).lastCA().getClass());
-        assertEquals(SynchronizedBehaviorAdapter.class, mpc.addComponent("foobar").lastCA().getClass());
-        assertEquals(SynchronizedBehaviorAdapter.class, mpc.addComponent(SimpleA.class).lastCA().getClass());
+        assertEquals(SynchronizedBehavior.class, mpc.addComponent("foobar").lastCA().getClass());
+        assertEquals(SynchronizedBehavior.class, mpc.addComponent(SimpleA.class).lastCA().getClass());
     }
 
 

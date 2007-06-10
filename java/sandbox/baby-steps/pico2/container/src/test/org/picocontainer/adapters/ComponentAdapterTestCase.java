@@ -19,7 +19,6 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.injectors.InjectingAdapter;
-import org.picocontainer.adapters.MonitoringAdapter;
 
 import java.lang.reflect.Constructor;
 
@@ -45,9 +44,9 @@ public class ComponentAdapterTestCase
         
     }
 
-    private static class TestMonitoringComponentAdapter extends MonitoringAdapter {
+    private static class TestMonitoringComponentAdapter extends AbstractAdapter {
         TestMonitoringComponentAdapter(ComponentMonitor componentMonitor) {
-            super(componentMonitor);
+            super(null, null, componentMonitor);
         }
         public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
             return null;
@@ -105,13 +104,13 @@ public class ComponentAdapterTestCase
             new TestAdapter("Key", String.class, null);
             fail("NullPointerException expected");
         } catch (NullPointerException e) {
-            assertEquals("monitor", e.getMessage());
+            assertEquals("ComponentMonitor==null", e.getMessage());
         }
         try {
             new TestMonitoringComponentAdapter(null);
             fail("NullPointerException expected");
         } catch (NullPointerException e) {
-            assertEquals("monitor", e.getMessage());
+            assertEquals("ComponentMonitor==null", e.getMessage());
         }
     }
 

@@ -4,7 +4,7 @@ package org.picocontainer.gems.adapters;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.injectors.AnyInjectionFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -53,7 +53,7 @@ public final class ImplementationHidingBehaviorFactoryTestCase extends AbstractC
     public void testIHCAFwithCTORandNoCaching() {
         // http://lists.codehaus.org/pipermail/picocontainer-dev/2004-January/001985.html
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new ImplementationHidingBehaviorAdapter(new ConstructorInjectionAdapter("l", ArrayList.class)));
+        pico.addAdapter(new ImplementationHidingBehaviorAdapter(new ConstructorInjector("l", ArrayList.class)));
 
         List list1 = (List) pico.getComponent("l");
         List list2 = (List) pico.getComponent("l");
@@ -76,7 +76,7 @@ public final class ImplementationHidingBehaviorFactoryTestCase extends AbstractC
 
     public void testElephantWithAsmProxy() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new ImplementationHidingBehaviorAdapter(new ConstructorInjectionAdapter("l", ArrayList.class)));
+        pico.addAdapter(new ImplementationHidingBehaviorAdapter(new ConstructorInjector("l", ArrayList.class)));
         Elephant elephant = pico.addComponent(Elephant.class, ElephantImpl.class).getComponent(Elephant.class);
 
         assertions(elephant);

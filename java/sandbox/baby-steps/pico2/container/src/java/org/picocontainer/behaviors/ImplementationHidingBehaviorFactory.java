@@ -29,6 +29,6 @@ public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory
                                                                                                                                                                                                                                                                 PicoRegistrationException
     {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
-        return new ImplementationHidingBehaviorAdapter(componentAdapter);
+        return new ImplementationHidingBehavior(componentAdapter);
     }
 }

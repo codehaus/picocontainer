@@ -15,7 +15,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.behaviors.BehaviorAdapter;
-import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehavior;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class JMXExposingBehaviorAdapter extends BehaviorAdapter {
      * Retrieve the addComponent instance. The implementation will automatically register it in the {@link MBeanServer},
      * if a provider can return a {@link javax.management.DynamicMBean} for it.
      * <p>
-     * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link CachingBehaviorAdapter} to avoid
+     * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link CachingBehavior} to avoid
      * the registration of the same addComponent again.
      * </p>
      * @throws PicoInitializationException Thrown by the delegate or if the registering of the
@@ -87,7 +87,7 @@ public class JMXExposingBehaviorAdapter extends BehaviorAdapter {
      */
     public Object getComponentInstance(final PicoContainer container)
             throws PicoInitializationException, PicoIntrospectionException {
-        final ComponentAdapter componentAdapter = new CachingBehaviorAdapter(getDelegate());
+        final ComponentAdapter componentAdapter = new CachingBehavior(getDelegate());
         final Object componentInstance = componentAdapter.getComponentInstance(container);
         for (DynamicMBeanProvider provider : providers) {
             final JMXRegistrationInfo info = provider.provide(container, componentAdapter);

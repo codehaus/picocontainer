@@ -11,7 +11,7 @@ package org.picocontainer.gems.adapters;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehavior;
 
 
 /**
@@ -21,7 +21,7 @@ import org.picocontainer.behaviors.CachingBehaviorAdapter;
  * underlying subject. In any case, the proxy will also implement {@link com.thoughtworks.proxy.toys.hotswap.Swappable}, making
  * it possible to swap out the underlying subject at runtime. <p/> <em>
  * Note that this class doesn't cache instances. If you want caching,
- * use a {@link CachingBehaviorAdapter} around this one.
+ * use a {@link CachingBehavior} around this one.
  * </em>
  * 
  * @author Paul Hammant

@@ -12,7 +12,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.AnnotationInjectionFactory;
-import org.picocontainer.injectors.AnnotationInjectionAdapter;
+import org.picocontainer.injectors.AnnotationInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
@@ -90,7 +90,7 @@ public class AnnotationInjectionFactoryTestCase extends AbstractComponentAdapter
     public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         AnnotationInjectionFactory caf = new AnnotationInjectionFactory();
-        AnnotationInjectionAdapter aica = (AnnotationInjectionAdapter)caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
+        AnnotationInjector aica = (AnnotationInjector)caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
         One one = new One(new StringBuffer());
         aica.start(one);
         aica.stop(one);

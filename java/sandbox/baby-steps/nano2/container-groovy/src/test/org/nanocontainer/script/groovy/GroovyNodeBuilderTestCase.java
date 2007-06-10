@@ -31,7 +31,7 @@ import org.picocontainer.injectors.InjectingAdapter;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.injectors.SetterInjectionAdapter;
+import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.injectors.SetterInjectionFactory;
 
 import java.io.File;
@@ -499,7 +499,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         MutablePicoContainer pico = (MutablePicoContainer)buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
         ComponentAdapter componentAdapter = pico.addComponent(String.class).lastCA();
-        assertTrue("ComponentAdapter should be originally defined by parent" , componentAdapter instanceof SetterInjectionAdapter);
+        assertTrue("ComponentAdapter should be originally defined by parent" , componentAdapter instanceof SetterInjector);
     }
 
 
@@ -726,7 +726,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
         // LifecyleContainerBuilder starts the container
         Object one = pico.getComponents().get(1);
-        assertEquals("org.picocontainer.behaviors.CachingBehaviorAdapter", one.toString());
+        assertEquals("org.picocontainer.behaviors.CachingBehavior", one.toString());
     }
 
 

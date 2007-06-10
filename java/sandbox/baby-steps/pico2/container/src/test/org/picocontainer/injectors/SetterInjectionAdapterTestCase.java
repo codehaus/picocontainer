@@ -16,7 +16,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.injectors.SetterInjectionAdapter;
+import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
@@ -36,7 +36,7 @@ public class SetterInjectionAdapterTestCase
         extends AbstractComponentAdapterTestCase {
 
     protected Class getComponentAdapterType() {
-        return SetterInjectionAdapter.class;
+        return SetterInjector.class;
     }
 
     protected ComponentFactory createDefaultComponentAdapterFactory() {
@@ -44,23 +44,23 @@ public class SetterInjectionAdapterTestCase
     }
 
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
-        return new SetterInjectionAdapter(PersonBean.class, PersonBean.class, new ConstantParameter(
+        return new SetterInjector(PersonBean.class, PersonBean.class, new ConstantParameter(
                 "Pico Container"));
     }
 
     protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
-        return new SetterInjectionAdapter(DeadBody.class, DeadBody.class, DEFAULT);
+        return new SetterInjector(DeadBody.class, DeadBody.class, DEFAULT);
     }
 
     protected ComponentAdapter prepDEF_visitable() {
-        return new SetterInjectionAdapter(PersonBean.class, PersonBean.class, new ConstantParameter(
+        return new SetterInjector(PersonBean.class, PersonBean.class, new ConstantParameter(
                 "Pico Container"));
     }
 
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
-        return new SetterInjectionAdapter(PersonBean.class, PersonBean.class, DEFAULT);
+        return new SetterInjector(PersonBean.class, PersonBean.class, DEFAULT);
     }
 
     protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
@@ -70,7 +70,7 @@ public class SetterInjectionAdapterTestCase
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class);
-        SetterInjectionAdapter componentAdapter = new SetterInjectionAdapter(
+        SetterInjector componentAdapter = new SetterInjector(
                 PurseBean.class, MoneyPurse.class, DEFAULT, new ConstantParameter(100.0));
         return picoContainer.addAdapter(componentAdapter).lastCA();
     }
@@ -91,14 +91,14 @@ public class SetterInjectionAdapterTestCase
     protected ComponentAdapter prepVER_verificationFails(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class);
-        SetterInjectionAdapter componentAdapter = new SetterInjectionAdapter(
+        SetterInjector componentAdapter = new SetterInjector(
                 PurseBean.class, MoneyPurse.class, DEFAULT);
         return picoContainer.addAdapter(componentAdapter).lastCA();
     }
 
     protected ComponentAdapter prepINS_createsNewInstances(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
-        return new SetterInjectionAdapter(PersonBean.class, PersonBean.class, DEFAULT);
+        return new SetterInjector(PersonBean.class, PersonBean.class, DEFAULT);
     }
 
     public static class Ghost
@@ -110,7 +110,7 @@ public class SetterInjectionAdapterTestCase
 
     protected ComponentAdapter prepINS_errorIsRethrown(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
-        return new SetterInjectionAdapter(Ghost.class, Ghost.class, DEFAULT);
+        return new SetterInjector(Ghost.class, Ghost.class, DEFAULT);
     }
 
     public static class DeadBody
@@ -122,7 +122,7 @@ public class SetterInjectionAdapterTestCase
 
     protected ComponentAdapter prepINS_runtimeExceptionIsRethrown(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
-        return new SetterInjectionAdapter(DeadBody.class, DeadBody.class, DEFAULT);
+        return new SetterInjector(DeadBody.class, DeadBody.class, DEFAULT);
     }
 
     public static class HidingPersion
@@ -135,14 +135,14 @@ public class SetterInjectionAdapterTestCase
     protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInitializationException(
             MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
-        return new SetterInjectionAdapter(
+        return new SetterInjector(
                 HidingPersion.class, HidingPersion.class, DEFAULT);
     }
 
     protected ComponentAdapter prepRES_dependenciesAreResolved(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class);
-        return new SetterInjectionAdapter(PurseBean.class, PurseBean.class, DEFAULT);
+        return new SetterInjector(PurseBean.class, PurseBean.class, DEFAULT);
     }
 
     public static class WealthyPerson
@@ -161,7 +161,7 @@ public class SetterInjectionAdapterTestCase
     protected ComponentAdapter prepRES_failingVerificationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class, WealthyPerson.class);
-        SetterInjectionAdapter componentAdapter = new SetterInjectionAdapter(
+        SetterInjector componentAdapter = new SetterInjector(
                 PurseBean.class, PurseBean.class, DEFAULT);
         return picoContainer.addAdapter(componentAdapter).lastCA();
     }
@@ -169,7 +169,7 @@ public class SetterInjectionAdapterTestCase
     protected ComponentAdapter prepRES_failingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class, WealthyPerson.class);
-        SetterInjectionAdapter componentAdapter = new SetterInjectionAdapter(
+        SetterInjector componentAdapter = new SetterInjector(
                 PurseBean.class, PurseBean.class, DEFAULT);
         return picoContainer.addAdapter(componentAdapter).lastCA();
     }
@@ -239,8 +239,8 @@ public class SetterInjectionAdapterTestCase
     }
 
     public void testAllUnsatisfiableDependenciesAreSignalled() {
-        SetterInjectionAdapter aAdapter = new SetterInjectionAdapter("a", A.class);
-        SetterInjectionAdapter bAdapter = new SetterInjectionAdapter("b", B.class);
+        SetterInjector aAdapter = new SetterInjector("a", A.class);
+        SetterInjector bAdapter = new SetterInjector("b", B.class);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(bAdapter);
@@ -255,8 +255,8 @@ public class SetterInjectionAdapterTestCase
     }
 
     public void testAllUnsatisfiableDependenciesAreSignalled2() {
-        SetterInjectionAdapter aAdapter = new SetterInjectionAdapter(A2.class, A2.class);
-        SetterInjectionAdapter bAdapter = new SetterInjectionAdapter("b", B.class);
+        SetterInjector aAdapter = new SetterInjector(A2.class, A2.class);
+        SetterInjector bAdapter = new SetterInjector("b", B.class);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(List.class, ArrayList.class).addComponent(String.class, "foo");
@@ -297,7 +297,7 @@ public class SetterInjectionAdapterTestCase
     public void testSetterMethodInjectionToContrastWithThatBelow() {
 
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SetterInjectionAdapter(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT));
+        pico.addAdapter(new SetterInjector(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT));
         pico.addComponent(Wind.class, new Wind());
         SetterBurp burp = pico.getComponent(SetterBurp.class);
         assertNotNull(burp);
@@ -306,7 +306,7 @@ public class SetterInjectionAdapterTestCase
 
     public void testNonSetterMethodInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SetterInjectionAdapter(InitBurp.class, InitBurp.class, Parameter.DEFAULT) {
+        pico.addAdapter(new SetterInjector(InitBurp.class, InitBurp.class, Parameter.DEFAULT) {
             protected String getInjectorPrefix() {
                 return "init";
             }
@@ -319,7 +319,7 @@ public class SetterInjectionAdapterTestCase
 
     public void testNonSetterMethodInjectionWithoutOverridingSetterPrefix() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SetterInjectionAdapter(InitBurp.class, InitBurp.class, Parameter.ZERO));
+        pico.addAdapter(new SetterInjector(InitBurp.class, InitBurp.class, Parameter.ZERO));
         pico.addComponent(Wind.class, new Wind());
         InitBurp burp = pico.getComponent(InitBurp.class);
         assertNotNull(burp);
@@ -364,9 +364,9 @@ public class SetterInjectionAdapterTestCase
     }
 
     public void testHybridBeans() {
-        SetterInjectionAdapter bAdapter = new SetterInjectionAdapter("b", B.class, (Parameter[])null);
-        SetterInjectionAdapter cAdapter = new SetterInjectionAdapter("c", C.class, (Parameter[])null);
-        SetterInjectionAdapter cNullAdapter = new SetterInjectionAdapter("c0", C.class, (Parameter[])null);
+        SetterInjector bAdapter = new SetterInjector("b", B.class, (Parameter[])null);
+        SetterInjector cAdapter = new SetterInjector("c", C.class, (Parameter[])null);
+        SetterInjector cNullAdapter = new SetterInjector("c0", C.class, (Parameter[])null);
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(bAdapter);
@@ -421,7 +421,7 @@ public class SetterInjectionAdapterTestCase
     
     public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
-        SetterInjectionAdapter sica = new SetterInjectionAdapter(
+        SetterInjector sica = new SetterInjector(
                 NullLifecycle.class, NullLifecycle.class, new Parameter[0],
                 new DelegatingComponentMonitor(), strategy);
         Touchable touchable = new SimpleTouchable();

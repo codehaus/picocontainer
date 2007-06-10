@@ -18,14 +18,14 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
-import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.injectors.SetterInjectionFactory;
 
 import java.io.Serializable;
 
 /**
- * Creates instances of {@link ConstructorInjectionAdapter} decorated by
- * {@link CachingBehaviorAdapter}.
+ * Creates instances of {@link ConstructorInjector} decorated by
+ * {@link CachingBehavior}.
  *
  * @author Jon Tirs&eacute;n
  * @author Aslak Helles&oslash;y

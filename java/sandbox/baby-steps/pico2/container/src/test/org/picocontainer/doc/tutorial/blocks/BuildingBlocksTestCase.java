@@ -7,13 +7,13 @@ import org.picocontainer.Parameter;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
-import org.picocontainer.behaviors.CachingBehaviorAdapter;
-import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.injectors.SetterInjectionAdapter;
+import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.injectors.SetterInjectionFactory;
-import org.picocontainer.behaviors.SynchronizedBehaviorAdapter;
+import org.picocontainer.behaviors.SynchronizedBehavior;
 import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
 import org.picocontainer.doc.introduction.Apple;
 import org.picocontainer.doc.introduction.Juicer;
@@ -50,8 +50,8 @@ public class BuildingBlocksTestCase extends TestCase {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         // START SNIPPET: register-equivalent-at-length
         picoContainer.addAdapter(
-                new CachingBehaviorAdapter(
-                        new ConstructorInjectionAdapter(Juicer.class, Juicer.class)));
+                new CachingBehavior(
+                        new ConstructorInjector(Juicer.class, Juicer.class)));
         // END SNIPPET: register-equivalent-at-length
     }
 
@@ -67,9 +67,9 @@ public class BuildingBlocksTestCase extends TestCase {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         // START SNIPPET: register-equivalent-at-length2
         picoContainer.addAdapter(
-                new SynchronizedBehaviorAdapter(
-                        new CachingBehaviorAdapter(
-                                new SetterInjectionAdapter(
+                new SynchronizedBehavior(
+                        new CachingBehavior(
+                                new SetterInjector(
                                         JuicerBean.class, JuicerBean.class, (Parameter[])null))));
         // END SNIPPET: register-equivalent-at-length2
     }

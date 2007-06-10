@@ -34,13 +34,13 @@ import org.picocontainer.behaviors.BehaviorAdapter;
  * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapter for a more feature-rich version of this class.
  * @since 1.2, moved from package {@link org.picocontainer.alternatives}
  */
-public class ImplementationHidingBehaviorAdapter extends BehaviorAdapter {
+public class ImplementationHidingBehavior extends BehaviorAdapter {
 
     /**
      * Creates an ImplementationHidingComponentAdapter with a delegate 
      * @param delegate the addComponent addAdapter to which this addAdapter delegates
      */
-    public ImplementationHidingBehaviorAdapter(ComponentAdapter delegate) {
+    public ImplementationHidingBehavior(ComponentAdapter delegate) {
         super(delegate);
     }
 

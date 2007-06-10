@@ -5,7 +5,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.injectors.InjectingAdapter;
-import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.parameters.CollectionComponentParameter;
@@ -106,7 +106,7 @@ public class CollectionComponentParameterTestCase
 
     public void testCollectionsAreGeneratedOnTheFly() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new ConstructorInjectionAdapter(Bowl.class, Bowl.class));
+        mpc.addAdapter(new ConstructorInjector(Bowl.class, Bowl.class));
         mpc.addComponent(Cod.class);
         Bowl bowl = mpc.getComponent(Bowl.class);
         assertEquals(1, bowl.cods.length);

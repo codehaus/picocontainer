@@ -18,7 +18,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ParameterName;
 import org.picocontainer.injectors.InjectingAdapter;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehavior;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -40,7 +40,7 @@ import com.thoughtworks.paranamer.asm.AsmParanamer;
  * Instantiates components using Constructor Injection.
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
- * use a {@link CachingBehaviorAdapter} around this one.
+ * use a {@link CachingBehavior} around this one.
  * </em>
  *
  * @author Paul Hammant
@@ -51,7 +51,7 @@ import com.thoughtworks.paranamer.asm.AsmParanamer;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public final class ConstructorInjectionAdapter extends InjectingAdapter {
+public final class ConstructorInjector extends InjectingAdapter {
     private transient List<Constructor> sortedMatchingConstructors;
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     private final transient Paranamer paranamer = new AsmParanamer();
@@ -68,7 +68,7 @@ public final class ConstructorInjectionAdapter extends InjectingAdapter {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws  NotConcreteRegistrationException {
+    public ConstructorInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
     }
 
@@ -83,7 +83,7 @@ public final class ConstructorInjectionAdapter extends InjectingAdapter {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor) throws  NotConcreteRegistrationException {
+    public ConstructorInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor);
     }
 
@@ -97,7 +97,7 @@ public final class ConstructorInjectionAdapter extends InjectingAdapter {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter... parameters) throws  NotConcreteRegistrationException {
+    public ConstructorInjector(final Object componentKey, final Class componentImplementation, Parameter... parameters) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters);
     }
 
@@ -110,7 +110,7 @@ public final class ConstructorInjectionAdapter extends InjectingAdapter {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public ConstructorInjectionAdapter(Object componentKey, Class componentImplementation) throws NotConcreteRegistrationException {
+    public ConstructorInjector(Object componentKey, Class componentImplementation) throws NotConcreteRegistrationException {
         this(componentKey, componentImplementation, (Parameter[])null);
     }
 
@@ -285,7 +285,7 @@ public final class ConstructorInjectionAdapter extends InjectingAdapter {
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
                     for (int i = 0; i < currentParameters.length; i++) {
                         final int i1 = i;
-                        currentParameters[i].verify(container, ConstructorInjectionAdapter.this, parameterTypes[i], new ParameterName() {
+                        currentParameters[i].verify(container, ConstructorInjector.this, parameterTypes[i], new ParameterName() {
                     public String getParameterName() {
                         Paranamer dpn = new AsmParanamer();
                         String[] names = dpn.lookupParameterNames(constructor);

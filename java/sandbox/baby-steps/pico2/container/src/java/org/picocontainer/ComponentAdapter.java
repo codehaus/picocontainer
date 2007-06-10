@@ -7,7 +7,7 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehavior;
 
 /**
  * A addComponent addAdapter is responsible for providing a specific addComponent instance. An instance of an implementation of
@@ -42,7 +42,7 @@ public interface ComponentAdapter<T> {
 
     /**
      * Retrieve the addComponent instance. This method will usually create a new instance each time it is called, but that
-     * is not required. For example, {@link CachingBehaviorAdapter} will always return the
+     * is not required. For example, {@link CachingBehavior} will always return the
      * same instance.
      *
      * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.

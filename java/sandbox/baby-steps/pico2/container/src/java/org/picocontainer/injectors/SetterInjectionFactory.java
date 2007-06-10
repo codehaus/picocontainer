@@ -24,7 +24,7 @@ import java.io.Serializable;
 
 /**
  * A {@link org.picocontainer.ComponentFactory} for JavaBeans.
- * The factory creates {@link SetterInjectionAdapter}.
+ * The factory creates {@link SetterInjector}.
  *
  * @author J&ouml;rg Schaible
  * @version $Revision$
@@ -32,7 +32,7 @@ import java.io.Serializable;
 public class SetterInjectionFactory implements InjectionFactory, Serializable {
 
     /**
-     * Create a {@link SetterInjectionAdapter}.
+     * Create a {@link SetterInjector}.
      *
      * @param componentMonitor
      * @param lifecycleStrategy
@@ -41,13 +41,13 @@ public class SetterInjectionFactory implements InjectionFactory, Serializable {
      * @param componentImplementation     The class of the bean.
      * @param parameters                  Any parameters for the setters. If null the addAdapter solves the
      *                                    dependencies for all setters internally. Otherwise the number parameters must match
-     *                                    the number of the setter. @return Returns a new {@link SetterInjectionAdapter}. @throws PicoIntrospectionException if dependencies cannot be solved
+     *                                    the number of the setter. @return Returns a new {@link SetterInjector}. @throws PicoIntrospectionException if dependencies cannot be solved
      * @throws org.picocontainer.PicoRegistrationException
      *          if the implementation is an interface or an
      *          abstract class.
      */
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, PicoRegistrationException {
-        return new SetterInjectionAdapter(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
+        return new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
     }
 }

@@ -9,14 +9,14 @@ import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.behaviors.ImplementationHidingBehaviorAdapter;
-import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.behaviors.ImplementationHidingBehavior;
+import org.picocontainer.injectors.ConstructorInjector;
 
 public class ImplementationHidingBehaviorAdapterTestCase extends TestCase {
 
     public void testMultipleInterfacesCanBeHidden() {
-        ComponentAdapter ca = new ConstructorInjectionAdapter(new Class[]{ActionListener.class, MouseListener.class}, Footle.class);
-        ImplementationHidingBehaviorAdapter ihca = new ImplementationHidingBehaviorAdapter(ca);
+        ComponentAdapter ca = new ConstructorInjector(new Class[]{ActionListener.class, MouseListener.class}, Footle.class);
+        ImplementationHidingBehavior ihca = new ImplementationHidingBehavior(ca);
         Object comp = ihca.getComponentInstance(null);
         assertNotNull(comp);
         assertTrue(comp instanceof ActionListener);
@@ -24,8 +24,8 @@ public class ImplementationHidingBehaviorAdapterTestCase extends TestCase {
     }
 
     public void testNonInterfaceInArrayCantBeHidden() {
-        ComponentAdapter ca = new ConstructorInjectionAdapter(new Class[]{String.class}, Footle.class);
-        ImplementationHidingBehaviorAdapter ihca = new ImplementationHidingBehaviorAdapter(ca);
+        ComponentAdapter ca = new ConstructorInjector(new Class[]{String.class}, Footle.class);
+        ImplementationHidingBehavior ihca = new ImplementationHidingBehavior(ca);
         try {
             ihca.getComponentInstance(null);
             fail("PicoIntrospectionException expected");

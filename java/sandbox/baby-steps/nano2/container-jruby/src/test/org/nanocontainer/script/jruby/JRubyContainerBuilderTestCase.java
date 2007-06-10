@@ -10,7 +10,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.injectors.SetterInjectionAdapter;
+import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.injectors.SetterInjectionFactory;
 import org.picocontainer.injectors.InjectingAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -433,7 +433,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         // Should be able to get instance that was registered in the parent container
         ComponentAdapter componentAdapter = pico.addComponent(String.class).lastCA();
         assertTrue("ComponentAdapter should be originally defined by parent",
-                   componentAdapter instanceof SetterInjectionAdapter);
+                   componentAdapter instanceof SetterInjector);
     }
 
     public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {

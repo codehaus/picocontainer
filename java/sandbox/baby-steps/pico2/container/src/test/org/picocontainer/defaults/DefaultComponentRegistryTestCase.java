@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.injectors.ConstructorInjectionAdapter;
+import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.InjectingAdapter;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -82,6 +82,6 @@ public class DefaultComponentRegistryTestCase extends TestCase {
     }
 
     private ComponentAdapter createComponentAdapter() throws PicoRegistrationException {
-        return new ConstructorInjectionAdapter(Touchable.class, SimpleTouchable.class);
+        return new ConstructorInjector(Touchable.class, SimpleTouchable.class);
     }
 }

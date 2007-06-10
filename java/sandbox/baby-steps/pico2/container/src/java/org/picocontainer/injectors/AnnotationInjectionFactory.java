@@ -24,7 +24,7 @@ import java.io.Serializable;
 
 /**
  * A {@link org.picocontainer.ComponentFactory} for Guice style annotated methods.
- * The factory creates {@link AnnotationInjectionAdapter}.
+ * The factory creates {@link AnnotationInjector}.
  *
  * @author Paul Hammant
  * @version $Revision$
@@ -32,7 +32,7 @@ import java.io.Serializable;
 public class AnnotationInjectionFactory implements InjectionFactory, Serializable {
 
     /**
-     * Create a {@link SetterInjectionAdapter}.
+     * Create a {@link SetterInjector}.
      *
      * @param componentMonitor
      *@param lifecycleStrategy
@@ -41,7 +41,7 @@ public class AnnotationInjectionFactory implements InjectionFactory, Serializabl
      * @param componentImplementation The class of the bean.
      * @param parameters              Any parameters for the setters. If null the addAdapter solves the
 *                                dependencies for all setters internally. Otherwise the number parameters must match
-*                                the number of the setter. @return Returns a new {@link SetterInjectionAdapter}. @throws org.picocontainer.PicoIntrospectionException if dependencies cannot be solved
+*                                the number of the setter. @return Returns a new {@link SetterInjector}. @throws org.picocontainer.PicoIntrospectionException if dependencies cannot be solved
      * @throws org.picocontainer.PicoRegistrationException
      *                                    if the implementation is an interface or an
      *                                    abstract class.
@@ -49,6 +49,6 @@ public class AnnotationInjectionFactory implements InjectionFactory, Serializabl
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoIntrospectionException, PicoRegistrationException
     {
-        return new AnnotationInjectionAdapter(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
+        return new AnnotationInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
     }
 }

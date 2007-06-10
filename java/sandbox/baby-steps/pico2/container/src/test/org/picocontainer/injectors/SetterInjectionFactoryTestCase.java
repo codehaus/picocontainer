@@ -14,7 +14,7 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.SetterInjectionFactory;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.injectors.SetterInjectionAdapter;
+import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
 import org.picocontainer.testmodel.NullLifecycle;
@@ -91,7 +91,7 @@ public class SetterInjectionFactoryTestCase extends AbstractComponentAdapterFact
     public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         SetterInjectionFactory caf = new SetterInjectionFactory();
-        SetterInjectionAdapter sica = (SetterInjectionAdapter)caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
+        SetterInjector sica = (SetterInjector)caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
         One one = new RecordingLifecycle.One(new StringBuffer());
         sica.start(one);
         sica.stop(one);        

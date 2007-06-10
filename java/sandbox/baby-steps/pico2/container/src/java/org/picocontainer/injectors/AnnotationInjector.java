@@ -8,13 +8,13 @@ import org.picocontainer.LifecycleStrategy;
 import java.lang.reflect.Method;
 import java.io.Serializable;
 
-public class AnnotationInjectionAdapter extends SetterInjectionAdapter {
+public class AnnotationInjector extends SetterInjector {
 
-    public AnnotationInjectionAdapter(Serializable key, Class  impl, Parameter... params) {
+    public AnnotationInjector(Serializable key, Class  impl, Parameter... params) {
         super(key, impl, params);
     }
 
-    public AnnotationInjectionAdapter(Object key, Class impl, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
+    public AnnotationInjector(Object key, Class impl, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
         super(key, impl, parameters, monitor, lifecycleStrategy);
     }
 

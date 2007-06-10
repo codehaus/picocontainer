@@ -11,7 +11,12 @@ package org.picocontainer.adapters;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
+
+import java.io.Serializable;
 
 /**
  * Base class for a ComponentAdapter with general functionality.
@@ -26,9 +31,11 @@ import org.picocontainer.monitors.DelegatingComponentMonitor;
  * @version $Revision$
  * @since 1.0
  */
-public abstract class AbstractAdapter extends MonitoringAdapter {
+public abstract class AbstractAdapter implements ComponentAdapter, ComponentMonitorStrategy, Serializable {
     private Object componentKey;
     private Class componentImplementation;
+    private ComponentMonitor componentMonitor;
+
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation.
@@ -37,16 +44,20 @@ public abstract class AbstractAdapter extends MonitoringAdapter {
      */
     protected AbstractAdapter(Object componentKey, Class componentImplementation) {
         this(componentKey, componentImplementation, new DelegatingComponentMonitor());
+        this.componentMonitor = NullComponentMonitor.getInstance();
     }
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation.
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
-     * @param monitor the addComponent monitor used by this ComponentAdapter
+     * @param monitor the component monitor used by this ComponentAdapter
      */
     protected AbstractAdapter(Object componentKey, Class componentImplementation, ComponentMonitor monitor) {
-        super(monitor);
+        if (monitor == null) {
+            throw new NullPointerException("ComponentMonitor==null");
+        }
+        this.componentMonitor = monitor;
         if (componentImplementation == null) {
             throw new NullPointerException("componentImplementation");
         }
@@ -94,5 +105,18 @@ public abstract class AbstractAdapter extends MonitoringAdapter {
     public void accept(PicoVisitor visitor) {
         visitor.visitComponentAdapter(this);
     }
+
+    public void changeMonitor(ComponentMonitor monitor) {
+        this.componentMonitor = monitor;
+    }
+
+    /**
+     * Returns the monitor currently used
+     * @return The ComponentMonitor currently used
+     */
+    public ComponentMonitor currentMonitor(){
+        return componentMonitor;
+    }
+
 
 }

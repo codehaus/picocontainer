@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.Inject;
-import org.picocontainer.injectors.AnnotationInjectionAdapter;
-import org.picocontainer.injectors.SetterInjectionAdapter;
+import org.picocontainer.injectors.AnnotationInjector;
+import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class AnnotationInjectionAdapterTestCase extends TestCase {
@@ -35,7 +35,7 @@ public class AnnotationInjectionAdapterTestCase extends TestCase {
     public void testSetterMethodInjectionToContrastWithThatBelow() {
 
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SetterInjectionAdapter(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT));
+        pico.addAdapter(new SetterInjector(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT));
         pico.addComponent(Wind.class, new Wind());
         SetterBurp burp = pico.getComponent(SetterBurp.class);
         assertNotNull(burp);
@@ -44,7 +44,7 @@ public class AnnotationInjectionAdapterTestCase extends TestCase {
 
     public void testNonSetterMethodInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new AnnotationInjectionAdapter(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT) {
+        pico.addAdapter(new AnnotationInjector(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT) {
             protected String getInjectorPrefix() {
                 return "init";
             }

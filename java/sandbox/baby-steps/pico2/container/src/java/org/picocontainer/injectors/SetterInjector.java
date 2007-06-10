@@ -17,7 +17,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ParameterName;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.BeanPropertyComponentAdapter;
-import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.injectors.InjectingAdapter;
 
 import java.lang.reflect.Constructor;
@@ -39,7 +39,7 @@ import java.io.Serializable;
  * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
- * use a {@link CachingBehaviorAdapter} around this one.
+ * use a {@link CachingBehavior} around this one.
  * </em>
  * </p>
  *
@@ -49,7 +49,7 @@ import java.io.Serializable;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class SetterInjectionAdapter extends InjectingAdapter {
+public class SetterInjector extends InjectingAdapter {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     private transient List<Method> injectionMethods;
     private transient Class[] injectionTypes;
@@ -66,7 +66,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public SetterInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws  NotConcreteRegistrationException {
+    public SetterInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
     }
 
@@ -82,7 +82,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public SetterInjectionAdapter(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor) throws  NotConcreteRegistrationException {
+    public SetterInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor);
     }
 
@@ -96,7 +96,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public SetterInjectionAdapter(final Serializable componentKey, final Class componentImplementation, Parameter... parameters) throws NotConcreteRegistrationException {
+    public SetterInjector(final Serializable componentKey, final Class componentImplementation, Parameter... parameters) throws NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters);
     }
 
@@ -207,7 +207,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
                         for (int i = 0; i < injectionMethods.size(); i++) {
                             setter = injectionMethods.get(i);
                             componentMonitor.invoking(setter, componentInstance);
-                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, SetterInjectionAdapter.this, injectionTypes[i], new ParameterName() {
+                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, SetterInjector.this, injectionTypes[i], new ParameterName() {
                                 public String getParameterName() {
                                     return ""; // TODO
                                 }
@@ -243,7 +243,7 @@ public class SetterInjectionAdapter extends InjectingAdapter {
                 public Object run() {
                     final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
                     for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, SetterInjectionAdapter.this, injectionTypes[i], new ParameterName() {
+                        currentParameters[i].verify(container, SetterInjector.this, injectionTypes[i], new ParameterName() {
                             public String getParameterName() {
                                 return ""; // TODO
                             }

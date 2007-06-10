@@ -21,8 +21,8 @@ import org.picocontainer.behaviors.BehaviorAdapter;
  * @author Manish Shah
  * @version $Revision$
  */
-public class SynchronizedBehaviorAdapter extends BehaviorAdapter {
-    public SynchronizedBehaviorAdapter(ComponentAdapter delegate) {
+public class SynchronizedBehavior extends BehaviorAdapter {
+    public SynchronizedBehavior(ComponentAdapter delegate) {
         super(delegate);
     }
 

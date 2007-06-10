@@ -36,18 +36,18 @@ import org.picocontainer.defaults.SimpleReference;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public final class CachingBehaviorAdapter extends BehaviorAdapter implements LifecycleManager {
+public final class CachingBehavior extends BehaviorAdapter implements LifecycleManager {
 
     private final ObjectReference instanceReference;
     private boolean disposed;
     private boolean started;
     private final boolean delegateHasLifecylce;
 
-    public CachingBehaviorAdapter(ComponentAdapter delegate) {
+    public CachingBehavior(ComponentAdapter delegate) {
         this(delegate, new SimpleReference());
     }
 
-    public CachingBehaviorAdapter(ComponentAdapter delegate, ObjectReference instanceReference) {
+    public CachingBehavior(ComponentAdapter delegate, ObjectReference instanceReference) {
         super(delegate);
         this.instanceReference = instanceReference;
         this.disposed = false;

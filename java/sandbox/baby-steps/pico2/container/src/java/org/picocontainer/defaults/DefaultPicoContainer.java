@@ -27,9 +27,9 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.injectors.AnyInjectionFactory;
 import org.picocontainer.injectors.InjectingAdapter;
-import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
-import org.picocontainer.behaviors.ImplementationHidingBehaviorAdapter;
+import org.picocontainer.behaviors.ImplementationHidingBehavior;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -64,7 +64,7 @@ import java.util.Set;
  * </p>
  * <p/>
  * Another place where keys that are classes make a subtle difference is in
- * {@link ImplementationHidingBehaviorAdapter}.
+ * {@link ImplementationHidingBehavior}.
  * </p>
  * <p/>
  * This implementation of {@link MutablePicoContainer} also supports
@@ -112,7 +112,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
-     * in a factory that creates {@link CachingBehaviorAdapter} instances, such as for example
+     * in a factory that creates {@link CachingBehavior} instances, such as for example
      * {@link CachingBehaviorFactory}. CachingBehaviorFactory can delegate to
      * other ComponentAdapterFactories.
      * </em>
@@ -130,7 +130,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
-     * in a factory that creates {@link CachingBehaviorAdapter} instances, such as for example
+     * in a factory that creates {@link CachingBehavior} instances, such as for example
      * {@link CachingBehaviorFactory}. CachingBehaviorFactory can delegate to
      * other ComponentAdapterFactories.
      * </em>

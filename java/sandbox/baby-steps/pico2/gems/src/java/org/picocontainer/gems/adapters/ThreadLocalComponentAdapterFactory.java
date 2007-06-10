@@ -18,7 +18,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.behaviors.CachingBehaviorAdapter;
+import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
@@ -32,7 +32,7 @@ import org.picocontainer.PicoRegistrationException;
  * This mode ({@link #ENSURE_THREAD_LOCALITY}) makes internal usage of a {@link ThreadLocalComponentAdapter}. If the
  * application architecture ensures, that the thread that creates the addComponent is always also the thread that is th
  * only user, you can set the mode {@link #THREAD_ENSURES_LOCALITY}. In this mode the factory uses a simple
- * {@link CachingBehaviorAdapter} that uses a {@link ThreadLocalReference} to cache the addComponent.
+ * {@link CachingBehavior} that uses a {@link ThreadLocalReference} to cache the addComponent.
  * </p>
  * <p>
  * See the use cases for the subtile difference:
@@ -113,7 +113,7 @@ public final class ThreadLocalComponentAdapterFactory extends AbstractBehaviorFa
             componentAdapter = new ThreadLocalComponentAdapter(super.createComponentAdapter(
                     componentMonitor, lifecycleStrategy, null, componentKey, componentImplementation, parameters), proxyFactory);
         } else {
-            componentAdapter = new CachingBehaviorAdapter(super.createComponentAdapter(
+            componentAdapter = new CachingBehavior(super.createComponentAdapter(
                     componentMonitor, lifecycleStrategy, null, componentKey, componentImplementation, parameters), new ThreadLocalReference());
         }
         return componentAdapter;

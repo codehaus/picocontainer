@@ -16,7 +16,7 @@ package org.nanocontainer.script.groovy;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.A;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -94,7 +94,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
     public void testBuildingWithPicoSyntax() {
         Reader script = new StringReader("" +
                 "parent.addComponent('foo', java.lang.String)\n"  +
-                "pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)\n" +
+                "pico = new org.picocontainer.DefaultPicoContainer(parent)\n" +
                 "pico.addComponent(org.nanocontainer.testmodel.A)\n" +
                 "");
 
@@ -110,7 +110,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     public void testBuildingWithPicoSyntaxAndNullParent() {
         Reader script = new StringReader("" +
-                "pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)\n" +
+                "pico = new org.picocontainer.DefaultPicoContainer(parent)\n" +
                 "pico.addComponent(org.nanocontainer.testmodel.A)\n" +
                 "");
 

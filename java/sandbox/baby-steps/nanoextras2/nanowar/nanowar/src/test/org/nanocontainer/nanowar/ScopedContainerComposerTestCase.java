@@ -23,9 +23,9 @@ import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.defaults.SimpleReference;
+import org.picocontainer.behaviors.CachingBehavior;
 
 /**
  * @author Mauro Talevi
@@ -101,8 +101,8 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
     }
     
     private PicoContainer buildContainer(ScriptedContainerBuilder builder) {
-        ObjectReference containerRef = new SimpleReference();
-        builder.buildContainer(containerRef, new SimpleReference(), new SimpleReference(), false);
+        ObjectReference containerRef = new CachingBehavior.SimpleReference();
+        builder.buildContainer(containerRef, new CachingBehavior.SimpleReference(), new CachingBehavior.SimpleReference(), false);
         return (PicoContainer) containerRef.get();
     }
         

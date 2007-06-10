@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
@@ -11,7 +12,6 @@ import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.injectors.SetterInjectionFactory;
 import org.picocontainer.behaviors.SynchronizedBehavior;
 import org.picocontainer.behaviors.SynchronizedBehaviorFactory;

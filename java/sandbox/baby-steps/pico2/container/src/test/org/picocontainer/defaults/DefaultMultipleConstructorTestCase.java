@@ -10,8 +10,7 @@
 package org.picocontainer.defaults;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractMultipleConstructorTestCase;
 
 /**

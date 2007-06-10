@@ -20,7 +20,7 @@ import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * @author Stephen Molitor

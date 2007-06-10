@@ -13,8 +13,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.behaviors.CachingBehavior;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 

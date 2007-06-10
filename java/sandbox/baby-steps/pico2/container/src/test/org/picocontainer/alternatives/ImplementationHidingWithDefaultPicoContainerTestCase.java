@@ -12,7 +12,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
 
 /**

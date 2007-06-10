@@ -62,7 +62,7 @@ public class SetterInjector extends AbstractInjector {
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the addComponent monitor used by this addAdapter
      * @param lifecycleStrategy       the addComponent lifecycle strategy used by this addAdapter
-     * @throws org.picocontainer.defaults.NotConcreteRegistrationException
+     * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */

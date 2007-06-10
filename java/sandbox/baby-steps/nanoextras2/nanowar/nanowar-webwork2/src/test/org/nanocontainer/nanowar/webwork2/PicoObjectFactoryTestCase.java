@@ -16,7 +16,7 @@ import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.gems.adapters.ThreadLocalReference;
 

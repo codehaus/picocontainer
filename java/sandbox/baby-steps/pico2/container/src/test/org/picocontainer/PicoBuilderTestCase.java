@@ -7,7 +7,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -32,8 +32,8 @@ public class PicoBuilderTestCase extends TestCase {
         xs.alias("PICO", DefaultPicoContainer.class);
         xs.registerConverter(new Converter() {
             public boolean canConvert(Class aClass) {
-                return aClass.getName().equals("org.picocontainer.defaults.DefaultPicoContainer$OrderedComponentAdapterLifecycleManager") ||
-                       aClass.getName().equals("org.picocontainer.defaults.DefaultPicoContainer$1") ||
+                return aClass.getName().equals("org.picocontainer.DefaultPicoContainer$OrderedComponentAdapterLifecycleManager") ||
+                       aClass.getName().equals("org.picocontainer.DefaultPicoContainer$1") ||
                        aClass == Boolean.class ||
                        aClass == HashSet.class ||
                        aClass == ArrayList.class;
@@ -333,15 +333,15 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  delegate\n","\n");
         foo = foo.replaceAll("\n    delegate\n","\n");
         foo = foo.replaceAll("\n      delegate\n","\n");
-        foo = foo.replaceAll("\n  componentCharacteristic class=\"org.picocontainer.defaults.DefaultPicoContainer$1\"","");
+        foo = foo.replaceAll("\n  componentCharacteristic class=\"org.picocontainer.DefaultPicoContainer$1\"","");
         foo = foo.replaceAll("\n  componentCharacteristic","");
         foo = foo.replaceAll("\n  componentKeyToAdapterCache","");
         foo = foo.replaceAll("\n    startedComponentAdapters","");
         foo = foo.replaceAll("\"class=","\"\nclass=");
         foo = foo.replaceAll("\n  componentAdapterFactory\n","\n");
         foo = foo.replaceAll("\n  lifecycleManager","");
-        foo = foo.replaceAll("class=\"org.picocontainer.defaults.DefaultPicoContainer_1\"","");
-        foo = foo.replaceAll("class=\"org.picocontainer.defaults.DefaultPicoContainer_OrderedComponentAdapterLifecycleManager\"","");
+        foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_1\"","");
+        foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_OrderedComponentAdapterLifecycleManager\"","");
         foo = foo.replaceAll("class=","=");
         foo = foo.replaceAll("\"","");
         foo = foo.replaceAll(" \n","\n");

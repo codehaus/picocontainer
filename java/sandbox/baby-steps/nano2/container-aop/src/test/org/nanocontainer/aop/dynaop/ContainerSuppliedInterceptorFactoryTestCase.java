@@ -15,7 +15,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * @author Stephen Molitor

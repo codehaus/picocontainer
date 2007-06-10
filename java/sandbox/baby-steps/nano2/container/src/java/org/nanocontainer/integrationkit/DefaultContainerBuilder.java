@@ -12,7 +12,7 @@ package org.nanocontainer.integrationkit;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 public class DefaultContainerBuilder extends AbstractContainerBuilder {
     private final ContainerComposer composer;

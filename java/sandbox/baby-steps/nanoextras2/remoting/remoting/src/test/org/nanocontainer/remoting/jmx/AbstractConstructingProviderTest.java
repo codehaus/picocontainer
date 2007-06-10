@@ -20,7 +20,7 @@ import org.nanocontainer.remoting.jmx.testmodel.Person;
 import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;

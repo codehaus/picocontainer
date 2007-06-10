@@ -14,6 +14,7 @@ import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.DefaultPicoContainer;
 
 import junit.framework.TestCase;
 

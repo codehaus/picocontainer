@@ -4,8 +4,8 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.Mock;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Startable;
-import org.picocontainer.defaults.DefaultPicoContainerTestCase;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainerTestCase;
 
 import java.lang.reflect.Method;
 

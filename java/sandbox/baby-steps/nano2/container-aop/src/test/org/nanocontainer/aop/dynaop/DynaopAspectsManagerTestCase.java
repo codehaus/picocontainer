@@ -30,7 +30,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import java.lang.reflect.Method;
 

@@ -28,8 +28,8 @@ import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.defaults.SimpleReference;
 
 /**
  * Servlet listener class that hooks into the underlying servlet
@@ -79,7 +79,7 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
             builderRef.set(containerBuilder);
 
             ObjectReference containerRef = new ApplicationScopeReference(context, APPLICATION_CONTAINER);
-            containerBuilder.buildContainer(containerRef, new SimpleReference(), context, false);
+            containerBuilder.buildContainer(containerRef, new CachingBehavior.SimpleReference(), context, false);
         // TODO bad catch - PH
         } catch (Exception e) {
             e.printStackTrace();

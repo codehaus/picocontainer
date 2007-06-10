@@ -12,7 +12,7 @@ package org.picocontainer.gems.adapters;
 import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

@@ -4,9 +4,9 @@ import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.Inject;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AnnotationInjector;
 import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 public class AnnotationInjectionAdapterTestCase extends TestCase {
 

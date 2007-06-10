@@ -13,7 +13,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.SetterInjectionFactory;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;

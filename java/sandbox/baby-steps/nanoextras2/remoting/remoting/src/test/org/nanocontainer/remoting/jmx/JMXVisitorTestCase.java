@@ -22,11 +22,11 @@ import javax.management.ObjectName;
 import org.nanocontainer.remoting.jmx.testmodel.Person;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;

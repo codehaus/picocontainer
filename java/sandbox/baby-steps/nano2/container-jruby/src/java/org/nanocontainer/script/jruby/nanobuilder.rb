@@ -16,7 +16,7 @@
 module Nano
   Parameter = org.picocontainer.Parameter
   DefaultNanoContainer = org.nanocontainer.DefaultNanoContainer
-  DefaultPicoContainer = org.picocontainer.defaults.DefaultPicoContainer
+  DefaultPicoContainer = org.picocontainer.DefaultPicoContainer
   ComponentParameter = org.picocontainer.parameters.ComponentParameter
   ConstantParameter = org.picocontainer.parameters.ConstantParameter
   JRubyContainerBuilder = org.nanocontainer.script.jruby.JRubyContainerBuilder

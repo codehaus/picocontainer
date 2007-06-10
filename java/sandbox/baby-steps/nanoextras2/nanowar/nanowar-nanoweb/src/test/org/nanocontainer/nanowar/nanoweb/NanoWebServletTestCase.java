@@ -5,7 +5,7 @@ import org.jmock.MockObjectTestCase;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;

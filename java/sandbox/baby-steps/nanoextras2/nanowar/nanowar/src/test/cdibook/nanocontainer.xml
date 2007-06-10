@@ -6,16 +6,16 @@
    <context-param>
         <param-name>nanocontainer.groovy</param-name>
         <param-value><![CDATA[
-            pico = new org.picocontainer.defaults.DefaultPicoContainer(parent)
-            if(assemblyScope instanceof javax.servlet.ServletContext) {
-                println("**** Webapp-level pico components registered by Groovy")
-                pico.registerComponentImplementation(org.nanocontainer.sample.nanowar.service.defaults.DefaultCheeseService)
-            } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
-                println("**** Session-level pico components registered by Groovy")
-            } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
-                println("**** Request-level pico components registered by Groovy")
-            }
-        ]]></param-value>
+            pico = new org.picocontainer.DefaultPicoContainer(parent)
+                    if(assemblyScope instanceof javax.servlet.ServletContext) {
+                        println("**** Webapp-level pico components registered by Groovy")
+                        pico.registerComponentImplementation(org.nanocontainer.sample.nanowar.service.defaults.DefaultCheeseService)
+                    } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
+                        println("**** Session-level pico components registered by Groovy")
+                    } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
+                        println("**** Request-level pico components registered by Groovy")
+                    }
+                ]]></param-value>
     </context-param>
 <!-- END SNIPPET: xml -->
 

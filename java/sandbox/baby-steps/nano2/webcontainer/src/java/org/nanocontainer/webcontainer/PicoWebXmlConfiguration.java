@@ -13,7 +13,7 @@ import org.mortbay.jetty.webapp.WebXmlConfiguration;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 
 public final class PicoWebXmlConfiguration extends WebXmlConfiguration {

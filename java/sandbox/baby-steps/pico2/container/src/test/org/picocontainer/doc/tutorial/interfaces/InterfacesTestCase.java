@@ -2,7 +2,7 @@ package org.picocontainer.doc.tutorial.interfaces;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 public class InterfacesTestCase extends TestCase {
     public void testKissing() {

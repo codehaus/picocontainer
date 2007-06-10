@@ -3,7 +3,7 @@ package org.picocontainer.defaults.issues;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 public class Issue0196TestCase extends TestCase {
     public static class Descriptor {

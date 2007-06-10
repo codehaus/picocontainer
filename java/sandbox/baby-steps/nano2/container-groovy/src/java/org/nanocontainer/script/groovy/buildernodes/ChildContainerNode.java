@@ -13,7 +13,7 @@ package org.nanocontainer.script.groovy.buildernodes;
 import java.util.Map;
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import java.security.PrivilegedAction;
 import org.picocontainer.ComponentFactory;
 import java.security.AccessController;

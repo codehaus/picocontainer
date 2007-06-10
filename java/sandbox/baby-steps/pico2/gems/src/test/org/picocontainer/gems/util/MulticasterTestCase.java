@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.testmodel.RecordingLifecycle;
 
 import com.thoughtworks.proxy.ProxyFactory;

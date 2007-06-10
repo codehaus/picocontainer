@@ -25,7 +25,7 @@ import org.nanocontainer.testmodel.OrderEntity;
 import org.nanocontainer.testmodel.OrderEntityImpl;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.testmodel.SimpleTouchable;
 
 /**

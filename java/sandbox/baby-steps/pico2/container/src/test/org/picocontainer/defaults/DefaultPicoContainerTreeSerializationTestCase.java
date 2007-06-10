@@ -19,7 +19,7 @@ import java.io.ObjectOutputStream;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
 /**

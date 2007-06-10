@@ -10,7 +10,7 @@ package org.nanocontainer.webcontainer;
 
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import javax.servlet.Servlet;
 

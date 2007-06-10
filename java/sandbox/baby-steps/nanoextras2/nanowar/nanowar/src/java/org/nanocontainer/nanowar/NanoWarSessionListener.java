@@ -13,9 +13,10 @@ import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSession;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.behaviors.CachingBehavior;
+
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import javax.servlet.http.HttpSessionBindingEvent;
-import org.picocontainer.defaults.SimpleReference;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionBindingListener;
@@ -79,7 +80,7 @@ public class NanoWarSessionListener extends AbstractNanoWarListener implements H
         session.setAttribute(KILLER_HELPER, new SessionContainerKillerHelper() {
             public void valueBound(HttpSessionBindingEvent bindingEvent) {
                 HttpSession session = bindingEvent.getSession();
-                containerRef = new SimpleReference();
+                containerRef = new CachingBehavior.SimpleReference();
                 containerRef.set(new SessionScopeReference(session, SESSION_CONTAINER).get());
             }
 
@@ -107,6 +108,6 @@ public class NanoWarSessionListener extends AbstractNanoWarListener implements H
     }
 
     private abstract class SessionContainerKillerHelper implements HttpSessionBindingListener, Serializable {
-        transient SimpleReference containerRef;
+        transient CachingBehavior.SimpleReference containerRef;
     }
 }

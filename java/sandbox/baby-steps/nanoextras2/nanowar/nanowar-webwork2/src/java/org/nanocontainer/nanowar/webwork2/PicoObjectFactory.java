@@ -13,7 +13,7 @@ import org.nanocontainer.nanowar.ActionsContainerFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

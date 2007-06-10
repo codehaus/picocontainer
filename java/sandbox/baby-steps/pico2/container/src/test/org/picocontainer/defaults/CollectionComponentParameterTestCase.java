@@ -4,6 +4,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.NullComponentMonitor;

@@ -11,7 +11,7 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;

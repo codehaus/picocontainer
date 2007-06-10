@@ -7,33 +7,17 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentCharacteristic;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
-import org.picocontainer.Disposable;
-import org.picocontainer.LifecycleManager;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.Startable;
-import org.picocontainer.injectors.AnyInjectionFactory;
-import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.behaviors.ImplementationHidingBehavior;
-import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.AnyInjectionFactory;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 

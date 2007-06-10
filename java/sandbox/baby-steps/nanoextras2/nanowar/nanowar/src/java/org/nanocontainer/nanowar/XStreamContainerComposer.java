@@ -14,7 +14,7 @@ import org.nanocontainer.integrationkit.ContainerRecorder;
 import org.nanocontainer.reflection.DefaultContainerRecorder;
 import org.nanocontainer.script.xml.XStreamContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;

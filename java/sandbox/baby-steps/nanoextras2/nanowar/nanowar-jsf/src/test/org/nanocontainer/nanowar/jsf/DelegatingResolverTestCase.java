@@ -19,7 +19,7 @@ import org.jmock.cglib.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * Basic testing for the NanoWAR variable resolver. 

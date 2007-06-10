@@ -7,7 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -22,6 +22,7 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;

@@ -15,7 +15,7 @@ import org.apache.axis.utils.cache.ClassCache;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.nanocontainer.nanowar.RequestScopeReference;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
 
 import javax.servlet.http.HttpServletRequest;

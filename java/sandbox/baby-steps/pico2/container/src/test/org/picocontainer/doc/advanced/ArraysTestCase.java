@@ -6,7 +6,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.parameters.CollectionComponentParameter;
 import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import java.util.Arrays;
 import java.util.List;

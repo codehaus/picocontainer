@@ -15,7 +15,7 @@ import java.net.URL;
 import junit.framework.TestCase;
 
 import org.mortbay.util.IO;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 
 public class DependencyInjectionServletTestCase extends TestCase {

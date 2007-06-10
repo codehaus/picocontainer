@@ -7,7 +7,7 @@ import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.injectors.AnyInjectionFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 
 import java.util.ArrayList;

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * Factory for the actions container used by MVC action-based frameworks.

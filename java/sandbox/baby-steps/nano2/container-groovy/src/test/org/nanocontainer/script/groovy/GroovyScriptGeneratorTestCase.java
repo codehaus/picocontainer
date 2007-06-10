@@ -3,7 +3,7 @@ package org.nanocontainer.script.groovy;
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import java.io.StringReader;
 import java.util.ArrayList;

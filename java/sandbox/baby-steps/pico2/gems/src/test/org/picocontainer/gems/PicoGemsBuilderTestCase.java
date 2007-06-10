@@ -2,7 +2,7 @@ package org.picocontainer.gems;
 
 import junit.framework.TestCase;
 import com.thoughtworks.xstream.XStream;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 
@@ -94,7 +94,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  delegate\n","\n");
         foo = foo.replaceAll("\n    delegate\n","\n");
         foo = foo.replaceAll("\n    outer-class reference=\"/PICO\"","");
-        foo = foo.replaceAll("\n  componentCharacteristic class=\"org.picocontainer.defaults.DefaultPicoContainer$1\"","");
+        foo = foo.replaceAll("\n  componentCharacteristic class=\"org.picocontainer.DefaultPicoContainer$1\"","");
         foo = foo.replaceAll("\n  componentCharacteristic","");
         foo = foo.replaceAll("\n  componentKeyToAdapterCache","");
         foo = foo.replaceAll("\n    startedComponentAdapters","");
@@ -103,8 +103,8 @@ public class PicoGemsBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  componentAdapterFactory\n","\n");
         foo = foo.replaceAll("\n  componentMonitor\n","\n");
         foo = foo.replaceAll("\n  lifecycleManager","");
-        foo = foo.replaceAll("class=\"org.picocontainer.defaults.DefaultPicoContainer_1\"","");
-        foo = foo.replaceAll("class=\"org.picocontainer.defaults.DefaultPicoContainer_OrderedComponentAdapterLifecycleManager\"","");
+        foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_1\"","");
+        foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_OrderedComponentAdapterLifecycleManager\"","");
         foo = foo.replaceAll("class=","=");
         foo = foo.replaceAll("\"","");
         foo = foo.replaceAll(" \n","\n");

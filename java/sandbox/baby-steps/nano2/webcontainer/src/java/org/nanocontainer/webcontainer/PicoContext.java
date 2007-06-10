@@ -23,7 +23,7 @@ import org.mortbay.jetty.servlet.ErrorPageErrorHandler;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 public class PicoContext {
 

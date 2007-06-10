@@ -23,9 +23,9 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.AnyInjectionFactory;
 import org.picocontainer.BeanPropertyComponentAdapter;
 import org.picocontainer.behaviors.BeanPropertyBehaviorFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.defaults.SimpleReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public final class PicoContainerTask extends Task {
         }
     };
 
-    private final ObjectReference containerRef = new SimpleReference();
+    private final ObjectReference containerRef = new CachingBehavior.SimpleReference();
 
     public void addComponent(Component component) {
         antSpecifiedComponents.add(component);

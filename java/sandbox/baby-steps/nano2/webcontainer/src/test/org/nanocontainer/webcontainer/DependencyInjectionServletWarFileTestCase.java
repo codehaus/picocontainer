@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.util.IO;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 public class DependencyInjectionServletWarFileTestCase extends TestCase {
 

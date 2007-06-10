@@ -13,7 +13,7 @@ import dynaop.MixinFactory;
 import org.jmock.MockObjectTestCase;
 import org.nanocontainer.testmodel.IdentifiableMixin;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * @author Stephen Molitor

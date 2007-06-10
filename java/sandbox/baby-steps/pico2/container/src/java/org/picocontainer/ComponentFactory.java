@@ -20,7 +20,7 @@ import org.picocontainer.LifecycleStrategy;
  * <p/>
  * A addComponent addAdapter factory is responsible for creating
  * {@link ComponentAdapter} component adapters. The main use of the component adapter factory is
- * inside {@link org.picocontainer.defaults.DefaultPicoContainer#DefaultPicoContainer(ComponentFactory)}, where it can
+ * inside {@link DefaultPicoContainer#DefaultPicoContainer(ComponentFactory)}, where it can
  * be used to customize the default component adapter that is used when none is specified
  * explicitly.
  * </p>

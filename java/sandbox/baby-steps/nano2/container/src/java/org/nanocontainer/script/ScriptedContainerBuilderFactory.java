@@ -18,7 +18,7 @@ import java.net.URL;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.ClassName;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * The main class for configuration of PicoContainer with various scripting languages.

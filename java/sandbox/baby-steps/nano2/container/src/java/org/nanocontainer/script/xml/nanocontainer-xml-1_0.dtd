@@ -61,7 +61,7 @@
 <!ATTLIST element url CDATA #IMPLIED>
 
 <!--
-    Defines a org.picocontainer.defaults.ContainerAdapterFactory
+    Defines a org.picocontainer.ComponentAdapterFactory
 -->
 <!ELEMENT component-adapter-factory (
     (component-adapter-factory | parameter)*

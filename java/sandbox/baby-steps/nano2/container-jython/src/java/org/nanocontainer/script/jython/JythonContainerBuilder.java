@@ -45,7 +45,6 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
             PythonInterpreter interpreter = new PythonInterpreter();
-            interpreter.exec("from org.picocontainer.defaults import *");
             interpreter.exec("from org.nanocontainer import *");
             interpreter.exec("from org.nanocontainer.reflection import *");
             interpreter.exec("from java.net import *");

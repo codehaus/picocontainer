@@ -17,7 +17,7 @@ package org.picocontainer;
  * @see org.picocontainer.Startable the Startable interface if you need to <code>start()</code> and
  *      <code>stop()</code> semantics.
  * @see org.picocontainer.PicoContainer the main PicoContainer interface (and hence its subinterfaces and
- *      implementations like {@link org.picocontainer.defaults.DefaultPicoContainer}) implement this interface.
+ *      implementations like {@link DefaultPicoContainer}) implement this interface.
  * @since 1.0
  */
 public interface Disposable {

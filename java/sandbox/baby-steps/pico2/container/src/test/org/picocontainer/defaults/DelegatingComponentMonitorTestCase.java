@@ -5,6 +5,7 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 
 import java.lang.reflect.Constructor;

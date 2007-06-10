@@ -14,7 +14,7 @@ import org.jmock.MockObjectTestCase;
 import org.nanocontainer.aop.AspectsApplicator;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * @author Stephen Molitor

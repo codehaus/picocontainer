@@ -5,7 +5,7 @@ package org.nanocontainer.nanowar.chain;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import junit.framework.TestCase;
 

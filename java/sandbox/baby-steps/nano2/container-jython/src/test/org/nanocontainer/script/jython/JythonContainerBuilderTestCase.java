@@ -15,7 +15,7 @@ import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import java.io.IOException;
 import java.io.Reader;

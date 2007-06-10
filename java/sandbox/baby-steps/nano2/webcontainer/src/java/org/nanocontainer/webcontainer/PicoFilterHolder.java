@@ -4,7 +4,7 @@ import javax.servlet.Filter;
 
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 public class PicoFilterHolder extends FilterHolder {
 

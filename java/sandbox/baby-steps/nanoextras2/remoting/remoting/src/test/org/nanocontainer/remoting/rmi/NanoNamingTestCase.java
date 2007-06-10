@@ -11,7 +11,7 @@ import java.util.List;
 import org.nanocontainer.remoting.rmi.testmodel.Thang;
 import org.nanocontainer.remoting.rmi.testmodel.Thing;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;

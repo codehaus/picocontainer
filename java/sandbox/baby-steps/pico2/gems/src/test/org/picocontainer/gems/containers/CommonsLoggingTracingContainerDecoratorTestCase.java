@@ -34,13 +34,13 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Michael Rimov

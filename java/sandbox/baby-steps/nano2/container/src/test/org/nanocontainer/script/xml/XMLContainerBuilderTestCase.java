@@ -702,7 +702,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
         assertEquals("<org.nanocontainer.DefaultNanoContainer>\n" +
                 "  <namedChildContainers/>\n" +
-                "  <delegate class='org.picocontainer.defaults.DefaultPicoContainer'>\n" +
+                "  <delegate class='org.picocontainer.DefaultPicoContainer'>\n" +
                 "    <componentKeyToAdapterCache/>\n" +
                 "    <componentAdapterFactory class='"+MyCAF3.class.getName()+"'>\n" +
                 "      <delegate class='"+MyCAF2.class.getName()+"'>\n" +
@@ -716,14 +716,14 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "    <started>true</started>\n" +
                 "    <disposed>false</disposed>\n" +
                 "    <childrenStarted/>\n" +
-                "    <lifecycleManager class='org.picocontainer.defaults.DefaultPicoContainer$OrderedComponentAdapterLifecycleManager'>\n" +
+                "    <lifecycleManager class='org.picocontainer.DefaultPicoContainer$OrderedComponentAdapterLifecycleManager'>\n" +
                 "      <startedComponentAdapters/>\n" +
                 "      <outer-class reference='../..'/>\n" +
                 "    </lifecycleManager>\n" +
                 "    <lifecycleStrategy class='org.picocontainer.lifecycle.StartableLifecycleStrategy'>\n" +
                 "      <componentMonitor class='org.picocontainer.monitors.NullComponentMonitor'/>\n" +
                 "    </lifecycleStrategy>\n" +
-                "    <componentCharacteristic class='org.picocontainer.defaults.DefaultPicoContainer$1'>\n" +
+                "    <componentCharacteristic class='org.picocontainer.DefaultPicoContainer$1'>\n" +
                 "      <outer-class reference='../..'/>\n" +
                 "      <props/>\n" +
                 "    </componentCharacteristic>\n" +

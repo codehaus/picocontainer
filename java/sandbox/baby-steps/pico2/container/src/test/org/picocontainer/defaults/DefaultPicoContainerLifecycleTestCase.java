@@ -18,6 +18,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoLifecycleException;
 import org.picocontainer.Startable;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.injectors.AnyInjectionFactory;

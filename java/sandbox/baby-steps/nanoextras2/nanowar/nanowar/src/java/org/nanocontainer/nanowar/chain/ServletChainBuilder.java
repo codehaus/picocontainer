@@ -31,7 +31,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * <p>

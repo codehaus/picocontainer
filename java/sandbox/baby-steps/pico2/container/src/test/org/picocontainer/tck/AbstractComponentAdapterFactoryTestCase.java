@@ -17,7 +17,7 @@ import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 

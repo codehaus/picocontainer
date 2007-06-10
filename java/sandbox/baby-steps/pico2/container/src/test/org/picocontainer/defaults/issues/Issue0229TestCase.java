@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.visitors.VerifyingVisitor;
 
 import junit.framework.TestCase;

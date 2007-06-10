@@ -3,10 +3,9 @@ package org.picocontainer.doc.advanced;
 import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.parameters.CollectionComponentParameter;
 import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import java.util.Collection;
 import java.util.HashSet;

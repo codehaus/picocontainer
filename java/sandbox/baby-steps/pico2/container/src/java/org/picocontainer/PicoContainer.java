@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * This is the core interface for PicoContainer. It is used to retrieve addComponent instances from the container; it only
  * has accessor methods (in addition to the {@link #accept(PicoVisitor)} method). In order to register components in a
- * PicoContainer, use a {@link MutablePicoContainer}, such as {@link org.picocontainer.defaults.DefaultPicoContainer}.
+ * PicoContainer, use a {@link MutablePicoContainer}, such as {@link DefaultPicoContainer}.
  *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y

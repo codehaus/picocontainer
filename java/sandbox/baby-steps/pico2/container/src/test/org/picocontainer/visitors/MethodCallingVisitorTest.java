@@ -8,9 +8,8 @@
 package org.picocontainer.visitors;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.visitors.MethodCallingVisitor;
 import org.picocontainer.testmodel.Touchable;
 

@@ -12,7 +12,7 @@ package org.nanocontainer.aop.dynaop;
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * @author Stephen Molitor

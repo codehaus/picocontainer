@@ -14,6 +14,7 @@ import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.monitors.DelegatingComponentMonitor;

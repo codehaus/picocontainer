@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.jmock.Mock;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 
 /**

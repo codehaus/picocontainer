@@ -17,7 +17,7 @@ import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.TestHelper;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import java.io.File;
 import java.io.IOException;

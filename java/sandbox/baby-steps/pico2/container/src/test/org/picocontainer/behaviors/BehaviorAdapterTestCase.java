@@ -8,7 +8,7 @@ import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.testmodel.SimpleTouchable;

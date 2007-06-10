@@ -7,13 +7,13 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.injectors.SetterInjectionFactory;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 import java.io.File;
 import java.io.IOException;
@@ -94,7 +94,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         Reader script = new StringReader(
                                          "$parent.addAdapter('foo', Java::JavaClass.for_name('java.lang.String'))\n"
                                          +
-                                         "DefaultPicoContainer = org.picocontainer.defaults.DefaultPicoContainer\n" +
+                                         "DefaultPicoContainer = org.picocontainer.DefaultPicoContainer\n" +
                                          "pico = DefaultPicoContainer.new($parent)\n" +
                                          "pico.addAdapter(Java::JavaClass.for_name('org.nanocontainer.testmodel.A'))\n"
                                          +

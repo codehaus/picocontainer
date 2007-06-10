@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * <a href="http://www.junit.org/">JUnit</a>

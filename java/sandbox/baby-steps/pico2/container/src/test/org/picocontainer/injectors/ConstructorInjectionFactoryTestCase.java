@@ -11,7 +11,7 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;

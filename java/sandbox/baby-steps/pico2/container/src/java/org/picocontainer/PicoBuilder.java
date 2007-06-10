@@ -6,7 +6,7 @@ import static org.picocontainer.behaviors.Behaviors.implHiding;
 import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import static org.picocontainer.injectors.Injectors.ADI;
 import static org.picocontainer.injectors.Injectors.CDI;
 import static org.picocontainer.injectors.Injectors.SDI;

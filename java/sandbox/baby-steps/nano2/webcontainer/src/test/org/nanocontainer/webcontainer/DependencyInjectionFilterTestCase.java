@@ -5,7 +5,8 @@ import junit.framework.TestCase;
 import java.io.IOException;
 import java.net.URL;
 
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
+
 import org.mortbay.util.IO;
 
 public class DependencyInjectionFilterTestCase extends TestCase {

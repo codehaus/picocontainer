@@ -30,8 +30,8 @@ import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.SimpleReference;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.behaviors.CachingBehavior;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -255,7 +255,7 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
     public void testGroovyContainerBuilderCanBeScopedWithInlineScriptsUsingPicoSyntax() throws Exception{
       String picoScript =
           "caf = new org.picocontainer.injectors.AnyInjectionFactory()\n"+
-          "pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)\n"+
+          "pico = new org.picocontainer.DefaultPicoContainer(caf, parent)\n"+
           "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
           "      System.out.println('Application scope parent '+parent)\n "+
           "      pico.addComponent((Object)'testFoo', org.nanocontainer.nanowar.Foo)\n" +
@@ -319,8 +319,8 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
         ServletContext context = (ServletContext)servletContextMock.proxy();
         ContainerBuilder containerBuilder = createContainerBuilder(script, containerBuilderClass);
         
-        ObjectReference containerRef = new SimpleReference();
-        containerBuilder.buildContainer(containerRef, new SimpleReference(), context, false);
+        ObjectReference containerRef = new CachingBehavior.SimpleReference();
+        containerBuilder.buildContainer(containerRef, new CachingBehavior.SimpleReference(), context, false);
         return (PicoContainer) containerRef.get();
     }
 

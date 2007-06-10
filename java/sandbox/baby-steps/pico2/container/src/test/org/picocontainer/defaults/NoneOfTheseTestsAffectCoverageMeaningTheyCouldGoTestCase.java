@@ -16,6 +16,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.testmodel.DependsOnTouchable;

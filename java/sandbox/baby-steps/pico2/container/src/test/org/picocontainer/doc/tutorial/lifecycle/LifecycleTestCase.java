@@ -2,7 +2,7 @@ package org.picocontainer.doc.tutorial.lifecycle;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.doc.tutorial.interfaces.Boy;
 
 public class LifecycleTestCase extends TestCase {

@@ -19,7 +19,8 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.defaults.SimpleReference;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -121,5 +122,25 @@ public final class CachingBehavior extends AbstractBehavior implements Lifecycle
     public boolean hasLifecycle() {
         return delegateHasLifecylce;
     }
+
+    /**
+     * @author Aslak Helles&oslash;y
+     * @version $Revision$
+     */
+    public static class SimpleReference implements ObjectReference, Serializable {
+        private Object instance;
+
+        public SimpleReference() {
+        }
+
+        public Object get() {
+            return instance;
+        }
+
+        public void set(Object item) {
+            this.instance = item;
+        }
+    }
+
     
 }

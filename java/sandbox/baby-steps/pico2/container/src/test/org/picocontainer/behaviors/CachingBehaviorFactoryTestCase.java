@@ -14,7 +14,7 @@ import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentCharacteristics;
 

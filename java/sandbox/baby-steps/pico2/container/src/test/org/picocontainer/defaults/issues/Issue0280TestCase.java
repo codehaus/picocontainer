@@ -1,7 +1,7 @@
 package org.picocontainer.defaults.issues;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import junit.framework.TestCase;
 

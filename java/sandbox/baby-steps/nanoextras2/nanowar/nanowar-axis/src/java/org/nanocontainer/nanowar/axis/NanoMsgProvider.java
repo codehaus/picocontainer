@@ -16,7 +16,7 @@ import org.nanocontainer.nanowar.KeyConstants;
 import org.nanocontainer.nanowar.RequestScopeReference;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import javax.servlet.http.HttpServletRequest;
 

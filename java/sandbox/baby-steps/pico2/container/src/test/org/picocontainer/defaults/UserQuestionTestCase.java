@@ -6,6 +6,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.adapters.AbstractAdapter;
 

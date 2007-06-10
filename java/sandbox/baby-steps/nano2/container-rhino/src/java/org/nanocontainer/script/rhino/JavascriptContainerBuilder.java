@@ -68,7 +68,6 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
                         new NativeJavaPackage("org.picocontainer.adapters", loader),
                         new NativeJavaPackage("org.picocontainer.injectors", loader),
                         new NativeJavaPackage("org.picocontainer.behaviors", loader),
-                        new NativeJavaPackage("org.picocontainer.defaults", loader),
                         new NativeJavaPackage("org.nanocontainer", loader),
                         new NativeJavaPackage("org.nanocontainer.reflection", loader),
                         // File, URL and URLClassLoader will be frequently used by scripts.

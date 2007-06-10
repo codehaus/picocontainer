@@ -52,7 +52,7 @@ public interface AspectablePicoContainerFactory {
 
     /**
      * Creates a new <code>AspectablePicoContainer</code>. Uses
-     * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
+     * <code>org.picocontainer.DefaultPicoContainer</code> as the
      * delegate container.
      *
      * @param componentAdapterFactory the delegate addComponent addAdapter factory
@@ -64,7 +64,7 @@ public interface AspectablePicoContainerFactory {
 
     /**
      * Creates a new <code>AspectablePicoContainer</code>. Uses
-     * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
+     * <code>org.picocontainer.DefaultPicoContainer</code> as the
      * delegate container.
      *
      * @param componentAdapterFactory the delegate addComponent addAdapter factory
@@ -75,7 +75,7 @@ public interface AspectablePicoContainerFactory {
 
     /**
      * Creates a new <code>AspectablePicoContainer</code>. Uses
-     * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
+     * <code>org.picocontainer.DefaultPicoContainer</code> as the
      * delegate container. Uses
      * <code>org.picocontainer.injectors.AnyInjectionFactory</code>
      * as the delegate addComponent addAdapter factory.
@@ -87,7 +87,7 @@ public interface AspectablePicoContainerFactory {
 
     /**
      * Creates a new <code>AspectablePicoContainer</code>. Uses
-     * <code>org.picocontainer.defaults.DefaultPicoContainer</code> as the
+     * <code>org.picocontainer.DefaultPicoContainer</code> as the
      * delegate container. Uses
      * <code>org.picocontainer.injectors.AnyInjectionFactory</code>
      * as the delegate addComponent addAdapter factory.

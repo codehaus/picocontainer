@@ -11,10 +11,10 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AnnotationInjectionFactory;
 import org.picocontainer.injectors.AnnotationInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
 import org.picocontainer.testmodel.NullLifecycle;

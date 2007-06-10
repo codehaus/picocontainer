@@ -16,7 +16,7 @@ import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.SimpleReference;
+import org.picocontainer.behaviors.CachingBehavior;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -60,8 +60,8 @@ public class ContainerComposerMocker implements KeyConstants {
      *  Mock application start
      */
     public void startApplication() {
-        SimpleReference ref = new SimpleReference();
-        containerBuilder.buildContainer(ref, new SimpleReference(), (new Mock(ServletContext.class)).proxy(), false);
+        CachingBehavior.SimpleReference ref = new CachingBehavior.SimpleReference();
+        containerBuilder.buildContainer(ref, new CachingBehavior.SimpleReference(), (new Mock(ServletContext.class)).proxy(), false);
         applicationContainer = (MutablePicoContainer) ref.get();
     }
 
@@ -69,7 +69,7 @@ public class ContainerComposerMocker implements KeyConstants {
      *  Mock application stop
      */
     public void stopApplication() {
-        SimpleReference ref = new SimpleReference();
+        CachingBehavior.SimpleReference ref = new CachingBehavior.SimpleReference();
         ref.set(applicationContainer);
         containerKiller.killContainer(ref);
         // and reset all the containers
@@ -82,8 +82,8 @@ public class ContainerComposerMocker implements KeyConstants {
      * Mock new session
      */
     public void startSession() {
-        SimpleReference ref = new SimpleReference();
-        SimpleReference parent = new SimpleReference();
+        CachingBehavior.SimpleReference ref = new CachingBehavior.SimpleReference();
+        CachingBehavior.SimpleReference parent = new CachingBehavior.SimpleReference();
         parent.set(applicationContainer);
         containerBuilder.buildContainer(ref, parent, ((new Mock(HttpSession.class)).proxy()), false);
         sessionContainer = (MutablePicoContainer) ref.get();
@@ -93,7 +93,7 @@ public class ContainerComposerMocker implements KeyConstants {
      *  Mock session invalidation
      */
     public void stopSession() {
-        SimpleReference ref = new SimpleReference();
+        CachingBehavior.SimpleReference ref = new CachingBehavior.SimpleReference();
         ref.set(sessionContainer);
         containerKiller.killContainer(ref);
         sessionContainer = null;
@@ -105,8 +105,8 @@ public class ContainerComposerMocker implements KeyConstants {
      *  Mock request start
      */
     public void startRequest() {
-        SimpleReference ref = new SimpleReference();
-        SimpleReference parent = new SimpleReference();
+        CachingBehavior.SimpleReference ref = new CachingBehavior.SimpleReference();
+        CachingBehavior.SimpleReference parent = new CachingBehavior.SimpleReference();
         parent.set(sessionContainer);
         containerBuilder.buildContainer(ref, parent, (new Mock(HttpServletRequest.class)).proxy(), false);
         requestContainer = (MutablePicoContainer) ref.get();
@@ -116,7 +116,7 @@ public class ContainerComposerMocker implements KeyConstants {
      * Mock request stop
      */
     public void stopRequest() {
-        SimpleReference ref = new SimpleReference();
+        CachingBehavior.SimpleReference ref = new CachingBehavior.SimpleReference();
         ref.set(requestContainer);
         containerKiller.killContainer(ref);
         requestContainer = null;

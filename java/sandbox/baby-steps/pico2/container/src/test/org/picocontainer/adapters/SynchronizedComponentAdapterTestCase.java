@@ -18,10 +18,10 @@ import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.behaviors.SynchronizedBehavior;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.behaviors.SynchronizedBehaviorFactory;

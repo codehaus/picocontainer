@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer.parameters;
 
 import junit.framework.TestCase;
 import org.picocontainer.PicoIntrospectionException;

@@ -3,7 +3,7 @@ package org.picocontainer.doc.introduction;
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y

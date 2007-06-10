@@ -12,8 +12,8 @@ package org.picocontainer.gems.adapters;
 
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.CompatibleTouchable;

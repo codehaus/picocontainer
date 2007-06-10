@@ -27,8 +27,8 @@ import java.util.Map;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.TestHelper;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y

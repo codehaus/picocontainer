@@ -13,7 +13,7 @@ package org.picocontainer.containers;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;

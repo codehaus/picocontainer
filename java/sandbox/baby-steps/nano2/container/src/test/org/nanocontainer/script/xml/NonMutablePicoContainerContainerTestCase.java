@@ -14,7 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import java.io.IOException;
 import java.io.Reader;

@@ -6,6 +6,7 @@ import com.thoughtworks.xstream.io.xml.XppDriver;
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 

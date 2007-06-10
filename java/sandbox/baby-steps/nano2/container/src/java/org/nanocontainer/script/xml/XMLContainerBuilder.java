@@ -43,10 +43,11 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;

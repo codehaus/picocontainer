@@ -20,8 +20,8 @@ import org.nanocontainer.aop.defaults.AspectsComponentAdapterFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
-import org.picocontainer.defaults.DefaultPicoContainer;
 
 /**
  * Uses dynaop to create <code>AspectablePicoContainer</code> objects.

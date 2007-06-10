@@ -14,7 +14,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 import webwork.action.ServletActionContext;
 

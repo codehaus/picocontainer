@@ -31,9 +31,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.SimpleReference;
 
 /**
  * <p>
@@ -144,9 +144,9 @@ public final class ScopedContainerComposer implements ContainerComposer {
                 new ClassName(containerBuilderClassName), parameters);
         ContainerBuilder containerBuilder = (ContainerBuilder) nano
                 .getComponent(containerBuilderClassName);
-        ObjectReference parentRef = new SimpleReference();
+        ObjectReference parentRef = new CachingBehavior.SimpleReference();
         parentRef.set(parent);
-        containerBuilder.buildContainer(new SimpleReference(), parentRef, null, false);
+        containerBuilder.buildContainer(new CachingBehavior.SimpleReference(), parentRef, null, false);
         return (ContainerPopulator) containerBuilder;
     }
 

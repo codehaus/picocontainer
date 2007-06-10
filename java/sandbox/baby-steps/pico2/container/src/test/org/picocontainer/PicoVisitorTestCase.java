@@ -11,7 +11,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.visitors.VerifyingVisitor;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 

@@ -2,7 +2,7 @@ package org.picocontainer.doc.tutorial.simple;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainer;
 
 public class ConcreteClassesTestCase extends TestCase {
 

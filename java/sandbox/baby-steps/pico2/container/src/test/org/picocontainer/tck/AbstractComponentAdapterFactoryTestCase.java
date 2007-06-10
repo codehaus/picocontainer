@@ -18,7 +18,6 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -36,7 +35,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
         picoContainer = new DefaultPicoContainer();
     }
 
-    public void testEquals() throws PicoIntrospectionException, NotConcreteRegistrationException {
+    public void testEquals() throws PicoIntrospectionException, PicoRegistrationException {
         ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class);
 
         assertEquals(componentAdapter, componentAdapter);

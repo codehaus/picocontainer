@@ -5,6 +5,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.adapters.ConstructorInjectionFactory;
 import org.picocontainer.adapters.AbstractComponentAdapter;
 
@@ -24,7 +25,8 @@ public final class UserQuestionTestCase extends TestCase {
     public static final class CheeseComponentAdapter extends AbstractComponentAdapter {
         private final Map bla;
 
-        public CheeseComponentAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws  NotConcreteRegistrationException {
+        public CheeseComponentAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws PicoRegistrationException
+        {
             super(componentKey, componentImplementation);
             this.bla = cheeseMap;
         }

@@ -14,8 +14,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.adapters.BehaviorAdapter;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * @author Stephen Molitor
@@ -30,7 +30,7 @@ public class AspectsComponentAdapter extends BehaviorAdapter {
     }
 
     public Object getComponentInstance(PicoContainer pico) throws PicoInitializationException, PicoIntrospectionException,
-             NotConcreteRegistrationException {
+                                                                  PicoRegistrationException {
         Object component = super.getComponentInstance(pico);
         return aspectsApplicator.applyAspects(getComponentKey(), component, pico);
     }

@@ -30,7 +30,6 @@ import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.NullLifecycle;
@@ -226,7 +225,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         try {
             pico.addComponent(Runnable.class);
             fail("Shouldn't be allowed to register abstract classes or interfaces.");
-        } catch (NotConcreteRegistrationException e) {
+        } catch (InjectingAdapter.NotConcreteRegistrationException e) {
             assertEquals(Runnable.class, e.getComponentImplementation());
             assertTrue(e.getMessage().indexOf(Runnable.class.getName()) > 0);
         }
@@ -238,7 +237,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         try {
             pico.addComponent(AbstractButton.class);
             fail("Shouldn't be allowed to register abstract classes or interfaces.");
-        } catch (NotConcreteRegistrationException e) {
+        } catch (InjectingAdapter.NotConcreteRegistrationException e) {
             assertEquals(AbstractButton.class, e.getComponentImplementation());
             assertTrue(e.getMessage().indexOf(AbstractButton.class.getName()) > 0);
         }

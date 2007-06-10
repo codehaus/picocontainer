@@ -18,9 +18,9 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.adapters.CachingBehaviorAdapter;
 import org.picocontainer.adapters.BehaviorAdapter;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -73,7 +73,7 @@ public final class ThreadLocalComponentAdapter extends BehaviorAdapter {
 
     public Object getComponentInstance(final PicoContainer pico)
             throws PicoInitializationException, PicoIntrospectionException,
-            NotConcreteRegistrationException {
+                   PicoRegistrationException {
 
         if (interfaces == null) {
             interfaces = getInterfaces();

@@ -28,7 +28,6 @@ import org.picocontainer.adapters.ConstructorInjectionAdapter;
 import org.picocontainer.adapters.InstanceComponentAdapter;
 import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.parameters.BasicComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -195,16 +194,14 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
     public void testLookupWithUnregisteredKeyReturnsNull() throws PicoIntrospectionException,
                                                                   PicoInitializationException,
-                                                                  NotConcreteRegistrationException
-    {
+                                                                  PicoRegistrationException {
         MutablePicoContainer pico = createPicoContainer(null);
         assertNull(pico.getComponent(String.class));
     }
 
     public void testLookupWithUnregisteredTypeReturnsNull() throws PicoIntrospectionException,
                                                                    PicoInitializationException,
-                                                                   NotConcreteRegistrationException
-    {
+                                                                   PicoRegistrationException {
         MutablePicoContainer pico = createPicoContainer(null);
         assertNull(pico.getComponent(String.class));
     }

@@ -16,9 +16,9 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.adapters.AbstractBehaviorFactory;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 
 /**
@@ -36,7 +36,7 @@ public class HotSwappingComponentAdapterFactory extends AbstractBehaviorFactory 
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoIntrospectionException, NotConcreteRegistrationException {
+            throws PicoIntrospectionException, PicoRegistrationException {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
         return new HotSwappingComponentAdapter(componentAdapter);
     }

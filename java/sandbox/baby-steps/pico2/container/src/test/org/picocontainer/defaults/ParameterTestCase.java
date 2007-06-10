@@ -58,7 +58,7 @@ public final class ParameterTestCase extends TestCase {
         assertNull(touchable);
     }
 
-    public void testConstantParameter() throws PicoInitializationException, NotConcreteRegistrationException, PicoIntrospectionException {
+    public void testConstantParameter() throws PicoInitializationException, PicoRegistrationException, PicoIntrospectionException {
         Object value = new Object();
         ConstantParameter parameter = new ConstantParameter(value);
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
@@ -95,7 +95,7 @@ public final class ParameterTestCase extends TestCase {
         assertFalse(parameter.isResolvable(picoContainer, adapter, TestCase.class, pn));
     }
 
-    public void testParameterRespectsExpectedType() throws PicoInitializationException, NotConcreteRegistrationException, PicoIntrospectionException {
+    public void testParameterRespectsExpectedType() throws PicoInitializationException, PicoRegistrationException, PicoIntrospectionException {
         Parameter parameter = new ConstantParameter(Touchable.class);
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         assertFalse(parameter.isResolvable(picoContainer, null, TestCase.class, pn));
@@ -105,7 +105,7 @@ public final class ParameterTestCase extends TestCase {
         assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class, pn));
     }
 
-    public void testConstantParameterWithPrimitives() throws PicoInitializationException, NotConcreteRegistrationException, PicoIntrospectionException {
+    public void testConstantParameterWithPrimitives() throws PicoInitializationException, PicoRegistrationException, PicoIntrospectionException {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         Byte byteValue = (byte)5;
         ConstantParameter parameter = new ConstantParameter(byteValue);
@@ -141,7 +141,7 @@ public final class ParameterTestCase extends TestCase {
         assertSame(charValue, parameter.resolveInstance(picoContainer, null, Character.class, pn));
     }
 
-    public void testConstantParameterWithPrimitivesRejectsUnexpectedType() throws PicoInitializationException, NotConcreteRegistrationException, PicoIntrospectionException {
+    public void testConstantParameterWithPrimitivesRejectsUnexpectedType() throws PicoInitializationException, PicoRegistrationException, PicoIntrospectionException {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         Byte byteValue = (byte)5;
         ConstantParameter parameter = new ConstantParameter(byteValue);

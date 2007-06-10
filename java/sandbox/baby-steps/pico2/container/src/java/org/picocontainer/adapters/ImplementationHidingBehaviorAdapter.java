@@ -19,7 +19,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.PicoRegistrationException;
 
 /**
  * This addComponent addAdapter makes it possible to hide the implementation
@@ -44,7 +44,7 @@ public class ImplementationHidingBehaviorAdapter extends BehaviorAdapter {
     }
 
     public Object getComponentInstance(final PicoContainer container)
-            throws PicoInitializationException, PicoIntrospectionException, NotConcreteRegistrationException {
+            throws PicoInitializationException, PicoIntrospectionException, PicoRegistrationException {
 
         Object componentKey = getDelegate().getComponentKey();
         Class[] classes;

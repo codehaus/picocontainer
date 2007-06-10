@@ -21,7 +21,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.adapters.AbstractBehaviorFactory;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.PicoRegistrationException;
 
 
 /**
@@ -65,7 +65,7 @@ public class AssimilatingComponentAdapterFactory extends AbstractBehaviorFactory
      */
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
-            throws PicoIntrospectionException, NotConcreteRegistrationException {
+            throws PicoIntrospectionException, PicoRegistrationException {
         return new AssimilatingComponentAdapter(assimilationType, super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy, null, componentKey, componentImplementation, parameters), proxyFactory);
     }

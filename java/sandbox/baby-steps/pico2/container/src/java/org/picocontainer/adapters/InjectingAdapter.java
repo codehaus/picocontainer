@@ -16,8 +16,8 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 
@@ -365,6 +365,24 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
         }
 
     }
+
+    /**
+     * @author Aslak Hellesoy
+     * @version $Revision$
+     */
+    public static class NotConcreteRegistrationException extends PicoRegistrationException {
+        private final Class componentImplementation;
+
+        public NotConcreteRegistrationException(Class componentImplementation) {
+            super("Bad Access: '" + componentImplementation.getName() + "' is not instantiable");
+            this.componentImplementation = componentImplementation;
+        }
+
+        public Class getComponentImplementation() {
+            return componentImplementation;
+        }
+    }
+
 
 
 

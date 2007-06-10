@@ -18,8 +18,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoClassNotFoundException;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.adapters.BehaviorAdapter;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * Decorating addComponent addAdapter that can be used to set additional properties
@@ -61,11 +61,13 @@ public class BeanPropertyComponentAdapter extends BehaviorAdapter {
      * @return the addComponent instance with any properties of the properties map set.
      * @throws PicoInitializationException {@inheritDoc}
      * @throws PicoIntrospectionException  {@inheritDoc}
-     * @throws org.picocontainer.defaults.NotConcreteRegistrationException
+     * @throws org.picocontainer.PicoRegistrationException
      *                                     {@inheritDoc}
      * @see #setProperties(Map)
      */
-    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, NotConcreteRegistrationException {
+    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException,
+                                                                       PicoRegistrationException
+    {
         final Object componentInstance = super.getComponentInstance(container);
         if (setters == null) {
             setters = getSetters(getComponentImplementation());

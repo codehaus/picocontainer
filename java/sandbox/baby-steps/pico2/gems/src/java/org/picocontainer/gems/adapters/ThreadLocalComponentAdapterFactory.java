@@ -21,8 +21,8 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.adapters.CachingBehaviorAdapter;
 import org.picocontainer.adapters.AbstractBehaviorFactory;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoRegistrationException;
 
 
 /**
@@ -107,7 +107,7 @@ public final class ThreadLocalComponentAdapterFactory extends AbstractBehaviorFa
 
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoIntrospectionException, NotConcreteRegistrationException {
+            throws PicoIntrospectionException, PicoRegistrationException {
         final ComponentAdapter componentAdapter;
         if (ensureThreadLocal) {
             componentAdapter = new ThreadLocalComponentAdapter(super.createComponentAdapter(

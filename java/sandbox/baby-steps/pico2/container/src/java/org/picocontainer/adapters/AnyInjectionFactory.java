@@ -18,7 +18,6 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.adapters.SetterInjectionFactory;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 import java.io.Serializable;
 
@@ -35,7 +34,7 @@ public class AnyInjectionFactory implements InjectionFactory, Serializable {
     private final ConstructorInjectionFactory cdiDelegate = new ConstructorInjectionFactory();
     private final SetterInjectionFactory sdiDelegate = new SetterInjectionFactory();
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, NotConcreteRegistrationException {
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException {
         if (ComponentCharacteristics.SDI.isSoCharacterized(componentCharacteristic)) {
             return sdiDelegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
         }

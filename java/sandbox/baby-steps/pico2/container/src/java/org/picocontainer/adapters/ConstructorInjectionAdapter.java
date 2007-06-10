@@ -18,7 +18,6 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ParameterName;
 import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

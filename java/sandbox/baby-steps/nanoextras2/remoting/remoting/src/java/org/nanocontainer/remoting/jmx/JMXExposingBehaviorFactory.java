@@ -19,8 +19,8 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.adapters.AbstractBehaviorFactory;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 
 /**
@@ -73,7 +73,7 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
      */
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter[] parameters)
-            throws PicoIntrospectionException, NotConcreteRegistrationException {
+            throws PicoIntrospectionException, PicoRegistrationException {
         final ComponentAdapter componentAdapter = super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
         if (ComponentCharacteristics.NOJMX.isSoCharacterized(componentCharacteristic)) {

@@ -6,8 +6,8 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.adapters.AnyInjectionFactory;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 
 /**
  * @author Paul Hammant
@@ -21,7 +21,8 @@ public final class TestComponentAdapterFactory extends AnyInjectionFactory {
         this.sb = sb;
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException, NotConcreteRegistrationException {
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException,
+                                                                                                                                                                                                                                                               PicoRegistrationException {
         sb.append("called");
         return super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
     }

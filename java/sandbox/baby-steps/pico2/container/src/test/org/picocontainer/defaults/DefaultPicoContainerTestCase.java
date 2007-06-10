@@ -301,7 +301,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         public ComponentAdapterFactoryWithNoMonitor(ComponentAdapter adapter){
             this.adapter = adapter;
         }
-        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, NotConcreteRegistrationException {
+        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, PicoRegistrationException {
             return adapter;
         }        
     }

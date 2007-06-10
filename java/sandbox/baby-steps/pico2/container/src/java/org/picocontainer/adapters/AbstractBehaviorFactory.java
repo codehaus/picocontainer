@@ -15,8 +15,8 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoRegistrationException;
 
 import java.io.Serializable;
 
@@ -30,7 +30,9 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
     }
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey,
                                                    Class componentImplementation,
-                                                   Parameter... parameters) throws PicoIntrospectionException, NotConcreteRegistrationException {
+                                                   Parameter... parameters) throws PicoIntrospectionException,
+                                                                                   PicoRegistrationException
+    {
         return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
     }
 

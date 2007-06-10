@@ -15,7 +15,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.defaults.NotConcreteRegistrationException;
+import org.picocontainer.PicoRegistrationException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -24,7 +24,9 @@ import org.picocontainer.defaults.NotConcreteRegistrationException;
  */
 public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory {
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, NotConcreteRegistrationException {
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException,
+                                                                                                                                                                                                                                                                PicoRegistrationException
+    {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
         return new ImplementationHidingBehaviorAdapter(componentAdapter);
     }

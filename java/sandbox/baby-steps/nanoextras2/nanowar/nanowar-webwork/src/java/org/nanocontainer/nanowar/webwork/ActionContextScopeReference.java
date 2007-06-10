@@ -1,6 +1,6 @@
 package org.nanocontainer.nanowar.webwork;
 
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 import webwork.action.ActionContext;
 
 /**
@@ -9,11 +9,11 @@ import webwork.action.ActionContext;
  *
  * @author Konstantin Pribluda
  */
-public final class ActionContextScopeObjectReference implements ObjectReference {
+public final class ActionContextScopeReference implements ObjectReference {
 
     private final String key;
 
-    public ActionContextScopeObjectReference(String key) {
+    public ActionContextScopeReference(String key) {
         this.key = key;
     }
 

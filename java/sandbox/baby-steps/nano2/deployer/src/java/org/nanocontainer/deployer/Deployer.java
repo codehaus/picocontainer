@@ -2,7 +2,7 @@ package org.nanocontainer.deployer;
 
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
 /**
  * A deployer provides a method of loading some sort of &quot;archive&quot; with a soft-configuration

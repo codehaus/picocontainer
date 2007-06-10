@@ -9,7 +9,7 @@
 package org.nanocontainer.nanowar;
 
 import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Joe Walnes
  */
 public final class ServletRequestContainerLauncher {
 
@@ -27,8 +27,8 @@ public final class ServletRequestContainerLauncher {
     private final ServletContext context;
 
     public ServletRequestContainerLauncher(ServletContext context, HttpServletRequest request) {
-        ObjectReference builderRef = new ApplicationScopeObjectReference(context, KeyConstants.BUILDER);
-        containerRef = new RequestScopeObjectReference(request, KeyConstants.REQUEST_CONTAINER);
+        ObjectReference builderRef = new ApplicationScopeReference(context, KeyConstants.BUILDER);
+        containerRef = new RequestScopeReference(request, KeyConstants.REQUEST_CONTAINER);
         containerBuilder = (ContainerBuilder) builderRef.get();
         this.request = request;
         this.context = context;
@@ -47,9 +47,9 @@ public final class ServletRequestContainerLauncher {
         //
         ObjectReference containerReferenceToUse;
         if (session == null || session.getAttribute(KeyConstants.SESSION_CONTAINER) == null) {
-            containerReferenceToUse = new ApplicationScopeObjectReference(context, KeyConstants.APPLICATION_CONTAINER);
+            containerReferenceToUse = new ApplicationScopeReference(context, KeyConstants.APPLICATION_CONTAINER);
         } else {
-            containerReferenceToUse = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);
+            containerReferenceToUse = new SessionScopeReference(session, KeyConstants.SESSION_CONTAINER);
         } 
 
         containerBuilder.buildContainer(containerRef, containerReferenceToUse, request, false);

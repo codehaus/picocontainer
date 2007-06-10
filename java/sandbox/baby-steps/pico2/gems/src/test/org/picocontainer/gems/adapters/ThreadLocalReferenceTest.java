@@ -12,7 +12,7 @@ package org.picocontainer.gems.adapters;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
 import java.util.ArrayList;
 import java.util.Collections;

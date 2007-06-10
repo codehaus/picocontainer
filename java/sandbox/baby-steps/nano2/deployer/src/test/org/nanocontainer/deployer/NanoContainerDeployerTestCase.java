@@ -9,7 +9,8 @@ import org.apache.commons.vfs.provider.zip.ZipFileProvider;
 import org.nanocontainer.deployer.Deployer;
 import org.nanocontainer.deployer.NanoContainerDeployer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
+
 import junit.framework.TestCase;
 
 import java.net.MalformedURLException;

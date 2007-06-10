@@ -17,7 +17,7 @@ import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoRegistrationException;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
 /**

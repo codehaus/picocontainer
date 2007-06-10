@@ -15,7 +15,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
 /**

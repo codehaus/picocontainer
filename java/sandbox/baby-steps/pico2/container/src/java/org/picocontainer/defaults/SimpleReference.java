@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import org.picocontainer.ObjectReference;
+
 import java.io.Serializable;
 
 /**
@@ -17,6 +19,9 @@ import java.io.Serializable;
  */
 public class SimpleReference implements ObjectReference, Serializable {
     private Object instance;
+
+    public SimpleReference() {
+    }
 
     public Object get() {
         return instance;

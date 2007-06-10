@@ -8,7 +8,7 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
@@ -17,9 +17,9 @@ import java.io.Serializable;
  * References an object that lives as an attribute of the
  * HttpSession.
  *
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Joe Walnes
  */
-public final class SessionScopeObjectReference implements ObjectReference, Serializable {
+public final class SessionScopeReference implements ObjectReference, Serializable {
 
     //The only reason this class is Serializable and the 'session' field is transient
     //is so that if this class is used as a key in a PicoContainer (as it is in the
@@ -29,7 +29,7 @@ public final class SessionScopeObjectReference implements ObjectReference, Seria
     private final transient HttpSession session;
     private final String key;
 
-    public SessionScopeObjectReference(HttpSession session, String key) {
+    public SessionScopeReference(HttpSession session, String key) {
         this.session = session;
         this.key = key;
     }

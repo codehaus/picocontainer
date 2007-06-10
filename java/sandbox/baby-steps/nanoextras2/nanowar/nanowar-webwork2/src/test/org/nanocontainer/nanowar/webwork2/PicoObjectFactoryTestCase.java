@@ -17,7 +17,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.gems.adapters.ThreadLocalReference;
 
 /**

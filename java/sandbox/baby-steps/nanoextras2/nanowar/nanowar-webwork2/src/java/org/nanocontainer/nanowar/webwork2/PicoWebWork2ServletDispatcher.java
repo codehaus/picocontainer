@@ -25,7 +25,7 @@ import com.opensymphony.xwork.DefaultActionProxyFactory;
  * <p/>
  * To use, replace the WebWork ServletDispatcher in web.xml with this.
  *
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Joe Walnes
  */
 public class PicoWebWork2ServletDispatcher extends ServletDispatcher {
 

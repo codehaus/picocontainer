@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picocontainer.defaults;
+package org.picocontainer;
 
 /**
  * A way to refer to objects that are stored in "awkward" places (for example inside a
@@ -14,7 +14,7 @@ package org.picocontainer.defaults;
  * <p/>
  * This interface is typically implemented by someone integrating Pico into an existing container.
  *
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Joe Walnes
  */
 public interface ObjectReference {
     /**

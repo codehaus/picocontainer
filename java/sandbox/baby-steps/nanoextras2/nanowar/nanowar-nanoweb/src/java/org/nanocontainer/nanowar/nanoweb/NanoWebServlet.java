@@ -2,12 +2,12 @@ package org.nanocontainer.nanowar.nanoweb;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-import org.nanocontainer.nanowar.ApplicationScopeObjectReference;
+import org.nanocontainer.nanowar.ApplicationScopeReference;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.RequestScopeObjectReference;
+import org.nanocontainer.nanowar.RequestScopeReference;
 import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -194,12 +194,12 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     }
 
     private MutablePicoContainer getApplicationContainer(ServletContext context) {
-        ObjectReference ref = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
+        ObjectReference ref = new ApplicationScopeReference(context, APPLICATION_CONTAINER);
         return (MutablePicoContainer) ref.get();
     }
 
     private MutablePicoContainer getRequestContainer(ServletRequest request) {
-        ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
+        ObjectReference ref = new RequestScopeReference(request, REQUEST_CONTAINER);
         return (MutablePicoContainer) ref.get();
     }
 }

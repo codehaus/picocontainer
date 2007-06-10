@@ -30,7 +30,7 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
     public void setUp(){
         factory = new PicoActionFactory();
         container = new DefaultPicoContainer();
-        (new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER)).set(container);
+        (new ActionContextScopeReference(KeyConstants.REQUEST_CONTAINER)).set(container);
     }
     
 	public void testActionInstantiationWithValidClassName() throws Exception {

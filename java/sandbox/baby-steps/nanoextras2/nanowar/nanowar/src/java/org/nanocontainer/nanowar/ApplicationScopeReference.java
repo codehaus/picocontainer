@@ -8,32 +8,32 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.ServletContext;
 
 /**
  * References an object that lives as an attribute of the
- * ServletRequest.
+ * ServletContext (application scope)
  *
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Joe Walnes
  */
-public final class RequestScopeObjectReference implements ObjectReference {
+public final class ApplicationScopeReference implements ObjectReference {
 
-    private final ServletRequest request;
+    private final ServletContext context;
     private final String key;
 
-    public RequestScopeObjectReference(ServletRequest request, String key) {
-        this.request = request;
+    public ApplicationScopeReference(ServletContext context, String key) {
+        this.context = context;
         this.key = key;
     }
 
     public void set(Object item) {
-        request.setAttribute(key, item);
+        context.setAttribute(key, item);
     }
 
     public Object get() {
-        return request.getAttribute(key);
+        return context.getAttribute(key);
     }
 
 }

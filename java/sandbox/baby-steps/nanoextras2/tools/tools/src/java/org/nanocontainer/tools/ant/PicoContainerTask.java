@@ -24,11 +24,10 @@ import org.picocontainer.adapters.AnyInjectionFactory;
 import org.picocontainer.adapters.BeanPropertyComponentAdapter;
 import org.picocontainer.adapters.BeanPropertyBehaviorFactory;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**

@@ -12,10 +12,11 @@ package org.nanocontainer.nanowar;
 import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSession;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import javax.servlet.http.HttpSessionBindingEvent;
 import org.picocontainer.defaults.SimpleReference;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionBindingListener;
 import java.io.Serializable;
@@ -63,7 +64,7 @@ import java.io.Serializable;
 public class NanoWarSessionListener extends AbstractNanoWarListener implements HttpSessionListener, KeyConstants {
 
     private ContainerBuilder getBuilder(ServletContext context) {
-        ObjectReference assemblerRef = new ApplicationScopeObjectReference(context, BUILDER);
+        ObjectReference assemblerRef = new ApplicationScopeReference(context, BUILDER);
         return (ContainerBuilder) assemblerRef.get();
     }
 
@@ -71,15 +72,15 @@ public class NanoWarSessionListener extends AbstractNanoWarListener implements H
         HttpSession session = event.getSession();
         ServletContext context = session.getServletContext();
         ContainerBuilder containerBuilder = getBuilder(context);
-        ObjectReference sessionContainerRef = new SessionScopeObjectReference(session, SESSION_CONTAINER);
-        ObjectReference webappContainerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
+        ObjectReference sessionContainerRef = new SessionScopeReference(session, SESSION_CONTAINER);
+        ObjectReference webappContainerRef = new ApplicationScopeReference(context, APPLICATION_CONTAINER);
         containerBuilder.buildContainer(sessionContainerRef, webappContainerRef, session, false);
 
         session.setAttribute(KILLER_HELPER, new SessionContainerKillerHelper() {
             public void valueBound(HttpSessionBindingEvent bindingEvent) {
                 HttpSession session = bindingEvent.getSession();
                 containerRef = new SimpleReference();
-                containerRef.set(new SessionScopeObjectReference(session, SESSION_CONTAINER).get());
+                containerRef.set(new SessionScopeReference(session, SESSION_CONTAINER).get());
             }
 
             public void valueUnbound(HttpSessionBindingEvent event) {

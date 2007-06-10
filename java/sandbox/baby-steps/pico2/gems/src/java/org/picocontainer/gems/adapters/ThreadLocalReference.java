@@ -10,7 +10,7 @@
 
 package org.picocontainer.gems.adapters;
 
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -18,7 +18,7 @@ import java.io.Serializable;
 
 
 /**
- * An {@link org.picocontainer.defaults.ObjectReference} based on a {@link ThreadLocal}.
+ * An {@link ObjectReference} based on a {@link ThreadLocal}.
  * 
  * @author J&ouml;rg Schaible
  */

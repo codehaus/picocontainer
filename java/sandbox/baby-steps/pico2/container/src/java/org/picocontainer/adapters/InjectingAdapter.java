@@ -17,6 +17,7 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -183,7 +184,7 @@ public abstract class InjectingAdapter extends AbstractComponentAdapter
      * Abstract utility class to detect recursion cycles.
      * Derive from this class and implement {@link ThreadLocalCyclicDependencyGuard#run}.
      * The method will be called by  {@link ThreadLocalCyclicDependencyGuard#observe}. Select
-     * an appropriate guard for your scope. Any {@link org.picocontainer.defaults.ObjectReference} can be
+     * an appropriate guard for your scope. Any {@link ObjectReference} can be
      * used as long as it is initialized with  <code>Boolean.FALSE</code>.
      *
      * @author J&ouml;rg Schaible

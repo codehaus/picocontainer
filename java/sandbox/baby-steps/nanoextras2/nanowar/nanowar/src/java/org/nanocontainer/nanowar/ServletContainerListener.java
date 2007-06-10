@@ -13,10 +13,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.defaults.SimpleReference;
 
 /**
  * Servlet listener class that hooks into the underlying servlet

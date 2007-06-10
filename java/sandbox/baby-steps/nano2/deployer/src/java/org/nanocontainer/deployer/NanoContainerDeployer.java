@@ -26,8 +26,9 @@ import org.apache.commons.vfs.impl.VFSClassLoader;
 import org.apache.commons.vfs.VFS;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
+
 import org.nanocontainer.script.UnsupportedScriptTypeException;
 import org.nanocontainer.script.ScriptBuilderResolver;
 

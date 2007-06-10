@@ -19,9 +19,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
-import org.picocontainer.PicoClassNotFoundException;
 
 /**
  * Standalone offers a command line interface to NanoContainer.

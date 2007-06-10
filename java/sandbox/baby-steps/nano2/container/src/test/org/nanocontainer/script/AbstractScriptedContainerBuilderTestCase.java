@@ -15,7 +15,7 @@ package org.nanocontainer.script;
 
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
 public abstract class AbstractScriptedContainerBuilderTestCase extends MockObjectTestCase {

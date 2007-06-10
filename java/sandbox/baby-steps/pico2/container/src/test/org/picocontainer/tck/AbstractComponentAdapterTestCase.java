@@ -31,7 +31,7 @@ import org.picocontainer.adapters.BehaviorAdapter;
 import org.picocontainer.adapters.InjectingAdapter;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
 import org.jmock.MockObjectTestCase;

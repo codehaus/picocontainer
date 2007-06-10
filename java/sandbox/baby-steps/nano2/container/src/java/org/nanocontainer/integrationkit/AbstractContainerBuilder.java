@@ -12,10 +12,10 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
 /**
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Joe Walnes
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author Mauro Talevi

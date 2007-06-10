@@ -13,7 +13,7 @@ import org.nanocontainer.integrationkit.ContainerComposer;
 /**
  * Attribute keys used to store containers in various webapp scopes.
  * 
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Joe Walnes
  */
 public interface KeyConstants {
     

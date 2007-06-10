@@ -22,10 +22,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.RequestScopeObjectReference;
+import org.nanocontainer.nanowar.RequestScopeReference;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
 /**
  * <p>
@@ -285,7 +285,7 @@ public class ContainerChainFilter implements Filter {
 	}
 
 	private ObjectReference obtainRequestObjectReference(ServletRequest request) {
-		return new RequestScopeObjectReference(request,
+		return new RequestScopeReference(request,
 				KeyConstants.REQUEST_CONTAINER);
 	}
 

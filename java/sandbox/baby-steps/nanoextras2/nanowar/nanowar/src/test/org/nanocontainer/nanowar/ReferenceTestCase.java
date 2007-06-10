@@ -11,7 +11,7 @@ package org.nanocontainer.nanowar;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
@@ -28,19 +28,19 @@ public class ReferenceTestCase extends MockObjectTestCase {
 
     public void testRequestScope() throws UnsupportedEncodingException {
         Mock mock = createMock(ServletRequest.class);
-        RequestScopeObjectReference ref = new RequestScopeObjectReference((ServletRequest) mock.proxy(), key);
+        RequestScopeReference ref = new RequestScopeReference((ServletRequest) mock.proxy(), key);
         setGetAndVerify(ref, mock);
     }
 
     public void testApplicationScope() {
         Mock mock = createMock(ServletContext.class);
-        ApplicationScopeObjectReference ref = new ApplicationScopeObjectReference((ServletContext) mock.proxy(), key);
+        ApplicationScopeReference ref = new ApplicationScopeReference((ServletContext) mock.proxy(), key);
         setGetAndVerify(ref, mock);
     }
 
     public void testSessionScope() {
         Mock mock = createMock(HttpSession.class);
-        SessionScopeObjectReference ref = new SessionScopeObjectReference((HttpSession) mock.proxy(), key);
+        SessionScopeReference ref = new SessionScopeReference((HttpSession) mock.proxy(), key);
         setGetAndVerify(ref, mock);
     }
 

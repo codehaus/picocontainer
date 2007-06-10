@@ -11,7 +11,7 @@ package org.nanocontainer.nanowar;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
@@ -54,17 +54,17 @@ public class ServletContainerFinder {
     }
 
     protected MutablePicoContainer getApplicationContainer(ServletContext context) {
-        ObjectReference ref = new ApplicationScopeObjectReference(context, KeyConstants.APPLICATION_CONTAINER);
+        ObjectReference ref = new ApplicationScopeReference(context, KeyConstants.APPLICATION_CONTAINER);
         return (MutablePicoContainer) ref.get();
     }
 
     protected MutablePicoContainer getSessionContainer(HttpSession session) {
-        ObjectReference ref = new SessionScopeObjectReference(session, KeyConstants.SESSION_CONTAINER);
+        ObjectReference ref = new SessionScopeReference(session, KeyConstants.SESSION_CONTAINER);
         return (MutablePicoContainer) ref.get();
     }
 
     protected MutablePicoContainer getRequestContainer(ServletRequest request) {
-        ObjectReference ref = new RequestScopeObjectReference(request, KeyConstants.REQUEST_CONTAINER);
+        ObjectReference ref = new RequestScopeReference(request, KeyConstants.REQUEST_CONTAINER);
         return (MutablePicoContainer) ref.get();
     }
 

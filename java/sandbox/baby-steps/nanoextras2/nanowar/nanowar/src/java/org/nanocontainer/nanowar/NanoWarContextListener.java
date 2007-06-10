@@ -27,8 +27,8 @@ import org.nanocontainer.script.ScriptBuilderResolver;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.defaults.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 
 /**
@@ -75,10 +75,10 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
         try {
             ContainerBuilder containerBuilder = createContainerBuilder(context);
 
-            ObjectReference builderRef = new ApplicationScopeObjectReference(context, BUILDER);
+            ObjectReference builderRef = new ApplicationScopeReference(context, BUILDER);
             builderRef.set(containerBuilder);
 
-            ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
+            ObjectReference containerRef = new ApplicationScopeReference(context, APPLICATION_CONTAINER);
             containerBuilder.buildContainer(containerRef, new SimpleReference(), context, false);
         // TODO bad catch - PH
         } catch (Exception e) {
@@ -144,7 +144,7 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
 
     public void contextDestroyed(ServletContextEvent event) {
         ServletContext context = event.getServletContext();
-        ObjectReference containerRef = new ApplicationScopeObjectReference(context, APPLICATION_CONTAINER);
+        ObjectReference containerRef = new ApplicationScopeReference(context, APPLICATION_CONTAINER);
         killContainer(containerRef);
     }
 }

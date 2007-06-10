@@ -12,7 +12,7 @@ package org.nanocontainer.nanowar;
 import java.io.Serializable;
 import org.picocontainer.PicoContainer;
 import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.defaults.SimpleReference;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.DefaultContainerBuilder;

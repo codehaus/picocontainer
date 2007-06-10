@@ -13,10 +13,10 @@ import org.apache.axis.providers.java.MsgProvider;
 import org.apache.axis.transport.http.HTTPConstants;
 import org.apache.axis.utils.cache.ClassCache;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.RequestScopeObjectReference;
+import org.nanocontainer.nanowar.RequestScopeReference;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.defaults.DefaultPicoContainer;
-import org.picocontainer.defaults.ObjectReference;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,7 +43,7 @@ public class NanoMsgProvider extends MsgProvider implements KeyConstants {
     private Object instantiateService(Class svcClass, MessageContext msgContext) {
 
         HttpServletRequest request = (HttpServletRequest) msgContext.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
-        ObjectReference ref = new RequestScopeObjectReference(request, REQUEST_CONTAINER);
+        ObjectReference ref = new RequestScopeReference(request, REQUEST_CONTAINER);
         MutablePicoContainer requestContainer = (MutablePicoContainer) ref.get();
 
         MutablePicoContainer container = new DefaultPicoContainer(requestContainer);

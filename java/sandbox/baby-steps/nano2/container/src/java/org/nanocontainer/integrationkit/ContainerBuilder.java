@@ -8,14 +8,14 @@
  *****************************************************************************/
 package org.nanocontainer.integrationkit;
 
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
 /**
  * The responsibility of a ContainerBuilder is to <em>instantiate</em> and <em>compose</em> containers.
  * (Composition means assembly (registration) and configuration (setting primitive parameters) of
  * components).
  *
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Joe Walnes
  */
 public interface ContainerBuilder {
 

@@ -16,6 +16,6 @@ public class ActionContextScopeObjectReferenceTestCase extends TestCase {
     
     public void testReferenceCanBeFound() throws Exception {
         ActionContext.getContext().put("foo","bar");
-        assertEquals("bar",(new ActionContextScopeObjectReference("foo")).get());
+        assertEquals("bar",(new ActionContextScopeReference("foo")).get());
     }
 }

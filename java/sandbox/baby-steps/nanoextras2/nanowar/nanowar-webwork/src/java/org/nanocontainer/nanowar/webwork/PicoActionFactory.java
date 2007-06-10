@@ -14,7 +14,7 @@ import org.nanocontainer.nanowar.ActionsContainerFactory;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.defaults.ObjectReference;
+import org.picocontainer.ObjectReference;
 
 import webwork.action.Action;
 import webwork.action.ServletActionContext;
@@ -24,7 +24,7 @@ import webwork.action.factory.ActionFactory;
  * Replacement for the standard WebWork JavaActionFactory that uses a 
  * PicoContainer to resolve all of the dependencies an Action may have.
  *
- * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
+ * @author Joe Walnes
  * @author Mauro Talevi
  */
 public final class PicoActionFactory extends ActionFactory {
@@ -69,7 +69,7 @@ public final class PicoActionFactory extends ActionFactory {
         if ( request != null ) {
             return actionsContainerFactory.getActionsContainer(request);
         } else {
-            ObjectReference ref = new ActionContextScopeObjectReference(KeyConstants.REQUEST_CONTAINER);
+            ObjectReference ref = new ActionContextScopeReference(KeyConstants.REQUEST_CONTAINER);
             return (MutablePicoContainer) ref.get();
         }
     }

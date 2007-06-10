@@ -11,7 +11,7 @@ package org.picocontainer.gems.constraints;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.parameters.CollectionComponentParameter;
 
@@ -34,7 +34,7 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
     public Object resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
                                   Class expectedType,
-                                  ParameterName expectedParameterName) throws PicoIntrospectionException
+                                  ParameterName expectedParameterName) throws PicoCompositionException
     {
         final Object[] array =
             (Object[])super.resolveInstance(container, adapter, getArrayType(expectedType), expectedParameterName);
@@ -47,7 +47,7 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
                                 Class expectedType,
-                                ParameterName expectedParameterName) throws PicoIntrospectionException
+                                ParameterName expectedParameterName) throws PicoCompositionException
     {
         return super.isResolvable(container, adapter, getArrayType(expectedType), expectedParameterName);
     }
@@ -55,7 +55,7 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
                        Class expectedType,
-                       ParameterName expectedParameterName) throws PicoIntrospectionException
+                       ParameterName expectedParameterName) throws PicoCompositionException
     {
         super.verify(container, adapter, getArrayType(expectedType), expectedParameterName);
     }

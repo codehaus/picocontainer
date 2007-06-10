@@ -12,8 +12,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ParameterName;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.BeanPropertyComponentAdapter;
@@ -101,7 +100,7 @@ public class SetterInjector extends AbstractInjector {
     }
 
 
-    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException,
+    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException,
                                                                                              NotConcreteRegistrationException {
         final Constructor constructor = getConstructor();
         getMatchingParameterListForSetters(container);
@@ -114,20 +113,20 @@ public class SetterInjector extends AbstractInjector {
                 try {
                     return getComponentImplementation().getConstructor((Class[])null);
                 } catch (NoSuchMethodException e) {
-                    return new PicoInitializationException(e);
+                    return new PicoCompositionException(e);
                 } catch (SecurityException e) {
-                    return new PicoInitializationException(e);
+                    return new PicoCompositionException(e);
                 }
             }
         });
         if (retVal instanceof Constructor) {
             return (Constructor) retVal;
         } else {
-            throw (PicoInitializationException) retVal;
+            throw (PicoCompositionException) retVal;
         }
     }
 
-    private Parameter[] getMatchingParameterListForSetters(PicoContainer container) throws PicoInitializationException, UnsatisfiableDependenciesException {
+    private Parameter[] getMatchingParameterListForSetters(PicoContainer container) throws PicoCompositionException, UnsatisfiableDependenciesException {
         if (injectionMethods == null) {
             initializeInjectionMethodsAndTypeLists();
         }
@@ -163,12 +162,13 @@ public class SetterInjector extends AbstractInjector {
         if (unsatisfiableDependencyTypes.size() > 0) {
             throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
         } else if (nonMatchingParameterPositions.size() > 0) {
-            throw new PicoInitializationException("Following parameters do not match any of the injectionMethods for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
+            throw new PicoCompositionException("Following parameters do not match any of the injectionMethods for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
         }
         return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
     }
 
-    public Object getComponentInstance(final PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, NotConcreteRegistrationException {
+    public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException,
+                                                                             PicoCompositionException, NotConcreteRegistrationException {
         final Constructor constructor = getConstructor();
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
@@ -187,18 +187,18 @@ public class SetterInjector extends AbstractInjector {
                         } else if (e.getTargetException() instanceof Error) {
                             throw (Error) e.getTargetException();
                         }
-                        throw new PicoInitializationException(e.getTargetException());
+                        throw new PicoCompositionException(e.getTargetException());
                     } catch (InstantiationException e) {
                         // can't get here because checkConcrete() will catch it earlier, but see PICO-191
                         ///CLOVER:OFF
                         componentMonitor.instantiationFailed(SetterInjector.this, constructorToUse, e);
-                        throw new PicoInitializationException("Should never get here");
+                        throw new PicoCompositionException("Should never get here");
                         ///CLOVER:ON
                     } catch (IllegalAccessException e) {
                         // can't get here because either filtered or access mode set
                         ///CLOVER:OFF
                         componentMonitor.instantiationFailed(SetterInjector.this, constructorToUse, e);
-                        throw new PicoInitializationException(e);
+                        throw new PicoCompositionException(e);
                         ///CLOVER:ON
                     }
                     Method setter = null;
@@ -225,10 +225,10 @@ public class SetterInjector extends AbstractInjector {
                         } else if (e.getTargetException() instanceof Error) {
                             throw (Error) e.getTargetException();
                         }
-                        throw new PicoInitializationException(e.getTargetException());
+                        throw new PicoCompositionException(e.getTargetException());
                     } catch (IllegalAccessException e) {
                         componentMonitor.invocationFailed(setter, componentInstance, e);
-                        throw new PicoInitializationException(e);
+                        throw new PicoCompositionException(e);
                     }
 
                 }
@@ -238,7 +238,7 @@ public class SetterInjector extends AbstractInjector {
         return instantiationGuard.observe(getComponentImplementation());
     }
 
-    public void verify(final PicoContainer container) throws PicoIntrospectionException {
+    public void verify(final PicoContainer container) throws PicoCompositionException {
         if (verifyingGuard == null) {
             verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {

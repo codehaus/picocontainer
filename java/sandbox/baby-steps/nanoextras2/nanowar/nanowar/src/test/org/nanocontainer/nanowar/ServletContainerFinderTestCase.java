@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 
 /**
@@ -72,8 +72,8 @@ public final class ServletContainerFinderTestCase extends MockObjectTestCase {
 
         try {
             finder.findContainer(request);
-            fail("PicoInitializationException should have been raised");
-        } catch (PicoInitializationException e) {
+            fail("PicoCompositionException should have been raised");
+        } catch (PicoCompositionException e) {
             // expected
         }
     }

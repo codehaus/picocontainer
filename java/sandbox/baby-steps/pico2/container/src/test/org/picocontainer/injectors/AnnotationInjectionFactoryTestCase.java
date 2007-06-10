@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AnnotationInjectionFactory;
@@ -83,7 +83,7 @@ public class AnnotationInjectionFactoryTestCase extends AbstractComponentAdapter
         try {
             picoContainer.getComponent(Bean.class);
             fail("Instantiation should have failed.");
-        } catch (PicoInitializationException e) {
+        } catch (PicoCompositionException e) {
         }
     }
 

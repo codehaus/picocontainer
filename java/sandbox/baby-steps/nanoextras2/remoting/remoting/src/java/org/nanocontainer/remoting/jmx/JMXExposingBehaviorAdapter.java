@@ -12,8 +12,7 @@ package org.nanocontainer.remoting.jmx;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.CachingBehavior;
 
@@ -81,12 +80,13 @@ public class JMXExposingBehaviorAdapter extends AbstractBehavior {
      * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link CachingBehavior} to avoid
      * the registration of the same component again.
      * </p>
-     * @throws PicoInitializationException Thrown by the delegate or if the registering of the
+     * @throws PicoCompositionException Thrown by the delegate or if the registering of the
      *             {@link javax.management.DynamicMBean} in the {@link MBeanServer } fails.
      * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(final PicoContainer container)
-            throws PicoInitializationException, PicoIntrospectionException {
+            throws PicoCompositionException, PicoCompositionException
+    {
         final ComponentAdapter componentAdapter = new CachingBehavior(getDelegate());
         final Object componentInstance = componentAdapter.getComponentInstance(container);
         for (DynamicMBeanProvider provider : providers) {
@@ -107,7 +107,7 @@ public class JMXExposingBehaviorAdapter extends AbstractBehavior {
                 }
                 registeredObjectNames.add(info.getObjectName());
                 if (exception != null) {
-                    throw new PicoInitializationException("Registering MBean failed", exception);
+                    throw new PicoCompositionException("Registering MBean failed", exception);
                 }
             }
         }

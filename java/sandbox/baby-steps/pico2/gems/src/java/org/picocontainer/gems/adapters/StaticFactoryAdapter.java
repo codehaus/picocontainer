@@ -10,8 +10,7 @@
 package org.picocontainer.gems.adapters;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.adapters.AbstractAdapter;
 
@@ -54,7 +53,9 @@ public final class StaticFactoryAdapter extends AbstractAdapter {
      * @return Returns the component created by the static factory.
      * @see org.picocontainer.ComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
      */
-    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
+    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException,
+                                                                       PicoCompositionException
+    {
         return staticFactory.get();
     }
 

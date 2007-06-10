@@ -12,8 +12,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.parameters.ConstantParameter;
@@ -36,7 +35,9 @@ public class ComponentAdapterTestCase
         TestAdapter(Object componentKey, Class componentImplementation) {
             super(componentKey, componentImplementation);
         }
-        public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
+        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException,
+                                                                           PicoCompositionException
+        {
             return null;
         }
         public void verify(PicoContainer container) throws PicoVerificationException {
@@ -48,7 +49,9 @@ public class ComponentAdapterTestCase
         TestMonitoringComponentAdapter(ComponentMonitor componentMonitor) {
             super(null, null, componentMonitor);
         }
-        public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
+        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException,
+                                                                           PicoCompositionException
+        {
             return null;
         }
         public void verify(PicoContainer container) throws PicoVerificationException {
@@ -67,15 +70,18 @@ public class ComponentAdapterTestCase
         TestInstantiatingAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
             super(componentKey, componentImplementation, parameters);
         }
-        protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException,
+        protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws
+                                                                                          PicoCompositionException,
                                                                                                  NotConcreteRegistrationException {
             return null;
         }
 
-        public void verify(PicoContainer container) throws PicoIntrospectionException {
+        public void verify(PicoContainer container) throws PicoCompositionException {
         }
 
-        public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
+        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException,
+                                                                           PicoCompositionException
+        {
             return null;
         }
     }

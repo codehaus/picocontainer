@@ -16,8 +16,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
@@ -62,8 +61,8 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
     protected abstract MutablePicoContainer createPicoContainer(PicoContainer parent);
 
     protected final MutablePicoContainer createPicoContainerWithDependsOnTouchableOnly() throws
-                                                                                         PicoInitializationException,
-                                                                                         PicoIntrospectionException
+                                                                                         PicoCompositionException,
+                                                                                         PicoCompositionException
     {
         MutablePicoContainer pico = createPicoContainer(null);
         pico.addComponent(DependsOnTouchable.class);
@@ -72,8 +71,8 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
     }
 
     protected final MutablePicoContainer createPicoContainerWithTouchableAndDependsOnTouchable() throws
-                                                                                                 PicoInitializationException,
-                                                                                                 PicoIntrospectionException
+                                                                                                 PicoCompositionException,
+                                                                                                 PicoCompositionException
     {
         MutablePicoContainer pico = createPicoContainerWithDependsOnTouchableOnly();
         pico.addComponent(Touchable.class, SimpleTouchable.class);
@@ -168,7 +167,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             pico.addComponent(Object.class);
             pico.addComponent(Object.class);
             fail("Should have failed with duplicate registration");
-        } catch (PicoInitializationException e) {
+        } catch (PicoCompositionException e) {
             assertTrue("Wrong key", e.getMessage().indexOf(Object.class.toString()) > -1);
         }
     }
@@ -180,7 +179,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         assertSame(map, pico.getComponent(Map.class));
     }
 
-    public void testAmbiguousResolution() throws PicoInitializationException, PicoInitializationException {
+    public void testAmbiguousResolution() throws PicoCompositionException, PicoCompositionException {
         MutablePicoContainer pico = createPicoContainer(null);
         pico.addComponent("ping", String.class);
         pico.addComponent("pong", "pang");
@@ -191,16 +190,18 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testLookupWithUnregisteredKeyReturnsNull() throws PicoIntrospectionException,
-                                                                  PicoInitializationException,
-                                                                  PicoInitializationException {
+    public void testLookupWithUnregisteredKeyReturnsNull() throws PicoCompositionException,
+                                                                  PicoCompositionException,
+                                                                  PicoCompositionException
+    {
         MutablePicoContainer pico = createPicoContainer(null);
         assertNull(pico.getComponent(String.class));
     }
 
-    public void testLookupWithUnregisteredTypeReturnsNull() throws PicoIntrospectionException,
-                                                                   PicoInitializationException,
-                                                                   PicoInitializationException {
+    public void testLookupWithUnregisteredTypeReturnsNull() throws PicoCompositionException,
+                                                                   PicoCompositionException,
+                                                                   PicoCompositionException
+    {
         MutablePicoContainer pico = createPicoContainer(null);
         assertNull(pico.getComponent(String.class));
     }
@@ -365,7 +366,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         assertSame(nw.washable, nt.touchable);
     }
 
-    public void testRegisterComponentWithObjectBadType() throws PicoIntrospectionException {
+    public void testRegisterComponentWithObjectBadType() throws PicoCompositionException {
         MutablePicoContainer pico = createPicoContainer(null);
 
         try {
@@ -748,7 +749,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         assertEquals(expectedList, visitedList);
     }
 
-    public void testAmbiguousDependencies() throws PicoInitializationException, PicoInitializationException {
+    public void testAmbiguousDependencies() throws PicoCompositionException, PicoCompositionException {
 
         MutablePicoContainer pico = this.createPicoContainer(null);
 

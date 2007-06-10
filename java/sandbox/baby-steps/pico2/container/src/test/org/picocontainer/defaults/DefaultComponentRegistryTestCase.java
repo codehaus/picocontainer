@@ -12,7 +12,7 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.AbstractInjector;
@@ -27,20 +27,22 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         picoContainer = new DefaultPicoContainer();
     }
 
-    public void testRegisterComponent() throws PicoInitializationException {
+    public void testRegisterComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
 
-    public void testUnregisterComponent() throws PicoInitializationException {
+    public void testUnregisterComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.removeComponent(Touchable.class);
         assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
 
-    public void testCannotInstantiateAnUnregisteredComponent() throws PicoInitializationException, PicoInitializationException {
+    public void testCannotInstantiateAnUnregisteredComponent() throws PicoCompositionException,
+                                                                      PicoCompositionException
+    {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -49,7 +51,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertTrue(picoContainer.getComponents().isEmpty());
     }
 
-    public void testCanInstantiateReplacedComponent() throws PicoInitializationException, PicoInitializationException {
+    public void testCanInstantiateReplacedComponent() throws PicoCompositionException, PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -61,7 +63,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
                 1, picoContainer.getComponents().size());
     }
 
-    public void testUnregisterAfterInstantiateComponents() throws PicoInitializationException, PicoInitializationException, AbstractInjector.AmbiguousComponentResolutionException {
+    public void testUnregisterAfterInstantiateComponents() throws PicoCompositionException, PicoCompositionException, AbstractInjector.AmbiguousComponentResolutionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -69,7 +71,9 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertNull(picoContainer.getComponent(Touchable.class));
     }
 
-    public void testReplacedInstantiatedComponentHasCorrectClass() throws PicoInitializationException, PicoInitializationException {
+    public void testReplacedInstantiatedComponentHasCorrectClass() throws PicoCompositionException,
+                                                                          PicoCompositionException
+    {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -81,7 +85,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertEquals(AlternativeTouchable.class, component.getClass());
     }
 
-    private ComponentAdapter createComponentAdapter() throws PicoInitializationException {
+    private ComponentAdapter createComponentAdapter() throws PicoCompositionException {
         return new ConstructorInjector(Touchable.class, SimpleTouchable.class);
     }
 }

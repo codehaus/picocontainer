@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jmock.Mock;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 
 
@@ -153,8 +153,8 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         container.addComponent(Foo.class);
         try {
             filter.lookupDelegate(mockRequest(container));
-            fail("PicoInitializationException expected");
-        } catch ( PicoInitializationException e) {
+            fail("PicoCompositionException expected");
+        } catch ( PicoCompositionException e) {
             assertEquals("You must specify one of delegate-class or delegate-key in the filter config", e.getMessage());
         }
     }
@@ -168,8 +168,8 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         container.addComponent(Foo.class);
         try {
             filter.lookupDelegate(mockRequest(container));
-            fail("PicoInitializationException expected");
-        } catch ( PicoInitializationException e) {
+            fail("PicoCompositionException expected");
+        } catch ( PicoCompositionException e) {
             assertEquals("Cannot load "+delegateClassName, e.getMessage());
         }
     }
@@ -183,8 +183,8 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         container.addComponent(Foo.class);
         try {
             filter.lookupDelegate(mockRequest(container));
-            fail("PicoInitializationException expected");
-        } catch ( PicoInitializationException e) {
+            fail("PicoCompositionException expected");
+        } catch ( PicoCompositionException e) {
             assertEquals("Cannot find delegate for class " + delegateClassName + " or key "+ delegateKey, e.getMessage());
         }
     }    

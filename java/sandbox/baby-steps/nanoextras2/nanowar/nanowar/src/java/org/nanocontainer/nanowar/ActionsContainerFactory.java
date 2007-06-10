@@ -15,7 +15,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 
 /**
@@ -41,11 +41,11 @@ public final class ActionsContainerFactory {
         return actionsContainer;
     }
 
-    public Class getActionClass(String className) throws PicoIntrospectionException {
+    public Class getActionClass(String className) throws PicoCompositionException {
         try {
             return loadClass(className);
         } catch (ClassNotFoundException e) {
-            throw new PicoIntrospectionException("Action class '" + className + "' not found", e);
+            throw new PicoCompositionException("Action class '" + className + "' not found", e);
         }
     }
     

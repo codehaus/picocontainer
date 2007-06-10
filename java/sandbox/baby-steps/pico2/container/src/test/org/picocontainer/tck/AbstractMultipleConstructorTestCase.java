@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 
@@ -107,7 +107,7 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
         try {
             pico.getComponent(Multi.class);
             fail();
-        } catch (PicoIntrospectionException e) {
+        } catch (PicoCompositionException e) {
             assertEquals("3 satisfiable constructors is too many for 'class org.picocontainer.tck.AbstractMultipleConstructorTestCase$Multi'. Constructor List:[<init>(), <init>(org.picocontainer.tck.AbstractMultipleConstructorTestCase$One,org.picocontainer.tck.AbstractMultipleConstructorTestCase$Two), <init>(org.picocontainer.tck.AbstractMultipleConstructorTestCase$Two,org.picocontainer.tck.AbstractMultipleConstructorTestCase$One)]",
                     e.getMessage());
         }

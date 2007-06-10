@@ -13,8 +13,7 @@ package org.picocontainer.behaviors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.behaviors.AbstractBehavior;
@@ -57,7 +56,8 @@ public final class CachingBehavior extends AbstractBehavior implements Lifecycle
     }
 
     public Object getComponentInstance(PicoContainer container)
-            throws PicoInitializationException, PicoIntrospectionException, PicoInitializationException {
+            throws PicoCompositionException, PicoCompositionException, PicoCompositionException
+    {
         Object instance = instanceReference.get();
         if (instance == null) {
             instance = super.getComponentInstance(container);

@@ -11,7 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 
 /**
 *<p>
@@ -99,7 +99,7 @@ public class ServletContainerProxyFilter implements Filter {
      * Looks up delegate Filter in PicoContainer found in any of the web scopes.
      * 
      * @param request the HttpServletRequest used to find the PicoContainer
-     * @throws PicoInitializationException if the delegate Filter cannot be found
+     * @throws PicoCompositionException if the delegate Filter cannot be found
      */
     protected void lookupDelegate(HttpServletRequest request) {
         PicoContainer pico = findContainer(request);
@@ -110,16 +110,16 @@ public class ServletContainerProxyFilter implements Filter {
                 Class delegateClass = getClassLoader().loadClass(delegateClassName);
                 delegate = (Filter) pico.getComponent(delegateClass);
             } catch (ClassNotFoundException e) {
-                throw new PicoInitializationException("Cannot load " + delegateClassName, e);
+                throw new PicoCompositionException("Cannot load " + delegateClassName, e);
             }
         } else if (delegateKey != null) {
             delegate = (Filter) pico.getComponent(delegateKey);
         } else {
-            throw new PicoInitializationException("You must specify one of delegate-class or delegate-key in the filter config");
+            throw new PicoCompositionException("You must specify one of delegate-class or delegate-key in the filter config");
         }
 
         if (delegate == null) {
-            throw new PicoInitializationException("Cannot find delegate for class " + delegateClassName + " or key "+ delegateKey);
+            throw new PicoCompositionException("Cannot find delegate for class " + delegateClassName + " or key "+ delegateKey);
         }
     }
 

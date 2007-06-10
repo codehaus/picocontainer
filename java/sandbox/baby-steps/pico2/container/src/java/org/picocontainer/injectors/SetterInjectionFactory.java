@@ -12,12 +12,11 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
-import org.picocontainer.PicoInitializationException;
 
 import java.io.Serializable;
 
@@ -41,13 +40,13 @@ public class SetterInjectionFactory implements InjectionFactory, Serializable {
      * @param componentImplementation     The class of the bean.
      * @param parameters                  Any parameters for the setters. If null the adapter solves the
      *                                    dependencies for all setters internally. Otherwise the number parameters must match
-     *                                    the number of the setter. @return Returns a new {@link SetterInjector}. @throws PicoIntrospectionException if dependencies cannot be solved
-     * @throws org.picocontainer.PicoInitializationException
+     *                                    the number of the setter. @return Returns a new {@link SetterInjector}. @throws PicoCompositionException if dependencies cannot be solved
+     * @throws org.picocontainer.PicoCompositionException
      *          if the implementation is an interface or an
      *          abstract class.
      */
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoIntrospectionException, PicoInitializationException
+            throws PicoCompositionException, PicoCompositionException
     {
         return new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
     }

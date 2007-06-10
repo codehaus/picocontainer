@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.ImplementationHidingBehavior;
 import org.picocontainer.injectors.ConstructorInjector;
 
@@ -28,8 +28,8 @@ public class ImplementationHidingBehaviorAdapterTestCase extends TestCase {
         ImplementationHidingBehavior ihca = new ImplementationHidingBehavior(ca);
         try {
             ihca.getComponentInstance(null);
-            fail("PicoIntrospectionException expected");
-        } catch (PicoIntrospectionException e) {
+            fail("PicoCompositionException expected");
+        } catch (PicoCompositionException e) {
             // expected        
         }
     }

@@ -1,8 +1,6 @@
 package org.picocontainer.tck;
 
-import org.picocontainer.Parameter;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoInitializationException;
 import org.picocontainer.MutablePicoContainer;
 
 import java.util.Map;

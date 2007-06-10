@@ -12,8 +12,7 @@ package org.nanocontainer.aop.defaults;
 import org.nanocontainer.aop.AspectsApplicator;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
@@ -28,8 +27,9 @@ public class AspectsComponentAdapter extends AbstractBehavior {
         this.aspectsApplicator = aspectsApplicator;
     }
 
-    public Object getComponentInstance(PicoContainer pico) throws PicoInitializationException, PicoIntrospectionException,
-                                                                  PicoInitializationException {
+    public Object getComponentInstance(PicoContainer pico) throws PicoCompositionException, PicoCompositionException,
+                                                                  PicoCompositionException
+    {
         Object component = super.getComponentInstance(pico);
         return aspectsApplicator.applyAspects(getComponentKey(), component, pico);
     }

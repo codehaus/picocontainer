@@ -11,7 +11,7 @@ package org.nanocontainer.aop.dynaop;
 
 import junit.framework.TestCase;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 
 /**
@@ -30,8 +30,8 @@ public final class ContainerLoaderTestCase extends TestCase {
     public void testContainerNotSet() {
         try {
             loader.getContainer();
-            fail("PicoInitializationException should have been raised");
-        } catch (PicoInitializationException e) {
+            fail("PicoCompositionException should have been raised");
+        } catch (PicoCompositionException e) {
         }
     }
 

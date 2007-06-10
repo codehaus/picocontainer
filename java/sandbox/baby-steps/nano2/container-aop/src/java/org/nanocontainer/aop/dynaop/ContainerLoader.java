@@ -10,7 +10,7 @@
 package org.nanocontainer.aop.dynaop;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 
 /**
  * Loads a <code>PicoContainer</code> 'late'. Used to create a late-loading
@@ -32,11 +32,11 @@ class ContainerLoader {
      * been called prior to calling this method.
      *
      * @return the loaded <code>PicoContainer</code> object.
-     * @throws PicoInitializationException if the container has not been set.
+     * @throws PicoCompositionException if the container has not been set.
      */
     PicoContainer getContainer() {
         if (container == null) {
-            throw new PicoInitializationException("Container has not been set");
+            throw new PicoCompositionException("Container has not been set");
         }
         return container;
     }

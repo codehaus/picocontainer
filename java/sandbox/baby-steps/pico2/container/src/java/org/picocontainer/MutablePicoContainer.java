@@ -53,7 +53,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
      *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
      *
-     * @throws PicoInitializationException if registration of the component fails.
+     * @throws PicoCompositionException if registration of the component fails.
      * @see org.picocontainer.Parameter
      * @see org.picocontainer.parameters.ConstantParameter
      * @see org.picocontainer.parameters.ComponentParameter
@@ -72,7 +72,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
      *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
      *
-     * @throws PicoInitializationException if registration fails.
+     * @throws PicoCompositionException if registration fails.
      */
     MutablePicoContainer addComponent(Object implOrInstance);
 
@@ -84,7 +84,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @return the same adapter that was passed as an argument.
      *
-     * @throws PicoInitializationException if registration fails.
+     * @throws PicoCompositionException if registration fails.
      */
     MutablePicoContainer addAdapter(ComponentAdapter componentAdapter);
 

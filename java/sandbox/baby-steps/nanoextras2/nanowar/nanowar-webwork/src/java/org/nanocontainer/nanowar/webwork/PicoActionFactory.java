@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.nanocontainer.nanowar.ActionsContainerFactory;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ObjectReference;
 
 import webwork.action.Action;
@@ -41,7 +41,7 @@ public final class PicoActionFactory extends ActionFactory {
                 //swallow these exceptions and return null action
             }
             return action;
-        } catch (PicoIntrospectionException e) {
+        } catch (PicoCompositionException e) {
             return null;
         }
     }

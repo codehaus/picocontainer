@@ -10,14 +10,13 @@
 package org.nanocontainer.aop.dynaop;
 
 import dynaop.Aspects;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * Represents the collection of component scoped aspects for a Pico container.
@@ -70,15 +69,15 @@ class ComponentAspectsCollection {
             constructor.setAccessible(true);
             return (Aspects) constructor.newInstance(aspects);
         } catch (SecurityException e) {
-            throw new PicoInitializationException("security exception copying dynaop.Aspects", e);
+            throw new PicoCompositionException("security exception copying dynaop.Aspects", e);
         } catch (IllegalArgumentException e) {
-            throw new PicoInitializationException("illegal argument passed to dynaop.Aspects copy constructor", e);
+            throw new PicoCompositionException("illegal argument passed to dynaop.Aspects copy constructor", e);
         } catch (InstantiationException e) {
-            throw new PicoInitializationException("error instantiating dynaop.Aspects copy constructor object", e);
+            throw new PicoCompositionException("error instantiating dynaop.Aspects copy constructor object", e);
         } catch (IllegalAccessException e) {
-            throw new PicoInitializationException("illegal access exception while trying to make dynaop.Aspects copy constructor accessible", e);
+            throw new PicoCompositionException("illegal access exception while trying to make dynaop.Aspects copy constructor accessible", e);
         } catch (InvocationTargetException e) {
-            throw new PicoInitializationException("dynaop.Aspects copy constructor threw an exception", e);
+            throw new PicoCompositionException("dynaop.Aspects copy constructor threw an exception", e);
         }
     }
 
@@ -90,7 +89,7 @@ class ComponentAspectsCollection {
                 return constructor;
             }
         }
-        throw new PicoInitializationException("dynaop.Aspects copy constructor not found");
+        throw new PicoCompositionException("dynaop.Aspects copy constructor not found");
     }
 
 }

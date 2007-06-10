@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.gems.adapters;
 
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 
 
 /**
@@ -18,7 +18,7 @@ import org.picocontainer.PicoIntrospectionException;
  * @author J&ouml;rg Schaible
  * @since 1.2
  */
-public class PoolException extends PicoIntrospectionException {
+public class PoolException extends PicoCompositionException {
 
     private static final long serialVersionUID = 1L;
 

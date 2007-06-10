@@ -23,10 +23,6 @@ import java.io.PrintWriter;
  * @since 1.0
  */
 public abstract class PicoException extends RuntimeException {
-    /**
-     * The exception that caused this one.
-     */
-    private Throwable cause;
 
     /**
      * Construct a new exception with no cause and no detail message. Note modern JVMs may still track the exception
@@ -51,7 +47,7 @@ public abstract class PicoException extends RuntimeException {
      * @param cause the exception that caused this one.
      */
     protected PicoException(final Throwable cause) {
-        this.cause = cause;
+        super(cause);
     }
 
     /**
@@ -61,18 +57,7 @@ public abstract class PicoException extends RuntimeException {
      * @param cause   the exception that caused this one.
      */
     protected PicoException(final String message, final Throwable cause) {
-        super(message);
-        this.cause = cause;
-    }
-
-    /**
-     * Retrieve the exception that caused this one.
-     *
-     * @return the exception that caused this one, or null if it was not set.
-     * @see Throwable#getCause() the method available since JDK 1.4 that is overridden by this method.
-     */
-    public Throwable getCause() {
-        return cause;
+        super(message,cause);
     }
 
 }

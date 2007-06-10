@@ -11,7 +11,7 @@ package org.picocontainer.gems.adapters;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
@@ -176,8 +176,8 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     public void testComponentMustImplementInterface() {
         try {
             new ThreadLocalComponentAdapter(new ConstructorInjector(Object.class, Object.class));
-            fail("PicoIntrospectionException expected");
-        } catch (final PicoIntrospectionException e) {
+            fail("PicoCompositionException expected");
+        } catch (final PicoCompositionException e) {
             assertTrue(e.getMessage().endsWith("It does not implement any interfaces."));
         }
     }

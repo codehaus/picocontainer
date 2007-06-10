@@ -15,8 +15,7 @@ import java.security.PrivilegedAction;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.behaviors.AbstractBehavior;
@@ -50,9 +49,9 @@ public class BeanPropertyComponentAdapter extends AbstractBehavior {
      * Construct a BeanPropertyComponentAdapter.
      *
      * @param delegate the wrapped {@link ComponentAdapter}
-     * @throws PicoInitializationException {@inheritDoc}
+     * @throws PicoCompositionException {@inheritDoc}
      */
-    public BeanPropertyComponentAdapter(ComponentAdapter delegate) throws PicoInitializationException {
+    public BeanPropertyComponentAdapter(ComponentAdapter delegate) throws PicoCompositionException {
         super(delegate);
     }
 
@@ -60,14 +59,15 @@ public class BeanPropertyComponentAdapter extends AbstractBehavior {
      * Get a component instance and set given property values.
      *
      * @return the component instance with any properties of the properties map set.
-     * @throws PicoInitializationException {@inheritDoc}
-     * @throws PicoIntrospectionException  {@inheritDoc}
-     * @throws org.picocontainer.PicoInitializationException
+     * @throws PicoCompositionException {@inheritDoc}
+     * @throws PicoCompositionException  {@inheritDoc}
+     * @throws org.picocontainer.PicoCompositionException
      *                                     {@inheritDoc}
      * @see #setProperties(Map)
      */
-    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException,
-                                                                       PicoInitializationException
+    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException,
+                                                                       PicoCompositionException,
+                                                                       PicoCompositionException
     {
         final Object componentInstance = super.getComponentInstance(container);
         if (setters == null) {
@@ -90,7 +90,7 @@ public class BeanPropertyComponentAdapter extends AbstractBehavior {
                     componentMonitor.invoked(setter, componentInstance, System.currentTimeMillis() - startTime);
                 } catch (final Exception e) {
                     componentMonitor.invocationFailed(setter, componentInstance, e);
-                    throw new PicoInitializationException("Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage(), e);
+                    throw new PicoCompositionException("Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage(), e);
                 }
             }
         }
@@ -198,7 +198,7 @@ public class BeanPropertyComponentAdapter extends AbstractBehavior {
             try {
                 return new URL(value);
             } catch (MalformedURLException e) {
-                throw new PicoInitializationException(e);
+                throw new PicoCompositionException(e);
             }
         } else if (typeName.equals(Class.class.getName()) || typeName.equals("class")) {
             return loadClass(classLoader, value);

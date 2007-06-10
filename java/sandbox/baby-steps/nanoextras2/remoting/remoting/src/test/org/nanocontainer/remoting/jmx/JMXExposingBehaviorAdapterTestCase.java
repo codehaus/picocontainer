@@ -17,7 +17,7 @@ import org.nanocontainer.remoting.jmx.testmodel.DynamicMBeanPerson;
 import org.nanocontainer.remoting.jmx.testmodel.Person;
 import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
@@ -99,8 +99,8 @@ public class JMXExposingBehaviorAdapterTestCase extends MockObjectTestCase {
 
         try {
             assertSame(person, componentAdapter.getComponentInstance(null));
-            fail("PicoInitializationException expected");
-        } catch (final PicoInitializationException e) {
+            fail("PicoCompositionException expected");
+        } catch (final PicoCompositionException e) {
             assertSame(exception, e.getCause());
         }
     }
@@ -117,8 +117,8 @@ public class JMXExposingBehaviorAdapterTestCase extends MockObjectTestCase {
 
         try {
             assertSame(person, componentAdapter.getComponentInstance(null));
-            fail("PicoInitializationException expected");
-        } catch (final PicoInitializationException e) {
+            fail("PicoCompositionException expected");
+        } catch (final PicoCompositionException e) {
             assertSame(exception, e.getCause());
         }
     }
@@ -135,8 +135,8 @@ public class JMXExposingBehaviorAdapterTestCase extends MockObjectTestCase {
 
         try {
             assertSame(person, componentAdapter.getComponentInstance(null));
-            fail("PicoInitializationException expected");
-        } catch (final PicoInitializationException e) {
+            fail("PicoCompositionException expected");
+        } catch (final PicoCompositionException e) {
             assertSame(exception, e.getCause());
         }
     }

@@ -1,6 +1,6 @@
 package org.picocontainer.defaults.issues;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 
 import junit.framework.TestCase;
@@ -29,7 +29,7 @@ public class Issue0280TestCase extends TestCase
         }
         catch (Exception e)
         {
-            assertTrue(e.getClass() == PicoInitializationException.class);
+            assertTrue(e.getClass() == PicoCompositionException.class);
         }
 
     }
@@ -47,7 +47,7 @@ public class Issue0280TestCase extends TestCase
 	{
 		public ChildImplementation()
 		{
-			throw new PicoInitializationException("Problem during initialization");
+			throw new PicoCompositionException("Problem during initialization");
 		}
 	}
 

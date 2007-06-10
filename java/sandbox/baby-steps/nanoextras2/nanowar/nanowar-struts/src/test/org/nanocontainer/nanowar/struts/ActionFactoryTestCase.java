@@ -18,8 +18,7 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 
 /**
@@ -163,8 +162,8 @@ public final class ActionFactoryTestCase extends MockObjectTestCase {
 
         try {
             actionFactory.getAction(request, mapping1, servlet);
-            fail("PicoInitializationException should have been raised");
-        } catch (PicoInitializationException e) {
+            fail("PicoCompositionException should have been raised");
+        } catch (PicoCompositionException e) {
             // expected
         }
     }
@@ -177,8 +176,8 @@ public final class ActionFactoryTestCase extends MockObjectTestCase {
         mapping1.setType("/i/made/a/typo");
         try {
             actionFactory.getAction(request, mapping1, servlet);
-            fail("PicoIntrospectionException should have been raised");
-        } catch (PicoIntrospectionException e) {
+            fail("PicoCompositionException should have been raised");
+        } catch (PicoCompositionException e) {
             // expected
         }
     }

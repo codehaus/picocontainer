@@ -18,7 +18,7 @@ import javax.naming.InitialContext;
 import org.nanocontainer.remoting.ejb.testmodel.Hello;
 import org.nanocontainer.remoting.ejb.testmodel.HelloHomeImpl;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -100,8 +100,8 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
         final ComponentFactory caf = new EJBClientComponentAdapterFactory(env, true);
         try {
             caf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Foo", Test.class, null);
-            fail("Should have thrown a PicoIntrospectionException");
-        } catch (PicoIntrospectionException e) {
+            fail("Should have thrown a PicoCompositionException");
+        } catch (PicoCompositionException e) {
             assertTrue(e.getCause() instanceof ClassNotFoundException);
         }
 

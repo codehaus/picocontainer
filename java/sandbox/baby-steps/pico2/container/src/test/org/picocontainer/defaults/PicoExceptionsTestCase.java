@@ -11,8 +11,7 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.AbstractInjector;
@@ -73,7 +72,7 @@ public class PicoExceptionsTestCase
     }
 
     public void testPicoInitializationException() {
-        executeTestOfStandardException(PicoInitializationException.class);
+        executeTestOfStandardException(PicoCompositionException.class);
     }
 
     public void testPicoInitializationExceptionWithDefaultConstructor() {
@@ -82,14 +81,10 @@ public class PicoExceptionsTestCase
         assertNull(e.getCause());
     }
 
-    private static class TestException extends PicoInitializationException {
+    private static class TestException extends PicoCompositionException {
         public TestException(final String message) {
             super(message);
         }
-    }
-
-    public void testPicoIntrospectionException() {
-        executeTestOfStandardException(PicoIntrospectionException.class);
     }
 
     public void testPrintStackTrace() throws IOException {

@@ -14,7 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.ParameterName;
 
@@ -50,7 +50,7 @@ public class ConstantParameter
         try {
             verify(container, adapter, expectedType, expectedParameterName);
             return true;
-        } catch(final PicoIntrospectionException e) {
+        } catch(final PicoCompositionException e) {
             return false;
         }
     }
@@ -62,7 +62,7 @@ public class ConstantParameter
      */
     public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) throws PicoException {
         if (!checkPrimitive(expectedType) && !expectedType.isInstance(value)) {
-            throw new PicoIntrospectionException(expectedType.getClass().getName() + " is not assignable from " +
+            throw new PicoCompositionException(expectedType.getClass().getName() + " is not assignable from " +
                                                  (value != null ? value.getClass().getName() : "null"));
         }
     }

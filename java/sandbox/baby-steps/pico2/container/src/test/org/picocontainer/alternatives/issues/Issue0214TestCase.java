@@ -36,7 +36,7 @@ public class Issue0214TestCase extends TestCase {
 
         /* The following verify() throws the exception, but is expected not to
          * throw: "org.picocontainer.PicoVerificationException:
-         * [[org.picocontainer.PicoInitializationException: Either do the
+         * [[org.picocontainer.PicoCompositionException: Either do the
          * specified parameters not match any of the following constructors:
          * [public PicoContainerBugTest$C(PicoContainerBugTest$A)] or the
          * constructors were not accessible for 'class

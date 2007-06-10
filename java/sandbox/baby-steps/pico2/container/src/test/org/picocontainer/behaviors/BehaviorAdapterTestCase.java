@@ -6,7 +6,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentMonitorStrategy;
@@ -31,8 +31,8 @@ public class BehaviorAdapterTestCase extends MockObjectTestCase {
         adapter.changeMonitor(mockMonitorWithNoExpectedMethods());
         try {
             adapter.currentMonitor();
-            fail("PicoIntrospectionException expected");
-        } catch (PicoIntrospectionException e) {
+            fail("PicoCompositionException expected");
+        } catch (PicoCompositionException e) {
             assertEquals("No component monitor found in delegate", e.getMessage());
         }
     }

@@ -14,7 +14,7 @@ import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Interceptor;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 
 /**
  * session delegator with failover behaviour in case of hibernate exception. old session is disposed and new one is
@@ -87,7 +87,7 @@ public class FailoverSessionDelegator extends SessionDelegator {
 			try {
 				session = interceptor == null ? sessionFactory.openSession() : sessionFactory.openSession(interceptor);
 			} catch (HibernateException ex) {
-				throw new PicoInitializationException(ex);
+				throw new PicoCompositionException(ex);
 			}
 		}
 

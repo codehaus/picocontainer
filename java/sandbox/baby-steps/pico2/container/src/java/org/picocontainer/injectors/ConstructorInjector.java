@@ -13,8 +13,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ParameterName;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.LifecycleStrategy;
@@ -114,7 +113,7 @@ public final class ConstructorInjector extends AbstractInjector {
         this(componentKey, componentImplementation, (Parameter[])null);
     }
 
-    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException, NotConcreteRegistrationException {
         final Set<Constructor> conflicts = new HashSet<Constructor>();
         final Set<List<Class>> unsatisfiableDependencyTypes = new HashSet<List<Class>>();
         if (sortedMatchingConstructors == null) {
@@ -168,7 +167,7 @@ public final class ConstructorInjector extends AbstractInjector {
             }
         }
         if (!conflicts.isEmpty()) {
-            throw new PicoIntrospectionException(conflicts.size() + " satisfiable constructors is too many for '"+getComponentImplementation()+"'. Constructor List:" + conflicts.toString().replace(getComponentImplementation().getName(),"<init>").replace("public <i","<i"));
+            throw new PicoCompositionException(conflicts.size() + " satisfiable constructors is too many for '"+getComponentImplementation()+"'. Constructor List:" + conflicts.toString().replace(getComponentImplementation().getName(),"<init>").replace("public <i","<i"));
         } else if (greediestConstructor == null && !unsatisfiableDependencyTypes.isEmpty()) {
             throw new UnsatisfiableDependenciesException(this, unsatisfiedDependencyType, unsatisfiableDependencyTypes, container);
         } else if (greediestConstructor == null) {
@@ -177,14 +176,15 @@ public final class ConstructorInjector extends AbstractInjector {
             for (Constructor constructor : getConstructors()) {
                 nonMatching.add(constructor);
             }
-            throw new PicoInitializationException("Either the specified parameters do not match any of the following constructors: " + nonMatching.toString() + "; OR the constructors were not accessible for '" + getComponentImplementation().getName() + "'");
+            throw new PicoCompositionException("Either the specified parameters do not match any of the following constructors: " + nonMatching.toString() + "; OR the constructors were not accessible for '" + getComponentImplementation().getName() + "'");
         }
         return greediestConstructor;
     }
 
 
 
-    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException, NotConcreteRegistrationException {
+    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException,
+                                                                       PicoCompositionException, NotConcreteRegistrationException {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
@@ -211,18 +211,18 @@ public final class ConstructorInjector extends AbstractInjector {
                         } else if (e.getTargetException() instanceof Error) {
                             throw (Error) e.getTargetException();
                         }
-                        throw new PicoInitializationException(e.getTargetException());
+                        throw new PicoCompositionException(e.getTargetException());
                     } catch (InstantiationException e) {
                         // can't get here because checkConcrete() will catch it earlier, but see PICO-191
                         ///CLOVER:OFF
                         componentMonitor.instantiationFailed(ConstructorInjector.this, constructor, e);
-                        throw new PicoInitializationException("Should never get here");
+                        throw new PicoCompositionException("Should never get here");
                         ///CLOVER:ON
                     } catch (IllegalAccessException e) {
                         // can't get here because either filtered or access mode set
                         ///CLOVER:OFF
                         componentMonitor.instantiationFailed(ConstructorInjector.this, constructor, e);
-                        throw new PicoInitializationException(e);
+                        throw new PicoCompositionException(e);
                         ///CLOVER:ON
                     }
                 }
@@ -277,7 +277,7 @@ public final class ConstructorInjector extends AbstractInjector {
         });
     }
 
-    public void verify(final PicoContainer container) throws PicoIntrospectionException {
+    public void verify(final PicoContainer container) throws PicoCompositionException {
         if (verifyingGuard == null) {
             verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {

@@ -10,7 +10,7 @@ package org.nanocontainer.nanowar;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ObjectReference;
 
 import javax.servlet.ServletContext;
@@ -36,9 +36,9 @@ public class ServletContainerFinder {
      * 
      * @param request the HttpServletRequest
      * @return A MutablePicoContainer
-     * @throws PicoInitializationException
+     * @throws PicoCompositionException
      */
-    public PicoContainer findContainer(HttpServletRequest request) throws PicoInitializationException {
+    public PicoContainer findContainer(HttpServletRequest request) throws PicoCompositionException {
         MutablePicoContainer container = getRequestContainer(request);
         if (container == null) {
             container = getSessionContainer(request.getSession());
@@ -47,7 +47,7 @@ public class ServletContainerFinder {
             container = getApplicationContainer(request.getSession().getServletContext());
         }
         if (container == null) {
-            throw new PicoInitializationException("No Container found in request, session or application."
+            throw new PicoCompositionException("No Container found in request, session or application."
                     + " Please make sure nanocontainer-nanowar is configured properly in web.xml.");
         }
         return container;

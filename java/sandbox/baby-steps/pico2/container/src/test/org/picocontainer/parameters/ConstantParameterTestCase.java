@@ -10,7 +10,7 @@
 package org.picocontainer.parameters;
 
 import junit.framework.TestCase;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.parameters.ConstantParameter;
 
 /**
@@ -28,7 +28,7 @@ public class ConstantParameterTestCase extends TestCase {
         ConstantParameter param = new ConstantParameter(239);
         try{
             param.verify(null,null,Integer.TYPE, null);
-        } catch(PicoIntrospectionException ex) {
+        } catch(PicoCompositionException ex) {
             fail("failed verification for primitive / instance ");
         }
     }

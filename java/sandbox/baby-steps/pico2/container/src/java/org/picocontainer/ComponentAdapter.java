@@ -47,21 +47,21 @@ public interface ComponentAdapter<T> {
      *
      * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.
      * @return the component instance.
-     * @throws PicoInitializationException if the component could not be instantiated.
-     * @throws PicoIntrospectionException  if the component has dependencies which could not be resolved, or
+     * @throws PicoCompositionException if the component could not be instantiated.
+     * @throws PicoCompositionException  if the component has dependencies which could not be resolved, or
      *                                     instantiation of the component lead to an ambigous situation within the
      *                                     container.
      */
-    T getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException;
+    T getComponentInstance(PicoContainer container) throws PicoCompositionException, PicoCompositionException;
 
     /**
      * Verify that all dependencies for this adapter can be satisifed. Normally, the adapter should verify this by
      * checking that the associated PicoContainer contains all the needed dependnecies.
      *
      * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.
-     * @throws PicoIntrospectionException if one or more dependencies cannot be resolved.
+     * @throws PicoCompositionException if one or more dependencies cannot be resolved.
      */
-    void verify(PicoContainer container) throws PicoIntrospectionException;
+    void verify(PicoContainer container) throws PicoCompositionException;
 
     /**
      * Accepts a visitor for this ComponentAdapter. The method is normally called by visiting a {@link PicoContainer}, that

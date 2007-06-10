@@ -24,8 +24,7 @@ import javax.rmi.PortableRemoteObject;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.adapters.AbstractAdapter;
 
@@ -105,7 +104,7 @@ public class EJBClientAdapter extends AbstractAdapter {
      * @param homeInterface the home interface of the EJB
      * @param environment the environment {@link InitialContext} to use
      * @param earlyBinding <code>true</code> if the EJB should be instantiated in the constructor
-     * @throws PicoIntrospectionException if lookup of home interface fails
+     * @throws PicoCompositionException if lookup of home interface fails
      */
     public EJBClientAdapter(
             final String name, final Class type, final Class homeInterface, final Hashtable environment,
@@ -118,7 +117,7 @@ public class EJBClientAdapter extends AbstractAdapter {
             throw new ClassCastException(type.getName() + " is not a " + EJBObject.class.getName());
         }
         if (!type.isInterface()) {
-            throw new PicoIntrospectionException(type.getName() + " must be an interface");
+            throw new PicoCompositionException(type.getName() + " must be an interface");
         }
         final Invoker invoker = new EJBClientInvoker(name, type, homeInterface, environment);
         proxy = new StandardProxyFactory().createProxy(new Class[]{type}, invoker);
@@ -182,14 +181,14 @@ public class EJBClientAdapter extends AbstractAdapter {
                 if (type.isAssignableFrom(create.getReturnType())) {
                     return create.invoke(proxy, (Object[])null);
                 }
-                throw new PicoIntrospectionException(
+                throw new PicoCompositionException(
                         "Wrong return type of EJBHome implementation", new ClassCastException(create.getReturnType()
                                 .getName()));
             } catch (final SecurityException e) {
-                throw new PicoIntrospectionException(
+                throw new PicoCompositionException(
                         "Security Exception occured accessing create method of home interface of " + name, e);
             } catch (final NoSuchMethodException e) {
-                throw new PicoIntrospectionException("Home interface of " + name + " has no create method", e);
+                throw new PicoCompositionException("Home interface of " + name + " has no create method", e);
             } catch (final NameNotFoundException e) {
                 // Server startup, application not bound yet
                 throw new InvocationTargetException(e);
@@ -200,10 +199,10 @@ public class EJBClientAdapter extends AbstractAdapter {
                     // Server down, did not have a connection or JNDI not stuffed yet
                     throw new InvocationTargetException(e);
                 } else {
-                    throw new PicoInitializationException("InitialContext has no EJB named " + name, e);
+                    throw new PicoCompositionException("InitialContext has no EJB named " + name, e);
                 }
             } catch (final IllegalAccessException e) {
-                throw new PicoInitializationException("Cannot access default constructor for " + name, e);
+                throw new PicoCompositionException("Cannot access default constructor for " + name, e);
             }
         }
     }

@@ -16,8 +16,7 @@ import com.thoughtworks.proxy.toys.delegate.Delegating;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.lang.reflect.Method;
@@ -67,10 +66,11 @@ public final class AssimilatingComponentAdapter extends AbstractBehavior {
      * @param type The class type used as key.
      * @param delegate The delegated {@link ComponentAdapter}.
      * @param proxyFactory The {@link ProxyFactory} to use.
-     * @throws PicoIntrospectionException Thrown if the <code>type</code> is not compatible and cannot be proxied.
+     * @throws PicoCompositionException Thrown if the <code>type</code> is not compatible and cannot be proxied.
      */
     public AssimilatingComponentAdapter(final Class type, final ComponentAdapter delegate, final ProxyFactory proxyFactory)
-            throws PicoIntrospectionException {
+            throws PicoCompositionException
+    {
         super(delegate);
         this.type = type;
         this.proxyFactory = proxyFactory;
@@ -78,14 +78,14 @@ public final class AssimilatingComponentAdapter extends AbstractBehavior {
         this.isCompatible = type.isAssignableFrom(delegationType);
         if (!isCompatible) {
             if (!proxyFactory.canProxy(type)) {
-                throw new PicoIntrospectionException("Cannot create proxy for type " + type.getName());
+                throw new PicoCompositionException("Cannot create proxy for type " + type.getName());
             }
             final Method[] methods = type.getMethods();
             for (final Method method : methods) {
                 try {
                     delegationType.getMethod(method.getName(), method.getParameterTypes());
                 } catch (final NoSuchMethodException e) {
-                    throw new PicoIntrospectionException("Cannot create proxy for type "
+                    throw new PicoCompositionException("Cannot create proxy for type "
                                                          + type.getName()
                                                          + ", because of incompatible method "
                                                          + method.toString());
@@ -113,7 +113,8 @@ public final class AssimilatingComponentAdapter extends AbstractBehavior {
      * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(final PicoContainer container)
-            throws PicoInitializationException, PicoIntrospectionException {
+            throws PicoCompositionException, PicoCompositionException
+    {
         return isCompatible ? super.getComponentInstance(container) : Delegating.object(
                 type, super.getComponentInstance(container), proxyFactory);
     }

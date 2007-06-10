@@ -17,7 +17,7 @@ import javax.naming.InitialContext;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentFactory;
@@ -68,7 +68,8 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
 
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, final Object componentKey, final Class componentImplementation, final Parameter[] parameters)
-            throws PicoIntrospectionException {
+            throws PicoCompositionException
+    {
         return createComponentAdapter(componentKey.toString(), componentImplementation);
     }
 
@@ -78,15 +79,16 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
      * @param componentImplementation the home interface.
      * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
      * @return Returns the created {@link ComponentAdapter}
-     * @throws PicoIntrospectionException if the home interface of the EJB could not instanciated
+     * @throws PicoCompositionException if the home interface of the EJB could not instanciated
      */
     public ComponentAdapter createComponentAdapter(final String componentKey, final Class componentImplementation)
-            throws PicoIntrospectionException {
+            throws PicoCompositionException
+    {
         try {
             return new ThreadLocalComponentAdapter(new EJBClientAdapter(
                 componentKey, componentImplementation, environment, earlyBinding), proxyFactory);
         } catch (final ClassNotFoundException e) {
-            throw new PicoIntrospectionException("Home interface not found", e);
+            throw new PicoCompositionException("Home interface not found", e);
         }
     }
 

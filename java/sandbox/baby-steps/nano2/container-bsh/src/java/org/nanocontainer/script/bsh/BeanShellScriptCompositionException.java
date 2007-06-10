@@ -9,21 +9,22 @@
  *****************************************************************************/
 package org.nanocontainer.script.bsh;
 
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 
 /**
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
  * @version $Id$
  */
-public class BeanShellScriptInitializationException
-        extends PicoInitializationException {
+public class BeanShellScriptCompositionException
+    extends PicoCompositionException
+{
 
-    BeanShellScriptInitializationException(String message) {
+    BeanShellScriptCompositionException(String message) {
         super(message);
     }
 
-    BeanShellScriptInitializationException(Throwable cause) {
-        this("BeanShellScriptInitializationException: " + cause.getClass().getName() + " "
+    BeanShellScriptCompositionException(Throwable cause) {
+        this("BeanShellScriptCompositionException: " + cause.getClass().getName() + " "
                 + cause.getMessage());
     }
 }

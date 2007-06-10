@@ -3,7 +3,7 @@ package org.nanocontainer.script;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -19,7 +19,8 @@ public class FooDecoratingPicoContainer extends AbstractDelegatingMutablePicoCon
     }
 
     public MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance, Parameter... parameters) throws
-                                                                                                                                     PicoInitializationException {
+                                                                                                                                     PicoCompositionException
+    {
         Assert.assertEquals(HashMap.class, componentImplementationOrInstance);
         return super.addComponent(ArrayList.class, ArrayList.class, parameters);
     }

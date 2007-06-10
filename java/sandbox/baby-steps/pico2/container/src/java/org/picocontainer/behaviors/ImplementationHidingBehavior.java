@@ -17,8 +17,7 @@ import java.lang.reflect.Proxy;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
@@ -44,7 +43,8 @@ public class ImplementationHidingBehavior extends AbstractBehavior {
     }
 
     public Object getComponentInstance(final PicoContainer container)
-            throws PicoInitializationException, PicoIntrospectionException, PicoInitializationException {
+            throws PicoCompositionException, PicoCompositionException, PicoCompositionException
+    {
 
         Object componentKey = getDelegate().getComponentKey();
         Class[] classes;
@@ -85,7 +85,7 @@ public class ImplementationHidingBehavior extends AbstractBehavior {
     private Class[] verifyInterfacesOnly(Class[] classes) {
         for (Class aClass : classes) {
             if (!aClass.isInterface()) {
-                throw new PicoIntrospectionException(
+                throw new PicoCompositionException(
                     "Class keys must be interfaces. " + aClass + " is not an interface.");
             }
         }

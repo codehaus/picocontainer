@@ -16,8 +16,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.LifecycleStrategy;
@@ -58,11 +57,13 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
         return delegate.getComponentImplementation();
     }
 
-    public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
+    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException,
+                                                                       PicoCompositionException
+    {
         return delegate.getComponentInstance(container);
     }
 
-    public void verify(PicoContainer container) throws PicoIntrospectionException {
+    public void verify(PicoContainer container) throws PicoCompositionException {
         delegate.verify(container);
     }
 
@@ -90,13 +91,13 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
      * Returns delegate's current monitor if the delegate supports 
      * a component monitor strategy.
      * {@inheritDoc}
-     * @throws PicoIntrospectionException if no component monitor is found in delegate
+     * @throws PicoCompositionException if no component monitor is found in delegate
      */
     public ComponentMonitor currentMonitor() {
         if ( delegate instanceof ComponentMonitorStrategy ){
             return ((ComponentMonitorStrategy)delegate).currentMonitor();
         }
-        throw new PicoIntrospectionException("No component monitor found in delegate");
+        throw new PicoCompositionException("No component monitor found in delegate");
     }
 
     // ~~~~~~~~ LifecylceManager ~~~~~~~~

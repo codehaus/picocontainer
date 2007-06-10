@@ -8,7 +8,7 @@
 package org.picocontainer.visitors;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -108,11 +108,11 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
         try {
             method.invoke(target, getArguments());
         } catch (IllegalArgumentException e) {
-            throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + target, e);
+            throw new PicoCompositionException("Can't call " + method.getName() + " on " + target, e);
         } catch (IllegalAccessException e) {
-            throw new PicoIntrospectionException("Can't call " + method.getName() + " on " + target, e);
+            throw new PicoCompositionException("Can't call " + method.getName() + " on " + target, e);
         } catch (InvocationTargetException e) {
-            throw new PicoIntrospectionException("Failed when calling " + method.getName() + " on " + target, e
+            throw new PicoCompositionException("Failed when calling " + method.getName() + " on " + target, e
                     .getTargetException());
         }
         return Void.TYPE;

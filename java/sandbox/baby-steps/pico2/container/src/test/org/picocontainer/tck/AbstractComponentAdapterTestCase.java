@@ -20,8 +20,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AnyInjectionFactory;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.ComponentFactory;
@@ -284,18 +283,17 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             try {
                 componentAdapter.verify(picoContainer);
-                fail("PicoIntrospectionException expected");
-            } catch (PicoIntrospectionException e) {
+                fail("PicoCompositionException expected");
+            } catch (PicoCompositionException e) {
             } catch (Exception e) {
-                fail("PicoIntrospectionException expected, but got " + e.getClass().getName());
+                fail("PicoCompositionException expected, but got " + e.getClass().getName());
             }
             try {
                 componentAdapter.getComponentInstance(picoContainer);
-                fail("PicoInitializationException or PicoIntrospectionException expected");
-            } catch (PicoInitializationException e) {
-            } catch (PicoIntrospectionException e) {
+                fail("PicoCompositionException or PicoCompositionException expected");
+            } catch (PicoCompositionException e) {
             } catch (Exception e) {
-                fail("PicoInitializationException or PicoIntrospectionException expected, but got "
+                fail("PicoCompositionException or PicoCompositionException expected, but got "
                         + e.getClass().getName());
             }
         }
@@ -385,7 +383,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * 
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test with a component that fails with a
-     *         {@link PicoInitializationException} at instantiation. Registration in the pico is not
+     *         {@link PicoCompositionException} at instantiation. Registration in the pico is not
      *         necessary.
      */
     protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInitializationException(
@@ -400,8 +398,8 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             try {
                 componentAdapter.getComponentInstance(picoContainer);
-                fail("Thrown PicoInitializationException excpected");
-            } catch (final PicoInitializationException e) {
+                fail("Thrown PicoCompositionException excpected");
+            } catch (final PicoCompositionException e) {
                 assertTrue(e.getCause() instanceof Exception);
                 assertTrue(e.getCause().getMessage().endsWith("test"));
             }

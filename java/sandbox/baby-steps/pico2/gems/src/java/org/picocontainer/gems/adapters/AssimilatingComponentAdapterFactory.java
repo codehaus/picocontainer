@@ -15,13 +15,12 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.PicoInitializationException;
 
 
 /**
@@ -65,7 +64,8 @@ public class AssimilatingComponentAdapterFactory extends AbstractBehaviorFactory
      */
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
-            throws PicoIntrospectionException, PicoInitializationException {
+            throws PicoCompositionException, PicoCompositionException
+    {
         return new AssimilatingComponentAdapter(assimilationType, super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy, null, componentKey, componentImplementation, parameters), proxyFactory);
     }

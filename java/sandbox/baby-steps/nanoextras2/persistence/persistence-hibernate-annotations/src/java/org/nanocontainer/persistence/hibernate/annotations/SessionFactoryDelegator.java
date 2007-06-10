@@ -28,7 +28,7 @@ import org.hibernate.engine.FilterDefinition;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.stat.Statistics;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 
 /**
  * Delegates everything to session factory obtained from confiuration. this class is necessary
@@ -44,7 +44,7 @@ public final class SessionFactoryDelegator implements SessionFactory {
         try {
             this.sessionFactory = configuration.buildSessionFactory();
         } catch (HibernateException ex) {
-            throw new PicoInitializationException(ex);
+            throw new PicoCompositionException(ex);
         }
     }
 

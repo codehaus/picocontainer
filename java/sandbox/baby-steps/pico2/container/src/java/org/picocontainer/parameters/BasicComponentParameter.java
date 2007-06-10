@@ -63,7 +63,7 @@ public class BasicComponentParameter
      *
      * @return <code>true</code> if the Parameter can be verified.
      *
-     * @throws org.picocontainer.PicoInitializationException
+     * @throws org.picocontainer.PicoCompositionException
      *          {@inheritDoc}
      * @see org.picocontainer.Parameter#isResolvable(org.picocontainer.PicoContainer,org.picocontainer.ComponentAdapter,Class,org.picocontainer.ParameterName)
      */

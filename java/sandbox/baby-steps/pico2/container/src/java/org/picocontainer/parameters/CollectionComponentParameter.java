@@ -13,8 +13,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
@@ -117,7 +116,7 @@ public class CollectionComponentParameter
      *
      * @return the instance of the collection type or <code>null</code>
      *
-     * @throws PicoInitializationException {@inheritDoc}
+     * @throws PicoCompositionException {@inheritDoc}
      */
     @SuppressWarnings({ "unchecked" })
     public Object resolveInstance(PicoContainer container,
@@ -138,7 +137,7 @@ public class CollectionComponentParameter
             } else if (Collection.class.isAssignableFrom(collectionType)) {
                 result = getCollectionInstance(container, (Class<? extends Collection>)expectedType, adapterMap);
             } else {
-                throw new PicoIntrospectionException(expectedType.getName() + " is not a collective type");
+                throw new PicoCompositionException(expectedType.getName() + " is not a collective type");
             }
         }
         return result;
@@ -182,7 +181,7 @@ public class CollectionComponentParameter
      * @param expectedType          {@inheritDoc}
      * @param expectedParameterName {@inheritDoc}
      *
-     * @throws PicoIntrospectionException {@inheritDoc}
+     * @throws PicoCompositionException {@inheritDoc}
      */
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
@@ -196,7 +195,7 @@ public class CollectionComponentParameter
                 getMatchingComponentAdapters(container, adapter, componentKeyType, valueType).values();
             if (componentAdapters.isEmpty()) {
                 if (!emptyCollection) {
-                    throw new PicoIntrospectionException(expectedType.getName()
+                    throw new PicoCompositionException(expectedType.getName()
                                                          + " not resolvable, no components of type "
                                                          + getValueType(expectedType).getName()
                                                          + " available");
@@ -208,7 +207,7 @@ public class CollectionComponentParameter
                 }
             }
         } else {
-            throw new PicoIntrospectionException(expectedType.getName() + " is not a collective type");
+            throw new PicoCompositionException(expectedType.getName() + " is not a collective type");
         }
     }
 
@@ -333,11 +332,11 @@ public class CollectionComponentParameter
             return result;
         } catch (InstantiationException e) {
             ///CLOVER:OFF
-            throw new PicoInitializationException(e);
+            throw new PicoCompositionException(e);
             ///CLOVER:ON
         } catch (IllegalAccessException e) {
             ///CLOVER:OFF
-            throw new PicoInitializationException(e);
+            throw new PicoCompositionException(e);
             ///CLOVER:ON
         }
     }
@@ -367,11 +366,11 @@ public class CollectionComponentParameter
             return result;
         } catch (InstantiationException e) {
             ///CLOVER:OFF
-            throw new PicoInitializationException(e);
+            throw new PicoCompositionException(e);
             ///CLOVER:ON
         } catch (IllegalAccessException e) {
             ///CLOVER:OFF
-            throw new PicoInitializationException(e);
+            throw new PicoCompositionException(e);
             ///CLOVER:ON
         }
     }

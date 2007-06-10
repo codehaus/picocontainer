@@ -11,7 +11,7 @@ package org.picocontainer;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
@@ -46,21 +46,21 @@ public interface ComponentFactory {
      * @param parameters                  additional parameters to use by the component adapter in constructing
      *                                    component instances. These may be used, for example, to make decisions about the
      *                                    arguments passed into the component constructor. These should be considered hints; they
-     *                                    may be ignored by some implementations. May be null, and may be of zero length. @return a new component adapter based on the specified arguments. Should not return null. @throws PicoIntrospectionException if the creation of the component adapter results in a
-     *                                    {@link PicoIntrospectionException}.
+     *                                    may be ignored by some implementations. May be null, and may be of zero length. @return a new component adapter based on the specified arguments. Should not return null. @throws PicoCompositionException if the creation of the component adapter results in a
+     *                                    {@link PicoCompositionException}.
      * @return The component adapter
-     * @throws org.picocontainer.PicoInitializationException
+     * @throws org.picocontainer.PicoCompositionException
      *          if the creation of the component adapter results in a
-     *          {@link org.picocontainer.PicoInitializationException}.
-     * @throws PicoIntrospectionException
+     *          {@link org.picocontainer.PicoCompositionException}.
+     * @throws PicoCompositionException
      */
     ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                             LifecycleStrategy lifecycleStrategy,
                                             ComponentCharacteristic componentCharacteristic,
                                             Object componentKey,
                                             Class componentImplementation,
-                                            Parameter... parameters) throws PicoIntrospectionException,
-                                                                            PicoInitializationException;
+                                            Parameter... parameters) throws PicoCompositionException,
+                                                                            PicoCompositionException;
 
 
 }

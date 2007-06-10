@@ -12,8 +12,7 @@ package org.picocontainer.behaviors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
@@ -26,7 +25,9 @@ public class SynchronizedBehavior extends AbstractBehavior {
         super(delegate);
     }
 
-    public synchronized Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
+    public synchronized Object getComponentInstance(PicoContainer container) throws PicoCompositionException,
+                                                                                    PicoCompositionException
+    {
         return super.getComponentInstance(container);
     }
 }

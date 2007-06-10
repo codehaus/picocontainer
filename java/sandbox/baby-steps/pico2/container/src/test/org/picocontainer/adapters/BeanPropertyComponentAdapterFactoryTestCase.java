@@ -21,7 +21,7 @@ import javax.swing.JLabel;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -147,7 +147,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         try {
             adapter.getComponentInstance(null);
             fail();
-        } catch (PicoInitializationException e) {
+        } catch (PicoCompositionException e) {
         }
     }
 
@@ -285,7 +285,7 @@ public class BeanPropertyComponentAdapterFactoryTestCase extends AbstractCompone
         try {
             Object testResult = picoContainer.getComponent("TestBean");
             fail("Getting a bad test result through BeanPropertyComponentAdapter should have thrown exception.  Instead got:" + testResult);
-        } catch (PicoInitializationException ex) {
+        } catch (PicoCompositionException ex) {
             //A-ok
         }
 

@@ -14,8 +14,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.ComponentCharacteristic;
@@ -301,7 +300,10 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         public ComponentAdapterFactoryWithNoMonitor(ComponentAdapter adapter){
             this.adapter = adapter;
         }
-        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, PicoInitializationException {
+        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws
+                                                                                                                                                                                                                                                             PicoCompositionException,
+                                                                                                                                                                                                                                                             PicoCompositionException
+        {
             return adapter;
         }        
     }
@@ -317,10 +319,12 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         public Class getComponentImplementation() {
             return instance.getClass();
         }
-        public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException {
+        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException,
+                                                                           PicoCompositionException
+        {
             return instance;
         }
-        public void verify(PicoContainer container) throws PicoIntrospectionException {
+        public void verify(PicoContainer container) throws PicoCompositionException {
         }
         public void accept(PicoVisitor visitor) {
         }
@@ -448,8 +452,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         MutablePicoContainer mpc = createPicoContainer(null);
         mpc.addComponent("greeting", "1");
         mpc.addComponent("message", "2");
-        mpc.addComponent(PicoInitializationException.class, PicoInitializationException.class);
-        assertEquals("2", mpc.getComponent(PicoInitializationException.class).getMessage());
+        mpc.addComponent(PicoCompositionException.class, PicoCompositionException.class);
+        assertEquals("2", mpc.getComponent(PicoCompositionException.class).getMessage());
     }
 
     public void testPicoCanDifferentiateBetweenNamedObjectsThatWouldOtherwiseBeAmbiguous() {

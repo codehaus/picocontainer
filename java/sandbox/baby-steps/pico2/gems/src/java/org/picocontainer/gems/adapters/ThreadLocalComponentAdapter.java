@@ -16,8 +16,7 @@ import com.thoughtworks.proxy.kit.ReflectionUtils;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.AbstractBehavior;
 
@@ -51,10 +50,11 @@ public final class ThreadLocalComponentAdapter extends AbstractBehavior {
      * 
      * @param delegate The {@link ComponentAdapter} to delegate.
      * @param proxyFactory The {@link ProxyFactory} to use.
-     * @throws PicoIntrospectionException Thrown if the component does not implement any interface.
+     * @throws PicoCompositionException Thrown if the component does not implement any interface.
      */
     public ThreadLocalComponentAdapter(final ComponentAdapter delegate, final ProxyFactory proxyFactory)
-            throws PicoIntrospectionException {
+            throws PicoCompositionException
+    {
         super(new CachingBehavior(delegate, new ThreadLocalReference()));
         this.proxyFactory = proxyFactory;
         interfaces = getInterfaces();
@@ -64,15 +64,16 @@ public final class ThreadLocalComponentAdapter extends AbstractBehavior {
      * Construct a ThreadLocalComponentAdapter using {@link Proxy} instances.
      * 
      * @param delegate The {@link ComponentAdapter} to delegate.
-     * @throws PicoIntrospectionException Thrown if the component does not implement any interface.
+     * @throws PicoCompositionException Thrown if the component does not implement any interface.
      */
-    public ThreadLocalComponentAdapter(final ComponentAdapter delegate) throws PicoIntrospectionException {
+    public ThreadLocalComponentAdapter(final ComponentAdapter delegate) throws PicoCompositionException {
         this(new CachingBehavior(delegate, new ThreadLocalReference()), new StandardProxyFactory());
     }
 
     public Object getComponentInstance(final PicoContainer pico)
-            throws PicoInitializationException, PicoIntrospectionException,
-                   PicoInitializationException {
+            throws PicoCompositionException, PicoCompositionException,
+                   PicoCompositionException
+    {
 
         if (interfaces == null) {
             interfaces = getInterfaces();
@@ -93,7 +94,7 @@ public final class ThreadLocalComponentAdapter extends AbstractBehavior {
             interfaces = (Class[])allInterfaces.toArray(new Class[allInterfaces.size()]);
         }
         if (interfaces.length == 0) {
-            throw new PicoIntrospectionException("Can't proxy implementation for "
+            throw new PicoCompositionException("Can't proxy implementation for "
                     + getComponentImplementation().getName()
                     + ". It does not implement any interfaces.");
         }

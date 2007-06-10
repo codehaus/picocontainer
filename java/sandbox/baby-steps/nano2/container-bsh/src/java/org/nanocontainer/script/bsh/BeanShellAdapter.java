@@ -13,8 +13,7 @@ import bsh.EvalError;
 import bsh.Interpreter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.adapters.AbstractAdapter;
 
 import java.io.IOException;
@@ -69,7 +68,8 @@ public class BeanShellAdapter extends AbstractAdapter {
     }
 
     public Object getComponentInstance(PicoContainer pico)
-            throws PicoInitializationException, PicoIntrospectionException {
+            throws PicoCompositionException, PicoCompositionException
+    {
 
         if (instance == null) {
             try {
@@ -89,19 +89,19 @@ public class BeanShellAdapter extends AbstractAdapter {
                 // the same problem exists for maven, but some custom jelly script will be able to fix that.
                 URL scriptURL = getComponentImplementation().getResource(scriptPath);
                 if (scriptURL == null) {
-                    throw new BeanShellScriptInitializationException("Couldn't load script at path " + scriptPath);
+                    throw new BeanShellScriptCompositionException("Couldn't load script at path " + scriptPath);
                 }
                 Reader sourceReader = new InputStreamReader(scriptURL.openStream());
                 i.eval(sourceReader, i.getNameSpace(), scriptURL.toExternalForm());
 
                 instance = i.get("instance");
                 if (instance == null) {
-                    throw new BeanShellScriptInitializationException("The 'instance' variable was not instantiated");
+                    throw new BeanShellScriptCompositionException("The 'instance' variable was not instantiated");
                 }
             } catch (EvalError e) {
-                throw new BeanShellScriptInitializationException(e);
+                throw new BeanShellScriptCompositionException(e);
             } catch (IOException e) {
-                throw new BeanShellScriptInitializationException(e);
+                throw new BeanShellScriptCompositionException(e);
             }
         }
         return instance;

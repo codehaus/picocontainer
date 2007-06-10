@@ -13,11 +13,10 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
-import org.picocontainer.PicoInitializationException;
 
 import java.io.Serializable;
 
@@ -31,7 +30,7 @@ public class ConstructorInjectionFactory implements InjectionFactory, Serializab
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters)
-            throws PicoIntrospectionException, PicoInitializationException
+            throws PicoCompositionException, PicoCompositionException
     {
         return new ConstructorInjector(componentKey, componentImplementation, parameters,
                     componentMonitor, lifecycleStrategy);

@@ -3,8 +3,7 @@ package org.picocontainer.defaults;
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.adapters.AbstractAdapter;
@@ -25,13 +24,16 @@ public final class UserQuestionTestCase extends TestCase {
     public static final class CheeseAdapter extends AbstractAdapter {
         private final Map bla;
 
-        public CheeseAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws PicoInitializationException
+        public CheeseAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws
+                                                                                                PicoCompositionException
         {
             super(componentKey, componentImplementation);
             this.bla = cheeseMap;
         }
 
-        public Object getComponentInstance(PicoContainer pico) throws PicoInitializationException, PicoIntrospectionException {
+        public Object getComponentInstance(PicoContainer pico) throws PicoCompositionException,
+                                                                      PicoCompositionException
+        {
             return bla.get("cheese");
         }
 

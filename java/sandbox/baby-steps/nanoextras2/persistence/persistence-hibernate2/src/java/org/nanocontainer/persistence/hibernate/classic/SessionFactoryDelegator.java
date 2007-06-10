@@ -23,7 +23,7 @@ import net.sf.hibernate.metadata.ClassMetadata;
 import net.sf.hibernate.metadata.CollectionMetadata;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 /** 
  * delegates everything to session factory obtained from confiuration.
  * this class is necessary because component adapters are really ugly when
@@ -42,7 +42,7 @@ public class SessionFactoryDelegator implements SessionFactory {
         try {
             delegate = configuration.buildSessionFactory();
         } catch(HibernateException ex) {
-            throw new PicoInitializationException(ex);
+            throw new PicoCompositionException(ex);
         }
     }
     

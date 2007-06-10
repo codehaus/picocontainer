@@ -3,7 +3,7 @@ package org.picocontainer.defaults;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -301,8 +301,8 @@ public class CollectionComponentParameterTestCase
         parameterNonEmpty.verify(pico, null, Fish[].class, null);
         try {
             parameterNonEmpty.verify(pico, null, Cod[].class, null);
-            fail("(PicoIntrospectionException expected");
-        } catch (PicoIntrospectionException e) {
+            fail("(PicoCompositionException expected");
+        } catch (PicoCompositionException e) {
             assertTrue(e.getMessage().indexOf(Cod.class.getName())>0);
         }
         CollectionComponentParameter parameterEmpty = CollectionComponentParameter.ARRAY_ALLOW_EMPTY;

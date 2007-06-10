@@ -22,8 +22,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -167,7 +166,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         try {
             picoContainer.getComponent(NormalExceptionThrowing.class);
             fail();
-        } catch (PicoInitializationException e) {
+        } catch (PicoCompositionException e) {
             assertEquals("test", e.getCause().getMessage());
         }
     }
@@ -203,7 +202,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
             picoContainer.addComponent(IllegalAccessExceptionThrowing.class);
             picoContainer.getComponent(IllegalAccessExceptionThrowing.class);
             fail();
-        } catch (PicoInitializationException e) {
+        } catch (PicoCompositionException e) {
             assertTrue(e.getCause().getMessage().indexOf(IllegalAccessExceptionThrowing.class.getName()) > 0);
         }
     }
@@ -214,12 +213,12 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
             picoContainer.addComponent(IllegalAccessExceptionThrowing.class);
             picoContainer.getComponent(IllegalAccessExceptionThrowing.class);
             fail();
-        } catch (PicoInitializationException e) {
+        } catch (PicoCompositionException e) {
             assertTrue(e.getMessage().indexOf(IllegalAccessExceptionThrowing.class.getName()) > 0);
         }
     }
 
-    public void testRegisterInterfaceShouldFail() throws PicoInitializationException, PicoIntrospectionException {
+    public void testRegisterInterfaceShouldFail() throws PicoCompositionException, PicoCompositionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {
@@ -231,7 +230,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         }
     }
 
-    public void testRegisterAbstractShouldFail() throws PicoInitializationException, PicoIntrospectionException {
+    public void testRegisterAbstractShouldFail() throws PicoCompositionException, PicoCompositionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {

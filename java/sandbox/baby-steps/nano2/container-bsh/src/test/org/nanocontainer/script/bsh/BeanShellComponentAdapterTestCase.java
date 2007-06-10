@@ -55,7 +55,7 @@ public class BeanShellComponentAdapterTestCase extends TestCase {
         try {
             adapter.getComponentInstance(pico);
             fail("did not throw exception on missing 'instance' variable");
-        } catch (BeanShellScriptInitializationException bssie) {
+        } catch (BeanShellScriptCompositionException bssie) {
             // success
         }
     }

@@ -15,8 +15,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
 import org.nanocontainer.nanowar.ActionsContainerFactory;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 
 /**
  * Uses PicoContainer to produce Actions and inject dependencies into them. 
@@ -41,7 +40,7 @@ public final class ActionFactory {
      * place it in the request. The parent container will either be the request
      * container, or if that container can not be found the session container,
      * or if that container can not be found, the application container. If no
-     * parent container can be found, a <code>PicoInitializationException</code>
+     * parent container can be found, a <code>PicoCompositionException</code>
      * will be thrown. The action path specified in the mapping is used as
      * the component key for the action.
      * 
@@ -50,12 +49,13 @@ public final class ActionFactory {
      *        Action class is required.
      * @param servlet the Struts <code>ActionServlet</code>.  
      * @return the <code>Action</code> instance.
-     * @throws PicoIntrospectionException  if the mapping type does not specify a valid action.
-     * @throws PicoInitializationException if no request, session, or application scoped Pico container
+     * @throws PicoCompositionException  if the mapping type does not specify a valid action.
+     * @throws PicoCompositionException if no request, session, or application scoped Pico container
      *                                     can be found.
      */
     public Action getAction(HttpServletRequest request, ActionMapping mapping, ActionServlet servlet)
-            throws PicoIntrospectionException, PicoInitializationException {
+            throws PicoCompositionException, PicoCompositionException
+    {
 
         MutablePicoContainer actionsContainer = actionsContainerFactory.getActionsContainer(request);
         Object actionKey = mapping.getPath();

@@ -35,8 +35,7 @@ import org.nanocontainer.remoting.ejb.testmodel.HelloHome;
 import org.nanocontainer.remoting.ejb.testmodel.HelloHomeImpl;
 import org.nanocontainer.remoting.ejb.testmodel.HelloImpl;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoInitializationException;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 
 import junit.framework.Test;
 
@@ -98,8 +97,8 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
         }
         try {
             new EJBClientAdapter("Hello", HelloImpl.class, HelloHome.class, m_environment, false);
-            fail("Should have thrown a PicoIntrospectionException");
-        } catch (PicoIntrospectionException e) {
+            fail("Should have thrown a PicoCompositionException");
+        } catch (PicoCompositionException e) {
             assertTrue(e.getMessage().endsWith("interface"));
         }
     }
@@ -113,15 +112,15 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
         m_initialContextMock.expects(once()).method("lookup").with(eq("Foo")).will(returnValue(new FooHomeImpl()));
         try {
             new EJBClientAdapter("Foo", FooBar.class, m_environment, true);
-            fail("Should have thrown a PicoIntrospectionException");
-        } catch (PicoIntrospectionException e) {
+            fail("Should have thrown a PicoCompositionException");
+        } catch (PicoCompositionException e) {
             assertTrue(e.getCause() instanceof NoSuchMethodException);
         }
         m_initialContextMock.expects(once()).method("lookup").with(eq("Bar")).will(returnValue(new BarHomeImpl()));
         try {
             new EJBClientAdapter("Bar", FooBar.class, m_environment, true);
-            fail("Should have thrown a PicoIntrospectionException");
-        } catch (PicoIntrospectionException e) {
+            fail("Should have thrown a PicoCompositionException");
+        } catch (PicoCompositionException e) {
             assertTrue(e.getCause() instanceof ClassCastException);
         }
         m_initialContextMock.expects(once()).method("lookup").with(eq("NoEntry")).will(
@@ -138,8 +137,8 @@ public class EJBClientComponentAdapterTest extends MockObjectTestCase {
         final Hello hello = (Hello)componentAdapter.getComponentInstance(null);
         try {
             hello.getHelloWorld();
-            fail("Should have thrown a PicoInitializationException");
-        } catch (PicoInitializationException e) {
+            fail("Should have thrown a PicoCompositionException");
+        } catch (PicoCompositionException e) {
             assertTrue(e.getCause() instanceof NoInitialContextException);
         } finally {
             System.setProperties(systemProperties);

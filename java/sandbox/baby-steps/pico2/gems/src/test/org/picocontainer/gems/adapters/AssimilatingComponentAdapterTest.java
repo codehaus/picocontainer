@@ -16,7 +16,7 @@ import junit.framework.TestCase;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -100,8 +100,8 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
         try {
             new AssimilatingComponentAdapter(SimpleTouchable.class, new InstanceAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance()));
-            fail("PicoIntrospectionException expected");
-        } catch (final PicoIntrospectionException e) {
+            fail("PicoCompositionException expected");
+        } catch (final PicoCompositionException e) {
             assertTrue(e.getMessage().endsWith(SimpleTouchable.class.getName()));
         }
     }
@@ -115,8 +115,8 @@ public class AssimilatingComponentAdapterTest extends AbstractComponentAdapterTe
         try {
             new AssimilatingComponentAdapter(Touchable.class, new InstanceAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance()));
-            fail("PicoIntrospectionException expected");
-        } catch (final PicoIntrospectionException e) {
+            fail("PicoCompositionException expected");
+        } catch (final PicoCompositionException e) {
             assertTrue(e.getMessage().endsWith(touch.toString()));
         }
     }

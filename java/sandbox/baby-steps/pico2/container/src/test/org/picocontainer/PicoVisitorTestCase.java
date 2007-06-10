@@ -9,7 +9,7 @@ package org.picocontainer;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.visitors.VerifyingVisitor;
@@ -64,10 +64,10 @@ public class PicoVisitorTestCase
         PicoVisitor visitor = new VerifyingVisitor();
         Error exception = new Error("junit");
         mockPico.expects(once()).method("accept").with(same(visitor)).will(
-                throwException(new PicoIntrospectionException("message", exception)));
+                throwException(new PicoCompositionException("message", exception)));
         try {
             visitor.traverse(mockPico.proxy());
-            fail("PicoIntrospectionException expected");
+            fail("PicoCompositionException expected");
         } catch (RuntimeException e) {
             assertEquals("message", e.getMessage());
             assertSame(exception, e.getCause());

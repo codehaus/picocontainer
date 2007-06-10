@@ -12,12 +12,11 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.PicoInitializationException;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
@@ -127,7 +126,7 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
         return componentParameters;
     }
 
-    public abstract void verify(PicoContainer container) throws PicoIntrospectionException;
+    public abstract void verify(PicoContainer container) throws PicoCompositionException;
 
     public void accept(PicoVisitor visitor) {
         super.accept(visitor);
@@ -173,11 +172,12 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
      * 
      * @param container the PicoContainer to resolve dependencies.
      * @return the found constructor.
-     * @throws PicoIntrospectionException
+     * @throws PicoCompositionException
      * @throws UnsatisfiableDependenciesException
      * @throws NotConcreteRegistrationException
      */
-    protected abstract Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoIntrospectionException, NotConcreteRegistrationException;
+    protected abstract Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws
+                                                                                               PicoCompositionException, NotConcreteRegistrationException;
 
 
     /**
@@ -238,7 +238,7 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
 
     }
 
-    public static class CyclicDependencyException extends PicoIntrospectionException {
+    public static class CyclicDependencyException extends PicoCompositionException {
         private final List<Class> stack;
 
         /**
@@ -278,7 +278,7 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
      * @author Jon Tirs&eacute;n
      * @since 1.0
      */
-    public static final class AmbiguousComponentResolutionException extends PicoIntrospectionException {
+    public static final class AmbiguousComponentResolutionException extends PicoCompositionException {
         private Class component;
         private final Class ambiguousDependency;
         private final Object[] ambiguousComponentKeys;
@@ -330,7 +330,7 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
      * @author Mauro Talevi
      * @version $Revision$
      */
-    public static class UnsatisfiableDependenciesException extends PicoIntrospectionException {
+    public static class UnsatisfiableDependenciesException extends PicoCompositionException {
 
         private final ComponentAdapter instantiatingComponentAdapter;
         private final Set unsatisfiableDependencies;
@@ -371,7 +371,7 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
      * @author Aslak Hellesoy
      * @version $Revision$
      */
-    public static class NotConcreteRegistrationException extends PicoInitializationException {
+    public static class NotConcreteRegistrationException extends PicoCompositionException {
         private final Class componentImplementation;
 
         public NotConcreteRegistrationException(Class componentImplementation) {

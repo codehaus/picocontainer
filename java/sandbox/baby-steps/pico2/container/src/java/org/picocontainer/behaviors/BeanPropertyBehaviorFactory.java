@@ -12,12 +12,11 @@ package org.picocontainer.behaviors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.BeanPropertyComponentAdapter;
-import org.picocontainer.PicoInitializationException;
 
 /**
  * A {@link org.picocontainer.ComponentFactory} that creates
@@ -32,8 +31,10 @@ public final class BeanPropertyBehaviorFactory extends AbstractBehaviorFactory {
     /**
      * {@inheritDoc}
      */
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException,
-                                                                                                                                                                                                                                                                PicoInitializationException {
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws
+                                                                                                                                                                                                                                                         PicoCompositionException,
+                                                                                                                                                                                                                                                         PicoCompositionException
+    {
         ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
         return new BeanPropertyComponentAdapter(decoratedAdapter);
     }

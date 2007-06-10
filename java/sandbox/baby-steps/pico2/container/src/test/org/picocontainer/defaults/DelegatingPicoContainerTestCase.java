@@ -12,7 +12,7 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoInitializationException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -22,7 +22,7 @@ public class DelegatingPicoContainerTestCase extends TestCase {
     private MutablePicoContainer parent;
     private DefaultPicoContainer child;
 
-    public void setUp() throws PicoInitializationException, PicoInitializationException {
+    public void setUp() throws PicoCompositionException, PicoCompositionException {
         parent = new DefaultPicoContainer();
         child = new DefaultPicoContainer(parent);
     }

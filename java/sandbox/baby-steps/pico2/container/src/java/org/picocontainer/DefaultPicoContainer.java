@@ -278,7 +278,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) {
         Object componentKey = componentAdapter.getComponentKey();
         if (componentKeyToAdapterCache.containsKey(componentKey)) {
-            throw new PicoInitializationException("Duplicate Keys not allowed. Duplicate for '" + componentKey + "'");
+            throw new PicoCompositionException("Duplicate Keys not allowed. Duplicate for '" + componentKey + "'");
         }
         componentAdapters.add(componentAdapter);
         componentKeyToAdapterCache.put(componentKey, componentAdapter);
@@ -632,7 +632,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * and the child containers, if these support a ComponentMonitorStrategy.
      * {@inheritDoc}
      *
-     * @throws PicoIntrospectionException if no component monitor is found in container or its children
+     * @throws PicoCompositionException if no component monitor is found in container or its children
      */
     public ComponentMonitor currentMonitor() {
         return componentMonitor;
@@ -752,14 +752,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
         public MutablePicoContainer addComponent(Object componentKey,
                                                  Object componentImplementationOrInstance,
-                                                 Parameter... parameters) throws PicoInitializationException
+                                                 Parameter... parameters) throws PicoCompositionException
         {
             return super.addComponent(componentKey,
                                       makeCharacterizedImplOrInstance(componentImplementationOrInstance),
                                       parameters);
         }
 
-        public MutablePicoContainer addComponent(Object implOrInstance) throws PicoInitializationException {
+        public MutablePicoContainer addComponent(Object implOrInstance) throws PicoCompositionException {
             return super.addComponent(makeCharacterizedImplOrInstance(implOrInstance));
         }
 

@@ -14,7 +14,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoIntrospectionException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
@@ -73,8 +73,8 @@ public final class PicoObjectFactoryTestCase extends MockObjectTestCase {
     public void testActionInstantiationWithInvalidClassName() throws Exception {
         try {
             factory.buildBean("invalidAction");
-            fail("PicoIntrospectionException expected");
-        } catch ( PicoIntrospectionException e) {
+            fail("PicoCompositionException expected");
+        } catch ( PicoCompositionException e) {
             // expected
         }
     }

@@ -16,7 +16,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.ParameterName;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
@@ -41,7 +40,7 @@ public final class ParameterTestCase extends TestCase {
 
     final ParameterName pn = new FooParameterName();
 
-    public void testComponentParameterFetches() throws PicoRegistrationException, PicoInitializationException {
+    public void testComponentParameterFetches() throws PicoInitializationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         ComponentAdapter adapter = pico.addComponent(Touchable.class, SimpleTouchable.class).lastCA();
         assertNotNull(adapter);
@@ -50,7 +49,7 @@ public final class ParameterTestCase extends TestCase {
         assertNotNull(touchable);
     }
 
-    public void testComponentParameterExcludesSelf() throws PicoRegistrationException, PicoInitializationException {
+    public void testComponentParameterExcludesSelf() throws PicoInitializationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         ComponentAdapter adapter = pico.addComponent(Touchable.class, SimpleTouchable.class).lastCA();
 
@@ -59,14 +58,14 @@ public final class ParameterTestCase extends TestCase {
         assertNull(touchable);
     }
 
-    public void testConstantParameter() throws PicoInitializationException, PicoRegistrationException, PicoIntrospectionException {
+    public void testConstantParameter() throws PicoInitializationException, PicoInitializationException, PicoIntrospectionException {
         Object value = new Object();
         ConstantParameter parameter = new ConstantParameter(value);
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         assertSame(value, parameter.resolveInstance(picoContainer, null, Object.class, pn));
     }
 
-    public void testDependsOnTouchableWithTouchableSpecifiedAsConstant() throws PicoRegistrationException, PicoInitializationException {
+    public void testDependsOnTouchableWithTouchableSpecifiedAsConstant() throws PicoInitializationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         SimpleTouchable touchable = new SimpleTouchable();
         pico.addComponent(DependsOnTouchable.class, DependsOnTouchable.class, new ConstantParameter(touchable));
@@ -96,7 +95,7 @@ public final class ParameterTestCase extends TestCase {
         assertFalse(parameter.isResolvable(picoContainer, adapter, TestCase.class, pn));
     }
 
-    public void testParameterRespectsExpectedType() throws PicoInitializationException, PicoRegistrationException, PicoIntrospectionException {
+    public void testParameterRespectsExpectedType() throws PicoInitializationException, PicoInitializationException, PicoIntrospectionException {
         Parameter parameter = new ConstantParameter(Touchable.class);
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         assertFalse(parameter.isResolvable(picoContainer, null, TestCase.class, pn));
@@ -106,7 +105,7 @@ public final class ParameterTestCase extends TestCase {
         assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class, pn));
     }
 
-    public void testConstantParameterWithPrimitives() throws PicoInitializationException, PicoRegistrationException, PicoIntrospectionException {
+    public void testConstantParameterWithPrimitives() throws PicoInitializationException, PicoInitializationException, PicoIntrospectionException {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         Byte byteValue = (byte)5;
         ConstantParameter parameter = new ConstantParameter(byteValue);
@@ -142,7 +141,7 @@ public final class ParameterTestCase extends TestCase {
         assertSame(charValue, parameter.resolveInstance(picoContainer, null, Character.class, pn));
     }
 
-    public void testConstantParameterWithPrimitivesRejectsUnexpectedType() throws PicoInitializationException, PicoRegistrationException, PicoIntrospectionException {
+    public void testConstantParameterWithPrimitivesRejectsUnexpectedType() throws PicoInitializationException, PicoInitializationException, PicoIntrospectionException {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         Byte byteValue = (byte)5;
         ConstantParameter parameter = new ConstantParameter(byteValue);
@@ -170,7 +169,7 @@ public final class ParameterTestCase extends TestCase {
         assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn));
     }
 
-    public void testKeyClashBug118() throws PicoRegistrationException, PicoInitializationException {
+    public void testKeyClashBug118() throws PicoInitializationException, PicoInitializationException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("A", String.class, new ConstantParameter("A"));
         pico.addComponent("B", String.class, new ConstantParameter("A"));

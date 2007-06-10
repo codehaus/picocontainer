@@ -49,9 +49,9 @@ public interface ComponentFactory {
      *                                    may be ignored by some implementations. May be null, and may be of zero length. @return a new component adapter based on the specified arguments. Should not return null. @throws PicoIntrospectionException if the creation of the component adapter results in a
      *                                    {@link PicoIntrospectionException}.
      * @return The component adapter
-     * @throws org.picocontainer.PicoRegistrationException
+     * @throws org.picocontainer.PicoInitializationException
      *          if the creation of the component adapter results in a
-     *          {@link org.picocontainer.PicoRegistrationException}.
+     *          {@link org.picocontainer.PicoInitializationException}.
      * @throws PicoIntrospectionException
      */
     ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
@@ -60,7 +60,7 @@ public interface ComponentFactory {
                                             Object componentKey,
                                             Class componentImplementation,
                                             Parameter... parameters) throws PicoIntrospectionException,
-                                                                            PicoRegistrationException;
+                                                                            PicoInitializationException;
 
 
 }

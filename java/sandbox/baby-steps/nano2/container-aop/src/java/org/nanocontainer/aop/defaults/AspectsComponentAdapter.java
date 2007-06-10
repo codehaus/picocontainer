@@ -14,7 +14,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
@@ -30,7 +29,7 @@ public class AspectsComponentAdapter extends AbstractBehavior {
     }
 
     public Object getComponentInstance(PicoContainer pico) throws PicoInitializationException, PicoIntrospectionException,
-                                                                  PicoRegistrationException {
+                                                                  PicoInitializationException {
         Object component = super.getComponentInstance(pico);
         return aspectsApplicator.applyAspects(getComponentKey(), component, pico);
     }

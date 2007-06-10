@@ -13,7 +13,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.AbstractInjector;
@@ -92,11 +91,6 @@ public class PicoExceptionsTestCase
     public void testPicoIntrospectionException() {
         executeTestOfStandardException(PicoIntrospectionException.class);
     }
-
-    public void testPicoRegistrationException() {
-        executeTestOfStandardException(PicoRegistrationException.class);
-    }
-
 
     public void testPrintStackTrace() throws IOException {
         PicoException nestedException = new PicoException("Outer", new Exception("Inner")) {

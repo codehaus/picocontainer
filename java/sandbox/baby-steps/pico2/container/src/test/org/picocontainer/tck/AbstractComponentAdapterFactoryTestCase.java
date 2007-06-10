@@ -12,12 +12,12 @@ package org.picocontainer.tck;
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoInitializationException;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -35,14 +35,14 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
         picoContainer = new DefaultPicoContainer();
     }
 
-    public void testEquals() throws PicoIntrospectionException, PicoRegistrationException {
+    public void testEquals() throws PicoIntrospectionException, PicoInitializationException {
         ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class);
 
         assertEquals(componentAdapter, componentAdapter);
         assertTrue(!componentAdapter.equals("blah"));
     }
 
-    public void testRegisterComponent() throws PicoRegistrationException {
+    public void testRegisterComponent() throws PicoInitializationException {
         ComponentAdapter componentAdapter =
                 createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class);
 
@@ -51,7 +51,7 @@ public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
         assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
 
-    public void testUnregisterComponent() throws PicoRegistrationException {
+    public void testUnregisterComponent() throws PicoInitializationException {
         ComponentAdapter componentAdapter =
                 createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class);
 

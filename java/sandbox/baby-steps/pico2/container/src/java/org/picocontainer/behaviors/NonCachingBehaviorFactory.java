@@ -19,7 +19,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoInitializationException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -29,7 +29,7 @@ import org.picocontainer.PicoRegistrationException;
 public class NonCachingBehaviorFactory extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoIntrospectionException, PicoRegistrationException {
+            throws PicoIntrospectionException, PicoInitializationException {
         if (ComponentCharacteristics.CACHE.isSoCharacterized(componentCharacteristic)) {
             return new CachingBehavior(super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters));
         }

@@ -13,7 +13,7 @@ import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoInitializationException;
 import org.picocontainer.adapters.AbstractAdapter;
 
 /**
@@ -36,7 +36,9 @@ public final class InstanceAdapter extends AbstractAdapter implements LifecycleM
     private final Object componentInstance;
     private final LifecycleStrategy lifecycleStrategy;
 
-    public InstanceAdapter(Object componentKey, Object componentInstance, LifecycleStrategy lifecycleStrategy, ComponentMonitor componentMonitor) throws PicoRegistrationException {
+    public InstanceAdapter(Object componentKey, Object componentInstance, LifecycleStrategy lifecycleStrategy, ComponentMonitor componentMonitor) throws
+                                                                                                                                                  PicoInitializationException
+    {
         super(componentKey, getInstanceClass(componentInstance), componentMonitor);
         this.componentInstance = componentInstance;
         this.lifecycleStrategy = lifecycleStrategy;

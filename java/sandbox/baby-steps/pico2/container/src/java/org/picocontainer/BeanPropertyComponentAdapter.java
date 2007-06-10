@@ -18,7 +18,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.CachingBehavior;
@@ -63,12 +62,12 @@ public class BeanPropertyComponentAdapter extends AbstractBehavior {
      * @return the component instance with any properties of the properties map set.
      * @throws PicoInitializationException {@inheritDoc}
      * @throws PicoIntrospectionException  {@inheritDoc}
-     * @throws org.picocontainer.PicoRegistrationException
+     * @throws org.picocontainer.PicoInitializationException
      *                                     {@inheritDoc}
      * @see #setProperties(Map)
      */
     public Object getComponentInstance(PicoContainer container) throws PicoInitializationException, PicoIntrospectionException,
-                                                                       PicoRegistrationException
+                                                                       PicoInitializationException
     {
         final Object componentInstance = super.getComponentInstance(container);
         if (setters == null) {

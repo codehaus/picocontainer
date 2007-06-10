@@ -316,7 +316,7 @@ public class PicoBuilderTestCase extends TestCase {
                                                        Object componentKey,
                                                        Class componentImplementation,
                                                        Parameter... parameters) throws PicoIntrospectionException,
-                                                                                       PicoRegistrationException
+                                                                                       PicoInitializationException
         {
             return null;
         }

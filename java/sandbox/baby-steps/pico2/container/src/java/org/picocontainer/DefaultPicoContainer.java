@@ -278,7 +278,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) {
         Object componentKey = componentAdapter.getComponentKey();
         if (componentKeyToAdapterCache.containsKey(componentKey)) {
-            throw new PicoRegistrationException("Duplicate Keys not allowed. Duplicate for '" + componentKey + "'");
+            throw new PicoInitializationException("Duplicate Keys not allowed. Duplicate for '" + componentKey + "'");
         }
         componentAdapters.add(componentAdapter);
         componentKeyToAdapterCache.put(componentKey, componentAdapter);
@@ -752,14 +752,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
         public MutablePicoContainer addComponent(Object componentKey,
                                                  Object componentImplementationOrInstance,
-                                                 Parameter... parameters) throws PicoRegistrationException
+                                                 Parameter... parameters) throws PicoInitializationException
         {
             return super.addComponent(componentKey,
                                       makeCharacterizedImplOrInstance(componentImplementationOrInstance),
                                       parameters);
         }
 
-        public MutablePicoContainer addComponent(Object implOrInstance) throws PicoRegistrationException {
+        public MutablePicoContainer addComponent(Object implOrInstance) throws PicoInitializationException {
             return super.addComponent(makeCharacterizedImplOrInstance(implOrInstance));
         }
 

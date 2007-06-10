@@ -24,7 +24,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -220,7 +219,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         }
     }
 
-    public void testRegisterInterfaceShouldFail() throws PicoRegistrationException, PicoIntrospectionException {
+    public void testRegisterInterfaceShouldFail() throws PicoInitializationException, PicoIntrospectionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {
@@ -232,7 +231,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
         }
     }
 
-    public void testRegisterAbstractShouldFail() throws PicoRegistrationException, PicoIntrospectionException {
+    public void testRegisterAbstractShouldFail() throws PicoInitializationException, PicoIntrospectionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {

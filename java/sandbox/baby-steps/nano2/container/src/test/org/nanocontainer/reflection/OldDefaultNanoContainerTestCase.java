@@ -24,7 +24,7 @@ import java.net.MalformedURLException;
 
 public class OldDefaultNanoContainerTestCase extends TestCase {
 
-    public void testBasic() throws PicoRegistrationException, PicoInitializationException {
+    public void testBasic() throws PicoInitializationException, PicoInitializationException {
         NanoContainer nanoContainer = new DefaultNanoContainer();
         nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
         nanoContainer.addComponent("org.nanocontainer.testmodel.WebServer", new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
@@ -39,7 +39,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         assertTrue("WebServerImpl should exist", nanoContainer.getComponent(WebServerImpl.class) instanceof WebServerImpl);
     }
 
-    public void testNoGenerationRegistration() throws PicoRegistrationException, PicoIntrospectionException {
+    public void testNoGenerationRegistration() throws PicoInitializationException, PicoIntrospectionException {
         NanoContainer nanoContainer = new DefaultNanoContainer();
         try {
             nanoContainer.addComponent(new ClassName("Ping"));

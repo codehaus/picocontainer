@@ -10,7 +10,7 @@
 
 package org.nanocontainer.remoting.jmx;
 
-import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoInitializationException;
 
 
 /**
@@ -18,7 +18,7 @@ import org.picocontainer.PicoRegistrationException;
  * @author Michael Ward
  * @version $Revision$
  */
-public class JMXRegistrationException extends PicoRegistrationException {
+public class JMXRegistrationException extends PicoInitializationException {
 
     /**
      * Construct a JMXRegistrationException with a particular message.

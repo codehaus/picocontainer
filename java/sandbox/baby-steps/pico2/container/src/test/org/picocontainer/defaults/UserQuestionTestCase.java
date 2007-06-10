@@ -5,7 +5,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.adapters.AbstractAdapter;
@@ -26,7 +25,7 @@ public final class UserQuestionTestCase extends TestCase {
     public static final class CheeseAdapter extends AbstractAdapter {
         private final Map bla;
 
-        public CheeseAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws PicoRegistrationException
+        public CheeseAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws PicoInitializationException
         {
             super(componentKey, componentImplementation);
             this.bla = cheeseMap;

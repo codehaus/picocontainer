@@ -19,7 +19,6 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.ComponentCharacteristic;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
@@ -302,7 +301,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         public ComponentAdapterFactoryWithNoMonitor(ComponentAdapter adapter){
             this.adapter = adapter;
         }
-        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, PicoRegistrationException {
+        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoIntrospectionException, PicoInitializationException {
             return adapter;
         }        
     }
@@ -449,8 +448,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         MutablePicoContainer mpc = createPicoContainer(null);
         mpc.addComponent("greeting", "1");
         mpc.addComponent("message", "2");
-        mpc.addComponent(PicoRegistrationException.class, PicoRegistrationException.class);
-        assertEquals("2", mpc.getComponent(PicoRegistrationException.class).getMessage());
+        mpc.addComponent(PicoInitializationException.class, PicoInitializationException.class);
+        assertEquals("2", mpc.getComponent(PicoInitializationException.class).getMessage());
     }
 
     public void testPicoCanDifferentiateBetweenNamedObjectsThatWouldOtherwiseBeAmbiguous() {

@@ -16,8 +16,8 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.PicoInitializationException;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
@@ -372,7 +372,7 @@ public abstract class AbstractInjector extends AbstractAdapter
      * @author Aslak Hellesoy
      * @version $Revision$
      */
-    public static class NotConcreteRegistrationException extends PicoRegistrationException {
+    public static class NotConcreteRegistrationException extends PicoInitializationException {
         private final Class componentImplementation;
 
         public NotConcreteRegistrationException(Class componentImplementation) {

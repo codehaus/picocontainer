@@ -15,7 +15,6 @@ import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.parameters.ComponentParameter;
@@ -30,7 +29,7 @@ import java.util.List;
 public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends TestCase {
 
     //TODO - move to AbstractComponentRegistryTestCase
-    public void testGetComponentSpecification() throws PicoRegistrationException, PicoIntrospectionException {
+    public void testGetComponentSpecification() throws PicoInitializationException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         assertNull(pico.getComponentAdapter(Touchable.class));
@@ -42,7 +41,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
 
     //TODO move
     public void testMultipleImplementationsAccessedThroughKey()
-            throws PicoInitializationException, PicoRegistrationException {
+            throws PicoInitializationException, PicoInitializationException {
         SimpleTouchable Touchable1 = new SimpleTouchable();
         SimpleTouchable Touchable2 = new SimpleTouchable();
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -95,14 +94,14 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
         assertNull("Lookup of unknown key should return null", pico.getComponent("unknown"));
     }
 
-    public void testDuplicateRegistrationWithTypeAndObject() throws PicoRegistrationException, PicoIntrospectionException {
+    public void testDuplicateRegistrationWithTypeAndObject() throws PicoInitializationException, PicoIntrospectionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         pico.addComponent(SimpleTouchable.class);
         try {
             pico.addComponent(SimpleTouchable.class, new SimpleTouchable());
             fail("Should have barfed with dupe registration");
-        } catch (PicoRegistrationException e) {
+        } catch (PicoInitializationException e) {
             // expected
             assertTrue(e.getMessage().startsWith("Duplicate"));
             assertTrue(e.getMessage().indexOf(SimpleTouchable.class.getName()) > 0);
@@ -110,7 +109,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
     }
 
 
-    public void testComponentRegistrationMismatch() throws PicoRegistrationException, PicoIntrospectionException {
+    public void testComponentRegistrationMismatch() throws PicoInitializationException, PicoIntrospectionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {

@@ -18,7 +18,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoInitializationException;
 import org.picocontainer.PicoIntrospectionException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.AbstractBehavior;
 
@@ -73,7 +72,7 @@ public final class ThreadLocalComponentAdapter extends AbstractBehavior {
 
     public Object getComponentInstance(final PicoContainer pico)
             throws PicoInitializationException, PicoIntrospectionException,
-                   PicoRegistrationException {
+                   PicoInitializationException {
 
         if (interfaces == null) {
             interfaces = getInterfaces();

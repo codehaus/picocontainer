@@ -18,7 +18,6 @@ import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AnyInjectionFactory;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
@@ -30,7 +29,7 @@ public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAda
         return new AnyInjectionFactory();
     }
 
-    public void testInstantiateComponentWithNoDependencies() throws PicoInitializationException, PicoIntrospectionException, PicoRegistrationException {
+    public void testInstantiateComponentWithNoDependencies() throws PicoInitializationException, PicoIntrospectionException, PicoInitializationException {
         ComponentAdapter componentAdapter =
                 createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
 

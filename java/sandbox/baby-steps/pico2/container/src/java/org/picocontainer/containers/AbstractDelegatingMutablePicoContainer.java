@@ -15,8 +15,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoRegistrationException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.PicoInitializationException;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -43,16 +43,15 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
 
     public MutablePicoContainer addComponent(Object componentKey,
                                              Object componentImplementationOrInstance,
-                                             Parameter... parameters) throws PicoRegistrationException
-    {
+                                             Parameter... parameters) throws PicoInitializationException {
         return delegate.addComponent(componentKey, componentImplementationOrInstance, parameters);
     }
 
-    public MutablePicoContainer addComponent(Object implOrInstance) throws PicoRegistrationException {
+    public MutablePicoContainer addComponent(Object implOrInstance) throws PicoInitializationException {
         return delegate.addComponent(implOrInstance);
     }
 
-    public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) throws PicoRegistrationException {
+    public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) throws PicoInitializationException {
         return delegate.addAdapter(componentAdapter);
     }
 

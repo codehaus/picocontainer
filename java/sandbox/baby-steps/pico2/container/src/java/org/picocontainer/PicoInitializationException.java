@@ -11,8 +11,12 @@
 package org.picocontainer;
 
 /**
- * Subclass of {@link PicoException} that is thrown when there is a problem initializing the container or some other
- * part of the PicoContainer api, for example, when a cyclic dependency between components occurs.
+ * Subclass of {@link PicoException} that is thrown when there is:
+ *   - a problem initializing the container
+ *   - a cyclic dependency between components occurs.
+ *   - problem adding a component
+ *   - a request for a component that is ambiguous.
+
  * 
  * @version $Revision$
  * @since 1.0

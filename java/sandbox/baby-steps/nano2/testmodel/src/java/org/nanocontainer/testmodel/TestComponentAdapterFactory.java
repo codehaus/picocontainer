@@ -6,7 +6,7 @@ import org.picocontainer.PicoIntrospectionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.PicoRegistrationException;
+import org.picocontainer.PicoInitializationException;
 import org.picocontainer.injectors.AnyInjectionFactory;
 
 /**
@@ -22,7 +22,7 @@ public final class TestComponentAdapterFactory extends AnyInjectionFactory {
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoIntrospectionException,
-                                                                                                                                                                                                                                                               PicoRegistrationException {
+                                                                                                                                                                                                                                                               PicoInitializationException {
         sb.append("called");
         return super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
     }

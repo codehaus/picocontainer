@@ -18,6 +18,7 @@ import java.lang.reflect.Member;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -109,28 +110,34 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     }
 
 
-    public Constructor instantiating(Constructor constructor) {
+    public Constructor instantiating(ComponentAdapter componentAdapter,
+                                     Constructor constructor
+    ) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
             log.debug(format(INSTANTIATING, toString(constructor)));
         }
-        return delegate.instantiating(constructor);
+        return delegate.instantiating(componentAdapter, constructor);
     }
 
-    public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {
+    public void instantiated(ComponentAdapter componentAdapter,
+                             Constructor constructor,
+                             Object instantiated,
+                             Object[] parameters,
+                             long duration) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
             log.debug(format(INSTANTIATED2, toString(constructor), duration, instantiated.getClass().getName(), toString(parameters)));
         }
-        delegate.instantiated(constructor, instantiated, parameters, duration);
+        delegate.instantiated(componentAdapter, constructor, instantiated, parameters, duration);
     }
 
-    public void instantiationFailed(Constructor constructor, Exception cause) {
+    public void instantiationFailed(ComponentAdapter componentAdapter, Constructor constructor, Exception cause) {
         Log log = getLog(constructor);
         if (log.isWarnEnabled()) {
             log.warn(format(INSTANTIATION_FAILED, toString(constructor), cause.getMessage()), cause);
         }
-        delegate.instantiationFailed(constructor, cause);
+        delegate.instantiationFailed(componentAdapter, constructor, cause);
     }
 
     public void invoking(Method method, Object instance) {

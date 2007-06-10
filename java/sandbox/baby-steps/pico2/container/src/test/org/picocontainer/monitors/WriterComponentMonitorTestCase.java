@@ -29,14 +29,14 @@ public class WriterComponentMonitorTestCase extends TestCase {
     }
 
     public void testShouldTraceInstantiating() {
-        componentMonitor.instantiating(constructor);
+        componentMonitor.instantiating(null, constructor);
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATING, AbstractComponentMonitor.toString(constructor)) +NL,  out.toString());
     }
 
     public void testShouldTraceInstantiatedWithInjected() {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
-        componentMonitor.instantiated(constructor, instantiated, injected, 543);
+        componentMonitor.instantiated(null, constructor, instantiated, injected, 543);
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATED2,
                                                    AbstractComponentMonitor.toString(constructor),
                                                    (long)543,
@@ -45,7 +45,7 @@ public class WriterComponentMonitorTestCase extends TestCase {
 
 
     public void testShouldTraceInstantiationFailed() {
-        componentMonitor.instantiationFailed(constructor, new RuntimeException("doh"));
+        componentMonitor.instantiationFailed(null, constructor, new RuntimeException("doh"));
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATION_FAILED,
                                                    AbstractComponentMonitor.toString(constructor), "doh") +NL,  out.toString());
     }

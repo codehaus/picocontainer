@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
@@ -54,16 +55,22 @@ public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMo
         this(NullComponentMonitor.getInstance());
     }
     
-    public Constructor instantiating(Constructor constructor) {
-        return delegate.instantiating(constructor);
+    public Constructor instantiating(ComponentAdapter componentAdapter,
+                                     Constructor constructor
+    ) {
+        return delegate.instantiating(componentAdapter, constructor);
     }
 
-    public void instantiated(Constructor constructor, Object instantiated, Object[] injected, long duration) {
-        delegate.instantiated(constructor, instantiated, injected, duration);
+    public void instantiated(ComponentAdapter componentAdapter,
+                             Constructor constructor,
+                             Object instantiated,
+                             Object[] injected,
+                             long duration) {
+        delegate.instantiated(componentAdapter, constructor, instantiated, injected, duration);
     }
 
-    public void instantiationFailed(Constructor constructor, Exception e) {
-        delegate.instantiationFailed(constructor, e);
+    public void instantiationFailed(ComponentAdapter componentAdapter, Constructor constructor, Exception e) {
+        delegate.instantiationFailed(componentAdapter, constructor, e);
     }
 
     public void invoking(Method method, Object instance) {

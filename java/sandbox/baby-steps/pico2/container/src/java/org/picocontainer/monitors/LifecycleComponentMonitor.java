@@ -9,6 +9,7 @@ import java.util.List;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoLifecycleException;
+import org.picocontainer.ComponentAdapter;
 
 /**
  * A {@link ComponentMonitor} which collects lifecycle failures
@@ -30,16 +31,22 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
         delegate = new NullComponentMonitor();
     }
 
-    public Constructor instantiating(Constructor constructor) {
-        return delegate.instantiating(constructor);
+    public Constructor instantiating(ComponentAdapter componentAdapter,
+                                     Constructor constructor
+    ) {
+        return delegate.instantiating(componentAdapter, constructor);
     }
 
-    public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {
-        delegate.instantiated(constructor, instantiated, parameters, duration);
+    public void instantiated(ComponentAdapter componentAdapter,
+                             Constructor constructor,
+                             Object instantiated,
+                             Object[] parameters,
+                             long duration) {
+        delegate.instantiated(componentAdapter, constructor, instantiated, parameters, duration);
     }
 
-    public void instantiationFailed(Constructor constructor, Exception cause) {
-        delegate.instantiationFailed(constructor, cause);
+    public void instantiationFailed(ComponentAdapter componentAdapter, Constructor constructor, Exception cause) {
+        delegate.instantiationFailed(componentAdapter, constructor, cause);
     }
 
     public void invoking(Method method, Object instance) {

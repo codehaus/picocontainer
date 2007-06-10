@@ -52,21 +52,21 @@ public abstract class AbstractComponentMonitorTestCase extends TestCase {
     }
 
     public void testShouldTraceInstantiating() throws IOException {
-        componentMonitor.instantiating(constructor);        
+        componentMonitor.instantiating(null, constructor);
         assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATING, AbstractComponentMonitor.toString(constructor)));
     }
 
     public void testShouldTraceInstantiatedWithInjected() throws IOException {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
-        componentMonitor.instantiated(constructor, instantiated, injected, 543);
+        componentMonitor.instantiated(null, constructor, instantiated, injected, 543);
         String s = AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATED2, AbstractComponentMonitor.toString(constructor), (long) 543, instantiated.getClass().getName(), AbstractComponentMonitor.toString(injected));
         assertFileContent(getLogPrefix() + s);
     }
 
 
     public void testShouldTraceInstantiationFailed() throws IOException {
-        componentMonitor.instantiationFailed(constructor, new RuntimeException("doh"));
+        componentMonitor.instantiationFailed(null, constructor, new RuntimeException("doh"));
         assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATION_FAILED, AbstractComponentMonitor.toString(constructor), "doh"));
     }
 

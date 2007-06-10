@@ -16,6 +16,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentAdapter;
 
 /**
  * A {@link ComponentMonitor} which writes to a {@link OutputStream}. 
@@ -44,19 +45,25 @@ public final class ConsoleComponentMonitor extends AbstractComponentMonitor {
         this.delegate = delegate;
     }
 
-    public Constructor instantiating(Constructor constructor) {
+    public Constructor instantiating(ComponentAdapter componentAdapter,
+                                     Constructor constructor
+    ) {
         out.println(format(INSTANTIATING, toString(constructor)));
-        return delegate.instantiating(constructor);
+        return delegate.instantiating(componentAdapter, constructor);
     }
 
-    public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {
+    public void instantiated(ComponentAdapter componentAdapter,
+                             Constructor constructor,
+                             Object instantiated,
+                             Object[] parameters,
+                             long duration) {
         out.println(format(INSTANTIATED2, toString(constructor), duration, instantiated.getClass().getName(), toString(parameters)));
-        delegate.instantiated(constructor, instantiated, parameters, duration);
+        delegate.instantiated(componentAdapter, constructor, instantiated, parameters, duration);
     }
 
-    public void instantiationFailed(Constructor constructor, Exception cause) {
+    public void instantiationFailed(ComponentAdapter componentAdapter, Constructor constructor, Exception cause) {
         out.println(format(INSTANTIATION_FAILED, toString(constructor), cause.getMessage()));
-        delegate.instantiationFailed(constructor, cause);
+        delegate.instantiationFailed(componentAdapter, constructor, cause);
     }
 
     public void invoking(Method method, Object instance) {

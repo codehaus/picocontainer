@@ -29,31 +29,39 @@ public interface ComponentMonitor {
     /**
      * Event thrown as the component is being instantiated using the given constructor
      * 
+     * @param componentAdapter
      * @param constructor the Constructor used to instantiate the addComponent
      * @return the constructor to use in instantiation (nearly always the same one as passed in)
      */
-    Constructor instantiating(Constructor constructor);
+    Constructor instantiating(ComponentAdapter componentAdapter,
+                              Constructor constructor
+    );
 
     /**
      * Event thrown after the component has been instantiated using the given constructor.
      * This should be called for both Constructor and Setter DI.
      *
-     * @param constructor the Constructor used to instantiate the addComponent
+     * @param componentAdapter
+     *@param constructor the Constructor used to instantiate the addComponent
      * @param instantiated the component that was instantiated by PicoContainer
      * @param injected the components during instantiation.
-     * @param duration the duration in millis of the instantiation
-     * @since 1.3
+     * @param duration the duration in millis of the instantiation @since 1.3
      */
 
-    void instantiated(Constructor constructor, Object instantiated, Object[] injected, long duration);
+    void instantiated(ComponentAdapter componentAdapter,
+                      Constructor constructor,
+                      Object instantiated,
+                      Object[] injected,
+                      long duration);
 
     /**
      * Event thrown if the component instantiation failed using the given constructor
      * 
+     * @param componentAdapter
      * @param constructor the Constructor used to instantiate the addComponent
      * @param cause the Exception detailing the cause of the failure
      */
-    void instantiationFailed(Constructor constructor, Exception cause);
+    void instantiationFailed(ComponentAdapter componentAdapter, Constructor constructor, Exception cause);
 
     /**
      * Event thrown as the component method is being invoked on the given instance

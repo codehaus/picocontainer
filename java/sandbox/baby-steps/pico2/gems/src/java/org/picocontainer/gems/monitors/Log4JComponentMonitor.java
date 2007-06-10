@@ -21,6 +21,7 @@ import org.apache.log4j.Priority;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentAdapter;
 
 
 /**
@@ -113,28 +114,34 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
         this.delegate = delegate;
     }
 
-    public Constructor instantiating(Constructor constructor) {
+    public Constructor instantiating(ComponentAdapter componentAdapter,
+                                     Constructor constructor
+    ) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
             logger.debug(format(INSTANTIATING, toString(constructor)));
         }
-        return delegate.instantiating(constructor);
+        return delegate.instantiating(componentAdapter, constructor);
     }
 
-    public void instantiated(Constructor constructor, Object instantiated, Object[] parameters, long duration) {
+    public void instantiated(ComponentAdapter componentAdapter,
+                             Constructor constructor,
+                             Object instantiated,
+                             Object[] parameters,
+                             long duration) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
             logger.debug(format(INSTANTIATED2, toString(constructor), duration, instantiated.getClass().getName(), toString(parameters)));
         }
-        delegate.instantiated(constructor, instantiated, parameters, duration);
+        delegate.instantiated(componentAdapter, constructor, instantiated, parameters, duration);
     }
 
-    public void instantiationFailed(Constructor constructor, Exception cause) {
+    public void instantiationFailed(ComponentAdapter componentAdapter, Constructor constructor, Exception cause) {
         Logger logger = getLogger(constructor);
         if (logger.isEnabledFor(Priority.WARN)) {
             logger.warn(format(INSTANTIATION_FAILED, toString(constructor), cause.getMessage()), cause);
         }
-        delegate.instantiationFailed(constructor, cause);
+        delegate.instantiationFailed(componentAdapter, constructor, cause);
     }
 
     public void invoking(Method method, Object instance) {

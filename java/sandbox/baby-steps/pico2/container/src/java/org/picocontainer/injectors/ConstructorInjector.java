@@ -198,13 +198,14 @@ public final class ConstructorInjector extends AbstractInjector {
                     ComponentMonitor componentMonitor = currentMonitor();
                     try {
                         Object[] parameters = getConstructorArguments(guardedContainer, constructor);
-                        constructor = componentMonitor.instantiating(constructor);
+                        constructor = componentMonitor.instantiating(ConstructorInjector.this, constructor);
                         long startTime = System.currentTimeMillis();
                         Object inst = newInstance(constructor, parameters);
-                        componentMonitor.instantiated(constructor, inst, parameters, System.currentTimeMillis() - startTime);
+                        componentMonitor.instantiated(ConstructorInjector.this,
+                                                      constructor, inst, parameters, System.currentTimeMillis() - startTime);
                         return inst;
                     } catch (InvocationTargetException e) {
-                        componentMonitor.instantiationFailed(constructor, e);
+                        componentMonitor.instantiationFailed(ConstructorInjector.this, constructor, e);
                         if (e.getTargetException() instanceof RuntimeException) {
                             throw (RuntimeException) e.getTargetException();
                         } else if (e.getTargetException() instanceof Error) {
@@ -214,13 +215,13 @@ public final class ConstructorInjector extends AbstractInjector {
                     } catch (InstantiationException e) {
                         // can't get here because checkConcrete() will catch it earlier, but see PICO-191
                         ///CLOVER:OFF
-                        componentMonitor.instantiationFailed(constructor, e);
+                        componentMonitor.instantiationFailed(ConstructorInjector.this, constructor, e);
                         throw new PicoInitializationException("Should never get here");
                         ///CLOVER:ON
                     } catch (IllegalAccessException e) {
                         // can't get here because either filtered or access mode set
                         ///CLOVER:OFF
-                        componentMonitor.instantiationFailed(constructor, e);
+                        componentMonitor.instantiationFailed(ConstructorInjector.this, constructor, e);
                         throw new PicoInitializationException(e);
                         ///CLOVER:ON
                     }

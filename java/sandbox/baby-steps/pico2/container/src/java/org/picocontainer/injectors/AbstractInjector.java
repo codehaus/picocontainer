@@ -44,8 +44,7 @@ import java.util.Set;
  * @version $Revision$
  * @since 1.0
  */
-public abstract class AbstractInjector extends AbstractAdapter
-    implements LifecycleStrategy {
+public abstract class AbstractInjector extends AbstractAdapter implements LifecycleStrategy {
     /** The cycle guard for the verification. */ 
     protected transient ThreadLocalCyclicDependencyGuard verifyingGuard;
     /** The parameters to use for initialization. */ 

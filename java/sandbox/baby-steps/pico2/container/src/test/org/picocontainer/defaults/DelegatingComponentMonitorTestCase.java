@@ -6,6 +6,7 @@ import org.jmock.core.Constraint;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 
 import java.lang.reflect.Constructor;
@@ -41,7 +42,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
         DelegatingComponentMonitor dcm = new DelegatingComponentMonitor(mockMonitorThatSupportsStrategy(monitor));
         dcm.changeMonitor(monitor);
         assertEquals(monitor, dcm.currentMonitor());
-        dcm.instantiating(null);
+        dcm.instantiating(null, null);
     }
 
     public void testDelegatingMonitorChangesDelegateThatDoesNotSupportMonitorStrategy() {
@@ -77,7 +78,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
         final String ourIntendedInjectee1 = "hullo";
         Mock monitor = mock(ComponentMonitor.class);
         Constructor nacotCtor = NeedsACoupleOfThings.class.getConstructors()[0];
-        monitor.expects(once()).method("instantiating").with(eq(nacotCtor)).will(returnValue(nacotCtor));
+        monitor.expects(once()).method("instantiating").with(isA(ConstructorInjector.class), eq(nacotCtor)).will(returnValue(nacotCtor));
         Constraint durationIsGreaterThanOrEqualToZero = new Constraint() {
             public boolean eval(Object o) {
                 Long duration = (Long)o;
@@ -106,7 +107,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
                 return stringBuffer.append("Should have injected our intended vector and string");
             }
         };
-        monitor.expects(once()).method("instantiated").with(eq(nacotCtor), isANACOTThatWozCreated, collectionAndStringWereInjected, durationIsGreaterThanOrEqualToZero);
+        monitor.expects(once()).method("instantiated").with(new Constraint[] {isA(ConstructorInjector.class),eq(nacotCtor), isANACOTThatWozCreated, collectionAndStringWereInjected, durationIsGreaterThanOrEqualToZero});
         DefaultPicoContainer parent = new DefaultPicoContainer();
         parent.addComponent(ourIntendedInjectee0);
         parent.addComponent(ourIntendedInjectee1);

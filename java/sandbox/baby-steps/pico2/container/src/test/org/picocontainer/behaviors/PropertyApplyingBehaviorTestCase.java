@@ -1,8 +1,8 @@
-package org.picocontainer.adapters;
+package org.picocontainer.behaviors;
 
 import junit.framework.TestCase;
 import org.picocontainer.testmodel.CoupleBean;
-import org.picocontainer.adapters.PropertyApplyingAdapter;
+import org.picocontainer.behaviors.PropertyApplyingBehavior;
 
 /**
  *
@@ -10,9 +10,9 @@ import org.picocontainer.adapters.PropertyApplyingAdapter;
  * @author $Author: $ (last edit)
  * @version $Revision: $ 
  */
-public class PropertyApplyingAdapterTestCase extends TestCase {
+public class PropertyApplyingBehaviorTestCase extends TestCase {
     public void testBeanPropertyComponentAdapterCanUsePropertyEditors() {
-        Object c = PropertyApplyingAdapter.convert(CoupleBean.class.getName(), "a's name:Camilla;b's name:Charles;", this.getClass().getClassLoader());
+        Object c = PropertyApplyingBehavior.convert(CoupleBean.class.getName(), "a's name:Camilla;b's name:Charles;", this.getClass().getClassLoader());
         assertNotNull(c);
         assertTrue(c instanceof CoupleBean);
         assertEquals("Camilla", ((CoupleBean) c).getPersonA().getName());

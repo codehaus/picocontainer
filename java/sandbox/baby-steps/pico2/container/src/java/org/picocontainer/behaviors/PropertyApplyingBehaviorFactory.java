@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.adapters;
+package org.picocontainer.behaviors;
 
 
 import org.picocontainer.ComponentAdapter;
@@ -17,17 +17,17 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
-import org.picocontainer.adapters.PropertyApplyingAdapter;
+import org.picocontainer.behaviors.PropertyApplyingBehavior;
 
 /**
  * A {@link org.picocontainer.ComponentFactory} that creates
- * {@link PropertyApplyingAdapter} instances.
+ * {@link PropertyApplyingBehavior} instances.
  * 
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  * @since 1.0
  */
-public final class PropertyApplyingFactory extends AbstractBehaviorFactory {
+public final class PropertyApplyingBehaviorFactory extends AbstractBehaviorFactory {
 
     /**
      * {@inheritDoc}
@@ -37,7 +37,7 @@ public final class PropertyApplyingFactory extends AbstractBehaviorFactory {
                                                                                                                                                                                                                                                          PicoCompositionException
     {
         ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
-        return new PropertyApplyingAdapter(decoratedAdapter);
+        return new PropertyApplyingBehavior(decoratedAdapter);
     }
 
 }

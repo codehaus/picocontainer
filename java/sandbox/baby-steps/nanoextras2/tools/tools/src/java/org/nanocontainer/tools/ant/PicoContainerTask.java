@@ -21,8 +21,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.AnyInjectionFactory;
-import org.picocontainer.adapters.PropertyApplyingAdapter;
-import org.picocontainer.adapters.PropertyApplyingFactory;
+import org.picocontainer.behaviors.PropertyApplyingBehavior;
+import org.picocontainer.behaviors.PropertyApplyingBehaviorFactory;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
@@ -67,8 +67,8 @@ public final class PicoContainerTask extends Task {
             NanoContainer container = new DefaultNanoContainer(getClass().getClassLoader(), picoContainer);
             for (Object antSpecifiedComponent : antSpecifiedComponents) {
                 Component component = (Component)antSpecifiedComponent;
-                PropertyApplyingAdapter adapter =
-                    (PropertyApplyingAdapter)container.addComponent(component.getKey(),
+                PropertyApplyingBehavior adapter =
+                    (PropertyApplyingBehavior)container.addComponent(component.getKey(),
                                                                          new ClassName(component.getClassname()));
                 adapter.setProperties(component.getProperties());
             }
@@ -84,7 +84,7 @@ public final class PicoContainerTask extends Task {
     public final void execute() {
         ContainerBuilder containerBuilder = new DefaultContainerBuilder(containerComposer) {
             final ComponentFactory propertyFactory =
-                    new PropertyApplyingFactory().forThis(new AnyInjectionFactory());
+                    new PropertyApplyingBehaviorFactory().forThis(new AnyInjectionFactory());
 
             protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
                 return new DefaultPicoContainer(propertyFactory);

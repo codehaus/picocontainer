@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.adapters;
+package org.picocontainer.behaviors;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -25,8 +25,8 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.adapters.PropertyApplyingAdapter;
-import org.picocontainer.adapters.PropertyApplyingFactory;
+import org.picocontainer.behaviors.PropertyApplyingBehavior;
+import org.picocontainer.behaviors.PropertyApplyingBehaviorFactory;
 import org.picocontainer.injectors.AnyInjectionFactory;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.ComponentFactory;
@@ -39,7 +39,7 @@ import org.picocontainer.testmodel.Touchable;
  * @author Mirko Novakovic
  * @version $Revision$
  */
-public class PropertyApplyingFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
 
     public static class Foo {
         public String message;
@@ -152,13 +152,13 @@ public class PropertyApplyingFactoryTestCase extends AbstractComponentAdapterFac
     }
 
     protected ComponentFactory createComponentAdapterFactory() {
-        return new PropertyApplyingFactory().forThis(new AnyInjectionFactory());
+        return new PropertyApplyingBehaviorFactory().forThis(new AnyInjectionFactory());
     }
 
     public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
-        PropertyApplyingFactory factory = (PropertyApplyingFactory) createComponentAdapterFactory();
+        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
 
-        PropertyApplyingAdapter adapter = (PropertyApplyingAdapter) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, "foo", Foo.class, (Parameter[])null);
+        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, "foo", Foo.class, (Parameter[])null);
 
         Map properties = new HashMap();
         properties.put("message", "hello");
@@ -178,18 +178,18 @@ public class PropertyApplyingFactoryTestCase extends AbstractComponentAdapterFac
     }
 
     private ComponentAdapter createAdapterCallingSetMessage(Class impl) {
-        PropertyApplyingFactory factory = (PropertyApplyingFactory) createComponentAdapterFactory();
+        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
 
         Map properties = new HashMap();
         properties.put("message", "hello");
 
-        PropertyApplyingAdapter adapter = (PropertyApplyingAdapter) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, impl, impl, (Parameter[])null);
+        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, impl, impl, (Parameter[])null);
         adapter.setProperties(properties);
         return adapter;
     }
 
     public void testAllJavaPrimitiveAttributesShouldBeSetByTheAdapter() throws MalformedURLException {
-        PropertyApplyingFactory factory = (PropertyApplyingFactory) createComponentAdapterFactory();
+        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
         Map properties = new HashMap();
         properties.put("byte_", "1");
         properties.put("short_", "2");
@@ -203,7 +203,7 @@ public class PropertyApplyingFactoryTestCase extends AbstractComponentAdapterFac
         properties.put("url_", "http://www.picocontainer.org/");
         properties.put("string_", "g string");
         properties.put("class_", "javax.swing.JLabel");
-        PropertyApplyingAdapter adapter = (PropertyApplyingAdapter) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Primitives.class, Primitives.class, (Parameter[])null);
+        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Primitives.class, Primitives.class, (Parameter[])null);
         adapter.setProperties(properties);
         Primitives primitives = (Primitives) adapter.getComponentInstance(null);
 
@@ -224,12 +224,12 @@ public class PropertyApplyingFactoryTestCase extends AbstractComponentAdapterFac
 
     public void testSetDependenComponentWillBeSetByTheAdapter() {
         picoContainer.addComponent("b", B.class);
-        PropertyApplyingFactory factory = (PropertyApplyingFactory) createComponentAdapterFactory();
+        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
         Map properties = new HashMap();
 
         // the second b is the key of the B implementation
         properties.put("b", "b");
-        PropertyApplyingAdapter adapter = (PropertyApplyingAdapter) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, A.class, A.class, (Parameter[])null);
+        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, A.class, A.class, (Parameter[])null);
         adapter.setProperties(properties);
         picoContainer.addAdapter(adapter);
         A a = picoContainer.getComponent(A.class);
@@ -239,13 +239,13 @@ public class PropertyApplyingFactoryTestCase extends AbstractComponentAdapterFac
     }
 
     public void testSetBeanPropertiesWithValueObjects() {
-      PropertyApplyingFactory factory = (PropertyApplyingFactory) createComponentAdapterFactory();
+      PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
 
       Map properties = new HashMap();
       properties.put("lenient", Boolean.FALSE);
       properties.put("2DigitYearStart", new Date(0));
 
-      PropertyApplyingAdapter adapter = (PropertyApplyingAdapter)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
+      PropertyApplyingBehavior adapter = (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
       adapter.setProperties(properties);
       picoContainer.addAdapter(adapter);
 
@@ -271,10 +271,10 @@ public class PropertyApplyingFactoryTestCase extends AbstractComponentAdapterFac
             }
         };
 
-        PropertyApplyingFactory factory = (PropertyApplyingFactory) createComponentAdapterFactory();
+        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
 
 
-        PropertyApplyingAdapter adapter = (PropertyApplyingAdapter)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, "TestBean", testBean.getClass(), (Parameter[])null);
+        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, "TestBean", testBean.getClass(), (Parameter[])null);
 
         Map properties = new HashMap();
         properties.put("multiValues","abcdefg");
@@ -284,7 +284,7 @@ public class PropertyApplyingFactoryTestCase extends AbstractComponentAdapterFac
 
         try {
             Object testResult = picoContainer.getComponent("TestBean");
-            fail("Getting a bad test result through PropertyApplyingAdapter should have thrown exception.  Instead got:" + testResult);
+            fail("Getting a bad test result through PropertyApplyingBehavior should have thrown exception.  Instead got:" + testResult);
         } catch (PicoCompositionException ex) {
             //A-ok
         }
@@ -293,21 +293,21 @@ public class PropertyApplyingFactoryTestCase extends AbstractComponentAdapterFac
 
 
     public void testSetBeanPropertiesWithInvalidValueTypes() {
-        PropertyApplyingFactory factory = (PropertyApplyingFactory) createComponentAdapterFactory();
+        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
 
 
         Map properties = new HashMap();
 
         // Set two digit year to a boolean (should throw error)
         properties.put("2DigitYearStart", Boolean.FALSE);
-        PropertyApplyingAdapter adapter = (PropertyApplyingAdapter)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
+        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
         adapter.setProperties(properties);
         picoContainer.addAdapter(adapter);
 
 
         try {
             SimpleDateFormat dateFormat = picoContainer.getComponent(SimpleDateFormat.class);
-            fail("Getting a bad test result through PropertyApplyingAdapter should have thrown exception.  Instead got:" + dateFormat);
+            fail("Getting a bad test result through PropertyApplyingBehavior should have thrown exception.  Instead got:" + dateFormat);
         } catch (ClassCastException ex) {
             //A-ok
         }

@@ -10,7 +10,7 @@ import org.picocontainer.adapters.PropertyApplyingAdapter;
  * @author $Author: $ (last edit)
  * @version $Revision: $ 
  */
-public class BeanPropertyComponentAdapterTestCase extends TestCase {
+public class PropertyApplyingAdapterTestCase extends TestCase {
     public void testBeanPropertyComponentAdapterCanUsePropertyEditors() {
         Object c = PropertyApplyingAdapter.convert(CoupleBean.class.getName(), "a's name:Camilla;b's name:Charles;", this.getClass().getClassLoader());
         assertNotNull(c);

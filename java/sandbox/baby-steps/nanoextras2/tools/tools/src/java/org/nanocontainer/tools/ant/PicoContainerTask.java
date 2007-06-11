@@ -22,7 +22,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.AnyInjectionFactory;
 import org.picocontainer.adapters.PropertyApplyingAdapter;
-import org.picocontainer.behaviors.BeanPropertyBehaviorFactory;
+import org.picocontainer.adapters.PropertyApplyingFactory;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
@@ -84,7 +84,7 @@ public final class PicoContainerTask extends Task {
     public final void execute() {
         ContainerBuilder containerBuilder = new DefaultContainerBuilder(containerComposer) {
             final ComponentFactory propertyFactory =
-                    new BeanPropertyBehaviorFactory().forThis(new AnyInjectionFactory());
+                    new PropertyApplyingFactory().forThis(new AnyInjectionFactory());
 
             protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
                 return new DefaultPicoContainer(propertyFactory);

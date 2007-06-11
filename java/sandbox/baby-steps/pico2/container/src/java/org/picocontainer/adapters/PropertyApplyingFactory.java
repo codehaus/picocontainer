@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.behaviors;
+package org.picocontainer.adapters;
 
 
 import org.picocontainer.ComponentAdapter;
@@ -16,6 +16,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.adapters.PropertyApplyingAdapter;
 
 /**
@@ -26,7 +27,7 @@ import org.picocontainer.adapters.PropertyApplyingAdapter;
  * @version $Revision$
  * @since 1.0
  */
-public final class BeanPropertyBehaviorFactory extends AbstractBehaviorFactory {
+public final class PropertyApplyingFactory extends AbstractBehaviorFactory {
 
     /**
      * {@inheritDoc}

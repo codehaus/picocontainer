@@ -15,7 +15,7 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.injectors.AnyInjectionFactory;
-import org.picocontainer.BeanPropertyComponentAdapter;
+import org.picocontainer.adapters.PropertyApplyingAdapter;
 import org.picocontainer.ComponentFactory;
 
 import org.w3c.dom.Element;
@@ -25,7 +25,7 @@ import org.w3c.dom.NodeList;
 import java.util.Properties;
 
 /**
- * Implementation of XMLComponentInstanceFactory that uses BeanPropertyComponentAdapter
+ * Implementation of XMLComponentInstanceFactory that uses PropertyApplyingAdapter
  * to create instances from DOM elements.
  *
  * @author Paul Hammant
@@ -41,13 +41,13 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
         Object instance;
 
         if (element.getChildNodes().getLength() == 1) {
-            instance = BeanPropertyComponentAdapter.convert(className, element.getFirstChild().getNodeValue(), classLoader);
+            instance = PropertyApplyingAdapter.convert(className, element.getFirstChild().getNodeValue(), classLoader);
         } else {
-            BeanPropertyComponentAdapter propertyComponentAdapter =
-                    new BeanPropertyComponentAdapter(createComponentAdapter(className, classLoader));
+            PropertyApplyingAdapter propertyAdapter =
+                    new PropertyApplyingAdapter(createComponentAdapter(className, classLoader));
             Properties properties = createProperties(element.getChildNodes());
-            propertyComponentAdapter.setProperties(properties);
-            instance = propertyComponentAdapter.getComponentInstance(pico);
+            propertyAdapter.setProperties(properties);
+            instance = propertyAdapter.getComponentInstance(pico);
         }
         return instance;
     }

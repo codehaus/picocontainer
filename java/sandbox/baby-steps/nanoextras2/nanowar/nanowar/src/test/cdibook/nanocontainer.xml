@@ -9,7 +9,7 @@
             pico = new org.picocontainer.DefaultPicoContainer(parent)
                     if(assemblyScope instanceof javax.servlet.ServletContext) {
                         println("**** Webapp-level pico components registered by Groovy")
-                        pico.registerComponentImplementation(org.nanocontainer.sample.nanowar.service.defaults.DefaultCheeseService)
+                        pico.addComponent(org.nanocontainer.sample.nanowar.service.defaults.DefaultCheeseService)
                     } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
                         println("**** Session-level pico components registered by Groovy")
                     } else if(assemblyScope instanceof javax.servlet.ServletRequest) {

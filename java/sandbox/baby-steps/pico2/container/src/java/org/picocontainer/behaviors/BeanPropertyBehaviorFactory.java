@@ -16,11 +16,11 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.BeanPropertyComponentAdapter;
+import org.picocontainer.adapters.PropertyApplyingAdapter;
 
 /**
  * A {@link org.picocontainer.ComponentFactory} that creates
- * {@link BeanPropertyComponentAdapter} instances.
+ * {@link PropertyApplyingAdapter} instances.
  * 
  * @author Aslak Helles&oslash;y
  * @version $Revision$
@@ -36,7 +36,7 @@ public final class BeanPropertyBehaviorFactory extends AbstractBehaviorFactory {
                                                                                                                                                                                                                                                          PicoCompositionException
     {
         ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
-        return new BeanPropertyComponentAdapter(decoratedAdapter);
+        return new PropertyApplyingAdapter(decoratedAdapter);
     }
 
 }

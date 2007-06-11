@@ -25,12 +25,14 @@ import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
+import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.behaviors.CachingBehavior;
 
 /**
@@ -184,8 +186,8 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
             listener.contextInitialized(new ServletContextEvent(
                     (ServletContext) servletContextMock.proxy()));
             fail("PicoCompositionException expected");
-        } catch (Exception e) {
-            assertNull(e.getMessage());
+        } catch (PicoCompositionException e) {
+            assertTrue(e.getCause() instanceof NanoContainerMarkupException);
         }
     }       
     

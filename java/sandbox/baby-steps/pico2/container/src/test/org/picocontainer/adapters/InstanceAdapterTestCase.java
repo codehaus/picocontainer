@@ -32,8 +32,8 @@ import java.util.Map;
  * @author J&ouml;rg Schaible
  * @since 1.1
  */
-public final class InstanceComponentAdapterTestCase
-        extends AbstractComponentAdapterTestCase {
+public final class InstanceAdapterTestCase
+    extends AbstractComponentAdapterTestCase {
 
     public void testComponentAdapterReturnsSame() {
         final Touchable touchable = new SimpleTouchable();

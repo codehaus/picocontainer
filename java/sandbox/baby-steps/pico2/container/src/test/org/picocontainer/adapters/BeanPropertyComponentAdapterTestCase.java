@@ -2,7 +2,7 @@ package org.picocontainer.adapters;
 
 import junit.framework.TestCase;
 import org.picocontainer.testmodel.CoupleBean;
-import org.picocontainer.BeanPropertyComponentAdapter;
+import org.picocontainer.adapters.PropertyApplyingAdapter;
 
 /**
  *
@@ -12,7 +12,7 @@ import org.picocontainer.BeanPropertyComponentAdapter;
  */
 public class BeanPropertyComponentAdapterTestCase extends TestCase {
     public void testBeanPropertyComponentAdapterCanUsePropertyEditors() {
-        Object c = BeanPropertyComponentAdapter.convert(CoupleBean.class.getName(), "a's name:Camilla;b's name:Charles;", this.getClass().getClassLoader());
+        Object c = PropertyApplyingAdapter.convert(CoupleBean.class.getName(), "a's name:Camilla;b's name:Charles;", this.getClass().getClassLoader());
         assertNotNull(c);
         assertTrue(c instanceof CoupleBean);
         assertEquals("Camilla", ((CoupleBean) c).getPersonA().getName());

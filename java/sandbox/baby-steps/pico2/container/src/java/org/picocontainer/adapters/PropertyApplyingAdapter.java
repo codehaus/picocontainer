@@ -1,4 +1,4 @@
-package org.picocontainer;
+package org.picocontainer.adapters;
 
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
@@ -41,17 +41,17 @@ import org.picocontainer.behaviors.CachingBehavior;
  * @version $Revision$
  * @since 1.0
  */
-public class BeanPropertyComponentAdapter extends AbstractBehavior {
+public class PropertyApplyingAdapter extends AbstractBehavior {
     private Map properties;
     private transient Map<String, Method> setters = null;
 
     /**
-     * Construct a BeanPropertyComponentAdapter.
+     * Construct a PropertyApplyingAdapter.
      *
      * @param delegate the wrapped {@link ComponentAdapter}
      * @throws PicoCompositionException {@inheritDoc}
      */
-    public BeanPropertyComponentAdapter(ComponentAdapter delegate) throws PicoCompositionException {
+    public PropertyApplyingAdapter(ComponentAdapter delegate) throws PicoCompositionException {
         super(delegate);
     }
 
@@ -84,11 +84,11 @@ public class BeanPropertyComponentAdapter extends AbstractBehavior {
                 Object valueToInvoke = this.getSetterParameter(propertyName, propertyValue, componentInstance, container);
 
                 try {
-                    componentMonitor.invoking(container, BeanPropertyComponentAdapter.this, setter, componentInstance);
+                    componentMonitor.invoking(container, PropertyApplyingAdapter.this, setter, componentInstance);
                     long startTime = System.currentTimeMillis();
                     setter.invoke(componentInstance, valueToInvoke);
                     componentMonitor.invoked(container,
-                                             BeanPropertyComponentAdapter.this,
+                                             PropertyApplyingAdapter.this,
                                              setter, componentInstance, System.currentTimeMillis() - startTime);
                 } catch (final Exception e) {
                     componentMonitor.invocationFailed(setter, componentInstance, e);

@@ -21,7 +21,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.AnyInjectionFactory;
-import org.picocontainer.BeanPropertyComponentAdapter;
+import org.picocontainer.adapters.PropertyApplyingAdapter;
 import org.picocontainer.behaviors.BeanPropertyBehaviorFactory;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.DefaultPicoContainer;
@@ -67,8 +67,8 @@ public final class PicoContainerTask extends Task {
             NanoContainer container = new DefaultNanoContainer(getClass().getClassLoader(), picoContainer);
             for (Object antSpecifiedComponent : antSpecifiedComponents) {
                 Component component = (Component)antSpecifiedComponent;
-                BeanPropertyComponentAdapter adapter =
-                    (BeanPropertyComponentAdapter)container.addComponent(component.getKey(),
+                PropertyApplyingAdapter adapter =
+                    (PropertyApplyingAdapter)container.addComponent(component.getKey(),
                                                                          new ClassName(component.getClassname()));
                 adapter.setProperties(component.getProperties());
             }

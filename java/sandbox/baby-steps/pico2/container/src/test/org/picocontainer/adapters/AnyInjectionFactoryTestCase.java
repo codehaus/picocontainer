@@ -23,7 +23,7 @@ import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-public class DefaultComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public class AnyInjectionFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     protected ComponentFactory createComponentAdapterFactory() {
         return new AnyInjectionFactory();
     }

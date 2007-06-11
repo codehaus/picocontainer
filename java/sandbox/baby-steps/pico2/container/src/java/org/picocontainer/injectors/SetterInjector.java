@@ -15,7 +15,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ParameterName;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.BeanPropertyComponentAdapter;
+import org.picocontainer.adapters.PropertyApplyingAdapter;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.injectors.AbstractInjector;
 
@@ -34,7 +34,7 @@ import java.io.Serializable;
 /**
  * Instantiates components using empty constructors and
  * <a href="http://docs.codehaus.org/display/PICO/Setter+Injection">Setter Injection</a>.
- * For easy setting of primitive properties, also see {@link BeanPropertyComponentAdapter}.
+ * For easy setting of primitive properties, also see {@link PropertyApplyingAdapter}.
  * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,

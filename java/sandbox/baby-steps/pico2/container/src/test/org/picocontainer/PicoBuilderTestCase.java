@@ -292,6 +292,20 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
+    public void testWithPropertyApplier() {
+        MutablePicoContainer mpc = new PicoBuilder().withPropertyApplier().build();
+        String foo = simplifyRepresentation(mpc);
+        assertEquals("PICO\n" +
+                     "  componentFactory=org.picocontainer.behaviors.PropertyApplyingBehaviorFactory\n" +
+                     "    delegate=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                     "      cdiDelegate\n" +
+                     "      sdiDelegate\n" +
+                     "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                     "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                     "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                     "PICO",foo);
+    }
+
     public void testWithCustomComponentFactory() {
         MutablePicoContainer mpc = new PicoBuilder().withCustomContainerComponent(new SomeContainerDependency()).withComponentFactory(CustomComponentFactory.class).build();
         String foo = simplifyRepresentation(mpc);

@@ -4,6 +4,7 @@ import org.picocontainer.injectors.ConstructorInjectionFactory;
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implHiding;
 import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
+import org.picocontainer.behaviors.PropertyApplyingBehaviorFactory;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
 import org.picocontainer.DefaultPicoContainer;
@@ -19,6 +20,8 @@ import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.util.Stack;
 import java.util.ArrayList;
+
+import com.sun.tools.doclets.internal.toolkit.builders.AbstractBuilder;
 
 public class PicoBuilder {
 
@@ -197,6 +200,11 @@ public class PicoBuilder {
 
     public PicoBuilder withCustomContainerComponent(Object containerDependency) {
         containerComps.add(containerDependency);
+        return this;
+    }
+
+    public PicoBuilder withPropertyApplier() {
+        cafs.push(PropertyApplyingBehaviorFactory.class);
         return this;
     }
 }

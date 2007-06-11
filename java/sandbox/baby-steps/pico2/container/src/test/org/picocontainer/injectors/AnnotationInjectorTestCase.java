@@ -5,10 +5,12 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.Inject;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.injectors.AnnotationInjector;
 import org.picocontainer.injectors.SetterInjector;
 
-public class AnnotationInjectionAdapterTestCase extends TestCase {
+public class AnnotationInjectorTestCase extends TestCase {
 
     public static class AnnotatedBurp {
 
@@ -35,7 +37,7 @@ public class AnnotationInjectionAdapterTestCase extends TestCase {
     public void testSetterMethodInjectionToContrastWithThatBelow() {
 
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SetterInjector(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT));
+        pico.addAdapter(new SetterInjector(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT, NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance()));
         pico.addComponent(Wind.class, new Wind());
         SetterBurp burp = pico.getComponent(SetterBurp.class);
         assertNotNull(burp);
@@ -44,7 +46,8 @@ public class AnnotationInjectionAdapterTestCase extends TestCase {
 
     public void testNonSetterMethodInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new AnnotationInjector(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT) {
+        pico.addAdapter(new AnnotationInjector(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT,
+                                               NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance()) {
             protected String getInjectorPrefix() {
                 return "init";
             }

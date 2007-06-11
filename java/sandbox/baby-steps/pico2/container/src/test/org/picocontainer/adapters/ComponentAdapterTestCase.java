@@ -15,6 +15,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.injectors.AbstractInjector;
@@ -68,7 +70,7 @@ public class ComponentAdapterTestCase
     
     private static class TestInstantiatingAdapter extends AbstractInjector {
         TestInstantiatingAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
-            super(componentKey, componentImplementation, parameters);
+            super(componentKey, componentImplementation, parameters, NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance());
         }
         protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws
                                                                                           PicoCompositionException,

@@ -10,10 +10,6 @@ import java.io.Serializable;
 
 public class AnnotationInjector extends SetterInjector {
 
-    public AnnotationInjector(Serializable key, Class  impl, Parameter... params) {
-        super(key, impl, params);
-    }
-
     public AnnotationInjector(Object key, Class impl, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
         super(key, impl, parameters, monitor, lifecycleStrategy);
     }

@@ -70,7 +70,7 @@ public class BuildingBlocksTestCase extends TestCase {
                 new SynchronizedBehavior(
                         new CachingBehavior(
                                 new SetterInjector(
-                                        JuicerBean.class, JuicerBean.class, (Parameter[])null))));
+                                        JuicerBean.class, JuicerBean.class, (Parameter[])null, NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance()))));
         // END SNIPPET: register-equivalent-at-length2
     }
 }

@@ -71,21 +71,6 @@ public class SetterInjector extends AbstractInjector {
 
 
     /**
-     * Constructs a SetterInjectionComponentAdapter
-     *
-     * @param componentKey            the search key for this implementation
-     * @param componentImplementation the concrete implementation
-     * @param parameters              the parameters to use for the initialization
-     * @param monitor                 the component monitor used by this addAdapter
-     * @throws NotConcreteRegistrationException
-     *                              if the implementation is not a concrete class.
-     * @throws NullPointerException if one of the parameters is <code>null</code>
-     */
-    public SetterInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor) throws  NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, monitor);
-    }
-
-    /**
      * Constructs a SetterInjectionComponentAdapter with a {@link org.picocontainer.monitors.DelegatingComponentMonitor} as default.
      *
      * @param componentKey            the search key for this implementation

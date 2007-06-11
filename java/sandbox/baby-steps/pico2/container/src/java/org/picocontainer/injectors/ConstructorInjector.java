@@ -50,7 +50,7 @@ import com.thoughtworks.paranamer.asm.AsmParanamer;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public final class ConstructorInjector extends AbstractInjector {
+public class ConstructorInjector extends AbstractInjector {
     private transient List<Constructor> sortedMatchingConstructors;
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     private final transient Paranamer paranamer = new AsmParanamer();

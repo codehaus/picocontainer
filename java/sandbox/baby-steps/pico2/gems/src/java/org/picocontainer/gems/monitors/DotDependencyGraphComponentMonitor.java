@@ -12,6 +12,7 @@ package org.picocontainer.gems.monitors;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 
 import java.lang.reflect.Constructor;
@@ -28,7 +29,7 @@ public final class DotDependencyGraphComponentMonitor extends DelegatingComponen
     public DotDependencyGraphComponentMonitor() {
     }
 
-    public void instantiated(ComponentAdapter componentAdapter,
+    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
                              Constructor constructor,
                              Object instantiated,
                              Object[] injected,
@@ -36,7 +37,7 @@ public final class DotDependencyGraphComponentMonitor extends DelegatingComponen
 
         this.allInstantiated.add(new Instantiation(constructor, instantiated, injected, duration));
 
-        super.instantiated(componentAdapter, constructor, instantiated, injected, duration);
+        super.instantiated(container, componentAdapter, constructor, instantiated, injected, duration);
     }
 
 

@@ -26,23 +26,23 @@ public class ConsoleComponentMonitorTestCase extends TestCase {
     }
 
     public void testShouldTraceInstantiating() {
-        componentMonitor.instantiating(null, constructor);
+        componentMonitor.instantiating(null, null, constructor);
     }
 
     public void testShouldTraceInstantiatedWithInjected() {
-        componentMonitor.instantiated(null, constructor, new Object(), new Object[0], 543);
+        componentMonitor.instantiated(null, null, constructor, new Object(), new Object[0], 543);
     }
 
     public void testShouldTraceInstantiationFailed() {
-        componentMonitor.instantiationFailed(null, constructor, new RuntimeException("doh"));
+        componentMonitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
     }
 
     public void testShouldTraceInvoking() {
-        componentMonitor.invoking(method, this);
+        componentMonitor.invoking(null, null, method, this);
     }
 
     public void testShouldTraceInvoked() {
-        componentMonitor.invoked(method, this, 543);
+        componentMonitor.invoked(null, null, method, this, 543);
     }
 
     public void testShouldTraceInvocatiationFailed() {

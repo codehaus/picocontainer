@@ -2,6 +2,8 @@ package org.picocontainer.defaults.issues;
 
 import org.jmock.MockObjectTestCase;
 import org.jmock.Mock;
+import org.jmock.core.Constraint;
+
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Startable;
 import org.picocontainer.DefaultPicoContainer;
@@ -20,19 +22,19 @@ public class Issue0265TestCase extends MockObjectTestCase {
         pico.addComponent(DefaultPicoContainerTestCase.MyStartable.class);
         mockMonitor1.expects(once()).method("instantiating").will(returnValue(DefaultPicoContainerTestCase.MyStartable.class.getConstructor()));
         mockMonitor1.expects(once()).method("instantiated");
-        mockMonitor1.expects(once()).method("invoking").with(eq(start), ANYTHING);
-        mockMonitor1.expects(once()).method("invoked").with(eq(start), ANYTHING, ANYTHING);
-        mockMonitor1.expects(once()).method("invoking").with(eq(stop), ANYTHING);
-        mockMonitor1.expects(once()).method("invoked").with(eq(stop), ANYTHING, ANYTHING);
+        mockMonitor1.expects(once()).method("invoking").with(NULL, NULL, eq(start), ANYTHING);
+        mockMonitor1.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, eq(start), ANYTHING, ANYTHING});
+        mockMonitor1.expects(once()).method("invoking").with(NULL, NULL, eq(stop), ANYTHING);
+        mockMonitor1.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, eq(stop), ANYTHING, ANYTHING});
         pico.start();
         pico.stop();
         Startable startable = pico.getComponent(DefaultPicoContainerTestCase.MyStartable.class);
         assertNotNull(startable);
         pico.changeMonitor((ComponentMonitor) mockMonitor2.proxy());
-        mockMonitor2.expects(once()).method("invoking").with(eq(start), ANYTHING);
-        mockMonitor2.expects(once()).method("invoked").with(eq(start), ANYTHING, ANYTHING);
-        mockMonitor2.expects(once()).method("invoking").with(eq(stop), ANYTHING);
-        mockMonitor2.expects(once()).method("invoked").with(eq(stop), ANYTHING, ANYTHING);
+        mockMonitor2.expects(once()).method("invoking").with(NULL, NULL, eq(start), ANYTHING);
+        mockMonitor2.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, eq(start), ANYTHING, ANYTHING});
+        mockMonitor2.expects(once()).method("invoking").with(NULL, NULL, eq(stop), ANYTHING);
+        mockMonitor2.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, eq(stop), ANYTHING, ANYTHING});
         pico.start();
         pico.stop();
     }

@@ -61,13 +61,13 @@ public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
         Mock mock = mock(Disposable.class);
         Object disposable = mock.proxy();
         mock.expects(once()).method("dispose");
-        componentMonitorMock.expects(once()).method("invoking").with(method("dispose"), same(mock.proxy()));
-        componentMonitorMock.expects(once()).method("invoked").with(method("dispose"), same(mock.proxy()), ANYTHING);
+        componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("dispose"), same(mock.proxy()));
+        componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("dispose"), same(mock.proxy()), ANYTHING});
         strategy.dispose(disposable);
         strategy.changeMonitor((ComponentMonitor)componentMonitorMock2.proxy());
         mock.expects(once()).method("dispose");
-        componentMonitorMock2.expects(once()).method("invoking").with(method("dispose"), same(mock.proxy()));
-        componentMonitorMock2.expects(once()).method("invoked").with(method("dispose"), same(mock.proxy()), ANYTHING);
+        componentMonitorMock2.expects(once()).method("invoking").with(NULL, NULL, method("dispose"), same(mock.proxy()));
+        componentMonitorMock2.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("dispose"), same(mock.proxy()), ANYTHING});
         strategy.dispose(disposable);
     }
     
@@ -82,12 +82,12 @@ public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
         anotherStartableMock.expects(once()).method("start");
         anotherStartableMock.expects(once()).method("stop");
         anotherStartableMock.expects(once()).method("dispose");
-        componentMonitorMock.expects(once()).method("invoking").with(method("start"), same(anotherStartableMock.proxy()));
-        componentMonitorMock.expects(once()).method("invoked").with(method("start"), same(anotherStartableMock.proxy()), ANYTHING);
-        componentMonitorMock.expects(once()).method("invoking").with(method("stop"), same(anotherStartableMock.proxy()));
-        componentMonitorMock.expects(once()).method("invoked").with(method("stop"), same(anotherStartableMock.proxy()), ANYTHING);
-        componentMonitorMock.expects(once()).method("invoking").with(method("dispose"), same(anotherStartableMock.proxy()));
-        componentMonitorMock.expects(once()).method("invoked").with(method("dispose"), same(anotherStartableMock.proxy()), ANYTHING);
+        componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("start"), same(anotherStartableMock.proxy()));
+        componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("start"), same(anotherStartableMock.proxy()), ANYTHING});
+        componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("stop"), same(anotherStartableMock.proxy()));
+        componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("stop"), same(anotherStartableMock.proxy()), ANYTHING});
+        componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("dispose"), same(anotherStartableMock.proxy()));
+        componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("dispose"), same(anotherStartableMock.proxy()), ANYTHING});
 
         Object startable = mockComponent(true, false);
         strategy.start(startable);
@@ -105,16 +105,16 @@ public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
             mock = mock(Startable.class);
             mock.expects(atLeastOnce()).method("start");
             mock.expects(atLeastOnce()).method("stop");
-            componentMonitorMock.expects(once()).method("invoking").with(method("start"), same(mock.proxy()));
-            componentMonitorMock.expects(once()).method("invoked").with(method("start"), same(mock.proxy()), ANYTHING);
-            componentMonitorMock.expects(once()).method("invoking").with(method("stop"), same(mock.proxy()));
-            componentMonitorMock.expects(once()).method("invoked").with(method("stop"), same(mock.proxy()), ANYTHING);
+            componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("start"), same(mock.proxy()));
+            componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("start"), same(mock.proxy()), ANYTHING});
+            componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("stop"), same(mock.proxy()));
+            componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("stop"), same(mock.proxy()), ANYTHING});
         }
         if ( disposable ) {
             mock = mock(Disposable.class);
             mock.expects(atLeastOnce()).method("dispose");
-            componentMonitorMock.expects(once()).method("invoking").with(method("dispose"), same(mock.proxy()));
-            componentMonitorMock.expects(once()).method("invoked").with(method("dispose"), same(mock.proxy()), ANYTHING);
+            componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("dispose"), same(mock.proxy()));
+            componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("dispose"), same(mock.proxy()), ANYTHING});
         }
         return mock.proxy();
     }

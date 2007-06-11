@@ -69,10 +69,12 @@ public class ImplementationHidingBehavior extends AbstractBehavior {
                         Object componentInstance = getDelegate().getComponentInstance(container);
                         ComponentMonitor componentMonitor = currentMonitor();
                         try {
-                            componentMonitor.invoking(method, componentInstance);
+                            componentMonitor.invoking(container, ImplementationHidingBehavior.this, method, componentInstance);
                             long startTime = System.currentTimeMillis();
                             Object object = method.invoke(componentInstance, args);
-                            componentMonitor.invoked(method, componentInstance, System.currentTimeMillis() - startTime);
+                            componentMonitor.invoked(container,
+                                                     ImplementationHidingBehavior.this,
+                                                     method, componentInstance, System.currentTimeMillis() - startTime);
                             return object;
                         } catch (final InvocationTargetException ite) {
                             componentMonitor.invocationFailed(method, componentInstance, ite);

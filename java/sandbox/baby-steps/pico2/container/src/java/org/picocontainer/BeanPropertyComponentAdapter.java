@@ -84,10 +84,12 @@ public class BeanPropertyComponentAdapter extends AbstractBehavior {
                 Object valueToInvoke = this.getSetterParameter(propertyName, propertyValue, componentInstance, container);
 
                 try {
-                    componentMonitor.invoking(setter, componentInstance);
+                    componentMonitor.invoking(container, BeanPropertyComponentAdapter.this, setter, componentInstance);
                     long startTime = System.currentTimeMillis();
                     setter.invoke(componentInstance, valueToInvoke);
-                    componentMonitor.invoked(setter, componentInstance, System.currentTimeMillis() - startTime);
+                    componentMonitor.invoked(container,
+                                             BeanPropertyComponentAdapter.this,
+                                             setter, componentInstance, System.currentTimeMillis() - startTime);
                 } catch (final Exception e) {
                     componentMonitor.invocationFailed(setter, componentInstance, e);
                     throw new PicoCompositionException("Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage(), e);

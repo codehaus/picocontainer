@@ -10,6 +10,8 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoLifecycleException;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 
 /**
  * A {@link ComponentMonitor} which collects lifecycle failures
@@ -31,47 +33,60 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
         delegate = new NullComponentMonitor();
     }
 
-    public Constructor instantiating(ComponentAdapter componentAdapter,
+    public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
                                      Constructor constructor
     ) {
-        return delegate.instantiating(componentAdapter, constructor);
+        return delegate.instantiating(container, componentAdapter, constructor);
     }
 
-    public void instantiated(ComponentAdapter componentAdapter,
+    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
                              Constructor constructor,
                              Object instantiated,
                              Object[] parameters,
                              long duration) {
-        delegate.instantiated(componentAdapter, constructor, instantiated, parameters, duration);
+        delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
 
-    public void instantiationFailed(ComponentAdapter componentAdapter, Constructor constructor, Exception cause) {
-        delegate.instantiationFailed(componentAdapter, constructor, cause);
+    public void instantiationFailed(PicoContainer container,
+                                    ComponentAdapter componentAdapter,
+                                    Constructor constructor,
+                                    Exception cause) {
+        delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
 
-    public void invoking(Method method, Object instance) {
-        delegate.invoking(method, instance);
+    public void invoking(PicoContainer container,
+                         ComponentAdapter componentAdapter,
+                         Method method,
+                         Object instance) {
+        delegate.invoking(container, componentAdapter, method, instance);
     }
 
-    public void invoked(Method method, Object instance, long duration) {
-        delegate.invoked(method, instance, duration);
+    public void invoked(PicoContainer container,
+                        ComponentAdapter componentAdapter,
+                        Method method,
+                        Object instance,
+                        long duration) {
+        delegate.invoked(container, componentAdapter, method, instance, duration);
     }
 
     public void invocationFailed(Method method, Object instance, Exception cause) {
         delegate.invocationFailed(method, instance, cause);
     }
 
-    public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
+    public void lifecycleInvocationFailed(MutablePicoContainer container,
+                                          ComponentAdapter componentAdapter, Method method,
+                                          Object instance,
+                                          RuntimeException cause) {
         lifecycleFailures.add(cause);
         try {
-            delegate.lifecycleInvocationFailed(method, instance, cause);
+            delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
         } catch (PicoLifecycleException e) {
             // do nothing, exception already logged for later rethrow.
         }
     }
 
-    public void noComponent(Object componentKey) {
-        delegate.noComponent(componentKey);
+    public void noComponent(MutablePicoContainer container, Object componentKey) {
+        delegate.noComponent(container, componentKey);
     }
 
 

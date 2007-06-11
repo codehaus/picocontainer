@@ -42,12 +42,12 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
     public void start(Object component) {
         if (component != null && component instanceof Startable) {
             long str = System.currentTimeMillis();
-            currentMonitor().invoking(start, component);
+            currentMonitor().invoking(null, null, start, component);
             try {
                 ((Startable) component).start();
-                currentMonitor().invoked(start, component, System.currentTimeMillis() - str);
+                currentMonitor().invoked(null, null, start, component, System.currentTimeMillis() - str);
             } catch (RuntimeException cause) {
-                currentMonitor().lifecycleInvocationFailed(start, component, cause); // may re-throw
+                currentMonitor().lifecycleInvocationFailed(null, null, start, component, cause); // may re-throw
             }
         }
     }
@@ -55,12 +55,12 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
     public void stop(Object component) {
         if (component != null && component instanceof Startable) {
             long str = System.currentTimeMillis();
-            currentMonitor().invoking(stop, component);
+            currentMonitor().invoking(null, null, stop, component);
             try {
                 ((Startable) component).stop();
-                currentMonitor().invoked(stop, component, System.currentTimeMillis() - str);
+                currentMonitor().invoked(null, null, stop, component, System.currentTimeMillis() - str);
             } catch (RuntimeException cause) {
-                currentMonitor().lifecycleInvocationFailed(stop, component, cause); // may re-throw
+                currentMonitor().lifecycleInvocationFailed(null, null, stop, component, cause); // may re-throw
             }
         }
     }
@@ -68,12 +68,12 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
     public void dispose(Object component) {
         if (component != null && component instanceof Disposable) {
             long str = System.currentTimeMillis();
-            currentMonitor().invoking(dispose, component);
+            currentMonitor().invoking(null, null, dispose, component);
             try {
                 ((Disposable) component).dispose();
-                currentMonitor().invoked(dispose, component, System.currentTimeMillis() - str);
+                currentMonitor().invoked(null, null, dispose, component, System.currentTimeMillis() - str);
             } catch (RuntimeException cause) {
-                currentMonitor().lifecycleInvocationFailed(dispose, component, cause); // may re-throw
+                currentMonitor().lifecycleInvocationFailed(null, null, dispose, component, cause); // may re-throw
             }
         }
     }

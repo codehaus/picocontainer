@@ -24,6 +24,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
@@ -275,7 +276,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
     public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
         Mock monitor = mock(ComponentMonitor.class);
         Constructor emptyHashMapCtor = HashMap.class.getConstructor();
-        monitor.expects(once()).method("instantiating").with(isA(ConstructorInjector.class),eq(emptyHashMapCtor)).will(returnValue(emptyHashMapCtor));
+        monitor.expects(once()).method("instantiating").with(NULL, isA(ConstructorInjector.class),eq(emptyHashMapCtor)).will(returnValue(emptyHashMapCtor));
         Constraint durationIsGreaterThanOrEqualToZero = new Constraint() {
             public boolean eval(Object o) {
                 Long duration = (Long)o;
@@ -307,7 +308,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
             }
         };
 
-        monitor.expects(once()).method("instantiated").with(new Constraint[] {isA(ComponentAdapter.class), eq(emptyHashMapCtor), isAHashMapThatWozCreated, injectedIsEmptyArray, durationIsGreaterThanOrEqualToZero});
+        monitor.expects(once()).method("instantiated").with(new Constraint[] {NULL, isA(ComponentAdapter.class), eq(emptyHashMapCtor), isAHashMapThatWozCreated, injectedIsEmptyArray, durationIsGreaterThanOrEqualToZero});
         ConstructorInjector cica = new ConstructorInjector(
                 Map.class, HashMap.class, new Parameter[0], (ComponentMonitor)monitor.proxy());
         cica.getComponentInstance(null);
@@ -316,7 +317,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
     public void testMonitoringHappensBeforeAndOnFailOfImpossibleComponentsInstantiation() throws NoSuchMethodException {
         Mock monitor = mock(ComponentMonitor.class);
         Constructor barfingActionListenerCtor = BarfingActionListener.class.getConstructor();
-        monitor.expects(once()).method("instantiating").with(new Constraint[] {isA(ComponentAdapter.class), eq(barfingActionListenerCtor)}).will(returnValue(barfingActionListenerCtor));
+        monitor.expects(once()).method("instantiating").with(new Constraint[] {NULL,isA(ComponentAdapter.class), eq(barfingActionListenerCtor)}).will(returnValue(barfingActionListenerCtor));
 
         Constraint isITE = new Constraint() {
             public boolean eval(Object o) {
@@ -329,7 +330,7 @@ public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapte
             }
         };
 
-        monitor.expects(once()).method("instantiationFailed").with(isA(ComponentAdapter.class), eq(barfingActionListenerCtor), isITE);
+        monitor.expects(once()).method("instantiationFailed").with(NULL,isA(ComponentAdapter.class), eq(barfingActionListenerCtor), isITE);
         ConstructorInjector cica = new ConstructorInjector(
                 ActionListener.class, BarfingActionListener.class, new Parameter[0], (ComponentMonitor)monitor.proxy());
         try {

@@ -17,6 +17,8 @@ import java.lang.reflect.Method;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
@@ -55,42 +57,55 @@ public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMo
         this(NullComponentMonitor.getInstance());
     }
     
-    public Constructor instantiating(ComponentAdapter componentAdapter,
+    public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
                                      Constructor constructor
     ) {
-        return delegate.instantiating(componentAdapter, constructor);
+        return delegate.instantiating(container, componentAdapter, constructor);
     }
 
-    public void instantiated(ComponentAdapter componentAdapter,
+    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
                              Constructor constructor,
                              Object instantiated,
                              Object[] injected,
                              long duration) {
-        delegate.instantiated(componentAdapter, constructor, instantiated, injected, duration);
+        delegate.instantiated(container, componentAdapter, constructor, instantiated, injected, duration);
     }
 
-    public void instantiationFailed(ComponentAdapter componentAdapter, Constructor constructor, Exception e) {
-        delegate.instantiationFailed(componentAdapter, constructor, e);
+    public void instantiationFailed(PicoContainer container,
+                                    ComponentAdapter componentAdapter,
+                                    Constructor constructor,
+                                    Exception e) {
+        delegate.instantiationFailed(container, componentAdapter, constructor, e);
     }
 
-    public void invoking(Method method, Object instance) {
-        delegate.invoking(method, instance);
+    public void invoking(PicoContainer container,
+                         ComponentAdapter componentAdapter,
+                         Method method,
+                         Object instance) {
+        delegate.invoking(container, componentAdapter, method, instance);
     }
 
-    public void invoked(Method method, Object instance, long duration) {
-        delegate.invoked(method, instance, duration);
+    public void invoked(PicoContainer container,
+                        ComponentAdapter componentAdapter,
+                        Method method,
+                        Object instance,
+                        long duration) {
+        delegate.invoked(container, componentAdapter, method, instance, duration);
     }
 
     public void invocationFailed(Method method, Object instance, Exception e) {
         delegate.invocationFailed(method, instance, e);
     }
 
-    public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
-        delegate.lifecycleInvocationFailed(method,instance, cause);
+    public void lifecycleInvocationFailed(MutablePicoContainer container,
+                                          ComponentAdapter componentAdapter, Method method,
+                                          Object instance,
+                                          RuntimeException cause) {
+        delegate.lifecycleInvocationFailed(container, componentAdapter, method,instance, cause);
     }
 
-    public void noComponent(Object componentKey) {
-        delegate.noComponent(componentKey); 
+    public void noComponent(MutablePicoContainer container, Object componentKey) {
+        delegate.noComponent(container, componentKey);
     }
 
     /**

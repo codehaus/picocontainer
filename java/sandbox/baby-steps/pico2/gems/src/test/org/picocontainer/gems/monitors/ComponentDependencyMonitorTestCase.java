@@ -23,7 +23,7 @@ public class ComponentDependencyMonitorTestCase extends TestCase implements Comp
     public void testShouldDependOnList() throws Exception {
         List list = new ArrayList();
         DependsOnList dol = new DependsOnList(list);
-        monitor.instantiated(null, DependsOnList.class.getConstructors()[0], dol, new Object[] { list }, 10);
+        monitor.instantiated(null, null, DependsOnList.class.getConstructors()[0], dol, new Object[] { list }, 10);
         assertEquals(new Dependency(DependsOnList.class, ArrayList.class), dependency);
     }
 

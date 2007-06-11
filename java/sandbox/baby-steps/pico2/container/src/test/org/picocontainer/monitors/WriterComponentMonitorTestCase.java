@@ -29,14 +29,14 @@ public class WriterComponentMonitorTestCase extends TestCase {
     }
 
     public void testShouldTraceInstantiating() {
-        componentMonitor.instantiating(null, constructor);
+        componentMonitor.instantiating(null, null, constructor);
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATING, AbstractComponentMonitor.toString(constructor)) +NL,  out.toString());
     }
 
     public void testShouldTraceInstantiatedWithInjected() {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
-        componentMonitor.instantiated(null, constructor, instantiated, injected, 543);
+        componentMonitor.instantiated(null, null, constructor, instantiated, injected, 543);
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATED2,
                                                    AbstractComponentMonitor.toString(constructor),
                                                    (long)543,
@@ -45,19 +45,19 @@ public class WriterComponentMonitorTestCase extends TestCase {
 
 
     public void testShouldTraceInstantiationFailed() {
-        componentMonitor.instantiationFailed(null, constructor, new RuntimeException("doh"));
+        componentMonitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INSTANTIATION_FAILED,
                                                    AbstractComponentMonitor.toString(constructor), "doh") +NL,  out.toString());
     }
 
     public void testShouldTraceInvoking() {
-        componentMonitor.invoking(method, this);
+        componentMonitor.invoking(null, null, method, this);
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOKING,
                                                    AbstractComponentMonitor.toString(method), this) +NL,  out.toString());
     }
 
     public void testShouldTraceInvoked() {
-        componentMonitor.invoked(method, this, 543);
+        componentMonitor.invoked(null, null, method, this, 543);
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOKED,
                                                    AbstractComponentMonitor.toString(method), this,
                                                    (long)543) +NL,  out.toString());

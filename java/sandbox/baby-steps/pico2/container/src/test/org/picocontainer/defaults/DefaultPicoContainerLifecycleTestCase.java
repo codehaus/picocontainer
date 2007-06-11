@@ -13,6 +13,8 @@ package org.picocontainer.defaults;
 import junit.framework.Assert;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
+
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoLifecycleException;
@@ -391,16 +393,16 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         Mock cm = mock(ComponentMonitor.class);
 
         // s1 expectations
-        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("start", (Class[])null)), same(s1.proxy()));
-        cm.expects(once()).method("lifecycleInvocationFailed").with(isA(Method.class),same(s1.proxy()), isA(RuntimeException.class) );
-        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("stop", (Class[])null)), same(s1.proxy()));
-        cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("stop", (Class[])null)), same(s1.proxy()), ANYTHING);
+        cm.expects(once()).method("invoking").with(NULL, NULL, eq(Startable.class.getMethod("start", (Class[])null)), same(s1.proxy()));
+        cm.expects(once()).method("lifecycleInvocationFailed").with(new Constraint[] {NULL, NULL, isA(Method.class),same(s1.proxy()), isA(RuntimeException.class)} );
+        cm.expects(once()).method("invoking").with(NULL, NULL, eq(Startable.class.getMethod("stop", (Class[])null)), same(s1.proxy()));
+        cm.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, eq(Startable.class.getMethod("stop", (Class[])null)), same(s1.proxy()), ANYTHING});
 
         // s2 expectations
-        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("start", (Class[])null)), same(s2.proxy()));
-        cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("start", (Class[])null)), same(s2.proxy()), ANYTHING);
-        cm.expects(once()).method("invoking").with(eq(Startable.class.getMethod("stop", (Class[])null)), same(s2.proxy()));
-        cm.expects(once()).method("invoked").with(eq(Startable.class.getMethod("stop", (Class[])null)), same(s2.proxy()), ANYTHING);
+        cm.expects(once()).method("invoking").with(NULL, NULL, eq(Startable.class.getMethod("start", (Class[])null)), same(s2.proxy()));
+        cm.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, eq(Startable.class.getMethod("start", (Class[])null)), same(s2.proxy()), ANYTHING});
+        cm.expects(once()).method("invoking").with(NULL, NULL, eq(Startable.class.getMethod("stop", (Class[])null)), same(s2.proxy()));
+        cm.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, eq(Startable.class.getMethod("stop", (Class[])null)), same(s2.proxy()), ANYTHING});
 
         DefaultPicoContainer dpc = new DefaultPicoContainer((ComponentMonitor) cm.proxy());
         dpc.addComponent("foo", s1.proxy());

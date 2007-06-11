@@ -28,12 +28,12 @@ public interface ComponentMonitor {
 
     /**
      * Event thrown as the component is being instantiated using the given constructor
-     * 
+     *
+     * @param container
      * @param componentAdapter
-     * @param constructor the Constructor used to instantiate the addComponent
-     * @return the constructor to use in instantiation (nearly always the same one as passed in)
+     * @param constructor the Constructor used to instantiate the addComponent @return the constructor to use in instantiation (nearly always the same one as passed in)
      */
-    Constructor instantiating(ComponentAdapter componentAdapter,
+    Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
                               Constructor constructor
     );
 
@@ -41,14 +41,15 @@ public interface ComponentMonitor {
      * Event thrown after the component has been instantiated using the given constructor.
      * This should be called for both Constructor and Setter DI.
      *
+     * @param container
      * @param componentAdapter
-     *@param constructor the Constructor used to instantiate the addComponent
+     * @param constructor the Constructor used to instantiate the addComponent
      * @param instantiated the component that was instantiated by PicoContainer
      * @param injected the components during instantiation.
      * @param duration the duration in millis of the instantiation @since 1.3
      */
 
-    void instantiated(ComponentAdapter componentAdapter,
+    void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
                       Constructor constructor,
                       Object instantiated,
                       Object[] injected,
@@ -57,28 +58,40 @@ public interface ComponentMonitor {
     /**
      * Event thrown if the component instantiation failed using the given constructor
      * 
+     * @param container
      * @param componentAdapter
      * @param constructor the Constructor used to instantiate the addComponent
      * @param cause the Exception detailing the cause of the failure
      */
-    void instantiationFailed(ComponentAdapter componentAdapter, Constructor constructor, Exception cause);
+    void instantiationFailed(PicoContainer container,
+                             ComponentAdapter componentAdapter,
+                             Constructor constructor,
+                             Exception cause);
 
     /**
      * Event thrown as the component method is being invoked on the given instance
      * 
+     * @param container
+     * @param componentAdapter
      * @param method the Method invoked on the component instance
      * @param instance the component instance
      */
-    void invoking(Method method, Object instance);
+    void invoking(PicoContainer container, ComponentAdapter componentAdapter, Method method, Object instance);
 
     /**
      * Event thrown after the component method has been invoked on the given instance
      * 
+     * @param container
+     * @param componentAdapter
      * @param method the Method invoked on the component instance
      * @param instance the component instance
      * @param duration the duration in millis of the invocation
      */
-    void invoked(Method method, Object instance, long duration);
+    void invoked(PicoContainer container,
+                 ComponentAdapter componentAdapter,
+                 Method method,
+                 Object instance,
+                 long duration);
 
     /**
      * Event thrown if the component method invocation failed on the given instance
@@ -93,12 +106,22 @@ public interface ComponentMonitor {
      * Event thrown if a lifecycle method invocation - start, stop or dispose - 
      * failed on the given instance
      *
+     * @param container
+     * @param componentAdapter
      * @param method the lifecycle Method invoked on the component instance
      * @param instance the component instance
      * @param cause the RuntimeException detailing the cause of the failure
      */
-    void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause);
+    void lifecycleInvocationFailed(MutablePicoContainer container,
+                                   ComponentAdapter componentAdapter, Method method,
+                                   Object instance,
+                                   RuntimeException cause);
 
 
-    void noComponent(Object componentKey);
+    /**
+     * 
+     * @param container
+     * @param componentKey
+     */
+    void noComponent(MutablePicoContainer container, Object componentKey);
 }

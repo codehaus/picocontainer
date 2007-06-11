@@ -183,7 +183,7 @@ public final class ConstructorInjector extends AbstractInjector {
 
 
 
-    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException,
+    public Object getComponentInstance(final PicoContainer container) throws
                                                                        PicoCompositionException, NotConcreteRegistrationException {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
@@ -198,14 +198,15 @@ public final class ConstructorInjector extends AbstractInjector {
                     ComponentMonitor componentMonitor = currentMonitor();
                     try {
                         Object[] parameters = getConstructorArguments(guardedContainer, constructor);
-                        constructor = componentMonitor.instantiating(ConstructorInjector.this, constructor);
+                        constructor = componentMonitor.instantiating(container, ConstructorInjector.this, constructor);
                         long startTime = System.currentTimeMillis();
                         Object inst = newInstance(constructor, parameters);
-                        componentMonitor.instantiated(ConstructorInjector.this,
+                        componentMonitor.instantiated(container,
+                                                      ConstructorInjector.this,
                                                       constructor, inst, parameters, System.currentTimeMillis() - startTime);
                         return inst;
                     } catch (InvocationTargetException e) {
-                        componentMonitor.instantiationFailed(ConstructorInjector.this, constructor, e);
+                        componentMonitor.instantiationFailed(container, ConstructorInjector.this, constructor, e);
                         if (e.getTargetException() instanceof RuntimeException) {
                             throw (RuntimeException) e.getTargetException();
                         } else if (e.getTargetException() instanceof Error) {
@@ -215,13 +216,13 @@ public final class ConstructorInjector extends AbstractInjector {
                     } catch (InstantiationException e) {
                         // can't get here because checkConcrete() will catch it earlier, but see PICO-191
                         ///CLOVER:OFF
-                        componentMonitor.instantiationFailed(ConstructorInjector.this, constructor, e);
+                        componentMonitor.instantiationFailed(container, ConstructorInjector.this, constructor, e);
                         throw new PicoCompositionException("Should never get here");
                         ///CLOVER:ON
                     } catch (IllegalAccessException e) {
                         // can't get here because either filtered or access mode set
                         ///CLOVER:OFF
-                        componentMonitor.instantiationFailed(ConstructorInjector.this, constructor, e);
+                        componentMonitor.instantiationFailed(container, ConstructorInjector.this, constructor, e);
                         throw new PicoCompositionException(e);
                         ///CLOVER:ON
                     }

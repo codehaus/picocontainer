@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.gems.monitors.prefuse.ComponentDependencyListener;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
 
 /**
  * Understands how to capture component dependency information from
@@ -21,7 +22,7 @@ public final class ComponentDependencyMonitor extends DelegatingComponentMonitor
         this.listener = listener;
     }
 
-    public void instantiated(ComponentAdapter componentAdapter,
+    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
                              Constructor constructor,
                              Object instantiated,
                              Object[] injected,

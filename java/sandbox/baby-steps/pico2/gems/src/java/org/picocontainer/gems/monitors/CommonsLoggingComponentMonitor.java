@@ -19,6 +19,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -110,17 +112,17 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     }
 
 
-    public Constructor instantiating(ComponentAdapter componentAdapter,
+    public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
                                      Constructor constructor
     ) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
             log.debug(format(INSTANTIATING, toString(constructor)));
         }
-        return delegate.instantiating(componentAdapter, constructor);
+        return delegate.instantiating(container, componentAdapter, constructor);
     }
 
-    public void instantiated(ComponentAdapter componentAdapter,
+    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
                              Constructor constructor,
                              Object instantiated,
                              Object[] parameters,
@@ -129,31 +131,41 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
         if (log.isDebugEnabled()) {
             log.debug(format(INSTANTIATED2, toString(constructor), duration, instantiated.getClass().getName(), toString(parameters)));
         }
-        delegate.instantiated(componentAdapter, constructor, instantiated, parameters, duration);
+        delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
 
-    public void instantiationFailed(ComponentAdapter componentAdapter, Constructor constructor, Exception cause) {
+    public void instantiationFailed(PicoContainer container,
+                                    ComponentAdapter componentAdapter,
+                                    Constructor constructor,
+                                    Exception cause) {
         Log log = getLog(constructor);
         if (log.isWarnEnabled()) {
             log.warn(format(INSTANTIATION_FAILED, toString(constructor), cause.getMessage()), cause);
         }
-        delegate.instantiationFailed(componentAdapter, constructor, cause);
+        delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
 
-    public void invoking(Method method, Object instance) {
+    public void invoking(PicoContainer container,
+                         ComponentAdapter componentAdapter,
+                         Method method,
+                         Object instance) {
         Log log = getLog(method);
         if (log.isDebugEnabled()) {
             log.debug(format(INVOKING, toString(method), instance));
         }
-        delegate.invoking(method, instance);
+        delegate.invoking(container, componentAdapter, method, instance);
     }
 
-    public void invoked(Method method, Object instance, long duration) {
+    public void invoked(PicoContainer container,
+                        ComponentAdapter componentAdapter,
+                        Method method,
+                        Object instance,
+                        long duration) {
         Log log = getLog(method);
         if (log.isDebugEnabled()) {
             log.debug(format(INVOKED, toString(method), instance, duration));
         }
-        delegate.invoked(method, instance,  duration);
+        delegate.invoked(container, componentAdapter, method, instance,  duration);
     }
 
     public void invocationFailed(Method method, Object instance, Exception cause) {
@@ -164,20 +176,23 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
         delegate.invocationFailed(method, instance, cause);
     }
 
-    public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
+    public void lifecycleInvocationFailed(MutablePicoContainer container,
+                                          ComponentAdapter componentAdapter, Method method,
+                                          Object instance,
+                                          RuntimeException cause) {
         Log log = getLog(method);
         if (log.isWarnEnabled()) {
             log.warn(format(LIFECYCLE_INVOCATION_FAILED, toString(method), instance, cause.getMessage()), cause);
         }
-        delegate.lifecycleInvocationFailed(method, instance, cause);
+        delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 
-    public void noComponent(Object componentKey) {
+    public void noComponent(MutablePicoContainer container, Object componentKey) {
         Log log = this.log != null ? this.log : LogFactory.getLog(ComponentMonitor.class);
         if (log.isWarnEnabled()) {
             log.warn(format(NO_COMPONENT, componentKey));
         }
-        delegate.noComponent(componentKey);
+        delegate.noComponent(container, componentKey);
     }
 
     protected Log getLog(Member member) {

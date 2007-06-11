@@ -17,6 +17,8 @@ import java.lang.reflect.Method;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 
 /**
  * A {@link ComponentMonitor} which writes to a {@link Writer}. 
@@ -41,34 +43,44 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
         this.delegate = delegate;
     }
 
-    public Constructor instantiating(ComponentAdapter componentAdapter,
+    public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
                                      Constructor constructor) {
         out.println(format(INSTANTIATING, toString(constructor)));
-        return delegate.instantiating(componentAdapter, constructor);
+        return delegate.instantiating(container, componentAdapter, constructor);
     }
 
-    public void instantiated(ComponentAdapter componentAdapter,
+    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
                              Constructor constructor,
                              Object instantiated,
                              Object[] injected,
                              long duration) {
         out.println(format(INSTANTIATED2, toString(constructor), duration, instantiated.getClass().getName(), toString(injected)));
-        delegate.instantiated(componentAdapter, constructor, instantiated, injected, duration);
+        delegate.instantiated(container, componentAdapter, constructor, instantiated, injected, duration);
     }
 
-    public void instantiationFailed(ComponentAdapter componentAdapter, Constructor constructor, Exception cause) {
+    public void instantiationFailed(PicoContainer container,
+                                    ComponentAdapter componentAdapter,
+                                    Constructor constructor,
+                                    Exception cause) {
         out.println(format(INSTANTIATION_FAILED, toString(constructor), cause.getMessage()));
-        delegate.instantiationFailed(null, constructor, cause);
+        delegate.instantiationFailed(container, null, constructor, cause);
     }
 
-    public void invoking(Method method, Object instance) {
+    public void invoking(PicoContainer container,
+                         ComponentAdapter componentAdapter,
+                         Method method,
+                         Object instance) {
         out.println(format(INVOKING, toString(method), instance));
-        delegate.invoking(method, instance);
+        delegate.invoking(container, componentAdapter, method, instance);
     }
 
-    public void invoked(Method method, Object instance, long duration) {
+    public void invoked(PicoContainer container,
+                        ComponentAdapter componentAdapter,
+                        Method method,
+                        Object instance,
+                        long duration) {
         out.println(format(INVOKED, toString(method), instance, duration));
-        delegate.invoked(method, instance, duration);
+        delegate.invoked(container, componentAdapter, method, instance, duration);
     }
 
     public void invocationFailed(Method method, Object instance, Exception cause) {
@@ -76,13 +88,16 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
         delegate.invocationFailed(method, instance, cause);
     }
 
-    public void lifecycleInvocationFailed(Method method, Object instance, RuntimeException cause) {
+    public void lifecycleInvocationFailed(MutablePicoContainer container,
+                                          ComponentAdapter componentAdapter, Method method,
+                                          Object instance,
+                                          RuntimeException cause) {
         out.println(format(LIFECYCLE_INVOCATION_FAILED, toString(method), instance, cause.getMessage()));
-        delegate.lifecycleInvocationFailed(method, instance, cause);
+        delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 
-    public void noComponent(Object componentKey) {
+    public void noComponent(MutablePicoContainer container, Object componentKey) {
         out.println(format(NO_COMPONENT, componentKey));
-        delegate.noComponent(componentKey);
+        delegate.noComponent(container, componentKey);
     }
 }

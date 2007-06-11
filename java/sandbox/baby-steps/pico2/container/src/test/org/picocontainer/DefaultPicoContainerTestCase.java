@@ -214,7 +214,10 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     public void testStartCapturedByMonitor() {
         final StringBuffer sb = new StringBuffer();
         DefaultPicoContainer dpc = new DefaultPicoContainer(new NullComponentMonitor() {
-            public void invoking(Method method, Object instance) {
+            public void invoking(PicoContainer container,
+                                 ComponentAdapter componentAdapter,
+                                 Method method,
+                                 Object instance) {
                 sb.append(method.toString());
             }
         });
@@ -595,7 +598,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         final String[] missingKey = new String[1];
         
         new DefaultPicoContainer(new NullComponentMonitor(){
-            public void noComponent(Object componentKey) {
+            public void noComponent(MutablePicoContainer container, Object componentKey) {
                 missingKey[0] = (String) componentKey;
             }
         }).getComponent("missingKey");

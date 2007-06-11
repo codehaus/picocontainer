@@ -42,7 +42,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
         DelegatingComponentMonitor dcm = new DelegatingComponentMonitor(mockMonitorThatSupportsStrategy(monitor));
         dcm.changeMonitor(monitor);
         assertEquals(monitor, dcm.currentMonitor());
-        dcm.instantiating(null, null);
+        dcm.instantiating(null, null, null);
     }
 
     public void testDelegatingMonitorChangesDelegateThatDoesNotSupportMonitorStrategy() {
@@ -76,9 +76,12 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
     public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
         final Vector ourIntendedInjectee0 = new Vector();
         final String ourIntendedInjectee1 = "hullo";
+        DefaultPicoContainer parent = new DefaultPicoContainer();
         Mock monitor = mock(ComponentMonitor.class);
+        DefaultPicoContainer child = new DefaultPicoContainer(new DelegatingComponentMonitor((ComponentMonitor) monitor.proxy()), parent);
+
         Constructor nacotCtor = NeedsACoupleOfThings.class.getConstructors()[0];
-        monitor.expects(once()).method("instantiating").with(isA(ConstructorInjector.class), eq(nacotCtor)).will(returnValue(nacotCtor));
+        monitor.expects(once()).method("instantiating").with(same(child), isA(ConstructorInjector.class), eq(nacotCtor)).will(returnValue(nacotCtor));
         Constraint durationIsGreaterThanOrEqualToZero = new Constraint() {
             public boolean eval(Object o) {
                 Long duration = (Long)o;
@@ -107,11 +110,9 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
                 return stringBuffer.append("Should have injected our intended vector and string");
             }
         };
-        monitor.expects(once()).method("instantiated").with(new Constraint[] {isA(ConstructorInjector.class),eq(nacotCtor), isANACOTThatWozCreated, collectionAndStringWereInjected, durationIsGreaterThanOrEqualToZero});
-        DefaultPicoContainer parent = new DefaultPicoContainer();
+        monitor.expects(once()).method("instantiated").with(new Constraint[] {same(child), isA(ConstructorInjector.class),eq(nacotCtor), isANACOTThatWozCreated, collectionAndStringWereInjected, durationIsGreaterThanOrEqualToZero});
         parent.addComponent(ourIntendedInjectee0);
         parent.addComponent(ourIntendedInjectee1);
-        DefaultPicoContainer child = new DefaultPicoContainer(new DelegatingComponentMonitor((ComponentMonitor) monitor.proxy()), parent);
         child.addComponent(NeedsACoupleOfThings.class);
         child.getComponent(NeedsACoupleOfThings.class);
     }

@@ -177,11 +177,12 @@ public class SetterInjector extends AbstractInjector {
                     ComponentMonitor componentMonitor = currentMonitor();
                     Object componentInstance;
                     long startTime = System.currentTimeMillis();
-                    Constructor constructorToUse = componentMonitor.instantiating(SetterInjector.this, constructor);
+                    Constructor constructorToUse = componentMonitor.instantiating(container,
+                                                                                  SetterInjector.this, constructor);
                     try {
                         componentInstance = newInstance(constructorToUse, null);
                     } catch (InvocationTargetException e) {
-                        componentMonitor.instantiationFailed(SetterInjector.this, constructorToUse, e);
+                        componentMonitor.instantiationFailed(container, SetterInjector.this, constructorToUse, e);
                         if (e.getTargetException() instanceof RuntimeException) {
                             throw (RuntimeException) e.getTargetException();
                         } else if (e.getTargetException() instanceof Error) {
@@ -191,13 +192,13 @@ public class SetterInjector extends AbstractInjector {
                     } catch (InstantiationException e) {
                         // can't get here because checkConcrete() will catch it earlier, but see PICO-191
                         ///CLOVER:OFF
-                        componentMonitor.instantiationFailed(SetterInjector.this, constructorToUse, e);
+                        componentMonitor.instantiationFailed(container, SetterInjector.this, constructorToUse, e);
                         throw new PicoCompositionException("Should never get here");
                         ///CLOVER:ON
                     } catch (IllegalAccessException e) {
                         // can't get here because either filtered or access mode set
                         ///CLOVER:OFF
-                        componentMonitor.instantiationFailed(SetterInjector.this, constructorToUse, e);
+                        componentMonitor.instantiationFailed(container, SetterInjector.this, constructorToUse, e);
                         throw new PicoCompositionException(e);
                         ///CLOVER:ON
                     }
@@ -206,7 +207,7 @@ public class SetterInjector extends AbstractInjector {
                     try {
                         for (int i = 0; i < injectionMethods.size(); i++) {
                             setter = injectionMethods.get(i);
-                            componentMonitor.invoking(setter, componentInstance);
+                            componentMonitor.invoking(container, SetterInjector.this, setter, componentInstance);
                             Object toInject = matchingParameters[i].resolveInstance(guardedContainer, SetterInjector.this, injectionTypes[i], new ParameterName() {
                                 public String getParameterName() {
                                     return ""; // TODO
@@ -215,7 +216,8 @@ public class SetterInjector extends AbstractInjector {
                             setter.invoke(componentInstance, toInject);
                             injected[i] = toInject;
                         }
-                        componentMonitor.instantiated(SetterInjector.this,
+                        componentMonitor.instantiated(container,
+                                                      SetterInjector.this,
                                                       constructorToUse, componentInstance, injected, System.currentTimeMillis() - startTime);
                         return componentInstance;
                     } catch (InvocationTargetException e) {

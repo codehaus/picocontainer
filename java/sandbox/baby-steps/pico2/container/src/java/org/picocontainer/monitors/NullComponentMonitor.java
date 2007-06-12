@@ -13,6 +13,7 @@ package org.picocontainer.monitors;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Member;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoLifecycleException;
@@ -52,7 +53,7 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
 
     public void invoking(PicoContainer container,
                          ComponentAdapter componentAdapter,
-                         Method method,
+                         Member member,
                          Object instance) {
     }
 
@@ -63,7 +64,7 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
                         long duration) {
     }
 
-    public void invocationFailed(Method method, Object instance, Exception e) {
+    public void invocationFailed(Member member, Object instance, Exception e) {
     }
 
     public void lifecycleInvocationFailed(MutablePicoContainer container,

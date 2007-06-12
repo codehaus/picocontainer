@@ -151,13 +151,13 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
 
     public void invoking(PicoContainer container,
                          ComponentAdapter componentAdapter,
-                         Method method,
+                         Member member,
                          Object instance) {
-        Logger logger = getLogger(method);
+        Logger logger = getLogger(member);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(INVOKING, toString(method), instance));
+            logger.debug(format(INVOKING, toString(member), instance));
         }
-        delegate.invoking(container, componentAdapter, method, instance);
+        delegate.invoking(container, componentAdapter, member, instance);
     }
 
     public void invoked(PicoContainer container,
@@ -172,12 +172,12 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
         delegate.invoked(container, componentAdapter, method, instance, duration);
     }
 
-    public void invocationFailed(Method method, Object instance, Exception cause) {
-        Logger logger = getLogger(method);
+    public void invocationFailed(Member member, Object instance, Exception cause) {
+        Logger logger = getLogger(member);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(INVOCATION_FAILED, toString(method), instance, cause.getMessage()), cause);
+            logger.warn(format(INVOCATION_FAILED, toString(member), instance, cause.getMessage()), cause);
         }
-        delegate.invocationFailed(method, instance, cause);
+        delegate.invocationFailed(member, instance, cause);
     }
 
     public void lifecycleInvocationFailed(MutablePicoContainer container,

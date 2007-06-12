@@ -22,6 +22,8 @@ import org.picocontainer.injectors.AbstractInjector;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Member;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -50,8 +52,8 @@ import java.io.Serializable;
  */
 public class SetterInjector extends AbstractInjector {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
-    private transient List<Method> injectionMethods;
-    private transient Class[] injectionTypes;
+    protected transient List<Member> injectionMembers;
+    protected transient Class[] injectionTypes;
 
     /**
      * Constructs a SetterInjectionComponentAdapter
@@ -112,11 +114,11 @@ public class SetterInjector extends AbstractInjector {
     }
 
     private Parameter[] getMatchingParameterListForSetters(PicoContainer container) throws PicoCompositionException, UnsatisfiableDependenciesException {
-        if (injectionMethods == null) {
-            initializeInjectionMethodsAndTypeLists();
+        if (injectionMembers == null) {
+            initializeInjectionMembersAndTypeLists();
         }
 
-        final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMethods.size(), null));
+        final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMembers.size(), null));
         final Set<Integer> nonMatchingParameterPositions = new HashSet<Integer>();
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
         for (int i = 0; i < currentParameters.length; i++) {
@@ -147,7 +149,7 @@ public class SetterInjector extends AbstractInjector {
         if (unsatisfiableDependencyTypes.size() > 0) {
             throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
         } else if (nonMatchingParameterPositions.size() > 0) {
-            throw new PicoCompositionException("Following parameters do not match any of the injectionMethods for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
+            throw new PicoCompositionException("Following parameters do not match any of the injectionMembers for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
         }
         return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
     }
@@ -187,18 +189,18 @@ public class SetterInjector extends AbstractInjector {
                         throw new PicoCompositionException(e);
                         ///CLOVER:ON
                     }
-                    Method setter = null;
-                    Object injected[] = new Object[injectionMethods.size()];
+                    Member member = null;
+                    Object injected[] = new Object[injectionMembers.size()];
                     try {
-                        for (int i = 0; i < injectionMethods.size(); i++) {
-                            setter = injectionMethods.get(i);
-                            componentMonitor.invoking(container, SetterInjector.this, setter, componentInstance);
+                        for (int i = 0; i < injectionMembers.size(); i++) {
+                            member = injectionMembers.get(i);
+                            componentMonitor.invoking(container, SetterInjector.this, member, componentInstance);
                             Object toInject = matchingParameters[i].resolveInstance(guardedContainer, SetterInjector.this, injectionTypes[i], new ParameterName() {
                                 public String getParameterName() {
                                     return ""; // TODO
                                 }
                             });
-                            setter.invoke(componentInstance, toInject);
+                            injectIntoMember(member, componentInstance, toInject);
                             injected[i] = toInject;
                         }
                         componentMonitor.instantiated(container,
@@ -206,7 +208,7 @@ public class SetterInjector extends AbstractInjector {
                                                       constructorToUse, componentInstance, injected, System.currentTimeMillis() - startTime);
                         return componentInstance;
                     } catch (InvocationTargetException e) {
-                        componentMonitor.invocationFailed(setter, componentInstance, e);
+                        componentMonitor.invocationFailed(member, componentInstance, e);
                         if (e.getTargetException() instanceof RuntimeException) {
                             throw (RuntimeException) e.getTargetException();
                         } else if (e.getTargetException() instanceof Error) {
@@ -214,7 +216,7 @@ public class SetterInjector extends AbstractInjector {
                         }
                         throw new PicoCompositionException(e.getTargetException());
                     } catch (IllegalAccessException e) {
-                        componentMonitor.invocationFailed(setter, componentInstance, e);
+                        componentMonitor.invocationFailed(member, componentInstance, e);
                         throw new PicoCompositionException(e);
                     }
 
@@ -223,6 +225,12 @@ public class SetterInjector extends AbstractInjector {
         }
         instantiationGuard.setGuardedContainer(container);
         return instantiationGuard.observe(getComponentImplementation());
+    }
+
+    protected void injectIntoMember(Member member, Object componentInstance, Object toInject)
+        throws IllegalAccessException, InvocationTargetException
+    {
+        ((Method)member).invoke(componentInstance, toInject);
     }
 
     public void verify(final PicoContainer container) throws PicoCompositionException {
@@ -245,8 +253,8 @@ public class SetterInjector extends AbstractInjector {
         verifyingGuard.observe(getComponentImplementation());
     }
 
-    private void initializeInjectionMethodsAndTypeLists() {
-        injectionMethods = new ArrayList<Method>();
+    protected void initializeInjectionMembersAndTypeLists() {
+        injectionMembers = new ArrayList<Member>();
         final List<Class> typeList = new ArrayList<Class>();
         final Method[] methods = getMethods();
         for (final Method method : methods) {
@@ -255,7 +263,7 @@ public class SetterInjector extends AbstractInjector {
             if (parameterTypes.length == 1) {
                 boolean isInjector = isInjectorMethod(method);
                 if (isInjector) {
-                    injectionMethods.add(method);
+                    injectionMembers.add(method);
                     typeList.add(parameterTypes[0]);
                 }
             }

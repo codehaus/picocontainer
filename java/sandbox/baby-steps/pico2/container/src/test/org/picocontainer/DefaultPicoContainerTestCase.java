@@ -39,7 +39,7 @@ import static org.picocontainer.ComponentCharacteristics.SDI;
 
 import java.io.Serializable;
 import java.io.StringWriter;
-import java.lang.reflect.Method;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -216,9 +216,9 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         DefaultPicoContainer dpc = new DefaultPicoContainer(new NullComponentMonitor() {
             public void invoking(PicoContainer container,
                                  ComponentAdapter componentAdapter,
-                                 Method method,
+                                 Member member,
                                  Object instance) {
-                sb.append(method.toString());
+                sb.append(member.toString());
             }
         });
         dpc.addComponent(DefaultPicoContainer.class);

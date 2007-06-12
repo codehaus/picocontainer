@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Member;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentAdapter;
@@ -68,10 +69,10 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
 
     public void invoking(PicoContainer container,
                          ComponentAdapter componentAdapter,
-                         Method method,
+                         Member member,
                          Object instance) {
-        out.println(format(INVOKING, toString(method), instance));
-        delegate.invoking(container, componentAdapter, method, instance);
+        out.println(format(INVOKING, toString(member), instance));
+        delegate.invoking(container, componentAdapter, member, instance);
     }
 
     public void invoked(PicoContainer container,
@@ -83,9 +84,9 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
         delegate.invoked(container, componentAdapter, method, instance, duration);
     }
 
-    public void invocationFailed(Method method, Object instance, Exception cause) {
-        out.println(format(INVOCATION_FAILED, toString(method), instance, cause.getMessage()));
-        delegate.invocationFailed(method, instance, cause);
+    public void invocationFailed(Member member, Object instance, Exception cause) {
+        out.println(format(INVOCATION_FAILED, toString(member), instance, cause.getMessage()));
+        delegate.invocationFailed(member, instance, cause);
     }
 
     public void lifecycleInvocationFailed(MutablePicoContainer container,

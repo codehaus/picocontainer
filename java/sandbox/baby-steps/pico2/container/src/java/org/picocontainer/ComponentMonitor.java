@@ -12,6 +12,8 @@ package org.picocontainer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Member;
 
 /**
  * A component monitor is responsible for monitoring the component instantiation
@@ -73,10 +75,10 @@ public interface ComponentMonitor {
      * 
      * @param container
      * @param componentAdapter
-     * @param method the Method invoked on the component instance
+     * @param member
      * @param instance the component instance
      */
-    void invoking(PicoContainer container, ComponentAdapter componentAdapter, Method method, Object instance);
+    void invoking(PicoContainer container, ComponentAdapter componentAdapter, Member member, Object instance);
 
     /**
      * Event thrown after the component method has been invoked on the given instance
@@ -96,11 +98,11 @@ public interface ComponentMonitor {
     /**
      * Event thrown if the component method invocation failed on the given instance
      * 
-     * @param method the Method invoked on the component instance
+     * @param member
      * @param instance the component instance
      * @param cause the Exception detailing the cause of the failure
      */
-    void invocationFailed(Method method, Object instance, Exception cause);
+    void invocationFailed(Member member, Object instance, Exception cause);
 
     /**
      * Event thrown if a lifecycle method invocation - start, stop or dispose - 

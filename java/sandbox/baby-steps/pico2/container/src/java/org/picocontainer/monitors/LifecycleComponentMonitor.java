@@ -2,6 +2,7 @@ package org.picocontainer.monitors;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -56,9 +57,9 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
 
     public void invoking(PicoContainer container,
                          ComponentAdapter componentAdapter,
-                         Method method,
+                         Member member,
                          Object instance) {
-        delegate.invoking(container, componentAdapter, method, instance);
+        delegate.invoking(container, componentAdapter, member, instance);
     }
 
     public void invoked(PicoContainer container,
@@ -69,8 +70,8 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
         delegate.invoked(container, componentAdapter, method, instance, duration);
     }
 
-    public void invocationFailed(Method method, Object instance, Exception cause) {
-        delegate.invocationFailed(method, instance, cause);
+    public void invocationFailed(Member member, Object instance, Exception cause) {
+        delegate.invocationFailed(member, instance, cause);
     }
 
     public void lifecycleInvocationFailed(MutablePicoContainer container,

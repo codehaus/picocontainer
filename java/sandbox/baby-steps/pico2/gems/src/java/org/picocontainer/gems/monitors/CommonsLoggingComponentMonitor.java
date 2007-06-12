@@ -147,13 +147,13 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
 
     public void invoking(PicoContainer container,
                          ComponentAdapter componentAdapter,
-                         Method method,
+                         Member member,
                          Object instance) {
-        Log log = getLog(method);
+        Log log = getLog(member);
         if (log.isDebugEnabled()) {
-            log.debug(format(INVOKING, toString(method), instance));
+            log.debug(format(INVOKING, toString(member), instance));
         }
-        delegate.invoking(container, componentAdapter, method, instance);
+        delegate.invoking(container, componentAdapter, member, instance);
     }
 
     public void invoked(PicoContainer container,
@@ -168,12 +168,12 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
         delegate.invoked(container, componentAdapter, method, instance,  duration);
     }
 
-    public void invocationFailed(Method method, Object instance, Exception cause) {
-        Log log = getLog(method);
+    public void invocationFailed(Member member, Object instance, Exception cause) {
+        Log log = getLog(member);
         if (log.isWarnEnabled()) {
-            log.warn(format(INVOCATION_FAILED, toString(method), instance, cause.getMessage()), cause);
+            log.warn(format(INVOCATION_FAILED, toString(member), instance, cause.getMessage()), cause);
         }
-        delegate.invocationFailed(method, instance, cause);
+        delegate.invocationFailed(member, instance, cause);
     }
 
     public void lifecycleInvocationFailed(MutablePicoContainer container,

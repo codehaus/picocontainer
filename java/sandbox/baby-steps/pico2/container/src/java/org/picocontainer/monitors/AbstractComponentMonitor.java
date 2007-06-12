@@ -13,6 +13,9 @@ package org.picocontainer.monitors;
 import java.text.MessageFormat;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Member;
 
 import org.picocontainer.ComponentMonitor;
 
@@ -77,6 +80,20 @@ public abstract class AbstractComponentMonitor implements ComponentMonitor {
             }
         }
         sb.append(")");
+        return sb.toString();
+    }
+
+    public static String toString(Member m) {
+        if (m instanceof Field) {
+            return toString((Field) m);
+        } else {
+            return toString((Method) m);
+        }
+    }
+
+    public static String toString(Field field) {
+        StringBuffer sb = new StringBuffer(field.getName());
+        sb.append("(").append(field.getName()).append(")");
         return sb.toString();
     }
 

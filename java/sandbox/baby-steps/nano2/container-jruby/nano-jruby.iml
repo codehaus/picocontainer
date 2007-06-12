@@ -60,15 +60,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/org/jruby/jruby/1.0RC2/jruby-1.0RC2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/jline/jline/0.9.91/jline-0.9.91.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -126,6 +117,15 @@
     <orderEntry type="module" module-name="nano-tck" />
     <orderEntry type="module" module-name="nano-testmodel" />
     <orderEntry type="module" module-name="nanocontainer" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/org/jruby/jruby/1.0/jruby-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntryProperties />
   </component>
 </module>

@@ -27,10 +27,10 @@ import org.picocontainer.testmodel.RecordingLifecycle.One;
  */
 public class SetterInjectionFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     protected void setUp() throws Exception {
-        picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
+        picoContainer = new DefaultPicoContainer(createComponentFactory());
     }
 
-    protected ComponentFactory createComponentAdapterFactory() {
+    protected ComponentFactory createComponentFactory() {
         return new SetterInjectionFactory();
     }
 

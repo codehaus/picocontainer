@@ -151,12 +151,12 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentAd
         }
     }
 
-    protected ComponentFactory createComponentAdapterFactory() {
+    protected ComponentFactory createComponentFactory() {
         return new PropertyApplyingBehaviorFactory().forThis(new AnyInjectionFactory());
     }
 
     public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
+        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentFactory();
 
         PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, "foo", Foo.class, (Parameter[])null);
 
@@ -172,13 +172,13 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentAd
 
     public void testDelegateIsAccessible() {
         AbstractBehavior componentAdapter =
-                (AbstractBehavior) createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
+                (AbstractBehavior) createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
 
         assertNotNull(componentAdapter.getDelegate());
     }
 
     private ComponentAdapter createAdapterCallingSetMessage(Class impl) {
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
+        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentFactory();
 
         Map properties = new HashMap();
         properties.put("message", "hello");
@@ -189,7 +189,7 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentAd
     }
 
     public void testAllJavaPrimitiveAttributesShouldBeSetByTheAdapter() throws MalformedURLException {
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
+        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentFactory();
         Map properties = new HashMap();
         properties.put("byte_", "1");
         properties.put("short_", "2");
@@ -224,7 +224,7 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentAd
 
     public void testSetDependenComponentWillBeSetByTheAdapter() {
         picoContainer.addComponent("b", B.class);
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
+        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentFactory();
         Map properties = new HashMap();
 
         // the second b is the key of the B implementation
@@ -239,7 +239,7 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentAd
     }
 
     public void testSetBeanPropertiesWithValueObjects() {
-      PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
+      PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentFactory();
 
       Map properties = new HashMap();
       properties.put("lenient", Boolean.FALSE);
@@ -271,7 +271,7 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentAd
             }
         };
 
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
+        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentFactory();
 
 
         PropertyApplyingBehavior adapter = (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, "TestBean", testBean.getClass(), (Parameter[])null);
@@ -293,7 +293,7 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentAd
 
 
     public void testSetBeanPropertiesWithInvalidValueTypes() {
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentAdapterFactory();
+        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentFactory();
 
 
         Map properties = new HashMap();

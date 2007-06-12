@@ -37,9 +37,9 @@ import org.objectweb.asm.*;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class ImplementationHidingBehaviorAdapter extends AbstractBehavior implements Opcodes {
+public class ImplementationHidingBehavior extends AbstractBehavior implements Opcodes {
 
-    public ImplementationHidingBehaviorAdapter(final ComponentAdapter delegate) {
+    public ImplementationHidingBehavior(final ComponentAdapter delegate) {
         super(delegate);
     }
 

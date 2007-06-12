@@ -15,24 +15,73 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.FieldAnnotationInjectorTestCase;
+import org.picocontainer.injectors.MethodAnnotationInjectorTestCase;
+import org.picocontainer.injectors.MethodAnnotationInjector;
+import org.picocontainer.injectors.FieldAnnotationInjector;
+import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import java.util.Map;
+import java.util.HashMap;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.converters.Converter;
+import com.thoughtworks.xstream.converters.MarshallingContext;
+import com.thoughtworks.xstream.converters.UnmarshallingContext;
+
 public class AnyInjectionFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
-    protected ComponentFactory createComponentAdapterFactory() {
+
+    XStream xs;
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        xs = new XStream();
+        xs.alias("RLS",ReflectionLifecycleStrategy.class);
+        xs.alias("CCM",ConsoleComponentMonitor.class);
+        xs.alias("Method-Injection", MethodAnnotationInjector.class);
+        xs.alias("Field-Injection", FieldAnnotationInjector.class);
+        xs.alias("Constructor-Injection", ConstructorInjector.class);
+        //xs.alias("CCM", ConsoleComponentMonitor.class);
+        xs.registerConverter(new Converter() {
+            public boolean canConvert(Class aClass) {
+                return aClass.getName().equals("org.picocontainer.monitors.ConsoleComponentMonitor") ||
+                       aClass.getName().equals("org.picocontainer.lifecycle.ReflectionLifecycleStrategy");
+
+            }
+
+            public void marshal(Object object,
+                                HierarchicalStreamWriter hierarchicalStreamWriter,
+                                MarshallingContext marshallingContext) {
+            }
+
+            public Object unmarshal(HierarchicalStreamReader hierarchicalStreamReader,
+                                    UnmarshallingContext unmarshallingContext) {
+                return null;
+            }
+        });
+
+    }
+
+    protected ComponentFactory createComponentFactory() {
         return new AnyInjectionFactory();
     }
 
-    public void testInstantiateComponentWithNoDependencies() throws PicoCompositionException, PicoCompositionException,
-                                                                    PicoCompositionException
+    public void testInstantiateComponentWithNoDependencies() throws PicoCompositionException
     {
         ComponentAdapter componentAdapter =
-                createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
+                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
 
         Object comp = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(comp);
@@ -40,8 +89,71 @@ public class AnyInjectionFactoryTestCase extends AbstractComponentAdapterFactory
     }
 
     public void testSingleUsecanBeInstantiatedByDefaultComponentAdapter() {
-        ComponentAdapter componentAdapter = createComponentAdapterFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, "o", Object.class, (Parameter[])null);
+        ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, "o", Object.class, (Parameter[])null);
         Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(component);
     }
+
+
+    public void testFactoryMakesConstructorInjector() {
+
+        ComponentFactory cf = createComponentFactory();
+
+        ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
+        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristic(),
+                                                        Map.class, HashMap.class, Parameter.DEFAULT);
+        
+        String foo = xs.toXML(ca).replace("\"","");
+
+        assertEquals("<Constructor-Injection>\n" +
+                     "  <lifecycleStrategy class=RLS/>\n" +
+                     "  <componentKey class=java-class>java.util.Map</componentKey>\n" +
+                     "  <componentImplementation>java.util.HashMap</componentImplementation>\n" +
+                     "  <componentMonitor class=CCM/>\n" +
+                     "</Constructor-Injection>", foo);
+
+
+    }
+
+    public void testFactoryMakesFieldAnnotationInjector() {
+
+        ComponentFactory cf = createComponentFactory();
+
+        ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
+        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristic(),
+                                                        FieldAnnotationInjectorTestCase.Helicopter.class, FieldAnnotationInjectorTestCase.Helicopter.class, Parameter.DEFAULT);
+
+        String foo = xs.toXML(ca).replace("\"","");
+
+        assertEquals("<Field-Injection>\n" +
+                     "  <lifecycleStrategy class=RLS/>\n" +
+                     "  <componentKey class=java-class>org.picocontainer.injectors.FieldAnnotationInjectorTestCase$Helicopter</componentKey>\n" +
+                     "  <componentImplementation>org.picocontainer.injectors.FieldAnnotationInjectorTestCase$Helicopter</componentImplementation>\n" +
+                     "  <componentMonitor class=CCM/>\n" +
+                     "</Field-Injection>", foo);
+
+
+    }
+
+    public void testFactoryMakesMethodAnnotationInjector() {
+
+        ComponentFactory cf = createComponentFactory();
+
+        ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
+        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristic(),
+                                                        MethodAnnotationInjectorTestCase.AnnotatedBurp.class, MethodAnnotationInjectorTestCase.AnnotatedBurp.class, Parameter.DEFAULT);
+
+        String foo = xs.toXML(ca).replace("\"","");
+
+        assertEquals("<Method-Injection>\n" +
+                     "  <lifecycleStrategy class=RLS/>\n" +
+                     "  <componentKey class=java-class>org.picocontainer.injectors.MethodAnnotationInjectorTestCase$AnnotatedBurp</componentKey>\n" +
+                     "  <componentImplementation>org.picocontainer.injectors.MethodAnnotationInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
+                     "  <componentMonitor class=CCM/>\n" +
+                     "</Method-Injection>", foo);
+
+
+    }
+
+
 }

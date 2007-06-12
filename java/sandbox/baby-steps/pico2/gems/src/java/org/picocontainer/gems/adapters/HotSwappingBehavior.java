@@ -27,12 +27,12 @@ import org.picocontainer.behaviors.CachingBehavior;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class HotSwappingComponentAdapter extends ImplementationHidingBehaviorAdapter {
+public class HotSwappingBehavior extends ImplementationHidingBehavior {
 
     private final Swappable swappable = new Swappable();
     private Object instance;
 
-    public HotSwappingComponentAdapter(ComponentAdapter delegate) {
+    public HotSwappingBehavior(ComponentAdapter delegate) {
         super(delegate);
     }
 

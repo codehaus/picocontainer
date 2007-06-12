@@ -26,18 +26,18 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
- * @see HotSwappingComponentAdapter
+ * @see HotSwappingBehavior
  */
-public class HotSwappingComponentAdapterFactory extends AbstractBehaviorFactory {
+public class HotSwappingBehaviorFactory extends AbstractBehaviorFactory {
 
-    public HotSwappingComponentAdapterFactory() {
+    public HotSwappingBehaviorFactory() {
         forThis(new AnyInjectionFactory());
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
-        return new HotSwappingComponentAdapter(componentAdapter);
+        return new HotSwappingBehavior(componentAdapter);
     }
 }

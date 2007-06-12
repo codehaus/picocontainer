@@ -12,7 +12,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.ImplementationHidingBehavior;
 import org.picocontainer.injectors.ConstructorInjector;
 
-public class ImplementationHidingBehaviorAdapterTestCase extends TestCase {
+public class ImplementationHidingBehaviorTestCase extends TestCase {
 
     public void testMultipleInterfacesCanBeHidden() {
         ComponentAdapter ca = new ConstructorInjector(new Class[]{ActionListener.class, MouseListener.class}, Footle.class);

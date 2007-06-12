@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 
-public final class HotSwappingComponentAdapterFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
-    private final ComponentFactory implementationHidingComponentAdapterFactory = new HotSwappingComponentAdapterFactory().forThis(new AnyInjectionFactory());
+public final class HotSwappingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+    private final ComponentFactory implementationHidingComponentAdapterFactory = new HotSwappingBehaviorFactory().forThis(new AnyInjectionFactory());
 
     // START SNIPPET: man
     public static interface Man {
@@ -49,7 +49,7 @@ public final class HotSwappingComponentAdapterFactoryTestCase extends AbstractCo
 
 
     public void testHotSwappingNaturaelyCaches() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingComponentAdapterFactory().forThis(new ConstructorInjectionFactory()));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
         pico.addComponent(Map.class, HashMap.class);
         Map firstMap = pico.getComponent(Map.class);
         Map secondMap = pico.getComponent(Map.class);
@@ -60,7 +60,7 @@ public final class HotSwappingComponentAdapterFactoryTestCase extends AbstractCo
 
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        HotSwappingComponentAdapter hsca = (HotSwappingComponentAdapter) pico.addAdapter(new HotSwappingComponentAdapter(new ConstructorInjector("l", ArrayList.class))).lastCA();
+        HotSwappingBehavior hsca = (HotSwappingBehavior) pico.addAdapter(new HotSwappingBehavior(new ConstructorInjector("l", ArrayList.class))).lastCA();
         List l = (List)pico.getComponent("l");
         l.add("Hello");
         final ArrayList newList = new ArrayList();
@@ -73,7 +73,7 @@ public final class HotSwappingComponentAdapterFactoryTestCase extends AbstractCo
     }
 
 
-    protected ComponentFactory createComponentAdapterFactory() {
+    protected ComponentFactory createComponentFactory() {
         return implementationHidingComponentAdapterFactory;
     }
 

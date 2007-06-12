@@ -27,10 +27,10 @@ import java.util.HashMap;
  */
 public class CachingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     protected void setUp() throws Exception {
-        picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
+        picoContainer = new DefaultPicoContainer(createComponentFactory());
     }
 
-    protected ComponentFactory createComponentAdapterFactory() {
+    protected ComponentFactory createComponentFactory() {
         return new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory());
     }
 

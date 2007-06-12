@@ -29,9 +29,9 @@ import java.util.List;
 public class AssimilatingComponentAdapterFactoryTest extends AbstractComponentAdapterFactoryTestCase {
 
     /**
-     * @see org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase#createComponentAdapterFactory()
+     * @see org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase#createComponentFactory()
      */
-    protected ComponentFactory createComponentAdapterFactory() {
+    protected ComponentFactory createComponentFactory() {
         return new AssimilatingComponentAdapterFactory(Touchable.class).forThis(new ConstructorInjectionFactory());
     }
 
@@ -39,7 +39,7 @@ public class AssimilatingComponentAdapterFactoryTest extends AbstractComponentAd
      * Test automatic assimilation of registered components.
      */
     public void testAutomaticAssimilation() {
-        picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
+        picoContainer = new DefaultPicoContainer(createComponentFactory());
         picoContainer.addComponent(SimpleTouchable.class);
         picoContainer.addComponent(AlternativeTouchable.class);
         picoContainer.addComponent(CompatibleTouchable.class);
@@ -51,7 +51,7 @@ public class AssimilatingComponentAdapterFactoryTest extends AbstractComponentAd
      * Test automatic assimilation of registered components.
      */
     public void testOnlyOneTouchableComponentKeyPossible() {
-        picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
+        picoContainer = new DefaultPicoContainer(createComponentFactory());
         picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
         try {
             picoContainer.addComponent(CompatibleTouchable.class);
@@ -66,7 +66,7 @@ public class AssimilatingComponentAdapterFactoryTest extends AbstractComponentAd
      * Test automatic assimilation of registered components.
      */
     public void testMultipleAssimilatedComponentsWithUserDefinedKeys() {
-        picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
+        picoContainer = new DefaultPicoContainer(createComponentFactory());
         picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
         picoContainer.addComponent("1", CompatibleTouchable.class);
         picoContainer.addComponent("2", CompatibleTouchable.class);

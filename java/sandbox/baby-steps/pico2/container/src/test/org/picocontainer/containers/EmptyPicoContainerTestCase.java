@@ -8,7 +8,7 @@
  * Original code by the committers                                           *
  *****************************************************************************/
 
-package org.picocontainer.alternatives;
+package org.picocontainer.containers;
 
 import junit.framework.TestCase;
 

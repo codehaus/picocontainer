@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by Stacy Curl                        *
  *****************************************************************************/
 
-package org.picocontainer.adapters;
+package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;

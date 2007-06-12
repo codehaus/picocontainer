@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.adapters;
+package org.picocontainer.behaviors;
 
 import java.util.ArrayList;
 import java.util.Collections;

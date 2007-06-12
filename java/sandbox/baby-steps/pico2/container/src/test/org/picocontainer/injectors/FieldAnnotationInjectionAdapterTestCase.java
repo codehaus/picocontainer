@@ -20,23 +20,40 @@ public class FieldAnnotationInjectionAdapterTestCase extends TestCase {
         }
     }
 
+    public static class Helicopter2 {
+        private PogoStick pogo;
+
+        public Helicopter2() {
+        }
+    }
+
     public static class PogoStick {
     }
 
     public void testFieldInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new FieldAnnotationInjector(Helicopter.class, Helicopter.class, null,
-                                                    new ConsoleComponentMonitor(), NullLifecycleStrategy.getInstance()));
+                                                    NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance()));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);
         assertNotNull(chopper.pogo);
     }
 
-    public void testFieldDeosNotHappenWithoutRightInjector() {
+    public void testFieldInjectionWithoutAnnotationDoesNotWork() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.addAdapter(new FieldAnnotationInjector(Helicopter2.class, Helicopter2.class, null,
+                                                    NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance()));
+        pico.addComponent(PogoStick.class, new PogoStick());
+        Helicopter2 chopper = pico.getComponent(Helicopter2.class);
+        assertNotNull(chopper);
+        assertNull(chopper.pogo);
+    }
+
+    public void testFieldDeosNotHappenWithoutRightInjectorDoesNotWork() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new SetterInjector(Helicopter.class, Helicopter.class, null,
-                                                    new ConsoleComponentMonitor(), NullLifecycleStrategy.getInstance()));
+                                                    NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance()));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);

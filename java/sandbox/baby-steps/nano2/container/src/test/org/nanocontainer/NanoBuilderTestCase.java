@@ -226,7 +226,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.injectors.AnnotationInjectionFactory\n" +
+                "    componentFactory=org.picocontainer.injectors.MethodAnnotationInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",

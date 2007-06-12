@@ -8,9 +8,9 @@ import org.picocontainer.LifecycleStrategy;
 import java.lang.reflect.Method;
 import java.io.Serializable;
 
-public class AnnotationInjector extends SetterInjector {
+public class MethodAnnotationInjector extends SetterInjector {
 
-    public AnnotationInjector(Object key, Class impl, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
+    public MethodAnnotationInjector(Object key, Class impl, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
         super(key, impl, parameters, monitor, lifecycleStrategy);
     }
 

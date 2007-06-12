@@ -39,7 +39,7 @@ import org.picocontainer.testmodel.Touchable;
 import javax.swing.*;
 
 
-public class ConstructorInjectionAdapterTestCase extends AbstractComponentAdapterTestCase {
+public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCase {
 
     protected Class getComponentAdapterType() {
         return ConstructorInjector.class;

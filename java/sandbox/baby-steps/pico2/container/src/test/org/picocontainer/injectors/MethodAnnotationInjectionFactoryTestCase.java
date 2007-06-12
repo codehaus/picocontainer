@@ -12,8 +12,8 @@ package org.picocontainer.injectors;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AnnotationInjectionFactory;
-import org.picocontainer.injectors.AnnotationInjector;
+import org.picocontainer.injectors.MethodAnnotationInjectionFactory;
+import org.picocontainer.injectors.MethodAnnotationInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
@@ -24,13 +24,13 @@ import org.picocontainer.testmodel.RecordingLifecycle.One;
  * @author J&ouml;rg Schaible</a>
  * @version $Revision$
  */
-public class AnnotationInjectionFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public class MethodAnnotationInjectionFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     protected void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentAdapterFactory());
     }
 
     protected ComponentFactory createComponentAdapterFactory() {
-        return new AnnotationInjectionFactory();
+        return new MethodAnnotationInjectionFactory();
     }
 
     public static interface Bean {
@@ -89,8 +89,8 @@ public class AnnotationInjectionFactoryTestCase extends AbstractComponentAdapter
 
     public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
-        AnnotationInjectionFactory caf = new AnnotationInjectionFactory();
-        AnnotationInjector aica = (AnnotationInjector)caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
+        MethodAnnotationInjectionFactory caf = new MethodAnnotationInjectionFactory();
+        MethodAnnotationInjector aica = (MethodAnnotationInjector)caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
         One one = new One(new StringBuffer());
         aica.start(one);
         aica.stop(one);

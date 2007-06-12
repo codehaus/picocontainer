@@ -10,7 +10,7 @@ import org.picocontainer.monitors.ConsoleComponentMonitor;
 
 import junit.framework.TestCase;
 
-public class FieldAnnotationInjectionAdapterTestCase extends TestCase {
+public class FieldAnnotationInjectorTestCase extends TestCase {
 
     public static class Helicopter {
         @Inject

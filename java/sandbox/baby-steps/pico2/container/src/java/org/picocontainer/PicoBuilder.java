@@ -1,6 +1,5 @@
 package org.picocontainer;
 
-import org.picocontainer.injectors.ConstructorInjectionFactory;
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implHiding;
 import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
@@ -8,7 +7,7 @@ import org.picocontainer.behaviors.PropertyApplyingBehaviorFactory;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
 import org.picocontainer.DefaultPicoContainer;
-import static org.picocontainer.injectors.Injectors.ADI;
+import static org.picocontainer.injectors.Injectors.MADI;
 import static org.picocontainer.injectors.Injectors.CDI;
 import static org.picocontainer.injectors.Injectors.SDI;
 import static org.picocontainer.injectors.Injectors.anyDI;
@@ -20,8 +19,6 @@ import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.util.Stack;
 import java.util.ArrayList;
-
-import com.sun.tools.doclets.internal.toolkit.builders.AbstractBuilder;
 
 public class PicoBuilder {
 
@@ -134,7 +131,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withAnnotationInjection() {
-        injectionType = ADI();
+        injectionType = MADI();
         return this;
     }
 

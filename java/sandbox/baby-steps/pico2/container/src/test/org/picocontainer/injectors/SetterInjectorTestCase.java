@@ -31,8 +31,8 @@ import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 
-public class SetterInjectionAdapterTestCase
-        extends AbstractComponentAdapterTestCase {
+public class SetterInjectorTestCase
+    extends AbstractComponentAdapterTestCase {
 
     protected Class getComponentAdapterType() {
         return SetterInjector.class;

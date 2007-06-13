@@ -13,8 +13,8 @@ import org.picocontainer.behaviors.CachingBehaviorFactory;
  */
 public class TestContainer extends DefaultNanoContainer {
 
-    public TestContainer(ComponentFactory caf, PicoContainer parent) {
-        super(TestContainer.class.getClassLoader(), caf, parent);
+    public TestContainer(ComponentFactory componentFactory, PicoContainer parent) {
+        super(TestContainer.class.getClassLoader(), componentFactory, parent);
     }
 
     public TestContainer(PicoContainer parent) {

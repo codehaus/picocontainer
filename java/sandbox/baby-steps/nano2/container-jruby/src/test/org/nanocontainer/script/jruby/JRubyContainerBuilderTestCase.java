@@ -232,12 +232,12 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "}");
 
         A a = new A();
-        Mock cafMock = mock(ComponentFactory.class);
+        Mock componentFactoryMock = mock(ComponentFactory.class);
         Constraint[] cons = {isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)};
-        cafMock.expects(once()).method("createComponentAdapter").with(cons)
+        componentFactoryMock.expects(once()).method("createComponentAdapter").with(cons)
             .will(returnValue(new InstanceAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance())));
-        PicoContainer pico = buildContainer(script, null, cafMock.proxy());
+        PicoContainer pico = buildContainer(script, null, componentFactoryMock.proxy());
         assertSame(a, pico.getComponent(A.class));
     }
 

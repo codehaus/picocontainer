@@ -165,23 +165,23 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "import org.nanocontainer.aop.dynaop.*\n" +
                 "intLog = new StringBuffer()\n" +
                 "logger = new LoggingInterceptor(intLog)\n" +
-                "cafLog = new StringBuffer()\n" +
-                "caf = new TestComponentAdapterFactory(cafLog)\n" +
+                "componentFactoryLog = new StringBuffer()\n" +
+                "componentFactory = new TestComponentAdapterFactory(componentFactoryLog)\n" +
                 "cuts = new DynaopPointcutsFactory()\n" +
                 "builder = new DynaopGroovyNodeBuilder()\n" +
-                "nano = builder.container(componentFactory:caf) {\n" +
+                "nano = builder.container(componentFactory:componentFactory) {\n" +
                 "    aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)\n" +
                 "    component(key:Dao, class:DaoImpl)\n" +
                 "    component(key:'intLog', instance:intLog)\n" +
-                "    component(key:'cafLog', instance:cafLog)\n" +
+                "    component(key:'componentFactoryLog', instance:componentFactoryLog)\n" +
                 "}";
 
         PicoContainer pico = buildContainer(script);
         Dao dao = pico.getComponent(Dao.class);
         StringBuffer intLog = (StringBuffer) pico.getComponent("intLog");
         verifyIntercepted(dao, intLog);
-        StringBuffer cafLog = (StringBuffer) pico.getComponent("cafLog");
-        assertEquals("called", cafLog.toString());
+        StringBuffer componentFactoryLog = (StringBuffer) pico.getComponent("componentFactoryLog");
+        assertEquals("called", componentFactoryLog.toString());
     }
 
     private PicoContainer buildContainer(String script) {

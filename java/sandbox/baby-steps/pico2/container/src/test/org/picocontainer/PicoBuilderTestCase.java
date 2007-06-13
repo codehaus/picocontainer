@@ -352,8 +352,8 @@ public class PicoBuilderTestCase extends TestCase {
 
 
     public static class TestPicoContainer extends DefaultPicoContainer {
-        public TestPicoContainer(ComponentFactory caf, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-            super(caf, lifecycleStrategy, parent, monitor);
+        public TestPicoContainer(ComponentFactory componentFactory, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+            super(componentFactory, lifecycleStrategy, parent, monitor);
         }
     }
 

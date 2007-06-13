@@ -152,9 +152,9 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
     }
 
-    private MutablePicoContainer createMutablePicoContainer(String cafName, String monitorName, PicoContainer parentContainer) throws PicoCompositionException {
-        ComponentFactory caf = createComponentAdapterFactory(cafName, new DefaultNanoContainer(getClassLoader()));
-        MutablePicoContainer container = new DefaultNanoContainer(getClassLoader(), caf, parentContainer);
+    private MutablePicoContainer createMutablePicoContainer(String componentFactoryName, String monitorName, PicoContainer parentContainer) throws PicoCompositionException {
+        ComponentFactory componentFactory = createComponentAdapterFactory(componentFactoryName, new DefaultNanoContainer(getClassLoader()));
+        MutablePicoContainer container = new DefaultNanoContainer(getClassLoader(), componentFactory, parentContainer);
         if ( !notSet(monitorName) ){
             ComponentMonitor monitor = createComponentMonitor(monitorName);
             ((ComponentMonitorStrategy)container).changeMonitor(monitor);

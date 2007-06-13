@@ -26,7 +26,7 @@ public class Issue0214TestCase extends TestCase {
 
         /* The following addAdapter(Object, Class) of
          * ImplementationHidingPicoContainer is buggy, as it contains
-         * "ComponentAdapter delegate = caf.createComponentAdapter(componentKey,
+         * "ComponentAdapter delegate = componentFactory.createComponentAdapter(componentKey,
          * componentImplementation, new Parameter[0]);". Instead of "new
          * Parameter[0]" it should be "null" to have a behaviour consistent to
          * DefaultPicoContainer, i.e. if PicoContainer shall resolve

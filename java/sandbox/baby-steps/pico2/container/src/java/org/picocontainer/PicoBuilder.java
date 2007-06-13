@@ -47,7 +47,7 @@ public class PicoBuilder {
         this(new EmptyPicoContainer(), anyDI());
     }
 
-    private final Stack cafs = new Stack();
+    private final Stack componentFactories = new Stack();
 
     private InjectionFactory injectionType;
 
@@ -93,15 +93,15 @@ public class PicoBuilder {
         }
 
         ComponentFactory lastCaf = injectionType;
-        while (!cafs.empty()) {
-            Object caf = cafs.pop();
+        while (!componentFactories.empty()) {
+            Object componentFactory = componentFactories.pop();
             DefaultPicoContainer temp2 = new TransientPicoContainer(temp);
-            temp2.addComponent("caf", caf);
+            temp2.addComponent("componentFactory", componentFactory);
             if (lastCaf != null) {
                 temp2.addComponent(ComponentFactory.class, lastCaf);
             }
             ComponentFactory penultimateCaf = lastCaf;
-            lastCaf = (ComponentFactory) temp2.getComponent("caf");
+            lastCaf = (ComponentFactory) temp2.getComponent("componentFactory");
             if (lastCaf instanceof BehaviorFactory) {
                 ((BehaviorFactory) lastCaf).forThis(penultimateCaf);
             }
@@ -121,7 +121,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withHiddenImplementations() {
-        cafs.push(implHiding());
+        componentFactories.push(implHiding());
         return this;
     }
 
@@ -141,39 +141,39 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withCaching() {
-        cafs.push(caching());
+        componentFactories.push(caching());
         return this;  
     }
 
-    public PicoBuilder withComponentAdapterFactory(Class cafClass) {
-        if (cafClass == null) {
+    public PicoBuilder withComponentAdapterFactory(Class componentFactoryClass) {
+        if (componentFactoryClass == null) {
             throw new NullPointerException("CAF class cannot be null");
         }
-        if (!ComponentFactory.class.isAssignableFrom(cafClass)) {
-            throw new ClassCastException(cafClass.getName() + " is not a " + ComponentFactory.class.getName());
+        if (!ComponentFactory.class.isAssignableFrom(componentFactoryClass)) {
+            throw new ClassCastException(componentFactoryClass.getName() + " is not a " + ComponentFactory.class.getName());
 
         }
-        cafs.push(cafClass);
+        componentFactories.push(componentFactoryClass);
         return this;
     }
 
-    public PicoBuilder withComponentAdapterFactory(ComponentFactory caf) {
-        if (caf == null) {
+    public PicoBuilder withComponentAdapterFactory(ComponentFactory componentFactory) {
+        if (componentFactory == null) {
             throw new NullPointerException("CAF cannot be null");
         }
-        cafs.push(caf);
+        componentFactories.push(componentFactory);
         return this;
     }
 
     public PicoBuilder withThreadSafety() {
-        cafs.push(SynchronizedBehaviorFactory.class);
+        componentFactories.push(SynchronizedBehaviorFactory.class);
         return this;
     }
 
 
     public PicoBuilder withBehaviors(BehaviorFactory... factories) {
-        for (ComponentFactory caf : factories) {
-            cafs.push(caf);
+        for (ComponentFactory componentFactory : factories) {
+            componentFactories.push(componentFactory);
         }
         return this;
     }
@@ -191,7 +191,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withComponentFactory(Class componentFactoryClass) {
-        cafs.push(componentFactoryClass);
+        componentFactories.push(componentFactoryClass);
         return this;
     }
 
@@ -201,7 +201,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withPropertyApplier() {
-        cafs.push(PropertyApplyingBehaviorFactory.class);
+        componentFactories.push(PropertyApplyingBehaviorFactory.class);
         return this;
     }
 }

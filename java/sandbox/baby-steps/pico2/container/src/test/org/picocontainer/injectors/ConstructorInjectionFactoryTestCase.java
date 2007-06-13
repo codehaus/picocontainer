@@ -35,10 +35,10 @@ public class ConstructorInjectionFactoryTestCase extends AbstractComponentAdapte
 
     public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
-        ConstructorInjectionFactory caf =
+        ConstructorInjectionFactory componentFactory =
             new ConstructorInjectionFactory();
         ConstructorInjector cica =  (ConstructorInjector)
-        caf.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
+        componentFactory.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
         One one = new RecordingLifecycle.One(new StringBuffer());
         cica.start(one);
         cica.stop(one);        

@@ -296,12 +296,12 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
-            String cafName = rootElement.getAttribute("componentadapterfactory");
-            if ("".equals(cafName) || cafName == null) {
-                cafName = CachingBehaviorFactory.class.getName();
+            String componentFactoryName = rootElement.getAttribute("componentadapterfactory");
+            if ("".equals(componentFactoryName) || componentFactoryName == null) {
+                componentFactoryName = CachingBehaviorFactory.class.getName();
             }
-            Class cafClass = getClassLoader().loadClass(cafName);
-            ComponentFactory componentFactory = (ComponentFactory) cafClass.newInstance();
+            Class componentFactoryClass = getClassLoader().loadClass(componentFactoryName);
+            ComponentFactory componentFactory = (ComponentFactory) componentFactoryClass.newInstance();
             MutablePicoContainer picoContainer = new DefaultPicoContainer(componentFactory);
             DefaultNanoContainer nano = new DefaultNanoContainer(getClassLoader(), picoContainer);
             populateContainer(nano);

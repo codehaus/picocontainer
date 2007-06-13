@@ -91,17 +91,17 @@ module Nano
   end
 
   class Container
-    def initialize(*cafs)
-      unless cafs.last.is_a?(Hash)
+    def initialize(*componentFactories)
+      unless componentFactories.last.is_a?(Hash)
         options = {}
-        cafs << options
+        componentFactories << options
       else
-        options = cafs.last
+        options = componentFactories.last
       end
 
       @impl     = DefaultNanoContainer
       @parent   = options[:parent]
-      @caf      = options[:component_adapter_factory]
+      @componentFactory      = options[:component_adapter_factory]
       @monitor  = options[:component_monitor]
       @comps    = []
       @children = []
@@ -126,12 +126,12 @@ module Nano
       @comps << Component.new(options)
     end
 
-    def container(*cafs, &block)
-      unless cafs.last.is_a?(Hash)
+    def container(*componentFactories, &block)
+      unless componentFactories.last.is_a?(Hash)
         options = {}
-        cafs << options
+        componentFactories << options
       else
-        options = cafs.last
+        options = componentFactories.last
       end
 
       if !options[:parent].nil? && options[:parent].equal?($parent)
@@ -140,7 +140,7 @@ module Nano
       if options[:parent].nil?
         options[:parent] = @container
       end
-      container = Container.new(*cafs)
+      container = Container.new(*componentFactories)
       container.build(&block)
       container
     end
@@ -166,10 +166,10 @@ module Nano
 
     private
     def construct_container
-      if @parent && !@caf && !@impl
+      if @parent && !@componentFactory && !@impl
         container = @parent.makeChildContainer
       else
-        container = ContainerElementHelper.makeNanoContainer(@caf, @parent, classloader)
+        container = ContainerElementHelper.makeNanoContainer(@componentFactory, @parent, classloader)
         @parent.addChildContainer(container) if @parent
       end
       container.changeMonitor(@monitor) if @monitor && container.respond_to?(:changeMonitor)

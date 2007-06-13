@@ -28,7 +28,7 @@ import java.util.List;
 public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends TestCase {
 
     //TODO - move to AbstractComponentRegistryTestCase
-    public void testGetComponentSpecification() throws PicoCompositionException, PicoCompositionException {
+    public void testGetComponentSpecification() throws PicoCompositionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         assertNull(pico.getComponentAdapter(Touchable.class));
@@ -40,7 +40,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
 
     //TODO move
     public void testMultipleImplementationsAccessedThroughKey()
-            throws PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
         SimpleTouchable Touchable1 = new SimpleTouchable();
         SimpleTouchable Touchable2 = new SimpleTouchable();
@@ -94,7 +94,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
         assertNull("Lookup of unknown key should return null", pico.getComponent("unknown"));
     }
 
-    public void testDuplicateRegistrationWithTypeAndObject() throws PicoCompositionException, PicoCompositionException {
+    public void testDuplicateRegistrationWithTypeAndObject() throws PicoCompositionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         pico.addComponent(SimpleTouchable.class);
@@ -109,7 +109,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
     }
 
 
-    public void testComponentRegistrationMismatch() throws PicoCompositionException, PicoCompositionException {
+    public void testComponentRegistrationMismatch() throws PicoCompositionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {

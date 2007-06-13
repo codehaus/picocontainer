@@ -68,7 +68,7 @@ public class BeanShellAdapter extends AbstractAdapter {
     }
 
     public Object getComponentInstance(PicoContainer pico)
-            throws PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
 
         if (instance == null) {

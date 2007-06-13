@@ -56,7 +56,7 @@ public final class CachingBehavior extends AbstractBehavior implements Lifecycle
     }
 
     public Object getComponentInstance(PicoContainer container)
-            throws PicoCompositionException, PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
         Object instance = instanceReference.get();
         if (instance == null) {

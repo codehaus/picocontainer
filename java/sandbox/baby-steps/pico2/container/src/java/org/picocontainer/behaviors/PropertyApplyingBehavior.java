@@ -65,9 +65,8 @@ public class PropertyApplyingBehavior extends AbstractBehavior {
      *                                     {@inheritDoc}
      * @see #setProperties(Map)
      */
-    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException,
-                                                                       PicoCompositionException,
-                                                                       PicoCompositionException
+    public Object getComponentInstance(PicoContainer container) throws
+                                                                PicoCompositionException
     {
         final Object componentInstance = super.getComponentInstance(container);
         if (setters == null) {

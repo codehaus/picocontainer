@@ -40,8 +40,8 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
 
-    public void testCannotInstantiateAnUnregisteredComponent() throws PicoCompositionException,
-                                                                      PicoCompositionException
+    public void testCannotInstantiateAnUnregisteredComponent() throws
+                                                               PicoCompositionException
     {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
@@ -51,7 +51,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertTrue(picoContainer.getComponents().isEmpty());
     }
 
-    public void testCanInstantiateReplacedComponent() throws PicoCompositionException, PicoCompositionException {
+    public void testCanInstantiateReplacedComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -63,7 +63,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
                 1, picoContainer.getComponents().size());
     }
 
-    public void testUnregisterAfterInstantiateComponents() throws PicoCompositionException, PicoCompositionException, AbstractInjector.AmbiguousComponentResolutionException {
+    public void testUnregisterAfterInstantiateComponents() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -71,8 +71,8 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertNull(picoContainer.getComponent(Touchable.class));
     }
 
-    public void testReplacedInstantiatedComponentHasCorrectClass() throws PicoCompositionException,
-                                                                          PicoCompositionException
+    public void testReplacedInstantiatedComponentHasCorrectClass() throws
+                                                                   PicoCompositionException
     {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);

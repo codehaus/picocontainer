@@ -25,7 +25,6 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws
-                                                                                                                                                                                                                                                         PicoCompositionException,
                                                                                                                                                                                                                                                          PicoCompositionException
     {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);

@@ -30,7 +30,7 @@ public class ConstructorInjectionFactory implements InjectionFactory, Serializab
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters)
-            throws PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
         return new ConstructorInjector(componentKey, componentImplementation, parameters,
                     componentMonitor, lifecycleStrategy);

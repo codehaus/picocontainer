@@ -57,8 +57,8 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
         return delegate.getComponentImplementation();
     }
 
-    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException,
-                                                                       PicoCompositionException
+    public Object getComponentInstance(PicoContainer container) throws
+                                                                PicoCompositionException
     {
         return delegate.getComponentInstance(container);
     }

@@ -72,7 +72,7 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
      */
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter[] parameters)
-            throws PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
         final ComponentAdapter componentAdapter = super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);

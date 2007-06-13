@@ -113,7 +113,7 @@ public class ConstructorInjector extends AbstractInjector {
         this(componentKey, componentImplementation, (Parameter[])null);
     }
 
-    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException, NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
         final Set<Constructor> conflicts = new HashSet<Constructor>();
         final Set<List<Class>> unsatisfiableDependencyTypes = new HashSet<List<Class>>();
         if (sortedMatchingConstructors == null) {
@@ -184,7 +184,8 @@ public class ConstructorInjector extends AbstractInjector {
 
 
     public Object getComponentInstance(final PicoContainer container) throws
-                                                                       PicoCompositionException, NotConcreteRegistrationException {
+                                                                       PicoCompositionException
+    {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {

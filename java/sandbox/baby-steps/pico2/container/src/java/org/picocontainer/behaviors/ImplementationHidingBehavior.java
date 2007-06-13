@@ -43,7 +43,7 @@ public class ImplementationHidingBehavior extends AbstractBehavior {
     }
 
     public Object getComponentInstance(final PicoContainer container)
-            throws PicoCompositionException, PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
 
         Object componentKey = getDelegate().getComponentKey();

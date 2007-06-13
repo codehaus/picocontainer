@@ -87,8 +87,7 @@ public class SetterInjector extends AbstractInjector {
     }
 
 
-    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException,
-                                                                                             NotConcreteRegistrationException {
+    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
         final Constructor constructor = getConstructor();
         getMatchingParameterListForSetters(container);
         return constructor;
@@ -113,7 +112,7 @@ public class SetterInjector extends AbstractInjector {
         }
     }
 
-    private Parameter[] getMatchingParameterListForSetters(PicoContainer container) throws PicoCompositionException, UnsatisfiableDependenciesException {
+    private Parameter[] getMatchingParameterListForSetters(PicoContainer container) throws PicoCompositionException {
         if (injectionMembers == null) {
             initializeInjectionMembersAndTypeLists();
         }
@@ -154,8 +153,9 @@ public class SetterInjector extends AbstractInjector {
         return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
     }
 
-    public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException,
-                                                                             PicoCompositionException, NotConcreteRegistrationException {
+    public Object getComponentInstance(final PicoContainer container) throws
+                                                                      PicoCompositionException
+    {
         final Constructor constructor = getConstructor();
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {

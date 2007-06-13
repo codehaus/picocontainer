@@ -21,7 +21,6 @@ public final class TestComponentAdapterFactory extends AnyInjectionFactory {
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter[] parameters) throws
-                                                                                                                                                                                                                                                        PicoCompositionException,
                                                                                                                                                                                                                                                         PicoCompositionException
     {
         sb.append("called");

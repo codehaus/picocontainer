@@ -177,7 +177,7 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
      * @throws NotConcreteRegistrationException
      */
     protected abstract Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws
-                                                                                               PicoCompositionException, NotConcreteRegistrationException;
+                                                                                               PicoCompositionException;
 
 
     /**

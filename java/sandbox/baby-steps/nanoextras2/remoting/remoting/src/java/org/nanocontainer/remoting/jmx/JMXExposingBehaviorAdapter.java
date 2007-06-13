@@ -85,7 +85,7 @@ public class JMXExposingBehaviorAdapter extends AbstractBehavior {
      * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(final PicoContainer container)
-            throws PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
         final ComponentAdapter componentAdapter = new CachingBehavior(getDelegate());
         final Object componentInstance = componentAdapter.getComponentInstance(container);

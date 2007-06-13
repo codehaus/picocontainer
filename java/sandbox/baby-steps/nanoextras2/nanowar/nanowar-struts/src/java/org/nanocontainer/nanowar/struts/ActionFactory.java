@@ -54,7 +54,7 @@ public final class ActionFactory {
      *                                     can be found.
      */
     public Action getAction(HttpServletRequest request, ActionMapping mapping, ActionServlet servlet)
-            throws PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
 
         MutablePicoContainer actionsContainer = actionsContainerFactory.getActionsContainer(request);

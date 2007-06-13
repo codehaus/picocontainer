@@ -28,7 +28,7 @@ import org.picocontainer.LifecycleStrategy;
 public class NonCachingBehaviorFactory extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
         if (ComponentCharacteristics.CACHE.isSoCharacterized(componentCharacteristic)) {
             return new CachingBehavior(super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters));

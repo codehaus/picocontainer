@@ -52,7 +52,7 @@ public interface ComponentAdapter<T> {
      *                                     instantiation of the component lead to an ambigous situation within the
      *                                     container.
      */
-    T getComponentInstance(PicoContainer container) throws PicoCompositionException, PicoCompositionException;
+    T getComponentInstance(PicoContainer container) throws PicoCompositionException;
 
     /**
      * Verify that all dependencies for this adapter can be satisifed. Normally, the adapter should verify this by

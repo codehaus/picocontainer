@@ -106,7 +106,7 @@ public final class ThreadLocalComponentAdapterFactory extends AbstractBehaviorFa
 
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
         final ComponentAdapter componentAdapter;
         if (ensureThreadLocal) {

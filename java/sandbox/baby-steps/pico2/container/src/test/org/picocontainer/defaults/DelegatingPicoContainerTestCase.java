@@ -22,7 +22,7 @@ public class DelegatingPicoContainerTestCase extends TestCase {
     private MutablePicoContainer parent;
     private DefaultPicoContainer child;
 
-    public void setUp() throws PicoCompositionException, PicoCompositionException {
+    public void setUp() throws PicoCompositionException {
         parent = new DefaultPicoContainer();
         child = new DefaultPicoContainer(parent);
     }

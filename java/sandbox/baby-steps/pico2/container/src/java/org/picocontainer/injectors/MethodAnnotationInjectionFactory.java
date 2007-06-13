@@ -46,7 +46,7 @@ public class MethodAnnotationInjectionFactory implements InjectionFactory, Seria
      *                                    abstract class.
      */
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
         return new MethodAnnotationInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
     }

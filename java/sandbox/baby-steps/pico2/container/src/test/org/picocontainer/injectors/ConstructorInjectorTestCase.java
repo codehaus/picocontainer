@@ -219,7 +219,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         }
     }
 
-    public void testRegisterInterfaceShouldFail() throws PicoCompositionException, PicoCompositionException {
+    public void testRegisterInterfaceShouldFail() throws PicoCompositionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {
@@ -231,7 +231,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         }
     }
 
-    public void testRegisterAbstractShouldFail() throws PicoCompositionException, PicoCompositionException {
+    public void testRegisterAbstractShouldFail() throws PicoCompositionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {

@@ -71,8 +71,8 @@ public final class ThreadLocalComponentAdapter extends AbstractBehavior {
     }
 
     public Object getComponentInstance(final PicoContainer pico)
-            throws PicoCompositionException, PicoCompositionException,
-                   PicoCompositionException
+            throws
+            PicoCompositionException
     {
 
         if (interfaces == null) {

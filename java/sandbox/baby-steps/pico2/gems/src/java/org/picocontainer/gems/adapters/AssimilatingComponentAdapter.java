@@ -113,7 +113,7 @@ public final class AssimilatingComponentAdapter extends AbstractBehavior {
      * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(final PicoContainer container)
-            throws PicoCompositionException, PicoCompositionException
+            throws PicoCompositionException
     {
         return isCompatible ? super.getComponentInstance(container) : Delegating.object(
                 type, super.getComponentInstance(container), proxyFactory);

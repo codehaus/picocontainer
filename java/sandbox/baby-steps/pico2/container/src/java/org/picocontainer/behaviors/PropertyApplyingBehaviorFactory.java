@@ -33,7 +33,6 @@ public final class PropertyApplyingBehaviorFactory extends AbstractBehaviorFacto
      * {@inheritDoc}
      */
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws
-                                                                                                                                                                                                                                                         PicoCompositionException,
                                                                                                                                                                                                                                                          PicoCompositionException
     {
         ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);

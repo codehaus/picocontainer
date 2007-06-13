@@ -31,8 +31,8 @@ public final class UserQuestionTestCase extends TestCase {
             this.bla = cheeseMap;
         }
 
-        public Object getComponentInstance(PicoContainer pico) throws PicoCompositionException,
-                                                                      PicoCompositionException
+        public Object getComponentInstance(PicoContainer pico) throws
+                                                               PicoCompositionException
         {
             return bla.get("cheese");
         }

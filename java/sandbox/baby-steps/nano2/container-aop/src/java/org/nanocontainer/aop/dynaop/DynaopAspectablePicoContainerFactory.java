@@ -69,11 +69,11 @@ public class DynaopAspectablePicoContainerFactory implements AspectablePicoConta
         return makeChildContainer(new DynaopAspectsManager(), parent);
     }
     
-    private MutablePicoContainer createMutablePicoContainer(Class containerClass, ComponentFactory caFactory,
+    private MutablePicoContainer createMutablePicoContainer(Class containerClass, ComponentFactory componentFactory,
                                                       PicoContainer parent) {
         MutablePicoContainer temp = new DefaultPicoContainer();
         temp.addComponent(containerClass);
-        temp.addComponent(ComponentFactory.class, caFactory);
+        temp.addComponent(ComponentFactory.class, componentFactory);
         if (parent != null) {
             temp.addComponent(PicoContainer.class, parent);
         }

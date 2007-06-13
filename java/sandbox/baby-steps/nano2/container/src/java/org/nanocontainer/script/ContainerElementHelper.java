@@ -14,14 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ContainerElementHelper {
-    public static NanoContainer makeNanoContainer(ComponentFactory caf, PicoContainer parent, ClassLoader classLoader) {
+    public static NanoContainer makeNanoContainer(ComponentFactory componentFactory, PicoContainer parent, ClassLoader classLoader) {
         if (parent == null) {
             parent = new EmptyPicoContainer();
         }
-        if (caf == null) {
-            caf = new CachingBehaviorFactory().forThis(new AnyInjectionFactory());
+        if (componentFactory == null) {
+            componentFactory = new CachingBehaviorFactory().forThis(new AnyInjectionFactory());
         }
-        return new DefaultNanoContainer(classLoader, new DefaultPicoContainer(caf, parent));
+        return new DefaultNanoContainer(classLoader, new DefaultPicoContainer(componentFactory, parent));
 
     }
 

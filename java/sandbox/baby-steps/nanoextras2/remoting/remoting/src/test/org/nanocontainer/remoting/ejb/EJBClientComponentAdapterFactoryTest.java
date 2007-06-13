@@ -63,8 +63,8 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
      */
     public final void testSystemInitialContext() {
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
-        final ComponentFactory caf = new EJBClientComponentAdapterFactory();
-        final ComponentAdapter componentAdapter = caf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Hello", Hello.class, null);
+        final ComponentFactory componentFactory = new EJBClientComponentAdapterFactory();
+        final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Hello", Hello.class, null);
         assertNotNull(componentAdapter);
         final Object hello1 = componentAdapter.getComponentInstance(null);
         final Object hello2 = componentAdapter.getComponentInstance(null);
@@ -80,8 +80,8 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
     public final void testPreparedInitialContext() {
         final Hashtable env = new Hashtable();
         env.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
-        final ComponentFactory caf = new EJBClientComponentAdapterFactory(env);
-        final ComponentAdapter componentAdapter = caf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Hello", Hello.class, null);
+        final ComponentFactory componentFactory = new EJBClientComponentAdapterFactory(env);
+        final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Hello", Hello.class, null);
         assertNotNull(componentAdapter);
         final Object hello1 = componentAdapter.getComponentInstance(null);
         final Object hello2 = componentAdapter.getComponentInstance(null);
@@ -97,9 +97,9 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
     public void testClassNotFoundIsConverted() {
         final Hashtable env = new Hashtable();
         env.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
-        final ComponentFactory caf = new EJBClientComponentAdapterFactory(env, true);
+        final ComponentFactory componentFactory = new EJBClientComponentAdapterFactory(env, true);
         try {
-            caf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Foo", Test.class, null);
+            componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Foo", Test.class, null);
             fail("Should have thrown a PicoCompositionException");
         } catch (PicoCompositionException e) {
             assertTrue(e.getCause() instanceof ClassNotFoundException);

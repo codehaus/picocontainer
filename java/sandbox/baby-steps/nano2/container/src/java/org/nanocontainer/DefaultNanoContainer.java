@@ -76,8 +76,8 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     protected final Map<String, PicoContainer> namedChildContainers = new HashMap<String, PicoContainer>();
 
 
-    public DefaultNanoContainer(ClassLoader classLoader, ComponentFactory caf, PicoContainer parent) {
-        super(new DefaultPicoContainer(caf, parent));
+    public DefaultNanoContainer(ClassLoader classLoader, ComponentFactory componentFactory, PicoContainer parent) {
+        super(new DefaultPicoContainer(componentFactory, parent));
         parentClassLoader = classLoader;
     }
 
@@ -93,8 +93,8 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         ((ComponentMonitorStrategy)getDelegate()).changeMonitor(componentMonitor);
     }
 
-    public DefaultNanoContainer(ComponentFactory caf) {
-        super(new DefaultPicoContainer(caf, null));
+    public DefaultNanoContainer(ComponentFactory componentFactory) {
+        super(new DefaultPicoContainer(componentFactory, null));
         parentClassLoader = DefaultNanoContainer.class.getClassLoader();
     }
 

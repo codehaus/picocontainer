@@ -169,7 +169,7 @@ public class NanoBuilderTestCase extends TestCase {
                 foo);
     }
 
-    public void testWithCafsListChainThingy() {
+    public void testWithComponentFactoriesListChainThingy() {
         NanoContainer nc = new NanoBuilder(SDI()).withComponentAdapterFactories(caching(), implHiding()).build();
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
@@ -324,8 +324,8 @@ public class NanoBuilderTestCase extends TestCase {
     }
 
     public static class TestPicoContainer extends DefaultPicoContainer {
-        public TestPicoContainer(ComponentFactory caf, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-            super(caf, lifecycleStrategy, parent, monitor);
+        public TestPicoContainer(ComponentFactory componentFactory, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+            super(componentFactory, lifecycleStrategy, parent, monitor);
         }
     }
 

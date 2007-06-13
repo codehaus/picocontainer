@@ -40,8 +40,8 @@ import java.lang.reflect.Method;
 public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
 
     private final AspectsManager aspects = new DynaopAspectsManager();
-    private final ComponentFactory caFactory = new CachingBehaviorFactory().forThis(new AspectsComponentAdapterFactory(aspects).forThis(new ConstructorInjectionFactory()));
-    private final MutablePicoContainer pico = new DefaultPicoContainer(caFactory);
+    private final ComponentFactory componentFactory = new CachingBehaviorFactory().forThis(new AspectsComponentAdapterFactory(aspects).forThis(new ConstructorInjectionFactory()));
+    private final MutablePicoContainer pico = new DefaultPicoContainer(componentFactory);
     private final PointcutsFactory cuts = aspects.getPointcutsFactory();
 
     public void testInterceptor() {

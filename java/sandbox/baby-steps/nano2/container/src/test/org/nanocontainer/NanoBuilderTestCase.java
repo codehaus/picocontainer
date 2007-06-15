@@ -201,7 +201,7 @@ public class NanoBuilderTestCase extends TestCase {
 
     public void testWithBogusParentContainer() {
         try {
-            NanoContainer nc = new NanoBuilder((PicoContainer)null).build();
+            new NanoBuilder((PicoContainer)null).build();
             fail("should have barfed");
         } catch (NullPointerException e) {
             //expected

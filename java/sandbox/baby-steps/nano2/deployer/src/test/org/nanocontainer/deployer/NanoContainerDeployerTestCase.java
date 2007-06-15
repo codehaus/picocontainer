@@ -71,7 +71,7 @@ public final class NanoContainerDeployerTestCase extends TestCase {
         FileObject applicationFolder = getApplicationFolder(manager, folderPath);
 
         try {
-            Deployer deployer = null;
+            Deployer deployer;
             deployer = new NanoContainerDeployer(manager);
             ObjectReference containerRef = deployer.deploy(applicationFolder, getClass().getClassLoader(), null,null);
             PicoContainer pico = (PicoContainer) containerRef.get();
@@ -117,7 +117,7 @@ public final class NanoContainerDeployerTestCase extends TestCase {
         FileObject badArchive = getApplicationArchive(manager, jarsDir + "/successful-deploy.jar");
         VFSClassLoader classLoader = new VFSClassLoader(new FileObject[] {badArchive}, manager, getClass().getClassLoader());
 
-        ObjectReference containerRef = deployer.deploy(applicationFolder, classLoader, null, null);
+        deployer.deploy(applicationFolder, classLoader, null, null);
 
     }
 

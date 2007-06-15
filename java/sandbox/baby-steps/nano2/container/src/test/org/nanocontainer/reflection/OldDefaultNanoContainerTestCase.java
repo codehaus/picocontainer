@@ -36,7 +36,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
 
         assertNotNull("WebServerImpl should exist", nanoContainer.getComponent(WebServerImpl.class));
-        assertTrue("WebServerImpl should exist", nanoContainer.getComponent(WebServerImpl.class) instanceof WebServerImpl);
+        assertTrue("WebServerImpl should exist", nanoContainer.getComponent(WebServerImpl.class) != null);
     }
 
     public void testNoGenerationRegistration() throws PicoCompositionException {

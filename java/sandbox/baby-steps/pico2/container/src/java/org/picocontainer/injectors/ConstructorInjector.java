@@ -122,10 +122,9 @@ public class ConstructorInjector extends AbstractInjector {
         Constructor greediestConstructor = null;
         int lastSatisfiableConstructorSize = -1;
         Class unsatisfiedDependencyType = null;
-        for (Constructor sortedMatchingConstructor : sortedMatchingConstructors) {
+        for (final Constructor sortedMatchingConstructor : sortedMatchingConstructors) {
             boolean failedDependency = false;
-            final Constructor constructor = sortedMatchingConstructor;
-            Class[] parameterTypes = constructor.getParameterTypes();
+            Class[] parameterTypes = sortedMatchingConstructor.getParameterTypes();
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
             // remember: all constructors with less arguments than the given parameters are filtered out already
@@ -134,7 +133,7 @@ public class ConstructorInjector extends AbstractInjector {
                 final int j1 = j;
                 if (currentParameters[j].isResolvable(container, this, parameterTypes[j], new ParameterName() {
                     public String getParameterName() {
-                        String[] names = paranamer.lookupParameterNames(constructor);
+                        String[] names = paranamer.lookupParameterNames(sortedMatchingConstructor);
                         if (names.length != 0) {
                             return names[j1];
                         }
@@ -155,14 +154,14 @@ public class ConstructorInjector extends AbstractInjector {
                     return greediestConstructor;
                 } else {
                     // fits although not greedy
-                    conflicts.add(constructor);
+                    conflicts.add(sortedMatchingConstructor);
                 }
             } else if (!failedDependency && lastSatisfiableConstructorSize == parameterTypes.length) {
                 // satisfied and same size as previous one?
-                conflicts.add(constructor);
+                conflicts.add(sortedMatchingConstructor);
                 conflicts.add(greediestConstructor);
             } else if (!failedDependency) {
-                greediestConstructor = constructor;
+                greediestConstructor = sortedMatchingConstructor;
                 lastSatisfiableConstructorSize = parameterTypes.length;
             }
         }

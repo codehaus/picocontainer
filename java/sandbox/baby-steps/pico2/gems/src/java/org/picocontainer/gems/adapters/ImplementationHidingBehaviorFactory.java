@@ -11,10 +11,6 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory {
 
-    public ImplementationHidingBehaviorFactory() {
-        forThis(new AdaptiveInjectionFactory());
-    }
-
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException
     {

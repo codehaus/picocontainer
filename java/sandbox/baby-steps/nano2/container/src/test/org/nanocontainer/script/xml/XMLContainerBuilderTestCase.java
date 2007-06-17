@@ -671,18 +671,18 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     }
 
 
-    public static class MyCAF extends ConstructorInjectionFactory {
-        public MyCAF() {
+    public static class MyComponentFactory extends ConstructorInjectionFactory {
+        public MyComponentFactory() {
             super();
         }
     }
-    public static class MyCAF2 extends AbstractBehaviorFactory {
-        public MyCAF2(ComponentFactory delegate) {
+    public static class MyComponentFactory2 extends AbstractBehaviorFactory {
+        public MyComponentFactory2(ComponentFactory delegate) {
             forThis(delegate);
         }
     }
-    public static class MyCAF3 extends AbstractBehaviorFactory {
-        public MyCAF3(ComponentFactory delegate) {
+    public static class MyComponentFactory3 extends AbstractBehaviorFactory {
+        public MyComponentFactory3(ComponentFactory delegate) {
             forThis(delegate);
         }
     }
@@ -690,9 +690,9 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     public void BROKEN_testNestedCAFLooksRightinXml() {
         Reader script = new StringReader("" +
                 "<container>" +
-                "  <component-adapter-factory class='"+MyCAF3.class.getName()+"' key='factory'>" +
-                "    <component-adapter-factory class='"+MyCAF2.class.getName()+"'>" +
-                "      <component-adapter-factory class='"+MyCAF.class.getName()+"'/>" +
+                "  <component-adapter-factory class='"+ MyComponentFactory3.class.getName()+"' key='factory'>" +
+                "    <component-adapter-factory class='"+ MyComponentFactory2.class.getName()+"'>" +
+                "      <component-adapter-factory class='"+ MyComponentFactory.class.getName()+"'/>" +
                 "    </component-adapter-factory>" +
                 "  </component-adapter-factory>" +
                 "</container>");
@@ -704,9 +704,9 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "  <namedChildContainers/>\n" +
                 "  <delegate class='org.picocontainer.DefaultPicoContainer'>\n" +
                 "    <componentKeyToAdapterCache/>\n" +
-                "    <componentFactory class='"+MyCAF3.class.getName()+"'>\n" +
-                "      <delegate class='"+MyCAF2.class.getName()+"'>\n" +
-                "        <delegate class='"+MyCAF.class.getName()+"'>\n" +
+                "    <componentFactory class='"+ MyComponentFactory3.class.getName()+"'>\n" +
+                "      <delegate class='"+ MyComponentFactory2.class.getName()+"'>\n" +
+                "        <delegate class='"+ MyComponentFactory.class.getName()+"'>\n" +
                 "        </delegate>\n" +
                 "      </delegate>\n" +
                 "    </componentFactory>\n" +
@@ -739,7 +739,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter-factory class='org.picocontainer.adapters.ImplementationHidingComponentAdapterFactory' key='factory'>" +
-                "    <component-adapter-factory class='"+MyCAF.class.getName()+"'/>" +
+                "    <component-adapter-factory class='"+ MyComponentFactory.class.getName()+"'/>" +
                 "  </component-adapter-factory>" +
                 "  <component-adapter class-name-key='org.nanocontainer.testmodel.WebServerConfig' class='org.nanocontainer.testmodel.DefaultWebServerConfig' factory='factory'/>" +
                 "</container>");

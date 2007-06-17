@@ -19,7 +19,6 @@ import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
 import org.picocontainer.Inject;
-import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.injectors.SetterInjectionFactory;
 
 import java.io.Serializable;
@@ -49,8 +48,16 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
         }
 
         if (ComponentCharacteristics.SDI.isSoCharacterized(componentCharacteristic)) {
-            return sdiDelegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
+            ComponentAdapter componentAdapter = sdiDelegate.createComponentAdapter(componentMonitor,
+                                                                                   lifecycleStrategy,
+                                                                                   componentCharacteristic,
+                                                                                   componentKey,
+                                                                                   componentImplementation,
+                                                                                   parameters);
+            ComponentCharacteristics.SDI.processed(componentCharacteristic);
+            return componentAdapter;
         }
+        ComponentCharacteristics.CDI.processed(componentCharacteristic);
         return cdiDelegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
     }
 

@@ -50,6 +50,15 @@ public class CachingBehaviorFactoryTestCase extends AbstractComponentAdapterFact
         final Map component1 = picoContainer.getComponent(Map.class);
         assertNotSame(component, component1);
     }
+    
+    public void testContainerCachesAsAContrastToTheAbove() {
+        picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
+        picoContainer.addComponent(Map.class, HashMap.class);
+        assertSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
+        final Map component = picoContainer.getComponent(Map.class);
+        final Map component1 = picoContainer.getComponent(Map.class);
+        assertSame(component, component1);
+    }
 
 
 }

@@ -15,6 +15,9 @@ public final class ComponentCharacteristics {
         public void mergeInto(ComponentCharacteristic characteristic) {
             characteristic.setProperty(_INJECTION, _CONSTRUCTOR);
         }
+        public void processed(ComponentCharacteristic characteristic) {
+            characteristic.removeProperty(_INJECTION);
+        }
         public boolean isSoCharacterized(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_INJECTION);
             return s != null && s.equals(_CONSTRUCTOR);
@@ -24,6 +27,10 @@ public final class ComponentCharacteristics {
     public static final ComponentCharacteristic SDI = new ComponentCharacteristic() {
         public void mergeInto(ComponentCharacteristic characteristic) {
             characteristic.setProperty(_INJECTION, _SETTER);
+        }
+
+        public void processed(ComponentCharacteristic characteristic) {
+            characteristic.removeProperty(_INJECTION);
         }
 
         public boolean isSoCharacterized(ComponentCharacteristic characteristic) {
@@ -37,6 +44,11 @@ public final class ComponentCharacteristics {
             characteristic.setProperty(_CACHE, FALSE);
         }
 
+
+        public void processed(ComponentCharacteristic characteristic) {
+            characteristic.removeProperty(_CACHE);
+        }
+
         public boolean isSoCharacterized(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_CACHE);
             return s != null && s.equals(FALSE);
@@ -46,6 +58,10 @@ public final class ComponentCharacteristics {
     public static final ComponentCharacteristic SINGLETON = new ComponentCharacteristic() {
         public void mergeInto(ComponentCharacteristic rc) {
             rc.setProperty(_CACHE, TRUE);
+        }
+
+        public void processed(ComponentCharacteristic characteristic) {
+            characteristic.removeProperty(_CACHE);
         }
 
         public boolean isSoCharacterized(ComponentCharacteristic characteristic) {
@@ -59,6 +75,10 @@ public final class ComponentCharacteristics {
             characteristic.setProperty(_CACHE, TRUE);
         }
 
+        public void processed(ComponentCharacteristic characteristic) {
+            characteristic.removeProperty(_CACHE);
+        }
+
         public boolean isSoCharacterized(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_CACHE);
             return s != null && s.equals(TRUE);
@@ -67,6 +87,10 @@ public final class ComponentCharacteristics {
     public static final ComponentCharacteristic NOJMX = new ComponentCharacteristic() {
         public void mergeInto(ComponentCharacteristic characteristic) {
             characteristic.setProperty(_NOJMX, TRUE);
+        }
+
+        public void processed(ComponentCharacteristic characteristic) {
+            characteristic.removeProperty(_NOJMX);
         }
 
         public boolean isSoCharacterized(ComponentCharacteristic characteristic) {

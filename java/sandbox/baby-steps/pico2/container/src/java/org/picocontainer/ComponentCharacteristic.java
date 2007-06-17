@@ -10,10 +10,16 @@ public class ComponentCharacteristic implements Serializable, Cloneable {
     public void setProperty(String name, String val) {
         props.setProperty(name, val);
     }
+    public void removeProperty(String name) {
+        props.remove(name);
+    }
     
 
     public void mergeInto(ComponentCharacteristic characteristics) {
     }
+    public void processed(ComponentCharacteristic characteristics) {
+    }
+
     public boolean isSoCharacterized(ComponentCharacteristic characteristics) {
         return false;
     }
@@ -31,5 +37,13 @@ public class ComponentCharacteristic implements Serializable, Cloneable {
         }
         cc.props = (Properties) props.clone();
         return cc;
+    }
+
+    public String toString() {
+        return props.toString();   
+    }
+
+    public boolean hasEntries() {
+        return !props.isEmpty();
     }
 }

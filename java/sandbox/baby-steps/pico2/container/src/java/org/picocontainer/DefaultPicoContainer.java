@@ -85,6 +85,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         public void mergeInto(ComponentCharacteristic rc) {
         }
 
+
+        public void processed(ComponentCharacteristic characteristics) {
+        }
+
         public boolean isSoCharacterized(ComponentCharacteristic rc) {
             return false;
         }
@@ -331,12 +335,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
         if (componentImplementationOrInstance instanceof Class) {
+            ComponentCharacteristic tmpComponentCharacteristic = (ComponentCharacteristic)characteristic.clone();
             ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(componentMonitor,
                                                                                                lifecycleStrategy,
-                                                                                               characteristic,
+                                                                                               tmpComponentCharacteristic,
                                                                                                componentKey,
                                                                                                (Class)componentImplementationOrInstance,
                                                                                                parameters);
+            if(tmpComponentCharacteristic.hasEntries()) {
+                throw new PicoCompositionException("Unprocessed Characteristics:" + tmpComponentCharacteristic);
+            }
             return addAdapter(componentAdapter);
         } else {
             ComponentAdapter componentAdapter =

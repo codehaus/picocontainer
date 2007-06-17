@@ -58,7 +58,6 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         try {
             dfca.addComponent("foo", new ClassName("TestComp"));
             Object o = dfca.getComponent("foo");
-            System.out.println("");
             fail("Should have failed. Class was loaded from " + o.getClass().getProtectionDomain().getCodeSource().getLocation());
         } catch (PicoClassNotFoundException expected) {
         }

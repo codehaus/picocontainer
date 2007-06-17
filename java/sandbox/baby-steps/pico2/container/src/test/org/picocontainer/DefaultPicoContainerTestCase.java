@@ -280,7 +280,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     public void testChangeMonitorIsIgnoredIfNotSupportingStrategy(){
         StringWriter writer = new StringWriter();
         ComponentMonitor monitor = new WriterComponentMonitor(writer);
-        DefaultPicoContainer parent = new DefaultPicoContainer(new ComponentAdapterFactoryWithNoMonitor(new ComponentAdapterWithNoMonitor(new SimpleTouchable())));
+        DefaultPicoContainer parent = new DefaultPicoContainer(new ComponentFactoryWithNoMonitor(new ComponentAdapterWithNoMonitor(new SimpleTouchable())));
         parent.addChildContainer(new EmptyPicoContainer());
         parent.addComponent("t1", SimpleTouchable.class);
         parent.changeMonitor(monitor);
@@ -298,9 +298,9 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         assertEquals(monitor2, pico.currentMonitor());
     }
    
-    private static final class ComponentAdapterFactoryWithNoMonitor implements ComponentFactory {
+    private static final class ComponentFactoryWithNoMonitor implements ComponentFactory {
         private final ComponentAdapter adapter;
-        public ComponentAdapterFactoryWithNoMonitor(ComponentAdapter adapter){
+        public ComponentFactoryWithNoMonitor(ComponentAdapter adapter){
             this.adapter = adapter;
         }
         public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws

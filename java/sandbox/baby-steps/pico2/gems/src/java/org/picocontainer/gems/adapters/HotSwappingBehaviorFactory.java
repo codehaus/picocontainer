@@ -30,10 +30,6 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  */
 public class HotSwappingBehaviorFactory extends AbstractBehaviorFactory {
 
-    public HotSwappingBehaviorFactory() {
-        forThis(new AdaptiveInjectionFactory());
-    }
-
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException
     {

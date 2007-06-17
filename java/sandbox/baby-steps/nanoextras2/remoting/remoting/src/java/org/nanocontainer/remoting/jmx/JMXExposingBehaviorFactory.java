@@ -76,7 +76,7 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
     {
         final ComponentAdapter componentAdapter = super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
-        if (ComponentCharacteristics.NOJMX.isSoCharacterized(componentCharacteristic)) {
+        if (ComponentCharacteristics.NOJMX.characterizes(componentCharacteristic)) {
             return componentAdapter;            
         } else {
             return new JMXExposingBehaviorAdapter(componentAdapter, mBeanServer, providers);

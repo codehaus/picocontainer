@@ -20,7 +20,7 @@ public class ComponentCharacteristic implements Serializable, Cloneable {
     public void processed(ComponentCharacteristic characteristics) {
     }
 
-    public boolean isSoCharacterized(ComponentCharacteristic characteristics) {
+    public boolean characterizes(ComponentCharacteristic characteristics) {
         return false;
     }
 

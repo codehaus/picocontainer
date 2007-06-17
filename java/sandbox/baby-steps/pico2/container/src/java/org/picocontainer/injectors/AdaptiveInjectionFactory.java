@@ -19,7 +19,6 @@ import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
 import org.picocontainer.Inject;
-import org.picocontainer.injectors.SetterInjectionFactory;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -33,32 +32,49 @@ import java.lang.reflect.Method;
  */
 public class AdaptiveInjectionFactory implements InjectionFactory, Serializable {
 
-    private final ConstructorInjectionFactory cdiDelegate = new ConstructorInjectionFactory();
-    private final SetterInjectionFactory sdiDelegate = new SetterInjectionFactory();
-
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws
-                                                                                                                                                                                                                                                         PicoCompositionException
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
+                                                   LifecycleStrategy lifecycleStrategy,
+                                                   ComponentCharacteristic componentCharacteristic,
+                                                   Object componentKey,
+                                                   Class componentImplementation,
+                                                   Parameter... parameters) throws
+                                                                            PicoCompositionException
     {
         if (isFieldAnnotationInjection(componentImplementation)) {
-            return new FieldAnnotationInjectionFactory().createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
+            return new FieldAnnotationInjectionFactory().createComponentAdapter(componentMonitor,
+                                                                                lifecycleStrategy,
+                                                                                componentCharacteristic,
+                                                                                componentKey,
+                                                                                componentImplementation,
+                                                                                parameters);
         }
 
         if (isMethodAnnotationInjection(componentImplementation)) {
-            return new MethodAnnotationInjectionFactory().createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
+            return new MethodAnnotationInjectionFactory().createComponentAdapter(componentMonitor,
+                                                                                 lifecycleStrategy,
+                                                                                 componentCharacteristic,
+                                                                                 componentKey,
+                                                                                 componentImplementation,
+                                                                                 parameters);
         }
 
-        if (ComponentCharacteristics.SDI.isSoCharacterized(componentCharacteristic)) {
-            ComponentAdapter componentAdapter = sdiDelegate.createComponentAdapter(componentMonitor,
-                                                                                   lifecycleStrategy,
-                                                                                   componentCharacteristic,
-                                                                                   componentKey,
-                                                                                   componentImplementation,
-                                                                                   parameters);
+        if (ComponentCharacteristics.SDI.characterizes(componentCharacteristic)) {
+            ComponentAdapter componentAdapter = new SetterInjectionFactory().createComponentAdapter(componentMonitor,
+                                                                                                    lifecycleStrategy,
+                                                                                                    componentCharacteristic,
+                                                                                                    componentKey,
+                                                                                                    componentImplementation,
+                                                                                                    parameters);
             ComponentCharacteristics.SDI.processed(componentCharacteristic);
             return componentAdapter;
         }
         ComponentCharacteristics.CDI.processed(componentCharacteristic);
-        return cdiDelegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
+        return new ConstructorInjectionFactory().createComponentAdapter(componentMonitor,
+                                                                        lifecycleStrategy,
+                                                                        componentCharacteristic,
+                                                                        componentKey,
+                                                                        componentImplementation,
+                                                                        parameters);
     }
 
     private boolean isMethodAnnotationInjection(Class componentImplementation) {
@@ -74,7 +90,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
     private boolean isFieldAnnotationInjection(Class componentImplementation) {
         Field[] fields = componentImplementation.getDeclaredFields();
         for (Field field : fields) {
-            if (field.getAnnotation(Inject.class)!= null) {
+            if (field.getAnnotation(Inject.class) != null) {
                 return true;
             }
         }

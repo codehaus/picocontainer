@@ -3,8 +3,6 @@ package org.picocontainer;
 public final class ComponentCharacteristics {
 
     private static final String _INJECTION = "injection";
-    private static final String _CONSTRUCTOR = "constructor";
-    private static final String _SETTER = "setter";
     private static final String _CACHE = "cache";
     private static final String _NOJMX = "no-jmx";
 
@@ -12,19 +10,23 @@ public final class ComponentCharacteristics {
     private static final String TRUE = "TRUE";
 
     public static final ComponentCharacteristic CDI = new ComponentCharacteristic() {
+        private static final String _CONSTRUCTOR = "constructor";
+
         public void mergeInto(ComponentCharacteristic characteristic) {
             characteristic.setProperty(_INJECTION, _CONSTRUCTOR);
         }
         public void processed(ComponentCharacteristic characteristic) {
             characteristic.removeProperty(_INJECTION);
         }
-        public boolean isSoCharacterized(ComponentCharacteristic characteristic) {
+        public boolean characterizes(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_INJECTION);
             return s != null && s.equals(_CONSTRUCTOR);
         }
     };
 
     public static final ComponentCharacteristic SDI = new ComponentCharacteristic() {
+        private static final String _SETTER = "setter";
+
         public void mergeInto(ComponentCharacteristic characteristic) {
             characteristic.setProperty(_INJECTION, _SETTER);
         }
@@ -33,7 +35,7 @@ public final class ComponentCharacteristics {
             characteristic.removeProperty(_INJECTION);
         }
 
-        public boolean isSoCharacterized(ComponentCharacteristic characteristic) {
+        public boolean characterizes(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_INJECTION);
             return s != null && s.equals(_SETTER);
         }
@@ -49,7 +51,7 @@ public final class ComponentCharacteristics {
             characteristic.removeProperty(_CACHE);
         }
 
-        public boolean isSoCharacterized(ComponentCharacteristic characteristic) {
+        public boolean characterizes(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_CACHE);
             return s != null && s.equals(FALSE);
         }
@@ -64,7 +66,7 @@ public final class ComponentCharacteristics {
             characteristic.removeProperty(_CACHE);
         }
 
-        public boolean isSoCharacterized(ComponentCharacteristic characteristic) {
+        public boolean characterizes(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_CACHE);
             return s != null && s.equals(TRUE);
         }
@@ -79,7 +81,7 @@ public final class ComponentCharacteristics {
             characteristic.removeProperty(_CACHE);
         }
 
-        public boolean isSoCharacterized(ComponentCharacteristic characteristic) {
+        public boolean characterizes(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_CACHE);
             return s != null && s.equals(TRUE);
         }
@@ -93,7 +95,7 @@ public final class ComponentCharacteristics {
             characteristic.removeProperty(_NOJMX);
         }
 
-        public boolean isSoCharacterized(ComponentCharacteristic characteristic) {
+        public boolean characterizes(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_NOJMX);
             return s != null && s.equals(TRUE);
         }

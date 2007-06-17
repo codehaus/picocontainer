@@ -27,8 +27,6 @@ public class PicoGemsBuilderTestCase extends TestCase {
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.gems.adapters.ImplementationHidingBehaviorFactory\n" +
                 "    delegate=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
-                "      cdiDelegate\n" +
-                "      sdiDelegate\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -40,8 +38,6 @@ public class PicoGemsBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
-                "    cdiDelegate\n" +
-                "    sdiDelegate\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.Log4JComponentMonitor\n" +
@@ -54,8 +50,6 @@ public class PicoGemsBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
-                "    cdiDelegate\n" +
-                "    sdiDelegate\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.Log4JComponentMonitor\n" +
@@ -68,8 +62,6 @@ public class PicoGemsBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
-                "    cdiDelegate\n" +
-                "    sdiDelegate\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor\n" +

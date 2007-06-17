@@ -3,7 +3,7 @@ package org.picocontainer.gems.adapters;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 
 public final class HotSwappingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
-    private final ComponentFactory implementationHidingComponentAdapterFactory = new HotSwappingBehaviorFactory().forThis(new AnyInjectionFactory());
+    private final ComponentFactory implementationHidingComponentAdapterFactory = new HotSwappingBehaviorFactory().forThis(new AdaptiveInjectionFactory());
 
     // START SNIPPET: man
     public static interface Man {

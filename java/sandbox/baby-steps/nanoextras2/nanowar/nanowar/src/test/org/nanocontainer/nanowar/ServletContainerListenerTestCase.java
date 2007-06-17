@@ -32,7 +32,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.behaviors.CachingBehavior;
 
 /**
@@ -256,7 +255,7 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
     
     public void testGroovyContainerBuilderCanBeScopedWithInlineScriptsUsingPicoSyntax() throws Exception{
       String picoScript =
-          "componentFactory = new org.picocontainer.injectors.AnyInjectionFactory()\n"+
+          "componentFactory = new org.picocontainer.injectors.AdaptiveInjectionFactory()\n"+
           "pico = new org.picocontainer.DefaultPicoContainer(componentFactory, parent)\n"+
           "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
           "      System.out.println('Application scope parent '+parent)\n "+

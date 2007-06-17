@@ -26,7 +26,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.gems.adapters.ImplementationHidingBehaviorFactory\n" +
-                "    delegate=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "    delegate=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
                 "      cdiDelegate\n" +
                 "      sdiDelegate\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -39,7 +39,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(Log4JComponentMonitor.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "  componentFactory=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -53,7 +53,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(LOG4J()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "  componentFactory=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -67,7 +67,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(CommonsLoggingComponentMonitor.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AnyInjectionFactory\n" +
+                "  componentFactory=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
                 "    cdiDelegate\n" +
                 "    sdiDelegate\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +

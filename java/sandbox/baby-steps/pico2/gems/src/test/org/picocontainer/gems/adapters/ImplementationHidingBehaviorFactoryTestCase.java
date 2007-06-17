@@ -6,7 +6,7 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
-import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 
@@ -19,7 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public final class ImplementationHidingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
 
-    private final ComponentFactory implementationHidingComponentAdapterFactory = new ImplementationHidingBehaviorFactory().forThis(new AnyInjectionFactory());
+    private final ComponentFactory implementationHidingComponentAdapterFactory = new ImplementationHidingBehaviorFactory().forThis(new AdaptiveInjectionFactory());
     private final ComponentFactory cachingBehaviorFactory = new CachingBehaviorFactory().forThis(implementationHidingComponentAdapterFactory);
 
     public void testComponentRegisteredWithInterfaceKeyOnlyImplementsThatInterfaceUsingStandardProxyfactory() {

@@ -17,7 +17,7 @@ import org.picocontainer.DefaultPicoContainer;
 import java.security.PrivilegedAction;
 import org.picocontainer.ComponentFactory;
 import java.security.AccessController;
-import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
@@ -149,7 +149,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
                 }
                 parent.addChildContainer(childContainer);
             } else if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
-                ComponentFactory componentFactory = new CachingBehaviorFactory().forThis(new AnyInjectionFactory());
+                ComponentFactory componentFactory = new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory());
                 childContainer = new DefaultPicoContainer(getDecorationDelegate().decorate(componentFactory, attributes), parent);
                 changeComponentMonitor(childContainer, createComponentMonitor(attributes));
             } else {
@@ -196,7 +196,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
     private ComponentFactory createComponentAdapterFactory(Map attributes) {
         final ComponentFactory factory = (ComponentFactory) attributes.remove(COMPONENT_ADAPTER_FACTORY);
         if ( factory == null ){
-            return new CachingBehaviorFactory().forThis(new AnyInjectionFactory());
+            return new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory());
         }
         return factory;
     }

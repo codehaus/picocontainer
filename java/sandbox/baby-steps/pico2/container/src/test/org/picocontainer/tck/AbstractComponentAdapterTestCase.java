@@ -21,7 +21,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.parameters.ConstantParameter;
@@ -70,7 +70,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
     }
 
     protected ComponentFactory createDefaultComponentAdapterFactory() {
-        return new AnyInjectionFactory();
+        return new AdaptiveInjectionFactory();
     }
 
     // ============================================

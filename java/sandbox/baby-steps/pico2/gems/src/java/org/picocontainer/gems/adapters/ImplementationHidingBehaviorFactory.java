@@ -6,13 +6,13 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory {
 
     public ImplementationHidingBehaviorFactory() {
-        forThis(new AnyInjectionFactory());
+        forThis(new AdaptiveInjectionFactory());
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)

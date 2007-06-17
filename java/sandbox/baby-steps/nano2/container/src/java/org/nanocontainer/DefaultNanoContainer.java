@@ -22,7 +22,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.CustomPermissionsURLClassLoader;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
@@ -88,7 +88,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     }
 
     public DefaultNanoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor componentMonitor) {
-        super(new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), parent));
+        super(new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), parent));
         parentClassLoader = classLoader;
         ((ComponentMonitorStrategy)getDelegate()).changeMonitor(componentMonitor);
     }

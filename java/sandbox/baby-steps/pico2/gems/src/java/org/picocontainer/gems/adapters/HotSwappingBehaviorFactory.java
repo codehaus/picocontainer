@@ -16,7 +16,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 
@@ -31,7 +31,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 public class HotSwappingBehaviorFactory extends AbstractBehaviorFactory {
 
     public HotSwappingBehaviorFactory() {
-        forThis(new AnyInjectionFactory());
+        forThis(new AdaptiveInjectionFactory());
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)

@@ -6,13 +6,13 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 
 /**
  * @author Paul Hammant
  * @version $Revision$
  */
-public final class TestComponentAdapterFactory extends AnyInjectionFactory {
+public final class TestComponentAdapterFactory extends AdaptiveInjectionFactory {
 
     public final StringBuffer sb;
 

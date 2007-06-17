@@ -27,14 +27,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * Creates instances of {@link ConstructorInjector} decorated by
- * {@link CachingBehavior}.
+ * Creates instances Injectors, depending on whether the component is the presence of Annotations and characteristics.
  *
- * @author Jon Tirs&eacute;n
- * @author Aslak Helles&oslash;y
+ * @author Paul Hammant
  * @version $Revision$
  */
-public class AnyInjectionFactory implements InjectionFactory, Serializable {
+public class AdaptiveInjectionFactory implements InjectionFactory, Serializable {
 
     private final ConstructorInjectionFactory cdiDelegate = new ConstructorInjectionFactory();
     private final SetterInjectionFactory sdiDelegate = new SetterInjectionFactory();

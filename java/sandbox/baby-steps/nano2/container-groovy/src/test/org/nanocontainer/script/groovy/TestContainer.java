@@ -4,7 +4,7 @@ import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 
 /**
@@ -18,7 +18,7 @@ public class TestContainer extends DefaultNanoContainer {
     }
 
     public TestContainer(PicoContainer parent) {
-        super(TestContainer.class.getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), parent));
+        super(TestContainer.class.getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), parent));
     }
 
     public TestContainer() {

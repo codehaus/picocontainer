@@ -18,7 +18,6 @@ import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.injectors.AnyInjectionFactory;
 
 /**
  * @author Aslak Helles&oslash;y

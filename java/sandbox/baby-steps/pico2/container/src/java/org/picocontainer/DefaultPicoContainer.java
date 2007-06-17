@@ -17,7 +17,7 @@ import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.AnyInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -149,18 +149,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
     /**
-     * Creates a new container with the AnyInjectionFactory using a
+     * Creates a new container with the AdaptiveInjectionFactory using a
      * custom ComponentMonitor
      *
      * @param monitor the ComponentMonitor to use
      * @param parent  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentMonitor monitor, PicoContainer parent) {
-        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), new StartableLifecycleStrategy(monitor), parent, monitor);
+        this(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), new StartableLifecycleStrategy(monitor), parent, monitor);
     }
 
     /**
-     * Creates a new container with the AnyInjectionFactory using a
+     * Creates a new container with the AdaptiveInjectionFactory using a
      * custom ComponentMonitor and lifecycle strategy
      *
      * @param monitor           the ComponentMonitor to use
@@ -168,11 +168,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent            the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), lifecycleStrategy, parent, monitor);
+        this(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), lifecycleStrategy, parent, monitor);
     }
 
     /**
-     * Creates a new container with the AnyInjectionFactory using a
+     * Creates a new container with the AdaptiveInjectionFactory using a
      * custom lifecycle strategy
      *
      * @param lifecycleStrategy the lifecycle strategy to use.
@@ -193,7 +193,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with the AnyInjectionFactory using a
+     * Creates a new container with the AdaptiveInjectionFactory using a
      * custom ComponentMonitor
      *
      * @param monitor the ComponentMonitor to use
@@ -203,18 +203,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with a (caching) {@link AnyInjectionFactory}
+     * Creates a new container with a (caching) {@link AdaptiveInjectionFactory}
      * and a parent container.
      *
      * @param parent the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(PicoContainer parent) {
-        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), parent);
+        this(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), parent);
     }
 
-    /** Creates a new container with a (caching) {@link AnyInjectionFactory} and no parent container. */
+    /** Creates a new container with a (caching) {@link AdaptiveInjectionFactory} and no parent container. */
     public DefaultPicoContainer() {
-        this(new CachingBehaviorFactory().forThis(new AnyInjectionFactory()), null);
+        this(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), null);
     }
 
     public Collection<ComponentAdapter<?>> getComponentAdapters() {

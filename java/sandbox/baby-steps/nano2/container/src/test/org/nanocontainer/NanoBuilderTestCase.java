@@ -155,7 +155,7 @@ public class NanoBuilderTestCase extends TestCase {
 
 
     public void testWithImplementationHidingInstance() {
-        NanoContainer nc = new NanoBuilder().withComponentAdapterFactory(new ImplementationHidingBehaviorFactory()).build();
+        NanoContainer nc = new NanoBuilder().withComponentFactory(new ImplementationHidingBehaviorFactory()).build();
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +

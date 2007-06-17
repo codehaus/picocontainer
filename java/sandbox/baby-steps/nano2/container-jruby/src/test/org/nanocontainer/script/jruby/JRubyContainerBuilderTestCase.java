@@ -264,9 +264,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
                                          "CachingBehaviorFactory = org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                                         "ConstructorInjectionFactory = org.picocontainer.injectors.ConstructorInjectionFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:component_adapter_factory => CachingBehaviorFactory.new, :component_monitor => monitor) {\n" +
+                                         "container(:component_adapter_factory => CachingBehaviorFactory.new().forThis(ConstructorInjectionFactory.new), :component_monitor => monitor) {\n" +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +
                                          "}");
@@ -301,9 +302,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
                                          "CachingBehaviorFactory = org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                                         "ConstructorInjectionFactory = org.picocontainer.injectors.ConstructorInjectionFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:parent => $parent, :component_adapter_factory => CachingBehaviorFactory.new, :component_monitor => monitor) {\n"
+                                         "container(:parent => $parent, :component_adapter_factory => CachingBehaviorFactory.new().forThis(ConstructorInjectionFactory.new), :component_monitor => monitor) {\n"
                                          +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +

@@ -307,11 +307,12 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
                 "import org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                "import org.picocontainer.injectors.ConstructorInjectionFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(componentFactory: new CachingBehaviorFactory(), componentMonitor: monitor) {\n" +
+                "nano = builder.container(componentFactory: new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -348,11 +349,12 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
                 "import org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                "import org.picocontainer.injectors.ConstructorInjectionFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(parent:parent, componentFactory: new CachingBehaviorFactory(), componentMonitor: monitor) {\n" +
+                "nano = builder.container(parent:parent, componentFactory: new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");

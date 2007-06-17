@@ -32,6 +32,8 @@ import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -296,12 +298,14 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
+            ComponentFactory componentFactory;
             String componentFactoryName = rootElement.getAttribute("componentadapterfactory");
             if ("".equals(componentFactoryName) || componentFactoryName == null) {
-                componentFactoryName = CachingBehaviorFactory.class.getName();
+                componentFactory = new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory());
+            } else {
+                Class componentFactoryClass = getClassLoader().loadClass(componentFactoryName);
+                componentFactory = (ComponentFactory) componentFactoryClass.newInstance();
             }
-            Class componentFactoryClass = getClassLoader().loadClass(componentFactoryName);
-            ComponentFactory componentFactory = (ComponentFactory) componentFactoryClass.newInstance();
             MutablePicoContainer picoContainer = new DefaultPicoContainer(componentFactory);
             DefaultNanoContainer nano = new DefaultNanoContainer(getClassLoader(), picoContainer);
             populateContainer(nano);

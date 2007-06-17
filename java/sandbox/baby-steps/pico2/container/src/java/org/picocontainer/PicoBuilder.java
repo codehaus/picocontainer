@@ -157,7 +157,7 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withComponentAdapterFactory(ComponentFactory componentFactory) {
+    public PicoBuilder withComponentFactory(ComponentFactory componentFactory) {
         if (componentFactory == null) {
             throw new NullPointerException("CAF cannot be null");
         }

@@ -8,12 +8,14 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.BehaviorFactory;
 import org.picocontainer.InjectionFactory;
 
+import org.nanocontainer.script.NanoContainerMarkupException;
+
 
 public final class NanoBuilder {
 
     private Class ncClass = DefaultNanoContainer.class;
     private final PicoBuilder picoBuilder;
-    private final ClassLoader classLoader = DefaultNanoContainer.class.getClassLoader();
+    private ClassLoader classLoader = DefaultNanoContainer.class.getClassLoader();
 
     public NanoBuilder(PicoContainer parentcontainer, InjectionFactory injectionType) {
         picoBuilder = new PicoBuilder(parentcontainer, injectionType);
@@ -64,8 +66,8 @@ public final class NanoBuilder {
         return this;
     }
 
-    public NanoBuilder withComponentAdapterFactory(ComponentFactory componentFactory) {
-        picoBuilder.withComponentAdapterFactory(componentFactory);
+    public NanoBuilder withComponentFactory(ComponentFactory componentFactory) {
+        picoBuilder.withComponentFactory(componentFactory);
         return this;
     }
 
@@ -106,6 +108,29 @@ public final class NanoBuilder {
 
     public NanoBuilder thisPicoContainer(Class picoContainerClass) {
         picoBuilder.thisMutablePicoContainer(picoContainerClass);
+        return this;
+    }
+
+    public NanoBuilder withClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+        return this;
+    }
+
+    public NanoBuilder withComponentFactory(String componentFactoryName) {
+            picoBuilder.withComponentFactory(loadClass(componentFactoryName));
+        return this;
+    }
+
+    private Class loadClass(String className) {
+        try {
+            return classLoader.loadClass(className);
+        } catch (ClassNotFoundException e) {
+            throw new NanoContainerMarkupException(e);
+        }
+    }
+
+    public NanoBuilder withMonitor(String monitorName) {
+        picoBuilder.withMonitor(loadClass(monitorName));
         return this;
     }
 }

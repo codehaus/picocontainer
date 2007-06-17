@@ -21,6 +21,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 
 /**
@@ -54,11 +55,11 @@ public class DynaopAspectablePicoContainerFactory implements AspectablePicoConta
     }
 
     public AspectablePicoContainer createContainer(PicoContainer parent) {
-        return createContainer(new CachingBehaviorFactory(), parent);
+        return createContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()), parent);
     }
 
     public AspectablePicoContainer createContainer() {
-        return createContainer(new CachingBehaviorFactory());
+        return createContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
     }
 
     public AspectablePicoContainer makeChildContainer(AspectsManager aspectsManager, AspectablePicoContainer parent) {

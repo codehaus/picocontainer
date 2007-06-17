@@ -27,10 +27,6 @@ import org.picocontainer.injectors.AnyInjectionFactory;
  */
 public class CachingBehaviorFactory extends AbstractBehaviorFactory {
 
-    public CachingBehaviorFactory() {
-        forThis(new AnyInjectionFactory());
-    }
-
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException

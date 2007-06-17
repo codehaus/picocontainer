@@ -167,7 +167,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithImplementationHidingInstance() {
-        MutablePicoContainer mpc = new PicoBuilder().withComponentAdapterFactory(new ImplementationHidingBehaviorFactory()).build();
+        MutablePicoContainer mpc = new PicoBuilder().withComponentFactory(new ImplementationHidingBehaviorFactory()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +

@@ -38,8 +38,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
                                                    Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws
-                                                                            PicoCompositionException
-    {
+                                                                            PicoCompositionException {
         if (isFieldAnnotationInjection(componentImplementation)) {
             return new FieldAnnotationInjectionFactory().createComponentAdapter(componentMonitor,
                                                                                 lifecycleStrategy,

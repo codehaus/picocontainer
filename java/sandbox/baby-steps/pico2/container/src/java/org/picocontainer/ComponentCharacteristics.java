@@ -57,21 +57,6 @@ public final class ComponentCharacteristics {
         }
     };
 
-    public static final ComponentCharacteristic SINGLETON = new ComponentCharacteristic() {
-        public void mergeInto(ComponentCharacteristic rc) {
-            rc.setProperty(_CACHE, TRUE);
-        }
-
-        public void processed(ComponentCharacteristic characteristic) {
-            characteristic.removeProperty(_CACHE);
-        }
-
-        public boolean characterizes(ComponentCharacteristic characteristic) {
-            String s = characteristic.getProperty(_CACHE);
-            return s != null && s.equals(TRUE);
-        }
-    };
-
     public static final ComponentCharacteristic CACHE = new ComponentCharacteristic() {
         public void mergeInto(ComponentCharacteristic characteristic) {
             characteristic.setProperty(_CACHE, TRUE);
@@ -97,6 +82,41 @@ public final class ComponentCharacteristics {
 
         public boolean characterizes(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_NOJMX);
+            return s != null && s.equals(TRUE);
+        }
+    };
+    public static final ComponentCharacteristic THREAD_SAFE = new ComponentCharacteristic() {
+        private static final String _THREAD_SAFE = "thread-safe";
+
+        public void mergeInto(ComponentCharacteristic characteristic) {
+            characteristic.setProperty(_THREAD_SAFE, TRUE);
+        }
+
+        public void processed(ComponentCharacteristic characteristic) {
+            characteristic.removeProperty(_THREAD_SAFE);
+        }
+
+        public boolean characterizes(ComponentCharacteristic characteristic) {
+            String s = characteristic.getProperty(_THREAD_SAFE);
+            return s != null && s.equals(TRUE);
+        }
+    };
+    
+    public static final ComponentCharacteristic SINGLE = CACHE;
+    
+    public static final ComponentCharacteristic HIDE = new ComponentCharacteristic() {
+        private static final String _HIDE = "hide-implementations";
+
+        public void mergeInto(ComponentCharacteristic characteristic) {
+            characteristic.setProperty(_HIDE, TRUE);
+        }
+
+        public void processed(ComponentCharacteristic characteristic) {
+            characteristic.removeProperty(_HIDE);
+        }
+
+        public boolean characterizes(ComponentCharacteristic characteristic) {
+            String s = characteristic.getProperty(_HIDE);
             return s != null && s.equals(TRUE);
         }
     };

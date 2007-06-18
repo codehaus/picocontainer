@@ -51,7 +51,7 @@ public class NonCachingBehaviorFactoryTestCase extends AbstractComponentAdapterF
 
     public void testContainerCanFollowSINGLETONDirectiveSelectively() {
         picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
-        picoContainer.change(ComponentCharacteristics.SINGLETON);
+        picoContainer.change(ComponentCharacteristics.SINGLE);
         picoContainer.addComponent(Map.class, HashMap.class);
         assertNotSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
         assertSame(picoContainer.getComponent(Map.class), picoContainer.getComponent(Map.class));

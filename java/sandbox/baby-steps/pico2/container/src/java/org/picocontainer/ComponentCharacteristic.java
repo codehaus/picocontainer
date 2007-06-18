@@ -43,7 +43,7 @@ public class ComponentCharacteristic implements Serializable, Cloneable {
         return props.toString();   
     }
 
-    public boolean hasEntries() {
+    public boolean hasUnProcessedEntries() {
         return !props.isEmpty();
     }
 }

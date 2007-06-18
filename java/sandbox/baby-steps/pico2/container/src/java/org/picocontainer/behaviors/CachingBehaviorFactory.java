@@ -40,6 +40,7 @@ public class CachingBehaviorFactory extends AbstractBehaviorFactory {
             ComponentCharacteristics.NOCACHE.processed(componentCharacteristic);
             return componentAdapter;
         }
+        ComponentCharacteristics.CACHE.processed(componentCharacteristic);
         return new CachingBehavior(super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters));
 
     }

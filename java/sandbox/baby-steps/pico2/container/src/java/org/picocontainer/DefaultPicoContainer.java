@@ -342,7 +342,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                                                                                                componentKey,
                                                                                                (Class)componentImplementationOrInstance,
                                                                                                parameters);
-            if(tmpComponentCharacteristic.hasEntries()) {
+            if(tmpComponentCharacteristic.hasUnProcessedEntries()) {
                 throw new PicoCompositionException("Unprocessed Characteristics:" + tmpComponentCharacteristic);
             }
             return addAdapter(componentAdapter);

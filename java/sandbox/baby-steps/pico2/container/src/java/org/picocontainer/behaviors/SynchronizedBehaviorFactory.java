@@ -14,6 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 /**
@@ -23,6 +24,14 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 public class SynchronizedBehaviorFactory extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) {
-        return new SynchronizedBehavior(super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters));
+        SynchronizedBehavior synchronizedBehavior = new SynchronizedBehavior(super.createComponentAdapter(
+            componentMonitor,
+            lifecycleStrategy,
+            componentCharacteristic,
+            componentKey,
+            componentImplementation,
+            parameters));
+        ComponentCharacteristics.THREAD_SAFE.processed(componentCharacteristic);
+        return synchronizedBehavior;
     }
 }

@@ -35,5 +35,4 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
     {
         return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
     }
-
 }

@@ -13,7 +13,7 @@ import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.behaviors.NonCachingBehaviorFactory;
+import org.picocontainer.behaviors.OptInCachingBehaviorFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentCharacteristics;
@@ -25,13 +25,13 @@ import java.util.HashMap;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Revision$
  */
-public class NonCachingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public class OptInCachingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
     protected void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }
 
     protected ComponentFactory createComponentFactory() {
-        return new NonCachingBehaviorFactory().forThis(new ConstructorInjectionFactory());
+        return new OptInCachingBehaviorFactory().forThis(new ConstructorInjectionFactory());
     }
 
     public void testContainerReturnsSameInstanceEachCall() {

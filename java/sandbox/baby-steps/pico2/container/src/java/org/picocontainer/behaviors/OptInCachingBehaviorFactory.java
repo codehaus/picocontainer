@@ -25,7 +25,7 @@ import org.picocontainer.LifecycleStrategy;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Revision$
  */
-public class NonCachingBehaviorFactory extends AbstractBehaviorFactory {
+public class OptInCachingBehaviorFactory extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException

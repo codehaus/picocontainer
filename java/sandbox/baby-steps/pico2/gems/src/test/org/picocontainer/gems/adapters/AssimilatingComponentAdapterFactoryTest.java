@@ -32,7 +32,7 @@ public class AssimilatingComponentAdapterFactoryTest extends AbstractComponentAd
      * @see org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase#createComponentFactory()
      */
     protected ComponentFactory createComponentFactory() {
-        return new AssimilatingComponentAdapterFactory(Touchable.class).forThis(new ConstructorInjectionFactory());
+        return new AssimilatingComponentFactory(Touchable.class).forThis(new ConstructorInjectionFactory());
     }
 
     /**

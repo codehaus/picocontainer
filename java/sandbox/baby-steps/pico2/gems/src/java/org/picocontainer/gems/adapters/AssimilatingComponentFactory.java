@@ -30,28 +30,28 @@ import org.picocontainer.ComponentFactory;
  * @author J&ouml;rg Schaible
  * @since 1.2
  */
-public class AssimilatingComponentAdapterFactory extends AbstractBehaviorFactory {
+public class AssimilatingComponentFactory extends AbstractBehaviorFactory {
 
     private final ProxyFactory proxyFactory;
     private final Class assimilationType;
 
     /**
-     * Construct an AssimilatingComponentAdapterFactory. The instance will use the {@link StandardProxyFactory} using the JDK
+     * Construct an AssimilatingComponentFactory. The instance will use the {@link StandardProxyFactory} using the JDK
      * implementation.
      * 
      * @param type The assimilated type.
      */
-    public AssimilatingComponentAdapterFactory(final Class type) {
+    public AssimilatingComponentFactory(final Class type) {
         this(type, new StandardProxyFactory());
     }
 
     /**
-     * Construct an AssimilatingComponentAdapterFactory using a special {@link ProxyFactory}.
+     * Construct an AssimilatingComponentFactory using a special {@link ProxyFactory}.
      * 
      * @param type The assimilated type.
      * @param proxyFactory The proxy factory to use.
      */
-    public AssimilatingComponentAdapterFactory(final Class type, final ProxyFactory proxyFactory) {
+    public AssimilatingComponentFactory(final Class type, final ProxyFactory proxyFactory) {
         this.assimilationType = type;
         this.proxyFactory = proxyFactory;
     }

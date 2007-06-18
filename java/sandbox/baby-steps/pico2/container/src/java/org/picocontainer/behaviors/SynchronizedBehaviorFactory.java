@@ -31,7 +31,7 @@ public class SynchronizedBehaviorFactory extends AbstractBehaviorFactory {
             componentKey,
             componentImplementation,
             parameters));
-        ComponentCharacteristics.THREAD_SAFE.processed(componentCharacteristic);
+        ComponentCharacteristics.THREAD_SAFE.setProcessedIn(componentCharacteristic);
         return synchronizedBehavior;
     }
 }

@@ -15,10 +15,10 @@ public final class ComponentCharacteristics {
         public void mergeInto(ComponentCharacteristic characteristic) {
             characteristic.setProperty(_INJECTION, _CONSTRUCTOR);
         }
-        public void processed(ComponentCharacteristic characteristic) {
+        public void setProcessedIn(ComponentCharacteristic characteristic) {
             characteristic.removeProperty(_INJECTION);
         }
-        public boolean characterizes(ComponentCharacteristic characteristic) {
+        public boolean isCharacterizedIn(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_INJECTION);
             return s != null && s.equals(_CONSTRUCTOR);
         }
@@ -31,11 +31,11 @@ public final class ComponentCharacteristics {
             characteristic.setProperty(_INJECTION, _SETTER);
         }
 
-        public void processed(ComponentCharacteristic characteristic) {
+        public void setProcessedIn(ComponentCharacteristic characteristic) {
             characteristic.removeProperty(_INJECTION);
         }
 
-        public boolean characterizes(ComponentCharacteristic characteristic) {
+        public boolean isCharacterizedIn(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_INJECTION);
             return s != null && s.equals(_SETTER);
         }
@@ -47,11 +47,11 @@ public final class ComponentCharacteristics {
         }
 
 
-        public void processed(ComponentCharacteristic characteristic) {
+        public void setProcessedIn(ComponentCharacteristic characteristic) {
             characteristic.removeProperty(_CACHE);
         }
 
-        public boolean characterizes(ComponentCharacteristic characteristic) {
+        public boolean isCharacterizedIn(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_CACHE);
             return s != null && s.equals(FALSE);
         }
@@ -62,11 +62,11 @@ public final class ComponentCharacteristics {
             characteristic.setProperty(_CACHE, TRUE);
         }
 
-        public void processed(ComponentCharacteristic characteristic) {
+        public void setProcessedIn(ComponentCharacteristic characteristic) {
             characteristic.removeProperty(_CACHE);
         }
 
-        public boolean characterizes(ComponentCharacteristic characteristic) {
+        public boolean isCharacterizedIn(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_CACHE);
             return s != null && s.equals(TRUE);
         }
@@ -76,11 +76,11 @@ public final class ComponentCharacteristics {
             characteristic.setProperty(_NOJMX, TRUE);
         }
 
-        public void processed(ComponentCharacteristic characteristic) {
+        public void setProcessedIn(ComponentCharacteristic characteristic) {
             characteristic.removeProperty(_NOJMX);
         }
 
-        public boolean characterizes(ComponentCharacteristic characteristic) {
+        public boolean isCharacterizedIn(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_NOJMX);
             return s != null && s.equals(TRUE);
         }
@@ -92,11 +92,11 @@ public final class ComponentCharacteristics {
             characteristic.setProperty(_THREAD_SAFE, TRUE);
         }
 
-        public void processed(ComponentCharacteristic characteristic) {
+        public void setProcessedIn(ComponentCharacteristic characteristic) {
             characteristic.removeProperty(_THREAD_SAFE);
         }
 
-        public boolean characterizes(ComponentCharacteristic characteristic) {
+        public boolean isCharacterizedIn(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_THREAD_SAFE);
             return s != null && s.equals(TRUE);
         }
@@ -111,11 +111,11 @@ public final class ComponentCharacteristics {
             characteristic.setProperty(_HIDE, TRUE);
         }
 
-        public void processed(ComponentCharacteristic characteristic) {
+        public void setProcessedIn(ComponentCharacteristic characteristic) {
             characteristic.removeProperty(_HIDE);
         }
 
-        public boolean characterizes(ComponentCharacteristic characteristic) {
+        public boolean isCharacterizedIn(ComponentCharacteristic characteristic) {
             String s = characteristic.getProperty(_HIDE);
             return s != null && s.equals(TRUE);
         }

@@ -7,20 +7,20 @@ public class ComponentCharacteristic implements Serializable, Cloneable {
 
     private Properties props = new Properties();
 
-    public void setProperty(String name, String val) {
+    protected void setProperty(String name, String val) {
         props.setProperty(name, val);
     }
-    public void removeProperty(String name) {
+    protected void removeProperty(String name) {
         props.remove(name);
     }
     
 
     public void mergeInto(ComponentCharacteristic characteristics) {
     }
-    public void processed(ComponentCharacteristic characteristics) {
+    public void setProcessedIn(ComponentCharacteristic characteristics) {
     }
 
-    public boolean characterizes(ComponentCharacteristic characteristics) {
+    public boolean isCharacterizedIn(ComponentCharacteristic characteristics) {
         return false;
     }
 

@@ -25,13 +25,13 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
                                                    Parameter... parameters) throws PicoCompositionException {
         List<ComponentFactory> list = new ArrayList<ComponentFactory>();
         list.add(new AdaptiveInjectionFactory());
-        if (ComponentCharacteristics.THREAD_SAFE.characterizes(componentCharacteristic)) {
+        if (ComponentCharacteristics.THREAD_SAFE.isCharacterizedIn(componentCharacteristic)) {
             list.add(new SynchronizedBehaviorFactory());
         }
-        if (ComponentCharacteristics.HIDE.characterizes(componentCharacteristic)) {
+        if (ComponentCharacteristics.HIDE.isCharacterizedIn(componentCharacteristic)) {
             list.add(new ImplementationHidingBehaviorFactory());
         }
-        if (ComponentCharacteristics.CACHE.characterizes(componentCharacteristic)) {
+        if (ComponentCharacteristics.CACHE.isCharacterizedIn(componentCharacteristic)) {
             list.add(new CachingBehaviorFactory());
         }
         ComponentFactory lastFactory = null;

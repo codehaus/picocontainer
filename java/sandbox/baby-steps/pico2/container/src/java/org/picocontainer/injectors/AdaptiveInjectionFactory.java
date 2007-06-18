@@ -57,17 +57,17 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
                                                                                  parameters);
         }
 
-        if (ComponentCharacteristics.SDI.characterizes(componentCharacteristic)) {
+        if (ComponentCharacteristics.SDI.isCharacterizedIn(componentCharacteristic)) {
             ComponentAdapter componentAdapter = new SetterInjectionFactory().createComponentAdapter(componentMonitor,
                                                                                                     lifecycleStrategy,
                                                                                                     componentCharacteristic,
                                                                                                     componentKey,
                                                                                                     componentImplementation,
                                                                                                     parameters);
-            ComponentCharacteristics.SDI.processed(componentCharacteristic);
+            ComponentCharacteristics.SDI.setProcessedIn(componentCharacteristic);
             return componentAdapter;
         }
-        ComponentCharacteristics.CDI.processed(componentCharacteristic);
+        ComponentCharacteristics.CDI.setProcessedIn(componentCharacteristic);
         return new ConstructorInjectionFactory().createComponentAdapter(componentMonitor,
                                                                         lifecycleStrategy,
                                                                         componentCharacteristic,

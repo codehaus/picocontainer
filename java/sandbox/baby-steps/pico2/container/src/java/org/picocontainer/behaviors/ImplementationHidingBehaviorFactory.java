@@ -30,7 +30,7 @@ public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory
     {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
         ImplementationHidingBehavior behavior = new ImplementationHidingBehavior(componentAdapter);
-        ComponentCharacteristics.HIDE.processed(componentCharacteristic);
+        ComponentCharacteristics.HIDE.setProcessedIn(componentCharacteristic);
         return behavior;
     }
 }

@@ -30,17 +30,17 @@ public class CachingBehaviorFactory extends AbstractBehaviorFactory {
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException
     {
-        if (ComponentCharacteristics.NOCACHE.characterizes(componentCharacteristic)) {
+        if (ComponentCharacteristics.NOCACHE.isCharacterizedIn(componentCharacteristic)) {
             ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor,
                                                                              lifecycleStrategy,
                                                                              componentCharacteristic,
                                                                              componentKey,
                                                                              componentImplementation,
                                                                              parameters);
-            ComponentCharacteristics.NOCACHE.processed(componentCharacteristic);
+            ComponentCharacteristics.NOCACHE.setProcessedIn(componentCharacteristic);
             return componentAdapter;
         }
-        ComponentCharacteristics.CACHE.processed(componentCharacteristic);
+        ComponentCharacteristics.CACHE.setProcessedIn(componentCharacteristic);
         return new CachingBehavior(super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters));
 
     }

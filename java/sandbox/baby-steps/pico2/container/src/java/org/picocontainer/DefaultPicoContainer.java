@@ -86,10 +86,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
 
 
-        public void processed(ComponentCharacteristic characteristics) {
+        public void setProcessedIn(ComponentCharacteristic characteristics) {
         }
 
-        public boolean characterizes(ComponentCharacteristic rc) {
+        public boolean isCharacterizedIn(ComponentCharacteristic rc) {
             return false;
         }
     };

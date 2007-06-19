@@ -25,17 +25,12 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
         List<ComponentFactory> list = new ArrayList<ComponentFactory>();
-        ComponentFactory lastFactory = new AdaptiveInjectionFactory();
-        if (ComponentCharacteristics.THREAD_SAFE.isCharacterizedIn(componentCharacteristic)) {
-            list.add(new SynchronizedBehaviorFactory());
-        }
-        if (ComponentCharacteristics.HIDE.isCharacterizedIn(componentCharacteristic)) {
-            list.add(new ImplementationHidingBehaviorFactory());
-        }
-        if (ComponentCharacteristics.CACHE.isCharacterizedIn(componentCharacteristic) ||
-            componentImplementation.getAnnotation(Single.class) != null) {
-            list.add(new CachingBehaviorFactory());
-        }
+        ComponentFactory lastFactory = makeInjectionFactory();
+        processThreadSafe(componentCharacteristic, list);
+        processImplementationHiding(componentCharacteristic, list);
+        processCachedInstance(componentCharacteristic, componentImplementation, list);
+
+        //Instantiate Chain of ComponentFactories
         for (ComponentFactory componentFactory : list) {
             if (lastFactory != null && componentFactory instanceof BehaviorFactory) {
                 ((BehaviorFactory)componentFactory).forThis(lastFactory);
@@ -49,6 +44,32 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
                                                   componentKey,
                                                   componentImplementation,
                                                   parameters);
+    }
+
+    protected AdaptiveInjectionFactory makeInjectionFactory() {
+        return new AdaptiveInjectionFactory();
+    }
+
+    protected void processThreadSafe(ComponentCharacteristic componentCharacteristic, List<ComponentFactory> list) {
+        if (ComponentCharacteristics.THREAD_SAFE.isCharacterizedIn(componentCharacteristic)) {
+            list.add(new SynchronizedBehaviorFactory());
+        }
+    }
+
+    protected void processCachedInstance(ComponentCharacteristic componentCharacteristic,
+                                       Class componentImplementation,
+                                       List<ComponentFactory> list) {
+        if (ComponentCharacteristics.CACHE.isCharacterizedIn(componentCharacteristic) ||
+            componentImplementation.getAnnotation(Single.class) != null) {
+            list.add(new CachingBehaviorFactory());
+        }
+    }
+
+    protected void processImplementationHiding(ComponentCharacteristic componentCharacteristic,
+                                             List<ComponentFactory> list) {
+        if (ComponentCharacteristics.HIDE.isCharacterizedIn(componentCharacteristic)) {
+            list.add(new ImplementationHidingBehaviorFactory());
+        }
     }
 
 }

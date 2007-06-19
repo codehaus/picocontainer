@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.gems.adapters;
+package org.picocontainer.gems.behaviors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
@@ -57,4 +57,19 @@ public class HotSwappingBehavior extends ImplementationHidingBehavior {
         }
         return instance;
     }
+
+    public static class Swappable {
+
+    private transient Object delegate;
+
+    public Object getInstance() {
+        return delegate;
+    }
+
+    public Object swap(Object delegate) {
+        Object old = this.delegate;
+        this.delegate = delegate;
+        return old;
+    }
+}
 }

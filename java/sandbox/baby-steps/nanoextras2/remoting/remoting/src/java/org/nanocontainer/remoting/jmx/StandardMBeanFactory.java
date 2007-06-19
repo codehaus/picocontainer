@@ -35,7 +35,7 @@ import javax.management.modelmbean.RequiredModelMBean;
 public class StandardMBeanFactory implements DynamicMBeanFactory {
 
     /**
-     * Create a StandardMBean for the addComponent.
+     * Create a StandardMBean for the component.
      * @param componentInstance {@inheritDoc}
      * @param management The management interface. If <code>null</code> the implementation will use the interface
      *            complying with the naming convention for management interfaces.

@@ -37,11 +37,11 @@ public interface ComponentFactory {
      * @param componentMonitor
      * @param lifecycleStrategy
      * @param componentCharacteristic
-     * @param componentKey                the key to be associated with this addAdapter. This value should be returned
-     *                                    from a call to {@link org.picocontainer.ComponentAdapter#getComponentKey()} on the created addAdapter.
-     * @param componentImplementation     the implementation class to be associated with this addAdapter.
+     * @param componentKey                the key to be associated with this adapter. This value should be returned
+     *                                    from a call to {@link org.picocontainer.ComponentAdapter#getComponentKey()} on the created adapter.
+     * @param componentImplementation     the implementation class to be associated with this adapter.
      *                                    This value should be returned from a call to
-     *                                    {@link org.picocontainer.ComponentAdapter#getComponentImplementation()} on the created addAdapter. Should not
+     *                                    {@link org.picocontainer.ComponentAdapter#getComponentImplementation()} on the created adapter. Should not
      *                                    be null.
      * @param parameters                  additional parameters to use by the component adapter in constructing
      *                                    component instances. These may be used, for example, to make decisions about the

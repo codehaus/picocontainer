@@ -27,7 +27,7 @@ import org.nanocontainer.remoting.jmx.StandardMBeanFactory;
 public class MX4JDynamicMBeanFactory extends StandardMBeanFactory {
 
     /**
-     * Create a MX4JDynamicMBean for the addComponent. MX4J is only used, if management is <code>null</code>.
+     * Create a MX4JDynamicMBean for the component. MX4J is only used, if management is <code>null</code>.
      * @see org.nanocontainer.remoting.jmx.StandardMBeanFactory#create(java.lang.Object, java.lang.Class,
      *      javax.management.MBeanInfo)
      */

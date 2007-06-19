@@ -62,6 +62,11 @@
             <name>Codehaus Snapshots Repository</name>
             <url>http://snapshots.repository.codehaus.org</url>
         </repository>
+        <repository>
+            <id>glassfish-repository</id>
+            <name>Glassfish Repository</name>
+            <url>https://maven-repository.dev.java.net/nonav/repository</url>
+        </repository>
     </repositories>
 
     <dependencyManagement>

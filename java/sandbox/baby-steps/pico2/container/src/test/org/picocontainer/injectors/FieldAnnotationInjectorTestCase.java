@@ -1,12 +1,10 @@
 package org.picocontainer.injectors;
 
-import org.picocontainer.Inject;
+import org.picocontainer.annotations.Inject;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
 
 import junit.framework.TestCase;
 

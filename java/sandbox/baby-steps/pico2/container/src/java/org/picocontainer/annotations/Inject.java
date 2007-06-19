@@ -1,4 +1,4 @@
-package org.picocontainer;
+package org.picocontainer.annotations;
 
 import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;

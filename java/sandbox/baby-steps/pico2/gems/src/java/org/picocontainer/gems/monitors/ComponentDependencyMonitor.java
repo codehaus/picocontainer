@@ -42,7 +42,7 @@ public final class ComponentDependencyMonitor extends DelegatingComponentMonitor
     }
 
     /**
-     * Understands which other classes are required to instantiate a addComponent.
+     * Understands which other classes are required to instantiate a component.
      * 
      * @author Peter Barry
      * @author Kent R. Spillner

@@ -18,7 +18,7 @@ import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
-import org.picocontainer.Inject;
+import org.picocontainer.annotations.Inject;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;

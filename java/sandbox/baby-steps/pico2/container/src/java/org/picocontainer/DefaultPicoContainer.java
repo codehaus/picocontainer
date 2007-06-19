@@ -474,10 +474,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The starting of the child container is only attempted if the parent
      * container start successfully.  The child container for which start is attempted
      * is tracked so that upon stop, only those need to be stopped.
-     * The lifecycle operation is delegated to the component addAdapter,
+     * The lifecycle operation is delegated to the component adapter,
      * if it is an instance of {@link LifecycleManager lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
-     * depends on the concrete implementation of the addAdapter.
+     * depends on the concrete implementation of the adapter.
      *
      * @see LifecycleManager
      * @see LifecycleStrategy
@@ -503,10 +503,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * Stop the components of this PicoContainer and all its logical child containers.
      * The stopping of the child containers is only attempted for those that have been
      * started, possibly not successfully.
-     * The lifecycle operation is delegated to the component addAdapter,
+     * The lifecycle operation is delegated to the component adapter,
      * if it is an instance of {@link LifecycleManager lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
-     * depends on the concrete implementation of the addAdapter.
+     * depends on the concrete implementation of the adapter.
      *
      * @see LifecycleManager
      * @see LifecycleStrategy
@@ -542,10 +542,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /**
      * Dispose the components of this PicoContainer and all its logical child containers.
-     * The lifecycle operation is delegated to the component addAdapter,
+     * The lifecycle operation is delegated to the component adapter,
      * if it is an instance of {@link LifecycleManager lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
-     * depends on the concrete implementation of the addAdapter.
+     * depends on the concrete implementation of the adapter.
      *
      * @see LifecycleManager
      * @see LifecycleStrategy

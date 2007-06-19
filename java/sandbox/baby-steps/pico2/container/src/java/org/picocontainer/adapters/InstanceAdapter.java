@@ -22,7 +22,7 @@ import org.picocontainer.adapters.AbstractAdapter;
  * </p>
  * <p>
  * This component adapter supports both a {@link LifecycleManager LifecycleManager} and a
- * {@link org.picocontainer.LifecycleStrategy LifecycleStrategy} to control the lifecycle of the addComponent.
+ * {@link org.picocontainer.LifecycleStrategy LifecycleStrategy} to control the lifecycle of the component.
  * The lifecycle manager methods simply delegate to the lifecycle strategy methods 
  * on the component instance.
  * </p>

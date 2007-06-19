@@ -1,4 +1,4 @@
-package org.picocontainer.gems.adapters;
+package org.picocontainer.gems.behaviors;
 
 
 import org.picocontainer.MutablePicoContainer;
@@ -8,6 +8,11 @@ import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.gems.behaviors.ImplementationHidingBehaviorFactory;
+import org.picocontainer.gems.behaviors.ImplementationHidingBehavior;
+import org.picocontainer.gems.adapters.ElephantProxy;
+import org.picocontainer.gems.adapters.ElephantImpl;
+import org.picocontainer.gems.adapters.Elephant;
 import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
 
 import java.util.ArrayList;

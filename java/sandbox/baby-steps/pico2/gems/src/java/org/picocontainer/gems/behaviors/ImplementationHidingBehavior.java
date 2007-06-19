@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.gems.adapters;
+package org.picocontainer.gems.behaviors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
@@ -48,11 +48,11 @@ public class ImplementationHidingBehavior extends AbstractBehavior implements Op
         Class[] interfaces = o.getClass().getInterfaces();
         if (interfaces.length != 0) {
             byte[] bytes = makeProxy("XX", interfaces, true);
-            AsmClassLoader cl = new AsmClassLoader(Swappable.class.getClassLoader());
+            AsmClassLoader cl = new AsmClassLoader(HotSwappingBehavior.Swappable.class.getClassLoader());
             Class<?> pClazz = cl.defineClass("XX", bytes);
             try {
-                Constructor<?> ctor = pClazz.getConstructor(Swappable.class);
-                final Swappable swappable = getSwappable();
+                Constructor<?> ctor = pClazz.getConstructor(HotSwappingBehavior.Swappable.class);
+                final HotSwappingBehavior.Swappable swappable = getSwappable();
                 swappable.swap(o);
                 return ctor.newInstance(swappable);
             } catch (NoSuchMethodException e) {
@@ -64,8 +64,8 @@ public class ImplementationHidingBehavior extends AbstractBehavior implements Op
         return o;
     }
 
-    protected Swappable getSwappable() {
-        return new Swappable();
+    protected HotSwappingBehavior.Swappable getSwappable() {
+        return new HotSwappingBehavior.Swappable();
     }
 
     public byte[] makeProxy(String proxyName, Class[] interfaces, boolean setter) {
@@ -78,7 +78,7 @@ public class ImplementationHidingBehavior extends AbstractBehavior implements Op
         cw.visit(V1_5, ACC_PUBLIC + ACC_SUPER, proxyName, null, dotsToSlashes(superclass), getNames(interfaces));
 
         {
-            fv = cw.visitField(ACC_PRIVATE + ACC_TRANSIENT, "swappable", encodedClassName(Swappable.class), null, null);
+            fv = cw.visitField(ACC_PRIVATE + ACC_TRANSIENT, "swappable", encodedClassName(HotSwappingBehavior.Swappable.class), null, null);
             fv.visitEnd();
         }
         doConstructor(proxyName, cw);
@@ -108,13 +108,13 @@ public class ImplementationHidingBehavior extends AbstractBehavior implements Op
 
     private void doConstructor(String proxyName, ClassWriter cw) {
         MethodVisitor mv;
-        mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(L"+ dotsToSlashes(Swappable.class)+";)V", null, null);
+        mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(L"+ dotsToSlashes(HotSwappingBehavior.Swappable.class)+";)V", null, null);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
         mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V");
         mv.visitVarInsn(ALOAD, 0);
         mv.visitVarInsn(ALOAD, 1);
-        mv.visitFieldInsn(PUTFIELD, proxyName, "swappable", encodedClassName(Swappable.class));
+        mv.visitFieldInsn(PUTFIELD, proxyName, "swappable", encodedClassName(HotSwappingBehavior.Swappable.class));
         mv.visitInsn(RETURN);
         mv.visitMaxs(2, 2);
         mv.visitEnd();
@@ -127,8 +127,8 @@ public class ImplementationHidingBehavior extends AbstractBehavior implements Op
         mv = cw.visitMethod(ACC_PUBLIC, meth.getName(), signature, null, exceptions);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
-        mv.visitFieldInsn(GETFIELD, proxyName, "swappable", encodedClassName(Swappable.class));
-        mv.visitMethodInsn(INVOKEVIRTUAL, dotsToSlashes(Swappable.class), "getInstance", "()Ljava/lang/Object;");
+        mv.visitFieldInsn(GETFIELD, proxyName, "swappable", encodedClassName(HotSwappingBehavior.Swappable.class));
+        mv.visitMethodInsn(INVOKEVIRTUAL, dotsToSlashes(HotSwappingBehavior.Swappable.class), "getInstance", "()Ljava/lang/Object;");
         mv.visitTypeInsn(CHECKCAST, dotsToSlashes(iface));
         Class[] types = meth.getParameterTypes();
         int ix = 1;

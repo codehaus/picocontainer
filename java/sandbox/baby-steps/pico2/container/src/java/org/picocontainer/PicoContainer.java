@@ -33,7 +33,7 @@ public interface PicoContainer {
      * the parent container (if one exists) will be searched.
      *
      * @param componentKeyOrType the key or Type that the component was registered with.
-     * @return an instantiated addComponent, or <code>null</code> if no component has been registered for the specified
+     * @return an instantiated component, or <code>null</code> if no component has been registered for the specified
      *         key.
      */
     Object getComponent(Object componentKeyOrType);
@@ -71,7 +71,7 @@ public interface PicoContainer {
      * Find a component adapter associated with the specified type. If a component adapter cannot be found in this
      * container, the parent container (if one exists) will be searched.
      *
-     * @param componentType the type of the addComponent.
+     * @param componentType the type of the component.
      * @return the component adapter associated with this class, or <code>null</code> if no component has been
      *         registered for the specified key.
      */

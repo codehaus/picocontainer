@@ -117,7 +117,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * Prepare the test <em>visitable</em>.
      * 
      * @return a ComponentAdapter of the type to test. If the ComponentAdapter supports {@link Parameter}, you have to
-     *         select a addComponent, that have some.
+     *         select a component, that have some.
      */
     protected abstract ComponentAdapter prepDEF_visitable();
 
@@ -144,7 +144,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      * supports {@link Parameter}.
      * 
      * @param picoContainer container, may probably not be used.
-     * @return a ComponentAdapter of the type to test. Select a addComponent, that has some parameters. Registration in the
+     * @return a ComponentAdapter of the type to test. Select a component, that has some parameters. Registration in the
      *         pico is not necessary.
      */
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {

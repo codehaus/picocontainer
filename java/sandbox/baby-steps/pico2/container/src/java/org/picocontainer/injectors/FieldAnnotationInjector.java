@@ -1,7 +1,7 @@
 package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Inject;
+import org.picocontainer.annotations.Inject;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 

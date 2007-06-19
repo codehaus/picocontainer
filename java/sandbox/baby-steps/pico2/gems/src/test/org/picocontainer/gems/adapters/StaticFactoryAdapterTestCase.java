@@ -22,7 +22,7 @@ import java.rmi.registry.Registry;
 /**
  * @author J&ouml;rg Schaible
  */
-public class StaticFactoryComponentAdapterTestCase extends TestCase {
+public class StaticFactoryAdapterTestCase extends TestCase {
 
     public void testStaticFactoryInAction() {
         ComponentAdapter componentAdapter = new StaticFactoryAdapter(Registry.class, new StaticFactory() {

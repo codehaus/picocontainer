@@ -21,7 +21,7 @@ import javax.management.ObjectName;
 
 /**
  * A DynamicMBeanProvider that constructs StandardMBean instances that as long as an ObjectName and a MBeanInfo can be
- * generated for the addComponent.
+ * generated for the component.
  * @author J&ouml;rg Schaible
  * @since 1.0
  */
@@ -93,7 +93,7 @@ public abstract class AbstractConstructingProvider implements DynamicMBeanProvid
     /**
      * Determin the management interface from the component implementation type and an optional MBeanInfo instance.
      * @param implementation The type of the addComponent's implementation.
-     * @param mBeanInfo The {@link MBeanInfo} to expose the addComponent. May be <code>null</code>.
+     * @param mBeanInfo The {@link MBeanInfo} to expose the component. May be <code>null</code>.
      * @return Returns the management interface.
      * @throws ClassNotFoundException Thrown if no interface can be determined.
      */

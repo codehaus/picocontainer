@@ -15,7 +15,7 @@ import org.aopalliance.intercept.MethodInterceptor;
  * Represents the collection of aspects (pointuts + advice) to be applied to a
  * Pico container. Provides methods for registering mixin and interceptor
  * advice. Advice can be applied to all components in the container that match a
- * pointcut, or advice can be applied to just one addComponent. Advice objects may
+ * pointcut, or advice can be applied to just one component. Advice objects may
  * themselves be components in the container, with dependencies on other
  * components.
  *
@@ -86,7 +86,7 @@ public interface AspectsContainer {
      * If a component of type <code>mixinClass</code> has been registered in
      * the container, that component will be used as the mixin. Otherwise a new
      * object of type <code>mixinClass</code> will be instantiated each time
-     * the mixin is applied to a addComponent. Any dependencies the mixin has will
+     * the mixin is applied to a component. Any dependencies the mixin has will
      * be supplied from components in the container, or, if there are no
      * dependencies, the default constructor will be invoked to instantiate the
      * mixin.
@@ -142,7 +142,7 @@ public interface AspectsContainer {
      * This can be handy when you want to add an aggregate helper interface that
      * extends all the mixin interfaces added, to avoid the need for casting.
      * Note that the interfaces will <i>not </i> be added if no advice
-     * (interceptor or mixin) has been applied to the addComponent.
+     * (interceptor or mixin) has been applied to the component.
      *
      * @param classPointcut classes to add interfaces to.
      * @param interfaces    the interfaces to add.

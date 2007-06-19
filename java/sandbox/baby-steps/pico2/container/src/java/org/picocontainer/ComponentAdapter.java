@@ -25,7 +25,7 @@ import org.picocontainer.behaviors.CachingBehavior;
  */
 public interface ComponentAdapter<T> {
     /**
-     * Retrieve the key associated with the addComponent.
+     * Retrieve the key associated with the component.
      *
      * @return the addComponent's key. Should either be a class type (normally an interface) or an identifier that is
      *         unique (within the scope of the current PicoContainer).
@@ -33,7 +33,7 @@ public interface ComponentAdapter<T> {
     Object getComponentKey();
 
     /**
-     * Retrieve the class of the addComponent.
+     * Retrieve the class of the component.
      *
      * @return the addComponent's implementation class. Should normally be a concrete class (ie, a class that can be
      *         instantiated).

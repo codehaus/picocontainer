@@ -26,7 +26,7 @@ public interface DynamicMBeanProvider {
     /**
      * Provide a {@link DynamicMBean} from the component delivered by the ComponentAdapter.
      * @param picoContainer The {@link PicoContainer} to resolve dependencies.
-     * @param componentAdapter The {@link ComponentAdapter} referring the addComponent.
+     * @param componentAdapter The {@link ComponentAdapter} referring the component.
      * @return Returns the registration information.
      */
     public JMXRegistrationInfo provide(PicoContainer picoContainer, ComponentAdapter componentAdapter);

@@ -1,8 +1,10 @@
-package org.picocontainer.gems.adapters;
+package org.picocontainer.gems.behaviors;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.gems.behaviors.HotSwappingBehaviorFactory;
+import org.picocontainer.gems.behaviors.HotSwappingBehavior;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;

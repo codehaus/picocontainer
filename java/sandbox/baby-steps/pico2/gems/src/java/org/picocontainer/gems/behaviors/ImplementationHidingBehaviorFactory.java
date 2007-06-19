@@ -1,4 +1,4 @@
-package org.picocontainer.gems.adapters;
+package org.picocontainer.gems.behaviors;
 
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentAdapter;

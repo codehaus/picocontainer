@@ -159,7 +159,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/axis/axis/1.2.1/axis-1.2.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/axis/axis/1.4/axis-1.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

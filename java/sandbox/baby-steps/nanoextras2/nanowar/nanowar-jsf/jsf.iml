@@ -141,7 +141,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/javax/faces/jsf-api/1.1_02/jsf-api-1.1_02.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/javax/faces/jsf-api/1.2_02/jsf-api-1.2_02.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -169,6 +169,15 @@
     <orderEntry type="module" module-name="nanowar" />
     <orderEntry type="module" module-name="nanocontainer" />
     <orderEntry type="module" module-name="picocontainer" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntryProperties />
   </component>
 </module>

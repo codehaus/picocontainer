@@ -36,7 +36,7 @@ import java.util.TreeSet;
  * A CollectionComponentParameter should be used to support inject an {@link Array}, a
  * {@link Collection}or {@link Map}of components automatically. The collection will contain
  * all components of a special type and additionally the type of the key may be specified. In
- * case of a map, the map's keys are the one of the component addAdapter.
+ * case of a map, the map's keys are the one of the component adapter.
  *
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible

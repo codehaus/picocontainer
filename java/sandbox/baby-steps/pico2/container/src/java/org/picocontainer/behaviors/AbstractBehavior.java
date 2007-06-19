@@ -23,7 +23,7 @@ import org.picocontainer.LifecycleStrategy;
 
 /**
  * <p>
- * Component adapter which decorates another addAdapter.
+ * Component adapter which decorates another adapter.
  * </p>
  * <p>
  * This adapter supports a {@link org.picocontainer.ComponentMonitorStrategy component monitor strategy}

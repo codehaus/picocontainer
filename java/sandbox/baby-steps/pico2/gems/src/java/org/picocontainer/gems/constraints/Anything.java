@@ -11,7 +11,7 @@ package org.picocontainer.gems.constraints;
 import org.picocontainer.ComponentAdapter;
 
 /**
- * A constraint that matches any component addAdapter.
+ * A constraint that matches any component adapter.
  *
  * @author Nick Sieger
  * @version 1.1

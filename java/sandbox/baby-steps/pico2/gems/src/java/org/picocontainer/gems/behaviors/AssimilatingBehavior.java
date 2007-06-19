@@ -8,7 +8,7 @@
  * Original code by Joerg Schaibe                                            *
  *****************************************************************************/
 
-package org.picocontainer.gems.adapters;
+package org.picocontainer.gems.behaviors;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
@@ -43,7 +43,7 @@ import java.lang.reflect.Method;
  *     }
  * }
  *        
- * new AssimilatingComponentAdapter(Foo.class, new InstanceAdapter(new Bar()));
+ * new AssimilatingBehavior(Foo.class, new InstanceAdapter(new Bar()));
  * </pre></code>
  * <p>
  * Notice how Bar does not implement the interface Foo. But Bar does have an identical <code>size()</code> method.
@@ -53,14 +53,14 @@ import java.lang.reflect.Method;
  * @author Michael Ward
  * @since 1.2
  */
-public final class AssimilatingComponentAdapter extends AbstractBehavior {
+public final class AssimilatingBehavior extends AbstractBehavior {
 
     private final Class type;
     private final ProxyFactory proxyFactory;
     private final boolean isCompatible;
 
     /**
-     * Construct an AssimilatingComponentAdapter. The <code>type</code> may not implement the type of the component instance.
+     * Construct an AssimilatingBehavior. The <code>type</code> may not implement the type of the component instance.
      * If the component instance <b>does</b> implement the interface, no proxy is used though.
      * 
      * @param type The class type used as key.
@@ -68,7 +68,7 @@ public final class AssimilatingComponentAdapter extends AbstractBehavior {
      * @param proxyFactory The {@link ProxyFactory} to use.
      * @throws PicoCompositionException Thrown if the <code>type</code> is not compatible and cannot be proxied.
      */
-    public AssimilatingComponentAdapter(final Class type, final ComponentAdapter delegate, final ProxyFactory proxyFactory)
+    public AssimilatingBehavior(final Class type, final ComponentAdapter delegate, final ProxyFactory proxyFactory)
             throws PicoCompositionException
     {
         super(delegate);
@@ -95,14 +95,14 @@ public final class AssimilatingComponentAdapter extends AbstractBehavior {
     }
 
     /**
-     * Construct an AssimilatingComponentAdapter. The <code>type</code> may not implement the type of the component instance.
+     * Construct an AssimilatingBehavior. The <code>type</code> may not implement the type of the component instance.
      * The implementation will use JDK {@link java.lang.reflect.Proxy} instances. If the component instant <b>does </b>
      * implement the interface, no proxy is used anyway.
      * 
      * @param type The class type used as key.
      * @param delegate The delegated {@link ComponentAdapter}.
      */
-    public AssimilatingComponentAdapter(final Class type, final ComponentAdapter delegate) {
+    public AssimilatingBehavior(final Class type, final ComponentAdapter delegate) {
         this(type, delegate, new StandardProxyFactory());
     }
 
@@ -120,7 +120,7 @@ public final class AssimilatingComponentAdapter extends AbstractBehavior {
     }
 
     /**
-     * Return the type of the addComponent. If the component type is not compatible with the type to assimilate, the assimilated
+     * Return the type of the component. If the component type is not compatible with the type to assimilate, the assimilated
      * type is returned.
      * 
      * @see AbstractBehavior#getComponentImplementation()
@@ -130,7 +130,7 @@ public final class AssimilatingComponentAdapter extends AbstractBehavior {
     }
 
     /**
-     * Return the key of the addComponent. If the key of the delegated component is a type, that is not compatible with the type to
+     * Return the key of the component. If the key of the delegated component is a type, that is not compatible with the type to
      * assimilate, then the assimilated type replaces the original type.
      * 
      * @see AbstractBehavior#getComponentKey()

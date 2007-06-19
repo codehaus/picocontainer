@@ -2,12 +2,13 @@
  * Copyright (C) 2005 J&ouml;rg Schaible
  * Created on 29.08.2005 by J&ouml;rg Schaible
  */
-package org.picocontainer.gems.adapters;
+package org.picocontainer.gems.behaviors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleManager;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.gems.behaviors.PoolingBehavior;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.RecordingLifecycle;
@@ -26,7 +27,7 @@ import com.thoughtworks.proxy.toys.pool.Poolable;
 /**
  * @author J&ouml;rg Schaible
  */
-public final class PoolingComponentAdapterTest extends AbstractComponentAdapterTestCase {
+public final class PoolingBehaviorTestCase extends AbstractComponentAdapterTestCase {
 
     public static interface Identifiable {
         int getId();
@@ -54,8 +55,8 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
     }
 
     public void testNewIsInstantiatedOnEachRequest() {
-        ComponentAdapter componentAdapter = new PoolingComponentAdapter(new ConstructorInjector(
-                Identifiable.class, InstanceCounter.class));
+        ComponentAdapter componentAdapter = new PoolingBehavior(new ConstructorInjector(
+                Identifiable.class, InstanceCounter.class), new PoolingBehavior.DefaultContext());
 
         Object borrowed0 = componentAdapter.getComponentInstance(null);
         Object borrowed1 = componentAdapter.getComponentInstance(null);
@@ -64,8 +65,8 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
     }
 
     public void testInstancesCanBeRecycled() {
-        ComponentAdapter componentAdapter = new PoolingComponentAdapter(new ConstructorInjector(
-                Identifiable.class, InstanceCounter.class));
+        ComponentAdapter componentAdapter = new PoolingBehavior(new ConstructorInjector(
+                Identifiable.class, InstanceCounter.class), new PoolingBehavior.DefaultContext());
 
         Object borrowed0 = componentAdapter.getComponentInstance(null);
         Object borrowed1 = componentAdapter.getComponentInstance(null);
@@ -88,8 +89,8 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
     }
 
     public void testBlocksWhenExhausted() throws InterruptedException {
-        final ComponentAdapter componentAdapter = new PoolingComponentAdapter(new ConstructorInjector(
-                Identifiable.class, InstanceCounter.class), new PoolingComponentAdapter.DefaultContext() {
+        final ComponentAdapter componentAdapter = new PoolingBehavior(new ConstructorInjector(
+                Identifiable.class, InstanceCounter.class), new PoolingBehavior.DefaultContext() {
             public int getMaxSize() {
                 return 2;
             }
@@ -146,8 +147,8 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
     }
 
     public void testTimeoutWhenExhausted() {
-        final ComponentAdapter componentAdapter = new PoolingComponentAdapter(new ConstructorInjector(
-                Identifiable.class, InstanceCounter.class), new PoolingComponentAdapter.DefaultContext() {
+        final ComponentAdapter componentAdapter = new PoolingBehavior(new ConstructorInjector(
+                Identifiable.class, InstanceCounter.class), new PoolingBehavior.DefaultContext() {
             public int getMaxSize() {
                 return 2;
             }
@@ -164,17 +165,17 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
         long time = System.currentTimeMillis();
         try {
             componentAdapter.getComponentInstance(null);
-            fail("Thrown " + PoolException.class.getName() + " expected");
-        } catch (final PoolException e) {
+            fail("Thrown " + PoolingBehavior.PoolException.class.getName() + " expected");
+        } catch (final PoolingBehavior.PoolException e) {
             assertTrue(e.getMessage().indexOf("Time out") >= 0);
             assertTrue(System.currentTimeMillis() - time >= 250);
         }
     }
 
     public void testGrowsAlways() {
-        PoolingComponentAdapter componentAdapter = new PoolingComponentAdapter(
+        PoolingBehavior behavior = new PoolingBehavior(
                 new ConstructorInjector("foo", Object.class),
-                new PoolingComponentAdapter.DefaultContext() {
+                new PoolingBehavior.DefaultContext() {
 
                     public ProxyFactory getProxyFactory() {
                         return new CglibProxyFactory();
@@ -186,51 +187,51 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
             final int max = 5;
             int i;
             for (i = 0; i < max; ++i) {
-                assertEquals(i, componentAdapter.size());
-                final Object object = componentAdapter.getComponentInstance(null);
+                assertEquals(i, behavior.size());
+                final Object object = behavior.getComponentInstance(null);
                 set.add(object);
             }
-            assertEquals(i, componentAdapter.size());
+            assertEquals(i, behavior.size());
             assertEquals(i, set.size());
 
             for (Object aSet : set) {
                 Poolable object = (Poolable)aSet;
                 object.returnInstanceToPool();
-                assertEquals(max, componentAdapter.size());
+                assertEquals(max, behavior.size());
             }
 
             for (i = 0; i < max; ++i) {
-                assertEquals(max, componentAdapter.size());
-                final Object object = componentAdapter.getComponentInstance(null);
+                assertEquals(max, behavior.size());
+                final Object object = behavior.getComponentInstance(null);
                 assertNotNull(object);
                 set.add(object);
             }
 
             assertEquals(max, set.size());
 
-        } catch (PoolException e) {
+        } catch (PoolingBehavior.PoolException e) {
             fail("This pool should not get exhausted.");
         }
     }
 
     public void testFailsWhenExhausted() {
-        final PoolingComponentAdapter componentAdapter = new PoolingComponentAdapter(
+        final PoolingBehavior behavior = new PoolingBehavior(
                 new ConstructorInjector(Identifiable.class, InstanceCounter.class),
-                new PoolingComponentAdapter.DefaultContext() {
+                new PoolingBehavior.DefaultContext() {
                     public int getMaxSize() {
                         return 2;
                     }
                 });
 
-        assertEquals(0, componentAdapter.size());
-        Identifiable borrowed0 = (Identifiable)componentAdapter.getComponentInstance(null);
-        assertEquals(1, componentAdapter.size());
-        Identifiable borrowed1 = (Identifiable)componentAdapter.getComponentInstance(null);
-        assertEquals(2, componentAdapter.size());
+        assertEquals(0, behavior.size());
+        Identifiable borrowed0 = (Identifiable)behavior.getComponentInstance(null);
+        assertEquals(1, behavior.size());
+        Identifiable borrowed1 = (Identifiable)behavior.getComponentInstance(null);
+        assertEquals(2, behavior.size());
         try {
-            componentAdapter.getComponentInstance(null);
+            behavior.getComponentInstance(null);
             fail("Expected ExhaustedException, pool shouldn't be able to grow further.");
-        } catch (PoolException e) {
+        } catch (PoolingBehavior.PoolException e) {
             assertTrue(e.getMessage().indexOf("exhausted") >= 0);
         }
 
@@ -238,8 +239,8 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
     }
 
     public void testInternalGCCall() {
-        ComponentAdapter componentAdapter = new PoolingComponentAdapter(new ConstructorInjector(
-                Identifiable.class, InstanceCounter.class), new PoolingComponentAdapter.DefaultContext() {
+        ComponentAdapter componentAdapter = new PoolingBehavior(new ConstructorInjector(
+                Identifiable.class, InstanceCounter.class), new PoolingBehavior.DefaultContext() {
             public int getMaxSize() {
                 return 1;
             }
@@ -257,7 +258,7 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
     }
 
     /**
-     * Prepare the test <em>lifecycleManagerSupport</em>. Prepare the delivered PicoContainer with an addAdapter, that
+     * Prepare the test <em>lifecycleManagerSupport</em>. Prepare the delivered PicoContainer with an adapter, that
      * has a lifecycle and use a StringBuffer registered in the container to record the lifecycle method invocations.
      * The recorded String in the buffer must result in <strong>&qout;&lt;OneOne&gt;!One&qout;</strong>. The addAdapter
      * top test should be registered in the container and delivered as return value.
@@ -266,9 +267,9 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
      */
     private ComponentAdapter prepDEF_lifecycleManagerSupport(MutablePicoContainer picoContainer) {
         picoContainer.addComponent(RecordingLifecycle.One.class);
-        PoolingComponentAdapter poolingComponentAdapter = new PoolingComponentAdapter(new ConstructorInjector(
-                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class));
-        return picoContainer.addAdapter(poolingComponentAdapter).lastCA();
+        PoolingBehavior poolingBehavior = new PoolingBehavior(new ConstructorInjector(
+                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class), new PoolingBehavior.DefaultContext());
+        return picoContainer.addAdapter(poolingBehavior).lastCA();
     }
 
     public void testDEF_lifecycleManagerSupport() {
@@ -302,9 +303,9 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
      */
     private ComponentAdapter prepRES_lifecycleManagerHonorsInstantiationSequence(MutablePicoContainer picoContainer) {
         picoContainer.addComponent(RecordingLifecycle.One.class);
-        PoolingComponentAdapter poolingComponentAdapter = new PoolingComponentAdapter(new ConstructorInjector(
-                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class));
-        return picoContainer.addAdapter(poolingComponentAdapter).lastCA();
+        PoolingBehavior poolingBehavior = new PoolingBehavior(new ConstructorInjector(
+                RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class), new PoolingBehavior.DefaultContext());
+        return picoContainer.addAdapter(poolingBehavior).lastCA();
     }
 
     public void testRES_lifecycleManagerHonorsInstantiationSequence() {
@@ -330,7 +331,7 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
     // -------- TCK -----------
 
     protected Class getComponentAdapterType() {
-        return PoolingComponentAdapter.class;
+        return PoolingBehavior.class;
     }
 
     protected int getComponentAdapterNature() {
@@ -338,8 +339,8 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
     }
 
     private ComponentAdapter createPoolOfTouchables() {
-        return new PoolingComponentAdapter(new ConstructorInjector(
-                Touchable.class, SimpleTouchable.class));
+        return new PoolingBehavior(new ConstructorInjector(
+                Touchable.class, SimpleTouchable.class), new PoolingBehavior.DefaultContext());
     }
 
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
@@ -355,8 +356,8 @@ public final class PoolingComponentAdapterTest extends AbstractComponentAdapterT
     }
 
     private ComponentAdapter createSerializable() {
-        return new PoolingComponentAdapter(new ConstructorInjector(
-                Identifiable.class, InstanceCounter.class));
+        return new PoolingBehavior(new ConstructorInjector(
+                Identifiable.class, InstanceCounter.class), new PoolingBehavior.DefaultContext());
     }
 
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {

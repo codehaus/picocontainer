@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by Aslak Hellesoy & Joerg Schaible                                       *
  *****************************************************************************/
-package org.picocontainer.gems.adapters;
+package org.picocontainer.gems.behaviors;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,6 +23,7 @@ import org.picocontainer.LifecycleManager;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
@@ -37,13 +38,13 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * <p>
  * The implementation utilizes a delegated ComponentAdapter to create the instances of the pool. The
  * pool can be configured to grow unlimited or to a maximum size. If a component is requested from
- * this addAdapter, the implementation returns an availailabe instance from the pool or will create a
+ * this adapter, the implementation returns an availailabe instance from the pool or will create a
  * new one, if the maximum pool size is not reached yet. If none is available, the implementation
  * can wait a defined time for a returned object before it throws a {@link PoolException}.
  * </p>
  * <p>
  * This implementation uses the {@link Pool} toy from the <a
- * href="http://proxytoys.codehaus.org">ProxyToys</a> project. This ensures, that any addComponent,
+ * href="http://proxytoys.codehaus.org">ProxyToys</a> project. This ensures, that any component,
  * that is out of scope will be automatically returned to the pool by the garbage collector.
  * Additionally will every component instance also implement
  * {@link com.thoughtworks.proxy.toys.pool.Poolable}, that can be used to return the instance
@@ -56,7 +57,7 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * may request a new instance.
  * </p>
  * <p>
- * The pool supports components with a lifecylce. If the delegated {@link ComponentAdapter}
+ * The pool supports components with a lifecycle. If the delegated {@link ComponentAdapter}
  * implements a {@link LifecycleStrategy}, any component retrieved form the pool will be started
  * before and stopped again, when it returns back into the pool. Also if a component cannot be
  * resetted it will automatically be disposed. If the container of the pool is disposed, that any
@@ -68,12 +69,12 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * @author Aslak Helles&oslash;y
  * @since 1.2
  */
-public final class PoolingComponentAdapter extends AbstractBehavior implements LifecycleManager {
+public final class PoolingBehavior extends AbstractBehavior implements LifecycleManager {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Context of the PoolingComponentAdapter used to initialize it.
+     * Context of the PoolingBehavior used to initialize it.
      * 
      * @author J&ouml;rg Schaible
      * @since 1.2
@@ -81,7 +82,7 @@ public final class PoolingComponentAdapter extends AbstractBehavior implements L
     public static interface Context {
         /**
          * Retrieve the maximum size of the pool. An implementation may return the maximum value or
-         * {@link PoolingComponentAdapter#UNLIMITED_SIZE} for <em>unlimited</em> growth.
+         * {@link PoolingBehavior#UNLIMITED_SIZE} for <em>unlimited</em> growth.
          * 
          * @return the maximum pool size
          * @since 1.2
@@ -90,8 +91,8 @@ public final class PoolingComponentAdapter extends AbstractBehavior implements L
 
         /**
          * Retrieve the maximum number of milliseconds to wait for a returned element. An
-         * implementation may return alternatively {@link PoolingComponentAdapter#BLOCK_ON_WAIT} or
-         * {@link PoolingComponentAdapter#FAIL_ON_WAIT}.
+         * implementation may return alternatively {@link PoolingBehavior#BLOCK_ON_WAIT} or
+         * {@link PoolingBehavior#FAIL_ON_WAIT}.
          * 
          * @return the maximum number of milliseconds to wait
          * @since 1.2
@@ -138,7 +139,7 @@ public final class PoolingComponentAdapter extends AbstractBehavior implements L
     }
 
     /**
-     * The default context for a PoolingComponentAdapter.
+     * The default context for a PoolingBehavior.
      * 
      * @author J&ouml;rg Schaible
      * @since 1.2
@@ -146,14 +147,14 @@ public final class PoolingComponentAdapter extends AbstractBehavior implements L
     public static class DefaultContext implements Context {
 
         /**
-         * {@inheritDoc} Returns {@link PoolingComponentAdapter#DEFAULT_MAX_SIZE}.
+         * {@inheritDoc} Returns {@link PoolingBehavior#DEFAULT_MAX_SIZE}.
          */
         public int getMaxSize() {
             return DEFAULT_MAX_SIZE;
         }
 
         /**
-         * {@inheritDoc} Returns {@link PoolingComponentAdapter#FAIL_ON_WAIT}.
+         * {@inheritDoc} Returns {@link PoolingBehavior#FAIL_ON_WAIT}.
          */
         public int getMaxWaitInMilliseconds() {
             return FAIL_ON_WAIT;
@@ -174,7 +175,7 @@ public final class PoolingComponentAdapter extends AbstractBehavior implements L
         }
 
         /**
-         * {@inheritDoc} Returns the {@link PoolingComponentAdapter#DEFAULT_RESETTER}.
+         * {@inheritDoc} Returns the {@link PoolingBehavior#DEFAULT_RESETTER}.
          */
         public Resetter getResetter() {
             return DEFAULT_RESETTER;
@@ -220,20 +221,10 @@ public final class PoolingComponentAdapter extends AbstractBehavior implements L
     private boolean started;
     private boolean disposed;
     private boolean delegateHasLifecylce;
-    private transient List components;
+    private transient List<Object> components;
 
     /**
-     * Construct a PoolingComponentAdapter with default settings.
-     * 
-     * @param delegate the delegated ComponentAdapter
-     * @since 1.2
-     */
-    public PoolingComponentAdapter(ComponentAdapter delegate) {
-        this(delegate, new DefaultContext());
-    }
-
-    /**
-     * Construct a PoolingComponentAdapter. Remember, that the implementation will request new
+     * Construct a PoolingBehavior. Remember, that the implementation will request new
      * components from the delegate as long as no component instance is available in the pool and
      * the maximum pool size is not reached. Therefore the delegate may not return the same
      * component instance twice. Ensure, that the used {@link ComponentAdapter} does not cache.
@@ -244,7 +235,7 @@ public final class PoolingComponentAdapter extends AbstractBehavior implements L
      *             invalid
      * @since 1.2
      */
-    public PoolingComponentAdapter(ComponentAdapter delegate, Context context) {
+    public PoolingBehavior(ComponentAdapter delegate, Context context) {
         super(delegate);
         this.maxPoolSize = context.getMaxSize();
         this.waitMilliSeconds = context.getMaxWaitInMilliseconds();
@@ -258,7 +249,7 @@ public final class PoolingComponentAdapter extends AbstractBehavior implements L
         delegateHasLifecylce = delegate instanceof LifecycleStrategy
                 && ((LifecycleStrategy)delegate)
                         .hasLifecycle(delegate.getComponentImplementation());
-        components = new ArrayList();
+        components = new ArrayList<Object>();
 
         final Class type = delegate.getComponentKey() instanceof Class ? (Class)delegate
                 .getComponentKey() : delegate.getComponentImplementation();
@@ -272,7 +263,7 @@ public final class PoolingComponentAdapter extends AbstractBehavior implements L
      * 
      * @since 1.2
      */
-    protected PoolingComponentAdapter() {
+    protected PoolingBehavior() {
         // @todo super class should support standard ctor
         super((ComponentAdapter)Null.object(ComponentAdapter.class));
     }
@@ -351,9 +342,9 @@ public final class PoolingComponentAdapter extends AbstractBehavior implements L
     static final class LifecycleResetter implements Resetter, Serializable {
         private static final long serialVersionUID = 1L;
         private final Resetter delegate;
-        private final PoolingComponentAdapter adapter;
+        private final PoolingBehavior adapter;
 
-        LifecycleResetter(final PoolingComponentAdapter adapter, final Resetter delegate) {
+        LifecycleResetter(final PoolingBehavior adapter, final Resetter delegate) {
             this.adapter = adapter;
             this.delegate = delegate;
         }
@@ -453,6 +444,40 @@ public final class PoolingComponentAdapter extends AbstractBehavior implements L
 
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        components = (List)in.readObject();
+        components = (List<Object>)in.readObject();
     }
+
+    /**
+     * Exception thrown from the PoolingBehavior. Only thrown if the interaction with the internal pool fails.
+     *
+     * @author J&ouml;rg Schaible
+     * @since 1.2
+     */
+    public static class PoolException extends PicoCompositionException {
+
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Construct a PoolException with an explaining message and a originalting cause.
+         *
+         * @param message the explaining message
+         * @param cause the originating cause
+         * @since 1.2
+         */
+        public PoolException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
+        /**
+         * Construct a PoolException with an explaining message.
+         *
+         * @param message the explaining message
+         * @since 1.2
+         */
+        public PoolException(String message) {
+            super(message);
+        }
+
+    }
+
 }

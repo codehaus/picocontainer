@@ -76,6 +76,11 @@
             <name>Jetty Release Repository</name>
             <url>http://jetty.mortbay.org/maven2/release</url>
         </repository>
+        <repository>
+            <id>glassfish-repository</id>
+            <name>Glassfish Repository</name>
+            <url>https://maven-repository.dev.java.net/nonav/repository</url>
+        </repository>
 
     </repositories>
 

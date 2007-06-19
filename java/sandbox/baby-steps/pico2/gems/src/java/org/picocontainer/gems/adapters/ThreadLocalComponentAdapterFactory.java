@@ -31,7 +31,7 @@ import org.picocontainer.LifecycleStrategy;
  * This mode ({@link #ENSURE_THREAD_LOCALITY}) makes internal usage of a {@link ThreadLocalComponentAdapter}. If the
  * application architecture ensures, that the thread that creates the component is always also the thread that is th
  * only user, you can set the mode {@link #THREAD_ENSURES_LOCALITY}. In this mode the factory uses a simple
- * {@link CachingBehavior} that uses a {@link ThreadLocalReference} to cache the addComponent.
+ * {@link CachingBehavior} that uses a {@link ThreadLocalReference} to cache the component.
  * </p>
  * <p>
  * See the use cases for the subtile difference:
@@ -42,13 +42,13 @@ import org.picocontainer.LifecycleStrategy;
  * is processed from the same thread and the thread local component is reused, if a previous request was handled in the
  * same thread. Note that thi scenario fails badly, if the thread local component is created because of another cached
  * component indirectly by a dependecy. In this case the cached component already have an instance of the thread local
- * addComponent, that may have been created in another thread, since only the component adapter for the thread local
+ * component, that may have been created in another thread, since only the component adapter for the thread local
  * component can ensure a unique component for each thread.
  * </p>
  * <p>
  * <code>ENSURES_THREAD_LOCALITY</code> solves this problem. In this case the returned component is just a proxy for
  * the thread local component and this proxy ensures, that a new component is created for each thread. Even if another
- * cached component has an indirect dependency on the thread local addComponent, the proxy ensures unique instances. This
+ * cached component has an indirect dependency on the thread local component, the proxy ensures unique instances. This
  * is vital for a multithreaded application that uses EJBs.
  * </p>
  * @author J&ouml;rg Schaible
@@ -57,12 +57,12 @@ public final class ThreadLocalComponentAdapterFactory extends AbstractBehaviorFa
 
     /**
      * <code>ENSURE_THREAD_LOCALITY</code> is the constant for created {@link ComponentAdapter} instances, that ensure
-     * unique instances of the component by delivering a proxy for the addComponent.
+     * unique instances of the component by delivering a proxy for the component.
      */
     public static final boolean ENSURE_THREAD_LOCALITY = true;
     /**
      * <code>THREAD_ENSURES_LOCALITY</code> is the constant for created {@link ComponentAdapter} instances, that
-     * create for the current thread a new addComponent.
+     * create for the current thread a new component.
      */
     public static final boolean THREAD_ENSURES_LOCALITY = false;
 

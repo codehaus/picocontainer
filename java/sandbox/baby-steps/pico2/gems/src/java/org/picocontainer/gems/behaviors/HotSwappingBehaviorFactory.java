@@ -8,7 +8,7 @@
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
-package org.picocontainer.gems.adapters;
+package org.picocontainer.gems.behaviors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
@@ -16,7 +16,6 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 

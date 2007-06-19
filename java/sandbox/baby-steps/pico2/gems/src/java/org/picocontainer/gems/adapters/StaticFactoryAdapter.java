@@ -26,9 +26,9 @@ public final class StaticFactoryAdapter extends AbstractAdapter {
     private final StaticFactory staticFactory;
 
     /**
-     * Construct a ComponentAdapter accessing a static factory creating the addComponent.
+     * Construct a ComponentAdapter accessing a static factory creating the component.
      *
-     * @param type The type of the created addComponent.
+     * @param type The type of the created component.
      * @param staticFactory Wrapper instance for the static factory.
      */
     public StaticFactoryAdapter(Class type, StaticFactory staticFactory) {
@@ -40,8 +40,8 @@ public final class StaticFactoryAdapter extends AbstractAdapter {
      * Construct a ComponentAdapter accessing a static factory creating the component using a special key for addComponent
      * registration.
      *
-     * @param componentKey The key of the created addComponent.
-     * @param type The type of the created addComponent.
+     * @param componentKey The key of the created component.
+     * @param type The type of the created component.
      * @param staticFactory Wrapper instance for the static factory.
      */
     public StaticFactoryAdapter(Object componentKey, Class type, StaticFactory staticFactory) {

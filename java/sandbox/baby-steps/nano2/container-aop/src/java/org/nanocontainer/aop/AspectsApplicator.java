@@ -12,8 +12,8 @@ package org.nanocontainer.aop;
 import org.picocontainer.PicoContainer;
 
 /**
- * Applies aspects to a addComponent. Intended for use by component adapters that
- * need to inject aspects into a addComponent.
+ * Applies aspects to a component. Intended for use by component adapters that
+ * need to inject aspects into a component.
  *
  * @author Stephen Molitor
  * @version $Revision$

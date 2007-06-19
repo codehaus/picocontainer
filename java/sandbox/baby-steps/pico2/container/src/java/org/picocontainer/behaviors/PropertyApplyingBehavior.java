@@ -26,7 +26,7 @@ import org.picocontainer.behaviors.CachingBehavior;
  * on a component in a bean style. These properties must be managed manually
  * by the user of the API, and will not be managed by PicoContainer. This class
  * is therefore <em>not</em> the same as {@link SetterInjector},
- * which is a true Setter Injection addAdapter.
+ * which is a true Setter Injection adapter.
  * <p/>
  * This adapter is mostly handy for setting various primitive properties via setters;
  * it is also able to set javabean properties by discovering an appropriate

@@ -2,11 +2,10 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Inject;
+import org.picocontainer.annotations.Inject;
 import org.picocontainer.LifecycleStrategy;
 
 import java.lang.reflect.Method;
-import java.io.Serializable;
 
 public class MethodAnnotationInjector extends SetterInjector {
 

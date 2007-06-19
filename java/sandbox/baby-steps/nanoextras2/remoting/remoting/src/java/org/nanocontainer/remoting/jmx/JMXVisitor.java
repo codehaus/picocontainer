@@ -96,7 +96,7 @@ public class JMXVisitor extends TraversalCheckingVisitor {
 
     /**
      * Register the component as MBean. The implementation uses the known DynamicMBeanProvider instances to get the
-     * MBean from the addComponent.
+     * MBean from the component.
      * @see org.picocontainer.PicoVisitor#visitComponentAdapter(org.picocontainer.ComponentAdapter)
      */
     public void visitComponentAdapter(final ComponentAdapter componentAdapter) {

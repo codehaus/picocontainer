@@ -30,12 +30,12 @@ import java.util.Set;
  * A {@link ComponentAdapter} that realizes a {@link ThreadLocal} component instance.
  * <p>
  * The adapter creates proxy instances, that will create the necessary instances on-the-fly invoking the methods of the
- * instance. Use this addAdapter, if you are instantiating your components in a single thread, but should be different when
+ * instance. Use this adapter, if you are instantiating your components in a single thread, but should be different when
  * accessed from different threads. See {@link ThreadLocalComponentAdapterFactory} for details.
  * </p>
  * <p>
  * Note: Because this implementation uses a {@link Proxy}, you can only access the methods exposed by the implemented
- * interfaces of your addComponent.
+ * interfaces of your component.
  * </p>
  * 
  * @author J&ouml;rg Schaible

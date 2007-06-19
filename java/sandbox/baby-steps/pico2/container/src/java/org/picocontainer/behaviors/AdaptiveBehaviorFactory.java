@@ -9,6 +9,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.BehaviorFactory;
+import org.picocontainer.annotations.Single;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 
 import java.io.Serializable;
@@ -24,17 +25,17 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
         List<ComponentFactory> list = new ArrayList<ComponentFactory>();
-        list.add(new AdaptiveInjectionFactory());
+        ComponentFactory lastFactory = new AdaptiveInjectionFactory();
         if (ComponentCharacteristics.THREAD_SAFE.isCharacterizedIn(componentCharacteristic)) {
             list.add(new SynchronizedBehaviorFactory());
         }
         if (ComponentCharacteristics.HIDE.isCharacterizedIn(componentCharacteristic)) {
             list.add(new ImplementationHidingBehaviorFactory());
         }
-        if (ComponentCharacteristics.CACHE.isCharacterizedIn(componentCharacteristic)) {
+        if (ComponentCharacteristics.CACHE.isCharacterizedIn(componentCharacteristic) ||
+            componentImplementation.getAnnotation(Single.class) != null) {
             list.add(new CachingBehaviorFactory());
         }
-        ComponentFactory lastFactory = null;
         for (ComponentFactory componentFactory : list) {
             if (lastFactory != null && componentFactory instanceof BehaviorFactory) {
                 ((BehaviorFactory)componentFactory).forThis(lastFactory);
@@ -49,4 +50,5 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
                                                   componentImplementation,
                                                   parameters);
     }
+
 }

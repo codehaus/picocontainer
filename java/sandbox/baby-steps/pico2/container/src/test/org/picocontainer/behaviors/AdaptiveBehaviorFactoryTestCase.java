@@ -5,6 +5,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.annotations.Single;
 import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.containers.EmptyPicoContainer;
 
@@ -25,8 +26,26 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
         assertNotNull(map);
         Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer());
-        assertEquals(map, map2);
+        assertSame(map, map2);
         assertFalse(cc.hasUnProcessedEntries());
+    }
+
+    public void testCachingBehaviorCanBeAddedByAnnotation() {
+        AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
+        ComponentCharacteristic cc = new ComponentCharacteristic();
+        ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap.class);
+        assertTrue(ca instanceof CachingBehavior);
+        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        assertNotNull(map);
+        Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        assertSame(map, map2);
+        assertFalse(cc.hasUnProcessedEntries());
+    }
+
+    @Single
+    public static class MyHashMap extends HashMap {
+        public MyHashMap() {
+        }
     }
 
     public void testImplementationHidingBehaviorCanBeAddedByCharacteristics() {

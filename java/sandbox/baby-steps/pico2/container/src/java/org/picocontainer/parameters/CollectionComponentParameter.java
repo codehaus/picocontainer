@@ -92,7 +92,7 @@ public class CollectionComponentParameter
      * Expect any of the collection types {@link Array},{@link Collection}or {@link Map}as
      * parameter.
      *
-     * @param componentKeyType   the type of the addComponent's key
+     * @param componentKeyType   the type of the component's key
      * @param componentValueType the type of the components (ignored in case of an Array)
      * @param emptyCollection    <code>true</code> if an empty collection resolves the
      *                           dependency.

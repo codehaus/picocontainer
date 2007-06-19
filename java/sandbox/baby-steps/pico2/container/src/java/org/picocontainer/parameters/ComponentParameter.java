@@ -19,7 +19,7 @@ import org.picocontainer.injectors.AbstractInjector;
 
 /**
  * A ComponentParameter should be used to pass in a particular component as argument to a
- * different addComponent's constructor. This is particularly useful in cases where several
+ * different component's constructor. This is particularly useful in cases where several
  * components of the same type have been registered, but with a different key. Passing a
  * ComponentParameter as a parameter when registering a component will give PicoContainer a hint
  * about what other component to use in the constructor. Collecting parameter types are
@@ -83,7 +83,7 @@ public class ComponentParameter
      * {@link java.lang.reflect.Array},{@link java.util.Collection}or {@link java.util.Map}.
      * The components in the collection will be of the specified type.
      * 
-     * @param componentValueType the addComponent's type (ignored for an Array)
+     * @param componentValueType the component's type (ignored for an Array)
      * @param emptyCollection <code>true</code> allows the collection to be empty
      * @since 1.1
      */
@@ -94,11 +94,11 @@ public class ComponentParameter
     /**
      * Expect any scalar paramter of the appropriate type or the collecting type
      * {@link java.lang.reflect.Array},{@link java.util.Collection}or {@link java.util.Map}.
-     * The components in the collection will be of the specified type and their addAdapter's key
+     * The components in the collection will be of the specified type and their adapter's key
      * must have a particular type.
      * 
-     * @param componentKeyType the component addAdapter's key type
-     * @param componentValueType the addComponent's type (ignored for an Array)
+     * @param componentKeyType the component adapter's key type
+     * @param componentValueType the component's type (ignored for an Array)
      * @param emptyCollection <code>true</code> allows the collection to be empty
      * @since 1.1
      */

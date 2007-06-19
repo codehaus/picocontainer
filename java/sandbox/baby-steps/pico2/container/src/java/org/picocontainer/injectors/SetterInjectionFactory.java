@@ -36,7 +36,7 @@ public class SetterInjectionFactory implements InjectionFactory, Serializable {
      * @param componentMonitor
      * @param lifecycleStrategy
      * @param componentCharacteristic
-     * @param componentKey                The addComponent's key
+     * @param componentKey                The component's key
      * @param componentImplementation     The class of the bean.
      * @param parameters                  Any parameters for the setters. If null the adapter solves the
      *                                    dependencies for all setters internally. Otherwise the number parameters must match

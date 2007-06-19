@@ -88,7 +88,7 @@ public interface PointcutsFactory {
      * returned pointcut expects an exact match against the package name.
      *
      * @param packageName the package name to match against the package of the
-     *                    candidate addComponent's class.
+     *                    candidate component's class.
      * @return a <code>ClassPointcut</code> that matches the class package
      *         with <code>packageName</code>.
      */

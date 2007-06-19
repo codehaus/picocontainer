@@ -27,7 +27,7 @@ public interface ComponentAdapter<T> {
     /**
      * Retrieve the key associated with the component.
      *
-     * @return the addComponent's key. Should either be a class type (normally an interface) or an identifier that is
+     * @return the component's key. Should either be a class type (normally an interface) or an identifier that is
      *         unique (within the scope of the current PicoContainer).
      */
     Object getComponentKey();
@@ -35,7 +35,7 @@ public interface ComponentAdapter<T> {
     /**
      * Retrieve the class of the component.
      *
-     * @return the addComponent's implementation class. Should normally be a concrete class (ie, a class that can be
+     * @return the component's implementation class. Should normally be a concrete class (ie, a class that can be
      *         instantiated).
      */
     Class<T> getComponentImplementation();

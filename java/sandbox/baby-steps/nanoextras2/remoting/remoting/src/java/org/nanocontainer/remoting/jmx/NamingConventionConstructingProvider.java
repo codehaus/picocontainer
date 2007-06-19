@@ -18,7 +18,7 @@ import javax.management.MBeanInfo;
  * the management interface must follow the naming conventions with an <em>MBean</em> appended to the MBean's type.
  * The implementation will use the registered MBeanInfoProvider instances of type
  * {@link ComponentKeyConventionMBeanInfoProvider} and {@link ComponentTypeConventionMBeanInfoProvider} to provide a
- * {@link MBeanInfo} for the addComponent's MBean. If a {@link MBeanInfo} was found, the MBean's type is used from the
+ * {@link MBeanInfo} for the component's MBean. If a {@link MBeanInfo} was found, the MBean's type is used from the
  * MBeanInfo otherwise the type is the implementation class of the component.
  * @author J&ouml;rg Schaible
  * @since 1.0
@@ -74,7 +74,7 @@ public class NamingConventionConstructingProvider extends AbstractConstructingPr
 
     /**
      * Determin the default management interface using naming convetions of the JMX specification.
-     * @param implementation The type of the addComponent's implementation.
+     * @param implementation The type of the component's implementation.
      * @param mBeanInfo The {@link MBeanInfo} to expose the component. May be <code>null</code>.
      * @return Returns the management interface.
      * @throws ClassNotFoundException Thrown if no interface can be determined.

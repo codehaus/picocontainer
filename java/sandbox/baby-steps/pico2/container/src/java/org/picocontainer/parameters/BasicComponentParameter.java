@@ -24,7 +24,7 @@ import java.util.Set;
 
 /**
  * A BasicComponentParameter should be used to pass in a particular component as argument to a
- * different addComponent's constructor. This is particularly useful in cases where several
+ * different component's constructor. This is particularly useful in cases where several
  * components of the same type have been registered, but with a different key. Passing a
  * ComponentParameter as a parameter when registering a component will give PicoContainer a hint
  * about what other component to use in the constructor. This Parameter will never resolve

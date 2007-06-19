@@ -49,7 +49,7 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
     }
 
     /**
-     * Provide a DynamicMBean for the given Pico component. The implementation will lookup the addComponent's key in the
+     * Provide a DynamicMBean for the given Pico component. The implementation will lookup the component's key in the
      * internal registry. Only components that were registered with additional information will be considered and a
      * {@link DynamicMBean} will be created for them using the {@link DynamicMBeanFactory}. If the component key is of
      * type class, it is used as management interface.

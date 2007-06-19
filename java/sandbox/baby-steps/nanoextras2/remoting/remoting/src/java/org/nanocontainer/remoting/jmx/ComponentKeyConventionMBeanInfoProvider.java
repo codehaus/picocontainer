@@ -27,7 +27,7 @@ public class ComponentKeyConventionMBeanInfoProvider extends AbstractNamingConve
     /**
      * Use the key of the component to search for a MBeanInfo in the PicoContainer. The matching MBeanInfo must be
      * stored in the PicoContainer. The key of the MBeanInfo follows the naming scheme
-     * &quot;&lt;ComponentKey&gt;MBeanInfo&quot;. The the addComponent's key is a type, the class name is used as prefix
+     * &quot;&lt;ComponentKey&gt;MBeanInfo&quot;. The the component's key is a type, the class name is used as prefix
      * otherwise the string representation of the key. The key part may already end with &quot;MBean&quot; as it would
      * for components registered with the management interface as key, that follow the JMX naming conventions. As last
      * resort the calculated key of the MBeanInfo is turned into a type that is used again as lookup key.

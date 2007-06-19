@@ -47,7 +47,7 @@ public interface LifecycleStrategy {
 
     /**
      * Test if a component instance has a lifecycle.
-     * @param type the addComponent's type
+     * @param type the component's type
      * 
      * @return <code>true</code> if the component has a lifecycle
      */

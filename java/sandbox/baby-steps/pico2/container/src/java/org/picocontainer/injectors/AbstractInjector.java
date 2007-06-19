@@ -324,7 +324,7 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
     }
 
     /**
-     * Exception thrown when some of the addComponent's dependencies are not satisfiable.
+     * Exception thrown when some of the component's dependencies are not satisfiable.
      *
      * @author Aslak Helles&oslash;y
      * @author Mauro Talevi

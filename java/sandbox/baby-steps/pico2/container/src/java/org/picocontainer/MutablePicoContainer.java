@@ -43,7 +43,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *                     of the key object has no semantic significance unless explicitly specified in the
      *                     documentation of the implementing container.
      * @param componentImplementationOrInstance
-     *                     the addComponent's implementation class. This must be a concrete class (ie, a
+     *                     the component's implementation class. This must be a concrete class (ie, a
      *                     class that can be instantiated). Or an intance of the compoent.
      * @param parameters   the parameters that gives the container hints about what arguments to pass
      *                     to the constructor when it is instantiated. Container implementations may ignore

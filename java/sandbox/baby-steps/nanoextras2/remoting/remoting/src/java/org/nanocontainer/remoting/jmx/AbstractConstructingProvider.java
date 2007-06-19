@@ -92,7 +92,7 @@ public abstract class AbstractConstructingProvider implements DynamicMBeanProvid
 
     /**
      * Determin the management interface from the component implementation type and an optional MBeanInfo instance.
-     * @param implementation The type of the addComponent's implementation.
+     * @param implementation The type of the component's implementation.
      * @param mBeanInfo The {@link MBeanInfo} to expose the component. May be <code>null</code>.
      * @return Returns the management interface.
      * @throws ClassNotFoundException Thrown if no interface can be determined.

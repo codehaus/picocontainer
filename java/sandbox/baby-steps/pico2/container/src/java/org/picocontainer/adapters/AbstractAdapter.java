@@ -95,7 +95,7 @@ public abstract class AbstractAdapter implements ComponentAdapter, ComponentMoni
     }
 
     /**
-     * @return Returns the ComponentAdapter's class name and the addComponent's key.
+     * @return Returns the ComponentAdapter's class name and the component's key.
      * @see java.lang.Object#toString()
      */
     public String toString() {

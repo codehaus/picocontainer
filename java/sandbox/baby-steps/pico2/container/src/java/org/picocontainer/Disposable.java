@@ -23,7 +23,7 @@ package org.picocontainer;
 public interface Disposable {
     /**
      * Dispose this component. The component should deallocate all resources. The contract for this method defines a
-     * single call at the end of this addComponent's life.
+     * single call at the end of this component's life.
      */
     void dispose();
 }

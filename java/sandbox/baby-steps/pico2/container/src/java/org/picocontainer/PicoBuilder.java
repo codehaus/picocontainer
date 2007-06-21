@@ -2,13 +2,12 @@ package org.picocontainer;
 
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implHiding;
-import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
 import org.picocontainer.behaviors.PropertyApplyingBehaviorFactory;
+import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
-import org.picocontainer.DefaultPicoContainer;
-import static org.picocontainer.injectors.Injectors.MADI;
 import static org.picocontainer.injectors.Injectors.CDI;
+import static org.picocontainer.injectors.Injectors.MADI;
 import static org.picocontainer.injectors.Injectors.SDI;
 import static org.picocontainer.injectors.Injectors.anyDI;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -17,15 +16,16 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import java.util.Stack;
 import java.util.ArrayList;
+import java.util.Stack;
+import java.util.List;
 
 public class PicoBuilder {
 
     private PicoContainer parentContainer;
-    private Class mpcClass = DefaultPicoContainer.class;
+    private Class<? extends MutablePicoContainer> mpcClass = DefaultPicoContainer.class;
     private ComponentMonitor componentMonitor;
-    private ArrayList containerComps = new ArrayList();
+    private List<Object> containerComps = new ArrayList<Object>();
 
     public PicoBuilder(PicoContainer parentContainer, InjectionFactory injectionType) {
         this.injectionType = injectionType;
@@ -47,12 +47,12 @@ public class PicoBuilder {
         this(new EmptyPicoContainer(), anyDI());
     }
 
-    private final Stack componentFactories = new Stack();
+    private final Stack<Object> componentFactories = new Stack<Object>();
 
     private InjectionFactory injectionType;
 
     private Class componentMonitorClass = NullComponentMonitor.class;
-    private Class lifecycleStrategyClass = NullLifecycleStrategy.class;
+    private Class<? extends LifecycleStrategy> lifecycleStrategyClass = NullLifecycleStrategy.class;
 
     public PicoBuilder withLifecycle() {
         lifecycleStrategyClass = StartableLifecycleStrategy.class;
@@ -142,18 +142,6 @@ public class PicoBuilder {
 
     public PicoBuilder withCaching() {
         componentFactories.push(caching());
-        return this;  
-    }
-
-    public PicoBuilder withComponentAdapterFactory(Class componentFactoryClass) {
-        if (componentFactoryClass == null) {
-            throw new NullPointerException("CAF class cannot be null");
-        }
-        if (!ComponentFactory.class.isAssignableFrom(componentFactoryClass)) {
-            throw new ClassCastException(componentFactoryClass.getName() + " is not a " + ComponentFactory.class.getName());
-
-        }
-        componentFactories.push(componentFactoryClass);
         return this;
     }
 
@@ -179,7 +167,7 @@ public class PicoBuilder {
     }
 
 
-    public PicoBuilder thisMutablePicoContainer(Class containerClass) {
+    public PicoBuilder thisMutablePicoContainer(Class<? extends MutablePicoContainer> containerClass) {
         mpcClass = containerClass;
         return this;
     }

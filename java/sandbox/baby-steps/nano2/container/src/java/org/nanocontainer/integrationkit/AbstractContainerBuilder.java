@@ -69,8 +69,7 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
             if (parent != null && parent instanceof MutablePicoContainer) {
                 // see comment in buildContainer
                 synchronized (parent) {
-                    // TODO - is this right ?
-                    ((MutablePicoContainer) parent).removeComponentByInstance(pico);
+                    ((MutablePicoContainer) parent).removeChildContainer(pico);
                 }
             }
         } finally {

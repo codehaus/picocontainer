@@ -1,28 +1,29 @@
 package org.nanocontainer;
 
-import junit.framework.TestCase;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import static org.picocontainer.behaviors.Behaviors.caching;
+import static org.picocontainer.behaviors.Behaviors.implHiding;
+import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
+import org.picocontainer.containers.EmptyPicoContainer;
+import static org.picocontainer.injectors.Injectors.SDI;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.containers.EmptyPicoContainer;
-import static org.picocontainer.behaviors.Behaviors.caching;
-import static org.picocontainer.behaviors.Behaviors.implHiding;
-import static org.picocontainer.injectors.Injectors.SDI;
-import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
-
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import junit.framework.TestCase;
 
 public class NanoBuilderTestCase extends TestCase {
 
@@ -93,7 +94,7 @@ public class NanoBuilderTestCase extends TestCase {
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.nanocontainer.DefaultNanoContainer/delegate/lifecycleStrategy/componentMonitor\n",
                 foo);
     }
-    
+
     public void testWithConsoleMonitor() {
         NanoContainer nc = new NanoBuilder().withConsoleMonitor().build();
         String foo = simplifyRepresentation(nc);
@@ -120,9 +121,11 @@ public class NanoBuilderTestCase extends TestCase {
                 "",foo);
     }
 
+    @SuppressWarnings({ "unchecked" })
     public void testWithBogusCustomMonitorByClass() {
         try {
-            new NanoBuilder().withMonitor(HashMap.class).build();
+            Class aClass = HashMap.class;
+            new NanoBuilder().withMonitor(aClass).build();
             fail("should have barfed");
         } catch (ClassCastException e) {
             // expected

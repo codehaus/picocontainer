@@ -1,27 +1,25 @@
 package org.picocontainer;
 
-import junit.framework.TestCase;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.converters.Converter;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.containers.EmptyPicoContainer;
-
-import static org.picocontainer.injectors.Injectors.SDI;
-
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implHiding;
 import static org.picocontainer.behaviors.Behaviors.threadSafe;
+import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
+import org.picocontainer.containers.EmptyPicoContainer;
+import static org.picocontainer.injectors.Injectors.SDI;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.ArrayList;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.Converter;
+import com.thoughtworks.xstream.converters.MarshallingContext;
+import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import junit.framework.TestCase;
 
 public class PicoBuilderTestCase extends TestCase {
 
@@ -61,7 +59,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithStartableLifecycle() {
-        
+
         NullComponentMonitor.getInstance();
 
         MutablePicoContainer mpc = new PicoBuilder().withLifecycle().build();
@@ -130,10 +128,13 @@ public class PicoBuilderTestCase extends TestCase {
                 "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
     }
-    
+
+    @SuppressWarnings({ "unchecked" })
     public void testWithBogusCustomMonitorByClass() {
+        // We do unchecked assignment so we test what its really doing, and smart IDE's don't complain
         try {
-            new PicoBuilder().withMonitor(HashMap.class).build();
+            Class aClass = HashMap.class;
+            new PicoBuilder().withMonitor(aClass).build();
             fail("should have barfed");
         } catch (ClassCastException e) {
             // expected
@@ -299,6 +300,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
     public static class CustomComponentFactory implements ComponentFactory {
 
+        @SuppressWarnings({ "UnusedDeclaration" })
         public CustomComponentFactory(SomeContainerDependency someDependency) {
         }
 

@@ -7,5 +7,5 @@ import java.lang.annotation.ElementType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value={ ElementType.TYPE })
-public @interface Single {
+public @interface Cache {
 }

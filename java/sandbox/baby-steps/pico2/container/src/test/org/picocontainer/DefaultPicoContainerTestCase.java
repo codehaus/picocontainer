@@ -23,10 +23,13 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.SynchronizedBehavior;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
@@ -55,7 +58,7 @@ import java.util.List;
  */
 public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultPicoContainer(parent);
+        return new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), parent);
     }
 
     public void testInstantiationWithNullComponentAdapterFactory(){
@@ -171,7 +174,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     }
 
     public void testDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientComponentAdapter() {
-        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
         picoContainer.addComponent(Service.class);
         picoContainer.addAdapter(new ConstructorInjector(TransientComponent.class, TransientComponent.class));
         TransientComponent c1 = picoContainer.getComponent(TransientComponent.class);
@@ -221,7 +224,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                 sb.append(member.toString());
             }
         });
-        dpc.addComponent(DefaultPicoContainer.class);
+        dpc.as(ComponentCharacteristics.CACHE).addComponent(DefaultPicoContainer.class);
         dpc.start();
         assertEquals("ComponentMonitor should have been notified that the component had been started",
                 "public abstract void org.picocontainer.Startable.start()", sb.toString());
@@ -343,7 +346,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     public void testCanUseCustomLifecycleStrategyForClassRegistrations() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new FailingLifecycleStrategy(), null);
-        dpc.addComponent(Startable.class, MyStartable.class);
+        dpc.as(ComponentCharacteristics.CACHE).addComponent(Startable.class, MyStartable.class);
         try {
             dpc.start();
             fail("should have barfed");

@@ -13,6 +13,7 @@ import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.behaviors.ImplementationHidingBehavior;
+import org.picocontainer.behaviors.AdaptiveBehaviorFactory;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
@@ -160,7 +161,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentMonitor monitor, PicoContainer parent) {
-        this(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), new StartableLifecycleStrategy(monitor), parent, monitor);
+        this(new AdaptiveBehaviorFactory(), new StartableLifecycleStrategy(monitor), parent, monitor);
     }
 
     /**
@@ -172,7 +173,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent            the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), lifecycleStrategy, parent, monitor);
+        this(new AdaptiveBehaviorFactory(), lifecycleStrategy, parent, monitor);
     }
 
     /**
@@ -213,12 +214,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(PicoContainer parent) {
-        this(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), parent);
+        this(new AdaptiveBehaviorFactory(), parent);
     }
 
-    /** Creates a new container with a (caching) {@link AdaptiveInjectionFactory} and no parent container. */
+    /** Creates a new container with a {@link AdaptiveBehaviorFactory} and no parent container. */
     public DefaultPicoContainer() {
-        this(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), null);
+        this(new AdaptiveBehaviorFactory(), null);
     }
 
     public Collection<ComponentAdapter<?>> getComponentAdapters() {
@@ -335,7 +336,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
         if (componentImplementationOrInstance instanceof Class) {
-            ComponentCharacteristic tmpComponentCharacteristic = (ComponentCharacteristic)characteristic.clone();
+            ComponentCharacteristic tmpComponentCharacteristic = characteristic.clone();
             ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(componentMonitor,
                                                                                                lifecycleStrategy,
                                                                                                tmpComponentCharacteristic,

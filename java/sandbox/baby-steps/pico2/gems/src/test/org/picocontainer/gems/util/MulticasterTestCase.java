@@ -5,6 +5,8 @@ import junit.framework.TestCase;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.testmodel.RecordingLifecycle;
 
 import com.thoughtworks.proxy.ProxyFactory;
@@ -17,7 +19,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 public class MulticasterTestCase extends TestCase {
     public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
-        DefaultPicoContainer pico = new DefaultPicoContainer();
+        DefaultPicoContainer pico = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
         pico.addComponent("recording", StringBuffer.class);
         pico.addComponent(RecordingLifecycle.Four.class);
         pico.addComponent(RecordingLifecycle.Two.class);

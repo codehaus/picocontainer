@@ -153,7 +153,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
     ComponentAdapter lastCA();
 
     /**
-     * You can change the characteristic of registration of a component on the fly.
+     * You can change the characteristic of registration of all subsequent components in this container.
      *
      * @param characteristics characteristics
      *

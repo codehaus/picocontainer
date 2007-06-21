@@ -9,7 +9,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.BehaviorFactory;
-import org.picocontainer.annotations.Single;
+import org.picocontainer.annotations.Cache;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 
 import java.io.Serializable;
@@ -60,7 +60,7 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
                                        Class componentImplementation,
                                        List<ComponentFactory> list) {
         if (ComponentCharacteristics.CACHE.isCharacterizedIn(componentCharacteristic) ||
-            componentImplementation.getAnnotation(Single.class) != null) {
+            componentImplementation.getAnnotation(Cache.class) != null) {
             list.add(new CachingBehaviorFactory());
         }
     }

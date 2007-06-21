@@ -5,7 +5,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.annotations.Single;
+import org.picocontainer.annotations.Cache;
 import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.containers.EmptyPicoContainer;
 
@@ -42,7 +42,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         assertFalse(cc.hasUnProcessedEntries());
     }
 
-    @Single
+    @Cache
     public static class MyHashMap extends HashMap {
         public MyHashMap() {
         }

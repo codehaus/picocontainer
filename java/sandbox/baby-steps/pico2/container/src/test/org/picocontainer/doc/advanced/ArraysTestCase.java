@@ -7,6 +7,8 @@ import org.picocontainer.Parameter;
 import org.picocontainer.parameters.CollectionComponentParameter;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +25,7 @@ public class ArraysTestCase
     private MutablePicoContainer pico;
 
     protected void setUp() throws Exception {
-        pico = new DefaultPicoContainer();
+        pico = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
     }
 
     private void explanation() {

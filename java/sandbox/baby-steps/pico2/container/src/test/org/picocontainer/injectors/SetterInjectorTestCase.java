@@ -259,9 +259,10 @@ public class SetterInjectorTestCase
         SetterInjector bAdapter = new SetterInjector("b", B.class, null, NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance());
 
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addComponent(List.class, ArrayList.class).addComponent(String.class, "foo");
-        pico.addAdapter(bAdapter);
-        pico.addAdapter(aAdapter);
+        pico.addComponent(List.class, ArrayList.class)
+            .addComponent(String.class, "foo")
+            .addAdapter(bAdapter)
+            .addAdapter(aAdapter);
 
         aAdapter.getComponentInstance(pico);
 

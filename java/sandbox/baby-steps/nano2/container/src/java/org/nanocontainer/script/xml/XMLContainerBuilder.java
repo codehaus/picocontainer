@@ -29,6 +29,7 @@ import org.nanocontainer.ClassPathElement;
 import org.nanocontainer.NanoContainer;
 import org.picocontainer.PicoClassNotFoundException;
 import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoBuilder;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.NanoContainerMarkupException;
@@ -154,6 +155,13 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     }
 
     private MutablePicoContainer createMutablePicoContainer(String componentFactoryName, String monitorName, PicoContainer parentContainer) throws PicoCompositionException {
+
+        // TODO would love to get this working
+        //NanoBuilder nb = new NanoBuilder(parentContainer);
+        //nb.withComponentFactory(componentFactoryName);
+        //nb.withMonitor(monitorName);
+        //return nb.build();
+
         ComponentFactory componentFactory = createComponentAdapterFactory(componentFactoryName, new DefaultNanoContainer(getClassLoader()));
         MutablePicoContainer container = new DefaultNanoContainer(getClassLoader(), componentFactory, parentContainer);
         if ( !notSet(monitorName) ){

@@ -5,6 +5,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.adapters.AbstractAdapter;
 
@@ -212,7 +213,7 @@ public final class UserQuestionTestCase extends TestCase {
 
     public void testShouldBeAbleShareSameReferenceForDifferentTypes() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addComponent(FooBar.class);
+        pico.as(ComponentCharacteristics.CACHE).addComponent(FooBar.class);
         pico.addComponent(NeedsFoo.class);
         pico.addComponent(NeedsBar.class);
         NeedsFoo needsFoo = pico.getComponent(NeedsFoo.class);

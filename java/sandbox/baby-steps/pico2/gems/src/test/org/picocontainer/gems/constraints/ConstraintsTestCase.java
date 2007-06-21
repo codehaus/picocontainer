@@ -11,7 +11,9 @@ package org.picocontainer.gems.constraints;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -35,7 +37,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        container = new DefaultPicoContainer();
+        container = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
         container.addComponent(SimpleTouchable.class);
         container.addComponent(DecoratedTouchable.class);
         container.addComponent(AlternativeTouchable.class);

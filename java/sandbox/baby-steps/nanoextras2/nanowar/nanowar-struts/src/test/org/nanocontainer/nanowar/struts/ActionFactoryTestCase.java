@@ -20,6 +20,9 @@ import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 /**
  * @author Stephen Molitor
@@ -66,9 +69,9 @@ public final class ActionFactoryTestCase extends MockObjectTestCase {
     }
 
     public void testGetActionWhenActionsContainerAlreadyExists() {
-        MutablePicoContainer requestContainer = new DefaultPicoContainer();
+        MutablePicoContainer requestContainer = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
         requestContainer.addComponent(TestService.class, service);
-        MutablePicoContainer actionsContainer = new DefaultPicoContainer(requestContainer);
+        MutablePicoContainer actionsContainer = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()),requestContainer);
 
         requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
                 returnValue(actionsContainer));

@@ -28,7 +28,7 @@ public class ComponentCharacteristic implements Serializable, Cloneable {
         return props.getProperty(name);
     }
 
-    public Object clone() {
+    public ComponentCharacteristic clone() {
         ComponentCharacteristic cc;
         try {
             cc = (ComponentCharacteristic) super.clone();

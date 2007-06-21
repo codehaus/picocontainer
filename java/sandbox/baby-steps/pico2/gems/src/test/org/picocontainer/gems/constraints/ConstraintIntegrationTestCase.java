@@ -12,7 +12,9 @@ import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.DecoratedTouchable;
@@ -40,7 +42,7 @@ public class ConstraintIntegrationTestCase
     protected void setUp() throws Exception {
         super.setUp();
 
-        container = new DefaultPicoContainer();
+        container = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
         container.addComponent(SimpleTouchable.class);
         container.addComponent(DependsOnTouchable.class);
         container.addComponent(DependsOnTwoComponents.class);

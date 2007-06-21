@@ -51,7 +51,7 @@ public class PicoBuilder {
 
     private InjectionFactory injectionType;
 
-    private Class componentMonitorClass = NullComponentMonitor.class;
+    private Class<? extends ComponentMonitor> componentMonitorClass = NullComponentMonitor.class;
     private Class<? extends LifecycleStrategy> lifecycleStrategyClass = NullLifecycleStrategy.class;
 
     public PicoBuilder withLifecycle() {
@@ -69,7 +69,7 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withMonitor(Class cmClass) {
+    public PicoBuilder withMonitor(Class<? extends ComponentMonitor> cmClass) {
         if (cmClass == null) {
             throw new NullPointerException("monitor class cannot be null");
         }
@@ -81,7 +81,6 @@ public class PicoBuilder {
         componentMonitor = null;
         return this;
     }
-
 
     public MutablePicoContainer build() {
 
@@ -166,8 +165,7 @@ public class PicoBuilder {
         return this;
     }
 
-
-    public PicoBuilder thisMutablePicoContainer(Class<? extends MutablePicoContainer> containerClass) {
+    public PicoBuilder withContainer(Class<? extends MutablePicoContainer> containerClass) {
         mpcClass = containerClass;
         return this;
     }
@@ -178,7 +176,7 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withComponentFactory(Class componentFactoryClass) {
+    public PicoBuilder withComponentFactory(Class<? extends ComponentFactory> componentFactoryClass) {
         componentFactories.push(componentFactoryClass);
         return this;
     }

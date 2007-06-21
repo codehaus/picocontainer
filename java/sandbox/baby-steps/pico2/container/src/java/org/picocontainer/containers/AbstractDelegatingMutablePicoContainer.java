@@ -43,8 +43,7 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
 
     public MutablePicoContainer addComponent(Object componentKey,
                                              Object componentImplementationOrInstance,
-                                             Parameter... parameters) throws PicoCompositionException
-    {
+                                             Parameter... parameters) throws PicoCompositionException {
         return delegate.addComponent(componentKey, componentImplementationOrInstance, parameters);
     }
 
@@ -127,10 +126,6 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
     public boolean equals(Object obj) {
         // required to make it pass on both jdk 1.3 and jdk 1.4. Btw, what about overriding hashCode()? (AH)
         return delegate.equals(obj) || this == obj;
-    }
-
-    public ComponentAdapter lastCA() {
-        return null;
     }
 
     public MutablePicoContainer change(ComponentCharacteristic... characteristics) {

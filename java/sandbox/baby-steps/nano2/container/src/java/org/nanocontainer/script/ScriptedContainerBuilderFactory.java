@@ -19,6 +19,7 @@ import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.ClassName;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * The main class for configuration of PicoContainer with various scripting languages.
@@ -77,7 +78,7 @@ public class ScriptedContainerBuilderFactory {
     }
 
     public ScriptedContainerBuilderFactory(URL compositionURL) {
-        this(compositionURL, Thread.currentThread().getContextClassLoader(),new ScriptBuilderResolver());
+        this(compositionURL, Thread.currentThread().getContextClassLoader(), new ScriptBuilderResolver());
     }
 
     /**
@@ -153,7 +154,9 @@ public class ScriptedContainerBuilderFactory {
             //
             defaultNanoContainer = new DefaultNanoContainer(classLoader,factory);
         }
-        ComponentAdapter componentAdapter = defaultNanoContainer.addComponent(new ClassName(builderClass)).lastCA();
+        ClassName className = new ClassName(builderClass);
+        MutablePicoContainer mutablePicoContainer = defaultNanoContainer.addComponent(className, className);
+        ComponentAdapter componentAdapter = mutablePicoContainer.getComponentAdapter(className);
         containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultNanoContainer);
     }
 

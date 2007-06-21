@@ -41,7 +41,7 @@ public final class ParameterTestCase extends TestCase {
 
     public void testComponentParameterFetches() throws PicoCompositionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        ComponentAdapter adapter = pico.addComponent(Touchable.class, SimpleTouchable.class).lastCA();
+        ComponentAdapter adapter = pico.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class);
         assertNotNull(adapter);
         assertNotNull(pico.getComponent(Touchable.class));
         Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, null, Touchable.class, pn);
@@ -50,7 +50,7 @@ public final class ParameterTestCase extends TestCase {
 
     public void testComponentParameterExcludesSelf() throws PicoCompositionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        ComponentAdapter adapter = pico.addComponent(Touchable.class, SimpleTouchable.class).lastCA();
+        ComponentAdapter adapter = pico.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class);
 
         assertNotNull(pico.getComponent(Touchable.class));
         Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, adapter, Touchable.class, pn);
@@ -78,13 +78,13 @@ public final class ParameterTestCase extends TestCase {
 
     public void testComponentParameterRespectsExpectedType() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).lastCA();
+        ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class);
         assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class, pn));
     }
 	
 	public void testComponentParameterResolvesPrimitiveType() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        ComponentAdapter adapter = picoContainer.addComponent("glarch", 239).lastCA();
+        ComponentAdapter adapter = picoContainer.addComponent("glarch", 239).getComponentAdapter("glarch");
         assertNotNull(adapter);
 		Parameter parameter = new ComponentParameter("glarch");
 		assertNotNull(parameter.resolveInstance(picoContainer,null,Integer.TYPE, pn));
@@ -94,7 +94,7 @@ public final class ParameterTestCase extends TestCase {
     public void testConstantParameterRespectsExpectedType() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         Parameter parameter = new ConstantParameter(new SimpleTouchable());
-        ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).lastCA();
+        ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class);
         assertFalse(parameter.isResolvable(picoContainer, adapter, TestCase.class, pn));
     }
 
@@ -105,7 +105,7 @@ public final class ParameterTestCase extends TestCase {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         assertFalse(parameter.isResolvable(picoContainer, null, TestCase.class, pn));
 
-        ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).lastCA();
+        ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class);
 
         assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class, pn));
     }

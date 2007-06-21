@@ -269,7 +269,7 @@ public final class PoolingBehaviorTestCase extends AbstractComponentAdapterTestC
         picoContainer.addComponent(RecordingLifecycle.One.class);
         PoolingBehavior poolingBehavior = new PoolingBehavior(new ConstructorInjector(
                 RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class), new PoolingBehavior.DefaultContext());
-        return picoContainer.addAdapter(poolingBehavior).lastCA();
+        return picoContainer.addAdapter(poolingBehavior).getComponentAdapter(RecordingLifecycle.One.class);
     }
 
     public void testDEF_lifecycleManagerSupport() {
@@ -305,7 +305,7 @@ public final class PoolingBehaviorTestCase extends AbstractComponentAdapterTestC
         picoContainer.addComponent(RecordingLifecycle.One.class);
         PoolingBehavior poolingBehavior = new PoolingBehavior(new ConstructorInjector(
                 RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class), new PoolingBehavior.DefaultContext());
-        return picoContainer.addAdapter(poolingBehavior).lastCA();
+        return picoContainer.addAdapter(poolingBehavior).getComponentAdapter(RecordingLifecycle.Two.class);
     }
 
     public void testRES_lifecycleManagerHonorsInstantiationSequence() {

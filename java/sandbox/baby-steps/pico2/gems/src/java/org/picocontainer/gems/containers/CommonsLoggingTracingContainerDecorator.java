@@ -451,10 +451,6 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	        log = LogFactory.getLog(this.logCategory);
 	}
 
-    public ComponentAdapter lastCA() {
-        return null;
-    }
-
     public MutablePicoContainer change(ComponentCharacteristic... characteristics) {
         return delegate.change(characteristics);
     }

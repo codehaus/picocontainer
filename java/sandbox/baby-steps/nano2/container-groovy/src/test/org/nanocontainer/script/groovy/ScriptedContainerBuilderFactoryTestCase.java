@@ -11,8 +11,7 @@ import junit.framework.TestCase;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 
-public class ScriptedContainerBuilderFactoryTestCase
-    extends TestCase {
+public class ScriptedContainerBuilderFactoryTestCase extends TestCase {
 
     private static final String TEST_SCRIPT_PATH = "/org/nanocontainer/script/groovy/nanocontainer.groovy";
 

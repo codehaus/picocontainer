@@ -287,7 +287,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
         componentAdapters.add(componentAdapter);
         componentKeyToAdapterCache.put(componentKey, componentAdapter);
-        return new TemporaryAdapterReturningPicoContainer(componentAdapter);
+        return this;
     }
 
     public ComponentAdapter removeComponent(Object componentKey) {
@@ -303,6 +303,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      */
     public MutablePicoContainer addComponent(Object implOrInstance) {
         Class clazz;
+        if (implOrInstance instanceof String) {
+            addComponent((String) implOrInstance, implOrInstance);
+        }
         if (implOrInstance instanceof CharacterizedObject) {
             CharacterizedObject co = (CharacterizedObject)implOrInstance;
             if (co.implOrInst instanceof Class) {
@@ -587,10 +590,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return result;
     }
 
-    public ComponentAdapter lastCA() {
-        return null;
-    }
-
     public MutablePicoContainer change(ComponentCharacteristic... characteristics) {
         for (ComponentCharacteristic c : characteristics) {
             c.mergeInto(this.componentCharacteristic);
@@ -728,23 +727,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             throw new UnsupportedOperationException("Should not have been called");
         }
 
-    }
-
-    private class TemporaryAdapterReturningPicoContainer extends AbstractDelegatingMutablePicoContainer {
-        private final ComponentAdapter componentAdapter;
-
-        public TemporaryAdapterReturningPicoContainer(ComponentAdapter componentAdapter) {
-            super(DefaultPicoContainer.this);
-            this.componentAdapter = componentAdapter;
-        }
-
-        public MutablePicoContainer makeChildContainer() {
-            return getDelegate().makeChildContainer();
-        }
-
-        public ComponentAdapter lastCA() {
-            return componentAdapter;
-        }
     }
 
     private class TemporaryCharacterizedPicoContainer extends AbstractDelegatingMutablePicoContainer {

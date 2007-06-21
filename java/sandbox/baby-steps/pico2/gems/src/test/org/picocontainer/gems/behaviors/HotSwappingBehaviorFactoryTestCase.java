@@ -62,7 +62,8 @@ public final class HotSwappingBehaviorFactoryTestCase extends AbstractComponentA
 
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        HotSwappingBehavior hsca = (HotSwappingBehavior) pico.addAdapter(new HotSwappingBehavior(new ConstructorInjector("l", ArrayList.class))).lastCA();
+        ConstructorInjector constructorInjector = new ConstructorInjector("l", ArrayList.class);
+        HotSwappingBehavior hsca = (HotSwappingBehavior) pico.addAdapter(new HotSwappingBehavior(constructorInjector)).getComponentAdapter(constructorInjector.getComponentKey());
         List l = (List)pico.getComponent("l");
         l.add("Hello");
         final ArrayList newList = new ArrayList();

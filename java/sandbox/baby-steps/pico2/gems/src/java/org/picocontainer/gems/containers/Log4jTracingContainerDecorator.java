@@ -512,10 +512,6 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         s.writeUTF(logger.getName());
     }
 
-    public ComponentAdapter lastCA() {
-        return null;
-    }
-
     public MutablePicoContainer change(ComponentCharacteristic... characteristics) {
         return delegate.change(characteristics);
     }

@@ -40,7 +40,7 @@ public class RemoteInterceptorImplTestCase extends TestCase {
         ProxyFactory proxyFactory = new CglibProxyFactory();
         ByRefKey thingKey = new ByRefKey("thing");
         ByRefKey thangKey = new ByRefKey("thang");
-        ComponentAdapter thingAdapter = pico.addComponent(thingKey, Thing.class).lastCA();
+        ComponentAdapter thingAdapter = pico.addComponent(thingKey, Thing.class).getComponentAdapter(thingKey);
         pico.addComponent(thangKey, Thang.class);
         pico.addComponent(ArrayList.class);
 

@@ -22,6 +22,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.CustomPermissionsURLClassLoader;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
@@ -50,8 +51,7 @@ import java.util.Map;
  * @version $Revision$
  */
 public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer implements NanoContainer, Serializable,
-                                                                                            ComponentMonitorStrategy
-{
+                                                                                            ComponentMonitorStrategy {
 
     private static final transient Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
 
@@ -251,15 +251,16 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     public MutablePicoContainer addComponent(Object implOrInstance) {
         if (implOrInstance instanceof ClassName) {
             String className = ((ClassName)implOrInstance).className;
-            return super.addComponent(loadClass(className));
+            super.addComponent(loadClass(className));
+        } else {
+            super.addComponent(implOrInstance);
         }
-        return super.addComponent(implOrInstance);
+        return this;
     }
 
     public MutablePicoContainer addComponent(Object key,
                                              Object componentImplementationOrInstance,
-                                             Parameter... parameters)
-    {
+                                             Parameter... parameters) {
         if (key instanceof ClassName) {
             key = loadClass(((ClassName)key).getClassName());
         }
@@ -267,7 +268,13 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
             componentImplementationOrInstance =
                 loadClass(((ClassName)componentImplementationOrInstance).getClassName());
         }
-        return super.addComponent(key, componentImplementationOrInstance, parameters);
+        super.addComponent(key, componentImplementationOrInstance, parameters);
+        return this;
+    }
+
+    public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) throws PicoCompositionException {
+        super.addAdapter(componentAdapter);
+        return this;
     }
 
     public ClassLoader getComponentClassLoader() {
@@ -330,4 +337,11 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     }
 
 
+    public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
+        Object componentKey2 = componentKey;
+        if (componentKey instanceof ClassName) {
+            componentKey2 = loadClass(((ClassName)componentKey).className);
+        }
+        return super.getComponentAdapter(componentKey2);
+    }
 }

@@ -144,13 +144,6 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      */
     boolean removeChildContainer(PicoContainer child);
 
-    /**
-     * Following an adapter or component, pico holds onto the last ComponentAdapter and return it if this
-     * method is immediately after the add operation. It will be null at all other times.
-     *
-     * @return the last ComponentAdapter to be made
-     */
-    ComponentAdapter lastCA();
 
     /**
      * You can change the characteristic of registration of all subsequent components in this container.

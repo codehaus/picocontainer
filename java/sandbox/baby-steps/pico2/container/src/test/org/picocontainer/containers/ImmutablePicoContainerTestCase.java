@@ -37,7 +37,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
     public void testVisitingOfImmutableContainerWorks() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         Object foo = new Object();
-        ComponentAdapter componentAdapter = pico.addComponent(foo).lastCA();
+        ComponentAdapter componentAdapter = pico.addComponent(foo).getComponentAdapter(foo.getClass());
 
         Mock fooVisitor = new Mock(PicoVisitor.class);
         fooVisitor.expects(once()).method("visitContainer").with(same(pico));

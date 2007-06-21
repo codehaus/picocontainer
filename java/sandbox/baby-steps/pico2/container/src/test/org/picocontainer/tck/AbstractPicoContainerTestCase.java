@@ -716,20 +716,21 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         final MutablePicoContainer parent = createPicoContainer(null);
         final MutablePicoContainer child = parent.makeChildContainer();
         ComponentAdapter hashMapAdapter =
-            parent.addAdapter(new ConstructorInjector(HashMap.class, HashMap.class)).lastCA();
+            parent.addAdapter(new ConstructorInjector(HashMap.class, HashMap.class)).getComponentAdapter(HashMap.class);
         ComponentAdapter hashSetAdapter =
-            parent.addAdapter(new ConstructorInjector(HashSet.class, HashSet.class)).lastCA();
-        ComponentAdapter stringAdapter = parent.addAdapter(new InstanceAdapter(String.class, "foo",
-                                                                        NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance())).lastCA();
+            parent.addAdapter(new ConstructorInjector(HashSet.class, HashSet.class)).getComponentAdapter(HashSet.class);
+        InstanceAdapter instanceAdapter = new InstanceAdapter(String.class, "foo",
+                                                              NullLifecycleStrategy.getInstance(),
+                                                              NullComponentMonitor.getInstance());
+        ComponentAdapter stringAdapter = parent.addAdapter(instanceAdapter).getComponentAdapter(instanceAdapter.getComponentKey());
         ComponentAdapter arrayListAdapter =
-            child.addAdapter(new ConstructorInjector(ArrayList.class, ArrayList.class)).lastCA();
+            child.addAdapter(new ConstructorInjector(ArrayList.class, ArrayList.class)).getComponentAdapter(ArrayList.class);
         Parameter componentParameter = BasicComponentParameter.BASIC_DEFAULT;
         Parameter throwableParameter = new ConstantParameter(new Throwable("bar"));
         ComponentAdapter exceptionAdapter =
             child.addAdapter(new ConstructorInjector(Exception.class, Exception.class,
                                                              componentParameter,
-                                                             throwableParameter)).lastCA();
+                                                             throwableParameter)).getComponentAdapter(Exception.class);
 
         List expectedList = Arrays.asList(parent,
                                           hashMapAdapter,

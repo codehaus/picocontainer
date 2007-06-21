@@ -28,6 +28,7 @@ import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.parameters.ConstantParameter;
 
@@ -135,9 +136,11 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
         }
         ComponentAdapter componentAdapter;
         if ( picoConfiguration != null ){
-            componentAdapter = nanoContainer.addComponent(containerComposerClassName, new ClassName(containerComposerClassName), new ConstantParameter(picoConfiguration)).lastCA();
+            componentAdapter = nanoContainer.addComponent(containerComposerClassName, new ClassName(containerComposerClassName), new ConstantParameter(picoConfiguration)).getComponentAdapter(containerComposerClassName);
         } else {
-            componentAdapter = nanoContainer.addComponent(new ClassName(containerComposerClassName)).lastCA();
+            ClassName className = new ClassName(containerComposerClassName);
+            MutablePicoContainer mutablePicoContainer = nanoContainer.addComponent(className);
+            componentAdapter = mutablePicoContainer.getComponentAdapter(className);
         }
         return (ContainerComposer) componentAdapter.getComponentInstance(nanoContainer);
     }

@@ -13,8 +13,8 @@ package org.picocontainer.behaviors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
+import org.picocontainer.Characterizations;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
@@ -27,19 +27,20 @@ import org.picocontainer.LifecycleStrategy;
  */
 public class OptInCachingBehaviorFactory extends AbstractBehaviorFactory {
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException
     {
-        if (ComponentCharacteristics.CACHE.isCharacterizedIn(componentCharacteristic)) {
+        if (Characterizations.CACHE.isCharacterizedIn(componentCharacteristics)) {
             CachingBehavior behavior = new CachingBehavior(super.createComponentAdapter(componentMonitor,
                                                                                         lifecycleStrategy,
-                                                                                        componentCharacteristic,
+                                                                                        componentCharacteristics,
                                                                                         componentKey,
                                                                                         componentImplementation,
                                                                                         parameters));
-            ComponentCharacteristics.CACHE.setProcessedIn(componentCharacteristic);
+            Characterizations.CACHE.setProcessedIn(componentCharacteristics);
             return behavior;
         }
-        return super.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
+        return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+                                            componentCharacteristics, componentKey, componentImplementation, parameters);
     }
 }

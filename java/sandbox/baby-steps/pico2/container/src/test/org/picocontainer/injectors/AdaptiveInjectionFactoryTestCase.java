@@ -13,14 +13,14 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristics;
+import org.picocontainer.Characterizations;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.injectors.FieldAnnotationInjectorTestCase;
 import org.picocontainer.injectors.MethodAnnotationInjectorTestCase;
@@ -81,7 +81,7 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentAdapterFa
     public void testInstantiateComponentWithNoDependencies() throws PicoCompositionException
     {
         ComponentAdapter componentAdapter =
-                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
+                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characterizations.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
 
         Object comp = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(comp);
@@ -89,7 +89,7 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentAdapterFa
     }
 
     public void testSingleUsecanBeInstantiatedByDefaultComponentAdapter() {
-        ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, "o", Object.class, (Parameter[])null);
+        ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characterizations.CDI, "o", Object.class, (Parameter[])null);
         Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(component);
     }
@@ -100,7 +100,7 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentAdapterFa
         ComponentFactory cf = createComponentFactory();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristic(),
+        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristics(),
                                                         Map.class, HashMap.class, Parameter.DEFAULT);
         
         String foo = xs.toXML(ca).replace("\"","");
@@ -120,7 +120,7 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentAdapterFa
         ComponentFactory cf = createComponentFactory();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristic(),
+        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristics(),
                                                         FieldAnnotationInjectorTestCase.Helicopter.class, FieldAnnotationInjectorTestCase.Helicopter.class, Parameter.DEFAULT);
 
         String foo = xs.toXML(ca).replace("\"","");
@@ -140,7 +140,7 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentAdapterFa
         ComponentFactory cf = createComponentFactory();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristic(),
+        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristics(),
                                                         MethodAnnotationInjectorTestCase.AnnotatedBurp.class, MethodAnnotationInjectorTestCase.AnnotatedBurp.class, Parameter.DEFAULT);
 
         String foo = xs.toXML(ca).replace("\"","");

@@ -29,7 +29,6 @@ import org.nanocontainer.ClassPathElement;
 import org.nanocontainer.NanoContainer;
 import org.picocontainer.PicoClassNotFoundException;
 import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoBuilder;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.NanoContainerMarkupException;
@@ -38,7 +37,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -519,7 +518,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         Parameter[] parameters = createChildParameters(container, element);
         ComponentFactory componentFactory = createComponentAdapterFactory(element.getAttribute(FACTORY), metaContainer);
 
-        container.addAdapter(componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new ComponentCharacteristic(), key, implementationClass, parameters));
+        container.addAdapter(componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new ComponentCharacteristics(), key, implementationClass, parameters));
     }
 
     private ComponentFactory createComponentAdapterFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {

@@ -82,15 +82,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     private final LifecycleManager lifecycleManager = new OrderedComponentAdapterLifecycleManager();
     private LifecycleStrategy lifecycleStrategy;
-    private final ComponentCharacteristic componentCharacteristic = new ComponentCharacteristic() {
-        public void mergeInto(ComponentCharacteristic rc) {
+    private final ComponentCharacteristics componentCharacteristics = new ComponentCharacteristics() {
+        public void mergeInto(ComponentCharacteristics rc) {
         }
 
 
-        public void setProcessedIn(ComponentCharacteristic characteristics) {
+        public void setProcessedIn(ComponentCharacteristics characteristics) {
         }
 
-        public boolean isCharacterizedIn(ComponentCharacteristic rc) {
+        public boolean isCharacterizedIn(ComponentCharacteristics rc) {
             return false;
         }
     };
@@ -330,24 +330,24 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                                              Object componentImplementationOrInstance,
                                              Parameter... parameters)
     {
-        ComponentCharacteristic characteristic = this.componentCharacteristic;
+        ComponentCharacteristics characteristics = this.componentCharacteristics;
         if (componentImplementationOrInstance instanceof CharacterizedObject) {
-            characteristic = ((CharacterizedObject)componentImplementationOrInstance).characteristic;
+            characteristics = ((CharacterizedObject)componentImplementationOrInstance).characteristics;
             componentImplementationOrInstance = ((CharacterizedObject)componentImplementationOrInstance).implOrInst;
         }
         if (parameters != null && parameters.length == 0 && parameters != Parameter.ZERO) {
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
         if (componentImplementationOrInstance instanceof Class) {
-            ComponentCharacteristic tmpComponentCharacteristic = characteristic.clone();
+            ComponentCharacteristics tmpComponentCharacteristics = characteristics.clone();
             ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(componentMonitor,
                                                                                                lifecycleStrategy,
-                                                                                               tmpComponentCharacteristic,
+                                                                                               tmpComponentCharacteristics,
                                                                                                componentKey,
                                                                                                (Class)componentImplementationOrInstance,
                                                                                                parameters);
-            if(tmpComponentCharacteristic.hasUnProcessedEntries()) {
-                throw new PicoCompositionException("Unprocessed Characteristics:" + tmpComponentCharacteristic);
+            if(tmpComponentCharacteristics.hasUnProcessedEntries()) {
+                throw new PicoCompositionException("Unprocessed Characteristics:" + tmpComponentCharacteristics);
             }
             return addAdapter(componentAdapter);
         } else {
@@ -357,8 +357,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
     }
 
-    protected ComponentCharacteristic getComponentCharacteristic() {
-        return componentCharacteristic;
+    protected ComponentCharacteristics getComponentCharacteristic() {
+        return componentCharacteristics;
     }
 
     private void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
@@ -590,14 +590,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return result;
     }
 
-    public MutablePicoContainer change(ComponentCharacteristic... characteristics) {
-        for (ComponentCharacteristic c : characteristics) {
-            c.mergeInto(this.componentCharacteristic);
+    public MutablePicoContainer change(ComponentCharacteristics... characteristics) {
+        for (ComponentCharacteristics c : characteristics) {
+            c.mergeInto(this.componentCharacteristics);
         }
         return this;
     }
 
-    public MutablePicoContainer as(ComponentCharacteristic... characteristics) {
+    public MutablePicoContainer as(ComponentCharacteristics... characteristics) {
         return new TemporaryCharacterizedPicoContainer(characteristics);
     }
 
@@ -730,9 +730,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     private class TemporaryCharacterizedPicoContainer extends AbstractDelegatingMutablePicoContainer {
-        private final ComponentCharacteristic[] characteristics;
+        private final ComponentCharacteristics[] characteristics;
 
-        public TemporaryCharacterizedPicoContainer(ComponentCharacteristic... characteristics) {
+        public TemporaryCharacterizedPicoContainer(ComponentCharacteristics... characteristics) {
             super(DefaultPicoContainer.this);
             this.characteristics = characteristics;
         }
@@ -756,23 +756,23 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
         private CharacterizedObject makeCharacterizedImplOrInstance(Object componentImplementationOrInstance) {
-            ComponentCharacteristic tempCharacteristic = (ComponentCharacteristic)componentCharacteristic.clone();
-            for (ComponentCharacteristic c : characteristics) {
-                c.mergeInto(tempCharacteristic);
+            ComponentCharacteristics tempCharacteristics = (ComponentCharacteristics)componentCharacteristics.clone();
+            for (ComponentCharacteristics c : characteristics) {
+                c.mergeInto(tempCharacteristics);
             }
-            return new CharacterizedObject(tempCharacteristic, componentImplementationOrInstance);
+            return new CharacterizedObject(tempCharacteristics, componentImplementationOrInstance);
         }
 
     }
 
     private static class CharacterizedObject {
-        private final ComponentCharacteristic characteristic;
+        private final ComponentCharacteristics characteristics;
         private final Object implOrInst;
 
-        public CharacterizedObject(ComponentCharacteristic tempCharacteristic,
+        public CharacterizedObject(ComponentCharacteristics tempCharacteristics,
                                    Object componentImplementationOrInstance)
         {
-            characteristic = tempCharacteristic;
+            characteristics = tempCharacteristics;
             implOrInst = componentImplementationOrInstance;
         }
     }

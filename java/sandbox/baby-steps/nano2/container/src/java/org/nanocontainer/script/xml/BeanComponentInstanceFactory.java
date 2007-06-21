@@ -11,7 +11,7 @@ package org.nanocontainer.script.xml;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
@@ -55,7 +55,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
     private ComponentAdapter createComponentAdapter(String className, ClassLoader classLoader)  {
         Class implementation = loadClass(classLoader, className);
         ComponentFactory factory = new AdaptiveInjectionFactory();
-        return factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new ComponentCharacteristic(), className, implementation);
+        return factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new ComponentCharacteristics(), className, implementation);
     }
 
     private Class loadClass(final ClassLoader classLoader, final String className) {

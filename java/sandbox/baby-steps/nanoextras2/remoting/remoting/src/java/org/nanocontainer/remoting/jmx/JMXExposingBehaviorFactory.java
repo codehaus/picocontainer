@@ -15,8 +15,8 @@ import javax.management.MBeanServer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
+import org.picocontainer.Characterizations;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
@@ -68,15 +68,16 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
     /**
      * Retrieve a {@link ComponentAdapter}. Wrap the instance retrieved by the delegate with an instance of a
      * {@link JMXExposingBehaviorAdapter}.
-     * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
+     * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristics,Object,Class,org.picocontainer.Parameter...)
      */
     public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter[] parameters)
+            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter[] parameters)
             throws PicoCompositionException
     {
         final ComponentAdapter componentAdapter = super.createComponentAdapter(
-                componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
-        if (ComponentCharacteristics.NOJMX.isCharacterizedIn(componentCharacteristic)) {
+                componentMonitor, lifecycleStrategy,
+                componentCharacteristics, componentKey, componentImplementation, parameters);
+        if (Characterizations.NOJMX.isCharacterizedIn(componentCharacteristics)) {
             return componentAdapter;            
         } else {
             return new JMXExposingBehaviorAdapter(componentAdapter, mBeanServer, providers);

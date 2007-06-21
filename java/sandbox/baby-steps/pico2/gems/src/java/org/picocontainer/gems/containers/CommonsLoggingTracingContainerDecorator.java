@@ -1,7 +1,7 @@
 package org.picocontainer.gems.containers;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -451,11 +451,11 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	        log = LogFactory.getLog(this.logCategory);
 	}
 
-    public MutablePicoContainer change(ComponentCharacteristic... characteristics) {
+    public MutablePicoContainer change(ComponentCharacteristics... characteristics) {
         return delegate.change(characteristics);
     }
 
-    public MutablePicoContainer as(ComponentCharacteristic... characteristics) {
+    public MutablePicoContainer as(ComponentCharacteristics... characteristics) {
         return delegate.as(characteristics);
     }
 }

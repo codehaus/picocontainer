@@ -13,7 +13,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
@@ -35,7 +35,7 @@ public class SetterInjectionFactory implements InjectionFactory, Serializable {
      *
      * @param componentMonitor
      * @param lifecycleStrategy
-     * @param componentCharacteristic
+     * @param componentCharacteristics
      * @param componentKey                The component's key
      * @param componentImplementation     The class of the bean.
      * @param parameters                  Any parameters for the setters. If null the adapter solves the
@@ -45,7 +45,7 @@ public class SetterInjectionFactory implements InjectionFactory, Serializable {
      *          if the implementation is an interface or an
      *          abstract class.
      */
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException
     {
         return new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);

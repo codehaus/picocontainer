@@ -16,7 +16,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
@@ -105,7 +105,7 @@ public final class ThreadLocalComponentAdapterFactory extends AbstractBehaviorFa
     }
 
     public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters)
+            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException
     {
         final ComponentAdapter componentAdapter;

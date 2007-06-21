@@ -11,10 +11,10 @@ package org.picocontainer.behaviors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentCharacteristics;
+import org.picocontainer.Characterizations;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 /**
@@ -23,15 +23,15 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  */
 public class SynchronizedBehaviorFactory extends AbstractBehaviorFactory {
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) {
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters) {
         SynchronizedBehavior synchronizedBehavior = new SynchronizedBehavior(super.createComponentAdapter(
             componentMonitor,
             lifecycleStrategy,
-            componentCharacteristic,
+            componentCharacteristics,
             componentKey,
             componentImplementation,
             parameters));
-        ComponentCharacteristics.THREAD_SAFE.setProcessedIn(componentCharacteristic);
+        Characterizations.THREAD_SAFE.setProcessedIn(componentCharacteristics);
         return synchronizedBehavior;
     }
 }

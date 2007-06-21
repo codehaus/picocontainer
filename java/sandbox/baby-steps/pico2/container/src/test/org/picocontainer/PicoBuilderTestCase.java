@@ -306,7 +306,7 @@ public class PicoBuilderTestCase extends TestCase {
 
         public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                        LifecycleStrategy lifecycleStrategy,
-                                                       ComponentCharacteristic componentCharacteristic,
+                                                       ComponentCharacteristics componentCharacteristics,
                                                        Object componentKey,
                                                        Class componentImplementation,
                                                        Parameter... parameters) throws
@@ -357,7 +357,7 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n    delegate\n","\n");
         foo = foo.replaceAll("\n      delegate\n","\n");
         foo = foo.replaceAll("\n  componentCharacteristic class=\"org.picocontainer.DefaultPicoContainer$1\"","");
-        foo = foo.replaceAll("\n  componentCharacteristic","");
+        foo = foo.replaceAll("\n  componentCharacteristics","");
         foo = foo.replaceAll("\n  componentKeyToAdapterCache","");
         foo = foo.replaceAll("\n    startedComponentAdapters","");
         foo = foo.replaceAll("\"class=","\"\nclass=");

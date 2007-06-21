@@ -14,7 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
 
@@ -27,7 +27,7 @@ import java.io.Serializable;
 public class ConstructorInjectionFactory implements InjectionFactory, Serializable {
 
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey,
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters)
             throws PicoCompositionException

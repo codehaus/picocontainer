@@ -152,7 +152,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @return the same Pico instance with changed characteritics
      */
-    MutablePicoContainer change(ComponentCharacteristic... characteristics);
+    MutablePicoContainer change(ComponentCharacteristics... characteristics);
 
     /**
      * You can set for the following operation only the characteristic of registration of a component on the fly.
@@ -161,6 +161,6 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @return the same Pico instance with temporary characteritics
      */
-    MutablePicoContainer as(ComponentCharacteristic... characteristics);
+    MutablePicoContainer as(ComponentCharacteristics... characteristics);
 
 }

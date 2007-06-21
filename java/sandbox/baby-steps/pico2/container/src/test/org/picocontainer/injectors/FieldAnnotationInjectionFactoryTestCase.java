@@ -2,7 +2,7 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentAdapter;
 
@@ -24,7 +24,7 @@ public class FieldAnnotationInjectionFactoryTestCase extends TestCase {
         FieldAnnotationInjectionFactory injectionFactory = new FieldAnnotationInjectionFactory();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristic(), Map.class, HashMap.class, Parameter.DEFAULT);
+        ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristics(), Map.class, HashMap.class, Parameter.DEFAULT);
         
         XStream xs = new XStream();
         //xs.alias("CCM", ConsoleComponentMonitor.class);

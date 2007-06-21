@@ -17,7 +17,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
@@ -37,8 +37,8 @@ import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-import static org.picocontainer.ComponentCharacteristics.CDI;
-import static org.picocontainer.ComponentCharacteristics.SDI;
+import static org.picocontainer.Characterizations.CDI;
+import static org.picocontainer.Characterizations.SDI;
 
 import java.io.Serializable;
 import java.io.StringWriter;
@@ -224,7 +224,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                 sb.append(member.toString());
             }
         });
-        dpc.as(ComponentCharacteristics.CACHE).addComponent(DefaultPicoContainer.class);
+        dpc.as(Characterizations.CACHE).addComponent(DefaultPicoContainer.class);
         dpc.start();
         assertEquals("ComponentMonitor should have been notified that the component had been started",
                 "public abstract void org.picocontainer.Startable.start()", sb.toString());
@@ -306,7 +306,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         public ComponentFactoryWithNoMonitor(ComponentAdapter adapter){
             this.adapter = adapter;
         }
-        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey, Class componentImplementation, Parameter... parameters) throws
+        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters) throws
                                                                                                                                                                                                                                                              PicoCompositionException
         {
             return adapter;
@@ -346,7 +346,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     public void testCanUseCustomLifecycleStrategyForClassRegistrations() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new FailingLifecycleStrategy(), null);
-        dpc.as(ComponentCharacteristics.CACHE).addComponent(Startable.class, MyStartable.class);
+        dpc.as(Characterizations.CACHE).addComponent(Startable.class, MyStartable.class);
         try {
             dpc.start();
             fail("should have barfed");

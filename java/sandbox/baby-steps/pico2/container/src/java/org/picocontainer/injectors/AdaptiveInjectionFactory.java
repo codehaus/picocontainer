@@ -14,8 +14,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
+import org.picocontainer.Characterizations;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
 import org.picocontainer.annotations.Inject;
@@ -34,7 +34,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
-                                                   ComponentCharacteristic componentCharacteristic,
+                                                   ComponentCharacteristics componentCharacteristics,
                                                    Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws
@@ -43,7 +43,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
         componentAdapter = makeIfFieldAnnotationInjection(componentImplementation,
                                componentMonitor,
                                lifecycleStrategy,
-                               componentCharacteristic,
+                               componentCharacteristics,
                                componentKey,
                                componentAdapter,
                                parameters);
@@ -56,7 +56,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
         componentAdapter = makeIfMethodAnnotationInjection(componentImplementation,
                                                            componentMonitor,
                                                            lifecycleStrategy,
-                                                           componentCharacteristic,
+                                                           componentCharacteristics,
                                                            componentKey,
                                                            componentAdapter,
                                                            parameters);
@@ -65,7 +65,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
             return componentAdapter;
         }
 
-        componentAdapter = makeIfSetterInjection(componentCharacteristic,
+        componentAdapter = makeIfSetterInjection(componentCharacteristics,
                                                  componentMonitor,
                                                  lifecycleStrategy,
                                                  componentKey,
@@ -78,7 +78,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
         }
 
 
-        return makeDefaultInjection(componentCharacteristic,
+        return makeDefaultInjection(componentCharacteristics,
                                     componentMonitor,
                                     lifecycleStrategy,
                                     componentKey,
@@ -86,22 +86,22 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
                                     parameters);
     }
 
-    protected ComponentAdapter makeDefaultInjection(ComponentCharacteristic componentCharacteristic,
+    protected ComponentAdapter makeDefaultInjection(ComponentCharacteristics componentCharacteristics,
                                                   ComponentMonitor componentMonitor,
                                                   LifecycleStrategy lifecycleStrategy,
                                                   Object componentKey,
                                                   Class componentImplementation, Parameter... parameters)
     {
-        ComponentCharacteristics.CDI.setProcessedIn(componentCharacteristic);
+        Characterizations.CDI.setProcessedIn(componentCharacteristics);
         return new ConstructorInjectionFactory().createComponentAdapter(componentMonitor,
                                                                         lifecycleStrategy,
-                                                                        componentCharacteristic,
+                                                                        componentCharacteristics,
                                                                         componentKey,
                                                                         componentImplementation,
                                                                         parameters);
     }
 
-    protected ComponentAdapter makeIfSetterInjection(ComponentCharacteristic componentCharacteristic,
+    protected ComponentAdapter makeIfSetterInjection(ComponentCharacteristics componentCharacteristics,
                                                    ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Object componentKey,
@@ -109,14 +109,14 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
                                                    ComponentAdapter componentAdapter,
                                                    Parameter... parameters)
     {
-        if (ComponentCharacteristics.SDI.isCharacterizedIn(componentCharacteristic)) {
+        if (Characterizations.SDI.isCharacterizedIn(componentCharacteristics)) {
             componentAdapter = new SetterInjectionFactory().createComponentAdapter(componentMonitor,
                                                                                                     lifecycleStrategy,
-                                                                                                    componentCharacteristic,
+                                                                                                    componentCharacteristics,
                                                                                                     componentKey,
                                                                                                     componentImplementation,
                                                                                                     parameters);
-            ComponentCharacteristics.SDI.setProcessedIn(componentCharacteristic);
+            Characterizations.SDI.setProcessedIn(componentCharacteristics);
         }
         return componentAdapter;
     }
@@ -124,7 +124,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
     protected ComponentAdapter makeIfMethodAnnotationInjection(Class componentImplementation,
                                                              ComponentMonitor componentMonitor,
                                                              LifecycleStrategy lifecycleStrategy,
-                                                             ComponentCharacteristic componentCharacteristic,
+                                                             ComponentCharacteristics componentCharacteristics,
                                                              Object componentKey,
                                                              ComponentAdapter componentAdapter,
                                                              Parameter... parameters)
@@ -133,7 +133,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
             componentAdapter =
                 new MethodAnnotationInjectionFactory().createComponentAdapter(componentMonitor,
                                                                               lifecycleStrategy,
-                                                                              componentCharacteristic,
+                                                                              componentCharacteristics,
                                                                               componentKey,
                                                                               componentImplementation,
                                                                               parameters);
@@ -144,14 +144,14 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
     protected ComponentAdapter makeIfFieldAnnotationInjection(Class componentImplementation,
                                  ComponentMonitor componentMonitor,
                                  LifecycleStrategy lifecycleStrategy,
-                                 ComponentCharacteristic componentCharacteristic,
+                                 ComponentCharacteristics componentCharacteristics,
                                  Object componentKey, ComponentAdapter componentAdapter, Parameter... parameters)
     {
         if (isFieldAnnotationInjection(componentImplementation)) {
              componentAdapter =
                 new FieldAnnotationInjectionFactory().createComponentAdapter(componentMonitor,
                                                                              lifecycleStrategy,
-                                                                             componentCharacteristic,
+                                                                             componentCharacteristics,
                                                                              componentKey,
                                                                              componentImplementation,
                                                                              parameters);

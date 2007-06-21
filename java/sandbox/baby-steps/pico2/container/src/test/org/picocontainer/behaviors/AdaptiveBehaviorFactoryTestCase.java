@@ -2,8 +2,8 @@ package org.picocontainer.behaviors;
 
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.ComponentCharacteristics;
+import org.picocontainer.Characterizations;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.annotations.Cache;
 import org.picocontainer.injectors.SetterInjector;
@@ -19,8 +19,8 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
 
     public void testCachingBehaviorCanBeAddedByCharacteristics() {
         AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
-        ComponentCharacteristic cc = new ComponentCharacteristic();
-        ComponentCharacteristics.CACHE.mergeInto(cc);
+        ComponentCharacteristics cc = new ComponentCharacteristics();
+        Characterizations.CACHE.mergeInto(cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof CachingBehavior);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
@@ -32,7 +32,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
 
     public void testCachingBehaviorCanBeAddedByAnnotation() {
         AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
-        ComponentCharacteristic cc = new ComponentCharacteristic();
+        ComponentCharacteristics cc = new ComponentCharacteristics();
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap.class);
         assertTrue(ca instanceof CachingBehavior);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
@@ -50,8 +50,8 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
 
     public void testImplementationHidingBehaviorCanBeAddedByCharacteristics() {
         AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
-        ComponentCharacteristic cc = new ComponentCharacteristic();
-        ComponentCharacteristics.HIDE.mergeInto(cc);
+        ComponentCharacteristics cc = new ComponentCharacteristics();
+        Characterizations.HIDE.mergeInto(cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof ImplementationHidingBehavior);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
@@ -65,8 +65,8 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
 
     public void testSetterInjectionCanBeTriggereedMeaningAdaptiveInjectorIsUsed() {
         AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
-        ComponentCharacteristic cc = new ComponentCharacteristic();
-        ComponentCharacteristics.SDI.mergeInto(cc);
+        ComponentCharacteristics cc = new ComponentCharacteristics();
+        Characterizations.SDI.mergeInto(cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof SetterInjector);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
@@ -78,10 +78,10 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
 
     public void testCachingAndImplHidingAndThreadSafetySetupCorrectly() {
         AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
-        ComponentCharacteristic cc = new ComponentCharacteristic();
-        ComponentCharacteristics.CACHE.mergeInto(cc);
-        ComponentCharacteristics.HIDE.mergeInto(cc);
-        ComponentCharacteristics.THREAD_SAFE.mergeInto(cc);
+        ComponentCharacteristics cc = new ComponentCharacteristics();
+        Characterizations.CACHE.mergeInto(cc);
+        Characterizations.HIDE.mergeInto(cc);
+        Characterizations.THREAD_SAFE.mergeInto(cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof CachingBehavior);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());

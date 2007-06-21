@@ -12,7 +12,7 @@ package org.picocontainer.tck;
 import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.ComponentCharacteristics;
+import org.picocontainer.Characterizations;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -39,8 +39,8 @@ public abstract class AbstractLazyInstantiationTestCase extends TestCase {
     public void testLazyInstantiation() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
 
-        pico.as(ComponentCharacteristics.CACHE).addComponent(Kilroy.class);
-        pico.as(ComponentCharacteristics.CACHE).addComponent(Havana.class);
+        pico.as(Characterizations.CACHE).addComponent(Kilroy.class);
+        pico.as(Characterizations.CACHE).addComponent(Havana.class);
 
         assertSame(pico.getComponent(Havana.class), pico.getComponent(Havana.class));
         assertNotNull(pico.getComponent(Havana.class));

@@ -18,7 +18,7 @@ import javax.naming.InitialContext;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
@@ -67,7 +67,7 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
     }
 
     public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, final Object componentKey, final Class componentImplementation, final Parameter[] parameters)
+            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, final Object componentKey, final Class componentImplementation, final Parameter[] parameters)
             throws PicoCompositionException
     {
         return createComponentAdapter(componentKey.toString(), componentImplementation);
@@ -77,7 +77,7 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
      * Creates a {@link ComponentAdapter} for EJB objects.
      * @param componentKey the key used to lookup the {@link InitialContext}.
      * @param componentImplementation the home interface.
-     * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
+     * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristics,Object,Class,org.picocontainer.Parameter...)
      * @return Returns the created {@link ComponentAdapter}
      * @throws PicoCompositionException if the home interface of the EJB could not instanciated
      */

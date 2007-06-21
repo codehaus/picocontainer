@@ -16,7 +16,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
@@ -60,10 +60,10 @@ public class AssimilatingBehaviorFactory extends AbstractBehaviorFactory {
      * Create a {@link AssimilatingBehavior}. This adapter will wrap the returned {@link ComponentAdapter} of the
      * deleated {@link ComponentFactory}.
      * 
-     * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristic,Object,Class,org.picocontainer.Parameter...)
+     * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristics,Object,Class,org.picocontainer.Parameter...)
      */
     public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
+            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
             throws PicoCompositionException
     {
         return new AssimilatingBehavior(assimilationType, super.createComponentAdapter(

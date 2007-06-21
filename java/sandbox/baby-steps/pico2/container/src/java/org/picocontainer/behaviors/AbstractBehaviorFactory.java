@@ -12,7 +12,7 @@ package org.picocontainer.behaviors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
@@ -28,11 +28,12 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
         this.delegate = delegate;
         return this;
     }
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristic componentCharacteristic, Object componentKey,
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws
                                                                             PicoCompositionException
     {
-        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentCharacteristic, componentKey, componentImplementation, parameters);
+        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy,
+                                               componentCharacteristics, componentKey, componentImplementation, parameters);
     }
 }

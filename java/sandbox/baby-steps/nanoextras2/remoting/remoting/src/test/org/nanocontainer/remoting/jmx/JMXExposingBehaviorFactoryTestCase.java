@@ -16,8 +16,8 @@ import javax.management.ObjectName;
 import org.nanocontainer.remoting.jmx.testmodel.DynamicMBeanPerson;
 import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Characterizations;
 import org.picocontainer.ComponentCharacteristics;
-import org.picocontainer.ComponentCharacteristic;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -47,7 +47,7 @@ public class JMXExposingBehaviorFactoryTestCase extends MockObjectTestCase {
                 isA(DynamicMBeanPerson.class), isA(ObjectName.class));
 
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
-                new NullComponentMonitor(), new NullLifecycleStrategy(), ComponentCharacteristics.CDI, PersonMBean.class, DynamicMBeanPerson.class, null);
+                new NullComponentMonitor(), new NullLifecycleStrategy(), Characterizations.CDI, PersonMBean.class, DynamicMBeanPerson.class, null);
         assertNotNull(componentAdapter);
         assertNotNull(componentAdapter.getComponentInstance(null));
     }
@@ -57,10 +57,10 @@ public class JMXExposingBehaviorFactoryTestCase extends MockObjectTestCase {
                 (MBeanServer)mockMBeanServer.proxy());
         componentFactory.forThis(new ConstructorInjectionFactory());
 
-        final ComponentCharacteristic rc = new ComponentCharacteristic() {
+        final ComponentCharacteristics rc = new ComponentCharacteristics() {
         };
 
-        ComponentCharacteristics.NOJMX.mergeInto(rc);
+        Characterizations.NOJMX.mergeInto(rc);
 
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), rc, PersonMBean.class, DynamicMBeanPerson.class, null);

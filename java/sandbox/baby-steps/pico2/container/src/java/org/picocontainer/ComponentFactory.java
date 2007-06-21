@@ -12,7 +12,7 @@ package org.picocontainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 
@@ -36,7 +36,7 @@ public interface ComponentFactory {
      *
      * @param componentMonitor
      * @param lifecycleStrategy
-     * @param componentCharacteristic
+     * @param componentCharacteristics
      * @param componentKey                the key to be associated with this adapter. This value should be returned
      *                                    from a call to {@link org.picocontainer.ComponentAdapter#getComponentKey()} on the created adapter.
      * @param componentImplementation     the implementation class to be associated with this adapter.
@@ -56,7 +56,7 @@ public interface ComponentFactory {
      */
     ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                             LifecycleStrategy lifecycleStrategy,
-                                            ComponentCharacteristic componentCharacteristic,
+                                            ComponentCharacteristics componentCharacteristics,
                                             Object componentKey,
                                             Class componentImplementation,
                                             Parameter... parameters) throws

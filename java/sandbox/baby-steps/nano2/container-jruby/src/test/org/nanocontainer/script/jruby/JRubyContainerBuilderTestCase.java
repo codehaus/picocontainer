@@ -1,7 +1,7 @@
 package org.nanocontainer.script.jruby;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentCharacteristic;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
@@ -233,7 +233,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         A a = new A();
         Mock componentFactoryMock = mock(ComponentFactory.class);
-        Constraint[] cons = {isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristic.class), same(A.class), same(A.class), eq(null)};
+        Constraint[] cons = {isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(ComponentCharacteristics.class), same(A.class), same(A.class), eq(null)};
         componentFactoryMock.expects(once()).method("createComponentAdapter").with(cons)
             .will(returnValue(new InstanceAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance())));

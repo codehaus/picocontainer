@@ -24,14 +24,13 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 public class SynchronizedBehaviorFactory extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters) {
-        SynchronizedBehavior synchronizedBehavior = new SynchronizedBehavior(super.createComponentAdapter(
+        Characterizations.THREAD_SAFE.setAsProcessedIfSoCharacterized(componentCharacteristics);
+        return new SynchronizedBehavior(super.createComponentAdapter(
             componentMonitor,
             lifecycleStrategy,
             componentCharacteristics,
             componentKey,
             componentImplementation,
             parameters));
-        Characterizations.THREAD_SAFE.setProcessedIn(componentCharacteristics);
-        return synchronizedBehavior;
     }
 }

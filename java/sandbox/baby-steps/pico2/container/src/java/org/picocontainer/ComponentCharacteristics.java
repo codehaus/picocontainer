@@ -17,10 +17,8 @@ public class ComponentCharacteristics implements Serializable, Cloneable {
 
     public void mergeInto(ComponentCharacteristics characteristics) {
     }
-    public void setProcessedIn(ComponentCharacteristics characteristics) {
-    }
 
-    public boolean isCharacterizedIn(ComponentCharacteristics characteristics) {
+    public boolean setAsProcessedIfSoCharacterized(ComponentCharacteristics characteristics) {
         return false;
     }
 

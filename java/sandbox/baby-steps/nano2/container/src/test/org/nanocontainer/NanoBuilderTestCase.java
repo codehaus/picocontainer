@@ -35,6 +35,7 @@ public class NanoBuilderTestCase extends TestCase {
             public boolean canConvert(Class aClass) {
                 return aClass.getName().equals("org.picocontainer.DefaultPicoContainer$OrderedComponentAdapterLifecycleManager") ||
                        aClass.getName().equals("org.picocontainer.DefaultPicoContainer$1") ||
+                       aClass.getName().equals("org.picocontainer.ComponentCharacteristics") ||
                        aClass == Boolean.class ||
                        aClass == HashSet.class ||
                        aClass == ArrayList.class;

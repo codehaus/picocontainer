@@ -30,15 +30,13 @@ public class OptInCachingBehaviorFactory extends AbstractBehaviorFactory {
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException
     {
-        if (Characterizations.CACHE.isCharacterizedIn(componentCharacteristics)) {
-            CachingBehavior behavior = new CachingBehavior(super.createComponentAdapter(componentMonitor,
+        if (Characterizations.CACHE.setAsProcessedIfSoCharacterized(componentCharacteristics)) {
+            return new CachingBehavior(super.createComponentAdapter(componentMonitor,
                                                                                         lifecycleStrategy,
                                                                                         componentCharacteristics,
                                                                                         componentKey,
                                                                                         componentImplementation,
                                                                                         parameters));
-            Characterizations.CACHE.setProcessedIn(componentCharacteristics);
-            return behavior;
         }
         return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                             componentCharacteristics, componentKey, componentImplementation, parameters);

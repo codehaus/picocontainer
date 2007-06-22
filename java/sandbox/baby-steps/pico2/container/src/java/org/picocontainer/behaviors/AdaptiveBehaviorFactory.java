@@ -51,7 +51,7 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
     }
 
     protected void processThreadSafe(ComponentCharacteristics componentCharacteristics, List<ComponentFactory> list) {
-        if (Characterizations.THREAD_SAFE.isCharacterizedIn(componentCharacteristics)) {
+        if (Characterizations.THREAD_SAFE.setAsProcessedIfSoCharacterized(componentCharacteristics)) {
             list.add(new SynchronizedBehaviorFactory());
         }
     }
@@ -59,7 +59,7 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
     protected void processCachedInstance(ComponentCharacteristics componentCharacteristics,
                                        Class componentImplementation,
                                        List<ComponentFactory> list) {
-        if (Characterizations.CACHE.isCharacterizedIn(componentCharacteristics) ||
+        if (Characterizations.CACHE.setAsProcessedIfSoCharacterized(componentCharacteristics) ||
             componentImplementation.getAnnotation(Cache.class) != null) {
             list.add(new CachingBehaviorFactory());
         }
@@ -67,7 +67,7 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
 
     protected void processImplementationHiding(ComponentCharacteristics componentCharacteristics,
                                              List<ComponentFactory> list) {
-        if (Characterizations.HIDE.isCharacterizedIn(componentCharacteristics)) {
+        if (Characterizations.HIDE.setAsProcessedIfSoCharacterized(componentCharacteristics)) {
             list.add(new ImplementationHidingBehaviorFactory());
         }
     }

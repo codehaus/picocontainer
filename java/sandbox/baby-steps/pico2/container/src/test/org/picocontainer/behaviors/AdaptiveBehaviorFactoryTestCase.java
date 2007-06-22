@@ -104,5 +104,27 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
 
     }
 
+    public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCaching() {
+        CachingBehaviorFactory cbf = new CachingBehaviorFactory();
+        AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
+        cbf.forThis(abf);
+        ComponentCharacteristics cc = new ComponentCharacteristics();
+        Characterizations.CACHE.mergeInto(cc);
+        Characterizations.HIDE.mergeInto(cc);
+        Characterizations.THREAD_SAFE.mergeInto(cc);
+        ComponentAdapter ca = cbf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
+        assertTrue(ca instanceof CachingBehavior);
+        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        assertNotNull(map);
+        assertTrue(!(map instanceof HashMap));
+
+        XStream xs = new XStream();
+        String foo = xs.toXML(ca);
+
+        assertTrue(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 0)  > -1);  // xml does start with CB
+        assertFalse(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 1)  > -1); // but only contains it once.
+
+    }
+
 
 }

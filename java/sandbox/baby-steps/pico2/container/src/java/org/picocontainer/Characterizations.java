@@ -15,12 +15,15 @@ public final class Characterizations {
         public void mergeInto(ComponentCharacteristics characteristics) {
             characteristics.setProperty(_INJECTION, _CONSTRUCTOR);
         }
-        public void setProcessedIn(ComponentCharacteristics characteristics) {
-            characteristics.removeProperty(_INJECTION);
-        }
-        public boolean isCharacterizedIn(ComponentCharacteristics characteristics) {
+
+        public boolean setAsProcessedIfSoCharacterized(ComponentCharacteristics characteristics) {
             String s = characteristics.getProperty(_INJECTION);
-            return s != null && s.equals(_CONSTRUCTOR);
+            boolean retVal = s != null && s.equals(_CONSTRUCTOR);
+            if (retVal) {
+                characteristics.removeProperty(_INJECTION);
+            }
+            return retVal;
+
         }
     };
 
@@ -31,13 +34,14 @@ public final class Characterizations {
             characteristics.setProperty(_INJECTION, _SETTER);
         }
 
-        public void setProcessedIn(ComponentCharacteristics characteristics) {
-            characteristics.removeProperty(_INJECTION);
-        }
-
-        public boolean isCharacterizedIn(ComponentCharacteristics characteristics) {
+        public boolean setAsProcessedIfSoCharacterized(ComponentCharacteristics characteristics) {
             String s = characteristics.getProperty(_INJECTION);
-            return s != null && s.equals(_SETTER);
+            boolean retVal = s != null && s.equals(_SETTER);
+            if (retVal) {
+                characteristics.removeProperty(_INJECTION);
+            }
+            return retVal;
+
         }
     };
 
@@ -46,14 +50,14 @@ public final class Characterizations {
             characteristics.setProperty(_CACHE, FALSE);
         }
 
-
-        public void setProcessedIn(ComponentCharacteristics characteristics) {
-            characteristics.removeProperty(_CACHE);
-        }
-
-        public boolean isCharacterizedIn(ComponentCharacteristics characteristics) {
+        public boolean setAsProcessedIfSoCharacterized(ComponentCharacteristics characteristics) {
             String s = characteristics.getProperty(_CACHE);
-            return s != null && s.equals(FALSE);
+            boolean retVal = s != null && s.equals(FALSE);
+            if (retVal) {
+                characteristics.removeProperty(_CACHE);
+            }
+            return retVal;
+
         }
     };
 
@@ -62,13 +66,14 @@ public final class Characterizations {
             characteristics.setProperty(_CACHE, TRUE);
         }
 
-        public void setProcessedIn(ComponentCharacteristics characteristics) {
-            characteristics.removeProperty(_CACHE);
-        }
-
-        public boolean isCharacterizedIn(ComponentCharacteristics characteristics) {
+        public boolean setAsProcessedIfSoCharacterized(ComponentCharacteristics characteristics) {
             String s = characteristics.getProperty(_CACHE);
-            return s != null && s.equals(TRUE);
+            boolean retVal =  s != null && s.equals(TRUE);
+            if (retVal) {
+                characteristics.removeProperty(_CACHE);
+            }
+            return retVal;
+
         }
     };
     public static final ComponentCharacteristics NOJMX = new ComponentCharacteristics() {
@@ -76,13 +81,14 @@ public final class Characterizations {
             characteristics.setProperty(_NOJMX, TRUE);
         }
 
-        public void setProcessedIn(ComponentCharacteristics characteristics) {
-            characteristics.removeProperty(_NOJMX);
-        }
-
-        public boolean isCharacterizedIn(ComponentCharacteristics characteristics) {
+        public boolean setAsProcessedIfSoCharacterized(ComponentCharacteristics characteristics) {
             String s = characteristics.getProperty(_NOJMX);
-            return s != null && s.equals(TRUE);
+            boolean retVal = s != null && s.equals(TRUE);
+            if (retVal) {
+                characteristics.removeProperty(_NOJMX);
+            }
+            return retVal;
+
         }
     };
     public static final ComponentCharacteristics THREAD_SAFE = new ComponentCharacteristics() {
@@ -92,13 +98,14 @@ public final class Characterizations {
             characteristics.setProperty(_THREAD_SAFE, TRUE);
         }
 
-        public void setProcessedIn(ComponentCharacteristics characteristics) {
-            characteristics.removeProperty(_THREAD_SAFE);
-        }
-
-        public boolean isCharacterizedIn(ComponentCharacteristics characteristics) {
+        public boolean setAsProcessedIfSoCharacterized(ComponentCharacteristics characteristics) {
             String s = characteristics.getProperty(_THREAD_SAFE);
-            return s != null && s.equals(TRUE);
+            boolean retVal = s != null && s.equals(TRUE);
+            if (retVal) {
+                characteristics.removeProperty(_THREAD_SAFE);
+            }
+            return retVal;
+
         }
     };
     
@@ -111,13 +118,14 @@ public final class Characterizations {
             characteristics.setProperty(_HIDE, TRUE);
         }
 
-        public void setProcessedIn(ComponentCharacteristics characteristics) {
-            characteristics.removeProperty(_HIDE);
-        }
-
-        public boolean isCharacterizedIn(ComponentCharacteristics characteristics) {
+        public boolean setAsProcessedIfSoCharacterized(ComponentCharacteristics characteristics) {
             String s = characteristics.getProperty(_HIDE);
-            return s != null && s.equals(TRUE);
+            boolean retVal =  s != null && s.equals(TRUE);
+            if (retVal) {
+                characteristics.removeProperty(_HIDE);
+            }
+            return retVal;
+
         }
     };
 }

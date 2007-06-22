@@ -82,18 +82,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     private final LifecycleManager lifecycleManager = new OrderedComponentAdapterLifecycleManager();
     private LifecycleStrategy lifecycleStrategy;
-    private final ComponentCharacteristics componentCharacteristics = new ComponentCharacteristics() {
-        public void mergeInto(ComponentCharacteristics rc) {
-        }
-
-
-        public void setProcessedIn(ComponentCharacteristics characteristics) {
-        }
-
-        public boolean isCharacterizedIn(ComponentCharacteristics rc) {
-            return false;
-        }
-    };
+    private final ComponentCharacteristics componentCharacteristics = new ComponentCharacteristics();
     private ComponentMonitor componentMonitor;
 
     /**

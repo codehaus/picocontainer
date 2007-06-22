@@ -92,7 +92,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
                                                   Object componentKey,
                                                   Class componentImplementation, Parameter... parameters)
     {
-        Characterizations.CDI.setProcessedIn(componentCharacteristics);
+        Characterizations.CDI.setAsProcessedIfSoCharacterized(componentCharacteristics);
         return new ConstructorInjectionFactory().createComponentAdapter(componentMonitor,
                                                                         lifecycleStrategy,
                                                                         componentCharacteristics,
@@ -109,14 +109,13 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
                                                    ComponentAdapter componentAdapter,
                                                    Parameter... parameters)
     {
-        if (Characterizations.SDI.isCharacterizedIn(componentCharacteristics)) {
+        if (Characterizations.SDI.setAsProcessedIfSoCharacterized(componentCharacteristics)) {
             componentAdapter = new SetterInjectionFactory().createComponentAdapter(componentMonitor,
                                                                                                     lifecycleStrategy,
                                                                                                     componentCharacteristics,
                                                                                                     componentKey,
                                                                                                     componentImplementation,
                                                                                                     parameters);
-            Characterizations.SDI.setProcessedIn(componentCharacteristics);
         }
         return componentAdapter;
     }

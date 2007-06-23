@@ -29,6 +29,7 @@ import org.nanocontainer.ClassPathElement;
 import org.nanocontainer.NanoContainer;
 import org.picocontainer.PicoClassNotFoundException;
 import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoBuilder;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.NanoContainerMarkupException;
@@ -44,10 +45,12 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Characterizations;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.AdaptiveBehaviorFactory;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -155,19 +158,31 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
     private MutablePicoContainer createMutablePicoContainer(String componentFactoryName, String monitorName, PicoContainer parentContainer) throws PicoCompositionException {
 
-        // TODO would love to get this working
-        //NanoBuilder nb = new NanoBuilder(parentContainer);
-        //nb.withComponentFactory(componentFactoryName);
-        //nb.withMonitor(monitorName);
-        //return nb.build();
-
-        ComponentFactory componentFactory = createComponentAdapterFactory(componentFactoryName, new DefaultNanoContainer(getClassLoader()));
-        MutablePicoContainer container = new DefaultNanoContainer(getClassLoader(), componentFactory, parentContainer);
-        if ( !notSet(monitorName) ){
-            ComponentMonitor monitor = createComponentMonitor(monitorName);
-            ((ComponentMonitorStrategy)container).changeMonitor(monitor);
+        NanoBuilder nb;
+        if (parentContainer == null) {
+            nb = new NanoBuilder();
+        } else {
+            nb = new NanoBuilder(parentContainer);
         }
-        return container;
+        nb.withClassLoader(getClassLoader()).withLifecycle();
+        if (componentFactoryName != null && !componentFactoryName.equals("")) {
+            nb.withComponentFactory(componentFactoryName);
+        } else {
+            nb.withComponentFactory(new CachingBehaviorFactory().forThis(new AdaptiveBehaviorFactory()));
+        }
+
+        if (monitorName != null && !monitorName.equals("")) {
+            nb.withMonitor(monitorName);
+        }
+        return nb.build();
+
+        //ComponentFactory componentFactory = createComponentAdapterFactory(componentFactoryName, new DefaultNanoContainer(getClassLoader()));
+        //MutablePicoContainer container = new DefaultNanoContainer(getClassLoader(), componentFactory, parentContainer);
+        //if ( !notSet(monitorName) ){
+        //    ComponentMonitor monitor = createComponentMonitor(monitorName);
+        //    ((ComponentMonitorStrategy)container).changeMonitor(monitor);
+        //}
+        //return container;
     }
 
     public void populateContainer(MutablePicoContainer container) {
@@ -535,21 +550,6 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         return (ComponentFactory) metaContainer.getComponent(key);
     }
 
-    private ComponentMonitor createComponentMonitor(String monitorName) throws PicoCompositionException {
-        if (notSet(monitorName)) {
-            monitorName = DEFAULT_COMPONENT_MONITOR;
-        }
-        try {
-            Class monitorClass = getClassLoader().loadClass(monitorName);
-            return (ComponentMonitor) monitorClass.newInstance();
-        } catch (InstantiationException e) {
-            throw new NanoContainerMarkupException(e);
-        } catch (IllegalAccessException e) {
-            throw new NanoContainerMarkupException(e);
-        } catch (ClassNotFoundException e) {
-            throw new PicoClassNotFoundException(monitorName, e);
-        }
-    }
 
     private boolean notSet(Object string) {
         return string == null || string.equals(EMPTY);

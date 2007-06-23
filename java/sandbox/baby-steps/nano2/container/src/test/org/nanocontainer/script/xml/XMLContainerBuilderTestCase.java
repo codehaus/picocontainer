@@ -175,7 +175,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
         PicoContainer pico = buildContainer(script);
         Object fooTestComp = pico.getComponent("foo");
-        assertNotNull("Container should have a 'foo' addComponent", fooTestComp);
+        assertNotNull("Container should have a 'foo' component", fooTestComp);
 
         StringBuffer sb = pico.getComponent(StringBuffer.class);
         assertTrue("Container should have instantiated a 'TestComp2' component because it is Startable", sb.toString().indexOf("-TestComp2") != -1);

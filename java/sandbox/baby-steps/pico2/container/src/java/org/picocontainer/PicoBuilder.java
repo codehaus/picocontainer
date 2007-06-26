@@ -165,7 +165,7 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withContainer(Class<? extends MutablePicoContainer> containerClass) {
+    public PicoBuilder implementedBy(Class<? extends MutablePicoContainer> containerClass) {
         mpcClass = containerClass;
         return this;
     }

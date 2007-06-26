@@ -108,7 +108,7 @@ public final class NanoBuilder {
     }
 
     public NanoBuilder thisPicoContainer(Class<? extends MutablePicoContainer> picoContainerClass) {
-        picoBuilder.withContainer(picoContainerClass);
+        picoBuilder.implementedBy(picoContainerClass);
         return this;
     }
 

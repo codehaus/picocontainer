@@ -319,7 +319,7 @@ public class PicoBuilderTestCase extends TestCase {
 
 
     public void testWithCustomPicoContainer() {
-        MutablePicoContainer mpc = new PicoBuilder().withContainer(TestPicoContainer.class).build();
+        MutablePicoContainer mpc = new PicoBuilder().implementedBy(TestPicoContainer.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("org.picocontainer.PicoBuilderTestCase_-TestPicoContainer\n" +
                 "  componentFactory=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +

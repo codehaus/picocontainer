@@ -106,7 +106,7 @@ public class DefaultContainerRecorderTestCase extends TestCase {
         Wilma wilma = (Wilma)childContainer.getComponent("wilma");
         assertSame(wilma, fred.wilma());
     }
-    
+                       
     private void populateXMLContainer(ContainerRecorder recorder, Reader resource) {
         ContainerPopulator populator = new XMLContainerBuilder(resource, Thread.currentThread().getContextClassLoader());
         populator.populateContainer(recorder.getContainerProxy());

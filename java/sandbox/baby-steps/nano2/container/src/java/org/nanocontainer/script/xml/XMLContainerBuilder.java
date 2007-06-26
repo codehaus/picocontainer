@@ -34,7 +34,6 @@ import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -43,14 +42,11 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.DelegatingComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Characterizations;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
-import org.picocontainer.behaviors.AdaptiveBehaviorFactory;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -146,9 +142,10 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
             // create ComponentInstanceFactory for the container
+            boolean caching = boolValue(rootElement.getAttribute("caching"), true);
             componentInstanceFactory = createComponentInstanceFactory(rootElement.getAttribute(COMPONENT_INSTANCE_FACTORY));
             MutablePicoContainer childContainer = createMutablePicoContainer(rootElement.getAttribute(COMPONENT_ADAPTER_FACTORY),
-                    rootElement.getAttribute(COMPONENT_MONITOR), parentContainer);
+                    rootElement.getAttribute(COMPONENT_MONITOR), parentContainer, caching);
             populateContainer(childContainer);
             return childContainer;
         } catch (PicoClassNotFoundException e) {
@@ -156,26 +153,17 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
     }
 
-    private MutablePicoContainer createMutablePicoContainer(String componentFactoryName, String monitorName, PicoContainer parentContainer) throws PicoCompositionException {
+    private MutablePicoContainer createMutablePicoContainer(String componentFactoryName, String monitorName, PicoContainer parentContainer, boolean caching) throws PicoCompositionException {
 
-        NanoBuilder nb = new NanoBuilder(parentContainer);
-        nb.withClassLoader(getClassLoader()).withLifecycle();
-        if (componentFactoryName != null && !componentFactoryName.equals("")) {
-            nb.withComponentFactory(componentFactoryName);
-        } else {
-            nb.withComponentFactory(new CachingBehaviorFactory().forThis(new AdaptiveBehaviorFactory()));
-        }
+        NanoBuilder builder = new NanoBuilder(parentContainer);
+        if (caching) builder.withCaching();
+        return builder
+            .withClassLoader(getClassLoader())
+            .withLifecycle()
+            .withComponentFactory(componentFactoryName)
+            .withMonitor(monitorName)
+            .build();
 
-        nb.withMonitor(monitorName);
-        return nb.build();
-
-        //ComponentFactory componentFactory = createComponentAdapterFactory(componentFactoryName, new DefaultNanoContainer(getClassLoader()));
-        //MutablePicoContainer container = new DefaultNanoContainer(getClassLoader(), componentFactory, parentContainer);
-        //if ( !notSet(monitorName) ){
-        //    ComponentMonitor monitor = createComponentMonitor(monitorName);
-        //    ((ComponentMonitorStrategy)container).changeMonitor(monitor);
-        //}
-        //return container;
     }
 
     public void populateContainer(MutablePicoContainer container) {
@@ -547,5 +535,13 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     private boolean notSet(Object string) {
         return string == null || string.equals(EMPTY);
     }
+
+    private boolean boolValue(String string, boolean dft) {
+        if (notSet(string)) {
+            return dft;
+        }
+        return "true".equalsIgnoreCase(string);
+    }
+
 
 }

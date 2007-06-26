@@ -8,6 +8,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Characterizations;
+import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.containers.TransientPicoContainer;
 
 import org.nanocontainer.script.NanoContainerMarkupException;
@@ -18,6 +20,7 @@ public final class NanoBuilder {
     private Class<? extends NanoContainer> ncClass = DefaultNanoContainer.class;
     private final PicoBuilder picoBuilder;
     private ClassLoader classLoader = DefaultNanoContainer.class.getClassLoader();
+    private boolean cfs;
 
     public NanoBuilder(PicoContainer parentcontainer, InjectionFactory injectionType) {
         picoBuilder = new PicoBuilder(parentcontainer, injectionType);
@@ -40,7 +43,8 @@ public final class NanoBuilder {
         temp.addComponent(ClassLoader.class, classLoader);
         temp.addComponent("nc", ncClass);
         temp.addComponent(MutablePicoContainer.class, picoBuilder.build());
-        return (NanoContainer)temp.getComponent("nc");
+        NanoContainer nc = (NanoContainer)temp.getComponent("nc");
+        return nc;
     }
 
     public NanoBuilder withConsoleMonitor() {
@@ -69,11 +73,13 @@ public final class NanoBuilder {
     }
 
     public NanoBuilder withComponentFactory(ComponentFactory componentFactory) {
+        cfs = true;
         picoBuilder.withComponentFactory(componentFactory);
         return this;
     }
 
     public NanoBuilder withComponentAdapterFactories(BehaviorFactory... factories) {
+        cfs = true;
         picoBuilder.withBehaviors(factories);
         return this;
     }
@@ -119,7 +125,9 @@ public final class NanoBuilder {
     }
 
     public NanoBuilder withComponentFactory(String componentFactoryName) {
-        picoBuilder.withComponentFactory(loadClass(componentFactoryName, ComponentFactory.class));
+        if (componentFactoryName != null && !componentFactoryName.equals("")) {
+            picoBuilder.withComponentFactory(loadClass(componentFactoryName, ComponentFactory.class));
+        }
         return this;
     }
 

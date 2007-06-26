@@ -33,6 +33,9 @@ import org.nanocontainer.testmodel.OrderEntityImpl;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfigComp;
 import org.nanocontainer.TestHelper;
+import org.nanocontainer.PrettyXmlRepresentation;
+import org.nanocontainer.NanoContainer;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
@@ -233,7 +236,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         Reader script = new StringReader("" +
                 "<container component-adapter-factory='" + ConstructorInjectionFactory.class.getName() + "'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-                "<container>");
+                "<container>"); // open instead of close
         try {
             buildContainer(script);
         } catch (NanoContainerMarkupException e) {
@@ -624,7 +627,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     // This is of little value given that nested adapters can't be specified in XML.
     public void testComponentAdapterClassCanBeSpecifiedInContainerElement() {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='" + ConstructorInjectionFactory.class.getName() + "'>" +
+                "<container caching='false'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");
 
@@ -634,6 +637,27 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
         assertNotSame(wsc1, wsc2);
     }
+
+    public void testCustomInjectionFactory() {
+        Reader script = new StringReader("" +
+                "<container component-adapter-factory='" + ConstructorInjectionFactory.class.getName() + "'>" +
+                "</container>");
+
+        NanoContainer pico = (NanoContainer)buildContainer(script);
+
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
+                     "  delegate=org.picocontainer.DefaultPicoContainer\n" +
+                     "    componentFactory=org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                     "      delegate=org.picocontainer.injectors.ConstructorInjectionFactory\n" +
+                     "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                     "    lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
+                     "      componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                     "    lifecycleStrategy\n" +
+                     "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.nanocontainer.DefaultNanoContainer/delegate/lifecycleStrategy/componentMonitor\n",
+                     new PrettyXmlRepresentation().simplifyRepresentation(pico));
+
+    }
+
 
     public void testComponentMonitorCanBeSpecified() {
         Reader script = new StringReader("" +

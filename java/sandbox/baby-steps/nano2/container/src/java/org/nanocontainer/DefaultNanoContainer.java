@@ -23,6 +23,7 @@ import org.picocontainer.PicoException;
 import org.picocontainer.CustomPermissionsURLClassLoader;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
@@ -343,5 +344,11 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
             componentKey2 = loadClass(((ClassName)componentKey).className);
         }
         return super.getComponentAdapter(componentKey2);
+    }
+
+
+    public MutablePicoContainer change(ComponentCharacteristics... characteristics) {
+        super.change(characteristics);
+        return this;
     }
 }

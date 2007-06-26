@@ -29,10 +29,11 @@ public class PicoBuilder {
 
     public PicoBuilder(PicoContainer parentContainer, InjectionFactory injectionType) {
         this.injectionType = injectionType;
-        if (parentContainer == null) {
-            throw new NullPointerException("parentContainer class cannot be null");
+        if (parentContainer != null) {
+            this.parentContainer = parentContainer;
+        } else {
+            this.parentContainer = new EmptyPicoContainer();
         }
-        this.parentContainer = parentContainer;
     }
 
     public PicoBuilder(PicoContainer parentContainer) {

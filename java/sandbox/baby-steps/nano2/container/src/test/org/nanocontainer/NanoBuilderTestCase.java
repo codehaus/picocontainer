@@ -27,7 +27,7 @@ import junit.framework.TestCase;
 
 public class NanoBuilderTestCase extends TestCase {
 
-    XStream xs;
+    private XStream xs;
 
     protected void setUp() throws Exception {
         xs = new XStream();
@@ -187,13 +187,16 @@ public class NanoBuilderTestCase extends TestCase {
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n", foo);
     }
 
-    public void testWithBogusParentContainer() {
-        try {
-            new NanoBuilder((PicoContainer)null).build();
-            fail("should have barfed");
-        } catch (NullPointerException e) {
-            //expected
-        }
+    public void testWithBogusParentContainerBehavesAsIfNotSet() {
+        NanoContainer nc = new NanoBuilder((PicoContainer)null).build();
+        String foo = simplifyRepresentation(nc);
+        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
+                     "  delegate=org.picocontainer.DefaultPicoContainer\n" +
+                     "    componentFactory=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
+                     "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                     "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                     "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                     "", foo);
     }
 
 

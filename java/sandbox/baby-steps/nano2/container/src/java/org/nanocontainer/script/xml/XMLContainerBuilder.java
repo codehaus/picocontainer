@@ -158,12 +158,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
     private MutablePicoContainer createMutablePicoContainer(String componentFactoryName, String monitorName, PicoContainer parentContainer) throws PicoCompositionException {
 
-        NanoBuilder nb;
-        if (parentContainer == null) {
-            nb = new NanoBuilder();
-        } else {
-            nb = new NanoBuilder(parentContainer);
-        }
+        NanoBuilder nb = new NanoBuilder(parentContainer);
         nb.withClassLoader(getClassLoader()).withLifecycle();
         if (componentFactoryName != null && !componentFactoryName.equals("")) {
             nb.withComponentFactory(componentFactoryName);

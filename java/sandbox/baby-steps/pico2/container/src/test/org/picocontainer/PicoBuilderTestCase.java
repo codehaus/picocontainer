@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 
 public class PicoBuilderTestCase extends TestCase {
 
-    XStream xs;
+    private XStream xs;
 
     protected void setUp() throws Exception {
         xs = new XStream();
@@ -194,13 +194,15 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithBogusParentContainer() {
-        try {
-            new PicoBuilder((PicoContainer)null).build();
-            fail("should have barfed");
-        } catch (NullPointerException e) {
-            //expected
-        }
+    public void testWithBogusParentContainerBehavesAsIfNotSet() {
+        MutablePicoContainer mpc = new PicoBuilder((PicoContainer)null).build();
+        String foo = simplifyRepresentation(mpc);
+        assertEquals("PICO\n" +
+                     "  componentFactory=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
+                     "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                     "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                     "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                     "PICO", foo);
     }
 
 

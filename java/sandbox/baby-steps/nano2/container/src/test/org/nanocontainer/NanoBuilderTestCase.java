@@ -273,7 +273,7 @@ public class NanoBuilderTestCase extends TestCase {
     }
 
     public void testWithCustomNanoContainer() {
-        NanoContainer nc = new NanoBuilder().thisNanoContainer(TestNanoContainer.class).build();
+        NanoContainer nc = new NanoBuilder().implementedBy(TestNanoContainer.class).build();
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.NanoBuilderTestCase_-TestNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
@@ -293,7 +293,7 @@ public class NanoBuilderTestCase extends TestCase {
     }
 
     public void testWithCustomNanoAndPicoContainer() {
-        NanoContainer nc = new NanoBuilder().thisNanoContainer(TestNanoContainer.class).thisPicoContainer(TestPicoContainer.class).build();
+        NanoContainer nc = new NanoBuilder().implementedBy(TestNanoContainer.class).picoImplementedBy(TestPicoContainer.class).build();
         String foo = simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.NanoBuilderTestCase_-TestNanoContainer\n" +
                 "  delegate=org.nanocontainer.NanoBuilderTestCase_TestPicoContainer\n" +

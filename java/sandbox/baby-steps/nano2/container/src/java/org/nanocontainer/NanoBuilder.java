@@ -8,6 +8,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.containers.TransientPicoContainer;
 
 import org.nanocontainer.script.NanoContainerMarkupException;
 
@@ -35,7 +36,7 @@ public final class NanoBuilder {
     }
 
     public NanoContainer build() {
-        DefaultPicoContainer temp = new DefaultPicoContainer();
+        DefaultPicoContainer temp = new TransientPicoContainer();
         temp.addComponent(ClassLoader.class, classLoader);
         temp.addComponent("nc", ncClass);
         temp.addComponent(MutablePicoContainer.class, picoBuilder.build());
@@ -102,12 +103,12 @@ public final class NanoBuilder {
         return this;
     }
 
-    public NanoBuilder thisNanoContainer(Class<? extends NanoContainer> nanoContainerClass) {
+    public NanoBuilder implementedBy(Class<? extends NanoContainer> nanoContainerClass) {
         ncClass = nanoContainerClass;
         return this;
     }
 
-    public NanoBuilder thisPicoContainer(Class<? extends MutablePicoContainer> picoContainerClass) {
+    public NanoBuilder picoImplementedBy(Class<? extends MutablePicoContainer> picoContainerClass) {
         picoBuilder.implementedBy(picoContainerClass);
         return this;
     }

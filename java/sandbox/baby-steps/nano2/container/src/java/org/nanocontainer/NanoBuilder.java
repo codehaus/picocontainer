@@ -132,7 +132,9 @@ public final class NanoBuilder {
     }
 
     public NanoBuilder withMonitor(String monitorName) {
-        picoBuilder.withMonitor(loadClass(monitorName, ComponentMonitor.class));
+        if (monitorName != null && !monitorName.equals("")) {
+            picoBuilder.withMonitor(loadClass(monitorName, ComponentMonitor.class));
+        }
         return this;
     }
 }

@@ -171,9 +171,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             nb.withComponentFactory(new CachingBehaviorFactory().forThis(new AdaptiveBehaviorFactory()));
         }
 
-        if (monitorName != null && !monitorName.equals("")) {
-            nb.withMonitor(monitorName);
-        }
+        nb.withMonitor(monitorName);
         return nb.build();
 
         //ComponentFactory componentFactory = createComponentAdapterFactory(componentFactoryName, new DefaultNanoContainer(getClassLoader()));

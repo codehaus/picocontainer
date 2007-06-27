@@ -540,7 +540,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         if (notSet(string)) {
             return dft;
         }
-        return "true".equalsIgnoreCase(string);
+        boolean aBoolean = Boolean.valueOf(string).booleanValue();
+        return aBoolean;
     }
 
 

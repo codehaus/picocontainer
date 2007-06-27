@@ -624,8 +624,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    // This is of little value given that nested adapters can't be specified in XML.
-    public void testComponentAdapterClassCanBeSpecifiedInContainerElement() {
+    public void testCachingCanBeUnsetAtContainerLevel() {
         Reader script = new StringReader("" +
                 "<container caching='false'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
@@ -636,6 +635,19 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         Object wsc2 = pico.getComponent(WebServerConfig.class);
 
         assertNotSame(wsc1, wsc2);
+    }
+
+    public void testCachingCanBeSetRedunadantlyAtContainerLevel() {
+        Reader script = new StringReader("" +
+                "<container caching='true'>" +
+                "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                "</container>");
+
+        PicoContainer pico = buildContainer(script);
+        Object wsc1 = pico.getComponent(WebServerConfig.class);
+        Object wsc2 = pico.getComponent(WebServerConfig.class);
+
+        assertSame(wsc1, wsc2);
     }
 
     public void testCustomInjectionFactory() {

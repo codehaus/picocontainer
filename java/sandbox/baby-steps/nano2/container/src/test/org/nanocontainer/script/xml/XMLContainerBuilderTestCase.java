@@ -574,7 +574,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
 
-    public void testComponentAdapterWithSpecifiedFactory() {
+    public void testComponentAdapterWithSpecifiedFactory() throws IOException {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance key='bean1'>" +
@@ -595,7 +595,14 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 " 		<parameter key='bean2'/>" +
                 "  </component-adapter>" +
                 "</container>");
-        PicoContainer pico = buildContainer(script);
+        MutablePicoContainer pico = (MutablePicoContainer)buildContainer(script);
+
+        String s = new PrettyXmlRepresentation().simplifyRepresentation(pico);
+        System.out.println("xml rep\n\n" + s);;
+
+
+
+
         assertNotNull(pico.getComponent("beanKey"));
         TestBeanComposer composer = (TestBeanComposer) pico.getComponent("beanKey");
         assertEquals("bean1", "hello1", composer.getBean1().getBar());

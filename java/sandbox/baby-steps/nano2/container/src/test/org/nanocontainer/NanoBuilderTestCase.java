@@ -68,6 +68,9 @@ public class NanoBuilderTestCase extends TestCase {
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.ReflectionLifecycleStrategy\n" +
                 "      methodNames\n" +
+                "        string:start\n" +
+                "        string:stop\n" +
+                "        string:dispose\n" +
                 "      componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.nanocontainer.DefaultNanoContainer/delegate/lifecycleStrategy/componentMonitor\n",
                 foo);

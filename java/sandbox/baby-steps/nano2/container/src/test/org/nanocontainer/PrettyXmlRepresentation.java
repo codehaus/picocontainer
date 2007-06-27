@@ -50,7 +50,8 @@ public class PrettyXmlRepresentation {
         String line = lnr.readLine();
         String foo = "";
         while (line != null) {
-            if (line.indexOf("</") == -1) {
+            int clo = line.indexOf("</");
+            if (clo == -1 || !line.substring(0, clo).trim().equals("")) {
                 int l = line.indexOf("<");
                 int r = line.lastIndexOf("/>");
                 int s = -1;
@@ -58,6 +59,10 @@ public class PrettyXmlRepresentation {
                     s = line.indexOf(" ",l);
                 }
                 if (((l < s && s < r) || l == -1 || r == -1) && line.indexOf("DefaultPicoContainer$OrderedComponentAdapterLifecycleManager") == -1) {
+                    String s1 = line.trim();
+                    if (s1.startsWith("<string>") && line.trim().endsWith("</string>")) {
+                        line = line.substring(0, line.indexOf("<string>")) + "string:" + line.substring(line.indexOf("<string>")+"<string>".length(), line.lastIndexOf("</string>"));
+                    }
                     foo += line + "\n";
                 }
             }

@@ -40,6 +40,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
@@ -650,22 +651,20 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertSame(wsc1, wsc2);
     }
 
-    public void testCustomInjectionFactory() {
+    public void testCustomInjectionFactory() throws IOException {
         Reader script = new StringReader("" +
                 "<container component-adapter-factory='" + ConstructorInjectionFactory.class.getName() + "'>" +
                 "</container>");
 
-        NanoContainer pico = (NanoContainer)buildContainer(script);
+        MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script);
 
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                     "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                     "    componentFactory=org.picocontainer.behaviors.CachingBehaviorFactory\n" +
-                     "      delegate=org.picocontainer.injectors.ConstructorInjectionFactory\n" +
-                     "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                     "    lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
-                     "      componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                     "    lifecycleStrategy\n" +
-                     "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.nanocontainer.DefaultNanoContainer/delegate/lifecycleStrategy/componentMonitor\n",
+        assertEquals("org.picocontainer.DefaultPicoContainer\n" +
+                     "  componentFactory=org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                     "    delegate=org.picocontainer.injectors.ConstructorInjectionFactory\n" +
+                     "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                     "  lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
+                     "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                     "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.picocontainer.DefaultPicoContainer/lifecycleStrategy/componentMonitor\n",
                      new PrettyXmlRepresentation().simplifyRepresentation(pico));
 
     }

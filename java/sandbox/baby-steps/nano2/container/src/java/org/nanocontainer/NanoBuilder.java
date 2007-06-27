@@ -42,9 +42,13 @@ public final class NanoBuilder {
         DefaultPicoContainer temp = new TransientPicoContainer();
         temp.addComponent(ClassLoader.class, classLoader);
         temp.addComponent("nc", ncClass);
-        temp.addComponent(MutablePicoContainer.class, picoBuilder.build());
+        temp.addComponent(MutablePicoContainer.class, buildPico());
         NanoContainer nc = (NanoContainer)temp.getComponent("nc");
         return nc;
+    }
+
+    public MutablePicoContainer buildPico() {
+        return picoBuilder.build();
     }
 
     public NanoBuilder withConsoleMonitor() {

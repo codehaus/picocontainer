@@ -4,6 +4,10 @@ import org.picocontainer.MutablePicoContainer;
 
 import java.util.HashSet;
 import java.util.ArrayList;
+import java.io.Reader;
+import java.io.LineNumberReader;
+import java.io.StringReader;
+import java.io.IOException;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -40,40 +44,33 @@ public class PrettyXmlRepresentation {
 
     }
 
-    public String simplifyRepresentation(MutablePicoContainer mpc) {
-        String foo = xs.toXML(mpc);
-        foo = foo.replace('$','_');
+    public String simplifyRepresentation(MutablePicoContainer mpc) throws IOException {
+        String bar = xs.toXML(mpc);
+        LineNumberReader lnr = new LineNumberReader(new StringReader(bar));
+        String line = lnr.readLine();
+        String foo = "";
+        while (line != null) {
+            if (line.indexOf("</") == -1) {
+                int l = line.indexOf("<");
+                int r = line.lastIndexOf("/>");
+                int s = -1;
+                if (l != -1) {
+                    s = line.indexOf(" ",l);
+                }
+                if (((l < s && s < r) || l == -1 || r == -1) && line.indexOf("DefaultPicoContainer$OrderedComponentAdapterLifecycleManager") == -1) {
+                    foo += line + "\n";
+                }
+            }
+            line = lnr.readLine();
+        }
+
         foo = foo.replaceAll("/>","");
-        foo = foo.replaceAll("</org.nanocontainer.DefaultNanoContainer","");
         foo = foo.replaceAll("</","");
         foo = foo.replaceAll("<","");
         foo = foo.replaceAll(">","");
-        foo = foo.replaceAll("\n    childrenStarted","");
-        foo = foo.replaceAll("\n    componentAdapters","");
-        foo = foo.replaceAll("\n    orderedComponentAdapters","");
-        foo = foo.replaceAll("\n    started","");
-        foo = foo.replaceAll("\n    disposed","");
-        foo = foo.replaceAll("\n    handler","");
-        foo = foo.replaceAll("\n    children","");
-        foo = foo.replaceAll("\n  namedChildContainers","");
-        foo = foo.replaceAll("\n  delegate\n","\n");
-        foo = foo.replaceAll("\n    delegate\n","\n");
-        foo = foo.replaceAll("\n      delegate\n","\n");
-        foo = foo.replaceAll("\n    componentCharacteristic class=\"org.picocontainer.DefaultPicoContainer$1\"","");
-        foo = foo.replaceAll("\n    componentCharacteristics","");
-        foo = foo.replaceAll("\n    componentKeyToAdapterCache","");
-        foo = foo.replaceAll("\n    startedComponentAdapters","");
-        foo = foo.replaceAll("\"class=","\"\nclass=");
-        foo = foo.replaceAll("\n    componentFactory\n","\n");
-        foo = foo.replaceAll("\n    componentMonitor\n","\n");
-        foo = foo.replaceAll("\n    lifecycleManager","");
-        foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_1\"","");
         foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_OrderedComponentAdapterLifecycleManager\"","");
-        foo = foo.replaceAll("class=","=");
+        foo = foo.replaceAll(" class=","=");
         foo = foo.replaceAll("\"","");
-        foo = foo.replaceAll(" \n","\n");
-        foo = foo.replaceAll(" =","=");
-        foo = foo.replaceAll("\n\n","\n");
 
         return foo;
     }

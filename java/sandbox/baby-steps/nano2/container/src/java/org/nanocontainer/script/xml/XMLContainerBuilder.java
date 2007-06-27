@@ -162,7 +162,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             .withLifecycle()
             .withComponentFactory(componentFactoryName)
             .withMonitor(monitorName)
-            .build();
+            .buildPico();
 
     }
 

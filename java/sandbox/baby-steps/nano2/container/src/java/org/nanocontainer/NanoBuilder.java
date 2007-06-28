@@ -9,6 +9,7 @@ import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Characterizations;
+import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.containers.TransientPicoContainer;
 
@@ -139,7 +140,7 @@ public final class NanoBuilder {
         try {
             return classLoader.loadClass(className).asSubclass(asClass);
         } catch (ClassNotFoundException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new PicoClassNotFoundException(className, e);
         }
     }
 

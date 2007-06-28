@@ -26,12 +26,16 @@ public class FieldAnnotationInjector extends SetterInjector {
         final List<Class> typeList = new ArrayList<Class>();
         final Field[] fields = getFields();
         for (final Field field : fields) {
-            if (field.getAnnotation(Inject.class) != null) {
+            if (isAnnotatedForInjection(field)) {
                 injectionMembers.add(field);
                 typeList.add(field.getType());
             }
         }
         injectionTypes = typeList.toArray(new Class[0]);
+    }
+
+    protected boolean isAnnotatedForInjection(Field field) {
+        return field.getAnnotation(Inject.class) != null;
     }
 
     private Field[] getFields() {

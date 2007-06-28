@@ -121,15 +121,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      */
     public DefaultPicoContainer(ComponentFactory componentFactory,
                                 LifecycleStrategy lifecycleStrategy,
-                                PicoContainer parent)
-    {
+                                PicoContainer parent) {
         this(componentFactory, lifecycleStrategy, parent, NullComponentMonitor.getInstance() );
     }
 
     public DefaultPicoContainer(ComponentFactory componentFactory,
                                 LifecycleStrategy lifecycleStrategy,
-                                PicoContainer parent, ComponentMonitor componentMonitor)
-    {
+                                PicoContainer parent, ComponentMonitor componentMonitor) {
         if (componentFactory == null) throw new NullPointerException("componentFactory");
         if (lifecycleStrategy == null) throw new NullPointerException("lifecycleStrategy");
         this.componentFactory = componentFactory;

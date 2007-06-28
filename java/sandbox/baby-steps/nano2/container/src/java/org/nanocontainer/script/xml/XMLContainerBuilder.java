@@ -41,7 +41,6 @@ import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.monitors.DelegatingComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.parameters.ComponentParameter;
@@ -65,9 +64,7 @@ import org.xml.sax.SAXException;
  */
 public class XMLContainerBuilder extends ScriptedContainerBuilder implements ContainerPopulator {
 
-    private final static String DEFAULT_COMPONENT_ADAPTER_FACTORY = CachingBehaviorFactory.class.getName();
     private final static String DEFAULT_COMPONENT_INSTANCE_FACTORY = BeanComponentInstanceFactory.class.getName();
-    private final static String DEFAULT_COMPONENT_MONITOR = DelegatingComponentMonitor.class.getName();
 
     private final static String CONTAINER = "container";
     private final static String CLASSPATH = "classpath";
@@ -491,9 +488,16 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             factoryClass = DEFAULT_COMPONENT_INSTANCE_FACTORY;
         }
 
-        NanoContainer adapter = new DefaultNanoContainer(getClassLoader());
-        adapter.addComponent(XMLComponentInstanceFactory.class.getName(), new ClassName(factoryClass));
-        return (XMLComponentInstanceFactory) adapter.getComponents().get(0);
+        // using a NanoContainer is overkill here.
+        try {
+            return (XMLComponentInstanceFactory)getClassLoader().loadClass(factoryClass).newInstance();
+        } catch (InstantiationException e) {
+            throw new PicoCompositionException(e);
+        } catch (IllegalAccessException e) {
+            throw new PicoCompositionException(e);
+        } catch (ClassNotFoundException e) {
+            throw new PicoClassNotFoundException(factoryClass, e);
+        }
     }
 
     private void registerComponentAdapter(NanoContainer container, Element element, NanoContainer metaContainer) throws ClassNotFoundException, PicoCompositionException, MalformedURLException {

@@ -13,7 +13,6 @@ public class MethodAnnotationInjector extends SetterInjector {
         super(key, impl, parameters, monitor, lifecycleStrategy);
     }
 
-
     protected final boolean isInjectorMethod(Method method) {
         return method.getAnnotation(Inject.class) != null;
     }

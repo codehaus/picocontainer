@@ -41,13 +41,13 @@
 
     <scm>
         <connection>
-            scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk
+            scm:svn:https://svn.codehaus.org/picocontainer/java/1.x/nanocontainer-nanowar/trunk
         </connection>
         <developerConnection>
-            scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-nanowar/trunk
+            scm:svn:https://svn.codehaus.org/scm/picocontainer/java/1.x/nanocontainer-nanowar/trunk
         </developerConnection>
         <url>
-            http://fisheye.codehaus.org/browse/picocontainer/java/nanocontainer-nanowar/trunk
+            http://fisheye.codehaus.org/browse/picocontainer/java/1.x/nanocontainer-nanowar/trunk
         </url>
     </scm>
 
@@ -184,5 +184,19 @@
             <artifactId>httpunit</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.0-beta-6</version>
+          <configuration>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+            <tagBase>https://svn.codehaus.org/picocontainer/java/1.x/nanocontainer-nanowar/tags/</tagBase>
+          </configuration>
+        </plugin>
+      </plugins>
+    </build>
 
 </project>

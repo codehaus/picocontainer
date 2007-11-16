@@ -59,7 +59,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
     MutablePicoContainer addComponent(Object componentKey,
                                       Object componentImplementationOrInstance,
                                       Parameter... parameters);
-
+   
     /**
      * Register an arbitrary object. The class of the object will be used as a key. Calling this method is equivalent to
      * calling  <code>addComponent(componentImplementation, componentImplementation)</code>.
@@ -74,7 +74,6 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
 
     /**
      * Register a config item.
-     *
      * @param name the name of the config item
      * @param val the value of the config item
      *

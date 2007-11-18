@@ -26,7 +26,7 @@ import com.thoughtworks.paranamer.Paranamer;
 /**
  * Injection will happen iteratively after component instantiation
  */
-public abstract class IterativeInjector extends AbstractInjector {
+public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     protected transient List<AccessibleObject> injectionMembers;
     protected transient Class[] injectionTypes;
@@ -83,7 +83,7 @@ public abstract class IterativeInjector extends AbstractInjector {
             boolean failedDependency = true;
             for (int j = 0; j < injectionTypes.length; j++) {
                 if (matchingParameterList.get(j) == null &&
-                    parameter.isResolvable(container, this, injectionTypes[j], makeParameterNameImpl(injectionMembers.get(i)), useNames())) {
+                    parameter.isResolvable(container)) {
                     matchingParameterList.set(j, parameter);
                     failedDependency = false;
                     break;
@@ -116,7 +116,7 @@ public abstract class IterativeInjector extends AbstractInjector {
         throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
     }
 
-    public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
+    public T getComponentInstance(final PicoContainer container) throws PicoCompositionException {
         final Constructor constructor = getConstructor();
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
@@ -135,9 +135,7 @@ public abstract class IterativeInjector extends AbstractInjector {
                             if (matchingParameters[i] == null) {
                                 continue;
                             }
-                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, IterativeInjector.this, injectionTypes[i],
-                                                                                    makeParameterNameImpl(injectionMembers.get(i)),
-                                                                                    useNames());
+                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer);
                             injectIntoMember(member, componentInstance, toInject);
                             injected[i] = toInject;
                         }
@@ -152,7 +150,7 @@ public abstract class IterativeInjector extends AbstractInjector {
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        return instantiationGuard.observe(getComponentImplementation());
+        return (T) instantiationGuard.observe(getComponentImplementation());
     }
 
     protected Object getOrMakeInstance(PicoContainer container,
@@ -197,8 +195,7 @@ public abstract class IterativeInjector extends AbstractInjector {
                 public Object run() {
                     final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
                     for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, IterativeInjector.this, injectionTypes[i],
-                                                    makeParameterNameImpl(injectionMembers.get(i)), useNames());
+                        currentParameters[i].verify(container);
                     }
                     return null;
                 }
@@ -231,8 +228,8 @@ public abstract class IterativeInjector extends AbstractInjector {
     }
 
     private Method[] getMethods() {
-        return (Method[]) AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
+        return  AccessController.doPrivileged(new PrivilegedAction<Method[]>() {
+            public Method[] run() {
                 return getComponentImplementation().getMethods();
             }
         });

@@ -10,16 +10,11 @@
 
 package org.picocontainer.parameters;
 
-import org.picocontainer.ComponentAdapter;
+import java.io.Serializable;
+
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.ParameterName;
-
-import java.io.Serializable;
-import java.lang.reflect.Field;
 
 
 /**
@@ -31,52 +26,25 @@ import java.lang.reflect.Field;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @author Thomas Heller
+ * @author Konstantin Pribluda
  */
-public class ConstantParameter
-        implements Parameter, Serializable {
+@SuppressWarnings("serial")
+public class ConstantParameter<T>  implements Parameter<T>, Serializable  {
 
-    private final Object value;
+    private final T value;
 
-    public ConstantParameter(Object value) {
+    public ConstantParameter(T value) {
         this.value = value;
     }
 
-    public Object resolveInstance(PicoContainer container,
-                                  ComponentAdapter adapter,
-                                  Class expectedType,
-                                  ParameterName expectedParameterName,
-                                  boolean useNames) {
+    public T resolveInstance(PicoContainer container) {
         return value;
     }
 
-    public boolean isResolvable(PicoContainer container,
-                                ComponentAdapter adapter,
-                                Class expectedType,
-                                ParameterName expectedParameterName,
-                                boolean useNames) {
-        try {
-            verify(container, adapter, expectedType, expectedParameterName, useNames);
+    public boolean isResolvable(PicoContainer container) {
             return true;
-        } catch(final PicoCompositionException e) {
-            return false;
-        }
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see Parameter#verify(PicoContainer,ComponentAdapter,Class,ParameterName,boolean)
-     */
-    public void verify(PicoContainer container,
-                       ComponentAdapter adapter,
-                       Class expectedType,
-                       ParameterName expectedParameterName,
-                       boolean useNames) throws PicoException {
-        if (!checkPrimitive(expectedType) && !expectedType.isInstance(value)) {
-            throw new PicoCompositionException(expectedType.getClass().getName() + " is not assignable from " +
-                                                 (value != null ? value.getClass().getName() : "null"));
-        }
-    }
 
     /**
      * Visit the current {@link Parameter}.
@@ -87,19 +55,12 @@ public class ConstantParameter
         visitor.visitParameter(this);
     }
 
-    private boolean checkPrimitive(Class expectedType) {
-        try {
-            if (expectedType.isPrimitive()) {
-                final Field field = value.getClass().getField("TYPE");
-                final Class type = (Class) field.get(value);
-                return expectedType.isAssignableFrom(type);
-            }
-        } catch (NoSuchFieldException e) {
-            //ignore
-        } catch (IllegalAccessException e) {
-            //ignore
-        }
-        return false;
-    }
+
+    /**
+     * ...we are always  fine
+     */
+	public void verify(PicoContainer container) {
+		// actually a no-op
+	}
 
 }

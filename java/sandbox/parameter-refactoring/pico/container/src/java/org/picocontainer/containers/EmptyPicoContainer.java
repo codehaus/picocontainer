@@ -48,7 +48,7 @@ public class EmptyPicoContainer implements PicoContainer, Serializable {
         return null;
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
         return null;
     }
 

@@ -10,8 +10,6 @@
 
 package org.picocontainer;
 
-import org.picocontainer.parameters.ComponentParameter;
-
 /**
  * Retrieves dependency from container. ComponentAdapters will use 
  * instances of parameter to obtain component dependencies. 
@@ -25,15 +23,17 @@ import org.picocontainer.parameters.ComponentParameter;
  *      used for resolving the parameter.
  * @see org.picocontainer.parameters.ConstantParameter an implementation of this interface that allows you to specify a constant
  *      that will be used for resolving the parameter.
+ *      
+ * @TODO figure good way to exclude adapter without polluting the interface
  */
-public interface Parameter {
+public interface Parameter<T> {
 
-    Parameter[] ZERO = new Parameter[0];
-    Parameter[] DEFAULT = new Parameter[]{ ComponentParameter.DEFAULT };
+      Parameter[] ZERO = new Parameter[0];
+//    Parameter[] DEFAULT = new Parameter[]{ ComponentParameter.DEFAULT };
 
     /**
      * Retrieve the object from the Parameter that statisfies the expected type.
-     *
+     * 
      * @param container             the container from which dependencies are resolved.
      * @param expectedType			expected parameter type ( I'm not happy with it here,
      * 								but automatic type wandling for config parameters 
@@ -42,7 +42,7 @@ public interface Parameter {
      *
      * @throws PicoCompositionException if a referenced component could not be instantiated.
      */
-     <T> T  resolveInstance(PicoContainer container, Class<T> expectedType);
+     T  resolveInstance(PicoContainer container);
 
     /**
      * Check if the Parameter can satisfy the expected type using the container.
@@ -56,12 +56,9 @@ public interface Parameter {
     boolean isResolvable(PicoContainer container);
 
     /**
-     * Verify that the Parameter can statisfied the expected type using the container
+     * Verify that the Parameter can statisfy the expected type using the container
      *
      * @param container             the container from which dependencies are resolved.
-
-     *
-     * @param useNames
      * @throws PicoCompositionException if parameter and its dependencies cannot be resolved
      */
     void verify(PicoContainer container);

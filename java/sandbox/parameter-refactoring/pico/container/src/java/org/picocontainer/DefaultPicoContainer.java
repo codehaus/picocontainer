@@ -226,7 +226,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return adapter;
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
         // See http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-115
         ComponentAdapter<?> adapterByKey = getComponentAdapter((Object)componentType);
         if (adapterByKey != null) {
@@ -239,20 +239,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return found.get(0);
         } else if (found.isEmpty()) {
             if (parent != null) {
-                return parent.getComponentAdapter(componentType, componentParameterName);
+                return parent.getComponentAdapter(componentType);
             } else {
                 return null;
             }
         } else {
-            if (componentParameterName != null) {
-                String parameterName = componentParameterName.getName();
-                if (parameterName != null) {
-                    ComponentAdapter ca = getComponentAdapter(parameterName);
-                    if (ca != null && componentType.isAssignableFrom(ca.getComponentImplementation())) {
-                        return ca;
-                    }
-                }
-            }
             Class[] foundClasses = new Class[found.size()];
             for (int i = 0; i < foundClasses.length; i++) {
                 foundClasses[i] = found.get(i).getComponentImplementation();
@@ -444,7 +435,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public Object getComponent(Object componentKeyOrType) {
         Object retVal;
         if (componentKeyOrType instanceof Class) {
-            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, null);
+            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType);
             retVal = componentAdapter == null ? null : getInstance(componentAdapter);
         } else {
             ComponentAdapter<?> componentAdapter = getComponentAdapter(componentKeyOrType);

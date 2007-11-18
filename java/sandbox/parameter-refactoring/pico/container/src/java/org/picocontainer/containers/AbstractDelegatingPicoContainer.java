@@ -48,10 +48,8 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer ,
 		return delegate.getComponent(componentKeyOrType);
 	}
 
-	public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType,
-			ParameterName componentParameterName) {
-		return delegate.getComponentAdapter(componentType,
-				componentParameterName);
+	public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
+		return delegate.getComponentAdapter(componentType);
 	}
 
 	public ComponentAdapter<?> getComponentAdapter(Object componentKey) {

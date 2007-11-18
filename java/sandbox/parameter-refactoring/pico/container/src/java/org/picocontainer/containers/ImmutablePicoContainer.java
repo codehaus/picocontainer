@@ -12,7 +12,6 @@ package org.picocontainer.containers;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.ParameterName;
 
 import java.util.List;
 import java.util.Collection;
@@ -55,8 +54,8 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
         return delegate.getComponentAdapter(componentKey);
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
-        return delegate.getComponentAdapter(componentType, componentParameterName);  
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
+        return delegate.getComponentAdapter(componentType);  
     }
 
     public Collection<ComponentAdapter<?>> getComponentAdapters() {

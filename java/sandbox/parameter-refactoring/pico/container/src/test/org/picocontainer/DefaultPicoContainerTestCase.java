@@ -665,4 +665,17 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         } catch (PicoCompositionException e) {
         }
     }
+    
+    /**
+     * while resolving component by type, only components
+     * of those type shall be retuned. 
+     *
+     */
+    public void testThatByTypeResolutionIsHonored() {
+    	MutablePicoContainer container = createPicoContainer(null);
+    	container.addComponent(Map.class,MyStartable.class);
+    	container.addComponent("glumBlam",HashMap.class);
+    	
+    	assertSame(container.getComponent("glumBlam"),container.getComponent(Map.class));
+    }
 }

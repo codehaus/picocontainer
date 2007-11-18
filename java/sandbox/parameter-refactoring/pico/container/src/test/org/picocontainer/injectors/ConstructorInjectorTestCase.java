@@ -237,8 +237,8 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         }
     }
 
-    private static class NotYourBusiness {
-        private NotYourBusiness(Private aPrivate) {
+	private static class NotYourBusiness {
+		private NotYourBusiness(Private aPrivate) {
             assertNotNull(aPrivate);
         }
     }

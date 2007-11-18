@@ -19,19 +19,20 @@ import java.lang.reflect.Constructor;
 import java.util.Set;
 
 /** @author Paul Hammant */
-public class MultiInjector extends AbstractInjector {
+@SuppressWarnings("serial")
+public class MultiInjector<T> extends AbstractInjector<T> {
 
-    private final ConstructorInjector constuctorInjector;
-    private final SetterInjector setterInjector;
-    private AnnotatedMethodInjector annotatedMethodInjector;
+    private final ConstructorInjector<T> constuctorInjector;
+    private final SetterInjector<T> setterInjector;
+    private AnnotatedMethodInjector<T> annotatedMethodInjector;
 
     public MultiInjector(Object componentKey,
                          Class componentImplementation,
                          Parameter[] parameters,
                          ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, String setterPrefix, boolean useNames) {
         super(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames);
-        constuctorInjector = new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames);
-        setterInjector = new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix, useNames) {
+        constuctorInjector = new ConstructorInjector<T>(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames);
+        setterInjector = new SetterInjector<T>(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix, useNames) {
             protected Object getOrMakeInstance(PicoContainer container,
                                                Constructor constructor,
                                                ComponentMonitor componentMonitor) {
@@ -45,7 +46,7 @@ public class MultiInjector extends AbstractInjector {
             protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
             }
         };
-        annotatedMethodInjector = new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, Inject.class, useNames) {
+        annotatedMethodInjector = new AnnotatedMethodInjector<T>(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, Inject.class, useNames) {
             protected Object getOrMakeInstance(PicoContainer container,
                                                Constructor constructor,
                                                ComponentMonitor componentMonitor)  {
@@ -61,7 +62,7 @@ public class MultiInjector extends AbstractInjector {
         };
     }
 
-    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
         return annotatedMethodInjector.getComponentInstance(container);
     }
 

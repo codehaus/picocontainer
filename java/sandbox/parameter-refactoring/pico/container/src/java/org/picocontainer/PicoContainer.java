@@ -36,6 +36,16 @@ public interface PicoContainer {
      */
     Object getComponent(Object componentKeyOrType);
 
+    /**
+     * Retrieve a component instance of desired type. will delegate to 
+     * parent container (if any) 
+     * @param componentType 	type of desirec component
+     * @return an instantiated component  or <code>null</code> if no component of specified type 
+     * was registered. 
+     * @throws AmbiguousComponentResolutionException  if more than one component is available from
+     * 					container
+     * @TODO  maybe this exception can be factored out of AbstractInjector? 
+     */
     <T> T getComponent(Class<T> componentType);
 
 
@@ -72,10 +82,9 @@ public interface PicoContainer {
      * @param componentType the type of the component.
      * @return the component adapter associated with this class, or <code>null</code> if no component has been
      *         registered for the specified key.
-     * @param componentParameterName
      */
 
-    <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName);
+    <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType);
 
     /**
      * Retrieve all the component adapters inside this container. The component adapters from the parent container are

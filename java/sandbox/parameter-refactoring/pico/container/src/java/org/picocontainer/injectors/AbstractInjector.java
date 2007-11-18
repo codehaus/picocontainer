@@ -27,7 +27,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.adapters.AbstractAdapter;
-import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.parameters.ByClass;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
@@ -94,10 +94,11 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @param parameters the parameter types
      * @return the array with the default parameters.
      */
-    protected Parameter[] createDefaultParameters(Class[] parameters) {
+    @SuppressWarnings("unchecked")
+	protected Parameter[] createDefaultParameters(Class[] parameters) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            componentParameters[i] = ComponentParameter.DEFAULT;
+            componentParameters[i] = new ByClass(parameters[i]);
         }
         return componentParameters;
     }

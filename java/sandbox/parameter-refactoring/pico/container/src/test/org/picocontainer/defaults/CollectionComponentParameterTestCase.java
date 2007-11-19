@@ -9,25 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.parameters.CollectionComponentParameter;
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,6 +19,23 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.CollectionComponentParameter;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
+
 
 /**
  * @author Aslak Helles&oslash;y
@@ -47,15 +45,15 @@ public class CollectionComponentParameterTestCase
         extends MockObjectTestCase {
 
     public void testShouldInstantiateArrayOfStrings() {
-        CollectionComponentParameter ccp = new CollectionComponentParameter();
+        CollectionComponentParameter ccp = new CollectionComponentParameter(String[].class,null,String.class);
 
         Mock componentAdapterMock = mock(ComponentAdapter.class);
         componentAdapterMock.expects(atLeastOnce()).method("getComponentKey").will(returnValue("x"));
         Mock containerMock = mock(PicoContainer.class);
         containerMock.expects(once()).method("getComponentAdapters").withNoArguments().will(returnValue(new HashSet()));
         containerMock.expects(once()).method("getComponentAdapters").with(eq(String.class)).will(
-                returnValue(Arrays.asList(new InstanceAdapter("y", "Hello", new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor()), new InstanceAdapter("z", "World", new NullLifecycleStrategy(),
+                returnValue(Arrays.asList(new InstanceAdapter<String>("y", "Hello", new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()), new InstanceAdapter<String>("z", "World", new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor()))));
         containerMock.expects(once()).method("getComponent").with(eq("z")).will(returnValue("World"));
         containerMock.expects(once()).method("getComponent").with(eq("y")).will(returnValue("Hello"));
@@ -64,8 +62,7 @@ public class CollectionComponentParameterTestCase
         List expected = Arrays.asList("Hello", "World");
         Collections.sort(expected);
         List actual = Arrays.asList((Object[]) ccp.resolveInstance(
-                (PicoContainer) containerMock.proxy(), (ComponentAdapter) componentAdapterMock.proxy(), String[].class, null,
-                false));
+                (PicoContainer) containerMock.proxy()));
         Collections.sort(actual);
         assertEquals(expected, actual);
     }

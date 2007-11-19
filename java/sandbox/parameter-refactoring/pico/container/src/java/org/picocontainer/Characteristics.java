@@ -69,7 +69,8 @@ public final class Characteristics {
         return new ImmutableProperties(name, value);
     }
 
-    public static class ImmutableProperties extends Properties {
+    @SuppressWarnings("serial")
+	public static class ImmutableProperties extends Properties {
 
         public ImmutableProperties(String name, String value) {
             super.setProperty(name, value);

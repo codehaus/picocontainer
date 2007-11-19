@@ -24,8 +24,11 @@ import org.picocontainer.PicoContainer;
 @SuppressWarnings("serial")
 public class ByClass<T> extends BasicComponentParameter<T> {
 
+	protected Class<T> expectedType;
+
 	public ByClass(Class<T> expectedType) {
-		super(expectedType);
+		super();
+		this.expectedType = expectedType;
 	}
 
 	/**
@@ -56,6 +59,14 @@ public class ByClass<T> extends BasicComponentParameter<T> {
 	@Override
 	ComponentAdapter<T> obtainAdapter(PicoContainer container) {
 		return container.getComponentAdapter(expectedType);
+	}
+
+	protected Class<T> getExpectedType() {
+		return expectedType;
+	}
+
+	protected void setExpectedType(Class<T> expectedType) {
+		this.expectedType = expectedType;
 	}
 
 

@@ -35,9 +35,6 @@ public interface Parameter<T> {
      * Retrieve the object from the Parameter that statisfies the expected type.
      * 
      * @param container             the container from which dependencies are resolved.
-     * @param expectedType			expected parameter type ( I'm not happy with it here,
-     * 								but automatic type wandling for config parameters 
-     * 								requires this ) 
      * @return the instance or <code>null</code> if no suitable instance can be found.
      *
      * @throws PicoCompositionException if a referenced component could not be instantiated.

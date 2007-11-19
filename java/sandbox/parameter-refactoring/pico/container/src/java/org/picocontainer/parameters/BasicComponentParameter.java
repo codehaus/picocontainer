@@ -32,19 +32,6 @@ import org.picocontainer.PicoVisitor;
 public abstract class BasicComponentParameter<T> implements Parameter<T>, Serializable {
 
     protected ComponentAdapter<T> target;
-	protected Class<T> expectedType;
-
-	public BasicComponentParameter(Class<T> expectedType) {
-		this.expectedType = expectedType;
-	}
-
-	protected Class<T> getExpectedType() {
-		return expectedType;
-	}
-
-	protected void setExpectedType(Class<T> expectedType) {
-		this.expectedType = expectedType;
-	}
 
 	/**
      * Visit the current {@link Parameter}.
@@ -72,6 +59,4 @@ public abstract class BasicComponentParameter<T> implements Parameter<T>, Serial
 	public boolean isResolvable(PicoContainer container) {
 		return resolveAdapter(container) != null;
 	}
-
-   
 }

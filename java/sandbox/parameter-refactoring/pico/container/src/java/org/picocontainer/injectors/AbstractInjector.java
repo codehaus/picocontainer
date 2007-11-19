@@ -410,4 +410,15 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             return componentImplementation;
         }
     }
+    
+    public static class MissingDependencyException extends PicoCompositionException {
+    	Object componentKey;
+    	public MissingDependencyException(Object key) {
+    		super("Missing component for key:"  + key);
+    		componentKey = key;
+    	}
+		protected Object getComponentKey() {
+			return componentKey;
+		}
+    }
 }

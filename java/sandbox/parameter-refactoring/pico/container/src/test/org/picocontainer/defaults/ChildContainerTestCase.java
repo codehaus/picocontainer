@@ -10,9 +10,10 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
-import org.picocontainer.MutablePicoContainer;
+
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.parameters.ByKey;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -65,7 +66,7 @@ public class ChildContainerTestCase extends TestCase {
 
         MutablePicoContainer child = new DefaultPicoContainer(parent);
         child.addComponent(DependsOnTouchable.class, DependsOnTouchable.class,
-                           new ComponentParameter(Touchable.class));
+                           new ByKey(Touchable.class));
 
         assertNotNull(child.getComponent(DependsOnTouchable.class));
     }
@@ -90,7 +91,7 @@ public class ChildContainerTestCase extends TestCase {
 
         MutablePicoContainer child = new DefaultPicoContainer(parent);
         child.addComponent(DependsOnTouchable.class, DependsOnTouchable.class,
-                           new ComponentParameter(Touchable.class));
+                           new ByKey(Touchable.class));
 
         assertNotNull(child.getComponent(DependsOnTouchable.class));
     }

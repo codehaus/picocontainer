@@ -11,12 +11,24 @@ package org.picocontainer.parameters;
 
 import org.picocontainer.PicoContainer;
 
-public interface Convert<T> {
+/**
+ * perform scalar conversion of data obtained by lookup. 
+ * @author Konstantin Pribluda
+ */
+public class Scalar<T> implements Extract<T> {
+
+	Lookup lookup;
+	
+	
+	public Scalar(Lookup lookup) {
+		this.lookup = lookup;
+	}
 
 	/**
-	 * perform instance resolution and conversion.
-	 * @param container
-	 * @return
+	 * resolve instance ot
 	 */
-	T resolveInstance(PicoContainer container); 
+	public T resolveInstance(PicoContainer container) {
+		return null;
+	}
+
 }

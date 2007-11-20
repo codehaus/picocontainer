@@ -10,6 +10,7 @@
 package org.picocontainer.parameters;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
@@ -25,15 +26,18 @@ public class ByKey implements Lookup {
 
 	Object key;
 	
-	
 	public ByKey(Object key) {
-		super();
 		this.key = key;
 	}
 
 
-	public Collection<ComponentAdapter<?>> lookup(PicoContainer container) {
-		return null;
+	@SuppressWarnings("unchecked")
+	public Collection<ComponentAdapter> lookup(PicoContainer container) {
+		ComponentAdapter adapter =  container.getComponentAdapter(key);
+		if(adapter != null) {
+			return Collections.singleton(adapter);
+		}
+		return Collections.EMPTY_SET;
 	}
 
 

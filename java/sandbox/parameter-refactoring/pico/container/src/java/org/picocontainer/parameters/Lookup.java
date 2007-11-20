@@ -30,5 +30,5 @@ public interface Lookup {
 	 * @param container
 	 * @return
 	 */
-	Collection<ComponentAdapter<?>> lookup(PicoContainer container);
+	Collection<ComponentAdapter> lookup(PicoContainer container);
 }

@@ -21,7 +21,8 @@ import org.picocontainer.PicoContainer;
 
 /**
  * perform necessary data conversion
- * @author k.pribluda
+ * @author Konstantin Pribluda
+ * @author Paul Hammant
  *
  */
 public class Convert<T> implements Extract<T> {

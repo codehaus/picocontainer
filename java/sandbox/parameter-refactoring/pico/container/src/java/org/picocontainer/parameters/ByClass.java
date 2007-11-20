@@ -10,8 +10,6 @@
 package org.picocontainer.parameters;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
@@ -31,9 +29,14 @@ public class ByClass implements Lookup {
 		this.expectedType = expectedType;
 	}
 
-	public Collection<ComponentAdapter<?>> lookup(PicoContainer container) {
-
-		return null;
+	/**
+	 * retrieve component adapters by class.
+	 * TODO: investigate, whether to look to parent containers
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<ComponentAdapter> lookup(PicoContainer container) {
+		return container.getComponentAdapters(expectedType);
 	}
 
 

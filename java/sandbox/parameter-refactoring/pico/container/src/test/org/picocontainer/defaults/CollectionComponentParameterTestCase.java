@@ -137,7 +137,8 @@ public class CollectionComponentParameterTestCase
     public void testCollections() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new Caching());
         mpc.addComponent(CollectedBowl.class, CollectedBowl.class,
-                         new ComponentParameter(Cod.class, false), new ComponentParameter(Fish.class, false));
+                         new CollectionComponentParameter(Collection.class,null,Cod.class), 
+                         new CollectionComponentParameter(Collection.class,null,Fish.class));
         mpc.addComponent(Cod.class);
         mpc.addComponent(Shark.class);
         Cod cod = mpc.getComponent(Cod.class);
@@ -159,8 +160,8 @@ public class CollectionComponentParameterTestCase
 
     public void testMaps() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addComponent(MappedBowl.class, MappedBowl.class, new ComponentParameter(
-                Fish.class, false));
+        mpc.addComponent(MappedBowl.class, MappedBowl.class, 
+        		new CollectionComponentParameter(Map.class,null,Fish.class));
         mpc.addComponent(Cod.class);
         mpc.addComponent(Shark.class);
         MappedBowl bowl = mpc.getComponent(MappedBowl.class);

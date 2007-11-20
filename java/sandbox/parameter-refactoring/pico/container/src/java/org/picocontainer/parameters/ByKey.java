@@ -9,11 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
+import java.util.Collection;
+
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.injectors.AbstractInjector;
 
 /**
  * component parameter implementing by-key resolution strategy. type conversion
@@ -22,47 +21,19 @@ import org.picocontainer.injectors.AbstractInjector;
  * @author Konstantin Pribluda
  */
 @SuppressWarnings("serial")
-public class ByKey<T> extends BasicComponentParameter<T> {
+public class ByKey implements Lookup {
 
-
-	private Object componentKey;
-
-	public ByKey(Object componentKey) {
-		this.componentKey = componentKey;
+	Object key;
+	
+	
+	public ByKey(Object key) {
+		super();
+		this.key = key;
 	}
 
-	/**
-	 * Check wether the given Parameter can be statisfied by the container.
-	 * 
-	 * @return <code>true</code> if the Parameter can be verified.
-	 * 
-	 * @throws org.picocontainer.PicoCompositionException
-	 *             {@inheritDoc}
-	 * @see Parameter#isResolvable(PicoContainer,ComponentAdapter,Class,ParameterName,boolean)
-	 */
-	public boolean isResolvable(PicoContainer container) {
-		return resolveAdapter(container) != null;
-	}
 
-	/**
-	 * actual adapter retrieval
-	 */
-	@Override
-	ComponentAdapter<T> obtainAdapter(PicoContainer container) {
-		return (ComponentAdapter<T>) container.getComponentAdapter(componentKey);
-	}
-
-	public T resolveInstance(PicoContainer container) {
-
-		return resolveAdapter(container).getComponentInstance(container);
-	}
-
-	public void verify(PicoContainer container) {
-		final ComponentAdapter resolvedAdapter = resolveAdapter(container);
-		if(resolvedAdapter == null) {
-			throw new AbstractInjector.MissingDependencyException(componentKey);
-		}
-		resolvedAdapter.verify(container);
+	public Collection<ComponentAdapter<?>> lookup(PicoContainer container) {
+		return null;
 	}
 
 

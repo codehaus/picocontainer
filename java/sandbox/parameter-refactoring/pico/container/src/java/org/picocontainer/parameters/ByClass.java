@@ -9,6 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,52 +22,18 @@ import org.picocontainer.PicoContainer;
  * @author Konstantin Pribluda
  *
  */
-@SuppressWarnings("serial")
-public class ByClass<T> extends BasicComponentParameter<T> {
 
-	protected Class<T> expectedType;
+public class ByClass implements Lookup {
 
-	public ByClass(Class<T> expectedType) {
-		super();
+	Class expectedType;
+	
+	public ByClass(Class expectedType) {
 		this.expectedType = expectedType;
 	}
 
-	/**
-	 * just retrieve component instance out of adapter. it shall be 
-	 * of proper type.
-	 */
-	public T resolveInstance(PicoContainer container) {
-		return resolveAdapter(container).getComponentInstance(container);
-	}
+	public Collection<ComponentAdapter<?>> lookup(PicoContainer container) {
 
-	/**
-	 * TODO: find a elegant way to produce good looking exception
-	 */
-	public void verify(PicoContainer container) {
-	       final ComponentAdapter componentAdapter =
-	            resolveAdapter(container);
-	        if (componentAdapter == null) {
-	            final Set<Class> set = new HashSet<Class>();
-	            set.add(expectedType);
-	           // throw new AbstractInjector.UnsatisfiableDependenciesException(adapter, null, set, container);
-	        }
-	        componentAdapter.verify(container);
-	}
-
-	/**
-	 * obtain suitable adapter from container. 
-	 */
-	@Override
-	ComponentAdapter<T> obtainAdapter(PicoContainer container) {
-		return container.getComponentAdapter(expectedType);
-	}
-
-	protected Class<T> getExpectedType() {
-		return expectedType;
-	}
-
-	protected void setExpectedType(Class<T> expectedType) {
-		this.expectedType = expectedType;
+		return null;
 	}
 
 

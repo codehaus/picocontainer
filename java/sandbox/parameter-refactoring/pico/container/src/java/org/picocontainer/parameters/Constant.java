@@ -19,15 +19,21 @@ import org.picocontainer.PicoContainer;
  */
 public class Constant<T> implements Extract<T> {
 
-	T constant;
-	
-	public Constant(T constant) {
-		super();
-		this.constant = constant;
+	T  value;
+
+	public Constant(T value) {
+		this.value = value;
 	}
 
+	/**
+	 * resolve constant instance
+	 */
 	public T resolveInstance(PicoContainer container) {
-		return constant;
+		return value;
 	}
-
+	
+	
+	public String toString() {
+		return "Constant[" +  value + "]";
+	}
 }

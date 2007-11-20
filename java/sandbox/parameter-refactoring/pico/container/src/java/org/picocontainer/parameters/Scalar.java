@@ -9,26 +9,39 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
+import java.util.Collection;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 
+
 /**
- * perform scalar conversion of data obtained by lookup. 
+ * perform scalar extraction of data obtained via lookup. 
+ * 
  * @author Konstantin Pribluda
  */
-public class Scalar<T> implements Extract<T> {
-
-	Lookup lookup;
-	
-	
-	public Scalar(Lookup lookup) {
+public class Scalar implements Extract {
+    Lookup lookup;
+    public Scalar(Lookup lookup) {
 		this.lookup = lookup;
 	}
-
-	/**
-	 * resolve instance ot
-	 */
-	public T resolveInstance(PicoContainer container) {
+    
+    /**
+     * resolve instance in question
+     * 
+     */
+	public Object resolveInstance(PicoContainer container) {
+		Collection<ComponentAdapter<?>> adapters = lookup.lookup(container);
+		if(adapters.size() == 0) {
+			return null;
+		} if(adapters.size() == 1) {
+			return adapters.iterator().next().getComponentInstance(container);
+		} if(adapters.size() > 1) {
+			throw new PicoCompositionException("Ambiguous component found by scalar resolution. (" + lookup +")");
+		}
 		return null;
 	}
+
 
 }

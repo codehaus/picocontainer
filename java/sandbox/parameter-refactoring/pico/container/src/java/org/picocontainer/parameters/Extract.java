@@ -17,11 +17,11 @@ import org.picocontainer.PicoContainer;
  * @param <T> target type
  */
 public interface Extract<T> {
-
+	
 	/**
-	 * perform instance resolution and conversion.
+	 * perform instance resolution without type check. 
 	 * @param container
 	 * @return
 	 */
-	T resolveInstance(PicoContainer container); 
+	T resolveInstance(PicoContainer container);
 }

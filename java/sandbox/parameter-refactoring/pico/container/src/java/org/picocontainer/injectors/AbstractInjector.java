@@ -28,6 +28,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.parameters.ByClass;
+import org.picocontainer.parameters.Scalar;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
@@ -98,7 +99,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 	protected Parameter[] createDefaultParameters(Class[] parameters) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            componentParameters[i] = new ByClass(parameters[i]);
+            componentParameters[i] = new Scalar(new ByClass(parameters[i]));
         }
         return componentParameters;
     }

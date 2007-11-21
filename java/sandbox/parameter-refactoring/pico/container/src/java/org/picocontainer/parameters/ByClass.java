@@ -31,8 +31,6 @@ public class ByClass implements Lookup {
 
 	/**
 	 * retrieve component adapters by class.
-	 * TODO: investigate, whether to look to parent containers
-	 * 
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<ComponentAdapter> lookup(PicoContainer container) {

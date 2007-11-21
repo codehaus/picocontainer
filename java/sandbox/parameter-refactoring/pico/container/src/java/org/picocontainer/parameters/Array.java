@@ -9,43 +9,44 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import org.picocontainer.Parameter;
+import java.util.Collection;
+
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
 
 /**
- * constant instance resover. 
+ * extract components to array of certain type
  * @author k.pribluda
- *
- * @param <T>
  */
-public class Constant<T> implements Parameter<T> {
+public  class Array extends AbstractCollectionExtractor {
 
-	T  value;
+	Class baseClass;
 
-	public Constant(T value) {
-		this.value = value;
+	
+
+	public Array(Lookup lookup, boolean empty, Class baseClass) {
+		super(lookup, empty);
+		this.baseClass = baseClass;
 	}
 
 	/**
-	 * resolve constant instance
+	 * 
 	 */
-	public T resolveInstance(PicoContainer container) {
-		return value;
+	public Object resolveInstance(PicoContainer container) {
+		Collection<ComponentAdapter> adapters = lookup.lookup(container);
+		final Object[] result = (Object[]) java.lang.reflect.Array.newInstance(baseClass, 
+				adapters.size());
+		int i = 0;
+		for (ComponentAdapter componentAdapter : adapters) {
+			result[i] = container.getComponent(componentAdapter
+					.getComponentKey());
+			i++;
+		}	
+		return result;
 	}
 	
-	
-	public String toString() {
-		return "Constant[" +  value + "]";
+	public String toString() {		
+		return "Array of " + baseClass + "[" + lookup + "]";
 	}
 
-	public boolean isResolvable(PicoContainer container) {
-		return true;
-	}
-
-	public void verify(PicoContainer container) {
-	}
-
-	public void accept(PicoVisitor visitor) {
-	}
 }

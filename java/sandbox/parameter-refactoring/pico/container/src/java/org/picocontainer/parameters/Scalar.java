@@ -9,22 +9,19 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import java.util.Collection;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.injectors.AbstractInjector;
 
 
 /**
  * perform scalar extraction of data obtained via lookup. 
- * 
  * @author Konstantin Pribluda
  */
-public class Scalar implements Extract {
-    Lookup lookup;
+public class Scalar extends AbstractParameter {
     public Scalar(Lookup lookup) {
-		this.lookup = lookup;
+		super(lookup);
 	}
     
     /**
@@ -32,16 +29,30 @@ public class Scalar implements Extract {
      * 
      */
 	public Object resolveInstance(PicoContainer container) {
-		Collection<ComponentAdapter<?>> adapters = lookup.lookup(container);
+		java.util.Collection<ComponentAdapter> adapters = lookup.lookup(container);
 		if(adapters.size() == 0) {
 			return null;
 		} if(adapters.size() == 1) {
 			return adapters.iterator().next().getComponentInstance(container);
 		} if(adapters.size() > 1) {
-			throw new PicoCompositionException("Ambiguous component found by scalar resolution. (" + lookup +")");
+			throw new PicoCompositionException("Ambiguous component found by scalar resolution. [" + lookup +"]");
 		}
 		return null;
 	}
 
+	public void verify(PicoContainer container) {
+		java.util.Collection<ComponentAdapter> adapters = lookup.lookup(container);
+		if(adapters.isEmpty()) {
+			throw new AbstractInjector.MissingDependencyException(this.toString());
+		}
+	}
+
+	public String toString() {
+		return "Scalar [" + lookup + "]";
+	}
+
+	public boolean isResolvable(PicoContainer container) {	
+		return lookup.lookup(container).size() == 1;
+	}
 
 }

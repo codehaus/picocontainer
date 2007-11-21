@@ -30,7 +30,7 @@ public class Convert<T> implements Extract<T> {
 	private static interface Converter {
         Object convert(String paramValue);
     }
-	private static class NewInstanceConverter implements Converter> {
+	private static class NewInstanceConverter implements Converter {
 	    private Constructor c;
 	
 	    private NewInstanceConverter(Class clazz) {
@@ -93,13 +93,17 @@ public class Convert<T> implements Extract<T> {
     	synchronized (stringConverters) {
     		Converter converter = stringConverters.get(clazz);
     		if(converter == null) {
-    			if(clazz.getConstructor(String.class)!= null) {
-    				converter = new NewInstanceConverter(clazz);
-    				stringConverters.put(clazz,converter);
-    			} else if(clazz.getMethod("valueOf", String.class) != null) {
-    				converter = new ValueOfConverter(clazz);
-    				stringConverters.put(clazz,converter);
-    			}
+    			try {
+					if(clazz.getConstructor(String.class)!= null) {
+						converter = new NewInstanceConverter(clazz);
+						stringConverters.put(clazz,converter);
+					} else if(clazz.getMethod("valueOf", String.class) != null) {
+						converter = new ValueOfConverter(clazz);
+						stringConverters.put(clazz,converter);
+					}
+				} catch (SecurityException e) {
+				} catch (NoSuchMethodException e) {
+				}
     		}
     		return converter;
 		}
@@ -135,7 +139,7 @@ public class Convert<T> implements Extract<T> {
 	
 	
 	public String toString() {
-		return "Convert to " + expectedClass  + " from (" + extract + ")";
+		return "Convert to " + expectedClass  + " from [" + extract + "]";
 	}
 
 }

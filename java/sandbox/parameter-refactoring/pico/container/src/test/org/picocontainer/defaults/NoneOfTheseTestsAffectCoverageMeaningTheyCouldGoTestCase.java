@@ -10,20 +10,20 @@
 
 package org.picocontainer.defaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
 
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.parameters.Constant;
+import org.picocontainer.parameters.Scalar;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.Webster;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends TestCase {
 
@@ -31,10 +31,10 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
     public void testGetComponentSpecification() throws PicoCompositionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
-        assertNull(pico.getComponentAdapter(Touchable.class, null));
+        assertNull(pico.getComponentAdapter(Touchable.class));
         pico.addComponent(SimpleTouchable.class);
-        assertNotNull(pico.getComponentAdapter(SimpleTouchable.class, null));
-        assertNotNull(pico.getComponentAdapter(Touchable.class, null));
+        assertNotNull(pico.getComponentAdapter(SimpleTouchable.class));
+        assertNotNull(pico.getComponentAdapter(Touchable.class));
     }
 
 
@@ -47,8 +47,8 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("Touchable1", Touchable1);
         pico.addComponent("Touchable2", Touchable2);
-        pico.addComponent("fred1", DependsOnTouchable.class, new ComponentParameter("Touchable1"));
-        pico.addComponent("fred2", DependsOnTouchable.class, new ComponentParameter("Touchable2"));
+        pico.addComponent("fred1", DependsOnTouchable.class,Scalar.byKey("Touchable1"));
+        pico.addComponent("fred2", DependsOnTouchable.class,Scalar.byKey("Touchable2"));
 
         DependsOnTouchable fred1 = (DependsOnTouchable) pico.getComponent("fred1");
         DependsOnTouchable fred2 = (DependsOnTouchable) pico.getComponent("fred2");
@@ -161,7 +161,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Animal.class,
                 Dino.class,
-                new ConstantParameter("bones"));
+                new Constant("bones"));
 
         Animal animal = pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
@@ -170,7 +170,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
 
     public void testParameterCanBePrimitive() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addComponent(Animal.class, Dino2.class, new ConstantParameter(22));
+        pico.addComponent(Animal.class, Dino2.class, new Constant(22));
 
         Animal animal = pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
@@ -179,8 +179,8 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
 
     public void testMultipleParametersCanBePassed() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addComponent(Animal.class, Dino3.class, new ConstantParameter("a"),
-                new ConstantParameter("b"));
+        pico.addComponent(Animal.class, Dino3.class, new Constant("a"),
+                new Constant("b"));
 
         Animal animal = pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);
@@ -191,10 +191,10 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
     public void testParametersCanBeMixedWithComponentsCanBePassed() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Touchable.class, SimpleTouchable.class);
-        pico.addComponent(Animal.class, Dino4.class, new ConstantParameter("a"),
-                new ConstantParameter(3),
-                new ConstantParameter("b"),
-                ComponentParameter.DEFAULT);
+        pico.addComponent(Animal.class, Dino4.class, new Constant("a"),
+                new Constant(3),
+                new Constant("b"),
+                Scalar.byClass(Touchable.class));
 
         Animal animal = pico.getComponent(Animal.class);
         assertNotNull("Component not null", animal);

@@ -44,6 +44,8 @@ import org.picocontainer.testmodel.Touchable;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @author Konstantin Pribluda
+ * @deprecated As there is no collection component adapter anymore
+ * this has to be reworked
  */
 public class CollectionComponentParameterTestCase
         extends MockObjectTestCase {

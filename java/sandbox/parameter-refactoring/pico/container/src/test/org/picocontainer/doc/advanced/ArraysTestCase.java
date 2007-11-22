@@ -9,18 +9,16 @@
  *****************************************************************************/
 package org.picocontainer.doc.advanced;
 
-import junit.framework.TestCase;
-
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.parameters.CollectionComponentParameter;
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.behaviors.Caching;
-
 import java.util.Arrays;
 import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.injectors.ConstructorInjection;
 
 
 /**

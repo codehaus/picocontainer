@@ -10,6 +10,7 @@
 package org.picocontainer.parameters;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
@@ -55,4 +56,23 @@ public class Scalar extends AbstractParameter {
 		return lookup.lookup(container).size() == 1;
 	}
 
+	/**
+	 * convenience method to create scalar parameter
+	 * based on by-key lookup strategy. 
+	 * @param key
+	 * @return
+	 */
+	public static Parameter byKey(Object key) {
+		return new Scalar(new ByKey(key));
+	}
+	
+	/**
+	 * convenience method to create scalar parameter with by-class lookup
+	 * strategy. 
+	 * @param clazz
+	 * @return
+	 */
+	public static Parameter byClass(Class clazz) {
+		return new Scalar(new ByClass(clazz));
+	}
 }

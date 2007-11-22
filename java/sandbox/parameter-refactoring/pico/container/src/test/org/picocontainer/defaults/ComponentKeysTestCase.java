@@ -9,14 +9,14 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.parameters.ComponentParameter;
+import junit.framework.TestCase;
+
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.parameters.Scalar;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.DefaultPicoContainer;
-
-import junit.framework.TestCase;
 
 /**
  * @author Thomas Heller
@@ -30,7 +30,7 @@ public class ComponentKeysTestCase extends TestCase {
         /**
          * By using a class as key, this should take precedence over the other Touchable
          */
-        pico.addComponent(Touchable.class, DecoratedTouchable.class, new ComponentParameter("default"));
+        pico.addComponent(Touchable.class, DecoratedTouchable.class, Scalar.byKey("default"));
 
         Touchable touchable = pico.getComponent(Touchable.class);
         assertEquals(DecoratedTouchable.class, touchable.getClass());
@@ -41,7 +41,7 @@ public class ComponentKeysTestCase extends TestCase {
         pico.addComponent("default", SimpleTouchable.class);
 
         // Use the List variant instead, so we get better test coverage.
-        pico.addComponent(Touchable.class, DecoratedTouchable.class, new ComponentParameter("default"));
+        pico.addComponent(Touchable.class, DecoratedTouchable.class, Scalar.byKey("default"));
 
         DefaultPicoContainer grandChild = new DefaultPicoContainer(new DefaultPicoContainer(new DefaultPicoContainer(pico)));
 

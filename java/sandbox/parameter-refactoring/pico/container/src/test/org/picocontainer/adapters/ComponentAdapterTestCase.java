@@ -7,21 +7,21 @@
  *****************************************************************************/
 package org.picocontainer.adapters;
 
+import java.lang.reflect.Constructor;
+
 import junit.framework.TestCase;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.adapters.AbstractAdapter;
-import org.picocontainer.injectors.AbstractInjector;
-
-import java.lang.reflect.Constructor;
+import org.picocontainer.parameters.Constant;
 
 /**
  * Test AbstractAdapter behaviour
@@ -127,7 +127,7 @@ public class ComponentAdapterTestCase
 
     public void testParameterMayNotBeNull() throws Exception {
         try {
-            new TestInstantiatingAdapter("Key", String.class, new Parameter[]{new ConstantParameter("Value"), null});
+            new TestInstantiatingAdapter("Key", String.class, new Parameter[]{new Constant("Value"), null});
             fail("Thrown " + NullPointerException.class.getName() + " expected");
         } catch (final NullPointerException e) {
             assertTrue(e.getMessage().endsWith("1 is null"));

@@ -22,6 +22,11 @@ public  class Array extends AbstractCollectionExtractor {
 
 	Class baseClass;
 
+
+	public Array(Lookup lookup,Class baseClass) {
+		this(lookup, false,baseClass);
+
+	}
 	
 
 	public Array(Lookup lookup, boolean empty, Class baseClass) {

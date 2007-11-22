@@ -24,6 +24,7 @@ import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
@@ -32,7 +33,9 @@ import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.parameters.CollectionComponentParameter;
+import org.picocontainer.parameters.Array;
+import org.picocontainer.parameters.ByClass;
+import org.picocontainer.parameters.Filter;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -40,21 +43,24 @@ import org.picocontainer.testmodel.Touchable;
 /**
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
+ * @author Konstantin Pribluda
  */
 public class CollectionComponentParameterTestCase
         extends MockObjectTestCase {
 
     public void testShouldInstantiateArrayOfStrings() {
-        CollectionComponentParameter ccp = new CollectionComponentParameter(String[].class,null,String.class);
+       Parameter ccp = new Array(new ByClass(String.class),String.class);
 
         Mock componentAdapterMock = mock(ComponentAdapter.class);
-        componentAdapterMock.expects(atLeastOnce()).method("getComponentKey").will(returnValue("x"));
+        //componentAdapterMock.expects(atLeastOnce()).method("getComponentKey").will(returnValue("x"));
         Mock containerMock = mock(PicoContainer.class);
         containerMock.expects(once()).method("getComponentAdapters").withNoArguments().will(returnValue(new HashSet()));
         containerMock.expects(once()).method("getComponentAdapters").with(eq(String.class)).will(
-                returnValue(Arrays.asList(new InstanceAdapter<String>("y", "Hello", new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor()), new InstanceAdapter<String>("z", "World", new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor()))));
+                returnValue(Arrays.asList(
+                		new InstanceAdapter<String>("y", "Hello", new NullLifecycleStrategy(),
+                                        new NullComponentMonitor()), 
+                        new InstanceAdapter<String>("z", "World", new NullLifecycleStrategy(),
+                                        new NullComponentMonitor()))));
         containerMock.expects(once()).method("getComponent").with(eq("z")).will(returnValue("World"));
         containerMock.expects(once()).method("getComponent").with(eq("y")).will(returnValue("Hello"));
         containerMock.expects(once()).method("getParent").withNoArguments().will(returnValue(null));
@@ -137,8 +143,9 @@ public class CollectionComponentParameterTestCase
     public void testCollections() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new Caching());
         mpc.addComponent(CollectedBowl.class, CollectedBowl.class,
-                         new CollectionComponentParameter(Collection.class,null,Cod.class), 
-                         new CollectionComponentParameter(Collection.class,null,Fish.class));
+                         new org.picocontainer.parameters.Collection(new ByClass(Cod.class)),
+                         new org.picocontainer.parameters.Collection(new ByClass(Fish.class))
+                         );
         mpc.addComponent(Cod.class);
         mpc.addComponent(Shark.class);
         Cod cod = mpc.getComponent(Cod.class);
@@ -161,7 +168,7 @@ public class CollectionComponentParameterTestCase
     public void testMaps() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.addComponent(MappedBowl.class, MappedBowl.class, 
-        		new CollectionComponentParameter(Map.class,null,Fish.class));
+        		new org.picocontainer.parameters.Map(new ByClass(Fish.class)));
         mpc.addComponent(Cod.class);
         mpc.addComponent(Shark.class);
         MappedBowl bowl = mpc.getComponent(MappedBowl.class);
@@ -212,7 +219,7 @@ public class CollectionComponentParameterTestCase
         MutablePicoContainer pico = getDefaultPicoContainer();
         pico.addComponent(
                 AnotherGenericCollectionBowl.class, AnotherGenericCollectionBowl.class,
-                ComponentParameter.ARRAY_ALLOW_EMPTY);
+                new Array(new ByClass(String.class),true,String.class));
         AnotherGenericCollectionBowl bowl = pico
                 .getComponent(AnotherGenericCollectionBowl.class);
         assertNotNull(bowl);
@@ -265,12 +272,14 @@ public class CollectionComponentParameterTestCase
         mpc.addComponent("Dick", Cod.class);
         mpc.addComponent("Harry", Cod.class);
         mpc.addComponent(Shark.class);
-        mpc.addComponent(CollectedBowl.class, CollectedBowl.class, new CollectionComponentParameter(Cod.class, false) {
-            protected boolean evaluate(ComponentAdapter adapter) {
-                return !"Tom".equals(adapter.getComponentKey());
-            }
-        },
-                         new CollectionComponentParameter(Fish.class, false));
+        mpc.addComponent(CollectedBowl.class, CollectedBowl.class, 
+        		new org.picocontainer.parameters.Collection(new Filter(new ByClass(Cod.class)) 
+	        		{
+			            protected boolean evaluate(ComponentAdapter adapter) {
+			                return !"Tom".equals(adapter.getComponentKey());
+		            }
+        		}),
+        		new org.picocontainer.parameters.Collection(new ByClass(Fish.class)));
         CollectedBowl bowl = mpc.getComponent(CollectedBowl.class);
         Cod tom = (Cod) mpc.getComponent("Tom");
         assertEquals(4, bowl.fishes.length);
@@ -293,29 +302,33 @@ public class CollectionComponentParameterTestCase
             //            assertNotNull(blockingQueue);
         }
     }
-
-    public void testDifferentCollectiveTypesAreResolved() {
-        MutablePicoContainer pico = new DefaultPicoContainer();
-        CollectionComponentParameter parameter = new CollectionComponentParameter(Fish.class, true);
-        pico.addComponent(DependsOnAll.class, DependsOnAll.class,
-                          parameter, parameter, parameter, parameter, parameter, parameter);
-        assertNotNull(pico.getComponent(DependsOnAll.class));
-    }
+    
+// this is somehow irrelevant, as we demand explicit parameters
+// to be clearly specified at registration time.     
+//    public void testDifferentCollectiveTypesAreResolved() {
+//        MutablePicoContainer pico = new DefaultPicoContainer();
+//        Parameter parameter = new CollectionComponentParameter(Fish.class, true);
+//        pico.addComponent(DependsOnAll.class, DependsOnAll.class,
+//                          parameter, parameter, parameter, parameter, parameter, parameter);
+//        assertNotNull(pico.getComponent(DependsOnAll.class));
+//    }
 
     public void testVerify() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        CollectionComponentParameter parameterNonEmpty = CollectionComponentParameter.ARRAY;
+        Parameter parameterNonEmpty = new Array(new ByClass(Shark.class),Fish.class);
         pico.addComponent(Shark.class);
-        parameterNonEmpty.verify(pico, null, Fish[].class, null, false);
+        parameterNonEmpty.verify(pico);
         try {
-            parameterNonEmpty.verify(pico, null, Cod[].class, null, false);
+        	parameterNonEmpty = new Array(new ByClass(Cod.class),Fish.class);
+            parameterNonEmpty.verify(pico);
             fail("(PicoCompositionException expected");
         } catch (PicoCompositionException e) {
             assertTrue(e.getMessage().indexOf(Cod.class.getName())>0);
         }
-        CollectionComponentParameter parameterEmpty = CollectionComponentParameter.ARRAY_ALLOW_EMPTY;
-        parameterEmpty.verify(pico, null, Fish[].class, null, false);
-        parameterEmpty.verify(pico, null, Cod[].class, null, false);
+        Parameter parameterEmpty = new Array(new ByClass(Shark.class),true,Fish.class);
+        parameterEmpty.verify(pico);
+        parameterEmpty = new Array(new ByClass(Shark.class),true,Fish.class);
+        parameterEmpty.verify(pico);
     }
 
     // PICO-243 : this test will fail if executed on jdk1.3 without commons-collections

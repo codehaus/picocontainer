@@ -1,5 +1,7 @@
 package org.picocontainer.parameters;
 
+import java.util.HashMap;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
@@ -12,6 +14,14 @@ import org.picocontainer.PicoContainer;
 public class Map extends AbstractCollectionExtractor  {
 
 	Class<? extends java.util.Map> mapType;
+	
+	public Map(Lookup lookup) {
+		this(lookup,false,HashMap.class);
+	}
+	
+	public Map(Lookup lookup, boolean empty) {
+		this(lookup,empty,HashMap.class);
+	}
 	
 	public Map(Lookup lookup, boolean empty, Class<? extends java.util.Map> mapType) {
 		super(lookup, empty);

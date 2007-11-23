@@ -99,7 +99,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 	protected Parameter[] createDefaultParameters(Class[] parameters) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            componentParameters[i] = new Scalar(new ByClass(parameters[i]));
+            componentParameters[i] = Scalar.byClass(parameters[i]);
         }
         return componentParameters;
     }

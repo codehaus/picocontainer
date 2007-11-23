@@ -30,6 +30,7 @@ public class Scalar extends AbstractParameter {
      * 
      */
 	public Object resolveInstance(PicoContainer container) {
+		
 		java.util.Collection<ComponentAdapter> adapters = lookup.lookup(container);
 		if(adapters.size() == 0) {
 			return null;
@@ -42,6 +43,7 @@ public class Scalar extends AbstractParameter {
 	}
 
 	public void verify(PicoContainer container) {
+		
 		java.util.Collection<ComponentAdapter> adapters = lookup.lookup(container);
 		if(adapters.isEmpty()) {
 			throw new AbstractInjector.MissingDependencyException(this.toString());

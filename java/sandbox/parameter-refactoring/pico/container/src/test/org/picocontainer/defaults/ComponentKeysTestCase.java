@@ -50,6 +50,9 @@ public class ComponentKeysTestCase extends TestCase {
 
     }
 
+    // this test fails ATM, pending investigation whether 
+    // descending to parent shall be handled by container or
+    // parameter. 
     public void testComponentKeysFromParentCannotConfuseTheChild() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("test", SimpleTouchable.class);

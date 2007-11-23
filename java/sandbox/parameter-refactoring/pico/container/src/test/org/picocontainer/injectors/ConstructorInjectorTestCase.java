@@ -29,6 +29,8 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.Constant;
+import org.picocontainer.parameters.Scalar;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.NullLifecycle;
@@ -64,14 +66,14 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
     }
 
     protected ComponentAdapter prepDEF_visitable() {
-        return new ConstructorInjector("bar", B.class, new Parameter[] {ComponentParameter.DEFAULT} , new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        return new ConstructorInjector("bar", B.class, Parameter.DEFAULT , new NullComponentMonitor(), new NullLifecycleStrategy(), false);
     }
 
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
         picoContainer.addComponent(SimpleTouchable.class);
         return new ConstructorInjector(
                 NamedDependsOnTouchable.class, NamedDependsOnTouchable.class,
-                new Parameter[] {ComponentParameter.DEFAULT, new ConstantParameter("Name")} , new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+                new Parameter[] {Scalar.byClass(Touchable.class), new Constant("Name")} , new NullComponentMonitor(), new NullLifecycleStrategy(), false);
     }
 
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {

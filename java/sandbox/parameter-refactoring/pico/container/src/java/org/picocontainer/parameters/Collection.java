@@ -1,13 +1,10 @@
 package org.picocontainer.parameters;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-
-import com.sun.org.apache.bcel.internal.generic.CPInstruction;
 
 /**
  * extract collection of values into array list

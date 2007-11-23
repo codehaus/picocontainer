@@ -22,6 +22,8 @@ import org.picocontainer.behaviors.Caching;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.Constant;
+import org.picocontainer.parameters.Scalar;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.PersonBean;
@@ -48,7 +50,7 @@ public class SetterInjectorTestCase
 
     protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
-        return new SetterInjector(DeadBody.class, DeadBody.class, new Parameter[] {DEFAULT}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+        return new SetterInjector(DeadBody.class, DeadBody.class, Parameter.DEFAULT, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                   "set", false);
     }
 
@@ -60,7 +62,7 @@ public class SetterInjectorTestCase
 
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
-        return new SetterInjector(PersonBean.class, PersonBean.class, new Parameter[] {DEFAULT}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+        return new SetterInjector(PersonBean.class, PersonBean.class, new Parameter[]{Scalar.byClass(String.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                   "set", false);
     }
 
@@ -72,9 +74,9 @@ public class SetterInjectorTestCase
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class);
         SetterInjector componentAdapter = new SetterInjector(
-                PurseBean.class, MoneyPurse.class, new Parameter[] {DEFAULT, new Constant(100.0)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+                PurseBean.class, MoneyPurse.class, new Parameter[] { Scalar.byClass(PersonBean.class),new Constant(100.0)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                 "set", false);
-        return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
+        return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class);
     }
 
     public static class MoneyPurse
@@ -94,14 +96,15 @@ public class SetterInjectorTestCase
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class);
         SetterInjector componentAdapter = new SetterInjector(
-                PurseBean.class, MoneyPurse.class, new Parameter[] {DEFAULT},new NullComponentMonitor(), new NullLifecycleStrategy(),
+                PurseBean.class, MoneyPurse.class, 
+                Parameter.DEFAULT,new NullComponentMonitor(), new NullLifecycleStrategy(),
                 "set", false);
-        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
+        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class);
     }
 
     protected ComponentAdapter prepINS_createsNewInstances(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
-        return new SetterInjector(PersonBean.class, PersonBean.class, new Parameter[] {DEFAULT}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+        return new SetterInjector(PersonBean.class, PersonBean.class,new Parameter[]{Scalar.byClass(String.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                   "set", false);
     }
 
@@ -114,7 +117,7 @@ public class SetterInjectorTestCase
 
     protected ComponentAdapter prepINS_errorIsRethrown(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
-        return new SetterInjector(Ghost.class, Ghost.class, new Parameter[] {DEFAULT}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+        return new SetterInjector(Ghost.class, Ghost.class,new Parameter[]{Scalar.byClass(String.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                   "set", false);
     }
 
@@ -127,7 +130,7 @@ public class SetterInjectorTestCase
 
     protected ComponentAdapter prepINS_runtimeExceptionIsRethrown(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
-        return new SetterInjector(DeadBody.class, DeadBody.class, new Parameter[] {DEFAULT}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+        return new SetterInjector(DeadBody.class, DeadBody.class,new Parameter[]{Scalar.byClass(String.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                   "set", false);
     }
 
@@ -142,14 +145,14 @@ public class SetterInjectorTestCase
             MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
         return new SetterInjector(
-                HidingPersion.class, HidingPersion.class, new Parameter[] {DEFAULT}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+                HidingPersion.class, HidingPersion.class, new Parameter[]{Scalar.byClass(String.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                 "set", false);
     }
 
     protected ComponentAdapter prepRES_dependenciesAreResolved(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class);
-        return new SetterInjector(PurseBean.class, PurseBean.class, new Parameter[] {DEFAULT}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+        return new SetterInjector(PurseBean.class, PurseBean.class, new Parameter[]{Scalar.byClass(String.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                   "set", false);
     }
 
@@ -170,18 +173,18 @@ public class SetterInjectorTestCase
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class, WealthyPerson.class);
         SetterInjector componentAdapter = new SetterInjector(
-                PurseBean.class, PurseBean.class, new Parameter[] {DEFAULT}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+                PurseBean.class, PurseBean.class,new Parameter[]{Scalar.byClass(String.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                 "set", false);
-        return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
+        return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class);
     }
 
     protected ComponentAdapter prepRES_failingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class, WealthyPerson.class);
         SetterInjector componentAdapter = new SetterInjector(
-                PurseBean.class, PurseBean.class, new Parameter[] {DEFAULT}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+                PurseBean.class, PurseBean.class, new Parameter[]{Scalar.byClass(String.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                 "set", false);
-        return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
+        return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class);
     }
 
     public static class A {

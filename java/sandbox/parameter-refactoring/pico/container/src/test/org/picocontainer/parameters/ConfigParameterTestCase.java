@@ -3,6 +3,7 @@ package org.picocontainer.parameters;
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
 
@@ -30,30 +31,26 @@ public class ConfigParameterTestCase extends TestCase {
 
 	public void testThatNoEntryIsWorkingProperly() throws Exception {
 		PicoContainer container = new DefaultPicoContainer();
-		ComponentParameter parameter = new ComponentParameter("gloo.blum");
+		Parameter parameter = Scalar.byKey("gloo.blum");
 
 		// shall be not resolvable
-		assertFalse(parameter.isResolvable(container, null, String.class,
-				paramName, false));
+		assertFalse(parameter.isResolvable(container));
 
 		// shall resolve instance as null
-		assertNull(parameter.resolveInstance(container, null, String.class,
-				paramName, false));
+		assertNull(parameter.resolveInstance(container));
 	}
 
 	public void testThatNotStringEntryIsNotResolved() throws Exception {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		container.addComponent("gloo.blum", new Integer(239));
 
-		ComponentParameter parameter = new ComponentParameter("gloo.blum");
+		Parameter parameter = Scalar.byKey("gloo.blum");
 
 		// shall be not resolvable
-		assertFalse(parameter.isResolvable(container, null, String.class,
-				paramName, false));
+		assertFalse(parameter.isResolvable(container));
 
 		// shall resolve instance as null
-		assertNull(parameter.resolveInstance(container, null, String.class,
-				paramName, false));
+		assertNull(parameter.resolveInstance(container));
 
 	}
 
@@ -66,12 +63,10 @@ public class ConfigParameterTestCase extends TestCase {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		container.addComponent("gloo.blum", "239");
 
-		ComponentParameter parameter = new ComponentParameter("gloo.blum");
+		Parameter parameter = Scalar.byKey("gloo.blum");
 
-		assertEquals(new Integer(239), parameter.resolveInstance(container,
-				null, Integer.class, paramName, false));
-		assertEquals("239", parameter.resolveInstance(container, null,
-				String.class, paramName, false));
+		assertEquals(new Integer(239), parameter.resolveInstance(container));
+		assertEquals("239", parameter.resolveInstance(container));
 	}
 
 	/**
@@ -82,7 +77,7 @@ public class ConfigParameterTestCase extends TestCase {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		container.addComponent("gloo.blum", "239");
 
-		ComponentParameter parameter = new ComponentParameter("gloo.blum");
+		Parameter parameter = Scalar.byKey("gloo.blum");
 
 //		try {
 //			Object foo = parameter.resolveInstance(container, null, List.class, paramName, false);
@@ -90,7 +85,7 @@ public class ConfigParameterTestCase extends TestCase {
 //		} catch (ConfigParameter.NoConverterAvailableException ex) {
 //			// that's anticipated
 //		}
-	    Object foo = parameter.resolveInstance(container, null, List.class, paramName, false);
+	    Object foo = parameter.resolveInstance(container);
         assertNull(foo);
 
     }
@@ -103,13 +98,13 @@ public class ConfigParameterTestCase extends TestCase {
 
 		DefaultPicoContainer container = new DefaultPicoContainer(properties);
 		container.addComponent("configured", ExternallyConfiguredComponent.class,
-						new ComponentParameter("numericProperty"),
+				Scalar.byKey("numericProperty"),
 						// resolves as string
-						new ComponentParameter("stringProperty"),
+				Scalar.byKey("stringProperty"),
 						// resolves as file
-						new ComponentParameter("stringProperty"),
+				Scalar.byKey("stringProperty"),
 						// resolves as double
-						new ComponentParameter("doubleProperty")
+				Scalar.byKey("doubleProperty")
 					
 				);
 		

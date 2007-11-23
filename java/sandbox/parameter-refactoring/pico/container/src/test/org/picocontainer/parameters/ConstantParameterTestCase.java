@@ -17,7 +17,7 @@ import org.picocontainer.parameters.Constant;
  * test that constant parameter behaves well.
  * @author Konstantin Pribluda
  */
-public class ConstantTestCase extends TestCase {
+public class ConstantParameterTestCase extends TestCase {
     
     /**
     *  constant parameter with instance type shall verify for expected primitives
@@ -26,7 +26,7 @@ public class ConstantTestCase extends TestCase {
     public void testThatInstaceTypeAcceptedForPrimitives() throws Exception {
         Constant param = new Constant(239);
         try{
-            param.verify(null,null,Integer.TYPE, null, false);
+            param.verify(null);
         } catch(PicoCompositionException ex) {
             fail("failed verification for primitive / instance ");
         }

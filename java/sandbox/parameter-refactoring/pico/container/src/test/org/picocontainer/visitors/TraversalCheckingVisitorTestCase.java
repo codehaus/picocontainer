@@ -47,10 +47,10 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
         SetterInjector componentAdapter = new SetterInjector(StringBuffer.class, StringBuffer.class,
                                                              null, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                                              "set", false);
-        parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class, null);
+        parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class);
         child = pico.makeChildContainer();
         ConstructorInjector adapter = new ConstructorInjector(ArrayList.class, ArrayList.class, new Parameter[] {new Constant(3)}, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
-        childAdapter = child.addAdapter(adapter).getComponentAdapter(ArrayList.class, null);
+        childAdapter = child.addAdapter(adapter).getComponentAdapter(ArrayList.class);
     }
 
     protected void tearDown() throws Exception {
@@ -130,9 +130,8 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
 
         assertTrue(allParameters.size() == 1);
         assertTrue(allParameters.get(0) instanceof Constant);
-        assertTrue( ( (Constant) allParameters.get(0)).resolveInstance(null, null, null, null, false) instanceof Integer);
-        assertEquals(3, ( (Integer) ( (Constant) allParameters.get(0)).resolveInstance(null, null,
-            null, null, false)).intValue());
+        assertTrue( ( (Constant) allParameters.get(0)).resolveInstance(null) instanceof Integer);
+        assertEquals(3, ( (Integer) ( (Constant) allParameters.get(0)).resolveInstance(null)).intValue());
     }
 
 }    

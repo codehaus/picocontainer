@@ -16,9 +16,10 @@ import junit.framework.TestCase;
 
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.parameters.Array;
+import org.picocontainer.parameters.ByKeyClass;
 
 
 /**
@@ -125,8 +126,8 @@ public class ArraysTestCase
 
         pico.addComponent(Shark.class);
         pico.addComponent(Cod.class);
-        Parameter parameter = new CollectionComponentParameter();
-        pico.addComponent(Bowl.class, Bowl.class, parameter, parameter);
+        
+        pico.addComponent(Bowl.class, Bowl.class, new Array(Fish.class), new Array(Cod.class));
         pico.addComponent(new Fish[]{});
         pico.addComponent(new Cod[]{});
 
@@ -154,8 +155,7 @@ public class ArraysTestCase
 
         //      START SNIPPET: emptyArray
 
-        Parameter parameter = CollectionComponentParameter.ARRAY_ALLOW_EMPTY;
-        pico.addComponent(Bowl.class, Bowl.class, parameter, parameter);
+        pico.addComponent(Bowl.class, Bowl.class, new Array(Fish.class,true), new Array(Cod.class,true));
 
         Bowl bowl = pico.getComponent(Bowl.class);
         //      END SNIPPET: emptyArray
@@ -173,7 +173,7 @@ public class ArraysTestCase
         pico.addComponent(Shark.class);
         pico.addComponent("Nemo", Cod.class);
         pico.addComponent(Bowl.class, Bowl.class,
-                          new ComponentParameter(String.class, Fish.class, false), new ComponentParameter(Cod.class, false));
+                          new Array(new ByKeyClass(String.class), Fish.class), new Array(Cod.class));
 
         Bowl bowl = pico.getComponent(Bowl.class);
         //      END SNIPPET: useKeyType

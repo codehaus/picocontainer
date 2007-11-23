@@ -9,18 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.doc.advanced;
 
-import junit.framework.TestCase;
-
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.parameters.CollectionComponentParameter;
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.Caching;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
+
+import junit.framework.TestCase;
+
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.parameters.ByClass;
 
 
 /**
@@ -64,7 +63,8 @@ public class CollectionsTestCase
         pico.addComponent(Shark.class);
         pico.addComponent(Cod.class);
         pico.addComponent(Bowl.class, Bowl.class,
-                          new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false));
+              new org.picocontainer.parameters.Collection(new ByClass(Fish.class), LinkedList.class),
+              new org.picocontainer.parameters.Collection(new ByClass(Cod.class)));
         //      END SNIPPET: usage
 
         Shark shark = pico.getComponent(Shark.class);
@@ -89,7 +89,8 @@ public class CollectionsTestCase
         pico.addComponent(Shark.class);
         pico.addComponent(Cod.class);
         pico.addComponent(Bowl.class, Bowl.class,
-                          new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false));
+                new org.picocontainer.parameters.Collection(new ByClass(Fish.class), LinkedList.class),
+                new org.picocontainer.parameters.Collection(new ByClass(Cod.class)));
         pico.addComponent(set);
 
         Bowl bowl = pico.getComponent(Bowl.class);
@@ -119,7 +120,8 @@ public class CollectionsTestCase
         pico.addComponent(Shark.class);
         pico.addComponent(Cod.class);
         pico.addComponent(Bowl.class, Bowl.class,
-                          new CollectionComponentParameter(Fish.class, false), new CollectionComponentParameter(Cod.class, false));
+                new org.picocontainer.parameters.Collection(new ByClass(Fish.class), LinkedList.class),
+                new org.picocontainer.parameters.Collection(new ByClass(Cod.class)));
         // This component will match both arguments of Bowl's constructor
         pico.addComponent(new LinkedList());
 
@@ -144,7 +146,8 @@ public class CollectionsTestCase
         //      START SNIPPET: emptyCollection
 
         pico.addComponent(Bowl.class, Bowl.class,
-                          new ComponentParameter(Fish.class, true), new ComponentParameter(Cod.class, true));
+                new org.picocontainer.parameters.Collection(new ByClass(Fish.class),true, LinkedList.class),
+                new org.picocontainer.parameters.Collection(new ByClass(Cod.class),true));
 
         Bowl bowl = pico.getComponent(Bowl.class);
         //      END SNIPPET: emptyCollection

@@ -1,10 +1,13 @@
 package org.picocontainer.parameters;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+
+import com.sun.org.apache.bcel.internal.generic.CPInstruction;
 
 /**
  * extract collection of values into array list
@@ -30,6 +33,10 @@ public class Collection extends AbstractCollectionExtractor {
 			Class<? extends java.util.Collection> collectionClass) {
 		super(lookup, empty);
 		this.collectionClass = collectionClass;
+	}
+
+	public Collection(Lookup lookup, Class<? extends java.util.Collection> collectionClass) {
+		this(lookup,false,collectionClass);
 	}
 
 	public Object resolveInstance(PicoContainer container) {

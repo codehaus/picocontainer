@@ -22,10 +22,21 @@ public  class Array extends AbstractCollectionExtractor {
 
 	Class baseClass;
 
+	
+	/**
+	 * create non-empty array of base class with by-class lookup,
+	 * @param baseClass class and array type
+	 */
+	public Array(Class baseClass) {
+		this(new ByClass(baseClass),false,baseClass);
+	}
+	
+	public Array(Class baseClass, boolean empty) {
+		this(new ByClass(baseClass),empty,baseClass);
+	}
 
 	public Array(Lookup lookup,Class baseClass) {
 		this(lookup, false,baseClass);
-
 	}
 	
 
@@ -33,6 +44,7 @@ public  class Array extends AbstractCollectionExtractor {
 		super(lookup, empty);
 		this.baseClass = baseClass;
 	}
+
 
 	/**
 	 * 

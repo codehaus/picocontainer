@@ -29,7 +29,7 @@ package org.picocontainer;
 public interface Parameter<T> {
 
       Parameter[] ZERO = new Parameter[0];
-//    Parameter[] DEFAULT = new Parameter[]{ ComponentParameter.DEFAULT };
+      Parameter[] DEFAULT =null;
 
     /**
      * Retrieve the object from the Parameter that statisfies the expected type.

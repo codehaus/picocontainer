@@ -16,28 +16,24 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.AbstractButton;
+
 import org.jmock.Mock;
 import org.jmock.core.Constraint;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-
-import javax.swing.*;
 
 
 public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCase {

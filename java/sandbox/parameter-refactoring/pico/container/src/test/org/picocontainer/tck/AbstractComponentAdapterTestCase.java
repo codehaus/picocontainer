@@ -24,7 +24,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.parameters.Constant;
 import org.picocontainer.references.SimpleReference;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.AbstractInjector;
@@ -626,9 +626,9 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         final Collection allComponentAdapters = picoContainer.getComponentAdapters();
         for (Object allComponentAdapter : allComponentAdapters) {
             final Parameter[] parameters = new Parameter[size];
-            parameters[0] = new ConstantParameter(allComponentAdapter);
+            parameters[0] = new Constant(allComponentAdapter);
             for (int i = 1; i < parameters.length; i++) {
-                parameters[i] = new ConstantParameter(wrapperDependencies[i - 1]);
+                parameters[i] = new Constant(wrapperDependencies[i - 1]);
             }
             final MutablePicoContainer instantiatingPicoContainer = new DefaultPicoContainer(
                 new ConstructorInjection());

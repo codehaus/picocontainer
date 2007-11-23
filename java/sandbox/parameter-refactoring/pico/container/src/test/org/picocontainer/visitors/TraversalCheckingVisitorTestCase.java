@@ -23,7 +23,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.parameters.Constant;
 import org.picocontainer.visitors.TraversalCheckingVisitor;
 import org.picocontainer.injectors.SetterInjector;
 
@@ -49,7 +49,7 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
                                                              "set", false);
         parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class, null);
         child = pico.makeChildContainer();
-        ConstructorInjector adapter = new ConstructorInjector(ArrayList.class, ArrayList.class, new Parameter[] {new ConstantParameter(3)}, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        ConstructorInjector adapter = new ConstructorInjector(ArrayList.class, ArrayList.class, new Parameter[] {new Constant(3)}, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
         childAdapter = child.addAdapter(adapter).getComponentAdapter(ArrayList.class, null);
     }
 
@@ -129,9 +129,9 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
         containerCollector.traverse(pico);
 
         assertTrue(allParameters.size() == 1);
-        assertTrue(allParameters.get(0) instanceof ConstantParameter);
-        assertTrue( ( (ConstantParameter) allParameters.get(0)).resolveInstance(null, null, null, null, false) instanceof Integer);
-        assertEquals(3, ( (Integer) ( (ConstantParameter) allParameters.get(0)).resolveInstance(null, null,
+        assertTrue(allParameters.get(0) instanceof Constant);
+        assertTrue( ( (Constant) allParameters.get(0)).resolveInstance(null, null, null, null, false) instanceof Integer);
+        assertEquals(3, ( (Integer) ( (Constant) allParameters.get(0)).resolveInstance(null, null,
             null, null, false)).intValue());
     }
 

@@ -10,12 +10,13 @@
 package org.picocontainer.tck;
 
 import junit.framework.TestCase;
+
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoException;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.PicoException;
+import org.picocontainer.parameters.Constant;
+import org.picocontainer.parameters.Scalar;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -114,14 +115,14 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
 
     public void testMultiWithSatisfyingDependencyAndParametersWorks() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
-        pico.addComponent("MultiOneTwo", Multi.class, ComponentParameter.DEFAULT,
-                new ComponentParameter("Two"));
-        pico.addComponent("MultiTwoOne", Multi.class, new ComponentParameter("Two"),
-                ComponentParameter.DEFAULT);
-        pico.addComponent("MultiOneString", Multi.class, ComponentParameter.DEFAULT,
-                new ConstantParameter(""));
-        pico.addComponent("MultiOneInt", Multi.class, ComponentParameter.DEFAULT,
-                new ConstantParameter(5));
+        pico.addComponent("MultiOneTwo", Multi.class, Scalar.byClass(One.class),
+                Scalar.byKey("Two"));
+        pico.addComponent("MultiTwoOne", Multi.class, Scalar.byKey("Two"),
+        		 Scalar.byClass(One.class));
+        pico.addComponent("MultiOneString", Multi.class, Scalar.byClass(One.class),
+                new Constant(""));
+        pico.addComponent("MultiOneInt", Multi.class, Scalar.byClass(One.class),
+                new Constant(5));
         pico.addComponent("MultiNone", Multi.class, Parameter.ZERO);
         pico.addComponent(One.class);
         pico.addComponent("Two", Two.class);

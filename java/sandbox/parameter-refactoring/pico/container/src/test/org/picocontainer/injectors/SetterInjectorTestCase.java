@@ -42,7 +42,7 @@ public class SetterInjectorTestCase
     }
 
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
-        return new SetterInjector(PersonBean.class, PersonBean.class, new Parameter[] {new ConstantParameter(
+        return new SetterInjector(PersonBean.class, PersonBean.class, new Parameter[] {new Constant(
                 "Pico Container")}, new NullComponentMonitor(), new NullLifecycleStrategy(), "set", false);
     }
 
@@ -53,7 +53,7 @@ public class SetterInjectorTestCase
     }
 
     protected ComponentAdapter prepDEF_visitable() {
-        return new SetterInjector(PersonBean.class, PersonBean.class, new Parameter[] {new ConstantParameter(
+        return new SetterInjector(PersonBean.class, PersonBean.class, new Parameter[] {new Constant(
                 "Pico Container")}, new NullComponentMonitor(), new NullLifecycleStrategy(), "set", false);
 
     }
@@ -72,7 +72,7 @@ public class SetterInjectorTestCase
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class);
         SetterInjector componentAdapter = new SetterInjector(
-                PurseBean.class, MoneyPurse.class, new Parameter[] {DEFAULT, new ConstantParameter(100.0)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+                PurseBean.class, MoneyPurse.class, new Parameter[] {DEFAULT, new Constant(100.0)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                 "set", false);
         return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
     }

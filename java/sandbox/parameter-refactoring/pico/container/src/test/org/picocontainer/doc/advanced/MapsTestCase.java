@@ -166,7 +166,7 @@ public class MapsTestCase extends TestCase implements CollectionDemoClasses {
 				new org.picocontainer.parameters.Map(new ByClass(Fish.class),TreeMap.class), 
 				new org.picocontainer.parameters.Map(new Filter(new ByClass(Cod.class)) 
 				{
-					protected boolean evaluate(ComponentAdapter adapter) {
+					public boolean evaluate(ComponentAdapter adapter) {
 						return !"Tom".equals(adapter.getComponentKey());
 					}
 				}));

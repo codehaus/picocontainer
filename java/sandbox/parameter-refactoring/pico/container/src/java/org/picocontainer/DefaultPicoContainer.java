@@ -436,6 +436,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         Object retVal;
         if (componentKeyOrType instanceof Class) {
             final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType);
+            
             retVal = componentAdapter == null ? null : getInstance(componentAdapter);
         } else {
             ComponentAdapter<?> componentAdapter = getComponentAdapter(componentKeyOrType);
@@ -458,6 +459,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         final boolean isLocal = componentAdapters.contains(componentAdapter);
 
         if (isLocal) {
+        	System.err.println("local retrieve " + componentAdapter.getComponentKey());
             Object instance;
             try {
                 instance = componentAdapter.getComponentInstance(this);
@@ -474,6 +476,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
             return instance;
         } else if (parent != null) {
+        	System.err.println("parent retrieve " + componentAdapter.getComponentKey());
             return parent.getComponent(componentAdapter.getComponentKey());
         }
 

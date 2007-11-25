@@ -277,7 +277,7 @@ public class CollectionComponentParameterTestCase
         mpc.addComponent(CollectedBowl.class, CollectedBowl.class, 
         		new org.picocontainer.parameters.Collection(new Filter(new ByClass(Cod.class)) 
 	        		{
-			            protected boolean evaluate(ComponentAdapter adapter) {
+			            public boolean evaluate(ComponentAdapter adapter) {
 			                return !"Tom".equals(adapter.getComponentKey());
 		            }
         		}),

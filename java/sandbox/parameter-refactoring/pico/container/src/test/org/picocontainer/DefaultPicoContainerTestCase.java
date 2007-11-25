@@ -11,6 +11,19 @@ package org.picocontainer;
 
 import static org.picocontainer.Characteristics.CDI;
 import static org.picocontainer.Characteristics.SDI;
+
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.lang.reflect.Member;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
@@ -24,17 +37,6 @@ import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-
-import java.io.Serializable;
-import java.io.StringWriter;
-import java.lang.reflect.Member;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Map;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -59,7 +61,26 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
             // expected
         }
     }
-
+//
+//    /**
+//     * no key in child container shall affect param 
+//     * resolution in parent
+//     */
+//    public void testChildKeyDoesNotAffectParentResolution() {
+//        MutablePicoContainer parent = createPicoContainer(null);
+//        MutablePicoContainer child = createPicoContainer(parent);
+//
+//        parent.addComponent(ComponentA.class);
+//        parent.addComponent(ComponentB.class);
+//        parent.addComponent(ComponentC.class);
+//        
+//        ComponentC wrongInstance =  new ComponentC();
+//        child.addAdapter(new InstanceAdapter<ComponentC>(ComponentC.class,wrongInstance));
+//
+//        ComponentA retrieved = child.getComponent(ComponentA.class);
+//        assertSame(parent.getComponent(ComponentC.class),retrieved.getC());
+//    }
+    
     public void testUpDownDependenciesCannotBeFollowed() {
         MutablePicoContainer parent = createPicoContainer(null);
         MutablePicoContainer child = createPicoContainer(parent);
@@ -71,7 +92,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         child.addComponent(ComponentC.class);
 
         try {
-            child.getComponent(ComponentF.class);
+        	child.getComponent(ComponentF.class);
             fail("Thrown " + AbstractInjector.UnsatisfiableDependenciesException.class.getName() + " expected");
         } catch (final AbstractInjector.UnsatisfiableDependenciesException e) {
             assertEquals(ComponentB.class, e.getUnsatisfiedDependencyType());

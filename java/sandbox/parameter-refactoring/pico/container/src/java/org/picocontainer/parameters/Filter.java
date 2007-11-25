@@ -11,21 +11,23 @@ import org.picocontainer.PicoContainer;
  * @author k.pribluda
  *
  */
-public class Filter implements Lookup {
+public abstract class Filter implements Lookup {
 
 	Lookup delegate;
 	
+	Collection<ComponentAdapter> result;
 	public Filter(Lookup delegate) {
 		super();
 		this.delegate = delegate;
 	}
 
 	public Collection<ComponentAdapter> lookup(PicoContainer container) {
-		ArrayList result = new ArrayList(delegate.lookup(container).size());
-		
-		for(ComponentAdapter adapter: delegate.lookup(container)) {
-			if(evaluate(adapter)) {
-				result.add(adapter);
+		if(result == null) {
+		 result = new ArrayList<ComponentAdapter>(delegate.lookup(container).size());
+			for(ComponentAdapter adapter: delegate.lookup(container)) {
+				if(evaluate(adapter)) {
+					result.add(adapter);
+				}
 			}
 		}
 		return result;
@@ -36,7 +38,5 @@ public class Filter implements Lookup {
 	 * @param adapter
 	 * @return
 	 */
-	protected boolean evaluate(ComponentAdapter adapter) {
-		return true;
-	}
+	public abstract  boolean  evaluate(ComponentAdapter adapter);
 }

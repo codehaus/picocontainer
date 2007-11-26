@@ -48,6 +48,7 @@ public class ByKeyClass implements Lookup {
 			extractAdapters(container.getParent(),adapters,keyClass);
 		}
 		for(ComponentAdapter candidate: container.getComponentAdapters()) {
+			System.err.println("checking " + candidate.getComponentKey() );
 			if(keyClass.isAssignableFrom(candidate.getComponentKey().getClass())) {
 				adapters.add(candidate);
 			}

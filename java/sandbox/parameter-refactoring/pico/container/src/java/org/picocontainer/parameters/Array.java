@@ -55,8 +55,7 @@ public  class Array extends AbstractCollectionExtractor {
 				adapters.size());
 		int i = 0;
 		for (ComponentAdapter componentAdapter : adapters) {
-			result[i] = container.getComponent(componentAdapter
-					.getComponentKey());
+			result[i] = componentAdapter.getComponentInstance(container);
 			i++;
 		}	
 		return result;

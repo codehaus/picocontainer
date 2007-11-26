@@ -45,13 +45,13 @@ public class ByClass implements Lookup {
 
 	Collection<ComponentAdapter> recursive(PicoContainer container,
 			Collection<ComponentAdapter> keep) {
+		if (container.getParent() != null) {
+			recursive(container.getParent(), keep);
+		}
 		for (Object candidate : container.getComponentAdapters(expectedType)) {
 			if (evaluate((ComponentAdapter) candidate)) {
 				keep.add((ComponentAdapter) candidate);
 			}
-		}
-		if (container.getParent() != null) {
-			recursive(container.getParent(), keep);
 		}
 		return keep;
 	}

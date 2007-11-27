@@ -9,32 +9,35 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import java.util.Collection;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
+import junit.framework.TestCase;
 
 /**
- * lookup component adapters registered with certain key class
+ * test by key resolver
  * @author Konstantin Pribluda
  *
  */
-public class ByKeyClass extends AbstractLookup {
-
-	Class keyClass;
+public class ByKeyTestCase extends TestCase {
 	
 	
-	public ByKeyClass(Class keyClass) {
-		this.keyClass = keyClass;
-	}
+	public void testByKeyResolution() {
+		MutablePicoContainer parent = new DefaultPicoContainer();
+		MutablePicoContainer child = new DefaultPicoContainer(parent);
+		
+		parent.addComponent(new Integer(239));
 
-	@Override
-	void extract(PicoContainer container, Collection<ComponentAdapter> store) {
-		for(ComponentAdapter candidate: container.getComponentAdapters()) {
-			if(keyClass.isAssignableFrom(candidate.getComponentKey().getClass())) {
-				store.add(candidate);
-			}
-		}
-	}
+		
+		ByKey byInt = new ByKey(Integer.class);
+		ByKey invalid = new ByKey("dlkfjsd fkldsj");
+		
 
+		assertEquals(1,byInt.lookup(child).size());
+		assertEquals(1,byInt.lookup(parent).size());
+		assertEquals(0,invalid.lookup(parent).size());
+		assertEquals(0,invalid.lookup(child).size());
+		
+		assertEquals(Integer.class,byInt.lookup(child).iterator().next().getComponentKey());
+	}
 }

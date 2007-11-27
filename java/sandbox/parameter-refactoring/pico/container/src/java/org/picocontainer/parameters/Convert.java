@@ -21,125 +21,125 @@ import org.picocontainer.PicoContainer;
 
 /**
  * perform necessary data conversion
+ * 
  * @author Konstantin Pribluda
  * @author Paul Hammant
- *
+ * 
  */
-public class Convert<T> implements Extract<T> {
-	
+public class Convert<T> extends Scalar {
+
 	private static interface Converter {
-        Object convert(String paramValue);
-    }
+		Object convert(String paramValue);
+	}
+
 	private static class NewInstanceConverter implements Converter {
-	    private Constructor c;
-	
-	    private NewInstanceConverter(Class clazz) {
-	        try {
-	            c = clazz.getConstructor(String.class);
-	        } catch (NoSuchMethodException e) {
-	        }
-	    }
-	
-	    public Object  convert(String paramValue) {
-	        try {
-	            return  c.newInstance(paramValue);
-	        } catch (IllegalAccessException e) {
-	        } catch (InvocationTargetException e) {
-	        } catch (InstantiationException e) {
-	        }
-	        return null;
-	    }
+		private Constructor c;
+
+		private NewInstanceConverter(Class clazz) {
+			try {
+				c = clazz.getConstructor(String.class);
+			} catch (NoSuchMethodException e) {
+			}
+		}
+
+		public Object convert(String paramValue) {
+			try {
+				return c.newInstance(paramValue);
+			} catch (IllegalAccessException e) {
+			} catch (InvocationTargetException e) {
+			} catch (InstantiationException e) {
+			}
+			return null;
+		}
 	}
-	
-	
+
 	private static class ValueOfConverter implements Converter {
-	    private Method m;
-	    private ValueOfConverter(Class clazz) {
-	        try {
-	            m = clazz.getMethod("valueOf", String.class);
-	        } catch (NoSuchMethodException e) {
-	        }
-	    }
-	
-	    public Object convert(String paramValue) {
-	        try {
-	            return m.invoke(null, paramValue);
-	        } catch (IllegalAccessException e) {
-	        } catch (InvocationTargetException e) {
-	        }
-	        return null;
-	
-	    }
+		private Method m;
+
+		private ValueOfConverter(Class clazz) {
+			try {
+				m = clazz.getMethod("valueOf", String.class);
+			} catch (NoSuchMethodException e) {
+			}
+		}
+
+		public Object convert(String paramValue) {
+			try {
+				return m.invoke(null, paramValue);
+			} catch (IllegalAccessException e) {
+			} catch (InvocationTargetException e) {
+			}
+			return null;
+
+		}
 	}
 
-
-    private static final Map<Class, Converter> stringConverters = new HashMap<Class, Converter>();
+	private static final Map<Class, Converter> stringConverters = new HashMap<Class, Converter>();
 
 	static {
-        stringConverters.put(Integer.class, new ValueOfConverter(Integer.class));
-        stringConverters.put(Double.class, new ValueOfConverter(Double.class));
-        stringConverters.put(Boolean.class, new ValueOfConverter(Boolean.class));
-        stringConverters.put(Long.class, new ValueOfConverter(Long.class));
-        stringConverters.put(Float.class, new ValueOfConverter(Float.class));
-        stringConverters.put(Character.class, new ValueOfConverter(Character.class));
-        stringConverters.put(Byte.class, new ValueOfConverter(Byte.class));
-        stringConverters.put(Byte.class, new ValueOfConverter(Short.class));
-        stringConverters.put(File.class, new NewInstanceConverter(File.class));
+		stringConverters
+				.put(Integer.class, new ValueOfConverter(Integer.class));
+		stringConverters.put(Double.class, new ValueOfConverter(Double.class));
+		stringConverters
+				.put(Boolean.class, new ValueOfConverter(Boolean.class));
+		stringConverters.put(Long.class, new ValueOfConverter(Long.class));
+		stringConverters.put(Float.class, new ValueOfConverter(Float.class));
+		stringConverters.put(Character.class, new ValueOfConverter(
+				Character.class));
+		stringConverters.put(Byte.class, new ValueOfConverter(Byte.class));
+		stringConverters.put(Byte.class, new ValueOfConverter(Short.class));
+		stringConverters.put(File.class, new NewInstanceConverter(File.class));
 
-    }
-	
-    
-    private static Converter obtainConverter(Class clazz) {
-    	synchronized (stringConverters) {
-    		Converter converter = stringConverters.get(clazz);
-    		if(converter == null) {
-    			try {
-					if(clazz.getConstructor(String.class)!= null) {
+	}
+
+	private static Converter obtainConverter(Class clazz) {
+		synchronized (stringConverters) {
+			Converter converter = stringConverters.get(clazz);
+			if (converter == null) {
+				try {
+					if (clazz.getConstructor(String.class) != null) {
 						converter = new NewInstanceConverter(clazz);
-						stringConverters.put(clazz,converter);
-					} else if(clazz.getMethod("valueOf", String.class) != null) {
+						stringConverters.put(clazz, converter);
+					} else if (clazz.getMethod("valueOf", String.class) != null) {
 						converter = new ValueOfConverter(clazz);
-						stringConverters.put(clazz,converter);
+						stringConverters.put(clazz, converter);
 					}
 				} catch (SecurityException e) {
 				} catch (NoSuchMethodException e) {
 				}
-    		}
-    		return converter;
+			}
+			return converter;
 		}
-    }
-	Class<T> expectedClass;
-	Extract extract;
+	}
 
-	/**
-	 * create type converter
-	 * @param expectedClass
-	 * @param extract
-	 */
-	public Convert(Class<T> expectedClass, Extract extract) {
+	Class<T> expectedClass;
+
+	public Convert(Lookup lookup, Class<T> expectedClass) {
+		super(lookup);
+		// TODO Auto-generated constructor stub
 		this.expectedClass = expectedClass;
-		this.extract = extract;
 	}
 
 	@SuppressWarnings("unchecked")
 	public T resolveInstance(PicoContainer container) {
-		
-		Object value = extract.resolveInstance(container);
-		if(value instanceof String && !String.class.equals(expectedClass)) {
+
+		Object value = super.resolveInstance(container);
+		if (value instanceof String && !String.class.equals(expectedClass)) {
 			// convert it
 			Converter converter = obtainConverter(expectedClass);
-			if(converter != null) {
-				return (T) converter.convert((String)value);
+			if (converter != null) {
+				return (T) converter.convert((String) value);
 			} else {
-				throw new PicoCompositionException("No converter available for coversion of " + value.getClass() + " to " + expectedClass);
+				throw new PicoCompositionException(
+						"No converter available for coversion of "
+								+ value.getClass() + " to " + expectedClass);
 			}
 		}
 		return (T) value;
 	}
-	
-	
+
 	public String toString() {
-		return "Convert to " + expectedClass  + " from [" + extract + "]";
+		return "Convert to " + expectedClass + " from [" + lookup + "]";
 	}
 
 }

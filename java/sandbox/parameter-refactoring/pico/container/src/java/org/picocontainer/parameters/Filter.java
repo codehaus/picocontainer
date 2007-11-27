@@ -9,13 +9,13 @@ import org.picocontainer.PicoContainer;
 /**
  * filter lookup results. this class intendet to be overiden. 
  * @author k.pribluda
- *
  */
 public abstract class Filter implements Lookup {
 
 	Lookup delegate;
 	
 	Collection<ComponentAdapter> result;
+	
 	public Filter(Lookup delegate) {
 		super();
 		this.delegate = delegate;

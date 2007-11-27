@@ -14,27 +14,20 @@ import java.util.Collection;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 
+import junit.framework.TestCase;
+
 /**
- * lookup component adapters registered with certain key class
+ * test that converter works properly
  * @author Konstantin Pribluda
- *
  */
-public class ByKeyClass extends AbstractLookup {
-
-	Class keyClass;
+public class ConvertTestCase extends TestCase {
 	
-	
-	public ByKeyClass(Class keyClass) {
-		this.keyClass = keyClass;
-	}
+	public void testNotStringIsNotResolved() {
+		Convert convert = new Convert(new Lookup() {
 
-	@Override
-	void extract(PicoContainer container, Collection<ComponentAdapter> store) {
-		for(ComponentAdapter candidate: container.getComponentAdapters()) {
-			if(keyClass.isAssignableFrom(candidate.getComponentKey().getClass())) {
-				store.add(candidate);
-			}
-		}
+			public Collection<ComponentAdapter> lookup(PicoContainer container) {
+				// TODO Auto-generated method stub
+				return null;
+			}}, Integer.class);
 	}
-
 }

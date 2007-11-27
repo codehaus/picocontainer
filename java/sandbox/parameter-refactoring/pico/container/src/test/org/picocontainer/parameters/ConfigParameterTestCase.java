@@ -16,7 +16,7 @@ import junit.framework.TestCase;
  * test that config parameter does the right job
  * 
  * @author k.pribluda
- * 
+ * @deprecated shall be reworked to test  components
  */
 public class ConfigParameterTestCase extends TestCase {
 

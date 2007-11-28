@@ -2,6 +2,8 @@ package org.picocontainer.parameters;
 
 import org.picocontainer.ComponentAdapter;
 
+import sun.security.action.GetLongAction;
+
 /**
  * anybody but me. 
  * @author ko5tik
@@ -9,9 +11,9 @@ import org.picocontainer.ComponentAdapter;
  */
 public class NotMe extends Filter {
 
-	Object me;
+	ComponentAdapter me;
 
-	public NotMe(Lookup delegate, Object me) {
+	public NotMe(Lookup delegate, ComponentAdapter me) {
 		super(delegate);
 		this.me = me;
 	}
@@ -21,4 +23,7 @@ public class NotMe extends Filter {
 		return me != adapter;
 	}
 
+	public String toString() {
+		return "NotMe(" + me + ")[" + delegate + "]";
+	}
 }

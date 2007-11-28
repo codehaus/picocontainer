@@ -87,7 +87,7 @@ public class Convert<T> extends Scalar {
 		stringConverters.put(Character.class, new ValueOfConverter(
 				Character.class));
 		stringConverters.put(Byte.class, new ValueOfConverter(Byte.class));
-		stringConverters.put(Byte.class, new ValueOfConverter(Short.class));
+		stringConverters.put(Short.class, new ValueOfConverter(Short.class));
 		stringConverters.put(File.class, new NewInstanceConverter(File.class));
 
 	}
@@ -96,17 +96,28 @@ public class Convert<T> extends Scalar {
 		synchronized (stringConverters) {
 			Converter converter = stringConverters.get(clazz);
 			if (converter == null) {
+
+				Constructor constructor = null;
+				Method method = null;
 				try {
-					if (clazz.getConstructor(String.class) != null) {
-						converter = new NewInstanceConverter(clazz);
-						stringConverters.put(clazz, converter);
-					} else if (clazz.getMethod("valueOf", String.class) != null) {
-						converter = new ValueOfConverter(clazz);
-						stringConverters.put(clazz, converter);
-					}
+					constructor = clazz.getConstructor(String.class);
 				} catch (SecurityException e) {
 				} catch (NoSuchMethodException e) {
 				}
+				try {
+					method = clazz.getMethod("valueOf", String.class);
+				} catch (SecurityException e) {
+				} catch (NoSuchMethodException e) {
+				}
+				
+				if (constructor != null) {
+					converter = new NewInstanceConverter(clazz);
+					stringConverters.put(clazz, converter);
+				} else if (method != null) {
+					converter = new ValueOfConverter(clazz);
+					stringConverters.put(clazz, converter);
+				}
+
 			}
 			return converter;
 		}
@@ -116,7 +127,6 @@ public class Convert<T> extends Scalar {
 
 	public Convert(Lookup lookup, Class<T> expectedClass) {
 		super(lookup);
-		// TODO Auto-generated constructor stub
 		this.expectedClass = expectedClass;
 	}
 

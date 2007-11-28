@@ -16,11 +16,12 @@ import org.picocontainer.parameters.Constant;
 /**
  * test that constant parameter behaves well.
  * @author Konstantin Pribluda
+ * @deprecated
  */
 public class ConstantParameterTestCase extends TestCase {
     
     /**
-    *  constant parameter with instance type shall verify for expected primitives
+     *  constant parameter with instance type shall verify for expected primitives
      * @throws Exception
      */
     public void testThatInstaceTypeAcceptedForPrimitives() throws Exception {

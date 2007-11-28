@@ -47,5 +47,6 @@ public class Constant<T> implements Parameter<T> {
 	}
 
 	public void accept(PicoVisitor visitor) {
+		visitor.visitParameter(this);
 	}
 }

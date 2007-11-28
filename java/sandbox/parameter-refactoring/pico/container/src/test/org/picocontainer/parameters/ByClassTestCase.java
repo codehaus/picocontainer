@@ -33,7 +33,6 @@ public class ByClassTestCase extends TestCase {
 		container.addComponent(25,25);
 		container.addComponent(37,37);
 		container.addComponent("foo bar");
-		container.addComponent(Integer.class);
 		
 		parent.addComponent(239,239);
 		parent.addComponent(717.28);

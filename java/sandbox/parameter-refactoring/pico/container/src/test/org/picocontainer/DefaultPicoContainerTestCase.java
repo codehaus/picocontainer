@@ -61,25 +61,24 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
             // expected
         }
     }
-//
-//    /**
-//     * no key in child container shall affect param 
-//     * resolution in parent
-//     */
-//    public void testChildKeyDoesNotAffectParentResolution() {
-//        MutablePicoContainer parent = createPicoContainer(null);
-//        MutablePicoContainer child = createPicoContainer(parent);
-//
-//        parent.addComponent(ComponentA.class);
-//        parent.addComponent(ComponentB.class);
-//        parent.addComponent(ComponentC.class);
-//        
-//        ComponentC wrongInstance =  new ComponentC();
-//        child.addAdapter(new InstanceAdapter<ComponentC>(ComponentC.class,wrongInstance));
-//
-//        ComponentA retrieved = child.getComponent(ComponentA.class);
-//        assertSame(parent.getComponent(ComponentC.class),retrieved.getC());
-//    }
+
+    /**
+     * no key in child container shall affect param 
+     * resolution in parent
+     */
+    public void testChildKeyDoesNotAffectParentResolution() {
+        MutablePicoContainer parent = createPicoContainer(null);
+        MutablePicoContainer child = createPicoContainer(parent);
+
+        parent.addComponent(ComponentA.class);
+        parent.addComponent(ComponentB.class);
+        parent.addComponent(ComponentC.class);
+        
+        ComponentC wrongInstance =  new ComponentC();
+        child.addAdapter(new InstanceAdapter<ComponentC>(ComponentC.class,wrongInstance));
+
+        ComponentA retrieved = child.getComponent(ComponentA.class);
+    }
     
     public void testUpDownDependenciesCannotBeFollowed() {
         MutablePicoContainer parent = createPicoContainer(null);
@@ -175,7 +174,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         assertEquals(0, adapters.size());
     }
 
-
+    
+    
     public static class Service {
     }
 
@@ -686,17 +686,5 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         } catch (PicoCompositionException e) {
         }
     }
-    
-    /**
-     * while resolving component by type, only components
-     * of those type shall be retuned. 
-     *
-     */
-    public void testThatByTypeResolutionIsHonored() {
-    	MutablePicoContainer container = createPicoContainer(null);
-    	container.addComponent(Map.class,MyStartable.class);
-    	container.addComponent("glumBlam",HashMap.class);
-    	
-    	assertSame(container.getComponent("glumBlam"),container.getComponent(Map.class));
-    }
+ 
 }

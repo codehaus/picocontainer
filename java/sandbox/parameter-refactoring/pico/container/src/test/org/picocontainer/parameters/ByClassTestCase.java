@@ -10,6 +10,7 @@
 package org.picocontainer.parameters;
 
 import java.util.Iterator;
+import java.util.Collection;
 
 import junit.framework.TestCase;
 
@@ -47,5 +48,26 @@ public class ByClassTestCase extends TestCase {
 		assertEquals(239,((ComponentAdapter)iter.next()).getComponentKey());
 		assertEquals(25,((ComponentAdapter)iter.next()).getComponentKey());
 		assertEquals(37,((ComponentAdapter)iter.next()).getComponentKey());
+	}
+	
+	/**
+	 * registration order shall be preserved
+	 */
+	public void testThatByClassPreservesRegistrationOrder() {
+		MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.addComponent("first", "first");
+        pico.addComponent("second", "second");
+        pico.addComponent("third", "third");
+        pico.addComponent("fourth", "fourth");
+        pico.addComponent("fifth", "fifth");
+
+        final Collection<ComponentAdapter> strings = (new ByClass(String.class)).lookup(pico);
+        Iterator<ComponentAdapter> iter = strings.iterator();
+        assertEquals("first", iter.next().getComponentInstance(pico));
+        assertEquals("second", iter.next().getComponentInstance(pico));
+        assertEquals("third", iter.next().getComponentInstance(pico));
+        assertEquals("fourth",iter.next().getComponentInstance(pico));
+        assertEquals("fifth", iter.next().getComponentInstance(pico));
+
 	}
 }

@@ -26,7 +26,7 @@ public class ConvertTestCase extends TestCase {
 		Convert convert = new Convert(new Lookup() {
 
 			public Collection<ComponentAdapter> lookup(PicoContainer container) {
-				// TODO Auto-generated method stub
+
 				return null;
 			}}, Integer.class);
 	}

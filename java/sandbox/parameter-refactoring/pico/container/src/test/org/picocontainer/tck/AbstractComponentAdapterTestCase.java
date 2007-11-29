@@ -9,33 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
-import com.thoughtworks.xstream.io.xml.XppDriver;
-
-import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.injectors.AdaptiveInjection;
-import org.picocontainer.visitors.AbstractPicoVisitor;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.parameters.Constant;
-import org.picocontainer.references.SimpleReference;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.behaviors.Cached;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ObjectReference;
-
-import org.jmock.MockObjectTestCase;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -49,6 +22,31 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
+
+import org.jmock.MockObjectTestCase;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.parameters.Constant;
+import org.picocontainer.references.SimpleReference;
+import org.picocontainer.visitors.AbstractPicoVisitor;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
+import com.thoughtworks.xstream.io.xml.XppDriver;
 
 
 /**

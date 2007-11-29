@@ -687,4 +687,11 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         }
     }
  
+    
+    public void testThatStringIsAddedOnlyOnce() {
+        MutablePicoContainer container = createPicoContainer(null);
+        
+        container.addComponent("foo bar");
+        assertEquals(1,container.getComponentAdapters().size());
+    }
 }

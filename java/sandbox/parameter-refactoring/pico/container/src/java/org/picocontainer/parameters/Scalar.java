@@ -49,6 +49,9 @@ public class Scalar extends AbstractParameter {
 		java.util.Collection<ComponentAdapter> adapters = lookup.lookup(container);
 		if(adapters.isEmpty()) {
 			throw new AbstractInjector.MissingDependencyException(this.toString());
+		} else if(adapters.size() == 1) {
+			// walk down 
+			adapters.iterator().next().verify(container);
 		}
 	}
 

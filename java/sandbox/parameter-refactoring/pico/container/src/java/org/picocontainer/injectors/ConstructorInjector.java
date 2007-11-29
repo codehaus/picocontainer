@@ -77,12 +77,13 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             Class[] parameterTypes = sortedMatchingConstructor.getParameterTypes();
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
-            System.err.println("parameters:" + currentParameters.length);
+            
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
                 // check whether this constructor is statisfiable
             	System.err.println("parameter:" + currentParameters[j]);
                 if (currentParameters[j].isResolvable(container)) {
+                	System.err.println("is resolvable");
                     continue;
                 }
                 unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
@@ -191,7 +192,8 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
 
     private Constructor<T>[] getConstructors() {
         return AccessController.doPrivileged(new PrivilegedAction<Constructor<T>[]>() {
-            public Constructor<T>[] run() {
+            @SuppressWarnings("unchecked")
+			public Constructor<T>[] run() {
                 return (Constructor<T>[]) getComponentImplementation().getDeclaredConstructors();
             }
         });

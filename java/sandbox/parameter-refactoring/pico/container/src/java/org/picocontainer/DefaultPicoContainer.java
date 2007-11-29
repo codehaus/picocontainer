@@ -257,9 +257,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (componentType == null) {
             return Collections.emptyList();
         }
+        System.err.println("retrieve adapters for:" + componentType);
         List<ComponentAdapter<T>> found = new ArrayList<ComponentAdapter<T>>();
         for (ComponentAdapter<?> componentAdapter : getComponentAdapters()) {
+        	System.err.println("*** candidate:" + componentAdapter.getComponentImplementation() + " key:" + componentAdapter.getComponentKey());
             if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
+            	System.err.println(".... accepted");
                 ComponentAdapter<T> typedComponentAdapter = typeComponentAdapter(componentAdapter);
                 found.add(typedComponentAdapter);
             }
@@ -324,7 +327,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private MutablePicoContainer addComponent(Object implOrInstance, Properties props) {
         Class clazz;
         if (implOrInstance instanceof String) {
-            addComponent((String) implOrInstance, implOrInstance);
+            return addComponent((String) implOrInstance, implOrInstance);
         }
         if (implOrInstance instanceof Class) {
             clazz = (Class)implOrInstance;

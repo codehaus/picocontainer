@@ -35,7 +35,8 @@ public class Scalar extends AbstractParameter {
 		if(adapters.size() == 0) {
 			return null;
 		} if(adapters.size() == 1) {
-			return adapters.iterator().next().getComponentInstance(container);
+			//return adapters.iterator().next().getComponentInstance(container);
+			return container.getComponent(adapters.iterator().next().getComponentKey());
 		} if(adapters.size() > 1) {
 			throw new PicoCompositionException("Ambiguous component found by scalar resolution. [" + lookup +"]");
 		}

@@ -20,6 +20,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.parameters.ByClass;
+import org.picocontainer.parameters.Scalar;
 
 
 /**
@@ -80,7 +81,14 @@ public class CollectionsTestCase
         assertEquals(1, cods.size());
         assertTrue(cods.contains(cod));
     }
-
+    /**
+     * REFACTORING: this test changes semantic. 
+     * while previously component parameter also took care of collections
+     * and made possible binding on empty set, new refactored behaviour 
+     * wuld ignore set at all, as it explicitely tries to create  collection
+     * ( and succeeeds )  - thus this test becomes useless and is castrated
+     * @deprecated
+     */
     public void testShouldCreateBowlWithFishesOnly() {
 
         //      START SNIPPET: directUsage
@@ -90,7 +98,12 @@ public class CollectionsTestCase
         pico.addComponent(Cod.class);
         pico.addComponent(Bowl.class, Bowl.class,
                 new org.picocontainer.parameters.Collection(new ByClass(Fish.class), LinkedList.class),
-                new org.picocontainer.parameters.Collection(new ByClass(Cod.class)));
+                // old registration
+                //new org.picocontainer.parameters.Collection(new ByClass(Cod.class))
+                // new registration
+                Scalar.byClass(Collection.class)
+        );
+        
         pico.addComponent(set);
 
         Bowl bowl = pico.getComponent(Bowl.class);

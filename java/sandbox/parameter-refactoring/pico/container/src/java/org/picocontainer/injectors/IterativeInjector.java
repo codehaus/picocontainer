@@ -79,15 +79,12 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
         for (int i = 0; i < currentParameters.length; i++) {
             final Parameter parameter = currentParameters[i];
-            System.err.println("parameter:" + parameter);
             boolean failedDependency = true;
             for (int j = 0; j < injectionTypes.length; j++) {
-            	System.err.println("checking against:" + injectionTypes[j]);
                 if (matchingParameterList.get(j) == null &&
                     parameter.isResolvable(container) && 
                     parameter.canSatisfy(container,injectionTypes[j])
                     ) {
-                	System.err.println(".. ok");
                     matchingParameterList.set(j, parameter);
                     failedDependency = false;
                     break;

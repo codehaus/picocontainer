@@ -59,7 +59,6 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         final List componentInstances = pico.getComponents();
 
         // instantiation - would be difficult to do these in the wrong order!!
-        System.err.println("instances:" + componentInstances);
         assertEquals("Incorrect Order of Instantiation", One.class, componentInstances.get(1).getClass());
         assertEquals("Incorrect Order of Instantiation", Two.class, componentInstances.get(2).getClass());
         assertEquals("Incorrect Order of Instantiation", Three.class, componentInstances.get(3).getClass());

@@ -254,14 +254,9 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
     public void testShouldNotConsiderNonPublicConstructors() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Component201.class);
-        System.err.println("amount adapters:" + pico.getComponentAdapters().size());
         pico.addComponent(new Integer(2));
-        System.err.println("amount adapters:" + pico.getComponentAdapters().size());
         pico.addComponent(Boolean.TRUE);
-        System.err.println("amount adapters:" + pico.getComponentAdapters().size());
         pico.addComponent("Hello");
-        System.err.println("amount adapters:" + pico.getComponentAdapters().size());
-        System.err.println("amount:" + pico.getComponentAdapters(String.class).size());
         assertNotNull(pico.getComponent(Component201.class));
     }
 

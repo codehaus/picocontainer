@@ -49,4 +49,30 @@ public class Constant<T> implements Parameter<T> {
 	public void accept(PicoVisitor visitor) {
 		visitor.visitParameter(this);
 	}
+
+	@SuppressWarnings("unchecked")
+	public boolean canSatisfy(PicoContainer container, final Class expectedType) {
+        Class type = expectedType;
+        if (type.isPrimitive()) {
+            String expectedTypeName = expectedType.getName();
+            if (expectedTypeName == "int") {
+                type = Integer.class;
+            } else if (expectedTypeName == "long") {
+                type = Long.class;
+            } else if (expectedTypeName == "float") {
+                type = Float.class;
+            } else if (expectedTypeName == "double") {
+                type = Double.class;
+            } else if (expectedTypeName == "boolean") {
+                type = Boolean.class;
+            } else if (expectedTypeName == "char") {
+                type = Character.class;
+            } else if (expectedTypeName == "short") {
+                type = Short.class;
+            } else if (expectedTypeName == "byte") {
+                type = Byte.class;
+            }
+        }
+		return type.isAssignableFrom(value.getClass());
+	}
 }

@@ -42,7 +42,7 @@ public interface Parameter<T> {
      T  resolveInstance(PicoContainer container);
 
     /**
-     * Check if the Parameter can satisfy the expected type using the container.
+     * Check if the Parameter can be resolved using the container.
      *
      * @param container             the container from which dependencies are resolved.
      *
@@ -51,6 +51,16 @@ public interface Parameter<T> {
      *
      */
     boolean isResolvable(PicoContainer container);
+
+    /**
+     * check if parameter satisfies 
+     * desired type (necessary for adapters where order is unknown - 
+     * like setters) 
+     * @param container
+     * @param expectedType
+     * @return
+     */
+    boolean canSatisfy(PicoContainer container,Class expectedType);
 
     /**
      * Verify that the Parameter can statisfy the expected type using the container

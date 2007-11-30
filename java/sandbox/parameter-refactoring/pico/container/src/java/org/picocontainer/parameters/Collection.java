@@ -51,4 +51,8 @@ public class Collection extends AbstractCollectionExtractor {
 		}
 		return result;
 	}
+
+	public boolean canSatisfy(PicoContainer container, Class expectedType) {		
+		return expectedType.isAssignableFrom(collectionClass);
+	}
 }

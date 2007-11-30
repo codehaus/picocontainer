@@ -257,12 +257,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (componentType == null) {
             return Collections.emptyList();
         }
-        System.err.println("retrieve adapters for:" + componentType);
         List<ComponentAdapter<T>> found = new ArrayList<ComponentAdapter<T>>();
         for (ComponentAdapter<?> componentAdapter : getComponentAdapters()) {
-        	System.err.println("*** candidate:" + componentAdapter.getComponentImplementation() + " key:" + componentAdapter.getComponentKey());
             if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
-            	System.err.println(".... accepted");
                 ComponentAdapter<T> typedComponentAdapter = typeComponentAdapter(componentAdapter);
                 found.add(typedComponentAdapter);
             }
@@ -421,10 +418,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     private <T> T getLocalInstance(ComponentAdapter<T> typedComponentAdapter) {
+    	System.err.println("local instace retrieval:" + typedComponentAdapter);
         T componentInstance = typedComponentAdapter.getComponentInstance(this);
 
         // This is to ensure all are added. (Indirect dependencies will be added
         // from InstantiatingComponentAdapter).
+        System.err.println("local adding adapter to list:" + typedComponentAdapter + " instance: " + componentInstance);
         addOrderedComponentAdapter(typedComponentAdapter);
 
         return componentInstance;
@@ -460,9 +459,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         // check wether this is our adapter
         // we need to check this to ensure up-down dependencies cannot be followed
         final boolean isLocal = componentAdapters.contains(componentAdapter);
-
+        System.err.println("retrieve instance from:" + componentAdapter);
         if (isLocal) {
-        	System.err.println("local retrieve " + componentAdapter.getComponentKey());
+        	System.err.println("... ist local");
             Object instance;
             try {
                 instance = componentAdapter.getComponentInstance(this);
@@ -475,11 +474,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 }
                 throw e;
             }
+            System.err.println("adding ordered CA:" + componentAdapter);
             addOrderedComponentAdapter(componentAdapter);
 
             return instance;
         } else if (parent != null) {
-        	System.err.println("parent retrieve " + componentAdapter.getComponentKey());
             return parent.getComponent(componentAdapter.getComponentKey());
         }
 

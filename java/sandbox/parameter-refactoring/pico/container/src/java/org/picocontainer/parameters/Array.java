@@ -65,4 +65,13 @@ public  class Array extends AbstractCollectionExtractor {
 		return "Array of " + baseClass + "[" + lookup + "]";
 	}
 
+	/**
+	 * array satisfyes only if expected type is array, and expected
+	 * array type can be assigned from  base class
+	 * ( say, int[] satisfies Object[] ) 
+	 */
+	public boolean canSatisfy(PicoContainer container, Class expectedType) {
+		return expectedType.isArray() && expectedType.getComponentType().isAssignableFrom(baseClass);
+	}
+
 }

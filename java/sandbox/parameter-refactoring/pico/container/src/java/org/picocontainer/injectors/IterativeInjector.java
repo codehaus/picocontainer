@@ -74,22 +74,22 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         if (injectionMembers == null) {
             initializeInjectionMembersAndTypeLists();
         }
-        System.err.println("determine suitable parameters for injection");
         final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMembers.size(), null));
         final Set<Integer> nonMatchingParameterPositions = new HashSet<Integer>();
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
         for (int i = 0; i < currentParameters.length; i++) {
             final Parameter parameter = currentParameters[i];
-            System.err.println("processing parameter:" + parameter);
+            System.err.println("parameter:" + parameter);
             boolean failedDependency = true;
             for (int j = 0; j < injectionTypes.length; j++) {
-            	
-            	System.err.println("type: " + injectionTypes[j] + " bound to:" + matchingParameterList.get(j));
+            	System.err.println("checking against:" + injectionTypes[j]);
                 if (matchingParameterList.get(j) == null &&
-                    parameter.isResolvable(container)) {
+                    parameter.isResolvable(container) && 
+                    parameter.canSatisfy(container,injectionTypes[j])
+                    ) {
+                	System.err.println(".. ok");
                     matchingParameterList.set(j, parameter);
                     failedDependency = false;
-                    System.err.println("found");
                     break;
                 }
             }
@@ -125,26 +125,24 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
+                	System.err.println("----------- resolve instance ------");
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
                     ComponentMonitor componentMonitor = currentMonitor();
                     Object componentInstance;
 
                     componentInstance = getOrMakeInstance(container, constructor, componentMonitor);
+                    System.err.println("instance resolved");
                     AccessibleObject member = null;
                     Object injected[] = new Object[injectionMembers.size()];
-                    System.err.println("************** member injection starts");
                     try {
-                    	System.err.println("processing " + this);
                         for (int i = 0; i < injectionMembers.size(); i++) {
                             member = injectionMembers.get(i);
-                            System.err.println("***** injection member:" + member);
-                            System.err.println("***** matching parameter:" + matchingParameters[i]);
+
                             componentMonitor.invoking(container, IterativeInjector.this, (Member) member, componentInstance);
                             if (matchingParameters[i] == null) {
                                 continue;
                             }
                             Object toInject = matchingParameters[i].resolveInstance(guardedContainer);
-                            System.err.println("resolved:" + toInject);
                             injectIntoMember(member, componentInstance, toInject);
                             injected[i] = toInject;
                         }
@@ -195,7 +193,6 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     protected void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
         throws IllegalAccessException, InvocationTargetException {
-    	System.err.println("*** injecting member:" + member + " with:" + toInject);
         ((Method)member).invoke(componentInstance, toInject);
     }
 
@@ -216,6 +213,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     }
 
     protected void initializeInjectionMembersAndTypeLists() {
+    	System.err.println("-------------");
         injectionMembers = new ArrayList<AccessibleObject>();
         final List<Class> typeList = new ArrayList<Class>();
         final Method[] methods = getMethods();
@@ -225,6 +223,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             if (parameterTypes.length == 1) {
                 boolean isInjector = isInjectorMethod(method);
                 if (isInjector) {
+                	System.err.println("accepted injector:" + method);
                     injectionMembers.add(method);
                     typeList.add(box(parameterTypes[0]));
                 }

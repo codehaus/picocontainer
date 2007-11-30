@@ -35,9 +35,7 @@ public class Scalar extends AbstractParameter {
 		if(adapters.size() == 0) {
 			return null;
 		} if(adapters.size() == 1) {
-			//System.err.println(" scalar retrieves from:" + container);
 			return adapters.iterator().next().getComponentInstance(container);
-			//return container.getComponent(adapters.iterator().next().getComponentKey());
 		} if(adapters.size() > 1) {
 			throw new PicoCompositionException("Ambiguous component found by scalar resolution. [" + lookup +"]");
 		}
@@ -52,6 +50,8 @@ public class Scalar extends AbstractParameter {
 		} else if(adapters.size() == 1) {
 			// walk down 
 			adapters.iterator().next().verify(container);
+		} else if(adapters.size() > 1) {
+			throw new PicoCompositionException("Ambiguous component found by scalar resolution. [" + lookup +"]");
 		}
 	}
 
@@ -81,5 +81,9 @@ public class Scalar extends AbstractParameter {
 	 */
 	public static Parameter byClass(Class clazz) {
 		return new Scalar(new ByClass(clazz));
+	}
+
+	public boolean canSatisfy(PicoContainer container, Class expectedType) {
+		return isResolvable(container) && expectedType.isAssignableFrom(lookup.lookup(container).iterator().next().getComponentImplementation());
 	}
 }

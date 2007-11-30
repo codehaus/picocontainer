@@ -152,7 +152,7 @@ public class SetterInjectorTestCase
     protected ComponentAdapter prepRES_dependenciesAreResolved(MutablePicoContainer picoContainer) {
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class);
-        return new SetterInjector(PurseBean.class, PurseBean.class, new Parameter[]{Scalar.byClass(String.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+        return new SetterInjector(PurseBean.class, PurseBean.class, new Parameter[]{Scalar.byClass(PersonBean.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                   "set", false);
     }
 
@@ -173,7 +173,7 @@ public class SetterInjectorTestCase
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class, WealthyPerson.class);
         SetterInjector componentAdapter = new SetterInjector(
-                PurseBean.class, PurseBean.class,new Parameter[]{Scalar.byClass(String.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+                PurseBean.class, PurseBean.class,new Parameter[]{Scalar.byClass(PersonBean.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                 "set", false);
         return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class);
     }
@@ -182,7 +182,7 @@ public class SetterInjectorTestCase
         picoContainer.addComponent("Pico Container");
         picoContainer.addComponent(PersonBean.class, WealthyPerson.class);
         SetterInjector componentAdapter = new SetterInjector(
-                PurseBean.class, PurseBean.class, new Parameter[]{Scalar.byClass(String.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
+                PurseBean.class, PurseBean.class, new Parameter[]{Scalar.byClass(PersonBean.class)}, new NullComponentMonitor(), new NullLifecycleStrategy(),
                 "set", false);
         return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class);
     }

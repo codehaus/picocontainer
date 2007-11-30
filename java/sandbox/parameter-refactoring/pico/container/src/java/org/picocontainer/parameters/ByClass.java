@@ -14,8 +14,6 @@ import java.util.Collection;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
-
 /**
  * component parameter implementing by-class lookup strategy
  * 
@@ -33,7 +31,6 @@ public class ByClass extends AbstractLookup {
 	@Override
 	void extract(PicoContainer container, Collection<ComponentAdapter> store) {
 		for (Object candidate : container.getComponentAdapters(expectedType)) {
-			System.err.println("candidate:" + candidate);
 			store.add((ComponentAdapter) candidate);
 		}
 

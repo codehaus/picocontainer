@@ -72,7 +72,6 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         int lastSatisfiableConstructorSize = -1;
         Class unsatisfiedDependencyType = null;
         for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
-        	System.err.println("check constructor: " + sortedMatchingConstructor);
             boolean failedDependency = false;
             Class[] parameterTypes = sortedMatchingConstructor.getParameterTypes();
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
@@ -81,9 +80,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
                 // check whether this constructor is statisfiable
-            	System.err.println("parameter:" + currentParameters[j]);
                 if (currentParameters[j].isResolvable(container)) {
-                	System.err.println("is resolvable");
                     continue;
                 }
                 unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));

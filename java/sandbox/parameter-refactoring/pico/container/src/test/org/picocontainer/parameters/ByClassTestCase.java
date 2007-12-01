@@ -71,4 +71,24 @@ public class ByClassTestCase extends TestCase {
         assertEquals("fifth", iter.next().getComponentInstance(pico));
 
 	}
+	
+	
+	public void testChildKeyMasksParentAdapterRegardlessOfType() {
+		MutablePicoContainer parent = new DefaultPicoContainer();
+		MutablePicoContainer child = new DefaultPicoContainer(parent);
+		
+		
+		parent.addComponent("foo bar",239);
+		parent.addComponent(515,515);
+		// shall mask in parent
+		child.addComponent("foo bar");
+		
+		// only 1 integer is resolvable here
+		ByClass byClass = new ByClass(Integer.class);
+
+		// shall retrieve all the integers from both contaienrs
+		assertEquals(1,byClass.lookup(child).size());
+		
+		assertEquals(515,((ComponentAdapter)byClass.lookup(child).iterator().next()).getComponentKey());
+	}
 }

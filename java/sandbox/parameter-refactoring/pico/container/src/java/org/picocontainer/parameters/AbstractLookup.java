@@ -48,7 +48,7 @@ public abstract class AbstractLookup  implements Lookup {
 
 	Collection<ComponentAdapter> processTree(PicoContainer container, Collection<ComponentAdapter> adapters,Collection exclude) {
 		if (container.getParent() != null) {
-			Collection toExclude = container.getComponentKeys();
+			Collection toExclude = new HashSet(container.getComponentKeys());
 			toExclude.addAll(exclude);
 			processTree(container.getParent(), adapters, toExclude);
 		}

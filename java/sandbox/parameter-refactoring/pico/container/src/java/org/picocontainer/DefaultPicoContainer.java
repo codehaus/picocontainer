@@ -769,4 +769,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
     }
 
+    /**
+     * unmodifiable collection of registered keys
+     */
+	public Collection getComponentKeys() {
+		return Collections.unmodifiableSet(componentKeyToAdapterCache.keySet());
+	}
+
 }

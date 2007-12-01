@@ -9,10 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import java.util.Collection;
-
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
 
 /**
  * component parameter implementing by-class lookup strategy
@@ -28,15 +25,14 @@ public class ByClass extends AbstractLookup {
 		this.expectedType = expectedType;
 	}
 
-	@Override
-	void extract(PicoContainer container, Collection<ComponentAdapter> store) {
-		for (Object candidate : container.getComponentAdapters(expectedType)) {
-			store.add((ComponentAdapter) candidate);
-		}
-
-	}
-	
 	public String toString() {
 		return "ByClass(" + expectedType + ")";
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	boolean isAcceptable(ComponentAdapter adapter) {
+		return expectedType.isAssignableFrom(adapter
+				.getComponentImplementation());
 	}
 }

@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 
@@ -151,5 +152,4 @@ public class Convert<T> extends Scalar {
 	public String toString() {
 		return "Convert to " + expectedClass + " from [" + lookup + "]";
 	}
-
 }

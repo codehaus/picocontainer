@@ -98,6 +98,14 @@ public interface PicoContainer {
     Collection<ComponentAdapter<?>> getComponentAdapters();
 
     /**
+     * retrieve all the keys of component adapters registered in this container. 
+     * parent containers are not consulted. this collection is unimodifable
+     * to prevent occasional out-of-bound modifcation of container content
+     * @return collection containing all the keys of components registered in this container 
+     */
+    Collection getComponentKeys();
+    
+    /**
      * Retrieve all component adapters inside this container that are associated with the specified type. The addComponent
      * adapters from the parent container are not returned.
      *

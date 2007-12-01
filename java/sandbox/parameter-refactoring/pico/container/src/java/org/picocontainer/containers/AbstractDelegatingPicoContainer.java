@@ -80,5 +80,9 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer ,
 	public PicoContainer getParent() {
 		return delegate.getParent();
 	}
+
+	public Collection getComponentKeys() {
+		return delegate.getComponentKeys();
+	}
 	
 }

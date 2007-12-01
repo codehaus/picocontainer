@@ -70,4 +70,8 @@ public class EmptyPicoContainer implements PicoContainer, Serializable {
         return Collections.emptyList();
     }
 
+	public Collection getComponentKeys() {
+		return Collections.EMPTY_SET;
+	}
+
 }

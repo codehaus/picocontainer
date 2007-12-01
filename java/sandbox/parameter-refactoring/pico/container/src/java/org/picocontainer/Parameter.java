@@ -54,7 +54,7 @@ public interface Parameter<T> {
 
     /**
      * check if parameter satisfies 
-     * desired type (necessary for adapters where order is unknown - 
+     * desired type (necessary for adapter binding  where order is unknown - 
      * like setters) 
      * @param container
      * @param expectedType

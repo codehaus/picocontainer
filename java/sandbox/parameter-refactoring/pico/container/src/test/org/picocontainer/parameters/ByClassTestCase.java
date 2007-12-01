@@ -26,6 +26,7 @@ import org.picocontainer.MutablePicoContainer;
  */
 public class ByClassTestCase extends TestCase {
 
+	
 	public void testComponentResolution() {
 		MutablePicoContainer parent = new DefaultPicoContainer();
 		MutablePicoContainer container = new DefaultPicoContainer(parent);

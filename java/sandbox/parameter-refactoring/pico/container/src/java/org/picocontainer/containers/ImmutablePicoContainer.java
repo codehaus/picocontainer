@@ -85,4 +85,8 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
     public int hashCode() {
         return delegate.hashCode();
     }
+
+	public Collection getComponentKeys() {
+		return delegate.getComponentKeys();
+	}
 }

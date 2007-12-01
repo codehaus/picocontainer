@@ -9,10 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import java.util.Collection;
-
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
 
 /**
  * lookup component adapters registered with certain key class
@@ -28,13 +25,11 @@ public class ByKeyClass extends AbstractLookup {
 		this.keyClass = keyClass;
 	}
 
+
+	@SuppressWarnings("unchecked")
 	@Override
-	void extract(PicoContainer container, Collection<ComponentAdapter> store) {
-		for(ComponentAdapter candidate: container.getComponentAdapters()) {
-			if(keyClass.isAssignableFrom(candidate.getComponentKey().getClass())) {
-				store.add(candidate);
-			}
-		}
+	boolean isAcceptable(ComponentAdapter adapter) {
+		return keyClass.isAssignableFrom(adapter.getComponentKey().getClass());
 	}
 
 }

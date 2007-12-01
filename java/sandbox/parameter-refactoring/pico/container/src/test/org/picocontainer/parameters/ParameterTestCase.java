@@ -25,6 +25,8 @@ import org.picocontainer.visitors.VerifyingVisitor;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
+ * @deprecated as parameters are split into several 
+ * kinds, those tests are mostly obsolete
  */
 public final class ParameterTestCase extends TestCase {
 
@@ -45,13 +47,21 @@ public final class ParameterTestCase extends TestCase {
         assertNotNull(touchable);
     }
 
+    /**
+     * @throws PicoCompositionException
+     * @deprecated original puprose of this test was to prove that 
+     * explicitely excluded adapter is not resolved.  as we do not have
+     * such default parameter logic anymore this test becomes obsolete
+     * 
+     * actual exclusion of itself is handled by "NotMe" lookup
+     */
     public void testComponentParameterExcludesSelf() throws PicoCompositionException {
-        DefaultPicoContainer pico = new DefaultPicoContainer();
-        ComponentAdapter adapter = pico.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class);
-
-        assertNotNull(pico.getComponent(Touchable.class));
-        Touchable touchable = (Touchable) Scalar.byClass(Touchable.class).resolveInstance(pico);
-        assertNull(touchable);
+//        DefaultPicoContainer pico = new DefaultPicoContainer();
+//        ComponentAdapter adapter = pico.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class);
+//
+//        assertNotNull(pico.getComponent(Touchable.class));
+//        Touchable touchable = (Touchable) Scalar.byClass(Touchable.class).resolveInstance(pico);
+//        assertNull(touchable);
     }
 
     public void testConstant() throws PicoCompositionException {
@@ -84,14 +94,23 @@ public final class ParameterTestCase extends TestCase {
 		assertEquals(239, ((Integer)parameter.resolveInstance(picoContainer)).intValue());
 	}
 
+	 /**
+     * @deprecated as there is no expected type anymore concept , 
+     * this becomes deprecated 
+     * @throws PicoCompositionException
+     */
     public void testConstantRespectsExpectedType() {
-        MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        Parameter parameter = new Constant(new SimpleTouchable());
-        ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class);
-        assertFalse(parameter.isResolvable(picoContainer));
+//        MutablePicoContainer picoContainer = new DefaultPicoContainer();
+//        Parameter parameter = new Constant(new SimpleTouchable());
+//        ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class);
+//        assertFalse(parameter.isResolvable(picoContainer));
     }
-// as there is no expected type anymore.... 
-//    public void testParameterRespectsExpectedType() throws PicoCompositionException {
+    /**
+     * @deprecated as tehere is no expected type anymore concept , 
+     * this becomes deprecated 
+     * @throws PicoCompositionException
+     */
+    public void testParameterRespectsExpectedType() throws PicoCompositionException {
 //        Parameter parameter = new Constant(Touchable.class);
 //        MutablePicoContainer picoContainer = new DefaultPicoContainer();
 //        assertFalse(parameter.isResolvable(picoContainer));
@@ -99,7 +118,7 @@ public final class ParameterTestCase extends TestCase {
 //        ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class);
 //
 //        assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class, pn, false));
-//    }
+   }
 
     public void testConstantWithPrimitives() throws PicoCompositionException {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
@@ -137,32 +156,37 @@ public final class ParameterTestCase extends TestCase {
         assertSame(charValue, parameter.resolveInstance(picoContainer));
     }
 
+    /**
+     * @deprecated there is no type expectation to parameter - 
+     * logic is moved to adapter.  
+     * @throws PicoCompositionException
+     */
     public void testConstantWithPrimitivesRejectsUnexpectedType() throws PicoCompositionException {
-        MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        Byte byteValue = (byte)5;
-        Constant parameter = new Constant(byteValue);
-        assertFalse(parameter.isResolvable(picoContainer));
-        Short shortValue = (short)5;
-        parameter = new Constant(shortValue);
-        assertFalse(parameter.isResolvable(picoContainer));
-        Integer intValue = 5;
-        parameter = new Constant(intValue);
-        assertFalse(parameter.isResolvable(picoContainer));
-        Long longValue = (long)5;
-        parameter = new Constant(longValue);
-        assertFalse(parameter.isResolvable(picoContainer));
-        Float floatValue = new Float(5.5);
-        parameter = new Constant(floatValue);
-        assertFalse(parameter.isResolvable(picoContainer));
-        Double doubleValue = 5.5;
-        parameter = new Constant(doubleValue);
-        assertFalse(parameter.isResolvable(picoContainer));
-        Boolean booleanValue = true;
-        parameter = new Constant(booleanValue);
-        assertFalse(parameter.isResolvable(picoContainer));
-        Character charValue = 'x';
-        parameter = new Constant(charValue);
-        assertFalse(parameter.isResolvable(picoContainer));
+//        MutablePicoContainer picoContainer = new DefaultPicoContainer();
+//        Byte byteValue = (byte)5;
+//        Constant parameter = new Constant(byteValue);
+//        assertFalse(parameter.isResolvable(picoContainer));
+//        Short shortValue = (short)5;
+//        parameter = new Constant(shortValue);
+//        assertFalse(parameter.isResolvable(picoContainer));
+//        Integer intValue = 5;
+//        parameter = new Constant(intValue);
+//        assertFalse(parameter.isResolvable(picoContainer));
+//        Long longValue = (long)5;
+//        parameter = new Constant(longValue);
+//        assertFalse(parameter.isResolvable(picoContainer));
+//        Float floatValue = new Float(5.5);
+//        parameter = new Constant(floatValue);
+//        assertFalse(parameter.isResolvable(picoContainer));
+//        Double doubleValue = 5.5;
+//        parameter = new Constant(doubleValue);
+//        assertFalse(parameter.isResolvable(picoContainer));
+//        Boolean booleanValue = true;
+//        parameter = new Constant(booleanValue);
+//        assertFalse(parameter.isResolvable(picoContainer));
+//        Character charValue = 'x';
+//        parameter = new Constant(charValue);
+//        assertFalse(parameter.isResolvable(picoContainer));
     }
 
     public void testKeyClashBug118() throws PicoCompositionException {

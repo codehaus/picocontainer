@@ -2,8 +2,6 @@ package org.picocontainer.parameters;
 
 import org.picocontainer.ComponentAdapter;
 
-import sun.security.action.GetLongAction;
-
 /**
  * anybody but me. 
  * @author ko5tik

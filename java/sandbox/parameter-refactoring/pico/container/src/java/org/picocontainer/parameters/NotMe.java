@@ -18,7 +18,7 @@ public class NotMe extends Filter {
 
 	@Override
 	public boolean evaluate(ComponentAdapter adapter) {
-		return me != adapter;
+		return !me.getComponentKey().equals(adapter.getComponentKey());
 	}
 
 	public String toString() {

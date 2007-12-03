@@ -35,9 +35,10 @@ public class Scalar extends AbstractParameter {
 		if(adapters.size() == 0) {
 			return null;
 		} if(adapters.size() == 1) {
-			return adapters.iterator().next().getComponentInstance(container);
-			// this is a way how it was done in previous versions
-			//return container.getComponent(adapters.iterator().next().getComponentKey());
+			// resolution against the container is correct,
+			// as we performed lookup against it, we can be sure that
+			// we got nothing from child and masking happened already
+			return container.getComponent(adapters.iterator().next().getComponentKey());
 		} if(adapters.size() > 1) {
 			throw new PicoCompositionException("Ambiguous component found by scalar resolution. [" + lookup +"]");
 		}

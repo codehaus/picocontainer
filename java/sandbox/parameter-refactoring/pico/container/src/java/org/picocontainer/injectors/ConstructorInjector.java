@@ -76,7 +76,6 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             Class[] parameterTypes = sortedMatchingConstructor.getParameterTypes();
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
-            
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
                 // check whether this constructor is statisfiable

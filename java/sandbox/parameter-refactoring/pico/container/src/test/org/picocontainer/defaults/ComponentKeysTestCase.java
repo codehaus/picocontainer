@@ -49,10 +49,12 @@ public class ComponentKeysTestCase extends TestCase {
         assertEquals(DecoratedTouchable.class, touchable.getClass());
 
     }
-
-    // this test fails ATM, pending investigation whether 
-    // descending to parent shall be handled by container or
-    // parameter. 
+    /**
+     * REFACTOR
+     * @deprecated this test fails due to masking of parent component with 
+     * a child key. however, this is discutable whether  it should do this in such 
+     * case
+     */
     public void testComponentKeysFromParentCannotConfuseTheChild() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("test", SimpleTouchable.class);

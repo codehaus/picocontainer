@@ -309,10 +309,11 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @author Paul Hammant
      * @author Aslak Helles&oslash;y
      * @author Jon Tirs&eacute;n
+     * @deprecated  this should be reworked to better reflect parameter architecture
      */
     public static final class AmbiguousComponentResolutionException extends PicoCompositionException {
         private Class component;
-        private final Class ambiguousDependency;
+        private Class ambiguousDependency;
         private final Object[] ambiguousComponentKeys;
 
 
@@ -336,7 +337,12 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             StringBuffer msg = new StringBuffer();
             msg.append(component);
             msg.append(" needs a '");
-            msg.append(ambiguousDependency.getName());
+            // this is kind of ugly hack, but this exception shall 
+            // be moved to more approperiate place enyway. 
+            // but not in this refactoring
+            if(ambiguousDependency != null) {
+            	msg.append(ambiguousDependency.getName());
+            }
             msg.append("' injected, but there are too many choices to inject. These:");
             msg.append(Arrays.asList(getAmbiguousComponentKeys()));
             msg.append(", refer http://picocontainer.org/ambiguous-injectable-help.html");
@@ -353,6 +359,10 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         public void setComponent(Class component) {
             this.component = component;
         }
+
+		protected void setAmbiguousDependency(Class ambiguousDependency) {
+			this.ambiguousDependency = ambiguousDependency;
+		}
     }
 
     /**

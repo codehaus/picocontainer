@@ -82,6 +82,8 @@ public interface PicoContainer {
      * @param componentType the type of the component.
      * @return the component adapter associated with this class, or <code>null</code> if no component has been
      *         registered for the specified key.
+     * @deprecated this functionality is also in lookup by class. not sure this is
+     * interesting for users
      */
 
     <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType);

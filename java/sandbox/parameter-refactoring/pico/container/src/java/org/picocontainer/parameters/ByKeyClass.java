@@ -20,9 +20,15 @@ public class ByKeyClass extends AbstractLookup {
 
 	Class keyClass;
 	
-	
-	public ByKeyClass(Class keyClass) {
+
+
+	public ByKeyClass(Class keyClass,boolean recursive) {
+		super(recursive);
 		this.keyClass = keyClass;
+	}
+
+	public ByKeyClass(Class keyClass) { 
+		this(keyClass,true);
 	}
 
 

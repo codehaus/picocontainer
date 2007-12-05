@@ -21,8 +21,13 @@ public class ByClass extends AbstractLookup {
 
 	Class expectedType;
 
-	public ByClass(Class expectedType) {
+	public ByClass( Class expectedType,boolean recursive) {
+		super(recursive);
 		this.expectedType = expectedType;
+	}
+
+	public ByClass(Class expectedType) {
+		this(expectedType,true);
 	}
 
 	public String toString() {

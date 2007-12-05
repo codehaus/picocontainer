@@ -9,6 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
@@ -62,8 +67,24 @@ public class Scalar extends AbstractParameter {
 		return "Scalar [" + lookup + "]";
 	}
 
-	public boolean isResolvable(PicoContainer container) {	
-		return lookup.lookup(container).size() == 1;
+	/**
+	 * whther we can resolve scalar from this adapter
+	 */
+	public boolean isResolvable(PicoContainer container) {
+		java.util.Collection<ComponentAdapter> adapters = lookup.lookup(container);
+		if(adapters.size() == 1) {
+			return true;
+		} else if(adapters.size() == 0) {
+			return false;
+		}
+		
+		//ok, more than one - produce ambiguity exception
+		ArrayList<Object> keys = new ArrayList<Object>();
+        for(ComponentAdapter adapter: adapters ) {
+        	keys.add(adapter.getComponentKey());
+        }
+        //
+       throw new AbstractInjector.AmbiguousComponentResolutionException(null,keys.toArray());
 	}
 
 	/**

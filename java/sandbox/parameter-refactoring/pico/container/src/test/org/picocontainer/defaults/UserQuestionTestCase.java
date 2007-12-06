@@ -144,24 +144,21 @@ public final class UserQuestionTestCase extends TestCase {
         }
     }
 
-    /**
-     * 
-     * @deprecated  not sure whether this test is correct at all
-     */
+
     public void testMoreWeirdness() {
-//        MutablePicoContainer pico = new DefaultPicoContainer();
-//        Map map = new HashMap();
-//        pico.addComponent(map);
-//        // See class level javadoc in DefaultPicoContainer - about precedence. 
-//        pico.addComponent(InterfaceX.class, Something.class);
-//        pico.addComponent(Disabled.class);
-//        pico.addComponent(Enabled.class);
-//        pico.addComponent(NeedsInterfaceX.class);
-//
-//        NeedsInterfaceX needsInterfaceX = pico.getComponent(NeedsInterfaceX.class);
-//        assertEquals("Disabled", needsInterfaceX.getIt());
-//        map.put("enabled", "blah");
-//        assertEquals("Enabled", needsInterfaceX.getIt());
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        Map map = new HashMap();
+        pico.addComponent(map);
+        // See class level javadoc in DefaultPicoContainer - about precedence. 
+        pico.addComponent(InterfaceX.class, Something.class);
+        pico.addComponent(Disabled.class);
+        pico.addComponent(Enabled.class);
+        pico.addComponent(NeedsInterfaceX.class);
+
+        NeedsInterfaceX needsInterfaceX = pico.getComponent(NeedsInterfaceX.class);
+        assertEquals("Disabled", needsInterfaceX.getIt());
+        map.put("enabled", "blah");
+        assertEquals("Enabled", needsInterfaceX.getIt());
     }
 
     // From John Tal 23/03/2004

@@ -28,6 +28,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.parameters.ByClass;
+import org.picocontainer.parameters.ByKey;
+import org.picocontainer.parameters.CompositeParameter;
 import org.picocontainer.parameters.Filter;
 import org.picocontainer.parameters.NotMe;
 import org.picocontainer.parameters.Scalar;
@@ -101,7 +103,12 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 	protected Parameter[] createDefaultParameters(Class[] parameters) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            componentParameters[i] = new Scalar(new NotMe(new ByClass(parameters[i]),this));
+            componentParameters[i] =
+            	new CompositeParameter(
+            			new Scalar(new NotMe(new ByKey(parameters[i]),this)),
+            			new Scalar(new NotMe(new ByClass(parameters[i]),this))
+            	);
+            	
         }
         return componentParameters;
     }

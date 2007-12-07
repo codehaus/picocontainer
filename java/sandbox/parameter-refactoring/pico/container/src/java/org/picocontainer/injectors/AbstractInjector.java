@@ -100,14 +100,13 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @return the array with the default parameters.
      */
     @SuppressWarnings("unchecked")
-	protected Parameter[] createDefaultParameters(Class[] parameters) {
+	protected Parameter[] createDefaultParameters(Class[] parameters, PicoContainer container) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
-            componentParameters[i] =
-            	new CompositeParameter(
-            			new Scalar(new NotMe(new ByKey(parameters[i]),this)),
-            			new Scalar(new NotMe(new ByClass(parameters[i]),this))
-            	);
+            componentParameters[i] = new Scalar(new NotMe(new ByKey(parameters[i]),this));
+            if(!componentParameters[i].isResolvable(container)) {
+            	componentParameters[i] = new Scalar(new NotMe(new ByClass(parameters[i]),this));
+            }
             	
         }
         return componentParameters;

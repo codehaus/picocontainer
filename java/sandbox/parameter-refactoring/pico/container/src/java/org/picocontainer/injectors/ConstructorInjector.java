@@ -89,7 +89,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
 			Class[] parameterTypes = sortedMatchingConstructor
 					.getParameterTypes();
 			Parameter[] currentParameters = parameters != null ? parameters
-					: createDefaultParameters(parameterTypes);
+					: createDefaultParameters(parameterTypes,container);
 
 			// remember: all constructors with less arguments than the given
 			// parameters are filtered out already
@@ -253,7 +253,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
 					final Class[] parameterTypes = constructor
 							.getParameterTypes();
 					final Parameter[] currentParameters = parameters != null ? parameters
-							: createDefaultParameters(parameterTypes);
+							: createDefaultParameters(parameterTypes,container);
 					for (int i = 0; i < currentParameters.length; i++) {
 						currentParameters[i].verify(container);
 					}

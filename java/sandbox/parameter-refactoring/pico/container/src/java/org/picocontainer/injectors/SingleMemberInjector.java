@@ -76,7 +76,7 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
         }
         Object[] result = new Object[parameterTypes.length];
-        Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+        Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes,container);
 
         for (int i = 0; i < currentParameters.length; i++) {
             result[i] = currentParameters[i].resolveInstance(container);

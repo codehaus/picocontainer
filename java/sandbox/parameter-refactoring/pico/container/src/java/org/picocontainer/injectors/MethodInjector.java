@@ -123,7 +123,7 @@ public class MethodInjector extends SingleMemberInjector {
                 public Object run() {
                     final Method method = getInjectorMethod();
                     final Class[] parameterTypes = method.getParameterTypes();
-                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes,container);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container);
                     }

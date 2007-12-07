@@ -76,7 +76,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         }
         final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMembers.size(), null));
         final Set<Integer> nonMatchingParameterPositions = new HashSet<Integer>();
-        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
+        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes,container);
         for (int i = 0; i < currentParameters.length; i++) {
             final Parameter parameter = currentParameters[i];
             boolean failedDependency = true;

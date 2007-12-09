@@ -71,7 +71,7 @@ public  class Array extends AbstractCollectionExtractor {
 	 * ( say, int[] satisfies Object[] ) 
 	 */
 	public boolean canSatisfy(PicoContainer container, Class expectedType) {
-		return expectedType.isArray() && expectedType.getComponentType().isAssignableFrom(baseClass);
+		return super.isResolvable(container) && expectedType.isArray() && expectedType.getComponentType().isAssignableFrom(baseClass);
 	}
 
 }

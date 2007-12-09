@@ -10,13 +10,9 @@
 package org.picocontainer.parameters;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 
@@ -43,24 +39,32 @@ public class Scalar extends AbstractParameter {
 			// resolution against the container is correct,
 			// as we performed lookup against it, we can be sure that
 			// we got nothing from child and masking happened already
+			// though it would be formally better ask found component adapter 
+			// instead of container and get rid of container param at all
 			return container.getComponent(adapters.iterator().next().getComponentKey());
-		} if(adapters.size() > 1) {
-			throw new PicoCompositionException("Ambiguous component found by scalar resolution. [" + lookup +"]");
-		}
-		return null;
+			// this is conceptually better, as this will allow us
+			// to made extractor unaware of container at all, and thus
+			// simplify interface
+			// ( by storing container reference in the lookup ) 
+			// but we have to first resolve issue with instantiation 
+			// order tracking 
+			//return adapters.iterator().next().getComponentInstance(container);
+		} 
+		
+		throw bombAmbiguity(adapters);
 	}
 
 	public void verify(PicoContainer container) {
 		
 		java.util.Collection<ComponentAdapter> adapters = lookup.lookup(container);
+		System.err.println("found: " + adapters);
 		if(adapters.isEmpty()) {
 			throw new AbstractInjector.MissingDependencyException(this.toString());
 		} else if(adapters.size() == 1) {
 			// walk down 
 			adapters.iterator().next().verify(container);
-		} else if(adapters.size() > 1) {
-			throw new PicoCompositionException("Ambiguous component found by scalar resolution. [" + lookup +"]");
-		}
+		} 
+		throw bombAmbiguity(adapters);
 	}
 
 	public String toString() {
@@ -68,25 +72,31 @@ public class Scalar extends AbstractParameter {
 	}
 
 	/**
-	 * whther we can resolve scalar from this adapter
+	 * whther we can resolve scalar from this adapter. ambiguity 
+	 * will be bombed
 	 */
 	public boolean isResolvable(PicoContainer container) {
 		java.util.Collection<ComponentAdapter> adapters = lookup.lookup(container);
-		if(adapters.size() == 1) {
-			return true;
-		} else if(adapters.size() == 0) {
+		switch(adapters.size()) {
+		case 0: 
 			return false;
+		case 1:
+			return true;
+		default:
+			throw bombAmbiguity(adapters);
 		}
-		
+	}
+
+	private  AbstractInjector.AmbiguousComponentResolutionException bombAmbiguity(java.util.Collection<ComponentAdapter> adapters) {
 		//ok, more than one - produce ambiguity exception
 		ArrayList<Object> keys = new ArrayList<Object>();
         for(ComponentAdapter adapter: adapters ) {
         	keys.add(adapter.getComponentKey());
         }
         //
-       throw new AbstractInjector.AmbiguousComponentResolutionException(null,keys.toArray());
-	}
+       return  new AbstractInjector.AmbiguousComponentResolutionException(null,keys.toArray());
 
+	}
 	/**
 	 * convenience method to create scalar parameter
 	 * based on by-key lookup strategy. 

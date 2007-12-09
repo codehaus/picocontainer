@@ -53,6 +53,6 @@ public class Collection extends AbstractCollectionExtractor {
 	}
 
 	public boolean canSatisfy(PicoContainer container, Class expectedType) {		
-		return expectedType.isAssignableFrom(collectionClass);
+		return super.isResolvable(container) && expectedType.isAssignableFrom(collectionClass);
 	}
 }

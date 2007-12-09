@@ -52,7 +52,7 @@ public class Map extends AbstractCollectionExtractor {
 	}
 
 	public boolean canSatisfy(PicoContainer container, Class expectedType) {
-		return expectedType.isAssignableFrom(mapType);
+		return super.isResolvable(container) && expectedType.isAssignableFrom(mapType);
 	}
 
 }

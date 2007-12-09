@@ -14,33 +14,34 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.injectors.AbstractInjector;
 
 import junit.framework.TestCase;
 
 /**
  * test scalar extraction out of lookup
+ * 
  * @author Konstantin Pribluda
- *
+ * 
  */
 public class ScalarTestCase extends TestCase {
 
 	/**
 	 * shall resolve single instance
 	 */
-	public void testSuccesfullExtraction() {	
-		Scalar scalar = new Scalar(new Lookup() {
-
-			public Collection<ComponentAdapter> lookup(PicoContainer container) {
-				// TODO Auto-generated method stub
-				return Collections.singleton(((ComponentAdapter)new InstanceAdapter("42","239")));
-			}});
-		assertTrue(scalar.isResolvable(null));
-		assertEquals("239",scalar.resolveInstance(null));
+	public void testSuccesfullExtraction() {
+		MutablePicoContainer container = new DefaultPicoContainer();
+		container.addComponent("42", "239");
+		Scalar scalar = new Scalar(new ByKey("42"));
+		assertTrue(scalar.isResolvable(container));
+		assertEquals("239", scalar.resolveInstance(container));
 	}
-	
+
 	/**
 	 * no instance - not resolvable
 	 */
@@ -49,32 +50,53 @@ public class ScalarTestCase extends TestCase {
 
 			public Collection<ComponentAdapter> lookup(PicoContainer container) {
 				return Collections.EMPTY_SET;
-			}});
+			}
+		});
 		assertFalse(scalar.isResolvable(null));
-		assertEquals(null,scalar.resolveInstance(null));
-		
+		assertEquals(null, scalar.resolveInstance(null));
+
 	}
-	
-	
-	public void testAmbiguousIsNotResolvableAndBombs() {
+
+	/**
+	 * attemtp to resolve orverify ambiguous resolution shallbe bombed, but not
+	 * polite asking whether this is resolvable
+	 * 
+	 */
+	public void testAmbiguousResolutionShallNotSucceed() {
 		Scalar scalar = new Scalar(new Lookup() {
 
 			public Collection<ComponentAdapter> lookup(PicoContainer container) {
 				return Arrays.asList(new ComponentAdapter[] {
-						new InstanceAdapter("42","239"),
-						new InstanceAdapter("42","239")
-				});
-			}});
-		assertFalse(scalar.isResolvable(null));
+						new InstanceAdapter("42", "239"),
+						new InstanceAdapter("24", "239") });
+			}
+		});
+		try {
+			scalar.isResolvable(null);
+			fail("should have produced exception");
+		} catch (AbstractInjector.AmbiguousComponentResolutionException ex) {
+			// anticipated
+			assertEquals("42",ex.getAmbiguousComponentKeys()[0]);
+			assertEquals("24",ex.getAmbiguousComponentKeys()[1]);
+		}
+		
 		try {
 			scalar.resolveInstance(null);
 			fail("should have produced exception");
-		} catch(PicoCompositionException ex) {
+		} catch (AbstractInjector.AmbiguousComponentResolutionException ex) {
 			// anticipated
+			assertEquals("42",ex.getAmbiguousComponentKeys()[0]);
+			assertEquals("24",ex.getAmbiguousComponentKeys()[1]);
+		}
+
+		try {
+			scalar.verify(null);
+			fail("should have produced exception");
+		} catch (AbstractInjector.AmbiguousComponentResolutionException ex) {
+			// anticipated
+			assertEquals("42",ex.getAmbiguousComponentKeys()[0]);
+			assertEquals("24",ex.getAmbiguousComponentKeys()[1]);
 		}
 	}
-	
-	
-	
-	
+
 }

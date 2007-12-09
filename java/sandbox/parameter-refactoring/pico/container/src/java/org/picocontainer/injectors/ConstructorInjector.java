@@ -96,7 +96,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
 			for (int j = 0; j < currentParameters.length; j++) {
 				// check whether this constructor is statisfiable
 				try {
-					if (currentParameters[j].isResolvable(container)) {
+					if (currentParameters[j].canSatisfy(container,parameterTypes[j])) {
 						continue;
 					}
 				} catch (AmbiguousComponentResolutionException e) {

@@ -27,6 +27,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.adapters.AbstractAdapter;
+import org.picocontainer.parameters.Array;
 import org.picocontainer.parameters.ByClass;
 import org.picocontainer.parameters.ByKey;
 import org.picocontainer.parameters.CompositeParameter;
@@ -94,7 +95,8 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     }
 
     /**
-     * Create default parameters for the given types.
+     * Create default parameters for the given types. order of precendence is discutable
+     * and shall be reviewed later
      *
      * @param parameters the parameter types
      * @return the array with the default parameters.
@@ -103,9 +105,17 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 	protected Parameter[] createDefaultParameters(Class[] parameters, PicoContainer container) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
+        	
+        	// first see whether resolution by key with class succeeds
             componentParameters[i] = new Scalar(new NotMe(new ByKey(parameters[i]),this));
             if(!componentParameters[i].isResolvable(container)) {
-            	componentParameters[i] = new Scalar(new NotMe(new ByClass(parameters[i]),this));
+            	// is it array? 
+            	if(parameters[i].isArray()) {
+            		// create array typed component
+            		componentParameters[i] =new Array(parameters[i].getComponentType());
+            	} else  {
+            		componentParameters[i] = new Scalar(new NotMe(new ByClass(parameters[i]),this));
+            	}
             }
             	
         }
@@ -332,7 +342,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         public AmbiguousComponentResolutionException(Class ambiguousDependency, Object[] componentKeys) {
             super("");
             this.ambiguousDependency = ambiguousDependency;
-            this.ambiguousComponentKeys = new Class[componentKeys.length];
+            this.ambiguousComponentKeys = new Object[componentKeys.length];
             System.arraycopy(componentKeys, 0, ambiguousComponentKeys, 0, componentKeys.length);
         }
 

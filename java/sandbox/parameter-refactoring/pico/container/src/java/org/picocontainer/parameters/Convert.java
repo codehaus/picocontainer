@@ -25,7 +25,7 @@ import org.picocontainer.PicoContainer;
  * 
  * @author Konstantin Pribluda
  * @author Paul Hammant
- * 
+ * @TODO decide how tocnvert Character
  */
 public class Convert<T> extends Scalar {
 
@@ -85,8 +85,8 @@ public class Convert<T> extends Scalar {
 				.put(Boolean.class, new ValueOfConverter(Boolean.class));
 		stringConverters.put(Long.class, new ValueOfConverter(Long.class));
 		stringConverters.put(Float.class, new ValueOfConverter(Float.class));
-		stringConverters.put(Character.class, new ValueOfConverter(
-				Character.class));
+//		stringConverters.put(Character.class, new ValueOfConverter(
+//				Character.class));
 		stringConverters.put(Byte.class, new ValueOfConverter(Byte.class));
 		stringConverters.put(Short.class, new ValueOfConverter(Short.class));
 		stringConverters.put(File.class, new NewInstanceConverter(File.class));

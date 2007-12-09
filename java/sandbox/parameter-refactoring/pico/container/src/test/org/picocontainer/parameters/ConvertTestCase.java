@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
@@ -27,13 +29,20 @@ import junit.framework.TestCase;
  */
 public class ConvertTestCase extends TestCase {
 
+	MutablePicoContainer container;
+	
+	public void setUp() {
+		container= new DefaultPicoContainer();
+		container.addComponent("foo.bar","239");
+	}
+	
 	/**
 	 * convert parameter passes non-string values as-is
 	 */
-
 	public void testNotStringIsLeavedAlone() {
-		assertEquals(239, wrap(Integer.class, new Integer(239))
-				.resolveInstance(null));
+		Integer value=new Integer(239);
+		container.addComponent(value);
+		assertSame(value, new Convert(new ByKey(Integer.class),Integer.class).resolveInstance(container));
 	}
 
 	/**
@@ -42,18 +51,20 @@ public class ConvertTestCase extends TestCase {
 	 * @TODO: string to character conversion?
 	 */
 	public void testRegisteredConverters() {
-		assertEquals(239, wrap(Integer.class, "239").resolveInstance(null));
-		assertEquals(239.0, wrap(Double.class, "239").resolveInstance(null));
-		assertEquals(true, wrap(Boolean.class, "true").resolveInstance(null));
-		assertEquals(239l, wrap(Long.class, "239").resolveInstance(null));
-		assertEquals((float) 239.0, wrap(Float.class, "239").resolveInstance(
-				null));
-		// assertEquals('v',wrap(Character.class,"v").resolveInstance(null));
-		assertEquals((byte) 121, wrap(Byte.class, "121").resolveInstance(null));
-		assertEquals((short) 239, wrap(Short.class, "239")
-				.resolveInstance(null));
-		assertEquals(new File("foo"), wrap(File.class, "foo").resolveInstance(
-				null));
+		container.addComponent("bool","true");
+		container.addComponent("121","121");
+		ByKey byKey= new ByKey("foo.bar");
+		
+		assertEquals(239, new Convert(byKey,Integer.class).resolveInstance(container));
+		assertEquals(239.0, new Convert(byKey,Double.class).resolveInstance(container));
+		assertEquals(true, new Convert(new ByKey("bool"),Boolean.class).resolveInstance(container));
+		assertEquals(239l,new Convert(byKey,Long.class).resolveInstance(container));
+		assertEquals((float) 239.0, new Convert(byKey,Float.class).resolveInstance(container));
+		// something stupid with character conveter...
+		//assertEquals('v',new Convert(byKey,Character.class).resolveInstance(container));
+		assertEquals((byte) 121, new Convert(new ByKey("121"),Byte.class).resolveInstance(container));
+		assertEquals((short) 239, new Convert(byKey,Short.class).resolveInstance(container));
+		assertEquals(new File("239"), new Convert(byKey,File.class).resolveInstance(container));
 	}
 
 	
@@ -62,8 +73,9 @@ public class ConvertTestCase extends TestCase {
 	 * if possible
 	 */
 	public void testAutomaticConverterRegistration() {
-		assertEquals(ValueOfComponent.class,wrap(ValueOfComponent.class, "239").resolveInstance(null).getClass());
-		assertEquals(StringConstructorComponent.class,wrap(StringConstructorComponent.class, "239").resolveInstance(null).getClass());
+		ByKey byKey= new ByKey("foo.bar");
+		assertEquals(ValueOfComponent.class,new Convert(byKey,ValueOfComponent.class).resolveInstance(container).getClass());
+		assertEquals(StringConstructorComponent.class,new Convert(byKey,StringConstructorComponent.class).resolveInstance(container).getClass());
 	}
 	
 	
@@ -75,16 +87,11 @@ public class ConvertTestCase extends TestCase {
 	 */
 	public void testNoConverterIsBombed() {
 		try {
-			wrap(PicoContainer.class, "239").resolveInstance(null);
-			fail("wa not bombed on non available converter");
+			new Convert(new ByKey("foo.bar"),PicoContainer.class).resolveInstance(container);
+			fail("was not bombed on non available converter");
 		} catch(PicoCompositionException ex) {
 			
 		}
-	}
-	
-	public void testNotStringIsPassedThrough() {
-		assertEquals(new File("glumbla"), wrap(Integer.class, new File("glumbla")).resolveInstance(null));
-		
 	}
 	
 	static class ValueOfComponent {
@@ -98,23 +105,5 @@ public class ConvertTestCase extends TestCase {
 			
 		}
 	}
-	/**
-	 * conveniently wrap object into singleton collection
-	 * 
-	 * @param object
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	Convert wrap(final Class clazz, final Object object) {
-		Convert convert = new Convert(new Lookup() {
 
-			public Collection<ComponentAdapter> lookup(PicoContainer container) {
-
-				return Collections
-						.singleton(((ComponentAdapter) new InstanceAdapter(
-								"foo", object)));
-			}
-		}, clazz);
-		return convert;
-	}
 }

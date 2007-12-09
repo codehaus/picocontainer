@@ -20,7 +20,9 @@ import org.picocontainer.PicoContainer;
  * later processed by convert. 
  * 
  * @author Konstantin Pribluda
- *
+ * @TODO: investigate adding  container reference to lookup 
+ * (would made programatic configuration worse,and made them not 
+ * reusable)
  */
 public interface Lookup {
 	

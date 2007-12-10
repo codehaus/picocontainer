@@ -21,6 +21,13 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
+/**
+ * those tests fail due toautomatic by name
+ * resolution. question is, whether whis has to be 
+ * reworked. 
+ * @author k.pribluda
+ *
+ */
 public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
 
     public void testBasicParsing() {

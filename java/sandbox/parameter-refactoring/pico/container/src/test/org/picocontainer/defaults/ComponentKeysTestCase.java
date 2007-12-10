@@ -50,6 +50,15 @@ public class ComponentKeysTestCase extends TestCase {
 
     }
 
+    /**
+     * @discuss
+     * this test is questionable.  since by-class lookup ensures
+     * that key in child overloads anything found in parent simple touchable
+     * is not resolvable from child. 
+     * 
+     * this requires some discussion
+     * @throws Exception
+     */
     public void testComponentKeysFromParentCannotConfuseTheChild() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("test", SimpleTouchable.class);

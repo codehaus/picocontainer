@@ -57,14 +57,16 @@ public class Scalar extends AbstractParameter {
 	public void verify(PicoContainer container) {
 		
 		java.util.Collection<ComponentAdapter> adapters = lookup.lookup(container);
-		System.err.println("found: " + adapters);
+
 		if(adapters.isEmpty()) {
 			throw new AbstractInjector.MissingDependencyException(this.toString());
 		} else if(adapters.size() == 1) {
 			// walk down 
 			adapters.iterator().next().verify(container);
-		} 
-		throw bombAmbiguity(adapters);
+			
+		} else {
+			throw bombAmbiguity(adapters);
+		}
 	}
 
 	public String toString() {

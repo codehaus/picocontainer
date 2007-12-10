@@ -23,7 +23,7 @@ public abstract class Filter implements Lookup {
 
 	public Collection<ComponentAdapter> lookup(PicoContainer container) {
 		if(result == null) {
-		 result = new ArrayList<ComponentAdapter>(delegate.lookup(container).size());
+		 result = new ArrayList<ComponentAdapter>(delegate.lookup(container).size());	 
 			for(ComponentAdapter adapter: delegate.lookup(container)) {
 				if(evaluate(adapter)) {
 					result.add(adapter);

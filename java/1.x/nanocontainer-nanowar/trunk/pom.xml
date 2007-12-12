@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.nanocontainer</groupId>
@@ -10,7 +7,7 @@
     </parent>
     <artifactId>nanocontainer-nanowar-parent</artifactId>
     <name>NanoContainer NanoWar Parent</name>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.1.1</version>
     <packaging>pom</packaging>
     <url>http://www.nanocontainer.org/nanowar</url>
 
@@ -34,15 +31,9 @@
     </issueManagement>
 
     <scm>
-        <connection>
-            scm:svn:https://svn.codehaus.org/picocontainer/java/1.x/nanocontainer-nanowar/trunk
-        </connection>
-        <developerConnection>
-            scm:svn:https://svn.codehaus.org/scm/picocontainer/java/1.x/nanocontainer-nanowar/trunk
-        </developerConnection>
-        <url>
-            http://fisheye.codehaus.org/browse/picocontainer/java/1.x/nanocontainer-nanowar/trunk
-        </url>
+        <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/1.x/nanocontainer-nanowar/tags/nanocontainer-nanowar-1.1.1</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/1.x/nanocontainer-nanowar/tags/nanocontainer-nanowar-1.1.1</developerConnection>
+        <url>scm:svn:https://svn.codehaus.org/picocontainer/java/1.x/nanocontainer-nanowar/tags/nanocontainer-nanowar-1.1.1</url>
     </scm>
 
     <repositories>

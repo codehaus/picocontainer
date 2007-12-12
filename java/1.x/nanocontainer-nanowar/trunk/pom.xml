@@ -187,6 +187,7 @@
           <version>2.0-beta-6</version>
           <configuration>
             <autoVersionSubmodules>true</autoVersionSubmodules>
+            <preparationGoals>clean install</preparationGoals>
             <tagBase>https://svn.codehaus.org/picocontainer/java/1.x/nanocontainer-nanowar/tags/</tagBase>
           </configuration>
         </plugin>

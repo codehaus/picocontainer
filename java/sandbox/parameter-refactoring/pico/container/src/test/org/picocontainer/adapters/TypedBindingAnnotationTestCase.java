@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 import junit.framework.TestCase;
 
 /** @author Paul Hammant */
-public class JasonsTestCase extends TestCase {
+public class TypedBindingAnnotationTestCase extends TestCase {
 
     public void testJasonsNeed() {
         MutablePicoContainer mpc = new DefaultPicoContainer();

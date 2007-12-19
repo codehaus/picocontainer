@@ -18,14 +18,14 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.BehaviorFactory;
 import org.picocontainer.annotations.Cache;
-import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class AdaptiveBehavior implements BehaviorFactory, Serializable {
+public class AdaptingBehavior implements BehaviorFactory, Serializable {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
@@ -85,8 +85,8 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
         return lastFactory.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
     }
 
-    protected AdaptiveInjection makeInjectionFactory() {
-        return new AdaptiveInjection();
+    protected AdaptingInjection makeInjectionFactory() {
+        return new AdaptingInjection();
     }
 
     protected void processSynchronizing(Properties componentProperties, List<BehaviorFactory> list) {
@@ -129,7 +129,7 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
     protected void processAutomatic(Properties componentProperties,
                                              List<BehaviorFactory> list) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC)) {
-            list.add(new Automatic());
+            list.add(new Automating());
         }
     }
 

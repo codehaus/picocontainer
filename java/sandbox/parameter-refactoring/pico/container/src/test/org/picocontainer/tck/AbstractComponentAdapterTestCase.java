@@ -38,7 +38,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.parameters.Constant;
 import org.picocontainer.references.SimpleReference;
@@ -68,7 +68,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
     }
 
     protected ComponentFactory createDefaultComponentFactory() {
-        return new AdaptiveInjection();
+        return new AdaptingInjection();
     }
 
     // ============================================

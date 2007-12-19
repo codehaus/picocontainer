@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 
 /** @author Paul Hammant */
-public class Interception extends AbstractBehaviorFactory {
+public class Intercepting extends AbstractBehaviorFactory {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                           LifecycleStrategy lifecycleStrategy,

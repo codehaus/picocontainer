@@ -12,7 +12,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -77,8 +77,8 @@ public class AnnotatedFieldInjector extends IterativeInjector {
         return "FieldInjector-";
     }
 
-    protected ParameterName makeParameterNameImpl(final AccessibleObject member) {
-        return new ParameterName() {
+    protected NameBinding makeParameterNameImpl(final AccessibleObject member) {
+        return new NameBinding() {
             public String getName() {
                 return ((Field) member).getName();
             }

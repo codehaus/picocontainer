@@ -60,7 +60,7 @@ public interface Parameter<T> {
      * @param expectedType
      * @return
      */
-    boolean canSatisfy(PicoContainer container,Class expectedType);
+    boolean canSatisfy(PicoContainer container, Class expectedType);
 
     /**
      * Verify that the Parameter can statisfy the expected type using the container

@@ -15,7 +15,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -30,13 +30,13 @@ import org.picocontainer.visitors.VerifyingVisitor;
  */
 public final class ParameterTestCase extends TestCase {
 
-    public static class FooParameterName implements ParameterName {
+    public static class FooNameBinding implements NameBinding {
         public String getName() {
             return "";
         }
     }
 
-    final ParameterName pn = new FooParameterName();
+    final NameBinding pn = new FooNameBinding();
 
     public void testComponentParameterFetches() throws PicoCompositionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();

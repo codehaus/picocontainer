@@ -12,7 +12,6 @@ package org.picocontainer.containers;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.ParameterName;
 
 import java.io.Serializable;
 import java.util.Collection;

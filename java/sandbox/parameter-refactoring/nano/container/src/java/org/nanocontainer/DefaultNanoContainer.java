@@ -23,7 +23,7 @@ import org.picocontainer.PicoException;
 import org.picocontainer.security.CustomPermissionsURLClassLoader;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
@@ -40,7 +40,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Enumeration;
 
 /**
  * This is a MutablePicoContainer that also supports soft composition. i.e. assembly by class name rather that class
@@ -453,8 +452,8 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
             return DefaultNanoContainer.this.getComponentAdapter(componentKey);
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
-            return DefaultNanoContainer.this.getComponentAdapter(componentType, componentParameterName);
+        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
+            return DefaultNanoContainer.this.getComponentAdapter(componentType, componentNameBinding);
         }
 
         public Collection<ComponentAdapter<?>> getComponentAdapters() {

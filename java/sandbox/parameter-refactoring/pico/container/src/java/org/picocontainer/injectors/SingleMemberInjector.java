@@ -11,7 +11,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 
 import java.lang.reflect.AccessibleObject;
@@ -86,12 +86,12 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
 
 
-    protected class SingleMemberInjectorParameterName implements ParameterName {
+    protected class SingleMemberInjectorNameBinding implements NameBinding {
         private final AccessibleObject member;
         private final int index;
         private String name;
 
-        public SingleMemberInjectorParameterName(AccessibleObject member, int index) {
+        public SingleMemberInjectorNameBinding(AccessibleObject member, int index) {
             this.member = member;
             this.index = index;
         }

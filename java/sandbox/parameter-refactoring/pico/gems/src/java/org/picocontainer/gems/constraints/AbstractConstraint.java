@@ -9,7 +9,7 @@
 package org.picocontainer.gems.constraints;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AbstractInjector;
@@ -33,10 +33,10 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
     public Object resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
                                   Class expectedType,
-                                  ParameterName expectedParameterName, boolean useNames) throws PicoCompositionException
+                                  NameBinding expectedNameBinding, boolean useNames) throws PicoCompositionException
     {
         final Object[] array =
-            (Object[])super.resolveInstance(container, adapter, getArrayType(expectedType), expectedParameterName,
+            (Object[])super.resolveInstance(container, adapter, getArrayType(expectedType), expectedNameBinding,
                                             useNames);
         if (array.length == 1) {
             return array[0];
@@ -47,17 +47,17 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
                                 Class expectedType,
-                                ParameterName expectedParameterName, boolean useNames) throws PicoCompositionException
+                                NameBinding expectedNameBinding, boolean useNames) throws PicoCompositionException
     {
-        return super.isResolvable(container, adapter, getArrayType(expectedType), expectedParameterName, useNames);
+        return super.isResolvable(container, adapter, getArrayType(expectedType), expectedNameBinding, useNames);
     }
 
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
                        Class expectedType,
-                       ParameterName expectedParameterName, boolean useNames) throws PicoCompositionException
+                       NameBinding expectedNameBinding, boolean useNames) throws PicoCompositionException
     {
-        super.verify(container, adapter, getArrayType(expectedType), expectedParameterName, useNames);
+        super.verify(container, adapter, getArrayType(expectedType), expectedNameBinding, useNames);
     }
 
     public abstract boolean evaluate(ComponentAdapter adapter);

@@ -1,14 +1,8 @@
 package org.picocontainer.parameters;
 
-import org.picocontainer.Characteristics;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.ParameterName;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.NameBinding;
 
 import java.io.File;
-import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -23,7 +17,7 @@ public class ConfigParameterTestCase extends TestCase {
 
 
 	// defaultparameter name, just for convenience
-	ParameterName paramName = new ParameterName() {
+	NameBinding paramNameBinding = new NameBinding() {
 		public String getName() {
 			return "gloo.blum";
 		}
@@ -81,7 +75,7 @@ public class ConfigParameterTestCase extends TestCase {
 //		Parameter parameter = Scalar.byKey("gloo.blum");
 //
 ////		try {
-////			Object foo = parameter.resolveInstance(container, null, List.class, paramName, false);
+////			Object foo = parameter.resolveInstance(container, null, List.class, paramNameBinding, false);
 ////			fail("failed to bomb on unavailable converter");
 ////		} catch (ConfigParameter.NoConverterAvailableException ex) {
 ////			// that's anticipated

@@ -30,13 +30,12 @@ public class TextElementModel extends AbstractModel implements Startable
     private Integer y;
     private Integer opacity;
     private Integer rotation;
-   
-    
     /**
      * Default constructor
      */
-    public TextElementModel()
+    public TextElementModel(DefaultController controller)
     {
+        controller.addModel(this);
     }
 
     /**
@@ -50,7 +49,6 @@ public class TextElementModel extends AbstractModel implements Startable
         setFont(new Font("Arial", Font.BOLD, 24));
         setX(50);
         setY(50);
-        
     }
 
     public void stop() {

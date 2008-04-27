@@ -47,6 +47,7 @@ public class PropertiesViewPanel extends AbstractViewPanel
     public PropertiesViewPanel(DefaultController controller) {
         
         this.controller = controller;
+        controller.addView(this);
         
         initComponents();
         localInitialization();
@@ -637,8 +638,6 @@ public class PropertiesViewPanel extends AbstractViewPanel
     }
     
     // </editor-fold>
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton changeFontButton;
     private javax.swing.JPanel documentTabPanel;

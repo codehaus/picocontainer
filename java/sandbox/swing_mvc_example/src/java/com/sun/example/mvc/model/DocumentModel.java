@@ -24,13 +24,13 @@ public class DocumentModel extends AbstractModel implements Startable
     private String name;
     private Integer width;
     private Integer height;
-   
 
     /**
      * Default constructor
      */
-    public DocumentModel()
-    {   
+    public DocumentModel(DefaultController controller)
+    {
+        controller.addModel(this);
     }
     
     /**
@@ -41,7 +41,7 @@ public class DocumentModel extends AbstractModel implements Startable
         setName("Sample Document");
         setWidth(500);
         setHeight(500);
-        
+
     }
 
     public void stop() {

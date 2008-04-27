@@ -39,15 +39,13 @@ public class DisplayViewPanel extends AbstractViewPanel
     //  component
     
     private TextElementComponent paintedString;
-    
-    
     /**
      * Creates new form TextElementDisplayPanel
      * @param controller An object implenting the controller interface that
      *        this view can use to process GUI actions
      */
-    public DisplayViewPanel() {
-        
+    public DisplayViewPanel(DefaultController controller) {
+        controller.addView(this);
 
         initComponents();
         localInitialization();
@@ -179,7 +177,7 @@ public class DisplayViewPanel extends AbstractViewPanel
         
     }
 
-    // </editor-fold>  
+    // </editor-fold>
     
     
     

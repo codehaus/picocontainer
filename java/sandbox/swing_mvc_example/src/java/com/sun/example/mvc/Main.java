@@ -24,12 +24,11 @@ import java.beans.PropertyChangeSupport;
 
 /**
  *
- * @author Robert Eckstein
+ * @author Paul Hammant
  */
 public class Main {
     
-    /** Creates a new instance of Main */
-    public Main() {
+    public static void main(String[] args) {
 
         DefaultPicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
 
@@ -45,23 +44,7 @@ public class Main {
 
         pico.addComponent(DefaultController.class);
 
-        DefaultController controller = pico.getComponent(DefaultController.class);
-
-        controller.addView(pico.getComponent(DisplayViewPanel.class));
-        controller.addView(pico.getComponent(PropertiesViewPanel.class));
-        controller.addModel(pico.getComponent(TextElementModel.class));
-        controller.addModel(pico.getComponent(DocumentModel.class));
-
         pico.start();
-             
-        
-    }
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        Main main = new Main();
     }
     
 }

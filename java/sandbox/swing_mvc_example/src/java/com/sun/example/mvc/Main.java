@@ -17,6 +17,7 @@ import com.sun.example.mvc.view.DisplayViewPanel;
 import com.sun.example.mvc.view.PropertiesDialog;
 import com.sun.example.mvc.view.PropertiesViewPanel;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.behaviors.Caching;
 
 import java.beans.PropertyChangeSupport;
@@ -30,7 +31,7 @@ public class Main {
     /** Creates a new instance of Main */
     public Main() {
 
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
 
         pico.addComponent(PropertyChangeSupport.class);
 

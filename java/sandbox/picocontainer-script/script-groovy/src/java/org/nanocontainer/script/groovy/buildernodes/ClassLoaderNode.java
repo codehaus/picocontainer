@@ -12,8 +12,8 @@ package org.nanocontainer.script.groovy.buildernodes;
 
 import java.util.Map;
 
-import org.nanocontainer.script.DefaultNanoContainer;
-import org.nanocontainer.script.NanoContainer;
+import org.nanocontainer.script.DefaultScriptedPicoContainer;
+import org.nanocontainer.script.ScriptedPicoContainer;
 
 /**
  * @author Paul Hammant
@@ -29,8 +29,8 @@ public class ClassLoaderNode extends AbstractBuilderNode {
 
     public Object createNewNode(Object current, Map attributes) {
 
-        NanoContainer nanoContainer = (NanoContainer) current;
-        return new DefaultNanoContainer(nanoContainer.getComponentClassLoader(), nanoContainer);
+        ScriptedPicoContainer nanoContainer = (ScriptedPicoContainer) current;
+        return new DefaultScriptedPicoContainer(nanoContainer.getComponentClassLoader(), nanoContainer);
     }
 
 }

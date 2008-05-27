@@ -37,7 +37,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     @Test public void testSimpleConfigurationIsPossible() {
         Reader script = new StringReader("from org.nanocontainer.testmodel import *\n" +
-                "pico = DefaultNanoContainer()\n" +
+                "pico = DefaultScriptedPicoContainer()\n" +
                 "pico.addComponent(WebServerImpl)\n" +
                 "pico.addComponent(DefaultWebServerConfig)\n");
 
@@ -49,9 +49,9 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
         try {
             Reader script = new StringReader("" +
                     "from org.nanocontainer.testmodel import *\n" +
-                    "pico = DefaultNanoContainer()\n" +
+                    "pico = DefaultScriptedPicoContainer()\n" +
                     "pico.addComponent(WebServerImpl)\n" +
-                    "childContainer = DefaultNanoContainer(pico)\n" +
+                    "childContainer = DefaultScriptedPicoContainer(pico)\n" +
                     "childContainer.addComponent(DefaultWebServerConfig)\n");
             PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
             pico.getComponent(WebServer.class);
@@ -65,7 +65,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
         Reader script = new StringReader("" +
                 "from org.nanocontainer.testmodel import *\n" +
                 "from org.picocontainer import Parameter\n"+
-                "pico = DefaultNanoContainer()\n" +
+                "pico = DefaultScriptedPicoContainer()\n" +
                 "pico.addComponent(DefaultWebServerConfig)\n" +
                 "child = pico.makeChildContainer()\n" +
                 "child.addComponent(WebServerImpl)\n" +

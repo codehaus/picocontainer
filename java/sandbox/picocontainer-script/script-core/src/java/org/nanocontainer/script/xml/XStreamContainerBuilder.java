@@ -20,7 +20,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.nanocontainer.script.ContainerPopulator;
-import org.nanocontainer.script.DefaultNanoContainer;
+import org.nanocontainer.script.DefaultScriptedPicoContainer;
 import org.nanocontainer.script.LifecycleMode;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
@@ -315,7 +315,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                 componentFactory = (ComponentFactory) componentFactoryClass.newInstance();
             }
             MutablePicoContainer picoContainer = new DefaultPicoContainer(componentFactory);
-            DefaultNanoContainer nano = new DefaultNanoContainer(getClassLoader(), picoContainer);
+            DefaultScriptedPicoContainer nano = new DefaultScriptedPicoContainer(getClassLoader(), picoContainer);
             populateContainer(nano);
             return nano;
         } catch (ClassNotFoundException e) {

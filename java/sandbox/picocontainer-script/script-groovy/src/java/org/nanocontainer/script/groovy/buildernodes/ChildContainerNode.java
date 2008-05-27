@@ -12,8 +12,8 @@ package org.nanocontainer.script.groovy.buildernodes;
 
 import java.util.Map;
 
-import org.nanocontainer.script.DefaultNanoContainer;
-import org.nanocontainer.script.NanoContainer;
+import org.nanocontainer.script.DefaultScriptedPicoContainer;
+import org.nanocontainer.script.ScriptedPicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.DefaultPicoContainer;
 import java.security.PrivilegedAction;
@@ -110,7 +110,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
     public Object createNewNode(Object current, Map attributes) throws
         NanoContainerMarkupException {
 
-        return createChildContainer(attributes,(NanoContainer) current);
+        return createChildContainer(attributes,(ScriptedPicoContainer) current);
     }
 
     /**
@@ -134,7 +134,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
      * @param parent The parent container
      * @return The NanoContainer
      */
-    protected NanoContainer createChildContainer(Map attributes, NanoContainer parent) {
+    protected ScriptedPicoContainer createChildContainer(Map attributes, ScriptedPicoContainer parent) {
 
         ClassLoader parentClassLoader;
         MutablePicoContainer childContainer;
@@ -174,7 +174,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
             Class clazz = (Class) attributes.get(CLASS);
             return createNanoContainer(clazz, decoratedPico, parentClassLoader);
         } else {
-            return new DefaultNanoContainer(parentClassLoader, decoratedPico);
+            return new DefaultScriptedPicoContainer(parentClassLoader, decoratedPico);
         }
     }
 
@@ -184,13 +184,13 @@ public class ChildContainerNode extends AbstractBuilderNode {
         }
     }
 
-    private NanoContainer createNanoContainer(Class clazz, MutablePicoContainer decoratedPico, ClassLoader parentClassLoader) {
+    private ScriptedPicoContainer createNanoContainer(Class clazz, MutablePicoContainer decoratedPico, ClassLoader parentClassLoader) {
         DefaultPicoContainer instantiatingContainer = new DefaultPicoContainer();
         instantiatingContainer.addComponent(ClassLoader.class, parentClassLoader);
         instantiatingContainer.addComponent(MutablePicoContainer.class, decoratedPico);
-        instantiatingContainer.addComponent(NanoContainer.class, clazz);
-        Object componentInstance = instantiatingContainer.getComponent(NanoContainer.class);
-        return (NanoContainer) componentInstance;
+        instantiatingContainer.addComponent(ScriptedPicoContainer.class, clazz);
+        Object componentInstance = instantiatingContainer.getComponent(ScriptedPicoContainer.class);
+        return (ScriptedPicoContainer) componentInstance;
     }
 
     private ComponentFactory createComponentFactory(Map attributes) {

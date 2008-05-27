@@ -15,8 +15,8 @@ import groovy.util.BuilderSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.picocontainer.PicoClassNotFoundException;
 import org.nanocontainer.script.ClassName;
-import org.nanocontainer.script.DefaultNanoContainer;
-import org.nanocontainer.script.NanoContainer;
+import org.nanocontainer.script.DefaultScriptedPicoContainer;
+import org.nanocontainer.script.ScriptedPicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.nanocontainer.script.NullNodeBuilderDecorationDelegate;
@@ -118,7 +118,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
                 .setNode(new ClassLoaderNode())
                 .setNode(new GrantNode())
                 .setNode(new AppendContainerNode());
-        DefaultNanoContainer factory = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer factory = new DefaultScriptedPicoContainer();
         try {
             factory.addComponent("wc",  new ClassName("org.nanocontainer.webcontainer.groovy.WebContainerBuilder"));
             setNode((BuilderNode) factory.getComponent("wc"));
@@ -251,19 +251,19 @@ public class GroovyNodeBuilder extends BuilderSupport {
      * @return NanoContainer, never null.
      * @throws NanoContainerMarkupException
      */
-    private NanoContainer extractOrCreateValidRootNanoContainer(final Map attributes) throws NanoContainerMarkupException {
+    private ScriptedPicoContainer extractOrCreateValidRootNanoContainer(final Map attributes) throws NanoContainerMarkupException {
         Object parentAttribute = attributes.get(PARENT);
         //
         //NanoPicoContainer implements MutablePicoCotainer AND NanoContainer
         //So we want to check for NanoContainer first.
         //
-        if (parentAttribute instanceof NanoContainer) {
+        if (parentAttribute instanceof ScriptedPicoContainer) {
             // we're not in an enclosing scope - look at parent attribute instead
-            return (NanoContainer) parentAttribute;
+            return (ScriptedPicoContainer) parentAttribute;
         }
         if (parentAttribute instanceof MutablePicoContainer) {
             // we're not in an enclosing scope - look at parent attribute instead
-            return new DefaultNanoContainer((MutablePicoContainer) parentAttribute);
+            return new DefaultScriptedPicoContainer((MutablePicoContainer) parentAttribute);
         }
         return null;
     }

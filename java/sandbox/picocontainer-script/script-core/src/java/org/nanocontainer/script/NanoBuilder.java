@@ -14,9 +14,9 @@ import org.picocontainer.containers.TransientPicoContainer;
 
 public final class NanoBuilder {
 
-    private Class<? extends NanoContainer> ncClass = DefaultNanoContainer.class;
+    private Class<? extends ScriptedPicoContainer> scriptClass = DefaultScriptedPicoContainer.class;
     private final PicoBuilder picoBuilder;
-    private ClassLoader classLoader = DefaultNanoContainer.class.getClassLoader();
+    private ClassLoader classLoader = DefaultScriptedPicoContainer.class.getClassLoader();
     private boolean cfs;
 
     public NanoBuilder(PicoContainer parentcontainer, InjectionFactory injectionType) {
@@ -35,12 +35,12 @@ public final class NanoBuilder {
         picoBuilder = new PicoBuilder();
     }
 
-    public NanoContainer build() {
+    public ScriptedPicoContainer build() {
         DefaultPicoContainer temp = new TransientPicoContainer();
         temp.addComponent(ClassLoader.class, classLoader);
-        temp.addComponent("nc", ncClass);
+        temp.addComponent("sc", scriptClass);
         temp.addComponent(MutablePicoContainer.class, buildPico());
-        NanoContainer nc = (NanoContainer)temp.getComponent("nc");
+        ScriptedPicoContainer nc = (ScriptedPicoContainer)temp.getComponent("sc");
         return nc;
     }
 
@@ -110,8 +110,8 @@ public final class NanoBuilder {
         return this;
     }
 
-    public NanoBuilder implementedBy(Class<? extends NanoContainer> nanoContainerClass) {
-        ncClass = nanoContainerClass;
+    public NanoBuilder implementedBy(Class<? extends ScriptedPicoContainer> nanoContainerClass) {
+        scriptClass = nanoContainerClass;
         return this;
     }
 

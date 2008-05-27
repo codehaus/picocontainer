@@ -23,9 +23,9 @@ import java.net.URL;
 
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.nanocontainer.script.DefaultNanoContainer;
+import org.nanocontainer.script.DefaultScriptedPicoContainer;
 import org.nanocontainer.script.LifecycleMode;
-import org.nanocontainer.script.NanoContainer;
+import org.nanocontainer.script.ScriptedPicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
@@ -35,7 +35,7 @@ import org.picocontainer.DefaultPicoContainer;
 
 /**
  * {@inheritDoc}
- * The groovy script has to return an instance of {@link NanoContainer}.
+ * The groovy script has to return an instance of {@link ScriptedPicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. It is recommended to use this as a constructor argument to the instantiated
  * NanoPicoContainer.
@@ -69,7 +69,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
 
         Binding binding = new Binding();
         if ( parentContainer == null ){
-            parentContainer = new DefaultNanoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(), new EmptyPicoContainer()));
+            parentContainer = new DefaultScriptedPicoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(), new EmptyPicoContainer()));
         }
         binding.setVariable("parent", parentContainer);
         binding.setVariable("builder", createGroovyNodeBuilder());
@@ -137,8 +137,8 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
 
         if (picoVariable instanceof PicoContainer) {
             return (PicoContainer) picoVariable;
-        } else if (picoVariable instanceof NanoContainer) {
-            return ((NanoContainer) picoVariable);
+        } else if (picoVariable instanceof ScriptedPicoContainer) {
+            return ((ScriptedPicoContainer) picoVariable);
         } else {
             throw new NanoContainerMarkupException("Bad type for pico:" + picoVariable.getClass().getName());
         }

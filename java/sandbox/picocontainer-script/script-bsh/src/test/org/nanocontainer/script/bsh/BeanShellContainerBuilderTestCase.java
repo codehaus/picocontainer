@@ -43,7 +43,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         Reader script = new StringReader("" +
                 "java.util.Map m = new java.util.HashMap();\n" +
                 "m.put(\"foo\",\"bar\");" +
-                "pico = new org.nanocontainer.script.DefaultNanoContainer(parent);\n" +
+                "pico = new org.nanocontainer.script.DefaultScriptedPicoContainer(parent);\n" +
                 "pico.addComponent((Object) \"hello\", m, new org.picocontainer.Parameter[0]);\n");
         PicoContainer parent = new DefaultPicoContainer();
         parent = new ImmutablePicoContainer(parent);

@@ -27,10 +27,10 @@ import org.picocontainer.tck.AbstractPicoContainerTest;
 /**
  * @author Paul Hammant
  */
-public class DefaultNanoContainerTestCase extends AbstractPicoContainerTest {
+public class DefaultScriptedPicoContainerTestCase extends AbstractPicoContainerTest {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultNanoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new Caching(), parent));
+        return new DefaultScriptedPicoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new Caching(), parent));
     }
 
 
@@ -41,9 +41,9 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTest {
     // TODO - go to a Nano TCK?
     @Test public void testNamedChildContainerIsAccessible()  {
         StringBuffer sb = new StringBuffer();
-        final NanoContainer parent = (NanoContainer) createPicoContainer(null);
+        final ScriptedPicoContainer parent = (ScriptedPicoContainer) createPicoContainer(null);
         parent.addComponent(sb);
-        final NanoContainer child = (NanoContainer) parent.makeChildContainer("foo");
+        final ScriptedPicoContainer child = (ScriptedPicoContainer) parent.makeChildContainer("foo");
         child.addComponent(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
         LifeCycleMonitoring o = (LifeCycleMonitoring) parent.getComponent((Object)("foo/*" + LifeCycleMonitoring.class.getName()));
         assertNotNull(o);
@@ -52,7 +52,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTest {
     // TODO - go to a Nano TCK?
     @Test public void testNamedChildContainerIsAccessibleForStringKeys() {
         StringBuffer sb = new StringBuffer();
-        final NanoContainer parent = (NanoContainer) createPicoContainer(null);
+        final ScriptedPicoContainer parent = (ScriptedPicoContainer) createPicoContainer(null);
         parent.addComponent(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.addComponent("lcm",LifeCycleMonitoring.class);
@@ -64,7 +64,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTest {
     // TODO - go to a Nano TCK?
     @Test public void testNamedChildContainerIsAccessibleForClassKeys() {
         StringBuffer sb = new StringBuffer();
-        final NanoContainer parent = (NanoContainer) createPicoContainer(null);
+        final ScriptedPicoContainer parent = (ScriptedPicoContainer) createPicoContainer(null);
         parent.addComponent(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.addComponent(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
@@ -74,7 +74,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTest {
     }
 
     @Test public void testMakeRemoveChildContainer() {
-        final NanoContainer parent = (NanoContainer) createPicoContainer(null);
+        final ScriptedPicoContainer parent = (ScriptedPicoContainer) createPicoContainer(null);
         parent.addComponent("java.lang.String", "This is a test");
         MutablePicoContainer pico = parent.makeChildContainer();
         // Verify they are indeed wired together.
@@ -91,7 +91,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTest {
     }
 
     protected void addContainers(List expectedList) {
-        expectedList.add(DefaultNanoContainer.class);
+        expectedList.add(DefaultScriptedPicoContainer.class);
         expectedList.add(DefaultPicoContainer.class);
     }
 

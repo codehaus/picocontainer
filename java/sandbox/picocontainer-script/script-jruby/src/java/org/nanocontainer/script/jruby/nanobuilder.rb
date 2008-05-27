@@ -15,7 +15,7 @@
 #
 module Nano
   Parameter = org.picocontainer.Parameter
-  DefaultNanoContainer = org.nanocontainer.script.DefaultNanoContainer
+  DefaultScriptedPicoContainer = org.nanocontainer.script.DefaultScriptedPicoContainer
   DefaultPicoContainer = org.picocontainer.DefaultPicoContainer
   ComponentParameter = org.picocontainer.parameters.ComponentParameter
   ConstantParameter = org.picocontainer.parameters.ConstantParameter
@@ -99,7 +99,7 @@ module Nano
         options = componentFactories.last
       end
 
-      @impl     = DefaultNanoContainer
+      @impl     = DefaultScriptedPicoContainer
       @parent   = options[:parent]
       @componentFactory      = options[:component_adapter_factory]
       @monitor  = options[:component_monitor]

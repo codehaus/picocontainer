@@ -13,7 +13,7 @@ package org.nanocontainer.script.groovy.buildernodes;
 
 import java.util.Map;
 
-import org.nanocontainer.script.NanoContainer;
+import org.nanocontainer.script.ScriptedPicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.PicoContainer;
 
@@ -80,7 +80,7 @@ public class AppendContainerNode extends AbstractBuilderNode {
 
 
         Object attributeValue = attributes.get(CONTAINER);
-        if (! (attributeValue instanceof NanoContainer) && !(attributeValue instanceof PicoContainer) ) {
+        if (! (attributeValue instanceof ScriptedPicoContainer) && !(attributeValue instanceof PicoContainer) ) {
             throw new ClassCastException(attributeValue.toString() + " must be a derivative of nanocontainer.  Got: "
                 + attributeValue.getClass().getName() + " instead.");
         }

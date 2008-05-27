@@ -126,7 +126,7 @@ public class ScriptedContainerBuilderFactory {
      * @param builderClass String the builder class to load.
      */
     private void createContainerBuilder(Object composition, ClassLoader classLoader, String builderClass) {
-        DefaultNanoContainer defaultNanoContainer;
+        DefaultScriptedPicoContainer defaultNanoContainer;
         {
             // transient.
             DefaultPicoContainer factory = new DefaultPicoContainer();
@@ -150,7 +150,7 @@ public class ScriptedContainerBuilderFactory {
             //up a nanocontainer may bomb. And we're only talking a reload
             //within a webapp!  -MR
             //
-            defaultNanoContainer = new DefaultNanoContainer(classLoader,factory);
+            defaultNanoContainer = new DefaultScriptedPicoContainer(classLoader,factory);
         }
         ClassName className = new ClassName(builderClass);
         MutablePicoContainer mutablePicoContainer = defaultNanoContainer.addComponent(className, className);

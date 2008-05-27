@@ -16,10 +16,10 @@ import java.util.Properties;
 
 public class ComponentElementHelper {
 
-    public static Object makeComponent(Object cnkey, Object key, Parameter[] parameters, Object klass, NanoContainer current, Object instance, Properties[] properties) {
-        NanoContainer container = current;
+    public static Object makeComponent(Object cnkey, Object key, Parameter[] parameters, Object klass, ScriptedPicoContainer current, Object instance, Properties[] properties) {
+        ScriptedPicoContainer container = current;
         if (properties.length != 0) {
-            container = (NanoContainer) current.as(properties);
+            container = (ScriptedPicoContainer) current.as(properties);
         }
         if (cnkey != null)  {
             key = new ClassName((String)cnkey);
@@ -45,7 +45,7 @@ public class ComponentElementHelper {
                                        Object key,
                                        Parameter[] parameters,
                                        Object classValue,
-                                       NanoContainer nanoContainer, Object instance) {
+                                       ScriptedPicoContainer nanoContainer, Object instance) {
         return makeComponent(cnkey, key, parameters, classValue, nanoContainer, instance, new Properties[0]);
     }
 }

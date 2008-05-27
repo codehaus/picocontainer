@@ -19,8 +19,8 @@ import java.util.HashMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.nanocontainer.script.DefaultNanoContainer;
-import org.nanocontainer.script.NanoContainer;
+import org.nanocontainer.script.DefaultScriptedPicoContainer;
+import org.nanocontainer.script.ScriptedPicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 
 /**
@@ -49,9 +49,9 @@ public class TestAppendContainerNode {
 
     @Test public void testCreateNodeWithParmeterReturnsParameter() throws NanoContainerMarkupException {
         HashMap params = new HashMap();
-        NanoContainer nano = new DefaultNanoContainer();
+        ScriptedPicoContainer nano = new DefaultScriptedPicoContainer();
         params.put(AppendContainerNode.CONTAINER, nano);
-        NanoContainer nano2 = (NanoContainer)appendContainerNode.createNewNode(null,params);
+        ScriptedPicoContainer nano2 = (ScriptedPicoContainer)appendContainerNode.createNewNode(null,params);
         assertTrue(nano == nano2);
     }
 

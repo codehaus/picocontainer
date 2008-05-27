@@ -42,9 +42,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.script.DefaultNanoContainer;
+import org.nanocontainer.script.DefaultScriptedPicoContainer;
 import org.nanocontainer.script.LifecycleMode;
-import org.nanocontainer.script.NanoContainer;
+import org.nanocontainer.script.ScriptedPicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.TestHelper;
 import org.nanocontainer.testmodel.A;
@@ -315,7 +315,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testCustomComponentMonitorCanBeSpecifiedWhenParentIsSpecified() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
@@ -333,7 +333,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testCustomComponentMonitorCanBeSpecifiedWhenParentAndCAFAreSpecified() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
@@ -397,7 +397,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testBuildContainerWithParentAttribute() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         parent.addComponent("hello", "world");
 
         Reader script = new StringReader(
@@ -412,7 +412,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testBuildContainerWithParentDependencyAndAssemblyScope() throws Exception {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         parent.addComponent("a", A.class);
 
         String source =
@@ -455,7 +455,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                              "}\n";
 
         Reader script = new StringReader(scriptValue);
-        NanoContainer parent = new DefaultNanoContainer(
+        ScriptedPicoContainer parent = new DefaultScriptedPicoContainer(
             buildContainer(script, null, new ParentAssemblyScope()));
         assertNotNull(parent.getComponentAdapter(A.class, (NameBinding) null));
 
@@ -497,7 +497,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     
 
     public void FAILING_testBuildContainerWithParentAttributesPropagatesComponentFactory() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjection());
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjection());
         Reader script = new StringReader("container(:parent => $parent)\n");
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
@@ -508,7 +508,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjection());
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjection());
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "B = org.nanocontainer.testmodel.B\n" +
@@ -529,7 +529,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     //TODO
     @Test public void testSpuriousAttributes() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
 
         Reader script = new StringReader(
                                          "container(:jim => 'Jam', :foo => 'bar')");
@@ -542,7 +542,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testWithDynamicClassPathThatDoesNotExist() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         try {
             Reader script = new StringReader(
                                              "container {\n" +
@@ -559,7 +559,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testWithDynamicClassPath() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         Reader script = new StringReader(
             "TestHelper = org.nanocontainer.script.TestHelper\n"
             + "testCompJar = TestHelper.getTestCompJarFile()\n"
@@ -577,7 +577,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testWithDynamicClassPathWithPermissions() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         Reader script = new StringReader(
             "TestHelper = org.nanocontainer.script.TestHelper\n" +
             "SocketPermission = java.net.SocketPermission\n"
@@ -598,7 +598,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testGrantPermissionInWrongPlace() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         try {
             Reader script = new StringReader(
                 "TestHelper = org.nanocontainer.script.TestHelper\n" +
@@ -642,7 +642,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
 //    @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-//        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentFactory() );
+//        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjectionComponentFactory() );
 //        Reader script = new StringReader("" +
 //                "package org.nanocontainer.testmodel\n" +
 //                "nano = new GroovyNodeBuilder().container() {\n" +

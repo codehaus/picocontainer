@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.nanocontainer.script.NanoContainer;
+import org.nanocontainer.script.ScriptedPicoContainer;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.nanocontainer.script.ComponentElementHelper;
 import org.picocontainer.Parameter;
@@ -93,7 +93,7 @@ public class ComponentNode extends AbstractBuilderNode {
         Object parameters =  attributes.remove(PARAMETERS);
         List properties = (List) attributes.remove(PROPERTIES);
 
-        return ComponentElementHelper.makeComponent(cnkey, key, getParameters(parameters), classValue, (NanoContainer) current, instance, getProperties(properties));
+        return ComponentElementHelper.makeComponent(cnkey, key, getParameters(parameters), classValue, (ScriptedPicoContainer) current, instance, getProperties(properties));
     }
 
     private static Parameter[] getParameters(Object params) {

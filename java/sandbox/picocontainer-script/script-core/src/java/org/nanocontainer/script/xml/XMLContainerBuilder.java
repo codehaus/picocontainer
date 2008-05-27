@@ -28,10 +28,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.nanocontainer.script.ClassName;
 import org.nanocontainer.script.ClassPathElement;
 import org.nanocontainer.script.ContainerPopulator;
-import org.nanocontainer.script.DefaultNanoContainer;
+import org.nanocontainer.script.DefaultScriptedPicoContainer;
 import org.nanocontainer.script.LifecycleMode;
 import org.nanocontainer.script.NanoBuilder;
-import org.nanocontainer.script.NanoContainer;
+import org.nanocontainer.script.ScriptedPicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -172,8 +172,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             if (parentClass != null && !EMPTY.equals(parentClass)) {
                 classLoader = classLoader.loadClass(parentClass).getClassLoader();
             }
-            NanoContainer nanoContainer = new DefaultNanoContainer(classLoader, container);
-            registerComponentsAndChildContainers(nanoContainer, rootElement, new DefaultNanoContainer(getClassLoader()));
+            ScriptedPicoContainer nanoContainer = new DefaultScriptedPicoContainer(classLoader, container);
+            registerComponentsAndChildContainers(nanoContainer, rootElement, new DefaultScriptedPicoContainer(getClassLoader()));
         } catch (ClassNotFoundException e) {
             throw new NanoContainerMarkupException("Class not found: " + e.getMessage(), e);
         } catch (IOException e) {
@@ -183,9 +183,9 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
     }
 
-    private void registerComponentsAndChildContainers(NanoContainer parentContainer, Element containerElement, NanoContainer knownComponentAdapterFactories) throws ClassNotFoundException, IOException, SAXException {
+    private void registerComponentsAndChildContainers(ScriptedPicoContainer parentContainer, Element containerElement, ScriptedPicoContainer knownComponentAdapterFactories) throws ClassNotFoundException, IOException, SAXException {
 
-        NanoContainer metaContainer = new DefaultNanoContainer(getClassLoader(), knownComponentAdapterFactories);
+        ScriptedPicoContainer metaContainer = new DefaultScriptedPicoContainer(getClassLoader(), knownComponentAdapterFactories);
         NodeList children = containerElement.getChildNodes();
         // register classpath first, regardless of order in the document.
         for (int i = 0; i < children.getLength(); i++) {
@@ -203,7 +203,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                 String name = childElement.getNodeName();
                 if (CONTAINER.equals(name)) {
                     MutablePicoContainer childContainer = parentContainer.makeChildContainer();
-                    NanoContainer childNanoContainer = new DefaultNanoContainer(parentContainer.getComponentClassLoader(), childContainer);
+                    ScriptedPicoContainer childNanoContainer = new DefaultScriptedPicoContainer(parentContainer.getComponentClassLoader(), childContainer);
                     registerComponentsAndChildContainers(childNanoContainer, childElement, metaContainer);
                 } else if (COMPONENT_IMPLEMENTATION.equals(name)
                         || COMPONENT.equals(name)) {
@@ -224,7 +224,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     }
 
 
-    private void addComponentFactory(Element element, NanoContainer metaContainer) throws MalformedURLException, ClassNotFoundException {
+    private void addComponentFactory(Element element, ScriptedPicoContainer metaContainer) throws MalformedURLException, ClassNotFoundException {
         if (notSet(element.getAttribute(KEY))) {
             throw new NanoContainerMarkupException("'" + KEY + "' attribute not specified for " + element.getNodeName());
         }
@@ -255,17 +255,17 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         registerComponent(metaContainer, node);
     }
 
-    private void registerClassLoader(NanoContainer parentContainer, Element childElement, NanoContainer metaContainer) throws IOException, SAXException, ClassNotFoundException {
+    private void registerClassLoader(ScriptedPicoContainer parentContainer, Element childElement, ScriptedPicoContainer metaContainer) throws IOException, SAXException, ClassNotFoundException {
         String parentClass = childElement.getAttribute("parentclassloader");
         ClassLoader parentClassLoader = parentContainer.getComponentClassLoader();
         if (parentClass != null && !EMPTY.equals(parentClass)) {
             parentClassLoader = parentClassLoader.loadClass(parentClass).getClassLoader();
         }
-        NanoContainer nano = new DefaultNanoContainer(parentClassLoader, parentContainer);
+        ScriptedPicoContainer nano = new DefaultScriptedPicoContainer(parentClassLoader, parentContainer);
         registerComponentsAndChildContainers(nano, childElement, metaContainer);
     }
 
-    private void registerClasspath(NanoContainer container, Element classpathElement) throws IOException, ClassNotFoundException {
+    private void registerClasspath(ScriptedPicoContainer container, Element classpathElement) throws IOException, ClassNotFoundException {
         NodeList children = classpathElement.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             if (children.item(i) instanceof Element) {
@@ -308,7 +308,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
     }
 
-    private void registerComponent(NanoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
+    private void registerComponent(ScriptedPicoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
         String className = element.getAttribute(CLASS);
         if (notSet(className)) {
             throw new NanoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
@@ -334,7 +334,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
 
 
-    private Parameter[] createChildParameters(NanoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
+    private Parameter[] createChildParameters(ScriptedPicoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
         List<Parameter> parametersList = new ArrayList<Parameter>();
         NodeList children = element.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
@@ -444,7 +444,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     }
 
 
-    private void registerComponentInstance(NanoContainer container, Element element) throws ClassNotFoundException, PicoCompositionException, MalformedURLException {
+    private void registerComponentInstance(ScriptedPicoContainer container, Element element) throws ClassNotFoundException, PicoCompositionException, MalformedURLException {
         Object instance = createInstance(container, element);
         String key = element.getAttribute(KEY);
         String classKey = element.getAttribute(CLASS_NAME_KEY);
@@ -502,7 +502,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
     }
 
-    private void registerComponentAdapter(NanoContainer container, Element element, NanoContainer metaContainer) throws ClassNotFoundException, PicoCompositionException, MalformedURLException {
+    private void registerComponentAdapter(ScriptedPicoContainer container, Element element, ScriptedPicoContainer metaContainer) throws ClassNotFoundException, PicoCompositionException, MalformedURLException {
         String className = element.getAttribute(CLASS);
         if (notSet(className)) {
             throw new NanoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
@@ -523,7 +523,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         container.as(Characteristics.NONE).addAdapter(componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), key, implementationClass, parameters));
     }
 
-    private ComponentFactory createComponentFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {
+    private ComponentFactory createComponentFactory(String factoryName, ScriptedPicoContainer metaContainer) throws PicoCompositionException {
         if ( notSet(factoryName)) {
             return new Caching().wrap(new ConstructorInjection());
         }

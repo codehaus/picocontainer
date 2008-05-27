@@ -1,6 +1,6 @@
 package org.nanocontainer.script.groovy;
 
-import org.nanocontainer.script.DefaultNanoContainer;
+import org.nanocontainer.script.DefaultScriptedPicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
@@ -10,7 +10,7 @@ import org.picocontainer.behaviors.Caching;
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
-public class TestContainer extends DefaultNanoContainer {
+public class TestContainer extends DefaultScriptedPicoContainer {
 
     public TestContainer(ComponentFactory componentFactory, PicoContainer parent) {
         super(TestContainer.class.getClassLoader(), componentFactory, parent);

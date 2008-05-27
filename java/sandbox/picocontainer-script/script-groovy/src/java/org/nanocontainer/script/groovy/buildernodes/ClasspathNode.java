@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.nanocontainer.script.ClassPathElement;
 import org.nanocontainer.script.ClassPathElementHelper;
-import org.nanocontainer.script.NanoContainer;
+import org.nanocontainer.script.ScriptedPicoContainer;
 
 
 /**
@@ -40,10 +40,10 @@ public class ClasspathNode extends AbstractBuilderNode {
 
 
     public Object createNewNode(Object current, Map attributes) {
-        return createClassPathElementNode(attributes, (NanoContainer) current);
+        return createClassPathElementNode(attributes, (ScriptedPicoContainer) current);
     }
 
-    private ClassPathElement createClassPathElementNode(Map attributes, NanoContainer nanoContainer) {
+    private ClassPathElement createClassPathElementNode(Map attributes, ScriptedPicoContainer nanoContainer) {
 
         final String path = (String) attributes.remove(PATH);
         return ClassPathElementHelper.addClassPathElement(path, nanoContainer);

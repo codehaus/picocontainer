@@ -21,23 +21,23 @@ import java.net.MalformedURLException;
 
 import org.junit.Test;
 import org.nanocontainer.script.ClassName;
-import org.nanocontainer.script.DefaultNanoContainer;
-import org.nanocontainer.script.NanoContainer;
+import org.nanocontainer.script.DefaultScriptedPicoContainer;
+import org.nanocontainer.script.ScriptedPicoContainer;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoException;
 
-public class OldDefaultNanoContainerTestCase {
+public class OldDefaultScriptedPicoContainerTestCase {
 
     @Test public void testBasic() throws PicoCompositionException {
-        NanoContainer nanoContainer = new DefaultNanoContainer();
+        ScriptedPicoContainer nanoContainer = new DefaultScriptedPicoContainer();
         nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
         nanoContainer.addComponent("org.nanocontainer.testmodel.WebServer", new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
     }
 
     @Test public void testProvision() throws PicoException {
-        NanoContainer nanoContainer = new DefaultNanoContainer();
+        ScriptedPicoContainer nanoContainer = new DefaultScriptedPicoContainer();
         nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
         nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
 
@@ -46,7 +46,7 @@ public class OldDefaultNanoContainerTestCase {
     }
 
     @Test public void testNoGenerationRegistration() throws PicoCompositionException {
-        NanoContainer nanoContainer = new DefaultNanoContainer();
+        ScriptedPicoContainer nanoContainer = new DefaultScriptedPicoContainer();
         try {
             nanoContainer.addComponent(new ClassName("Ping"));
             fail("should have failed");
@@ -60,7 +60,7 @@ public class OldDefaultNanoContainerTestCase {
         // the following tests try to load the jar containing TestComp - it
         // won't do to have the class already available in the classpath
 
-        DefaultNanoContainer dfca = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer dfca = new DefaultScriptedPicoContainer();
         try {
             dfca.addComponent("foo", new ClassName("TestComp"));
             Object o = dfca.getComponent("foo");
@@ -75,7 +75,7 @@ public class OldDefaultNanoContainerTestCase {
         File testCompJar = TestHelper.getTestCompJarFile();
 
         // Set up parent
-        NanoContainer parentContainer = new DefaultNanoContainer();
+        ScriptedPicoContainer parentContainer = new DefaultScriptedPicoContainer();
         parentContainer.addClassLoaderURL(testCompJar.toURL());
         parentContainer.addComponent("parentTestComp", new ClassName("TestComp"));
         parentContainer.addComponent(new ClassName("java.lang.StringBuffer"));
@@ -84,7 +84,7 @@ public class OldDefaultNanoContainerTestCase {
         assertEquals("TestComp", parentTestComp.getClass().getName());
 
         // Set up child
-        NanoContainer childContainer = (NanoContainer) parentContainer.makeChildContainer();
+        ScriptedPicoContainer childContainer = (ScriptedPicoContainer) parentContainer.makeChildContainer();
         File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
         //System.err.println("--> " + testCompJar2.getAbsolutePath());
         childContainer.addClassLoaderURL(testCompJar2.toURL());
@@ -120,7 +120,7 @@ public class OldDefaultNanoContainerTestCase {
     }
 
     @Test public void testClassLoaderJugglingIsPossible() throws MalformedURLException {
-        NanoContainer parentContainer = new DefaultNanoContainer();
+        ScriptedPicoContainer parentContainer = new DefaultScriptedPicoContainer();
 
 
         File testCompJar = TestHelper.getTestCompJarFile();
@@ -130,7 +130,7 @@ public class OldDefaultNanoContainerTestCase {
         Object fooWebServerConfig = parentContainer.getComponent("foo");
         assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
-        NanoContainer childContainer = new DefaultNanoContainer(parentContainer);
+        ScriptedPicoContainer childContainer = new DefaultScriptedPicoContainer(parentContainer);
         childContainer.addClassLoaderURL(testCompJar.toURL());
         childContainer.addComponent("bar", new ClassName("TestComp"));
 
@@ -156,7 +156,7 @@ public class OldDefaultNanoContainerTestCase {
     }
 
     public void TODO_testSecurityManagerCanPreventOperations() throws MalformedURLException {
-        NanoContainer parentContainer = new DefaultNanoContainer();
+        ScriptedPicoContainer parentContainer = new DefaultScriptedPicoContainer();
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         // Paul's path to TestComp. PLEASE do not take out.
@@ -170,7 +170,7 @@ public class OldDefaultNanoContainerTestCase {
         Object fooWebServerConfig = parentContainer.getComponent("foo");
         assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
-        NanoContainer childContainer = new DefaultNanoContainer(parentContainer);
+        ScriptedPicoContainer childContainer = new DefaultScriptedPicoContainer(parentContainer);
         childContainer.addClassLoaderURL(testCompJar.toURL());
         //TODO childContainer.setPermission(some permission list, that includes the preventing of general file access);
         // Or shoud this be done in the ctor for DRCA ?

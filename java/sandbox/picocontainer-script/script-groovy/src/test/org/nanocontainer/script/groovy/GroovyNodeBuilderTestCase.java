@@ -25,8 +25,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.script.DefaultNanoContainer;
-import org.nanocontainer.script.NanoContainer;
+import org.nanocontainer.script.DefaultScriptedPicoContainer;
+import org.nanocontainer.script.ScriptedPicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.TestHelper;
 import org.nanocontainer.testmodel.A;
@@ -403,7 +403,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testCustomComponentMonitorCanBeSpecifiedWhenParentIsSpecified() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
@@ -423,7 +423,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testCustomComponentMonitorCanBeSpecifiedWhenParentAndCAFAreSpecified() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
@@ -487,7 +487,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testBuildContainerWithParentAttribute() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         parent.addComponent("hello", "world");
 
         Reader script = new StringReader("" +
@@ -504,7 +504,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testBuildContainerWithParentDependencyAndAssemblyScope() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         parent.addComponent("a", A.class);
 
         Reader script = new StringReader("" +
@@ -539,7 +539,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "}\n");
 
         Reader script = new StringReader(scriptValue);
-        NanoContainer parent = new DefaultNanoContainer(
+        ScriptedPicoContainer parent = new DefaultScriptedPicoContainer(
             buildContainer(script, null, new ParentAssemblyScope()));
 
         assertNotNull(parent.getComponentAdapter(A.class, (NameBinding) null));
@@ -552,7 +552,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testBuildContainerWhenExpectedParentDependencyIsNotFound() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new Caching());
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new Caching());
 
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
@@ -572,7 +572,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testBuildContainerWithParentAttributesPropagatesComponentFactory() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjection() );
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjection() );
         Reader script = new StringReader("" +
                 "nano = builder.container(parent:parent) {\n" +
                 "}\n");
@@ -586,7 +586,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjection() );
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjection() );
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +
@@ -607,7 +607,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
     // TODO
     @Test public void testSpuriousAttributes() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
 
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
@@ -627,7 +627,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testWithDynamicClassPathThatDoesNotExist() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         try {
             Reader script = new StringReader("" +
                     "        child = null\n" +
@@ -646,7 +646,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testWithDynamicClassPath() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new Caching());
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new Caching());
         Reader script = new StringReader(
                 "        builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n"
               + "        File testCompJar = org.nanocontainer.script.TestHelper.getTestCompJarFile()\n"
@@ -668,7 +668,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testWithDynamicClassPathWithPermissions() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new Caching());
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new Caching());
         Reader script = new StringReader(
                 ""
                 + "        builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n"
@@ -691,7 +691,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testGrantPermissionInWrongPlace() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new Caching());
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new Caching());
         try {
             Reader script = new StringReader("" +
                     "        builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +
@@ -753,7 +753,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testValidationTurnedOnThrowsExceptionForUnknownAttributes() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         Reader script = new StringReader(
             "import org.nanocontainer.script.NullNodeBuilderDecorationDelegate\n" +
             "import org.nanocontainer.script.groovy.GroovyNodeBuilder\n" +
@@ -775,7 +775,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testValidationTurnedOffDoesntThrowExceptionForUnknownAttributes() {
-        DefaultNanoContainer parent = new DefaultNanoContainer();
+        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         Reader script = new StringReader(
             "import org.nanocontainer.script.NullNodeBuilderDecorationDelegate\n" +
             "import org.nanocontainer.script.groovy.GroovyNodeBuilder\n" +

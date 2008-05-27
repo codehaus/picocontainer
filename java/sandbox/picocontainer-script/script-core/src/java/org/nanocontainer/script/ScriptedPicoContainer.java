@@ -16,19 +16,14 @@ import org.picocontainer.PicoContainer;
 import java.net.URL;
 
 /**
- * A NanoContainer is a container that contains a PicoContainer. -Like
- * <a href="http://www.monkeon.co.uk/russiandolls/">Russian dolls</a>.
- * <p/>
- * A NanoContainer adapts a {@link MutablePicoContainer} through a similar API that
- * is based only on Strings. (It uses reflection to look up classes before registering them
- * with the adapted PicoContainer). This adapter API is used primarily by the various
+ * A ScriptedPicoContainer is used primarily by the various
  * {@link org.nanocontainer.script.ScriptedContainerBuilder} implementations in the
  * org.nanocontainer.script.[scripting engine] packages.
  *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
-public interface NanoContainer extends MutablePicoContainer {
+public interface ScriptedPicoContainer extends MutablePicoContainer {
 
     /**
      * Adds a new URL that will be used in classloading
@@ -44,7 +39,7 @@ public interface NanoContainer extends MutablePicoContainer {
      */
     ClassLoader getComponentClassLoader();
     
-    NanoContainer makeChildContainer(String name);
+    ScriptedPicoContainer makeChildContainer(String name);
 
     void addChildContainer(String name, PicoContainer child);
 

@@ -19,7 +19,7 @@ import java.io.File;
 public class ClassPathElementHelper {
     public static final String HTTP = "http://";
 
-    public static ClassPathElement addClassPathElement(final String path, NanoContainer nanoContainer) {
+    public static ClassPathElement addClassPathElement(final String path, ScriptedPicoContainer nanoContainer) {
         URL pathURL;
         try {
             if (path.toLowerCase().startsWith(HTTP)) {

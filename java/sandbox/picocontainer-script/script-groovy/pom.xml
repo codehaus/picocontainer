@@ -17,7 +17,7 @@
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
-      <artifactId>picocontainer-aop</artifactId>
+      <artifactId>picocontainer-script-aop</artifactId>
       <version>${pom.version}</version>
       <optional>true</optional>
     </dependency>

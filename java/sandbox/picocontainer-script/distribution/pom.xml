@@ -17,7 +17,7 @@
 		</dependency>
         <dependency>
             <groupId>org.picocontainer.script</groupId>
-            <artifactId>picocontainer-aop</artifactId>
+            <artifactId>picocontainer-script-aop</artifactId>
             <version>${pom.version}</version>
         </dependency>
         <dependency>
@@ -76,7 +76,7 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.picocontainer.script</groupId>
-                                    <artifactId>picocontainer-aop</artifactId>
+                                    <artifactId>picocontainer-script-aop</artifactId>
                                     <version>${pom.version}</version>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/javadoc/aop</outputDirectory>

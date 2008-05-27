@@ -6,8 +6,9 @@
     <groupId>org.picocontainer.web</groupId>
     <artifactId>picocontainer-web-examples</artifactId>
     <version>2.0-SNAPSHOT</version>
-  </parent>
+  </parent>  
   <artifactId>picocontainer-web-example</artifactId>
-  <name>Web example common code</name>
-
+  <name>Web examples common code</name>
+  <packaging>jar</packaging>
+  
 </project>

@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.sample.webwork2;
+package org.nanocontainer.nanowar.sample.struts2;
 
 import org.nanocontainer.nanowar.sample.service.CheeseService;
 

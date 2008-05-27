@@ -1,4 +1,4 @@
-<%@ taglib uri="webwork" prefix="ww" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
@@ -18,29 +18,29 @@
             <form action="addcheese.action">
                 <tr>
                     <td>
-                        <input value="<ww:property value="cheese.name"/>" name="cheese.name">
+                        <input value="<s:property value="cheese.name"/>" name="cheese.name">
                     </td>
                     <td>
-                        <input value="<ww:property value="cheese.country"/>" name="cheese.country">
+                        <input value="<s:property value="cheese.country"/>" name="cheese.country">
                      </td>
                      <td>
                         <input type="submit" value="Store"/>
                      </td>
                  </tr>
              </form>
-             <ww:iterator value="cheeses">
+             <s:iterator value="cheeses">
                 <tr>
                     <td style="vertical-align: top;">
-                        <ww:property value="name"/>
+                        <s:property value="name"/>
                     </td>
                     <td style="vertical-align: top;">
-                        <ww:property value="country"/>
+                        <s:property value="country"/>
                     </td>
                     <td style="vertical-align: top;"><br>
-                        <a href="removecheese.action?cheese.name=<ww:property value="name"/>">Dispose</a>
+                        <a href="removecheese.action?cheese.name=<s:property value="name"/>">Dispose</a>
                     </td>
                 </tr>
-            </ww:iterator>
+            </s:iterator>
         </tbody>
     </table>
 </body>

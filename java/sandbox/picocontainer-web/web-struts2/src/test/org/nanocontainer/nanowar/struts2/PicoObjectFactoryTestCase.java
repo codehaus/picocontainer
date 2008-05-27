@@ -32,6 +32,8 @@ import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AbstractInjector;
 
+import java.util.Collections;
+
 /**
  * @author Mauro Talevi
  * @author Konstantin Pribluda
@@ -54,7 +56,7 @@ public final class PicoObjectFactoryTestCase {
 
     @Test public void testActionInstantiationWithInvalidClassName() throws Exception {
         try {
-            factory.buildBean("invalidAction");
+            factory.buildBean("invalidAction", Collections.EMPTY_MAP);
             fail("PicoCompositionException expected");
         } catch ( PicoCompositionException e) {
             // expected

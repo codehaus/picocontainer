@@ -47,7 +47,11 @@ public class PicoObjectFactory extends ObjectFactory {
      * @return
      */
     public Object buildBean(Class clazz, Map extraContext) throws Exception {
-        return buildBean(clazz);
+        PicoContainer actionsContainer = NewFilter.getRequestContainerForThread();
+        if (actionsContainer == null) {
+            return super.buildBean(clazz, extraContext);
+        }
+        return buildBean(clazz, actionsContainer);
     }
 
     /**
@@ -58,7 +62,11 @@ public class PicoObjectFactory extends ObjectFactory {
      * @param className
      */
     public Object buildBean(String className, Map extraContext) throws Exception {
-        return buildBean(className);
+        PicoContainer actionsContainer = NewFilter.getRequestContainerForThread();
+        if (actionsContainer == null) {
+            return super.buildBean(className, extraContext);
+        }
+        return buildBean(className, actionsContainer);
     }
 
     /**
@@ -76,8 +84,7 @@ public class PicoObjectFactory extends ObjectFactory {
      * 
      * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.Class)
      */
-    public Object buildBean(Class actionClass) throws Exception {
-        PicoContainer actionsContainer = NewFilter.getRequestContainerForThread();
+    public Object buildBean(Class actionClass, PicoContainer actionsContainer) throws Exception {
         Object action = actionsContainer.getComponent(actionClass);
 
         if (action == null) {
@@ -99,9 +106,9 @@ public class PicoObjectFactory extends ObjectFactory {
      *
      * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.String)
      */
-    public Object buildBean(String className) throws Exception {
+    public Object buildBean(String className, PicoContainer actionsContainer) throws Exception {
         Class actionClass = getActionClass(className);
-        return buildBean(actionClass);
+        return buildBean(actionClass, actionsContainer);
     }
 
         public Class getActionClass(String className) throws PicoCompositionException {

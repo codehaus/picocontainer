@@ -53,7 +53,7 @@ public final class ServletContainerListenerTestCase implements KeyConstants {
 
 	private Mockery mockery = mockeryWithCountingNamingScheme();
 	
-    private ServletContainerListener listener = new ServletContainerListener();
+    private PicoServletContainerListener listener = new PicoServletContainerListener();
 
     private final String groovyScript =
         "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
@@ -215,7 +215,7 @@ public final class ServletContainerListenerTestCase implements KeyConstants {
     		will(returnValue(createContainerBuilder(containerBuilder, script)));
     		one(httpSession).getServletContext();
     		will(returnValue(servletContext));
-    		one(httpSession).setAttribute(with(equal(ServletContainerListener.KILLER_HELPER)), 
+    		one(httpSession).setAttribute(with(equal(PicoServletContainerListener.KILLER_HELPER)),
     				with(any(HttpSessionBindingListener.class)));
     		one(httpSession).setAttribute(with(equal(SESSION_CONTAINER)), 
     				with(any(PicoContainer.class)));
@@ -280,7 +280,7 @@ public final class ServletContainerListenerTestCase implements KeyConstants {
     		will(returnValue(createContainerBuilder(containerBuilder, script)));
     		one(httpSession).getServletContext();
     		will(returnValue(servletContext));
-    		one(httpSession).setAttribute(with(equal(ServletContainerListener.KILLER_HELPER)), 
+    		one(httpSession).setAttribute(with(equal(PicoServletContainerListener.KILLER_HELPER)),
     				with(any(HttpSessionBindingListener.class)));
     		one(httpSession).setAttribute(with(equal(SESSION_CONTAINER)), 
     				with(any(PicoContainer.class)));
@@ -309,13 +309,13 @@ public final class ServletContainerListenerTestCase implements KeyConstants {
     @Test public void testScopedContainerComposerIsCreatedWithDefaultConfiguration() {
     	final ServletContext servletContext = mockery.mock(ServletContext.class);
         final Vector<String> initParams = new Vector<String>();
-        initParams.add(ServletContainerListener.CONTAINER_COMPOSER);
+        initParams.add(PicoServletContainerListener.CONTAINER_COMPOSER);
         mockery.checking(new Expectations(){{
     		one(servletContext).getInitParameterNames();
     		will(returnValue(initParams.elements()));
-    		one(servletContext).getInitParameter(with(equal(ServletContainerListener.CONTAINER_COMPOSER)));
+    		one(servletContext).getInitParameter(with(equal(PicoServletContainerListener.CONTAINER_COMPOSER)));
     		will(returnValue(ScopedContainerComposer.class.getName()));
-       		one(servletContext).getInitParameter(with(equal(ServletContainerListener.CONTAINER_COMPOSER_CONFIGURATION)));
+       		one(servletContext).getInitParameter(with(equal(PicoServletContainerListener.CONTAINER_COMPOSER_CONFIGURATION)));
     		will(returnValue(null));
     		one(servletContext).getInitParameter(with(equal(SYSTEM_PROPERTIES_CONTAINER)));
     		will(returnValue(null));
@@ -357,13 +357,13 @@ public final class ServletContainerListenerTestCase implements KeyConstants {
     private void assertScopedContainerComposerIsCreatedWithConfiguration(final String scriptName, final String script) {
     	final ServletContext servletContext = mockery.mock(ServletContext.class);
         final Vector<String> initParams = new Vector<String>();
-        initParams.add(ServletContainerListener.CONTAINER_COMPOSER);
+        initParams.add(PicoServletContainerListener.CONTAINER_COMPOSER);
         mockery.checking(new Expectations(){{
     		one(servletContext).getInitParameterNames();
     		will(returnValue(initParams.elements()));
-    		one(servletContext).getInitParameter(with(equal(ServletContainerListener.CONTAINER_COMPOSER)));
+    		one(servletContext).getInitParameter(with(equal(PicoServletContainerListener.CONTAINER_COMPOSER)));
     		will(returnValue(ScopedContainerComposer.class.getName()));
-       		one(servletContext).getInitParameter(with(equal(ServletContainerListener.CONTAINER_COMPOSER_CONFIGURATION)));
+       		one(servletContext).getInitParameter(with(equal(PicoServletContainerListener.CONTAINER_COMPOSER_CONFIGURATION)));
     		will(returnValue("nanowar/"+scriptName));
     		one(servletContext).getInitParameter(with(equal(SYSTEM_PROPERTIES_CONTAINER)));
     		will(returnValue(null));

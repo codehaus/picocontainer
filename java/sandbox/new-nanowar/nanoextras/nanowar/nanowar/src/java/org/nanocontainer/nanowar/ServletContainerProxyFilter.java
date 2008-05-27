@@ -58,7 +58,6 @@ public class ServletContainerProxyFilter implements Filter {
     private boolean lookupOnlyOnce;
     private FilterConfig filterConfig;
     private Filter delegate;
-    private ServletContainerFinder containerFinder;
 
     public void init(FilterConfig filterConfig) throws ServletException {
         this.filterConfig = filterConfig;
@@ -102,7 +101,7 @@ public class ServletContainerProxyFilter implements Filter {
      * @throws PicoCompositionException if the delegate Filter cannot be found
      */
     protected void lookupDelegate(HttpServletRequest request) {
-        PicoContainer pico = findContainer(request);
+        PicoContainer pico = NewFilter.getRequestContainerForThread();
         String delegateClassName = filterConfig.getInitParameter("delegate-class");
         String delegateKey = filterConfig.getInitParameter("delegate-key");
         if (delegateClassName != null) {
@@ -121,20 +120,6 @@ public class ServletContainerProxyFilter implements Filter {
         if (delegate == null) {
             throw new PicoCompositionException("Cannot find delegate for class " + delegateClassName + " or key "+ delegateKey);
         }
-    }
-
-    /**
-     * Finds PicoContainer via the ServletContainerFinder 
-     * @param request the HttpServletRequest
-     * @return A PicoContainer 
-     * @see ServletContainerFinder
-     */
-    private PicoContainer findContainer(HttpServletRequest request) {
-        if (containerFinder == null) {
-            // lazy initialisation
-            containerFinder = new ServletContainerFinder();
-        }
-        return containerFinder.findContainer(request);
     }
 
     private ClassLoader getClassLoader() {

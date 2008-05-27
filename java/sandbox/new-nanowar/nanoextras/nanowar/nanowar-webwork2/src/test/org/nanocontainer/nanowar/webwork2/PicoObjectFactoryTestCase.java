@@ -31,7 +31,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.references.ThreadLocalReference;
 
 /**
  * @author Mauro Talevi
@@ -48,9 +47,7 @@ public final class PicoObjectFactoryTestCase {
     
     @Before public void setUp(){
         container = (DefaultPicoContainer)new DefaultPicoContainer().change(Characteristics.CACHE);
-        ObjectReference reference = new ThreadLocalReference();
-        reference.set(request);
-        factory = new PicoObjectFactory(reference);
+        factory = new PicoObjectFactory();
     }
     
 	@Test public void testActionInstantiationWithValidClassName() throws Exception {

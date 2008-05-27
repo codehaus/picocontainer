@@ -22,7 +22,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.RequestScopeReference;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
@@ -301,8 +300,10 @@ public class ContainerChainFilter implements Filter {
     }
 
     private ObjectReference obtainRequestObjectReference(ServletRequest request) {
-        return new RequestScopeReference(request,
-                KeyConstants.REQUEST_CONTAINER);
+        //TODO get this working again
+        return null;
+//        return new RequestScopeReference(request,
+//                KeyConstants.REQUEST_CONTAINER);
     }
 
     private PicoContainer obtainContainer(ServletRequest request) {

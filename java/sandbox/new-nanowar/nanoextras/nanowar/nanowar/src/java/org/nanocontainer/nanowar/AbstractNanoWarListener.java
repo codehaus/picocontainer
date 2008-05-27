@@ -25,16 +25,4 @@ import org.picocontainer.references.SimpleReference;
  */
 public class AbstractNanoWarListener implements Serializable {
 
-    protected PicoContainer buildContainer(ScriptedContainerBuilder builder) {
-        ObjectReference containerRef = new SimpleReference();
-        builder.buildContainer(containerRef, new SimpleReference(), new SimpleReference(), false);
-        return (PicoContainer) containerRef.get();
-    }
-
-    protected void killContainer(ObjectReference containerRef) {
-        ContainerBuilder containerKiller = new DefaultContainerBuilder(null);
-        if (containerRef.get() != null) {
-            containerKiller.killContainer(containerRef);
-        }
-    }
 }

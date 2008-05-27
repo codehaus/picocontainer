@@ -13,9 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
-import org.nanocontainer.nanowar.ActionsContainerFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.nanocontainer.nanowar.NewFilter;
+
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Uses PicoContainer to produce Actions and inject dependencies into them. 
@@ -27,8 +30,8 @@ import org.picocontainer.PicoCompositionException;
  * @author Mauro Talevi
  */
 public final class ActionFactory {
-    
-     private final ActionsContainerFactory actionsContainerFactory = new ActionsContainerFactory();
+
+     private final Map classCache = new HashMap();
 
     /**
      * Gets the <code>Action</code> specified by the mapping type from a PicoContainer. 
@@ -57,9 +60,9 @@ public final class ActionFactory {
             throws PicoCompositionException
     {
 
-        MutablePicoContainer actionsContainer = actionsContainerFactory.getActionsContainer(request);
+        MutablePicoContainer actionsContainer = NewFilter.getRequestContainerForThread();
         Object actionKey = mapping.getPath();
-        Class actionType = actionsContainerFactory.getActionClass(mapping.getType());
+        Class actionType = getActionClass(mapping.getType());
 
         Action action = (Action) actionsContainer.getComponent(actionKey);
         if (action == null) {
@@ -70,5 +73,24 @@ public final class ActionFactory {
         action.setServlet(servlet);
         return action;
     }
+
+        public Class getActionClass(String className) throws PicoCompositionException {
+        try {
+            return loadClass(className);
+        } catch (ClassNotFoundException e) {
+            throw new PicoCompositionException("Action class '" + className + "' not found", e);
+        }
+    }
+
+    protected Class loadClass(String className) throws ClassNotFoundException {
+        if (classCache.containsKey(className)) {
+            return (Class) classCache.get(className);
+        } else {
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            Class result = classLoader.loadClass(className);
+            classCache.put(className, result);
+            return result;
+        }
+    }    
 
 }

@@ -9,7 +9,7 @@
     </context-param>
 
     <listener>
-        <listener-class>org.nanocontainer.nanowar.ServletContainerListener</listener-class>
+        <listener-class>org.nanocontainer.nanowar.PicoServletContainerListener</listener-class>
     </listener>
 
     <!-- Action Servlet Configuration -->

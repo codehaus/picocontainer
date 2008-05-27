@@ -8,7 +8,6 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork;
 
-import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
 import webwork.action.factory.ActionFactory;
 import webwork.dispatcher.ServletDispatcher;
 
@@ -32,20 +31,4 @@ public class PicoWebWork1ServletDispatcher extends ServletDispatcher {
         ActionFactory.setActionFactory(new WebWorkActionFactory());
     }
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), request);
-        try {
-            containerLauncher.startContainer();
-            // process the servlet using webwork
-            super.service(request, response);
-        } catch (Exception e) {
-            throw new ServletException(e);
-        } finally {
-            try {
-                containerLauncher.killContainer();
-            } catch (Exception e) {
-                throw new ServletException(e);
-            }
-        }
-    }
 }

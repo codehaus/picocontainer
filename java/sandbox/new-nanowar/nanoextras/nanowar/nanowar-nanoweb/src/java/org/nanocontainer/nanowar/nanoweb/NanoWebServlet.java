@@ -2,10 +2,8 @@ package org.nanocontainer.nanowar.nanoweb;
 
 import ognl.Ognl;
 import ognl.OgnlException;
-import org.nanocontainer.nanowar.ApplicationScopeReference;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.RequestScopeReference;
-import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
+import org.nanocontainer.nanowar.NewFilter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 
@@ -66,9 +64,7 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     }
 
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), httpServletRequest);
         try {
-            containerLauncher.startContainer();
             String servletPath = getServletPath(httpServletRequest);
             String scriptPathWithoutExtension = servletPath.substring(0, servletPath.lastIndexOf('/'));
 
@@ -84,8 +80,6 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
             dispatcher.dispatch(servletContext, httpServletRequest, httpServletResponse, scriptPathWithoutExtension, actionMethod, result);
         } catch (ScriptException e) {
             handleServiceScriptException(e, httpServletResponse, httpServletRequest);
-        } finally {
-            containerLauncher.killContainer();
         }
     }
 
@@ -194,12 +188,10 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     }
 
     private MutablePicoContainer getApplicationContainer(ServletContext context) {
-        ObjectReference ref = new ApplicationScopeReference(context, APPLICATION_CONTAINER);
-        return (MutablePicoContainer) ref.get();
+        return NewFilter.getApplicationContainerForThread();
     }
 
     private MutablePicoContainer getRequestContainer(ServletRequest request) {
-        ObjectReference ref = new RequestScopeReference(request, REQUEST_CONTAINER);
-        return (MutablePicoContainer) ref.get();
+        return NewFilter.getRequestContainerForThread();
     }
 }

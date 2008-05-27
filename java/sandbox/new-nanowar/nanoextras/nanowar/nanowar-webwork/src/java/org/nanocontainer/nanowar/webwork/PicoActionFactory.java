@@ -10,8 +10,8 @@ package org.nanocontainer.nanowar.webwork;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.nanocontainer.nanowar.ActionsContainerFactory;
 import org.nanocontainer.nanowar.KeyConstants;
+import org.nanocontainer.nanowar.NewFilter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ObjectReference;
@@ -19,6 +19,9 @@ import org.picocontainer.ObjectReference;
 import webwork.action.Action;
 import webwork.action.ServletActionContext;
 import webwork.action.factory.ActionFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Replacement for the standard WebWork JavaActionFactory that uses a 
@@ -29,11 +32,11 @@ import webwork.action.factory.ActionFactory;
  */
 public final class PicoActionFactory extends ActionFactory {
 
-    private final ActionsContainerFactory actionsContainerFactory = new ActionsContainerFactory();
-    
+    private final Map classCache = new HashMap();
+
     public Action getActionImpl(String className) {
         try {
-            Class actionClass = actionsContainerFactory.getActionClass(className);
+            Class actionClass = getActionClass(className);
             Action action = null;
             try {
                 action = instantiateAction(actionClass);
@@ -47,7 +50,7 @@ public final class PicoActionFactory extends ActionFactory {
     }
 
     protected Action instantiateAction(Class actionClass) {
-        MutablePicoContainer actionsContainer = getActionsContainer();
+        MutablePicoContainer actionsContainer = NewFilter.getRequestContainerForThread();
         Action action = (Action) actionsContainer.getComponent(actionClass);
         
         if (action == null) {
@@ -57,20 +60,24 @@ public final class PicoActionFactory extends ActionFactory {
         }
         return action;
     }
-    
 
-    /**
-     *  Return actions container, first try using the ActionsContainerFactory, 
-     *  than in WebWork ActionContext.
-     * @return
-     */
-    private MutablePicoContainer getActionsContainer() {
-        HttpServletRequest request = ServletActionContext.getRequest();
-        if ( request != null ) {
-            return actionsContainerFactory.getActionsContainer(request);
-        } else {
-            ObjectReference ref = new ActionContextScopeReference(KeyConstants.REQUEST_CONTAINER);
-            return (MutablePicoContainer) ref.get();
+        public Class getActionClass(String className) throws PicoCompositionException {
+        try {
+            return loadClass(className);
+        } catch (ClassNotFoundException e) {
+            throw new PicoCompositionException("Action class '" + className + "' not found", e);
         }
     }
+
+    protected Class loadClass(String className) throws ClassNotFoundException {
+        if (classCache.containsKey(className)) {
+            return (Class) classCache.get(className);
+        } else {
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            Class result = classLoader.loadClass(className);
+            classCache.put(className, result);
+            return result;
+        }
+    } 
+
 }

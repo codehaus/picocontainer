@@ -13,7 +13,7 @@ import org.apache.axis.providers.java.RPCProvider;
 import org.apache.axis.transport.http.HTTPConstants;
 import org.apache.axis.utils.cache.ClassCache;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.RequestScopeReference;
+import org.nanocontainer.nanowar.NewFilter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
@@ -44,8 +44,7 @@ public class NanoRPCProvider extends RPCProvider implements KeyConstants {
     private Object instantiateService(Class svcClass, MessageContext msgContext) {
 
         HttpServletRequest request = (HttpServletRequest)msgContext.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
-        ObjectReference ref = new RequestScopeReference(request, REQUEST_CONTAINER);
-        MutablePicoContainer requestContainer = (MutablePicoContainer) ref.get();
+        MutablePicoContainer requestContainer = NewFilter.getRequestContainerForThread();
 
         MutablePicoContainer container = new DefaultPicoContainer(requestContainer);
         container.addComponent(svcClass);

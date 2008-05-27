@@ -44,7 +44,6 @@ public class PicoActionFactoryTestCase {
     @Before public void setUp(){
         factory = new PicoActionFactory();
         container = new DefaultPicoContainer(new Caching());
-        (new ActionContextScopeReference(KeyConstants.REQUEST_CONTAINER)).set(container);
     }
     
 	@Test public void testActionInstantiationWithValidClassName() throws Exception {

@@ -19,7 +19,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.picocontainer.ObjectReference;
-import org.picocontainer.references.ThreadLocalReference;
+import org.nanocontainer.nanowar.NewFilter;
 
 import com.opensymphony.xwork2.ObjectFactory;
 
@@ -29,30 +29,14 @@ import com.opensymphony.xwork2.ObjectFactory;
  * 
  * @author Jonas Engman
  */
-public class PicoObjectFactoryFilter implements Filter {
-
-	private final static String ALREADY_FILTERED_KEY = "nanocontainer_objectfactory_filtered";
-
-	private ObjectReference objectReference;
+public class PicoObjectFactoryFilter extends NewFilter {
 
 	public void init(FilterConfig config) throws ServletException {
-		objectReference = new ThreadLocalReference();
-		ObjectFactory.setObjectFactory(new PicoObjectFactory(objectReference));
+		ObjectFactory.setObjectFactory(new PicoObjectFactory());
 	}
 
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-		if (httpServletRequest.getAttribute(ALREADY_FILTERED_KEY) == null) {
-			httpServletRequest.setAttribute(ALREADY_FILTERED_KEY, Boolean.TRUE);
-			objectReference.set(httpServletRequest);
-			try {
-				chain.doFilter(request, response);
-			} finally {
-				objectReference.set(null);
-			}
-		} else {
-			chain.doFilter(request, response);
-		}
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+	    chain.doFilter(req, resp);
 	}
 
 	public void destroy() {

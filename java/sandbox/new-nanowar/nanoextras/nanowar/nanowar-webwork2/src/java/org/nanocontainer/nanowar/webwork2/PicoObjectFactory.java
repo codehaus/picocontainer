@@ -9,14 +9,16 @@
 package org.nanocontainer.nanowar.webwork2;
 
 import com.opensymphony.xwork.ObjectFactory;
-import org.nanocontainer.nanowar.ActionsContainerFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.nanocontainer.nanowar.NewFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * <p>
@@ -31,18 +33,7 @@ import java.util.Map;
  */
 public class PicoObjectFactory extends ObjectFactory {
 
-    private final ActionsContainerFactory actionsContainerFactory = new ActionsContainerFactory();
-    private final ObjectReference objectReference;
-
-    /**
-     * Creates a PicoObjectFactory with given object reference, 
-     * used to pass the http request to the factory
-     * 
-     * @param objectReference the ObjectReference 
-     */
-    public PicoObjectFactory(ObjectReference objectReference) {
-        this.objectReference = objectReference;
-    }
+    private final Map classCache = new HashMap();
 
     public boolean isNoArgConstructorRequired() {
         return false;
@@ -75,7 +66,7 @@ public class PicoObjectFactory extends ObjectFactory {
      * Using actionsContainerFactory for consistency with build methods.
      */
     public Class getClassInstance(String className) {
-        return actionsContainerFactory.getActionClass(className);
+        return getActionClass(className);
     }
 
     /**
@@ -86,7 +77,7 @@ public class PicoObjectFactory extends ObjectFactory {
      * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.Class)
      */
     public Object buildBean(Class actionClass) throws Exception {
-        PicoContainer actionsContainer = actionsContainerFactory.getActionsContainer((HttpServletRequest) objectReference.get());
+        PicoContainer actionsContainer = NewFilter.getRequestContainerForThread();
         Object action = actionsContainer.getComponent(actionClass);
 
         if (action == null) {
@@ -109,7 +100,27 @@ public class PicoObjectFactory extends ObjectFactory {
      * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.String)
      */
     public Object buildBean(String className) throws Exception {
-        Class actionClass = actionsContainerFactory.getActionClass(className);
+        Class actionClass = getActionClass(className);
         return buildBean(actionClass);
     }
+
+    public Class getActionClass(String className) throws PicoCompositionException {
+        try {
+            return loadClass(className);
+        } catch (ClassNotFoundException e) {
+            throw new PicoCompositionException("Action class '" + className + "' not found", e);
+        }
+    }
+
+    protected Class loadClass(String className) throws ClassNotFoundException {
+        if (classCache.containsKey(className)) {
+            return (Class) classCache.get(className);
+        } else {
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            Class result = classLoader.loadClass(className);
+            classCache.put(className, result);
+            return result;
+        }
+    }  
+
 }

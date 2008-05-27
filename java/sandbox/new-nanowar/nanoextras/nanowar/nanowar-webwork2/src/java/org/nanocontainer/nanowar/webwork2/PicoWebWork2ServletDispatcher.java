@@ -12,11 +12,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
-
 import com.opensymphony.webwork.dispatcher.ServletDispatcher;
 import com.opensymphony.xwork.ActionProxyFactory;
-import com.opensymphony.xwork.DefaultActionProxyFactory;
 
 /**
  * Extension to the standard WebWork2 ServletDispatcher that instantiates 
@@ -30,18 +27,6 @@ import com.opensymphony.xwork.DefaultActionProxyFactory;
 public class PicoWebWork2ServletDispatcher extends ServletDispatcher {
 
     public PicoWebWork2ServletDispatcher() {
-        super();
         ActionProxyFactory.setFactory(new PicoActionProxyFactory());
-    }
-
-    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), request);
-        try {
-            containerLauncher.startContainer();
-            // process the servlet using webwork2
-            super.service(request, response);
-        } finally {
-            containerLauncher.killContainer();
-        }
     }
 }

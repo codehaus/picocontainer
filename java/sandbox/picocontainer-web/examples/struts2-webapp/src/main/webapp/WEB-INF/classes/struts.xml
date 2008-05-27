@@ -5,7 +5,7 @@
 <struts>
 
     <bean type="com.opensymphony.xwork2.ActionProxyFactory" name="default" class="org.nanocontainer.nanowar.struts2.PicoActionProxyFactory" />
-    <!--<bean type="com.opensymphony.xwork2.ObjectFactory" name="default" class="org.nanocontainer.nanowar.struts2.PicoObjectFactory" />-->
+    <bean type="com.opensymphony.xwork2.ObjectFactory" name="default" class="org.nanocontainer.nanowar.struts2.PicoObjectFactory" />
 
 
     <package name="default" extends="struts-default">

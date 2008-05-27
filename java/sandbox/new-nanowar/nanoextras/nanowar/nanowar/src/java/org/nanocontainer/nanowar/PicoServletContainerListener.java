@@ -13,7 +13,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.references.SimpleReference;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.lifecycle.DefaultLifecycleState;
 import org.picocontainer.behaviors.Storing;
 import org.picocontainer.behaviors.Caching;
 import org.nanocontainer.integrationkit.ContainerPopulator;
@@ -93,13 +92,13 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
     protected DefaultPicoContainer appContainer;
     protected DefaultPicoContainer sessionContainer;
     protected DefaultPicoContainer requestContainer;
+    private Storing sessionStoring;
+    private Storing requestStoring;
 
     public void contextInitialized(final ServletContextEvent event) {
         ServletContext context = event.getServletContext();
 
 
-        Storing sessionStoring = new Storing();
-        Storing requestStoring = new Storing();
 
         appContainer = new DefaultPicoContainer(new Caching());
         appContainer.setName("application");
@@ -131,13 +130,13 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         // populateContainer("requestResources", requestContainer, sessionContainer, builderClassName);
 
         context.setAttribute(RequestContainerHolder.class.getName(), new RequestContainerHolder(requestContainer, requestStoring, requestStateModel));
+
+        appContainer.start();
     }
 
     public void contextDestroyed(ServletContextEvent event) {
-        ServletContext context = event.getServletContext();
-        ApplicationContainerHolder ach = (ApplicationContainerHolder) context.getAttribute(ApplicationContainerHolder.class.getName());
-        ach.getContainer().stop();
-        ach.getContainer().dispose();
+        appContainer.stop();
+        appContainer.dispose();
     }
 
     public void sessionCreated(HttpSessionEvent event) {
@@ -145,12 +144,10 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         ServletContext context = session.getServletContext();
 
         SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SessionContainerHolder.class.getName());
-        Storing sessionStoring = sch.getStoring();
         ThreadLocalLifecycleState tlLifecycleState = sch.getLifecycleStateModel();
-
         session.setAttribute(SessionStoreHolder.class.getName(), new SessionStoreHolder(sessionStoring.resetCacheForThread(), tlLifecycleState.resetStateModelForThread()));
 
-        sch.getContainer().start();
+        sessionContainer.start();
     }
 
     public void sessionDestroyed(HttpSessionEvent event) {
@@ -162,47 +159,12 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SessionContainerHolder.class.getName());
         ThreadLocalLifecycleState tlLifecycleState = sch.getLifecycleStateModel();
 
-        sch.getStoring().putCacheForThread(ssh.getStoreWrapper());
+        sessionStoring.putCacheForThread(ssh.getStoreWrapper());
         tlLifecycleState.putLifecycleStateModelForThread(ssh.getDefaultLifecycleState());
 
-        sch.getContainer().stop();
-        sch.getContainer().dispose();
-        sch.getStoring().invalidateCacheForThread();
-    }
-
-    private void populateContainer(String resources, MutablePicoContainer container, MutablePicoContainer parent, String containerBuilderClassName) {
-        String[] resourcePaths = toCSV(resources);
-        for (String resourcePath : resourcePaths) {
-            ContainerPopulator populator = createContainerPopulator(getResource(resourcePath), parent, containerBuilderClassName);
-            populator.populateContainer(container);
-        }
-    }
-
-    private static final String COMMA = ",";
-
-    private String[] toCSV(String resources) {
-        StringTokenizer st = new StringTokenizer(resources, COMMA);
-        List<String> tokens = new ArrayList<String>();
-        while (st.hasMoreTokens()) {
-            tokens.add(st.nextToken().trim());
-        }
-        return tokens.toArray(new String[tokens.size()]);
-    }
-
-    private Reader getResource(String resource) {
-        return new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(resource));
-    }
-
-    private ContainerPopulator createContainerPopulator(Reader reader, MutablePicoContainer parent, String containerBuilderClassName) {
-        NanoContainer nano = new DefaultNanoContainer(Thread.currentThread().getContextClassLoader());
-        nano.addComponent(containerBuilderClassName,
-                new ClassName(containerBuilderClassName), new ConstantParameter(reader),
-                new ConstantParameter(Thread.currentThread().getContextClassLoader()));
-        ContainerBuilder containerBuilder = (ContainerBuilder) nano.getComponent(containerBuilderClassName);
-        ObjectReference parentRef = new SimpleReference();
-        parentRef.set(parent);
-        containerBuilder.buildContainer(new SimpleReference(), parentRef, null, false);
-        return (ContainerPopulator) containerBuilder;
+        sessionContainer.stop();
+        sessionContainer.dispose();
+        sessionStoring.invalidateCacheForThread();
     }
 
 }

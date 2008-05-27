@@ -11,19 +11,20 @@
 	</context-param>	
 	
 	<!--  
-			NanoWAR filter to build the request container with each request to the
-			faces servlet.
+			Filter to build the request container with each request to the faces servlet.
 	 -->
-	<filter>
-	    <filter-name>NanoWar</filter-name>
-	    <filter-class>org.nanocontainer.nanowar.ServletRequestContainerFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>NanoWar</filter-name>
-		<servlet-name>Faces Servlet</servlet-name>
+   <filter>
+        <filter-name>picoFilter</filter-name>
+        <filter-class>org.nanocontainer.nanowar.NewFilter</filter-class>
+    </filter>
+
+  	<filter-mapping>
+		<filter-name>picoFilter</filter-name>
+        <url-pattern>*.jsf</url-pattern>
 	</filter-mapping>
+  
     <listener>
-        <listener-class>org.nanocontainer.nanowar.NanoWarContextListener</listener-class>
+        <listener-class>org.nanocontainer.nanowar.samples.jsf.JsfPicoServletContainerListener</listener-class>
     </listener>	
     
     <!-- 

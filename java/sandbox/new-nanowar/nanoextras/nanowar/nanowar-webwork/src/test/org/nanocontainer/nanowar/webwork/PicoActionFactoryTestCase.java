@@ -46,14 +46,7 @@ public class PicoActionFactoryTestCase {
         container = new DefaultPicoContainer(new Caching());
     }
     
-	@Test public void testActionInstantiationWithValidClassName() throws Exception {
-		container.addComponent("foo");
-		TestAction action = (TestAction) factory
-				.getActionImpl(TestAction.class.getName());
-		assertNotNull(action);
-		assertEquals("foo", action.getFoo());
-	}
-    
+
     @Test public void testActionInstantiationWhichFailsDueToFailedDependencies() throws Exception {
         TestAction action = (TestAction) factory
                 .getActionImpl(TestAction.class.getName());
@@ -67,14 +60,6 @@ public class PicoActionFactoryTestCase {
         assertNull(action);
     }
 
-    @Test public void testActionInstantiationWhichHasAlreadyBeenRegistered() throws Exception {
-        container.addComponent("foo");
-        container.addComponent(TestAction.class);
-        TestAction action1 = container.getComponent(TestAction.class);
-        TestAction action2 = (TestAction) factory
-                .getActionImpl(TestAction.class.getName());
-        assertSame(action1, action2);
-    }
 
     @Test public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
         container.addComponent("foo");
@@ -85,23 +70,5 @@ public class PicoActionFactoryTestCase {
         assertSame(action1, action2);
     }
     
-    @Test public void testActionContainerIsFoundInRequest() throws Exception {
-    	
-    	final HttpServletRequest request = mockery.mock(HttpServletRequest.class);
-    	mockery.checking(new Expectations(){{
-	        atLeast(1).of(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
-            will(returnValue(null));
-            atLeast(1).of(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
-            will(returnValue(container));
-            atLeast(1).of(request).setAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)),
-                    with(any(MutablePicoContainer.class))); 
-		}});
-
-        ServletActionContext.setRequest(request);
-        container.addComponent("foo");
-        TestAction action = (TestAction) factory
-                .getActionImpl(TestAction.class.getName());
-        assertNotNull(action);        
-    }
 
 }

@@ -17,9 +17,8 @@ import org.nanocontainer.integrationkit.ContainerComposer;
  */
 public interface KeyConstants {
     
-    String BUILDER = "nanocontainer.builder";    
-    String ACTIONS_CONTAINER = "nanocontainer.actions";
-
+    String BUILDER = "nanocontainer.builder";
+    
     String NANOCONTAINER_PREFIX = "nanocontainer";
     String CONTAINER_COMPOSER = ContainerComposer.class.getName();
     String CONTAINER_COMPOSER_CONFIGURATION = CONTAINER_COMPOSER + ".configuration";

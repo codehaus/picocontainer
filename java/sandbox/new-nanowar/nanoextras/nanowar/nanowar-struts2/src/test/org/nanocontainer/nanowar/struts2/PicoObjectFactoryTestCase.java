@@ -50,44 +50,7 @@ public final class PicoObjectFactoryTestCase {
         factory = new PicoObjectFactory();
     }
     
-	@Test public void testActionInstantiationWithValidClassName() throws Exception {
-		
-		mockery.checking(new Expectations(){{
-	        atLeast(1).of(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
-            will(returnValue(null));
-            atLeast(1).of(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
-            will(returnValue(container));
-            atLeast(1).of(request).setAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)),
-                    with(any(MutablePicoContainer.class))); 
-		}});
-		
-		container.addComponent("foo");
-		TestAction action = (TestAction) factory
-				.buildBean(TestAction.class.getName());
-		assertNotNull(action);
-		assertEquals("foo", action.getFoo());
-	}
     
-    @Test public void testActionInstantiationWhichFailsDueToFailedDependencies() throws Exception {
-		mockery.checking(new Expectations(){{
-	        atLeast(1).of(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
-            will(returnValue(null));
-            atLeast(1).of(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
-            will(returnValue(container));
-            atLeast(1).of(request).setAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)),
-                    with(any(MutablePicoContainer.class))); 
-		}});
-
-		TestAction action = null;
-        try {
-            action = (TestAction) factory
-                            .buildBean(TestAction.class.getName());
-            fail("should have barfed");
-        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            // expected
-        }
-        assertNull(action);
-    }
 
     @Test public void testActionInstantiationWithInvalidClassName() throws Exception {
         try {
@@ -98,43 +61,6 @@ public final class PicoObjectFactoryTestCase {
         }
     }
 
-    @Test public void testActionInstantiationWhichHasAlreadyBeenRegistered() throws Exception {
-		mockery.checking(new Expectations(){{
-	        atLeast(1).of(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
-            will(returnValue(null));
-            atLeast(1).of(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
-            will(returnValue(container));
-            atLeast(1).of(request).setAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)),
-                    with(any(MutablePicoContainer.class))); 
-		}});
 
-        container.addComponent("foo");
-        container.addComponent(TestAction.class);
-        TestAction action1 = container.getComponent(TestAction.class);
-        TestAction action2 = (TestAction) factory
-                .buildBean(TestAction.class.getName());
-        assertSame(action1, action2);
-    }
-
-    /**
-     * if component was not registered explicitely,  there shall be different instance for
-     * next invocation.  not only actions are instantiated via factory,  but also important stuff like filters,
-     * validators, interceptors etc - they shall not be shared. 
-     * @throws Exception
-     */
-    @Test public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
-    	mockery.checking(new Expectations(){{
-	        atLeast(1).of(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
-            will(returnValue(container));
-		}});
-
-    	container.addComponent("foo");
-        TestAction action1 = (TestAction) factory
-                .buildBean(TestAction.class.getName());
-        TestAction action2 = (TestAction) factory
-                .buildBean(TestAction.class.getName());
-        assertNotSame(action1, action2);
-    }
-    
 
 }

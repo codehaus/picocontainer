@@ -14,7 +14,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.NewFilter;
+import org.nanocontainer.nanowar.PicoServletContainerFilter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import webwork.action.ServletActionContext;
@@ -42,7 +42,7 @@ public final class WebWorkVelocityServlet extends VelocityViewServlet implements
                                    javax.servlet.http.HttpServletResponse response)
     {
 		Context ctx = new NanocontainerVelocityContext(
-	   		NewFilter.getRequestContainerForThread(),
+	   		PicoServletContainerFilter.getRequestContainerForThread(),
 			ServletValueStack.getStack(request)
 			);
 		ctx.put(REQUEST, request);

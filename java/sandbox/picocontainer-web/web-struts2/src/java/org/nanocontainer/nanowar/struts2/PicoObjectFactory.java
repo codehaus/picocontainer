@@ -14,7 +14,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.nanocontainer.nanowar.NewFilter;
+import org.nanocontainer.nanowar.PicoServletContainerFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -47,7 +47,7 @@ public class PicoObjectFactory extends ObjectFactory {
      * @return
      */
     public Object buildBean(Class clazz, Map extraContext) throws Exception {
-        PicoContainer actionsContainer = NewFilter.getRequestContainerForThread();
+        PicoContainer actionsContainer = PicoServletContainerFilter.getRequestContainerForThread();
         if (actionsContainer == null) {
             return super.buildBean(clazz, extraContext);
         }
@@ -62,7 +62,7 @@ public class PicoObjectFactory extends ObjectFactory {
      * @param className
      */
     public Object buildBean(String className, Map extraContext) throws Exception {
-        PicoContainer actionsContainer = NewFilter.getRequestContainerForThread();
+        PicoContainer actionsContainer = PicoServletContainerFilter.getRequestContainerForThread();
         if (actionsContainer == null) {
             return super.buildBean(className, extraContext);
         }

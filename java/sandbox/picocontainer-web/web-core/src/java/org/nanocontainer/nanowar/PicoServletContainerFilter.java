@@ -1,6 +1,7 @@
 package org.nanocontainer.nanowar;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,7 +17,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Storing;
 
 @SuppressWarnings("serial")
-public class NewFilter extends AbstractNanoWarListener implements Filter {
+public class PicoServletContainerFilter implements Filter, Serializable {
 
     public void init(FilterConfig filterConfig) throws ServletException {
     }

@@ -16,7 +16,7 @@ import javax.faces.el.EvaluationException;
 import javax.faces.el.VariableResolver;
 
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.NewFilter;
+import org.nanocontainer.nanowar.PicoServletContainerFilter;
 import org.picocontainer.PicoContainer;
 
 /**
@@ -151,7 +151,7 @@ public class NanoWarDelegatingVariableResolver extends VariableResolver  {
         
         //First check request map.
         if (requestAttributeMap != null) {
-            container = NewFilter.getRequestContainerForThread();
+            container = PicoServletContainerFilter.getRequestContainerForThread();
         }
         
         if (requestAttributeMap == null || container == null) {
@@ -160,13 +160,13 @@ public class NanoWarDelegatingVariableResolver extends VariableResolver  {
             Map sessionMap = facesContext.getExternalContext().getSessionMap();
             if (sessionMap != null) {
                 //If there is a session.
-                container = NewFilter.getSessionContainerForThread();
+                container = PicoServletContainerFilter.getSessionContainerForThread();
             }
             
             if (sessionMap == null || container == null) {
                 
                 //If that fails, check for App level container.
-                container = NewFilter.getApplicationContainerForThread();
+                container = PicoServletContainerFilter.getApplicationContainerForThread();
                 if (container == null) {
                     //If that fails... Fail.
                     throw new EvaluationException("The NanoWar delegating variable resolver is installed, however no NanoWar "

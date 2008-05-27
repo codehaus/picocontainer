@@ -15,7 +15,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.nanocontainer.nanowar.NewFilter;
+import org.nanocontainer.nanowar.PicoServletContainerFilter;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -60,7 +60,7 @@ public final class ActionFactory {
             throws PicoCompositionException
     {
 
-        MutablePicoContainer actionsContainer = NewFilter.getRequestContainerForThread();
+        MutablePicoContainer actionsContainer = PicoServletContainerFilter.getRequestContainerForThread();
         Object actionKey = mapping.getPath();
         Class actionType = getActionClass(mapping.getType());
 

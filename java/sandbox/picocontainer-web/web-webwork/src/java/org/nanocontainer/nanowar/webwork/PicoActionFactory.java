@@ -11,7 +11,7 @@ package org.nanocontainer.nanowar.webwork;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.nanocontainer.nanowar.NewFilter;
+import org.nanocontainer.nanowar.PicoServletContainerFilter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 
@@ -45,7 +45,7 @@ public final class PicoActionFactory extends ActionFactory {
     }
 
     protected Action instantiateAction(Class actionClass) {
-        MutablePicoContainer actionsContainer = NewFilter.getRequestContainerForThread();
+        MutablePicoContainer actionsContainer = PicoServletContainerFilter.getRequestContainerForThread();
         Action action = (Action) actionsContainer.getComponent(actionClass);
         
         if (action == null) {

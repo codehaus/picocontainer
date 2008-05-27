@@ -13,7 +13,7 @@ import org.apache.axis.providers.java.MsgProvider;
 import org.apache.axis.transport.http.HTTPConstants;
 import org.apache.axis.utils.cache.ClassCache;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.NewFilter;
+import org.nanocontainer.nanowar.PicoServletContainerFilter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.DefaultPicoContainer;
@@ -43,7 +43,7 @@ public class NanoMsgProvider extends MsgProvider implements KeyConstants {
     private Object instantiateService(Class svcClass, MessageContext msgContext) {
 
         HttpServletRequest request = (HttpServletRequest) msgContext.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
-        MutablePicoContainer requestContainer = NewFilter.getRequestContainerForThread();
+        MutablePicoContainer requestContainer = PicoServletContainerFilter.getRequestContainerForThread();
 
         MutablePicoContainer container = new DefaultPicoContainer(requestContainer);
         container.addComponent(svcClass);

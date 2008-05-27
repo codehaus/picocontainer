@@ -3,7 +3,7 @@ package org.nanocontainer.nanowar.nanoweb;
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.nanocontainer.nanowar.NewFilter;
+import org.nanocontainer.nanowar.PicoServletContainerFilter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 
@@ -42,7 +42,7 @@ import java.util.Enumeration;
  *
  * @author Aslak Helles&oslash;y
  * @author Kouhei Mori
- * @version $Revision$
+ * @version $Revision:4445 $
  */
 public class NanoWebServlet extends HttpServlet implements KeyConstants {
 
@@ -188,10 +188,10 @@ public class NanoWebServlet extends HttpServlet implements KeyConstants {
     }
 
     private MutablePicoContainer getApplicationContainer(ServletContext context) {
-        return NewFilter.getApplicationContainerForThread();
+        return PicoServletContainerFilter.getApplicationContainerForThread();
     }
 
     private MutablePicoContainer getRequestContainer(ServletRequest request) {
-        return NewFilter.getRequestContainerForThread();
+        return PicoServletContainerFilter.getRequestContainerForThread();
     }
 }

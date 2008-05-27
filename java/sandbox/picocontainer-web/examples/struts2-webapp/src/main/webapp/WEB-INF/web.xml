@@ -10,7 +10,7 @@
 
     <filter>
         <filter-name>picoFilter</filter-name>
-        <filter-class>org.nanocontainer.nanowar.NewFilter</filter-class>
+        <filter-class>org.nanocontainer.nanowar.PicoServletContainerFilter</filter-class>
     </filter>
 
     <filter>

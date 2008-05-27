@@ -15,14 +15,14 @@
   <url>http://www.picocontainer.org/web</url>
 
   <modules>
-    <module>nanowar</module>
-    <module>nanowar-axis</module>
-    <module>nanowar-jsf</module>
-    <module>nanowar-nanoweb</module>
-    <module>nanowar-struts</module>
-    <module>nanowar-struts2</module>
-    <module>nanowar-webwork</module>
-    <module>nanowar-webwork2</module>
+    <module>web-core</module>
+    <module>web-axis</module>
+    <module>web-jsf</module>
+    <module>web-nanoweb</module>
+    <module>web-struts</module>
+    <module>web-struts2</module>
+    <module>web-webwork</module>
+    <module>web-webwork2</module>
   </modules>
 
   <description>
@@ -34,11 +34,11 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-nanowar/trunk</connection>
+    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer-web/trunk</connection>
     <developerConnection>
-      scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-nanowar/trunk
+      scm:svn:https://svn.codehaus.org/scm/picocontainer/java/picocontainer-web/trunk
     </developerConnection>
-    <url>https://svn.codehaus.org/picocontainer/java/nanocontainer-nanowar/tags/trunk</url>
+    <url>https://svn.codehaus.org/picocontainer/java/picocontainer-web/tags/trunk</url>
   </scm>
 
   <repositories>

@@ -8,6 +8,6 @@
     <version>2.0-SNAPSHOT</version>
   </parent>
   <artifactId>picocontainer-web-example</artifactId>
-  <name>Web Example code</name>
+  <name>Web example common code</name>
 
 </project>

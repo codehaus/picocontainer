@@ -33,14 +33,14 @@ public class CheeseActionTest extends TestCase {
         action.setCommand("save");
         assertEquals(CheeseAction.SUCCESS,action.execute());
 
-        // Cheddar exists already -- count 1
+        // Cheddar + 3 others exists already -- count 4 already.
 
-        assertEquals(2, service.getCheeses().size());
+        assertEquals(5, service.getCheeses().size());
         
         action.setCommand("remove");
         assertEquals(CheeseAction.SUCCESS,action.execute());
         
-        assertEquals(1, service.getCheeses().size());
+        assertEquals(4, service.getCheeses().size());
         
     }
     public void testFoo() {

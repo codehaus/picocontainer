@@ -25,7 +25,10 @@ public class MemoryCheeseDao implements CheeseDao, Serializable {
 
     public MemoryCheeseDao() {
         cheeses = new HashMap();
-        cheeses.put("cheddar", new Cheese("cheddar","England"));
+        cheeses.put("Cheddar", new Cheese("Cheddar","England"));
+        cheeses.put("Brie", new Cheese("Brie","France"));
+        cheeses.put("Dolcelatte", new Cheese("Dolcelatte","Italy"));
+        cheeses.put("Manchego", new Cheese("Manchego","Spain"));
     }
 
     public void save(Cheese cheese) {

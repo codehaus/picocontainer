@@ -7,7 +7,7 @@
     <artifactId>picocontainer-web-examples</artifactId>
     <version>2.0-SNAPSHOT</version>
   </parent>
-  <artifactId>webwork2-webapp</artifactId>
+  <artifactId>struts2-webapp</artifactId>
   <name>Struts 2 Webapp</name>
   <packaging>war</packaging>
   <dependencies>

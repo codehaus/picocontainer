@@ -1,13 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.nanocontainer</groupId>
-  <artifactId>nanocontainer-parent</artifactId>
-  <name>NanoContainer Parent</name>
+  <groupId>org.picocontainer.script</groupId>
+  <artifactId>picocontainer-script</artifactId>
+  <name>PicoContainer Script</name>
   <version>2.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <url>http://www.nanocontainer.org</url>
+  <url>http://www.picocontainer.org/script</url>
 
   <modules>
     <module>testmodel</module>
@@ -19,9 +18,6 @@
     <module>container-jruby</module>
     <module>container-jython</module>
     <module>container-rhino</module>
-    <module>booter</module>
-    <module>deployer</module>
-    <module>webcontainer</module>
   </modules>
 
   <organization>
@@ -30,7 +26,7 @@
   </organization>
   <inceptionYear>2003</inceptionYear>
   <description>
-    <![CDATA[Please refer to the <a href="http://nanocontainer.org/">main website</a> for documentation.]]>
+    <![CDATA[Please refer to the <a href="http://picocontainer.org/script">main website</a> for documentation.]]>
   </description>
 
   <issueManagement>
@@ -40,23 +36,17 @@
 
   <licenses>
     <license>
-      <url>
-        https://svn.codehaus.org/picocontainer/java/nanocontainer/trunk/LICENSE.txt
-      </url>
+      <url>https://svn.codehaus.org/picocontainer/java/nanocontainer/trunk/LICENSE.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
 
   <scm>
-    <connection>
-      scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer/tags/nanocontainer-1_1
-    </connection>
+    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/sandbox/picocontainer-script</connection>
     <developerConnection>
-      scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer/tags/nanocontainer-1_1
+      scm:svn:https://svn.codehaus.org/picocontainer/java/sandbox/picocontainer-script
     </developerConnection>
-    <url>
-      https://svn.codehaus.org/picocontainer/java/nanocontainer/tags/nanocontainer-1_1
-    </url>
+    <url>https://svn.codehaus.org/picocontainer/java/sandbox/picocontainer-script</url>
   </scm>
 
   <repositories>
@@ -101,19 +91,17 @@
   <distributionManagement>
     <repository>
       <id>codehaus.org</id>
-      <name>Codehaus NanoContainer Repository</name>
-      <url>dav:https://dav.codehaus.org/repository/nanocontainer/</url>
+      <name>Codehaus PicoContainer Repository</name>
+      <url>dav:https://dav.codehaus.org/repository/picocontainer/</url>
     </repository>
     <snapshotRepository>
       <id>codehaus.org</id>
-      <name>Codehaus NanoContainer Snapshots Repository</name>
-      <url>
-        dav:https://dav.codehaus.org/snapshots.repository/nanocontainer/
-      </url>
+      <name>Codehaus PicoContainer Snapshots Repository</name>
+      <url>dav:https://dav.codehaus.org/snapshots.repository/picocontainer/</url>
     </snapshotRepository>
     <site>
       <id>codehaus.org</id>
-      <url>dav:https://dav.codehaus.org/nanocontainer/</url>
+      <url>dav:https://dav.codehaus.org/picocontainer/script</url>
     </site>
   </distributionManagement>
 
@@ -134,36 +122,23 @@
         <artifactId>picocontainer-tck</artifactId>
         <version>2.4-SNAPSHOT</version>
       </dependency>
+      <!-- 
       <dependency>
-        <groupId>${pom.groupId}</groupId>
-        <artifactId>nanocontainer</artifactId>
+        <groupId>org.picocontainer.script</groupId>
+        <artifactId>picocontainer-script-core</artifactId>
         <version>${pom.version}</version>
       </dependency>
       <dependency>
-        <groupId>${pom.groupId}</groupId>
-        <artifactId>nanocontainer-aop</artifactId>
+        <groupId>org.picocontainer.script</groupId>
+        <artifactId>picocontainer-script-tck</artifactId>
         <version>${pom.version}</version>
       </dependency>
       <dependency>
-        <groupId>${pom.groupId}</groupId>
-        <artifactId>nanocontainer-groovy</artifactId>
+        <groupId>org.picocontainer.script</groupId>
+        <artifactId>picocontainer-script-testmodel</artifactId>
         <version>${pom.version}</version>
       </dependency>
-      <dependency>
-        <groupId>${pom.groupId}</groupId>
-        <artifactId>nanocontainer-tck</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>${pom.groupId}</groupId>
-        <artifactId>nanocontainer-testmodel</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>${pom.groupId}</groupId>
-        <artifactId>nanocontainer-booter</artifactId>
-        <version>${pom.version}</version>
-      </dependency>   
+      -->
       <dependency>
         <groupId>org.jmock</groupId>
         <artifactId>jmock-junit4</artifactId>
@@ -177,7 +152,7 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
-    <!-- test scoped dependencies -->    
+    <!-- test scoped dependencies -->
     <dependency>
       <groupId>org.jmock</groupId>
       <artifactId>jmock-junit4</artifactId>
@@ -263,9 +238,7 @@
             <links>
               <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
               <link>http://proxytoys.codehaus.org/apidocs/</link>
-              <link>
-                http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/apidocs/
-              </link>
+              <link>http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/apidocs/</link>
             </links>
             <stylesheet>maven</stylesheet>
             <header>
@@ -293,9 +266,7 @@
               </property>
               <property>
                 <name>testcomp.jar</name>
-                <value>
-                  ${basedir}/../container/src/test-comp/TestComp.jar
-                </value>
+                <value>${basedir}/../container/src/test-comp/TestComp.jar</value>
               </property>
             </systemProperties>
             <excludes>
@@ -326,9 +297,7 @@
           <version>2.0-beta-7</version>
           <configuration>
             <autoVersionSubmodules>true</autoVersionSubmodules>
-            <tagBase>
-              https://svn.codehaus.org/picocontainer/java/2.x/tags/
-            </tagBase>
+            <tagBase>https://svn.codehaus.org/picocontainer/java/2.x/tags/</tagBase>
           </configuration>
         </plugin>
         <plugin>

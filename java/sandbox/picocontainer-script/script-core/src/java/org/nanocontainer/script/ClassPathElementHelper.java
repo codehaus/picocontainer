@@ -9,8 +9,6 @@
 
 package org.nanocontainer.script;
 
-import org.nanocontainer.ClassPathElement;
-import org.nanocontainer.NanoContainer;
 
 import java.net.URL;
 import java.net.MalformedURLException;

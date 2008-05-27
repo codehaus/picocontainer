@@ -13,7 +13,7 @@ package org.nanocontainer.script;
 import org.picocontainer.PicoException;
 
 /**
- * Exception thrown due to invalid markup when assembling {@link org.nanocontainer.NanoContainer}s.
+ * Exception thrown due to invalid markup when assembling {@link org.nanocontainer.script.NanoContainer}s.
  *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  * @author Aslak Helles&oslash;y

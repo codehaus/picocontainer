@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.nanocontainer;
+package org.nanocontainer.script;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;

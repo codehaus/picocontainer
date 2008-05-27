@@ -13,7 +13,7 @@ package org.nanocontainer.script.groovy.buildernodes;
 import java.util.Map;
 import java.security.Permission;
 
-import org.nanocontainer.ClassPathElement;
+import org.nanocontainer.script.ClassPathElement;
 import org.nanocontainer.script.NanoContainerMarkupException;
 
 /**

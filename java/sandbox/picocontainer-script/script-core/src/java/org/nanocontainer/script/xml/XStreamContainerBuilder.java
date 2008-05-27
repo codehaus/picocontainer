@@ -19,8 +19,8 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.script.ContainerPopulator;
+import org.nanocontainer.script.DefaultNanoContainer;
 import org.nanocontainer.script.LifecycleMode;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;

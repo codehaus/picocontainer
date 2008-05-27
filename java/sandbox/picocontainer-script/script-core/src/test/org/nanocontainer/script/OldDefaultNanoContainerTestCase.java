@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.nanocontainer;
+package org.nanocontainer.script;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -20,9 +20,9 @@ import java.io.File;
 import java.net.MalformedURLException;
 
 import org.junit.Test;
-import org.nanocontainer.ClassName;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoContainer;
+import org.nanocontainer.script.ClassName;
+import org.nanocontainer.script.DefaultNanoContainer;
+import org.nanocontainer.script.NanoContainer;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoCompositionException;

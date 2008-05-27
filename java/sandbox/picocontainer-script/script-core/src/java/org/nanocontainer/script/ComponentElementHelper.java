@@ -13,8 +13,6 @@ import org.picocontainer.Parameter;
 
 import java.util.Properties;
 
-import org.nanocontainer.ClassName;
-import org.nanocontainer.NanoContainer;
 
 public class ComponentElementHelper {
 

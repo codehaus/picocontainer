@@ -40,13 +40,13 @@ import org.jmock.integration.junit4.JMock;
 import org.jruby.exceptions.RaiseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.TestHelper;
 import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.script.DefaultNanoContainer;
 import org.nanocontainer.script.LifecycleMode;
+import org.nanocontainer.script.NanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
+import org.nanocontainer.script.TestHelper;
 import org.nanocontainer.testmodel.A;
 import org.nanocontainer.testmodel.B;
 import org.nanocontainer.testmodel.HasParams;
@@ -561,7 +561,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     @Test public void testWithDynamicClassPath() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
         Reader script = new StringReader(
-            "TestHelper = org.nanocontainer.TestHelper\n"
+            "TestHelper = org.nanocontainer.script.TestHelper\n"
             + "testCompJar = TestHelper.getTestCompJarFile()\n"
             + "compJarPath = testCompJar.getCanonicalPath()\n"
             + "container {\n"
@@ -579,7 +579,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     @Test public void testWithDynamicClassPathWithPermissions() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
         Reader script = new StringReader(
-            "TestHelper = org.nanocontainer.TestHelper\n" +
+            "TestHelper = org.nanocontainer.script.TestHelper\n" +
             "SocketPermission = java.net.SocketPermission\n"
             + "testCompJar = TestHelper.getTestCompJarFile()\n"
             + "compJarPath = testCompJar.getCanonicalPath()\n"
@@ -601,7 +601,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         DefaultNanoContainer parent = new DefaultNanoContainer();
         try {
             Reader script = new StringReader(
-                "TestHelper = org.nanocontainer.TestHelper\n" +
+                "TestHelper = org.nanocontainer.script.TestHelper\n" +
                 "SocketPermission = java.net.SocketPermission\n" +
                 "testCompJar = TestHelper.getTestCompJarFile()\n" +
                 "container {\n" +

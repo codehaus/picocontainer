@@ -22,10 +22,10 @@ import java.io.StringReader;
 
 import org.junit.Test;
 import org.mozilla.javascript.JavaScriptException;
-import org.nanocontainer.TestHelper;
 import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.LifecycleMode;
+import org.nanocontainer.script.TestHelper;
 import org.nanocontainer.testmodel.A;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerConfig;
@@ -39,7 +39,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
     @Test public void testInstantiateBasicScriptable() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 
         Reader script = new StringReader("" +
-        		"importPackage(Packages.org.nanocontainer) \n" +
+        		"importPackage(Packages.org.nanocontainer.script) \n" +
                 "var pico = new DefaultNanoContainer()\n" +
                 "pico.addComponent(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n");
 
@@ -51,7 +51,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
     @Test public void testInstantiateWithBespokeComponentAdapter() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 
         Reader script = new StringReader("" +
-        		"importPackage(Packages.org.nanocontainer) \n" +
+        		"importPackage(Packages.org.nanocontainer.script) \n" +
         		"importPackage(Packages.org.picocontainer.injectors) \n" +
                 "var pico = new DefaultNanoContainer(new ConstructorInjection())\n" +
                 "pico.addComponent(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n" +
@@ -76,7 +76,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         final String testCompJarPath = testCompJar.getCanonicalPath().replace('\\', '/');
         Reader script = new StringReader(
         		"importPackage(Packages.java.io) \n" +
-        		"importPackage(Packages.org.nanocontainer) \n" +
+        		"importPackage(Packages.org.nanocontainer.script) \n" +
         		"importPackage(Packages.org.picocontainer) \n" +
         		"importPackage(Packages.org.picocontainer.injectors) \n" +
         		"\n" +
@@ -113,7 +113,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
 
     @Test public void testRegisterComponentInstance() throws JavaScriptException, IOException {
         Reader script = new StringReader("" +
-        		"importPackage(Packages.org.nanocontainer) \n" +
+        		"importPackage(Packages.org.nanocontainer.script) \n" +
         		"importPackage(Packages.org.picocontainer) \n" +
                 "var pico = new DefaultNanoContainer()\n" +
                 "pico.addComponent( new Packages." + FooTestComp.class.getName() + "())\n" +
@@ -131,7 +131,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
 
     @Test public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
-        		"importPackage(Packages.org.nanocontainer) \n" +
+        		"importPackage(Packages.org.nanocontainer.script) \n" +
                 "var pico = new DefaultNanoContainer(parent)\n");
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer ipc = new ImmutablePicoContainer(parent);

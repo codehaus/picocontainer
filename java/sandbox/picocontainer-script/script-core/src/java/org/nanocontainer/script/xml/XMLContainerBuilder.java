@@ -25,13 +25,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.nanocontainer.ClassName;
-import org.nanocontainer.ClassPathElement;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoBuilder;
+import org.nanocontainer.script.ClassName;
+import org.nanocontainer.script.ClassPathElement;
 import org.nanocontainer.script.ContainerPopulator;
+import org.nanocontainer.script.DefaultNanoContainer;
 import org.nanocontainer.script.LifecycleMode;
+import org.nanocontainer.script.NanoBuilder;
+import org.nanocontainer.script.NanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;

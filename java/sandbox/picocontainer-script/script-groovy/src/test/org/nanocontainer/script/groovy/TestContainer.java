@@ -1,6 +1,6 @@
 package org.nanocontainer.script.groovy;
 
-import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.script.DefaultNanoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;

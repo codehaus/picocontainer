@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.nanocontainer.NanoContainer;
+import org.nanocontainer.script.NanoContainer;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.nanocontainer.script.ComponentElementHelper;
 import org.picocontainer.Parameter;

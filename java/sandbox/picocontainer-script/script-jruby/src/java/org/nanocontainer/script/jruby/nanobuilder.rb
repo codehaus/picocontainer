@@ -15,7 +15,7 @@
 #
 module Nano
   Parameter = org.picocontainer.Parameter
-  DefaultNanoContainer = org.nanocontainer.DefaultNanoContainer
+  DefaultNanoContainer = org.nanocontainer.script.DefaultNanoContainer
   DefaultPicoContainer = org.picocontainer.DefaultPicoContainer
   ComponentParameter = org.picocontainer.parameters.ComponentParameter
   ConstantParameter = org.picocontainer.parameters.ConstantParameter

@@ -8,23 +8,20 @@
  * Original code by Paul Hammant                                             *
  *****************************************************************************/
 
-package org.nanocontainer;
+package org.nanocontainer.script;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Properties;
 import java.util.List;
+import java.util.Properties;
 
 import org.junit.Test;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoContainer;
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.tck.AbstractPicoContainerTest;
 
 /**

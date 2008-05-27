@@ -1,4 +1,4 @@
-package org.nanocontainer;
+package org.nanocontainer.script;
 
 import org.picocontainer.BehaviorFactory;
 import org.picocontainer.ComponentFactory;

@@ -12,10 +12,11 @@ package org.nanocontainer.script.groovy.buildernodes;
 
 import java.util.Map;
 
-import org.nanocontainer.NanoContainer;
 import groovy.lang.GroovyObject;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.ClassName;
+
+import org.nanocontainer.script.ClassName;
+import org.nanocontainer.script.DefaultNanoContainer;
+import org.nanocontainer.script.NanoContainer;
 import org.picocontainer.MutablePicoContainer;
 
 /**

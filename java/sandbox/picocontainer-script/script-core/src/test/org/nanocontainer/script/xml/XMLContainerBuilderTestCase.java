@@ -31,11 +31,9 @@ import java.util.Map;
 import javax.swing.JButton;
 
 import org.junit.Test;
-import org.nanocontainer.TestHelper;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.NanoContainerMarkupException;
+import org.nanocontainer.script.TestHelper;
 import org.nanocontainer.testmodel.CustomerEntityImpl;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.nanocontainer.testmodel.Entity;
@@ -46,19 +44,18 @@ import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfigComp;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.behaviors.Caching;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.monitors.WriterComponentMonitor;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.w3c.dom.Element;
@@ -749,7 +746,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
         String xml = new XStream().toXML(pico).replace('\"','\'');
 
-        assertEquals("<org.nanocontainer.DefaultNanoContainer>\n" +
+        assertEquals("<org.nanocontainer.script.DefaultNanoContainer>\n" +
                 "  <namedChildContainers/>\n" +
                 "  <delegate class='org.picocontainer.DefaultPicoContainer'>\n" +
                 "    <componentKeyToAdapterCache/>\n" +
@@ -774,7 +771,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "    </componentCharacteristic>\n" +
                 "    <componentMonitor class='org.picocontainer.monitors.NullComponentMonitor' reference='../lifecycleStrategy/componentMonitor'/>\n" +
                 "  </delegate>\n" +
-                "</org.nanocontainer.DefaultNanoContainer>", xml);
+                "</org.nanocontainer.script.DefaultNanoContainer>", xml);
 
         // This test suggests that testComponentCanUsePredefinedNestedCAF() is not testing what it hopes to test
     }

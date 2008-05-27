@@ -8,7 +8,7 @@
  * Original code by Paul Hammant                                             *
  *****************************************************************************/
 
-package org.nanocontainer;
+package org.nanocontainer.script;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;

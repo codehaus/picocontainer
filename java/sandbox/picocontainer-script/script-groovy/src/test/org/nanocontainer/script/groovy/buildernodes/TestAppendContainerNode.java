@@ -19,8 +19,8 @@ import java.util.HashMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoContainer;
+import org.nanocontainer.script.DefaultNanoContainer;
+import org.nanocontainer.script.NanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 
 /**

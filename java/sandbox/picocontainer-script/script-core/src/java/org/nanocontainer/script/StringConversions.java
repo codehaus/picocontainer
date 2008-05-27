@@ -9,7 +9,7 @@
  *****************************************************************************/
 
 
-package org.nanocontainer;
+package org.nanocontainer.script;
 
 import org.picocontainer.PicoCompositionException;
 

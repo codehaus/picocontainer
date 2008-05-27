@@ -12,10 +12,10 @@ package org.nanocontainer.script.groovy.buildernodes;
 
 import java.util.Map;
 
-import org.nanocontainer.NanoContainer;
+import org.nanocontainer.script.ClassPathElement;
 import org.nanocontainer.script.ClassPathElementHelper;
+import org.nanocontainer.script.NanoContainer;
 
-import org.nanocontainer.ClassPathElement;
 
 /**
  * @author James Strachan

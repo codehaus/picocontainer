@@ -54,7 +54,7 @@ public class ScriptBuilderResolverTestCase {
     }
 
     @Test public void testGetBuilderClassNameForResource() {
-        final String resourceName = "/org/nanocontainer/nanocontainer.xml";
+        final String resourceName = "/org/nanocontainer/script/nanocontainer.xml";
         URL compositionURL = this.getClass().getResource(resourceName);
         if (compositionURL == null) {
             fail("This test depended on resource '"+ resourceName + "' which appears to have been moved");

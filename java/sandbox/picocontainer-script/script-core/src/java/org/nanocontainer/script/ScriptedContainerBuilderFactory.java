@@ -15,8 +15,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.ClassName;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;

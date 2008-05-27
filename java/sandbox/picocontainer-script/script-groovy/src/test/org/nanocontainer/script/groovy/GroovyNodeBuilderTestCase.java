@@ -23,12 +23,12 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.TestHelper;
 import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.script.DefaultNanoContainer;
+import org.nanocontainer.script.NanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
+import org.nanocontainer.script.TestHelper;
 import org.nanocontainer.testmodel.A;
 import org.nanocontainer.testmodel.B;
 import org.nanocontainer.testmodel.HasParams;
@@ -649,7 +649,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         DefaultNanoContainer parent = new DefaultNanoContainer(new Caching());
         Reader script = new StringReader(
                 "        builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n"
-              + "        File testCompJar = org.nanocontainer.TestHelper.getTestCompJarFile()\n"
+              + "        File testCompJar = org.nanocontainer.script.TestHelper.getTestCompJarFile()\n"
               + "        compJarPath = testCompJar.getCanonicalPath()\n"
               + "        child = null\n"
               + "        pico = builder.container {\n"
@@ -672,7 +672,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader(
                 ""
                 + "        builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n"
-                        + "        File testCompJar = org.nanocontainer.TestHelper.getTestCompJarFile()\n"
+                        + "        File testCompJar = org.nanocontainer.script.TestHelper.getTestCompJarFile()\n"
                         + "        compJarPath = testCompJar.getCanonicalPath()\n"
                         + "        child = null\n"
                         + "        pico = builder.container {\n"
@@ -695,7 +695,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         try {
             Reader script = new StringReader("" +
                     "        builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +
-                    "        File testCompJar = org.nanocontainer.TestHelper.getTestCompJarFile()\n" +
+                    "        File testCompJar = org.nanocontainer.script.TestHelper.getTestCompJarFile()\n" +
                     "        compJarPath = testCompJar.getCanonicalPath()\n" +
                     "        child = null\n" +
                     "        pico = builder.container {\n" +

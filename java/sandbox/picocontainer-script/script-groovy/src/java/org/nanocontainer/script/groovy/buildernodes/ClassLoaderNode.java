@@ -12,8 +12,8 @@ package org.nanocontainer.script.groovy.buildernodes;
 
 import java.util.Map;
 
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.script.DefaultNanoContainer;
+import org.nanocontainer.script.NanoContainer;
 
 /**
  * @author Paul Hammant

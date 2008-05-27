@@ -25,9 +25,9 @@ import java.net.URLClassLoader;
 import java.util.Map;
 
 import org.junit.Test;
-import org.nanocontainer.TestHelper;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.LifecycleMode;
+import org.nanocontainer.script.TestHelper;
 import org.nanocontainer.testmodel.A;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
@@ -43,7 +43,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         Reader script = new StringReader("" +
                 "java.util.Map m = new java.util.HashMap();\n" +
                 "m.put(\"foo\",\"bar\");" +
-                "pico = new org.nanocontainer.DefaultNanoContainer(parent);\n" +
+                "pico = new org.nanocontainer.script.DefaultNanoContainer(parent);\n" +
                 "pico.addComponent((Object) \"hello\", m, new org.picocontainer.Parameter[0]);\n");
         PicoContainer parent = new DefaultPicoContainer();
         parent = new ImmutablePicoContainer(parent);
@@ -60,7 +60,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
     @Test
     public void testWithParentClassPathPropagatesWithToBeanShellInterpreter() throws MalformedURLException {
         Reader script = new StringReader("" +
-    		"import org.nanocontainer.*;\n" +
+    		"import org.nanocontainer.script.*;\n" +
     		"Class clazz;\n"+
             "try {\n" + 
             "    clazz = getClass(\"TestComp\");\n" +
@@ -103,7 +103,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
 	@Test public void testAutoStartingContainerBuilderStarts() {
         A.reset();
         Reader script = new StringReader("" +
-        		"import org.nanocontainer.*;\n" +
+        		"import org.nanocontainer.script.*;\n" +
                 "pico = new NanoBuilder(parent).withLifecycle().withCaching().build();\n" +
                 "pico.addComponent(org.nanocontainer.testmodel.A.class);\n" +
                 "");
@@ -118,7 +118,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
 	@Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
         A.reset();
         Reader script = new StringReader("" +
-        		"import org.nanocontainer.*;\n" +
+        		"import org.nanocontainer.script.*;\n" +
                 "pico = new NanoBuilder(parent).withLifecycle().withCaching().build();\n" +
                 "pico.addComponent(org.nanocontainer.testmodel.A.class);\n" +
                 "");

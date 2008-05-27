@@ -1,4 +1,4 @@
-package org.nanocontainer;
+package org.nanocontainer.script;
 
 import static org.junit.Assert.assertEquals;
 

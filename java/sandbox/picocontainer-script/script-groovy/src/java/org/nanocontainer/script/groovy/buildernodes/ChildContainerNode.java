@@ -11,7 +11,9 @@
 package org.nanocontainer.script.groovy.buildernodes;
 
 import java.util.Map;
-import org.nanocontainer.NanoContainer;
+
+import org.nanocontainer.script.DefaultNanoContainer;
+import org.nanocontainer.script.NanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.DefaultPicoContainer;
 import java.security.PrivilegedAction;
@@ -21,7 +23,6 @@ import java.security.AccessController;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.monitors.AbstractComponentMonitor;

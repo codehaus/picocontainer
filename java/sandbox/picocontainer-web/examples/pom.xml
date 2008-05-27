@@ -3,12 +3,12 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.nanocontainer</groupId>
-    <artifactId>nanocontainer-nanowar-parent</artifactId>
+    <groupId>org.picocontainer.web</groupId>
+    <artifactId>picocontainer-web</artifactId>
     <version>2.0-SNAPSHOT</version>
   </parent>
-  <artifactId>nanocontainer-nanowar-examples</artifactId>
-  <name>NanoContainer NanoWar Examples</name>
+  <artifactId>picocontainer-web-examples</artifactId>
+  <name>PicoContainer Web Examples</name>
   <packaging>pom</packaging>
 
   <modules>
@@ -20,5 +20,60 @@
     <module>nanowar-webwork2-webapp</module>
   </modules>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.picocontainer.web</groupId>
+        <artifactId>picocontainer-web-core</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.picocontainer.web</groupId>
+        <artifactId>picocontainer-web-axis</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.picocontainer.web</groupId>
+        <artifactId>picocontainer-web-jsf</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.picocontainer.web</groupId>
+        <artifactId>picocontainer-web-nanoweb</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.picocontainer.web</groupId>
+        <artifactId>picocontainer-web-struts</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.picocontainer.web</groupId>
+        <artifactId>picocontainer-web-struts2</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.picocontainer.web</groupId>
+        <artifactId>picocontainer-web-webwork</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.picocontainer.web</groupId>
+        <artifactId>picocontainer-web-webwork2</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.picocontainer.web</groupId>
+        <artifactId>picocontainer-web-example</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.picocontainer.web</groupId>
+      <artifactId>picocontainer-web-core</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>

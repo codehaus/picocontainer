@@ -15,12 +15,12 @@
 
         <action name="addcheese" class="org.nanocontainer.nanowar.sample.struts2.AddCheese">
             <result name="input">cheeses.jsp</result>
-            <result type="redirect">cheeses.action</result>
+            <result>cheeses.jsp</result>
         </action>
 
         <action name="removecheese" class="org.nanocontainer.nanowar.sample.struts2.RemoveCheese">
             <result name="input">cheeses.jsp</result>
-            <result type="redirect">cheeses.action</result>
+            <result>cheeses.jsp</result>
         </action>
         
         <!--

@@ -20,12 +20,12 @@
 
     <filter-mapping>
         <filter-name>picoFilter</filter-name>
-        <url-pattern>*.action</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
 
     <filter-mapping>
         <filter-name>action</filter-name>
-        <url-pattern>*.action</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
 
 
@@ -36,12 +36,7 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
-
-    <taglib>
-        <taglib-uri>webwork</taglib-uri>
-        <taglib-location>/WEB-INF/webwork.tld</taglib-location>
-    </taglib>
-
+`
 </web-app>
 
 

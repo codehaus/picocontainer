@@ -11,10 +11,6 @@ package org.nanocontainer.nanowar.webwork;
 import webwork.action.factory.ActionFactory;
 import webwork.dispatcher.ServletDispatcher;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * Extension to the standard WebWork 1 ServletDispatcher that instantiates 
  * a new container in the request scope for each request and disposes of it 

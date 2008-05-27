@@ -8,20 +8,15 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.nanocontainer.nanowar.KeyConstants;
 import org.nanocontainer.nanowar.NewFilter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ObjectReference;
 
 import webwork.action.Action;
-import webwork.action.ServletActionContext;
 import webwork.action.factory.ActionFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Replacement for the standard WebWork JavaActionFactory that uses a 

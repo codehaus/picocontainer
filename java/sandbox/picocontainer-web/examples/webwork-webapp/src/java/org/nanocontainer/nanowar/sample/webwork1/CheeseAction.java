@@ -16,8 +16,8 @@ import webwork.action.CommandDriven;
 
 /**
  * Example of a WebWork1 action that relies on constructor injection.
+ * 
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public final class CheeseAction extends ActionSupport implements CommandDriven {
 
@@ -61,7 +61,7 @@ public final class CheeseAction extends ActionSupport implements CommandDriven {
         return SUCCESS;
         } catch(Exception e) {
             e.printStackTrace();
-            addErrorMessage("Could'nt remove cheese " + cheese);
+            addErrorMessage("Couldn't remove cheese " + cheese);
             return ERROR;
         }
     }

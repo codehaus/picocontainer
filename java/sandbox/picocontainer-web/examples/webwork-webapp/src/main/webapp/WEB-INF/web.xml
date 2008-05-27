@@ -3,40 +3,23 @@
 <web-app>
     <display-name>NanoWar WebWork 1 Demo</display-name>
 
-    <context-param>
-        <param-name>nanocontainer.groovy</param-name>
-        <param-value><![CDATA[
-        	caf = new org.picocontainer.adapters.AnyInjectionFactory()
-                                                                    pico = new org.picocontainer.defaults.DefaultPicoContainer(caf, parent)
-                                                                    if(assemblyScope instanceof javax.servlet.ServletContext) {
-                                                                        println("**** Webapp-level pico components registered by Groovy")
-                                                                        pico.registerComponentImplementation(org.nanocontainer.nanowar.sample.dao.simple.MemoryCheeseDao)
-                                                                    } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
-                                                                        println("**** Session-level pico components registered by Groovy")
-                                                                        pico.registerComponentImplementation("cheeseStore", org.nanocontainer.nanowar.sample.service.defaults.DefaultCheeseService)
-                                                                    } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
-                                                                        println("**** Request-level pico components registered by Groovy")
-                                                                    }
-                                                                ]]></param-value>
-    </context-param>
-
     <filter>
-        <filter-name>picoRequest</filter-name>
-        <filter-class>org.nanocontainer.nanowar.ServletRequestContainerFilter</filter-class>
+        <filter-name>picoFilter</filter-name>
+        <filter-class>org.nanocontainer.nanowar.NewFilter</filter-class>
     </filter>
             
     <filter-mapping>
-        <filter-name>picoRequest</filter-name>
-        <url-pattern>*.vm</url-pattern>
+        <filter-name>picoFilter</filter-name>
+        <url-pattern>*.action</url-pattern>
     </filter-mapping>
 
     <listener>
-        <listener-class>org.nanocontainer.nanowar.PicoServletContainerListener</listener-class>
+        <listener-class>org.nanocontainer.nanowar.sample.webwork1.ExampleWebWork1PicoServletContainerListener</listener-class>
     </listener>
 
     <servlet>
         <servlet-name>WebWork</servlet-name>
-        <servlet-class>org.nanocontainer.nanowar.webwork.PicoWebWork1ServletDispatcher</servlet-class>
+        <servlet-class>webwork.dispatcher.ServletDispatcher</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 

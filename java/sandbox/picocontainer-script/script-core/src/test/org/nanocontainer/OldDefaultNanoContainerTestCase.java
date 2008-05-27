@@ -8,7 +8,7 @@
  * Original code by Aslak Hellesoy and Paul Hammant                          *
  *****************************************************************************/
 
-package org.nanocontainer.reflection;
+package org.nanocontainer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -23,7 +23,6 @@ import org.junit.Test;
 import org.nanocontainer.ClassName;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
-import org.nanocontainer.TestHelper;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoCompositionException;

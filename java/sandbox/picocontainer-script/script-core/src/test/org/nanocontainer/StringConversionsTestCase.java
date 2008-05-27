@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.nanocontainer.reflection;
+package org.nanocontainer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -18,7 +18,7 @@ import java.io.File;
 import org.junit.Test;
 import org.nanocontainer.StringConversions;
 
-public final class StringToObjectConverterTestCase {
+public final class StringConversionsTestCase {
     private final StringConversions converter = new StringConversions();
 
     @Test public void testConvertsToString() {

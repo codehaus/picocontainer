@@ -1,4 +1,4 @@
-package org.nanocontainer.reflection;
+package org.nanocontainer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

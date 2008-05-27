@@ -10,7 +10,7 @@ package org.nanocontainer.nanowar.sample.struts2;
 
 import org.nanocontainer.nanowar.sample.service.CheeseService;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 import java.util.List;
 import java.util.ArrayList;

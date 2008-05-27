@@ -1,6 +1,6 @@
 package org.nanocontainer.nanowar.sample.struts2;
 
-import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.xwork2.ActionSupport;
 import org.nanocontainer.nanowar.sample.model.Cheese;
 import org.nanocontainer.nanowar.sample.service.CheeseService;
 

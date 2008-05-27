@@ -19,7 +19,7 @@
     </filter-mapping>
 
     <listener>
-        <listener-class>org.nanocontainer.nanowar.sample.struts2.ExampleStruts2PicoServletContainerListener</listener-class>
+        <listener-class>org.nanocontainer.nanowar.sample.struts2.ExampleStuts2PicoServletContainerListener</listener-class>
     </listener>
 
     <servlet>

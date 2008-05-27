@@ -19,22 +19,6 @@ public interface KeyConstants {
     
     String BUILDER = "nanocontainer.builder";    
     String ACTIONS_CONTAINER = "nanocontainer.actions";
-    /**
-     * if this parameter is present system properties pico container will
-     * be created and made parent to properties container 
-     * (if any)
-     */
-    String SYSTEM_PROPERTIES_CONTAINER = "nano.systemproperties";
-    /**
-     * location of properties file on the classpath of 
-     * web application. if this parameter is specified
-     * special properties pico container will be created and 
-     * made parent of application scope container.  
-     */
-    String PROPERTIES_CONTAINER = "nano.properties";
-    String APPLICATION_CONTAINER = "nanocontainer.application";
-    String SESSION_CONTAINER = "nanocontainer.session";
-    String REQUEST_CONTAINER = "nanocontainer.request";
 
     String NANOCONTAINER_PREFIX = "nanocontainer";
     String CONTAINER_COMPOSER = ContainerComposer.class.getName();

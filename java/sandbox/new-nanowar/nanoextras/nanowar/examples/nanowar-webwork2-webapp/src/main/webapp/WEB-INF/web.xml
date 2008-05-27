@@ -3,23 +3,23 @@
 <web-app>
     <display-name>NanoWar WebWork 2 Demo</display-name>
 
-    <context-param>
-        <param-name>org.nanocontainer.integrationkit.ContainerComposer</param-name>
-        <param-value>org.nanocontainer.nanowar.ScopedContainerComposer</param-value>
-    </context-param>
+    <!--<context-param>-->
+        <!--<param-name>org.nanocontainer.integrationkit.ContainerComposer</param-name>-->
+        <!--<param-value>org.nanocontainer.nanowar.ScopedContainerComposer</param-value>-->
+    <!--</context-param>-->
 
-    <filter>
-        <filter-name>picoObjectFactory</filter-name>
-        <filter-class>org.nanocontainer.nanowar.webwork2.PicoObjectFactoryFilter</filter-class>
-    </filter>
+    <!--<filter>-->
+        <!--<filter-name>picoObjectFactory</filter-name>-->
+        <!--<filter-class>org.nanocontainer.nanowar.webwork2.PicoObjectFactoryFilter</filter-class>-->
+    <!--</filter>-->
 
-    <filter-mapping>
-        <filter-name>picoObjectFactory</filter-name>
-        <url-pattern>*.action</url-pattern>
-    </filter-mapping>
+    <!--<filter-mapping>-->
+        <!--<filter-name>picoObjectFactory</filter-name>-->
+        <!--<url-pattern>*.action</url-pattern>-->
+    <!--</filter-mapping>-->
 
     <listener>
-        <listener-class>org.nanocontainer.nanowar.PicoServletContainerListener</listener-class>
+        <listener-class>org.nanocontainer.nanowar.sample.webwork2.ExampleWebWork2PicoServletContainerListener</listener-class>
     </listener>
 
     <servlet>

@@ -28,6 +28,13 @@ public class NewFilter extends AbstractNanoWarListener implements Filter {
         return currentRequestContainer.get();
     }
 
+    private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+
+    public static MutablePicoContainer getSessionContainerForThread() {
+        return currentSessionContainer.get();
+    }
+
+
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
 
     public static MutablePicoContainer getApplicationContainerForThread() {

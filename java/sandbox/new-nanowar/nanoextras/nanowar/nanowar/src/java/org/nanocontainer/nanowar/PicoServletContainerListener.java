@@ -88,24 +88,25 @@ import javax.servlet.http.HttpSession;
  * @author Konstantin Pribluda
  */
 @SuppressWarnings("serial")
-public final class PicoServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants, Serializable {
+public class PicoServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants, Serializable {
+
+    protected DefaultPicoContainer appContainer;
+    protected DefaultPicoContainer sessionContainer;
+    protected DefaultPicoContainer requestContainer;
 
     public void contextInitialized(final ServletContextEvent event) {
         ServletContext context = event.getServletContext();
 
-        DefaultPicoContainer sessionContainer;
-        DefaultPicoContainer requestContainer;
 
         Storing sessionStoring = new Storing();
         Storing requestStoring = new Storing();
 
-        DefaultPicoContainer appContainer = new DefaultPicoContainer(new Caching());
+        appContainer = new DefaultPicoContainer(new Caching());
         appContainer.setName("application");
         String builderClassName = context.getInitParameter("container-builder-class") ;
-        //TODO - real resources
 
-        
-        populateContainer("appResources", appContainer, null, builderClassName);
+        //TODO - real resources
+        //populateContainer("appResources", appContainer, null, builderClassName);
 
         context.setAttribute(ApplicationContainerHolder.class.getName(), new ApplicationContainerHolder(appContainer));
 
@@ -114,8 +115,9 @@ public final class PicoServletContainerListener implements ServletContextListene
         sessionContainer.setName("session");
         ThreadLocalLifecycleState sessionStateModel = new ThreadLocalLifecycleState();
         sessionContainer.setLifecycleState(sessionStateModel);
+
         //TODO - real resources
-        populateContainer("sessionResources", sessionContainer, appContainer, builderClassName);
+        // populateContainer("sessionResources", sessionContainer, appContainer, builderClassName);
 
         context.setAttribute(SessionContainerHolder.class.getName(), new SessionContainerHolder(sessionContainer, sessionStoring, sessionStateModel));
 
@@ -124,8 +126,9 @@ public final class PicoServletContainerListener implements ServletContextListene
         requestContainer.setName("request");
         ThreadLocalLifecycleState requestStateModel = new ThreadLocalLifecycleState();
         requestContainer.setLifecycleState(requestStateModel);
+
         //TODO - real resources
-        populateContainer("requestResources", requestContainer, sessionContainer, builderClassName);
+        // populateContainer("requestResources", requestContainer, sessionContainer, builderClassName);
 
         context.setAttribute(RequestContainerHolder.class.getName(), new RequestContainerHolder(requestContainer, requestStoring, requestStateModel));
     }

@@ -2,67 +2,52 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.nanocontainer</groupId>
-		<artifactId>nanocontainer-parent</artifactId>
+		<groupId>org.picocontainer.script</groupId>
+		<artifactId>picocontainer-script</artifactId>
 		<version>2.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>nanocontainer-distribution</artifactId>
+	<artifactId>picocontainer-script-distribution</artifactId>
 	<packaging>pom</packaging>
-	<name>NanoContainer Distribution</name>
+	<name>PicoContainer Script Distribution</name>
 	<dependencies>
 		<dependency>
-			<groupId>${pom.groupId}</groupId>
-			<artifactId>nanocontainer</artifactId>
+			<groupId>org.picocontainer.script</groupId>
+			<artifactId>picocontainer-script-core</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
         <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-aop</artifactId>
+            <groupId>org.picocontainer.script</groupId>
+            <artifactId>picocontainer-aop</artifactId>
             <version>${pom.version}</version>
         </dependency>
         <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-bsh</artifactId>
+            <groupId>org.picocontainer.script</groupId>
+            <artifactId>picocontainer-script-bsh</artifactId>
             <version>${pom.version}</version>
         </dependency>
         <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-groovy</artifactId>
+            <groupId>org.picocontainer.script</groupId>
+            <artifactId>picocontainer-script-groovy</artifactId>
             <version>${pom.version}</version>
         </dependency>
         <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-jruby</artifactId>
+            <groupId>org.picocontainer.script</groupId>
+            <artifactId>picocontainer-script-jruby</artifactId>
             <version>${pom.version}</version>
         </dependency>
         <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-jython</artifactId>
+            <groupId>org.picocontainer.script</groupId>
+            <artifactId>picocontainer-script-jython</artifactId>
             <version>${pom.version}</version>
         </dependency>
         <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-rhino</artifactId>
+            <groupId>org.picocontainer.script</groupId>
+            <artifactId>picocontainer-script-rhino</artifactId>
             <version>${pom.version}</version>
         </dependency>
         <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-tck</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-booter</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-deployer</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-webcontainer</artifactId>
+            <groupId>org.picocontainer.script</groupId>
+            <artifactId>picocontainer-script-tck</artifactId>
             <version>${pom.version}</version>
         </dependency>
 	</dependencies>
@@ -83,81 +68,60 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer</artifactId>
+                                    <groupId>org.picocontainer.script</groupId>
+                                    <artifactId>picocontainer-script-core</artifactId>
                                     <version>${pom.version}</version>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/javadoc/core</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer-aop</artifactId>
+                                    <groupId>org.picocontainer.script</groupId>
+                                    <artifactId>picocontainer-aop</artifactId>
                                     <version>${pom.version}</version>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/javadoc/aop</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer-bsh</artifactId>
+                                    <groupId>org.picocontainer.script</groupId>
+                                    <artifactId>picocontainer-script-bsh</artifactId>
                                     <version>${pom.version}</version>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/javadoc/bsh</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer-groovy</artifactId>
+                                    <groupId>org.picocontainer.script</groupId>
+                                    <artifactId>picocontainer-script-groovy</artifactId>
                                     <version>${pom.version}</version>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/javadoc/groovy</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer-jruby</artifactId>
+                                    <groupId>org.picocontainer.script</groupId>
+                                    <artifactId>picocontainer-script-jruby</artifactId>
                                     <version>${pom.version}</version>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/javadoc/jruby</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer-jython</artifactId>
+                                    <groupId>org.picocontainer.script</groupId>
+                                    <artifactId>picocontainer-script-jython</artifactId>
                                     <version>${pom.version}</version>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/javadoc/jython</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer-rhino</artifactId>
+                                    <groupId>org.picocontainer.script</groupId>
+                                    <artifactId>picocontainer-script-rhino</artifactId>
                                     <version>${pom.version}</version>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/javadoc/rhino</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer-tck</artifactId>
+                                    <groupId>org.picocontainer.script</groupId>
+                                    <artifactId>picocontainer-script-tck</artifactId>
                                     <version>${pom.version}</version>
                                     <classifier>javadoc</classifier>
                                     <outputDirectory>${project.build.directory}/javadoc/tck</outputDirectory>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer-booter</artifactId>
-                                    <version>${pom.version}</version>
-                                    <classifier>javadoc</classifier>
-                                    <outputDirectory>${project.build.directory}/javadoc/booter</outputDirectory>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer-deployer</artifactId>
-                                    <version>${pom.version}</version>
-                                    <classifier>javadoc</classifier>
-                                    <outputDirectory>${project.build.directory}/javadoc/deployer</outputDirectory>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer-webcontainer</artifactId>
-                                    <version>${pom.version}</version>
-                                    <classifier>javadoc</classifier>
-                                    <outputDirectory>${project.build.directory}/javadoc/webcontainer</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -176,7 +140,7 @@
 						</goals>
 						<configuration>
 							<descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
-							<finalName>nanocontainer-${pom.version}</finalName>
+							<finalName>picocontainer-script-${pom.version}</finalName>
 							<workDirectory>target/assembly/bin</workDirectory>
 						</configuration>
 					</execution>
@@ -188,7 +152,7 @@
 						</goals>
 						<configuration>
 							<descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
-							<finalName>nanocontainer-${pom.version}</finalName>
+							<finalName>picocontainer-script-${pom.version}</finalName>
 							<workDirectory>target/assembly/src</workDirectory>
 						</configuration>
 					</execution>

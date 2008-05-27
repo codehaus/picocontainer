@@ -45,7 +45,7 @@
           <systemProperties>
             <property>
               <name>testcomp.jar</name>
-              <value>${basedir}/../container/src/test-comp/TestComp.jar</value>
+              <value>${basedir}/../script-core/src/test-comp/TestComp.jar</value>
             </property>
           </systemProperties>
         </configuration>

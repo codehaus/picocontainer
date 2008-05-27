@@ -9,15 +9,15 @@
   <url>http://www.picocontainer.org/script</url>
 
   <modules>
-    <module>testmodel</module>
-    <module>container</module>
-    <module>container-tck</module>
-    <module>container-aop</module>
-    <module>container-bsh</module>
-    <module>container-groovy</module>
-    <module>container-jruby</module>
-    <module>container-jython</module>
-    <module>container-rhino</module>
+    <module>script-testmodel</module>
+    <module>script-core</module>
+    <module>script-tck</module>
+    <module>script-aop</module>
+    <module>script-bsh</module>
+    <module>script-groovy</module>
+    <module>script-jruby</module>
+    <module>script-jython</module>
+    <module>script-rhino</module>
   </modules>
 
   <organization>
@@ -266,7 +266,7 @@
               </property>
               <property>
                 <name>testcomp.jar</name>
-                <value>${basedir}/../container/src/test-comp/TestComp.jar</value>
+                <value>${basedir}/../script-core/src/test-comp/TestComp.jar</value>
               </property>
             </systemProperties>
             <excludes>

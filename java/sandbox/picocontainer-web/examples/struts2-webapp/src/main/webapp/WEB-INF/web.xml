@@ -13,24 +13,25 @@
         <filter-class>org.nanocontainer.nanowar.NewFilter</filter-class>
     </filter>
 
+    <filter>
+        <filter-name>action</filter-name>
+        <filter-class>.org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+    </filter>
+
     <filter-mapping>
         <filter-name>picoFilter</filter-name>
         <url-pattern>*.action</url-pattern>
     </filter-mapping>
 
+    <filter-mapping>
+        <filter-name>action</filter-name>
+        <url-pattern>*.action</url-pattern>
+    </filter-mapping>
+
+
     <listener>
         <listener-class>org.nanocontainer.nanowar.sample.struts2.ExampleStuts2PicoServletContainerListener</listener-class>
     </listener>
-
-    <servlet>
-        <servlet-name>action</servlet-name>
-        <servlet-class>org.nanocontainer.nanowar.struts2.PicoStruts2ServletDispatcher</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>action</servlet-name>
-        <url-pattern>*.action</url-pattern>
-    </servlet-mapping>
 
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

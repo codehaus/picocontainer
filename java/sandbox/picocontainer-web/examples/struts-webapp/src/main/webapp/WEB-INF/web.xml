@@ -3,13 +3,18 @@
 <web-app>
     <display-name>NanoWar Struts Demo</display-name>
 
-    <context-param>
-        <param-name>org.nanocontainer.integrationkit.ContainerComposer</param-name>
-        <param-value>org.nanocontainer.nanowar.ScopedContainerComposer</param-value>
-    </context-param>
+    <filter>
+        <filter-name>picoFilter</filter-name>
+        <filter-class>org.nanocontainer.nanowar.NewFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>picoFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
 
     <listener>
-        <listener-class>org.nanocontainer.nanowar.PicoServletContainerListener</listener-class>
+        <listener-class>org.nanocontainer.nanowar.sample.struts.StrutsPicoServletContainerListener</listener-class>
     </listener>
 
     <!-- Action Servlet Configuration -->

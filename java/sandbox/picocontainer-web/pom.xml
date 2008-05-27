@@ -29,11 +29,11 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer-web/trunk</connection>
+    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/sandbox/picocontainer-web</connection>
     <developerConnection>
-      scm:svn:https://svn.codehaus.org/scm/picocontainer/java/picocontainer-web/trunk
+      scm:svn:https://svn.codehaus.org/scm/picocontainer/java/sandbox/picocontainer-web
     </developerConnection>
-    <url>https://svn.codehaus.org/picocontainer/java/picocontainer-web/tags/trunk</url>
+    <url>https://svn.codehaus.org/picocontainer/java/sandbox/picocontainer-web</url>
   </scm>
 
   <repositories>

@@ -63,11 +63,13 @@ public class NewFilter extends AbstractNanoWarListener implements Filter {
         rch.getContainer().start();
 
         currentAppContainer.set(ach.getContainer());
+        currentSessionContainer.set(sch.getContainer());
         currentRequestContainer.set(rch.getContainer());
 
           filterChain.doFilter(req, resp);
 
         currentAppContainer.set(null);
+        currentSessionContainer.set(null);
         currentRequestContainer.set(null);
 
         rch.getContainer().stop();

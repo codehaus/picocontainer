@@ -1,16 +1,16 @@
 package org.nanocontainer.nanowar;
 
-import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 public class ApplicationContainerHolder {
 
-    private final DefaultPicoContainer container;
+    private final MutablePicoContainer container;
 
-    public ApplicationContainerHolder(DefaultPicoContainer container) {
+    public ApplicationContainerHolder(MutablePicoContainer container) {
         this.container = container;
     }
 
-    DefaultPicoContainer getContainer() {
+    MutablePicoContainer getContainer() {
         return container;
     }
 }

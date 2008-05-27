@@ -1,21 +1,21 @@
 package org.nanocontainer.nanowar;
 
-import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Storing;
 
 public class SessionContainerHolder {
 
-    private final DefaultPicoContainer container;
+    private final MutablePicoContainer container;
     private final Storing storing;
     private final ThreadLocalLifecycleState lifecycleState;
 
-    public SessionContainerHolder(DefaultPicoContainer container, Storing storing, ThreadLocalLifecycleState lifecycleState) {
+    public SessionContainerHolder(MutablePicoContainer container, Storing storing, ThreadLocalLifecycleState lifecycleState) {
         this.container = container;
         this.storing = storing;
         this.lifecycleState = lifecycleState;
     }
 
-    DefaultPicoContainer getContainer() {
+    MutablePicoContainer getContainer() {
         return container;
     }
 

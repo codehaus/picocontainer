@@ -11,18 +11,12 @@ package org.nanocontainer.nanowar;
 
 import java.io.Serializable;
 
-import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.integrationkit.DefaultContainerBuilder;
-import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.ObjectReference;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.references.SimpleReference;
-
 /**
  * Base class for application-level and session-level listeners.
  *
  * @author Michael Rimov
  */
+@SuppressWarnings("serial")
 public class AbstractNanoWarListener implements Serializable {
 
 }

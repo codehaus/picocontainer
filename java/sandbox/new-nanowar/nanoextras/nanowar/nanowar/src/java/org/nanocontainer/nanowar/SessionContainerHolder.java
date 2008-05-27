@@ -1,7 +1,6 @@
 package org.nanocontainer.nanowar;
 
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.lifecycle.LifecycleState;
 import org.picocontainer.behaviors.Storing;
 
 public class SessionContainerHolder {

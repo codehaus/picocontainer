@@ -1,20 +1,21 @@
 package org.nanocontainer.nanowar;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.behaviors.Storing;
+import java.io.IOException;
 
 import javax.servlet.Filter;
+import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.servlet.http.HttpSession;
 
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.behaviors.Storing;
+
+@SuppressWarnings("serial")
 public class NewFilter extends AbstractNanoWarListener implements Filter {
 
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -45,7 +46,6 @@ public class NewFilter extends AbstractNanoWarListener implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest httpReq = (HttpServletRequest) req;
-        HttpServletResponse httpResp = (HttpServletResponse) resp;
         HttpSession session = httpReq.getSession();
         ServletContext context = session.getServletContext();
 

@@ -106,7 +106,7 @@ public class ServletContainerProxyFilter implements Filter {
         String delegateKey = filterConfig.getInitParameter("delegate-key");
         if (delegateClassName != null) {
             try {
-                Class delegateClass = getClassLoader().loadClass(delegateClassName);
+                Class<?> delegateClass = getClassLoader().loadClass(delegateClassName);
                 delegate = (Filter) pico.getComponent(delegateClass);
             } catch (ClassNotFoundException e) {
                 throw new PicoCompositionException("Cannot load " + delegateClassName, e);

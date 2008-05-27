@@ -1,12 +1,10 @@
-/*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Original code by                                                          *
- *****************************************************************************/
+/*******************************************************************************
+ * Copyright (C) NanoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.nanocontainer.script;
 
 import static org.junit.Assert.assertNotSame;
@@ -18,10 +16,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.references.SimpleReference;
 import org.picocontainer.tck.MockFactory;
 
 /**
@@ -47,21 +43,16 @@ public class LifecycleContainerBuilderTestCase {
         };
         AbstractContainerBuilder builder = new DefaultContainerBuilder(containerComposer);
 
-        ObjectReference parentRef = new SimpleReference();
         MutablePicoContainer parent = new DefaultPicoContainer();
 
         final Startable parentStartable = mockery.mock(Startable.class);
         parent.addComponent(parentStartable);
-        parentRef.set(parent);
 
-        ObjectReference childRef = new SimpleReference();
-
-        builder.buildContainer(childRef, parentRef, null, true);
-        PicoContainer childContainer = (PicoContainer) childRef.get();
+        PicoContainer childContainer = builder.buildContainer(parent, null, true);
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, childContainer.getParent());
 
-        builder.killContainer(childRef);
+        builder.killContainer(childContainer);
     }
 
 }

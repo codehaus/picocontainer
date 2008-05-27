@@ -1,18 +1,16 @@
-/*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- *****************************************************************************/
+/*******************************************************************************
+ * Copyright (C) NanoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.nanocontainer.script;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 import org.picocontainer.Disposable;
-import org.picocontainer.ObjectReference;
 
 /**
  * @author Joe Walnes
@@ -20,32 +18,32 @@ import org.picocontainer.ObjectReference;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
-//TODO -- Perhaps the start/stop behavior should be moved to a decorator?
+// TODO -- Perhaps the start/stop behavior should be moved to a decorator?
 public abstract class AbstractContainerBuilder implements ContainerBuilder {
 
-	private final LifecycleMode startMode;
-	
-	public AbstractContainerBuilder() {
-		this(LifecycleMode.AUTO_LIFECYCLE);
-	}
-	
-	public AbstractContainerBuilder(LifecycleMode startMode) {
-		this.startMode = startMode;
-	}
-	
-    public final void buildContainer(ObjectReference<PicoContainer> containerRef, ObjectReference<PicoContainer> parentContainerRef, Object assemblyScope, boolean addChildToParent) {
-        PicoContainer parentContainer = parentContainerRef == null ? null : (PicoContainer) parentContainerRef.get();
+    private final LifecycleMode startMode;
+
+    public AbstractContainerBuilder() {
+        this(LifecycleMode.AUTO_LIFECYCLE);
+    }
+
+    public AbstractContainerBuilder(LifecycleMode startMode) {
+        this.startMode = startMode;
+    }
+
+    public final PicoContainer buildContainer(PicoContainer parentContainer, Object assemblyScope,
+            boolean addChildToParent) {
         PicoContainer container = createContainer(parentContainer, assemblyScope);
 
         if (parentContainer != null && parentContainer instanceof MutablePicoContainer) {
             MutablePicoContainer mutableParentContainer = (MutablePicoContainer) parentContainer;
 
             if (addChildToParent) {
-                // this synchronization is necessary, because several servlet requests may
-                // occur at the same time for given session, and this produce race condition
-                // especially in framed environments
+                // this synchronization is necessary to avoid
+                // race conditions for concurrent requests
                 synchronized (mutableParentContainer) {
-                    // register the child in the parent so that lifecycle can be propagated down the hierarchy
+                    // register the child in the parent so that lifecycle can be
+                    // propagated down the hierarchy
                     mutableParentContainer.addChildContainer(container);
                 }
             }
@@ -56,41 +54,39 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
         }
         autoStart(container);
 
-        // hold on to it
-        containerRef.set(container);
+        return container;
     }
 
     protected void autoStart(PicoContainer container) {
-    	if (!startMode.isInvokeLifecycle()) {
-    		return;
-    	}
-    	
+        if (!startMode.isInvokeLifecycle()) {
+            return;
+        }
+
         if (container instanceof Startable) {
             ((Startable) container).start();
         }
     }
 
-    public void killContainer(ObjectReference<PicoContainer> containerRef) {
+    public void killContainer(PicoContainer container) {
         try {
-            PicoContainer pico = (PicoContainer) containerRef.get();
-        	if (startMode.isInvokeLifecycle()) {
-                if (pico instanceof Startable) {
-                    ((Startable) pico).stop();
+            if (startMode.isInvokeLifecycle()) {
+                if (container instanceof Startable) {
+                    ((Startable) container).stop();
                 }
-        	}
-        	
-            if (pico instanceof Disposable) {
-                ((Disposable) pico).dispose();
             }
-            PicoContainer parent = pico.getParent();
+
+            if (container instanceof Disposable) {
+                ((Disposable) container).dispose();
+            }
+            PicoContainer parent = container.getParent();
             if (parent != null && parent instanceof MutablePicoContainer) {
                 // see comment in buildContainer
                 synchronized (parent) {
-                    ((MutablePicoContainer) parent).removeChildContainer(pico);
+                    ((MutablePicoContainer) parent).removeChildContainer(container);
                 }
             }
         } finally {
-            containerRef.set(null);
+            container = null;
         }
     }
 

@@ -14,8 +14,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 
-import org.nanocontainer.integrationkit.AbstractContainerBuilder;
-import org.nanocontainer.integrationkit.LifecycleMode;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 

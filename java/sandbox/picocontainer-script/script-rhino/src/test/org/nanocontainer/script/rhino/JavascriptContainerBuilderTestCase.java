@@ -22,10 +22,10 @@ import java.io.StringReader;
 
 import org.junit.Test;
 import org.mozilla.javascript.JavaScriptException;
-import org.nanocontainer.integrationkit.LifecycleMode;
 import org.nanocontainer.TestHelper;
 import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.script.LifecycleMode;
 import org.nanocontainer.testmodel.A;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerConfig;

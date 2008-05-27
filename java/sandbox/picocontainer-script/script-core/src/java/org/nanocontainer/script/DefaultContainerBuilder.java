@@ -8,7 +8,7 @@
  * Original code by                                                          *
  *****************************************************************************/
 
-package org.nanocontainer.integrationkit;
+package org.nanocontainer.script;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;

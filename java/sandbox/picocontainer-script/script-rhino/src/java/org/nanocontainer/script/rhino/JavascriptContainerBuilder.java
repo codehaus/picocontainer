@@ -23,7 +23,7 @@ import org.mozilla.javascript.NativeJavaPackage;
 import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
-import org.nanocontainer.integrationkit.LifecycleMode;
+import org.nanocontainer.script.LifecycleMode;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;

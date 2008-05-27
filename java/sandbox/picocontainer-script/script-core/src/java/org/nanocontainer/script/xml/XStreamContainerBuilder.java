@@ -20,8 +20,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.integrationkit.ContainerPopulator;
-import org.nanocontainer.integrationkit.LifecycleMode;
+import org.nanocontainer.script.ContainerPopulator;
+import org.nanocontainer.script.LifecycleMode;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ComponentAdapter;

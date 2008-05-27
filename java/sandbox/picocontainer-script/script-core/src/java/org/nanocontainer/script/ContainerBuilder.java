@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.integrationkit;
+package org.nanocontainer.script;
 
 import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;

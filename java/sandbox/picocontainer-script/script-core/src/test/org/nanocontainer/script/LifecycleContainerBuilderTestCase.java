@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.nanocontainer.integrationkit;
+package org.nanocontainer.script;
 
 import static org.junit.Assert.assertNotSame;
 

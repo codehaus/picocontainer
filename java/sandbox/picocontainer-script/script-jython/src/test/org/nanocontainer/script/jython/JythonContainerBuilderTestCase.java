@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.nanocontainer.script.jython;
 
-import org.nanocontainer.integrationkit.LifecycleMode;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -22,6 +21,7 @@ import java.io.StringReader;
 import org.junit.Test;
 import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.script.LifecycleMode;
 import org.nanocontainer.testmodel.A;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerImpl;

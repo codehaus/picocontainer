@@ -26,8 +26,8 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.nanocontainer.TestHelper;
-import org.nanocontainer.integrationkit.LifecycleMode;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.script.LifecycleMode;
 import org.nanocontainer.testmodel.A;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;

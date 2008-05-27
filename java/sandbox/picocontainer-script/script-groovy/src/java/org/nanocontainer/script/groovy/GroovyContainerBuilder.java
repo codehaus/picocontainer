@@ -24,7 +24,7 @@ import java.net.URL;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.nanocontainer.NanoContainer;
-import org.nanocontainer.integrationkit.LifecycleMode;
+import org.nanocontainer.script.LifecycleMode;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;

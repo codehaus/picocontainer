@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.integrationkit;
+package org.nanocontainer.script;
 
 /**
  * Enumeration for lifecycle behaviors with the container builders.

@@ -12,26 +12,26 @@ import org.picocontainer.InjectionFactory;
 import org.picocontainer.containers.TransientPicoContainer;
 
 
-public final class NanoBuilder {
+public final class ScriptedBuilder {
 
     private Class<? extends ScriptedPicoContainer> scriptClass = DefaultScriptedPicoContainer.class;
     private final PicoBuilder picoBuilder;
     private ClassLoader classLoader = DefaultScriptedPicoContainer.class.getClassLoader();
     private boolean cfs;
 
-    public NanoBuilder(PicoContainer parentcontainer, InjectionFactory injectionType) {
+    public ScriptedBuilder(PicoContainer parentcontainer, InjectionFactory injectionType) {
         picoBuilder = new PicoBuilder(parentcontainer, injectionType);
     }
 
-    public NanoBuilder(PicoContainer parentcontainer) {
+    public ScriptedBuilder(PicoContainer parentcontainer) {
         picoBuilder = new PicoBuilder(parentcontainer);
     }
 
-    public NanoBuilder(InjectionFactory injectionType) {
+    public ScriptedBuilder(InjectionFactory injectionType) {
         picoBuilder = new PicoBuilder(injectionType);
     }
 
-    public NanoBuilder() {
+    public ScriptedBuilder() {
         picoBuilder = new PicoBuilder();
     }
 
@@ -48,84 +48,84 @@ public final class NanoBuilder {
         return picoBuilder.build();
     }
 
-    public NanoBuilder withConsoleMonitor() {
+    public ScriptedBuilder withConsoleMonitor() {
         picoBuilder.withConsoleMonitor();
         return this;
     }
 
-    public NanoBuilder withLifecycle() {
+    public ScriptedBuilder withLifecycle() {
         picoBuilder.withLifecycle();
         return this;
     }
 
-    public NanoBuilder withReflectionLifecycle() {
+    public ScriptedBuilder withReflectionLifecycle() {
         picoBuilder.withReflectionLifecycle();
         return this;
     }
 
-    public NanoBuilder withMonitor(Class<? extends ComponentMonitor> clazz) {
+    public ScriptedBuilder withMonitor(Class<? extends ComponentMonitor> clazz) {
         picoBuilder.withMonitor(clazz);
         return this;
     }
 
-    public NanoBuilder withHiddenImplementations() {
+    public ScriptedBuilder withHiddenImplementations() {
         picoBuilder.withHiddenImplementations();
         return this;
     }
 
-    public NanoBuilder withComponentFactory(ComponentFactory componentFactory) {
+    public ScriptedBuilder withComponentFactory(ComponentFactory componentFactory) {
         cfs = true;
         picoBuilder.withComponentFactory(componentFactory);
         return this;
     }
 
-    public NanoBuilder withComponentAdapterFactories(BehaviorFactory... factories) {
+    public ScriptedBuilder withComponentAdapterFactories(BehaviorFactory... factories) {
         cfs = true;
         picoBuilder.withBehaviors(factories);
         return this;
     }
 
-    public NanoBuilder withSetterInjection() {
+    public ScriptedBuilder withSetterInjection() {
         picoBuilder.withSetterInjection();
         return this;
     }
 
-    public NanoBuilder withAnnotatedMethodInjection() {
+    public ScriptedBuilder withAnnotatedMethodInjection() {
         picoBuilder.withAnnotatedMethodInjection();
         return this;
     }
 
-    public NanoBuilder withConstructorInjection() {
+    public ScriptedBuilder withConstructorInjection() {
         picoBuilder.withConstructorInjection();
         return this;
     }
 
-    public NanoBuilder withCaching() {
+    public ScriptedBuilder withCaching() {
         picoBuilder.withCaching();
         return this;
     }
 
-    public NanoBuilder withThreadSafety() {
+    public ScriptedBuilder withThreadSafety() {
         picoBuilder.withSynchronizing();
         return this;
     }
 
-    public NanoBuilder implementedBy(Class<? extends ScriptedPicoContainer> scriptedContainerClass) {
+    public ScriptedBuilder implementedBy(Class<? extends ScriptedPicoContainer> scriptedContainerClass) {
         scriptClass = scriptedContainerClass;
         return this;
     }
 
-    public NanoBuilder picoImplementedBy(Class<? extends MutablePicoContainer> picoContainerClass) {
+    public ScriptedBuilder picoImplementedBy(Class<? extends MutablePicoContainer> picoContainerClass) {
         picoBuilder.implementedBy(picoContainerClass);
         return this;
     }
 
-    public NanoBuilder withClassLoader(ClassLoader classLoader) {
+    public ScriptedBuilder withClassLoader(ClassLoader classLoader) {
         this.classLoader = classLoader;
         return this;
     }
 
-    public NanoBuilder withComponentFactory(String componentFactoryName) {
+    public ScriptedBuilder withComponentFactory(String componentFactoryName) {
         if (componentFactoryName != null && !componentFactoryName.equals("")) {
             picoBuilder.withComponentFactory(loadClass(componentFactoryName, ComponentFactory.class));
         }
@@ -140,7 +140,7 @@ public final class NanoBuilder {
         }
     }
 
-    public NanoBuilder withMonitor(String monitorName) {
+    public ScriptedBuilder withMonitor(String monitorName) {
         if (monitorName != null && !monitorName.equals("")) {
             picoBuilder.withMonitor(loadClass(monitorName, ComponentMonitor.class));
         }

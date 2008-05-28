@@ -29,7 +29,7 @@ import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.script.ContainerPopulator;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
 import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.DefaultPicoContainer;
@@ -94,11 +94,11 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         try {
             rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource).getDocumentElement();
         } catch (SAXException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         } catch (IOException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         } catch (ParserConfigurationException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         }
     }
 
@@ -113,11 +113,11 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             InputSource inputSource = new InputSource(getScriptReader());
             rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource).getDocumentElement();
         } catch (SAXException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         } catch (IOException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         } catch (ParserConfigurationException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         }
     }
 
@@ -146,14 +146,14 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                     try {
                         insertImplementation(container, (Element) child);
                     } catch (ClassNotFoundException e) {
-                        throw new NanoContainerMarkupException(e);
+                        throw new ScriptedPicoContainerMarkupException(e);
                     }
                 } else if (INSTANCE.equals(name)) {
                     insertInstance(container, (Element) child);
                 } else if (ADAPTER.equals(name)) {
                     insertAdapter(container, (Element) child);
                 } else {
-                    throw new NanoContainerMarkupException("Unsupported element:" + name);
+                    throw new ScriptedPicoContainerMarkupException("Unsupported element:" + name);
                 }
             }
         }
@@ -181,7 +181,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                 container.addAdapter(nested.getComponent(ComponentAdapter.class));
             }
         } catch (ClassNotFoundException ex) {
-            throw new NanoContainerMarkupException(ex);
+            throw new ScriptedPicoContainerMarkupException(ex);
         }
 
     }
@@ -197,7 +197,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         String klass = rootElement.getAttribute(CLASS);
         String constructor = rootElement.getAttribute(CONSTRUCTOR);
         if (klass == null || "".equals(klass)) {
-            throw new NanoContainerMarkupException("class specification is required for component implementation");
+            throw new ScriptedPicoContainerMarkupException("class specification is required for component implementation");
         }
 
         Class clazz = getClassLoader().loadClass(klass);
@@ -220,7 +220,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                     // create constant with xstream
                     parseResult = parseElementChild((Element) child);
                     if (parseResult == null) {
-                        throw new NanoContainerMarkupException("could not parse constant parameter");
+                        throw new ScriptedPicoContainerMarkupException("could not parse constant parameter");
                     }
                     parameters.add(new ConstantParameter(parseResult));
                 } else if (DEPENDENCY.equals(name)) {
@@ -230,7 +230,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                     if (dependencyKey == null || "".equals(dependencyKey)) {
                         dependencyClass = ((Element) child).getAttribute(CLASS);
                         if (dependencyClass == null || "".equals(dependencyClass)) {
-                            throw new NanoContainerMarkupException("either key or class must be present for dependency");
+                            throw new ScriptedPicoContainerMarkupException("either key or class must be present for dependency");
                         } else {
                             parameters.add(new ComponentParameter(getClassLoader().loadClass(dependencyClass)));
                         }
@@ -276,7 +276,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         String key = rootElement.getAttribute(KEY);
         Object result = parseElementChild(rootElement);
         if (result == null) {
-            throw new NanoContainerMarkupException("no content could be parsed in instance");
+            throw new ScriptedPicoContainerMarkupException("no content could be parsed in instance");
         }
         if (key != null && !"".equals(key)) {
             // insert with key
@@ -319,11 +319,11 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             populateContainer(scripted);
             return scripted;
         } catch (ClassNotFoundException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         } catch (InstantiationException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         } catch (IllegalAccessException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         }
     }
 }

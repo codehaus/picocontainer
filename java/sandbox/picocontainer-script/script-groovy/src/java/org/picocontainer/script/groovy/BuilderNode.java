@@ -3,7 +3,7 @@ package org.picocontainer.script.groovy;
 import java.util.Map;
 import java.util.Set;
 
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 /**
  * In a groovy node builder environment, there is often one class per
@@ -33,9 +33,9 @@ public interface BuilderNode {
      * Validates a given map of attributes as supplied by the GroovyNodeBuilder
      * against the node's supported attributes.
      * @param specifiedAttributes Map
-     * @throws NanoContainerMarkupException
+     * @throws ScriptedPicoContainerMarkupException
      */
-    void validateScriptedAttributes(Map specifiedAttributes) throws NanoContainerMarkupException;
+    void validateScriptedAttributes(Map specifiedAttributes) throws ScriptedPicoContainerMarkupException;
 
     /**
      * Execute the handler for the given node builder.
@@ -45,7 +45,7 @@ public interface BuilderNode {
      * for the builder node.
      * in for consistency with the Groovy Builder API.  Normally set to null.
      * @return Object
-     * @throws NanoContainerMarkupException upon Nanocontainer error.
+     * @throws ScriptedPicoContainerMarkupException upon Nanocontainer error.
      */
-    Object createNewNode(Object current, Map attributes) throws NanoContainerMarkupException;
+    Object createNewNode(Object current, Map attributes) throws ScriptedPicoContainerMarkupException;
 }

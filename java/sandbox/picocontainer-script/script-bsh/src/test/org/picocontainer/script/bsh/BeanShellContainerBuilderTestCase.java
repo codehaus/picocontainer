@@ -74,7 +74,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
             "}\n" +
             "print(clazz); \n" +
             "ClassLoader cl = clazz.getClassLoader();" +
-            "pico = new NanoBuilder(parent).withLifecycle().withCaching().withClassLoader(cl).build();\n" +
+            "pico = new ScriptedBuilder(parent).withLifecycle().withCaching().withClassLoader(cl).build();\n" +
             "pico.addComponent(\"TestComp\", clazz, org.picocontainer.Parameter.ZERO);\n");
 
         
@@ -105,7 +105,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         A.reset();
         Reader script = new StringReader("" +
         		"import org.picocontainer.script.*;\n" +
-                "pico = new NanoBuilder(parent).withLifecycle().withCaching().build();\n" +
+                "pico = new ScriptedBuilder(parent).withLifecycle().withCaching().build();\n" +
                 "pico.addComponent(org.picocontainer.script.testmodel.A.class);\n" +
                 "");
         PicoContainer parent = new DefaultPicoContainer();
@@ -120,7 +120,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         A.reset();
         Reader script = new StringReader("" +
         		"import org.picocontainer.script.*;\n" +
-                "pico = new NanoBuilder(parent).withLifecycle().withCaching().build();\n" +
+                "pico = new ScriptedBuilder(parent).withLifecycle().withCaching().build();\n" +
                 "pico.addComponent(org.picocontainer.script.testmodel.A.class);\n" +
                 "");
         PicoContainer parent = new DefaultPicoContainer();

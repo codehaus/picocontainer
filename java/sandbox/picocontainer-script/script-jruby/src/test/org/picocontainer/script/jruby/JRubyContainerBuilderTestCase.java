@@ -45,7 +45,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
 import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.testmodel.A;
@@ -151,8 +151,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         try {
             buildContainer(script, null, ASSEMBLY_SCOPE);
-            fail("NanoContainerMarkupException should have been raised");
-        } catch(NanoContainerMarkupException e) {
+            fail("ScriptedPicoContainerMarkupException should have been raised");
+        } catch(ScriptedPicoContainerMarkupException e) {
             // expected
         }
     }
@@ -507,8 +507,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         try {
             buildContainer(script, parent, ASSEMBLY_SCOPE);
-            fail("NanoContainerMarkupException should have been thrown.");
-        } catch(NanoContainerMarkupException ignore) {
+            fail("ScriptedPicoContainerMarkupException should have been thrown.");
+        } catch(ScriptedPicoContainerMarkupException ignore) {
             // expected
         }
     }
@@ -522,7 +522,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         try {
             buildContainer(script, parent, ASSEMBLY_SCOPE);
             //fail("Should throw exception upon spurious attributes?");
-        } catch(NanoContainerMarkupException ex) {
+        } catch(ScriptedPicoContainerMarkupException ex) {
             //ok?
         }
     }
@@ -538,7 +538,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
             buildContainer(script, parent, ASSEMBLY_SCOPE);
             fail("should have barfed with bad path exception");
-        } catch(NanoContainerMarkupException e) {
+        } catch(ScriptedPicoContainerMarkupException e) {
             // excpected
         }
 

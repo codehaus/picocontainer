@@ -18,7 +18,7 @@ import org.picocontainer.script.groovy.buildernodes.*;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.script.ClassName;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.NodeBuilderDecorationDelegate;
 import org.picocontainer.script.NullNodeBuilderDecorationDelegate;
 import org.picocontainer.script.ScriptedPicoContainer;
@@ -187,7 +187,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
             current = extractOrCreateValidRootNanoContainer(attributes);
         } else {
             if (attributes.containsKey(PARENT)) {
-                throw new NanoContainerMarkupException("You can't explicitly specify a parent in a child element.");
+                throw new ScriptedPicoContainerMarkupException("You can't explicitly specify a parent in a child element.");
             }
         }
         if (name.equals("registerBuilder")) {
@@ -207,7 +207,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
                 clazz = this.getClass().getClassLoader().loadClass((String) clazz);
             }
         } catch (ClassNotFoundException e) {
-            throw new NanoContainerMarkupException("ClassNotFoundException " + clazz);
+            throw new ScriptedPicoContainerMarkupException("ClassNotFoundException " + clazz);
         }
         nodeBuilders.put(builderName, clazz);
         return clazz;
@@ -249,9 +249,9 @@ public class GroovyNodeBuilder extends BuilderSupport {
      *
      * @param attributes Map the attributes of the current node.
      * @return ScriptedPicoContainer, never null.
-     * @throws NanoContainerMarkupException
+     * @throws ScriptedPicoContainerMarkupException
      */
-    private ScriptedPicoContainer extractOrCreateValidRootNanoContainer(final Map attributes) throws NanoContainerMarkupException {
+    private ScriptedPicoContainer extractOrCreateValidRootNanoContainer(final Map attributes) throws ScriptedPicoContainerMarkupException {
         Object parentAttribute = attributes.get(PARENT);
         //
         //NanoPicoContainer implements MutablePicoCotainer AND NanoContainer

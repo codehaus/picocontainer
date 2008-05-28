@@ -25,7 +25,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
 import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.behaviors.Caching;
 
@@ -95,12 +95,12 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
 			IRubyObject result = JavaEmbedUtils.newRuntimeAdapter().eval(ruby, script);
 			return (PicoContainer) JavaEmbedUtils.rubyToJava(ruby, result, PicoContainer.class);
 		} catch (RaiseException re) {
-			if (re.getCause() instanceof NanoContainerMarkupException) {
-				throw (NanoContainerMarkupException) re.getCause();
+			if (re.getCause() instanceof ScriptedPicoContainerMarkupException) {
+				throw (ScriptedPicoContainerMarkupException) re.getCause();
 			}
 			String message = (String) JavaEmbedUtils.rubyToJava(ruby, re.getException().message, String.class);
 			if (message.startsWith(MARKUP_EXCEPTION_PREFIX)) {
-				throw new NanoContainerMarkupException(message.substring(MARKUP_EXCEPTION_PREFIX.length()));
+				throw new ScriptedPicoContainerMarkupException(message.substring(MARKUP_EXCEPTION_PREFIX.length()));
 			} else {
 				throw new PicoCompositionException(message, re);
 			}

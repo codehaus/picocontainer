@@ -81,7 +81,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     @Test public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
-                "pico = NanoBuilder(parent).withLifecycle().build()\n");
+                "pico = ScriptedBuilder(parent).withLifecycle().build()\n");
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
         //pico.getParent() is now ImmutablePicoContainer

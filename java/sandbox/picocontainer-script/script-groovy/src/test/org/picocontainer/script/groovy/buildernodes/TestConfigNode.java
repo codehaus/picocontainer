@@ -10,7 +10,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.groovy.buildernodes.ConfigNode;
 
 /**
@@ -35,7 +35,7 @@ public class TestConfigNode {
 		try {
 			node.validateScriptedAttributes(Collections.EMPTY_MAP);
 			fail("accepted empty map");
-		} catch(NanoContainerMarkupException ex) {
+		} catch(ScriptedPicoContainerMarkupException ex) {
 			// that's anticipated
 		}
 		
@@ -50,7 +50,7 @@ public class TestConfigNode {
 		try {
 			node.validateScriptedAttributes(map);
 			fail("accepted wrong params");
-		} catch(NanoContainerMarkupException ex) {
+		} catch(ScriptedPicoContainerMarkupException ex) {
 			// that's anticipated
 		}
 	}

@@ -41,7 +41,7 @@ public class NewBuilderNode extends AbstractBuilderNode {
 
     /**
      * Supported attribute 'validating'.  Indicates that attributes should
-     * be validated and NanoContainerMarkupException should be thrown
+     * be validated and ScriptedPicoContainerMarkupException should be thrown
      * if invalid attributes are found.
      * @todo Not yet implemented. How do we get NanoContainer to register
      * a component instance?  -MR

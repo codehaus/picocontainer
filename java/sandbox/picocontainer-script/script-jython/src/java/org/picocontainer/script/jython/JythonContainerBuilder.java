@@ -15,7 +15,7 @@ import java.net.URL;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.python.util.PythonInterpreter;
 
@@ -60,7 +60,7 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
             interpreter.execfile(getScriptInputStream(), "picocontainer.py");
             return (PicoContainer) interpreter.get("pico", PicoContainer.class);
         } catch (IOException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         }
     }
 }

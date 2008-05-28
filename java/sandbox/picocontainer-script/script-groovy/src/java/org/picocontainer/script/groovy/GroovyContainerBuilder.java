@@ -28,7 +28,7 @@ import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
 import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.DefaultPicoContainer;
@@ -111,7 +111,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         } catch (CompilationFailedException e) {
             throw new GroovyCompilationException("Compilation Failed '" + e.getMessage() + "'", e);
         } catch (IOException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         }
 
     }
@@ -140,7 +140,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         } else if (picoVariable instanceof ScriptedPicoContainer) {
             return ((ScriptedPicoContainer) picoVariable);
         } else {
-            throw new NanoContainerMarkupException("Bad type for pico:" + picoVariable.getClass().getName());
+            throw new ScriptedPicoContainerMarkupException("Bad type for pico:" + picoVariable.getClass().getName());
         }
 
     }

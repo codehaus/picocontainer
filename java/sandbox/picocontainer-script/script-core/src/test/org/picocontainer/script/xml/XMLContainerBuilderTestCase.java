@@ -46,7 +46,7 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.testmodel.CustomerEntityImpl;
 import org.picocontainer.script.testmodel.DefaultWebServerConfig;
@@ -208,7 +208,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                     "</container>");
             buildContainer(script);
             fail();
-        } catch (NanoContainerMarkupException expected) {
+        } catch (ScriptedPicoContainerMarkupException expected) {
             assertTrue(expected.getCause() instanceof ClassNotFoundException);
         }
     }
@@ -220,7 +220,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "</container>");
         try {
             buildContainer(script);
-        } catch (NanoContainerMarkupException expected) {
+        } catch (ScriptedPicoContainerMarkupException expected) {
             assertEquals("'class' attribute not specified for component-implementation", expected.getMessage());
         }
     }
@@ -236,7 +236,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
         try {
             buildContainer(script);
-        } catch (NanoContainerMarkupException e) {
+        } catch (ScriptedPicoContainerMarkupException e) {
             assertEquals("parameter needs a child element", e.getMessage());
         }
     }
@@ -253,7 +253,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "<container>"); // open instead of close
         try {
             buildContainer(script);
-        } catch (NanoContainerMarkupException e) {
+        } catch (ScriptedPicoContainerMarkupException e) {
             assertTrue("SAXException", e.getCause() instanceof SAXException);
         }
     }
@@ -275,7 +275,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         try {
             buildContainer(script);
             fail();
-        } catch (NanoContainerMarkupException expected) {
+        } catch (ScriptedPicoContainerMarkupException expected) {
             assertTrue("Message of exception does not contain missing class", expected.getMessage().indexOf("org.picocontainer.script.SomeInexistantFactory") > 0);
         }
     }
@@ -290,7 +290,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         try {
             buildContainer(script);
             fail();
-        } catch (NanoContainerMarkupException expected) {
+        } catch (ScriptedPicoContainerMarkupException expected) {
             assertEquals("component-instance needs a child element", expected.getMessage());
         }
     }
@@ -635,7 +635,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         try {
             buildContainer(script);
             fail();
-        } catch (NanoContainerMarkupException expected) {
+        } catch (ScriptedPicoContainerMarkupException expected) {
             assertEquals("'class' attribute not specified for component-adapter", expected.getMessage());
         }
     }

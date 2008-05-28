@@ -22,7 +22,7 @@ import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Scriptable;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
 
 
@@ -74,17 +74,17 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
             Object pico = scope.get("pico", scope);
 
             if (pico == null) {
-                throw new NanoContainerMarkupException("The script must define a variable named 'pico'");
+                throw new ScriptedPicoContainerMarkupException("The script must define a variable named 'pico'");
             }
             if (!(pico instanceof NativeJavaObject)) {
-                throw new NanoContainerMarkupException("The 'pico' variable must be of type " + NativeJavaObject.class.getName());
+                throw new ScriptedPicoContainerMarkupException("The 'pico' variable must be of type " + NativeJavaObject.class.getName());
             }
             Object javaObject = ((NativeJavaObject) pico).unwrap();
             if (!(javaObject instanceof PicoContainer)) {
-                throw new NanoContainerMarkupException("The 'pico' variable must be of type " + PicoContainer.class.getName());
+                throw new ScriptedPicoContainerMarkupException("The 'pico' variable must be of type " + PicoContainer.class.getName());
             }
             return (PicoContainer) javaObject;
-        } catch (NanoContainerMarkupException e) {
+        } catch (ScriptedPicoContainerMarkupException e) {
             throw e;
         } catch (RhinoException e) {
 			StringBuilder message = new StringBuilder();
@@ -95,9 +95,9 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
 			message.append(" and Column number: ");
 			message.append(e.columnNumber());
 			message.append(" .");
-			throw new NanoContainerMarkupException(message.toString(), e);
+			throw new ScriptedPicoContainerMarkupException(message.toString(), e);
         } catch (IOException e) {
-            throw new NanoContainerMarkupException("IOException encountered, message -'" + e.getMessage() + "'", e);
+            throw new ScriptedPicoContainerMarkupException("IOException encountered, message -'" + e.getMessage() + "'", e);
         } finally {
             Context.exit();
         }

@@ -19,7 +19,7 @@ public class NullNodeBuilderDecorationDelegate implements NodeBuilderDecorationD
     }
 
     public Object createNode(Object name, Map attributes, Object parentElement) {
-        throw new NanoContainerMarkupException("Don't know how to create a '" + name + "' child of a '" + ((parentElement == null) ? "null" : parentElement.toString()) + "' element");
+        throw new ScriptedPicoContainerMarkupException("Don't know how to create a '" + name + "' child of a '" + ((parentElement == null) ? "null" : parentElement.toString()) + "' element");
     }
 
     public void rememberComponentKey(Map attributes) {

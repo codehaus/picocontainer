@@ -37,7 +37,7 @@ public class ComponentElementHelper {
             key = key == null ? instance.getClass() : key;
             return container.addComponent(key, instance);
         } else {
-            throw new NanoContainerMarkupException("Must specify a 'class' attribute for a component as a class name (string) or Class.");
+            throw new ScriptedPicoContainerMarkupException("Must specify a 'class' attribute for a component as a class name (string) or Class.");
         }
     }
 

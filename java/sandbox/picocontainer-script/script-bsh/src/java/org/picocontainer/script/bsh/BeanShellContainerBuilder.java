@@ -6,7 +6,7 @@ import java.net.URL;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
 
 import bsh.EvalError;
@@ -51,9 +51,9 @@ public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
             i.eval(getScriptReader(), i.getNameSpace(), "picocontainer.bsh");
             return (PicoContainer) i.get("pico");
         } catch (EvalError e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         } catch (IOException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         }
     }
 }

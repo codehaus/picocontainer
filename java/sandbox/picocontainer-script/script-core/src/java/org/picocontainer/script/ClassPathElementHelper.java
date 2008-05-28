@@ -30,7 +30,7 @@ public class ClassPathElementHelper {
                         try {
                             File file = new File(path);
                             if (!file.exists()) {
-                                return new NanoContainerMarkupException("classpath '" + path + "' does not exist ");
+                                return new ScriptedPicoContainerMarkupException("classpath '" + path + "' does not exist ");
                             }
                             return file.toURI().toURL();
                         } catch (MalformedURLException e) {
@@ -42,13 +42,13 @@ public class ClassPathElementHelper {
                 if (rVal instanceof MalformedURLException) {
                     throw (MalformedURLException) rVal;
                 }
-                if (rVal instanceof NanoContainerMarkupException) {
-                    throw (NanoContainerMarkupException) rVal;
+                if (rVal instanceof ScriptedPicoContainerMarkupException) {
+                    throw (ScriptedPicoContainerMarkupException) rVal;
                 }
                 pathURL = (URL) rVal;
             }
         } catch (MalformedURLException e) {
-            throw new NanoContainerMarkupException("classpath '" + path + "' malformed ", e);
+            throw new ScriptedPicoContainerMarkupException("classpath '" + path + "' malformed ", e);
         }
         return container.addClassLoaderURL(pathURL);
     }

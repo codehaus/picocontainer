@@ -14,7 +14,7 @@ import java.util.Map;
 import java.security.Permission;
 
 import org.picocontainer.script.ClassPathElement;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 /**
  * @author Paul Hammant
@@ -34,7 +34,7 @@ public class GrantNode extends AbstractBuilderNode {
         Permission perm = (Permission) attributes.remove("class");
 
         if (!(current instanceof ClassPathElement)) {
-            throw new NanoContainerMarkupException("Don't know how to create a 'grant' child of a '" + current.getClass() + "' parent");
+            throw new ScriptedPicoContainerMarkupException("Don't know how to create a 'grant' child of a '" + current.getClass() + "' parent");
         }
 
         ClassPathElement cpe = (ClassPathElement) current;

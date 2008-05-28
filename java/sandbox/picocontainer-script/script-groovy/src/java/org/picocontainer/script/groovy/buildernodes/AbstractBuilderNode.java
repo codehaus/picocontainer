@@ -18,7 +18,7 @@ import java.util.Set;
 import org.picocontainer.script.groovy.BuilderNode;
 import java.util.Map;
 
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 /**
  * Abstract base class for custom nodes.  Also provides basic services and
@@ -98,10 +98,10 @@ abstract public class AbstractBuilderNode implements BuilderNode, Serializable {
      * against the values passed in via the attributes.</p>
      * @param specifiedAttributes the attributes as passed in by the groovy
      * script.
-     * @throws NanoContainerMarkupException if an attribute is specified that
+     * @throws ScriptedPicoContainerMarkupException if an attribute is specified that
      * is not recognized.
      */
-    public void validateScriptedAttributes(final Map specifiedAttributes) throws NanoContainerMarkupException {
+    public void validateScriptedAttributes(final Map specifiedAttributes) throws ScriptedPicoContainerMarkupException {
         Set specifiedAttributeNames = specifiedAttributes.keySet();
         if (this.getSupportedAttributes().containsAll(specifiedAttributeNames)) {
             return;
@@ -119,7 +119,7 @@ abstract public class AbstractBuilderNode implements BuilderNode, Serializable {
         errorMessage.append(convertSetToCommaDelimitedString(this.getSupportedAttributes()));
         errorMessage.append("].");
 
-        throw new NanoContainerMarkupException(errorMessage.toString());
+        throw new ScriptedPicoContainerMarkupException(errorMessage.toString());
     }
 
     /**

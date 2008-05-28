@@ -14,7 +14,7 @@ package org.picocontainer.script.groovy.buildernodes;
 import java.util.Map;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedPicoContainer;
 
 /**
@@ -68,13 +68,13 @@ public class AppendContainerNode extends AbstractBuilderNode {
      * @param attributes Map attributes passed in.  This must have the container
      * attribute defined.
      * @return Object the passed in Nanocontainer.
-     * @throws NanoContainerMarkupException if the container attribute
+     * @throws ScriptedPicoContainerMarkupException if the container attribute
      * is not supplied.
      * @throws ClassCastException if the container node specified is not a  ScriptedPicoContainer or PicoContainer
      */
-    public Object createNewNode(final Object current, final Map attributes) throws NanoContainerMarkupException, ClassCastException {
+    public Object createNewNode(final Object current, final Map attributes) throws ScriptedPicoContainerMarkupException, ClassCastException {
         if (!isAttribute(attributes, CONTAINER)) {
-            throw new NanoContainerMarkupException(NODE_NAME + " must have a container attribute");
+            throw new ScriptedPicoContainerMarkupException(NODE_NAME + " must have a container attribute");
         }
 
 

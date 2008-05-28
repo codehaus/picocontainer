@@ -24,7 +24,7 @@ import org.picocontainer.aop.ClassPointcut;
 import org.picocontainer.aop.ComponentPointcut;
 import org.picocontainer.aop.MethodPointcut;
 import org.picocontainer.aop.dynaop.InstanceMixinFactory;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.NodeBuilderDecorationDelegate;
 
 import java.util.List;
@@ -61,7 +61,7 @@ public class AopNodeBuilderDecorationDelegate implements NodeBuilderDecorationDe
         } else if (name.equals("pointcut")) {
             return createPointcutNode(attributes, name);
         } else {
-            throw new NanoContainerMarkupException("Don't know how to create a '" + name + "' child of a '" + parentElement.toString() + "' element");
+            throw new ScriptedPicoContainerMarkupException("Don't know how to create a '" + name + "' child of a '" + parentElement.toString() + "' element");
         }
     }
 
@@ -96,7 +96,7 @@ public class AopNodeBuilderDecorationDelegate implements NodeBuilderDecorationDe
         } else if (mixinClass != null) {
             registerMixin(currentPico, currentClassCut, componentCut, toClassArray(mixinInterfaces), mixinClass);
         } else {
-            throw new NanoContainerMarkupException("No advice specified - must specify one of interceptor, interceptorKey, mixinClass, or mixinKey");
+            throw new ScriptedPicoContainerMarkupException("No advice specified - must specify one of interceptor, interceptorKey, mixinClass, or mixinKey");
         }
 
         return name;
@@ -130,10 +130,10 @@ public class AopNodeBuilderDecorationDelegate implements NodeBuilderDecorationDe
 
         // validate script:
         if (classCut == null && componentCut == null) {
-            throw new NanoContainerMarkupException("currentClassCut or componentCut required for interceptor advice");
+            throw new ScriptedPicoContainerMarkupException("currentClassCut or componentCut required for interceptor advice");
         }
         if (methodCut == null) {
-            throw new NanoContainerMarkupException("currentMethodCut required for interceptor advice");
+            throw new ScriptedPicoContainerMarkupException("currentMethodCut required for interceptor advice");
         }
 
         if (classCut != null) {
@@ -160,7 +160,7 @@ public class AopNodeBuilderDecorationDelegate implements NodeBuilderDecorationDe
 
         // validate script:
         if (classCut == null && componentCut == null) {
-            throw new NanoContainerMarkupException("currentClassCut or componentCut required for mixin advice");
+            throw new ScriptedPicoContainerMarkupException("currentClassCut or componentCut required for mixin advice");
         }
 
         if (classCut != null) {

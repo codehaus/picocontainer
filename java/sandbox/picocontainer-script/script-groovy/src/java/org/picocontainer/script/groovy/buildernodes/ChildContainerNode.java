@@ -23,7 +23,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.NodeBuilderDecorationDelegate;
 import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.ComponentMonitorStrategy;
@@ -105,10 +105,10 @@ public class ChildContainerNode extends AbstractBuilderNode {
      * @param current NanoContainer
      * @param attributes Map
      * @return Object
-     * @throws NanoContainerMarkupException
+     * @throws ScriptedPicoContainerMarkupException
      */
     public Object createNewNode(Object current, Map attributes) throws
-        NanoContainerMarkupException {
+        ScriptedPicoContainerMarkupException {
 
         return createChildContainer(attributes,(ScriptedPicoContainer) current);
     }

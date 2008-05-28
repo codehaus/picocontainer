@@ -1,7 +1,7 @@
 package org.picocontainer.script.groovy.buildernodes;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 import java.util.Map;
 import java.util.Iterator;
@@ -39,9 +39,9 @@ public class ConfigNode extends AbstractBuilderNode {
     /**
      * ansure that node has proper attributes
      */
-    public void validateScriptedAttributes(Map specifiedAttributes) throws NanoContainerMarkupException {
+    public void validateScriptedAttributes(Map specifiedAttributes) throws ScriptedPicoContainerMarkupException {
         if (specifiedAttributes.size() != 2 || !isAttribute(specifiedAttributes, KEY) || !isAttribute(specifiedAttributes,VALUE)) {
-            throw new NanoContainerMarkupException("config has two parameters - key and value");
+            throw new ScriptedPicoContainerMarkupException("config has two parameters - key and value");
         }
     }
 }

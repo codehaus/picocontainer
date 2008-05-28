@@ -13,7 +13,7 @@ package org.picocontainer.script.groovy.buildernodes;
 import java.util.Map;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.codehaus.groovy.runtime.InvokerHelper;
 
 /**
@@ -60,7 +60,7 @@ public class BeanNode extends AbstractBuilderNode {
     protected Object createBean(final Map attributes) {
         Class type = (Class) attributes.remove(BEAN_CLASS);
         if (type == null) {
-            throw new NanoContainerMarkupException("Bean must have a beanClass attribute");
+            throw new ScriptedPicoContainerMarkupException("Bean must have a beanClass attribute");
         }
         try {
             Object bean = type.newInstance();
@@ -73,9 +73,9 @@ public class BeanNode extends AbstractBuilderNode {
             }
             return bean;
         } catch (IllegalAccessException e) {
-            throw new NanoContainerMarkupException("Failed to create bean of type '" + type + "'. Reason: " + e, e);
+            throw new ScriptedPicoContainerMarkupException("Failed to create bean of type '" + type + "'. Reason: " + e, e);
         } catch (InstantiationException e) {
-            throw new NanoContainerMarkupException("Failed to create bean of type " + type + "'. Reason: " + e, e);
+            throw new ScriptedPicoContainerMarkupException("Failed to create bean of type " + type + "'. Reason: " + e, e);
         }
     }
 
@@ -84,11 +84,11 @@ public class BeanNode extends AbstractBuilderNode {
      * <p>This version only checks for 'beanClass' and lets all other attributes
      * through (since they become property values)</p>
      * @param specifiedAttributes Map
-     * @throws NanoContainerMarkupException
+     * @throws ScriptedPicoContainerMarkupException
      */
-    public void validateScriptedAttributes(Map specifiedAttributes) throws NanoContainerMarkupException {
+    public void validateScriptedAttributes(Map specifiedAttributes) throws ScriptedPicoContainerMarkupException {
         if (!specifiedAttributes.containsKey(BEAN_CLASS)) {
-            throw new NanoContainerMarkupException("Attribute " + BEAN_CLASS + " is required.");
+            throw new ScriptedPicoContainerMarkupException("Attribute " + BEAN_CLASS + " is required.");
         }
 
         //Assume all other attributes

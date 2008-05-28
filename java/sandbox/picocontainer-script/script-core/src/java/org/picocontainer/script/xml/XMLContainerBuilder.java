@@ -36,8 +36,8 @@ import org.picocontainer.script.ClassPathElement;
 import org.picocontainer.script.ContainerPopulator;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
 import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.NanoBuilder;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedBuilder;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.behaviors.Caching;
@@ -104,7 +104,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             parse(documentBuilder, new InputSource(script));
         } catch (ParserConfigurationException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         }
     }
 
@@ -124,7 +124,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             });
             parse(documentBuilder, new InputSource(script.toString()));
         } catch (ParserConfigurationException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         }
     }
 
@@ -132,9 +132,9 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         try {
             rootElement = documentBuilder.parse(inputSource).getDocumentElement();
         } catch (SAXException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         } catch (IOException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         }
     }
 
@@ -148,13 +148,13 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             populateContainer(childContainer);
             return childContainer;
         } catch (PicoClassNotFoundException e) {
-            throw new NanoContainerMarkupException("Class not found:" + e.getMessage(), e);
+            throw new ScriptedPicoContainerMarkupException("Class not found:" + e.getMessage(), e);
         }
     }
 
     private MutablePicoContainer createMutablePicoContainer(String componentFactoryName, String monitorName, PicoContainer parentContainer, boolean caching) throws PicoCompositionException {
 
-        NanoBuilder builder = new NanoBuilder(parentContainer);
+        ScriptedBuilder builder = new ScriptedBuilder(parentContainer);
         if (caching) builder.withCaching();
         return builder
             .withClassLoader(getClassLoader())
@@ -175,11 +175,11 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             ScriptedPicoContainer scriptedContainer = new DefaultScriptedPicoContainer(classLoader, container);
             registerComponentsAndChildContainers(scriptedContainer, rootElement, new DefaultScriptedPicoContainer(getClassLoader()));
         } catch (ClassNotFoundException e) {
-            throw new NanoContainerMarkupException("Class not found: " + e.getMessage(), e);
+            throw new ScriptedPicoContainerMarkupException("Class not found: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         } catch (SAXException e) {
-            throw new NanoContainerMarkupException(e);
+            throw new ScriptedPicoContainerMarkupException(e);
         }
     }
 
@@ -217,7 +217,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                 } else if (CLASSLOADER.equals(name)) {
                     registerClassLoader(parentContainer, childElement, metaContainer);
                 } else if (!CLASSPATH.equals(name)) {
-                    throw new NanoContainerMarkupException("Unsupported element:" + name);
+                    throw new ScriptedPicoContainerMarkupException("Unsupported element:" + name);
                 }
             }
         }
@@ -226,7 +226,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
     private void addComponentFactory(Element element, ScriptedPicoContainer metaContainer) throws MalformedURLException, ClassNotFoundException {
         if (notSet(element.getAttribute(KEY))) {
-            throw new NanoContainerMarkupException("'" + KEY + "' attribute not specified for " + element.getNodeName());
+            throw new ScriptedPicoContainerMarkupException("'" + KEY + "' attribute not specified for " + element.getNodeName());
         }
         Element node = (Element)element.cloneNode(false);
         NodeList children = element.getChildNodes();
@@ -236,7 +236,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                 String name = childElement.getNodeName();
                 if (COMPONENT_ADAPTER_FACTORY.equals(name)) {
                     if (!"".equals(childElement.getAttribute(KEY))) {
-                        throw new NanoContainerMarkupException("'" + KEY + "' attribute must not be specified for nested " + element.getNodeName());
+                        throw new ScriptedPicoContainerMarkupException("'" + KEY + "' attribute must not be specified for nested " + element.getNodeName());
                     }
                     childElement = (Element)childElement.cloneNode(true);
                     String key = String.valueOf(System.identityHashCode(childElement));
@@ -311,7 +311,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     private void registerComponent(ScriptedPicoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
         String className = element.getAttribute(CLASS);
         if (notSet(className)) {
-            throw new NanoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
+            throw new ScriptedPicoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
         }
 
         Parameter[] parameters = createChildParameters(container, element);
@@ -404,7 +404,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             if (emptyCollectionString == null || componentValueTypeString == null || 
                     EMPTY.equals(emptyCollectionString) || EMPTY.equals(componentValueTypeString)) {
                 
-                throw new NanoContainerMarkupException("The componentKeyType attribute was specified (" +
+                throw new ScriptedPicoContainerMarkupException("The componentKeyType attribute was specified (" +
                         componentKeyTypeString + ") but one or both of the emptyCollection (" + 
                         emptyCollectionString + ") or componentValueType (" + componentValueTypeString + 
                         ") was empty or null.");
@@ -419,7 +419,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         } else if (componentValueTypeString != null && !EMPTY.equals(componentValueTypeString)) {
             if (emptyCollectionString == null || EMPTY.equals(emptyCollectionString)) {
                 
-                throw new NanoContainerMarkupException("The componentValueType attribute was specified (" +
+                throw new ScriptedPicoContainerMarkupException("The componentValueType attribute was specified (" +
                         componentValueTypeString + ") but the emptyCollection (" + 
                         emptyCollectionString + ") was empty or null.");
             }
@@ -475,7 +475,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             }
         }
         if (child == null && fail) {
-            throw new NanoContainerMarkupException(parent.getNodeName() + " needs a child element");
+            throw new ScriptedPicoContainerMarkupException(parent.getNodeName() + " needs a child element");
         }
         return child;
     }
@@ -505,7 +505,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     private void registerComponentAdapter(ScriptedPicoContainer container, Element element, ScriptedPicoContainer metaContainer) throws ClassNotFoundException, PicoCompositionException, MalformedURLException {
         String className = element.getAttribute(CLASS);
         if (notSet(className)) {
-            throw new NanoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
+            throw new ScriptedPicoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
         }
         Class implementationClass = getClassLoader().loadClass(className);
         Object key = element.getAttribute(KEY);

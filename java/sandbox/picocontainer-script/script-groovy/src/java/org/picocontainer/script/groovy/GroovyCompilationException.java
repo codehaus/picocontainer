@@ -7,12 +7,12 @@ import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.ErrorCollector;
 import org.codehaus.groovy.control.ProcessingUnit;
 import org.codehaus.groovy.control.messages.ExceptionMessage;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 /**
  * @author Paul Hammant
  */
-public final class GroovyCompilationException extends NanoContainerMarkupException {
+public final class GroovyCompilationException extends ScriptedPicoContainerMarkupException {
     private final CompilationFailedException compilationFailedException;
 
     public GroovyCompilationException(String message, CompilationFailedException e) {

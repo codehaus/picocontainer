@@ -20,7 +20,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.script.groovy.buildernodes.AppendContainerNode;
 
@@ -43,12 +43,12 @@ public class TestAppendContainerNode {
         try {
             appendContainerNode.createNewNode(null, Collections.EMPTY_MAP);
             fail("Should have thrown exception");
-        } catch (NanoContainerMarkupException ex) {
+        } catch (ScriptedPicoContainerMarkupException ex) {
             //ok
         }
     }
 
-    @Test public void testCreateNodeWithParmeterReturnsParameter() throws NanoContainerMarkupException {
+    @Test public void testCreateNodeWithParmeterReturnsParameter() throws ScriptedPicoContainerMarkupException {
         HashMap params = new HashMap();
         ScriptedPicoContainer scripted = new DefaultScriptedPicoContainer();
         params.put(AppendContainerNode.CONTAINER, scripted);
@@ -56,7 +56,7 @@ public class TestAppendContainerNode {
         assertTrue(scripted == scripted2);
     }
 
-    @Test public void testCreateWithImproperTypeThrowsClassCastException() throws NanoContainerMarkupException {
+    @Test public void testCreateWithImproperTypeThrowsClassCastException() throws ScriptedPicoContainerMarkupException {
         HashMap params = new HashMap();
         params.put(AppendContainerNode.CONTAINER, "This is a test");
         try {

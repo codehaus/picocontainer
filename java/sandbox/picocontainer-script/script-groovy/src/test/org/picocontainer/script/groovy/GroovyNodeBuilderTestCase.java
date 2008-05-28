@@ -41,7 +41,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
-import org.picocontainer.script.NanoContainerMarkupException;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.groovy.GroovyCompilationException;
@@ -104,8 +104,8 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         try {
             buildContainer(script, null, ASSEMBLY_SCOPE);
-            fail("NanoContainerMarkupException should have been raised");
-        } catch (NanoContainerMarkupException e) {
+            fail("ScriptedPicoContainerMarkupException should have been raised");
+        } catch (ScriptedPicoContainerMarkupException e) {
             // expected
         }
     }
@@ -601,8 +601,8 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         try {
             buildContainer(script, parent, ASSEMBLY_SCOPE);
-            fail("NanoContainerMarkupException should have been thrown.");
-        } catch (NanoContainerMarkupException ignore) {
+            fail("ScriptedPicoContainerMarkupException should have been thrown.");
+        } catch (ScriptedPicoContainerMarkupException ignore) {
             // expected
         }
     }
@@ -620,7 +620,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
             try {
                 buildContainer(script, parent, ASSEMBLY_SCOPE);
                 //fail("Should throw exception upon spurious attributes?");
-            } catch (NanoContainerMarkupException ex) {
+            } catch (ScriptedPicoContainerMarkupException ex) {
                 //ok?
             }
     }
@@ -640,7 +640,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
             buildContainer(script, parent, ASSEMBLY_SCOPE);
             fail("should have barfed with bad path exception");
-        } catch (NanoContainerMarkupException e) {
+        } catch (ScriptedPicoContainerMarkupException e) {
             // excpected
         }
 
@@ -707,7 +707,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
             buildContainer(script, parent, ASSEMBLY_SCOPE);
             fail("should barf with [Don't know how to create a 'grant' child] exception");
-        } catch (NanoContainerMarkupException e) {
+        } catch (ScriptedPicoContainerMarkupException e) {
             assertTrue(e.getMessage().indexOf("Don't know how to create a 'grant' child") > -1);
         }
 
@@ -767,11 +767,11 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         try {
             buildContainer(script, parent, ASSEMBLY_SCOPE);
-            fail("GroovyNodeBuilder with validation should have thrown NanoContainerMarkupException");
+            fail("GroovyNodeBuilder with validation should have thrown ScriptedPicoContainerMarkupException");
         } catch(GroovyCompilationException ex) {
             //Weed out the groovy compilation exceptions
             throw ex;
-        } catch (NanoContainerMarkupException ex) {
+        } catch (ScriptedPicoContainerMarkupException ex) {
             //a-ok
         }
     }
@@ -793,8 +793,8 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         } catch(GroovyCompilationException ex) {
             //Weed out the groovy compilation exceptions
             throw ex;
-        } catch (NanoContainerMarkupException ex) {
-            fail("GroovyNodeBuilder with validation turned off should never have thrown NanoContainerMarkupException: " + ex.getMessage());
+        } catch (ScriptedPicoContainerMarkupException ex) {
+            fail("GroovyNodeBuilder with validation turned off should never have thrown ScriptedPicoContainerMarkupException: " + ex.getMessage());
         }
 
     }

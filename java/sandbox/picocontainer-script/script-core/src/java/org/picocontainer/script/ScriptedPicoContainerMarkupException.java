@@ -18,17 +18,17 @@ import org.picocontainer.PicoException;
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  * @author Aslak Helles&oslash;y
  */
-public class NanoContainerMarkupException extends PicoException {
+public class ScriptedPicoContainerMarkupException extends PicoException {
 
-    public NanoContainerMarkupException(String message) {
+    public ScriptedPicoContainerMarkupException(String message) {
         super(message);
     }
 
-    public NanoContainerMarkupException(String message, Throwable e) {
+    public ScriptedPicoContainerMarkupException(String message, Throwable e) {
         super(message, e);
     }
 
-    public NanoContainerMarkupException(Throwable e) {
+    public ScriptedPicoContainerMarkupException(Throwable e) {
         super(e);
     }
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -84,7 +84,7 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
 		RubyInstanceConfig rubyConfig = new RubyInstanceConfig();
 		rubyConfig.setLoader(this.getClassLoader());
 		Ruby ruby = JavaEmbedUtils.initialize(Collections.EMPTY_LIST, rubyConfig);
-		ruby.getLoadService().require("org/picocontainer/script/jruby/nanobuilder");
+		ruby.getLoadService().require("org/picocontainer/script/jruby/scriptedbuilder");
 		ruby.defineReadonlyVariable("$parent", JavaEmbedUtils.javaToRuby(ruby, parentContainer));
 		ruby.defineReadonlyVariable("$assembly_scope", JavaEmbedUtils.javaToRuby(ruby, assemblyScope));
 		

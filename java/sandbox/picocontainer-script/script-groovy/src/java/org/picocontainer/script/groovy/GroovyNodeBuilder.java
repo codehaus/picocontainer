@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -184,7 +184,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
             GroovyObject groovyObject = (GroovyObject) current;
             return groovyObject.invokeMethod(name.toString(), attributes);
         } else if (current == null) {
-            current = extractOrCreateValidRootNanoContainer(attributes);
+            current = extractOrCreateValidRootPicoContainer(attributes);
         } else {
             if (attributes.containsKey(PARENT)) {
                 throw new ScriptedPicoContainerMarkupException("You can't explicitly specify a parent in a child element.");
@@ -251,11 +251,11 @@ public class GroovyNodeBuilder extends BuilderSupport {
      * @return ScriptedPicoContainer, never null.
      * @throws ScriptedPicoContainerMarkupException
      */
-    private ScriptedPicoContainer extractOrCreateValidRootNanoContainer(final Map attributes) throws ScriptedPicoContainerMarkupException {
+    private ScriptedPicoContainer extractOrCreateValidRootPicoContainer(final Map attributes) throws ScriptedPicoContainerMarkupException {
         Object parentAttribute = attributes.get(PARENT);
         //
-        //NanoPicoContainer implements MutablePicoCotainer AND NanoContainer
-        //So we want to check for NanoContainer first.
+        //NanoPicoContainer implements MutablePicoCotainer AND PicoContainer
+        //So we want to check for PicoContainer first.
         //
         if (parentAttribute instanceof ScriptedPicoContainer) {
             // we're not in an enclosing scope - look at parent attribute instead

@@ -1,6 +1,6 @@
 /*****************************************************************************
 
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
 
  * ------------------------------------------------------------------------- *
 

@@ -169,25 +169,25 @@ public class ScriptedBuilderTestCase {
         assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
-    @Test public void testWithCustomNanoContainer() throws IOException {
-        ScriptedPicoContainer nc = new ScriptedBuilder().implementedBy(TestNanoContainer.class).build();
+    @Test public void testWithCustomScriptedContainer() throws IOException {
+        ScriptedPicoContainer nc = new ScriptedBuilder().implementedBy(TestScriptedContainer.class).build();
         ComponentMonitor cm = new NullComponentMonitor();
-        ScriptedPicoContainer expected = new TestNanoContainer(null,new DefaultPicoContainer(new AdaptingInjection(),new NullLifecycleStrategy(), new EmptyPicoContainer()));
+        ScriptedPicoContainer expected = new TestScriptedContainer(null,new DefaultPicoContainer(new AdaptingInjection(),new NullLifecycleStrategy(), new EmptyPicoContainer()));
         assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
 
     @SuppressWarnings("serial")
-	public static class TestNanoContainer extends DefaultScriptedPicoContainer {
-        public TestNanoContainer(ClassLoader classLoader, MutablePicoContainer delegate) {
+	public static class TestScriptedContainer extends DefaultScriptedPicoContainer {
+        public TestScriptedContainer(ClassLoader classLoader, MutablePicoContainer delegate) {
             super(classLoader, delegate);
         }
     }
 
-    @Test public void testWithCustomNanoAndPicoContainer() throws IOException {
-        ScriptedPicoContainer nc = new ScriptedBuilder().implementedBy(TestNanoContainer.class).picoImplementedBy(TestPicoContainer.class).build();
+    @Test public void testWithCustomScriptedAndPicoContainer() throws IOException {
+        ScriptedPicoContainer nc = new ScriptedBuilder().implementedBy(TestScriptedContainer.class).picoImplementedBy(TestPicoContainer.class).build();
         ComponentMonitor cm = new NullComponentMonitor();
-        ScriptedPicoContainer expected = new TestNanoContainer(null, new TestPicoContainer(new AdaptingInjection(), new NullComponentMonitor(), new NullLifecycleStrategy(), new EmptyPicoContainer()));
+        ScriptedPicoContainer expected = new TestScriptedContainer(null, new TestPicoContainer(new AdaptingInjection(), new NullComponentMonitor(), new NullLifecycleStrategy(), new EmptyPicoContainer()));
         assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 

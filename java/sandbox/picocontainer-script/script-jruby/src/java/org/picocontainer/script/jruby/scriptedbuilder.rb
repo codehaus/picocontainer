@@ -1,6 +1,6 @@
 #--
 #############################################################################
-# Copyright (C) NanoContainer Organization. All rights reserved.            #
+# Copyright (C) PicoContainer Organization. All rights reserved.            #
 # ------------------------------------------------------------------------- #
 # The software in this package is published under the terms of the BSD      #
 # style license a copy of which has been included with this distribution in #
@@ -10,10 +10,10 @@
 #++
 
 #
-# Nano::Builder is a domain-specific language for use with JRuby and
-# Nanocontainer for configuring containers and components.
+# Scripted::Builder is a domain-specific language for use with JRuby and
+# ScriptedPicoContainer for configuring containers and components.
 #
-module Nano
+module Scripted
   Parameter = org.picocontainer.Parameter
   DefaultScriptedPicoContainer = org.picocontainer.script.DefaultScriptedPicoContainer
   DefaultPicoContainer = org.picocontainer.DefaultPicoContainer
@@ -169,7 +169,7 @@ module Nano
       if @parent && !@componentFactory && !@impl
         container = @parent.makeChildContainer
       else
-        container = ContainerElementHelper.makeNanoContainer(@componentFactory, @parent, classloader)
+        container = ContainerElementHelper.makePicoContainer(@componentFactory, @parent, classloader)
         @parent.addChildContainer(container) if @parent
       end
       container.changeMonitor(@monitor) if @monitor && container.respond_to?(:changeMonitor)
@@ -190,5 +190,5 @@ module Nano
 end
 
 class Object
-  include Nano::Builder
+  include Scripted::Builder
 end

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved. *
+ * Copyright (C) PicoContainer Organization. All rights reserved. *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD * style
  * license a copy of which has been included with this distribution in * the
@@ -343,13 +343,13 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
     }
 
     public MutablePicoContainer as(Properties... properties) {
-        return new AsPropertiesNanoContainer(properties);
+        return new AsPropertiesPicoContainer(properties);
     }
 
-    private class AsPropertiesNanoContainer implements ScriptedPicoContainer {
+    private class AsPropertiesPicoContainer implements ScriptedPicoContainer {
         private MutablePicoContainer delegate;
 
-        public AsPropertiesNanoContainer(Properties... props) {
+        public AsPropertiesPicoContainer(Properties... props) {
             delegate = DefaultScriptedPicoContainer.this.getDelegate().as(props);
         }
 
@@ -417,7 +417,7 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
         }
 
         public MutablePicoContainer as(Properties... properties) {
-            return new AsPropertiesNanoContainer(properties);
+            return new AsPropertiesPicoContainer(properties);
         }
 
         public Object getComponent(Object componentKeyOrType) {

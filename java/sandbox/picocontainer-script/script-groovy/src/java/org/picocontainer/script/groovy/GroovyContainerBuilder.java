@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -106,7 +106,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         try {
             GroovyClassLoader loader = new GroovyClassLoader(getClassLoader());
             InputStream scriptIs = getScriptInputStream();
-            GroovyCodeSource groovyCodeSource = new GroovyCodeSource(scriptIs,"picocontainer.groovy","groovyGeneratedForNanoContainer");
+            GroovyCodeSource groovyCodeSource = new GroovyCodeSource(scriptIs,"picocontainer.groovy","groovyGeneratedForPicoContainer");
             scriptClass = loader.parseClass(groovyCodeSource);
         } catch (CompilationFailedException e) {
             throw new GroovyCompilationException("Compilation Failed '" + e.getMessage() + "'", e);

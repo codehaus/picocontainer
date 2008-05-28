@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -29,7 +29,7 @@ import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.ComponentMonitorStrategy;
 
 /**
- * Creates a new NanoContainer node.  There may or may not be a parent
+ * Creates a new PicoContainer node.  There may or may not be a parent
  * container involved.
  * @author James Strachan
  * @author Paul Hammant
@@ -102,7 +102,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
      * Creates a new container.  There may or may not be a parent to this container.
      * Supported attributes are
      * <p>{@inheritDoc}</p>
-     * @param current NanoContainer
+     * @param current PicoContainer
      * @param attributes Map
      * @return Object
      * @throws ScriptedPicoContainerMarkupException
@@ -132,7 +132,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
      * </ul>
      * @param attributes Map Attributes defined by the builder in the script.
      * @param parent The parent container
-     * @return The NanoContainer
+     * @return The PicoContainer
      */
     protected ScriptedPicoContainer createChildContainer(Map attributes, ScriptedPicoContainer parent) {
 
@@ -172,7 +172,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
         MutablePicoContainer decoratedPico = getDecorationDelegate().decorate(childContainer);
         if ( isAttribute(attributes, CLASS) )  {
             Class clazz = (Class) attributes.get(CLASS);
-            return createNanoContainer(clazz, decoratedPico, parentClassLoader);
+            return createPicoContainer(clazz, decoratedPico, parentClassLoader);
         } else {
             return new DefaultScriptedPicoContainer(parentClassLoader, decoratedPico);
         }
@@ -184,7 +184,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
         }
     }
 
-    private ScriptedPicoContainer createNanoContainer(Class clazz, MutablePicoContainer decoratedPico, ClassLoader parentClassLoader) {
+    private ScriptedPicoContainer createPicoContainer(Class clazz, MutablePicoContainer decoratedPico, ClassLoader parentClassLoader) {
         DefaultPicoContainer instantiatingContainer = new DefaultPicoContainer();
         instantiatingContainer.addComponent(ClassLoader.class, parentClassLoader);
         instantiatingContainer.addComponent(MutablePicoContainer.class, decoratedPico);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -203,8 +203,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                 String name = childElement.getNodeName();
                 if (CONTAINER.equals(name)) {
                     MutablePicoContainer childContainer = parentContainer.makeChildContainer();
-                    ScriptedPicoContainer childNanoContainer = new DefaultScriptedPicoContainer(parentContainer.getComponentClassLoader(), childContainer);
-                    registerComponentsAndChildContainers(childNanoContainer, childElement, metaContainer);
+                    ScriptedPicoContainer childPicoContainer = new DefaultScriptedPicoContainer(parentContainer.getComponentClassLoader(), childContainer);
+                    registerComponentsAndChildContainers(childPicoContainer, childElement, metaContainer);
                 } else if (COMPONENT_IMPLEMENTATION.equals(name)
                         || COMPONENT.equals(name)) {
                     registerComponent(parentContainer, childElement);
@@ -490,7 +490,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             factoryClass = DEFAULT_COMPONENT_INSTANCE_FACTORY;
         }
 
-        // using a NanoContainer is overkill here.
+        // using a PicoContainer is overkill here.
         try {
             return (XMLComponentInstanceFactory)getClassLoader().loadClass(factoryClass).newInstance();
         } catch (InstantiationException e) {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
@@ -200,7 +200,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertTrue("Container should NOT have instantiated a 'NotStartable' component because it is NOT Startable", sb.toString().indexOf("-NotStartable") == -1);
     }
 
-    @Test public void testUnknownclassThrowsNanoContainerMarkupException() {
+    @Test public void testUnknownclassThrowsPicoContainerMarkupException() {
         try {
             Reader script = new StringReader("" +
                     "<container>" +
@@ -213,7 +213,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    @Test public void testNoImplementationClassThrowsNanoContainerMarkupException() {
+    @Test public void testNoImplementationClassThrowsPicoContainerMarkupException() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation/>" +
@@ -225,7 +225,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    @Test public void testConstantParameterWithNoChildElementThrowsNanoContainerMarkupException() {
+    @Test public void testConstantParameterWithNoChildElementThrowsPicoContainerMarkupException() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation class='org.picocontainer.script.xml.TestBeanComposer'>" +
@@ -280,7 +280,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    @Test public void testComponentInstanceWithNoChildElementThrowsNanoContainerMarkupException() {
+    @Test public void testComponentInstanceWithNoChildElementThrowsPicoContainerMarkupException() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance>" +
@@ -627,7 +627,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertSame(TestBeanComposer.class, adapter.getComponentImplementation());
     }
 
-    @Test public void testComponentAdapterWithNoClassThrowsNanoContainerMarkupException() {
+    @Test public void testComponentAdapterWithNoClassThrowsPicoContainerMarkupException() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter key='beanKey'/> " +

@@ -12,8 +12,6 @@ import org.picocontainer.MutablePicoContainer;
 
 /**
  * Interface for composing a container.
- * See <a href="http://nanocontainer.org/NanoWar">NanoWar</a>
- * for sample usage.
  *
  * @author Joe Walnes 
  * @author Mauro Talevi

@@ -244,11 +244,11 @@ public class GroovyNodeBuilder extends BuilderSupport {
     }
 
     /**
-     * Pulls the nanocontainer from the 'current' method or possibly creates
+     * Pulls the scripted container from the 'current' method or possibly creates
      * a new blank one if needed.
      *
      * @param attributes Map the attributes of the current node.
-     * @return NanoContainer, never null.
+     * @return ScriptedPicoContainer, never null.
      * @throws NanoContainerMarkupException
      */
     private ScriptedPicoContainer extractOrCreateValidRootNanoContainer(final Map attributes) throws NanoContainerMarkupException {

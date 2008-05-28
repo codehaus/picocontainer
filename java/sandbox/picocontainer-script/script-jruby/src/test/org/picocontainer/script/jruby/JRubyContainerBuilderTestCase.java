@@ -1,20 +1,5 @@
 package org.picocontainer.script.jruby;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.NameBinding;
-import org.picocontainer.PicoBuilder;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.SetterInjection;
-import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -40,7 +25,6 @@ import org.jmock.integration.junit4.JMock;
 import org.jruby.exceptions.RaiseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
@@ -49,6 +33,8 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoBuilder;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.AbstractInjector;
@@ -62,7 +48,6 @@ import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.NanoContainerMarkupException;
 import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.script.TestHelper;
-import org.picocontainer.script.jruby.JRubyContainerBuilder;
 import org.picocontainer.script.testmodel.A;
 import org.picocontainer.script.testmodel.B;
 import org.picocontainer.script.testmodel.HasParams;
@@ -641,26 +626,6 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertSame(testCompInstance.getClass(), testComp);
 
     }
-
-//    @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-//        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjectionComponentFactory() );
-//        Reader script = new StringReader("" +
-//                "package org.picocontainer.script.testmodel\n" +
-//                "nano = new GroovyNodeBuilder().container() {\n" +
-//                "    addComponent(A)\n" +
-//                "    container(parent:parent) {\n" +
-//                "         addComponent(B)\n" +
-//                "    }\n" +
-//                "}\n");
-//
-//        try {
-//            buildContainer(script, parent, ASSEMBLY_SCOPE);
-//            fail("NanoContainerMarkupException should have been thrown.");
-//        } catch (NanoContainerMarkupException ignore) {
-//            // ignore
-//        }
-//    }
-    
 
 	/**
 	 * Script will fail with not finding class TestComp if the classloader propagation is not working.

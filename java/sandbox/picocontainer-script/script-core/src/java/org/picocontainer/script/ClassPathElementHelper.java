@@ -19,7 +19,7 @@ import java.io.File;
 public class ClassPathElementHelper {
     public static final String HTTP = "http://";
 
-    public static ClassPathElement addClassPathElement(final String path, ScriptedPicoContainer nanoContainer) {
+    public static ClassPathElement addClassPathElement(final String path, ScriptedPicoContainer container) {
         URL pathURL;
         try {
             if (path.toLowerCase().startsWith(HTTP)) {
@@ -50,6 +50,6 @@ public class ClassPathElementHelper {
         } catch (MalformedURLException e) {
             throw new NanoContainerMarkupException("classpath '" + path + "' malformed ", e);
         }
-        return nanoContainer.addClassLoaderURL(pathURL);
+        return container.addClassLoaderURL(pathURL);
     }
 }

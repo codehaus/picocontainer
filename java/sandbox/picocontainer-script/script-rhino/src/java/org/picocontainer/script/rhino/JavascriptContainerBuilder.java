@@ -17,11 +17,8 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.DefiningClassLoader;
 import org.mozilla.javascript.GeneratedClassLoader;
 import org.mozilla.javascript.ImporterTopLevel;
-import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.NativeJavaObject;
-import org.mozilla.javascript.NativeJavaPackage;
 import org.mozilla.javascript.RhinoException;
-import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.script.LifecycleMode;
@@ -73,25 +70,7 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
             Scriptable scope = new ImporterTopLevel(cx);
             scope.put("parent", scope, parentContainer);
             scope.put("assemblyScope", scope, assemblyScope);
-            //Behavior change.  Rhino scripts now must use importPackage() explicitly.
-           /* ImporterTopLevel.importPackage(cx,
-                    scope, new NativeJavaPackage[]{
-                        new NativeJavaPackage("org.picocontainer.lifecycle", loader),
-                        new NativeJavaPackage("org.picocontainer", loader),
-                        new NativeJavaPackage("org.picocontainer.adapters", loader),
-                        new NativeJavaPackage("org.picocontainer.injectors", loader),
-                        new NativeJavaPackage("org.picocontainer.behaviors", loader),
-                        new NativeJavaPackage("org.nanocontainer", loader),
-                        new NativeJavaPackage("org.nanocontainer.reflection", loader),
-                        // File, URL and URLClassLoader will be frequently used by scripts.
-                        new NativeJavaPackage("java.net", loader),
-                        new NativeJavaPackage("java.io", loader),
-                    },
-                    null);*/
-
-            //Script scriptObject = cx.compileReader(scope, getScriptReader(), "javascript", 1, null);
-			//scriptObject.exec(cx, scope);            
-            cx.evaluateReader(scope, getScriptReader(), "nanocontainer.js", 1, null);
+            cx.evaluateReader(scope, getScriptReader(), "picocontainer.js", 1, null);
             Object pico = scope.get("pico", scope);
 
             if (pico == null) {

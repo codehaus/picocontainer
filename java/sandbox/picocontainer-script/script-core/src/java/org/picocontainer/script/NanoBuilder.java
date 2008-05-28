@@ -110,8 +110,8 @@ public final class NanoBuilder {
         return this;
     }
 
-    public NanoBuilder implementedBy(Class<? extends ScriptedPicoContainer> nanoContainerClass) {
-        scriptClass = nanoContainerClass;
+    public NanoBuilder implementedBy(Class<? extends ScriptedPicoContainer> scriptedContainerClass) {
+        scriptClass = scriptedContainerClass;
         return this;
     }
 

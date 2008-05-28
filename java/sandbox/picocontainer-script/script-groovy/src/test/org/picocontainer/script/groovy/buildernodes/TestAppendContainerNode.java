@@ -50,10 +50,10 @@ public class TestAppendContainerNode {
 
     @Test public void testCreateNodeWithParmeterReturnsParameter() throws NanoContainerMarkupException {
         HashMap params = new HashMap();
-        ScriptedPicoContainer nano = new DefaultScriptedPicoContainer();
-        params.put(AppendContainerNode.CONTAINER, nano);
-        ScriptedPicoContainer nano2 = (ScriptedPicoContainer)appendContainerNode.createNewNode(null,params);
-        assertTrue(nano == nano2);
+        ScriptedPicoContainer scripted = new DefaultScriptedPicoContainer();
+        params.put(AppendContainerNode.CONTAINER, scripted);
+        ScriptedPicoContainer scripted2 = (ScriptedPicoContainer)appendContainerNode.createNewNode(null,params);
+        assertTrue(scripted == scripted2);
     }
 
     @Test public void testCreateWithImproperTypeThrowsClassCastException() throws NanoContainerMarkupException {

@@ -172,8 +172,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             if (parentClass != null && !EMPTY.equals(parentClass)) {
                 classLoader = classLoader.loadClass(parentClass).getClassLoader();
             }
-            ScriptedPicoContainer nanoContainer = new DefaultScriptedPicoContainer(classLoader, container);
-            registerComponentsAndChildContainers(nanoContainer, rootElement, new DefaultScriptedPicoContainer(getClassLoader()));
+            ScriptedPicoContainer scriptedContainer = new DefaultScriptedPicoContainer(classLoader, container);
+            registerComponentsAndChildContainers(scriptedContainer, rootElement, new DefaultScriptedPicoContainer(getClassLoader()));
         } catch (ClassNotFoundException e) {
             throw new NanoContainerMarkupException("Class not found: " + e.getMessage(), e);
         } catch (IOException e) {
@@ -261,8 +261,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         if (parentClass != null && !EMPTY.equals(parentClass)) {
             parentClassLoader = parentClassLoader.loadClass(parentClass).getClassLoader();
         }
-        ScriptedPicoContainer nano = new DefaultScriptedPicoContainer(parentClassLoader, parentContainer);
-        registerComponentsAndChildContainers(nano, childElement, metaContainer);
+        ScriptedPicoContainer scripted = new DefaultScriptedPicoContainer(parentClassLoader, parentContainer);
+        registerComponentsAndChildContainers(scripted, childElement, metaContainer);
     }
 
     private void registerClasspath(ScriptedPicoContainer container, Element classpathElement) throws IOException, ClassNotFoundException {

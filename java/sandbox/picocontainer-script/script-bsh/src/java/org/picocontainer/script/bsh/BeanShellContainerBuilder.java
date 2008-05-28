@@ -48,7 +48,7 @@ public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
             i.set("parent", parentContainer);
             i.set("assemblyScope", assemblyScope);
             i.setClassLoader(this.getClassLoader());
-            i.eval(getScriptReader(), i.getNameSpace(), "nanocontainer.bsh");
+            i.eval(getScriptReader(), i.getNameSpace(), "picocontainer.bsh");
             return (PicoContainer) i.get("pico");
         } catch (EvalError e) {
             throw new NanoContainerMarkupException(e);

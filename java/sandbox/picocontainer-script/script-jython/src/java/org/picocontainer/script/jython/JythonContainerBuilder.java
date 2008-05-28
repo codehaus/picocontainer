@@ -57,7 +57,7 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
             interpreter.exec("from java.net import *");
             interpreter.set("parent", parentContainer);
             interpreter.set("assemblyScope", assemblyScope);
-            interpreter.execfile(getScriptInputStream(), "nanocontainer.py");
+            interpreter.execfile(getScriptInputStream(), "picocontainer.py");
             return (PicoContainer) interpreter.get("pico", PicoContainer.class);
         } catch (IOException e) {
             throw new NanoContainerMarkupException(e);

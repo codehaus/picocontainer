@@ -269,14 +269,14 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
     @Test public void testShouldThrowExceptionForNonExistantCafClass() {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='org.nanocontainer.SomeInexistantFactory'>" +
+                "<container component-adapter-factory='org.picocontainer.script.SomeInexistantFactory'>" +
                 "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");
         try {
             buildContainer(script);
             fail();
         } catch (NanoContainerMarkupException expected) {
-            assertTrue("Message of exception does not contain missing class", expected.getMessage().indexOf("org.nanocontainer.SomeInexistantFactory") > 0);
+            assertTrue("Message of exception does not contain missing class", expected.getMessage().indexOf("org.picocontainer.script.SomeInexistantFactory") > 0);
         }
     }
 
@@ -940,7 +940,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
     }
 
-    // TODO: Move this into pico-tck as soon as nano is dependend on a pico snapshot again ...
+    // TODO: Move this into pico-tck 
     public static class WrapsTouchable implements Touchable {
         private final Touchable wrapped;
         

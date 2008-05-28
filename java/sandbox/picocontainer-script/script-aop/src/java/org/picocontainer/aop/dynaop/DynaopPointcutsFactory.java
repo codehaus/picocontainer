@@ -111,33 +111,33 @@ public class  DynaopPointcutsFactory extends AbstractPointcutsFactory {
         return new DynaopMethodPointcut(Pointcuts.not(toDynaopMethodCut(methodPointcut)));
     }
 
-    private static dynaop.ClassPointcut toDynaopClassCut(final ClassPointcut nanoCut) {
+    private static dynaop.ClassPointcut toDynaopClassCut(final ClassPointcut cut) {
         // The purpose of the anonymous inner class adapter below is to allow
         // users to use union, intersection and not with custom pointcuts (not
-        // instances of dynaop.ClassPointcut). Now we could just wrap nanoCut
+        // instances of dynaop.ClassPointcut). Now we could just wrap cut
         // with the adapter every time, even if it is already a
         // dynaop.ClassPointcut. But the extra level of indirection gets a
         // little
         // confusing when debugging. Thus the instanceof check.
-        if (nanoCut instanceof dynaop.ClassPointcut) {
-            return (dynaop.ClassPointcut) nanoCut;
+        if (cut instanceof dynaop.ClassPointcut) {
+            return (dynaop.ClassPointcut) cut;
         } else {
             return new dynaop.ClassPointcut() {
                 public boolean picks(Class clazz) {
-                    return nanoCut.picks(clazz);
+                    return cut.picks(clazz);
                 }
             };
         }
     }
 
-    private static dynaop.MethodPointcut toDynaopMethodCut(final MethodPointcut nanoCut) {
+    private static dynaop.MethodPointcut toDynaopMethodCut(final MethodPointcut cut) {
         // see comment in toDynaopClassCut, above
-        if (nanoCut instanceof dynaop.MethodPointcut) {
-            return (dynaop.MethodPointcut) nanoCut;
+        if (cut instanceof dynaop.MethodPointcut) {
+            return (dynaop.MethodPointcut) cut;
         } else {
             return new dynaop.MethodPointcut() {
                 public boolean picks(Method method) {
-                    return nanoCut.picks(method);
+                    return cut.picks(method);
                 }
             };
         }

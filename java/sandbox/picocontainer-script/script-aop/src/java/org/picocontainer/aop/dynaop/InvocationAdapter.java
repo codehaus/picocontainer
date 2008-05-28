@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 
 /**
  * Adapts a <code>dynaop.Invocation</code> object to the
- * <code>org.nanocontainer.nanoaop.MethodInvocation</code> interface.
+ * <code>org.picocontainer.aop.MethodInvocation</code> interface.
  *
  * @author Stephen Molitor
  */

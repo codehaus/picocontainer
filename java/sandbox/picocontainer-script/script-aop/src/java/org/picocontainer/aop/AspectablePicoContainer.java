@@ -17,7 +17,7 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @author Stephen Molitor
  * @see <a href='package-summary.html#package_description'>The package
- *      description</a> has a basic overview of how to use the nanoaop package.
+ *      description</a> has a basic overview of how to use the AOP package.
  */
 public interface AspectablePicoContainer extends AspectsContainer, MutablePicoContainer {
 

@@ -43,10 +43,10 @@ public class ClasspathNode extends AbstractBuilderNode {
         return createClassPathElementNode(attributes, (ScriptedPicoContainer) current);
     }
 
-    private ClassPathElement createClassPathElementNode(Map attributes, ScriptedPicoContainer nanoContainer) {
+    private ClassPathElement createClassPathElementNode(Map attributes, ScriptedPicoContainer container) {
 
         final String path = (String) attributes.remove(PATH);
-        return ClassPathElementHelper.addClassPathElement(path, nanoContainer);
+        return ClassPathElementHelper.addClassPathElement(path, container);
     }
 
 }

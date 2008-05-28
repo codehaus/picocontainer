@@ -70,8 +70,7 @@ public class AppendContainerNode extends AbstractBuilderNode {
      * @return Object the passed in Nanocontainer.
      * @throws NanoContainerMarkupException if the container attribute
      * is not supplied.
-     * @throws ClassCastException if the container node specified is  not
-     * a nano or picocontainer.
+     * @throws ClassCastException if the container node specified is not a  ScriptedPicoContainer or PicoContainer
      */
     public Object createNewNode(final Object current, final Map attributes) throws NanoContainerMarkupException, ClassCastException {
         if (!isAttribute(attributes, CONTAINER)) {
@@ -81,7 +80,7 @@ public class AppendContainerNode extends AbstractBuilderNode {
 
         Object attributeValue = attributes.get(CONTAINER);
         if (! (attributeValue instanceof ScriptedPicoContainer) && !(attributeValue instanceof PicoContainer) ) {
-            throw new ClassCastException(attributeValue.toString() + " must be a derivative of nanocontainer.  Got: "
+            throw new ClassCastException(attributeValue.toString() + " must be a derivative of ScriptedPicoContainer or PicoContainer.  Got: "
                 + attributeValue.getClass().getName() + " instead.");
         }
         return attributeValue;

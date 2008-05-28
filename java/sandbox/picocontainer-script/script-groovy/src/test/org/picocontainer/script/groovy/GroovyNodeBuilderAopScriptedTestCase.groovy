@@ -9,8 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.script.groovy
 
-import org.nanocontainer.aop.*
-import org.nanocontainer.aop.dynaop.*
+import org.picocontainer.aop.*
+import org.picocontainer.aop.dynaop.*
 import org.picocontainer.script.groovy.*
 import org.picocontainer.script.NanoContainerMarkupException
 

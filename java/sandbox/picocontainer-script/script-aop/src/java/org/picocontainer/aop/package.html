@@ -41,9 +41,9 @@ implementation class <code>DaoImpl</code>.
 
 <h3>Java Configuration</h3>
 The primary interface for configuring aspects in Java is {@link
-org.nanocontainer.aop.AspectablePicoContainer}.  To create one you
+org.picocontainer.aop.AspectablePicoContainer}.  To create one you
 need a {@link
-org.nanocontainer.aop.AspectablePicoContainerFactory}.  The
+org.picocontainer.aop.AspectablePicoContainerFactory}.  The
 following example applies our logging interceptor to all methods of
 all instances of <code>Dao</code> in the container:
 
@@ -124,7 +124,7 @@ a new mixin object for each component that it applies the mixin to, but will sat
 dependencies the mixin has from components in the container, using constructor injection.
 
 <h4>Pointcuts</h4>
-Notice the use of the {@link org.nanocontainer.aop.PointcutsFactory}, <code>cuts</code>, in the
+Notice the use of the {@link org.picocontainer.aop.PointcutsFactory}, <code>cuts</code>, in the
 first example.  This interface provides methods for producing
 pointcuts that match one class or method, or that match the class,
 method or component name against a regular expressionm, pointcuts that
@@ -132,16 +132,16 @@ pick all instances of a given class, or all classes in a given
 package, etc.  You are not limited to the pointcuts produced
 by <code>PointcutsFactory</code> however.  Any pointcut that
 implements one of the interfaces {@link
-org.nanocontainer.aop.ComponentPointcut}, {@link
-org.nanocontainer.aop.ClassPointcut}, {@link
-org.nanocontainer.aop.MethodPointcut} will work.  Class pointcuts
+org.picocontainer.aop.ComponentPointcut}, {@link
+org.picocontainer.aop.ClassPointcut}, {@link
+org.picocontainer.aop.MethodPointcut} will work.  Class pointcuts
 match against the component's class.  Component pointcuts match
 against the component key.  Method pointcuts match against the method
 being invoked.  Method pointcuts only apply to interceptor advice;
 they are not used for mixins.
 
 <h3>Groovy Configuration</h3>
-To configure aspects using groovy, use {@link org.nanocontainer.aop.script.groovy.DynaopNanoContainerBuilder}.  
+To configure aspects using groovy, use {@link org.picocontainer.script.groovy.DynaopNanoContainerBuilder}.  
 
 <h2>Limitations</h2>
 Components that have aspects applied to them must implement an interface. Advice is not applied to components registered 

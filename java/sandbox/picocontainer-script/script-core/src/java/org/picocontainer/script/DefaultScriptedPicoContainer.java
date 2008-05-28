@@ -1,12 +1,10 @@
-/*****************************************************************************
- * Copyright (C) NanoContainer Organization. All rights reserved.            *
+/*******************************************************************************
+ * Copyright (C) NanoContainer Organization. All rights reserved. *
  * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Original code by Paul Hammant                                             *
- *****************************************************************************/
+ * The software in this package is published under the terms of the BSD * style
+ * license a copy of which has been included with this distribution in * the
+ * LICENSE.txt file. * * Original code by Paul Hammant *
+ ******************************************************************************/
 
 package org.picocontainer.script;
 
@@ -44,27 +42,29 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * This is a MutablePicoContainer that also supports soft composition. i.e. assembly by class name rather that class
- * reference.
+ * This is a MutablePicoContainer that also supports soft composition. i.e.
+ * assembly by class name rather that class reference.
  * <p>
- * In terms of implementation it adopts the behaviour of DefaultPicoContainer and DefaultScriptedPicoContainer.</p>
- *
+ * In terms of implementation it adopts the behaviour of DefaultPicoContainer
+ * and DefaultScriptedPicoContainer.
+ * </p>
+ * 
  * @author Paul Hammant
  * @author Mauro Talevi
  * @author Michael Rimov
  */
-public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoContainer implements ScriptedPicoContainer, Serializable,
-                                                                                            ComponentMonitorStrategy {
+public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoContainer implements
+        ScriptedPicoContainer, Serializable, ComponentMonitorStrategy {
 
     /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -1781615587796107858L;
-	
-	/**
-	 * Conversion Map to allow for primitives to be boxed to Object types.
-	 */
-	private static final transient Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
+     * Serialization UUID.
+     */
+    private static final long serialVersionUID = -1781615587796107858L;
+
+    /**
+     * Conversion Map to allow for primitives to be boxed to Object types.
+     */
+    private static final transient Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
 
     static {
         primitiveNameToBoxedName.put("int", Integer.class.getName());
@@ -76,16 +76,13 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
         primitiveNameToBoxedName.put("boolean", Boolean.class.getName());
     }
 
-
     private final transient List<ClassPathElement> classPathElements = new ArrayList<ClassPathElement>();
     private final transient ClassLoader parentClassLoader;
 
     private transient ClassLoader componentClassLoader;
     private transient boolean componentClassLoaderLocked;
 
-
     protected final Map<String, PicoContainer> namedChildContainers = new HashMap<String, PicoContainer>();
-
 
     public DefaultScriptedPicoContainer(ClassLoader classLoader, ComponentFactory componentFactory, PicoContainer parent) {
         super(new DefaultPicoContainer(componentFactory, parent));
@@ -101,7 +98,7 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
     public DefaultScriptedPicoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor componentMonitor) {
         super(new DefaultPicoContainer(new Caching(), parent));
         parentClassLoader = classLoader;
-        ((ComponentMonitorStrategy)getDelegate()).changeMonitor(componentMonitor);
+        ((ComponentMonitorStrategy) getDelegate()).changeMonitor(componentMonitor);
     }
 
     public DefaultScriptedPicoContainer(ComponentFactory componentFactory) {
@@ -129,26 +126,12 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
         parentClassLoader = DefaultScriptedPicoContainer.class.getClassLoader();
     }
 
-
-    /**
-     * Constructor that provides the same control over the nanocontainer lifecycle strategies
-     * as {@link DefaultPicoContainer ( org.picocontainer.ComponentFactory , org.picocontainer.LifecycleStrategy , PicoContainer)}.
-     *
-     * @param componentFactory componentFactory
-     * @param lifecycleStrategy       LifecycleStrategy
-     * @param parent                  PicoContainer may be null if there is no parent.
-     * @param cl                      the Classloader to use.  May be null, in which case DefaultNanoPicoContainer.class.getClassLoader()
-     *                                will be called instead.
-     */
-    public DefaultScriptedPicoContainer(ComponentFactory componentFactory,
-                                LifecycleStrategy lifecycleStrategy, PicoContainer parent,
-                                ClassLoader cl, ComponentMonitor componentMonitor)
-    {
+    public DefaultScriptedPicoContainer(ComponentFactory componentFactory, LifecycleStrategy lifecycleStrategy,
+            PicoContainer parent, ClassLoader cl, ComponentMonitor componentMonitor) {
 
         super(new DefaultPicoContainer(componentFactory, lifecycleStrategy, parent, componentMonitor));
         parentClassLoader = (cl != null) ? cl : DefaultScriptedPicoContainer.class.getClassLoader();
     }
-
 
     protected DefaultScriptedPicoContainer createChildContainer() {
         MutablePicoContainer child = getDelegate().makeChildContainer();
@@ -158,17 +141,17 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
     }
 
     public void changeMonitor(ComponentMonitor monitor) {
-        ((ComponentMonitorStrategy)getDelegate()).changeMonitor(monitor);
+        ((ComponentMonitorStrategy) getDelegate()).changeMonitor(monitor);
     }
 
     public ComponentMonitor currentMonitor() {
-        return ((ComponentMonitorStrategy)getDelegate()).currentMonitor();
+        return ((ComponentMonitorStrategy) getDelegate()).currentMonitor();
     }
 
     public final Object getComponent(Object componentKeyOrType) throws PicoException {
 
         if (componentKeyOrType instanceof ClassName) {
-            componentKeyOrType = loadClass(((ClassName)componentKeyOrType).className);
+            componentKeyOrType = loadClass(((ClassName) componentKeyOrType).className);
         }
 
         Object instance = getDelegate().getComponent(componentKeyOrType);
@@ -183,7 +166,7 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
             Collection<ComponentAdapter<?>> cas = getComponentAdapters();
             for (ComponentAdapter<?> ca : cas) {
                 Object key = ca.getComponentKey();
-                if (key instanceof Class && candidateClassName.equals(((Class<?>)key).getName())) {
+                if (key instanceof Class && candidateClassName.equals(((Class<?>) key).getName())) {
                     componentAdapter = ca;
                     break;
                 }
@@ -204,7 +187,7 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
             String remainder = componentKeyPath.substring(ix + 1, componentKeyPath.length());
             Object o = getNamedContainers().get(firstElement);
             if (o != null) {
-                MutablePicoContainer child = (MutablePicoContainer)o;
+                MutablePicoContainer child = (MutablePicoContainer) o;
                 return child.getComponent(remainder);
             }
         }
@@ -216,11 +199,11 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
     }
 
     /**
-     * Makes a child container with the same basic characteristics of <tt>this</tt>
-     * object (ComponentFactory, PicoContainer type, Behavior, etc)
-     *
+     * Makes a child container with the same basic characteristics of
+     * <tt>this</tt> object (ComponentFactory, PicoContainer type, Behavior,
+     * etc)
+     * 
      * @param name the name of the child container
-     *
      * @return The child MutablePicoContainer
      */
     public ScriptedPicoContainer makeChildContainer(String name) {
@@ -245,10 +228,9 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
         return result;
     }
 
-    protected final Map<String, PicoContainer>  getNamedContainers() {
+    protected final Map<String, PicoContainer> getNamedContainers() {
         return namedChildContainers;
     }
-
 
     public ClassPathElement addClassLoaderURL(URL url) {
         if (componentClassLoaderLocked) {
@@ -262,7 +244,7 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
 
     public MutablePicoContainer addComponent(Object implOrInstance) {
         if (implOrInstance instanceof ClassName) {
-            String className = ((ClassName)implOrInstance).className;
+            String className = ((ClassName) implOrInstance).className;
             super.addComponent(loadClass(className));
         } else {
             super.addComponent(implOrInstance);
@@ -270,16 +252,16 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
         return this;
     }
 
-    public MutablePicoContainer addComponent(Object key,
-                                             Object componentImplementationOrInstance,
-                                             Parameter... parameters) {
-        super.addComponent(classNameToClassIfApplicable(key), classNameToClassIfApplicable(componentImplementationOrInstance), parameters);
+    public MutablePicoContainer addComponent(Object key, Object componentImplementationOrInstance,
+            Parameter... parameters) {
+        super.addComponent(classNameToClassIfApplicable(key),
+                classNameToClassIfApplicable(componentImplementationOrInstance), parameters);
         return this;
     }
 
     private Object classNameToClassIfApplicable(Object key) {
         if (key instanceof ClassName) {
-            key = loadClass(((ClassName)key).getClassName());
+            key = loadClass(((ClassName) key).getClassName());
         }
         return key;
     }
@@ -294,9 +276,8 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
             componentClassLoaderLocked = true;
             componentClassLoader = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
                 public ClassLoader run() {
-                    return new CustomPermissionsURLClassLoader(getURLs(classPathElements),
-                                                               makePermissions(),
-                                                               parentClassLoader);
+                    return new CustomPermissionsURLClassLoader(getURLs(classPathElements), makePermissions(),
+                            parentClassLoader);
                 }
             });
         }
@@ -348,15 +329,13 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
         return fromMap != null ? fromMap : primitiveOrClass;
     }
 
-
     public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
         Object componentKey2 = componentKey;
         if (componentKey instanceof ClassName) {
-            componentKey2 = loadClass(((ClassName)componentKey).className);
+            componentKey2 = loadClass(((ClassName) componentKey).className);
         }
         return super.getComponentAdapter(componentKey2);
     }
-
 
     public MutablePicoContainer change(Properties... properties) {
         super.change(properties);
@@ -391,11 +370,10 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
 
         }
 
-        public MutablePicoContainer addComponent(Object componentKey,
-                                                 Object componentImplementationOrInstance,
-                                                 Parameter... parameters)
-        {
-            delegate.addComponent(classNameToClassIfApplicable(componentKey), classNameToClassIfApplicable(componentImplementationOrInstance), parameters);
+        public MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance,
+                Parameter... parameters) {
+            delegate.addComponent(classNameToClassIfApplicable(componentKey),
+                    classNameToClassIfApplicable(componentImplementationOrInstance), parameters);
             return DefaultScriptedPicoContainer.this;
         }
 
@@ -456,7 +434,7 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
 
         public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
             return DefaultScriptedPicoContainer.this.getComponent(componentType, binding);
-        }        
+        }
 
         public List<Object> getComponents() {
             return DefaultScriptedPicoContainer.this.getComponents();
@@ -486,10 +464,10 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
             return DefaultScriptedPicoContainer.this.getComponentAdapters(componentType);
         }
 
-        public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType,
+                Class<? extends Annotation> binding) {
             return DefaultScriptedPicoContainer.this.getComponentAdapters(componentType, binding);
         }
-
 
         public <T> List<T> getComponents(Class<T> componentType) {
             return DefaultScriptedPicoContainer.this.getComponents(componentType);
@@ -511,6 +489,5 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
 
         }
     }
-
 
 }

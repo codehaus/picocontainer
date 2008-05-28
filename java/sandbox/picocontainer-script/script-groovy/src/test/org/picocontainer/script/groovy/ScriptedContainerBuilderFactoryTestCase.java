@@ -16,7 +16,7 @@ import org.picocontainer.script.groovy.GroovyContainerBuilder;
 
 public class ScriptedContainerBuilderFactoryTestCase {
 
-    private static final String TEST_SCRIPT_PATH = "/org/picocontainer/script/groovy/nanocontainer.groovy";
+    private static final String TEST_SCRIPT_PATH = "/org/picocontainer/script/groovy/picocontainer.groovy";
 
     @Test public void testScriptedContainerBuilderFactoryWithUrl() throws ClassNotFoundException {
         URL resource = getClass().getResource(TEST_SCRIPT_PATH);
@@ -46,7 +46,7 @@ public class ScriptedContainerBuilderFactoryTestCase {
 
     // must use xml script
     public void FIXMEtestBuildWithFile() throws IOException {
-        File resource = new File("src/test/org/picocontainer/script/xml/nanocontainer.xml");
+        File resource = new File("src/test/org/picocontainer/script/xml/picocontainer.xml");
         assertNotNull("Could not find script resource '+ TEST_SCRIPT_PATH + '.", resource);
 
         ScriptedContainerBuilderFactory result = new ScriptedContainerBuilderFactory(resource);

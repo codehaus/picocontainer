@@ -45,7 +45,7 @@ public class ComponentElementHelper {
                                        Object key,
                                        Parameter[] parameters,
                                        Object classValue,
-                                       ScriptedPicoContainer nanoContainer, Object instance) {
-        return makeComponent(cnkey, key, parameters, classValue, nanoContainer, instance, new Properties[0]);
+                                       ScriptedPicoContainer container, Object instance) {
+        return makeComponent(cnkey, key, parameters, classValue, container, instance, new Properties[0]);
     }
 }

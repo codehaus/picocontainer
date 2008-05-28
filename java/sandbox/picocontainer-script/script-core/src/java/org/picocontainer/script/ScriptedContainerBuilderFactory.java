@@ -126,7 +126,7 @@ public class ScriptedContainerBuilderFactory {
      * @param builderClass String the builder class to load.
      */
     private void createContainerBuilder(Object composition, ClassLoader classLoader, String builderClass) {
-        DefaultScriptedPicoContainer defaultNanoContainer;
+        DefaultScriptedPicoContainer defaultScriptedContainer;
         {
             // transient.
             DefaultPicoContainer factory = new DefaultPicoContainer();
@@ -147,15 +147,15 @@ public class ScriptedContainerBuilderFactory {
 
             //
             //If we don't specify the classloader here, some of the things that make
-            //up a nanocontainer may bomb. And we're only talking a reload
+            //up a scripted container may bomb. And we're only talking a reload
             //within a webapp!  -MR
             //
-            defaultNanoContainer = new DefaultScriptedPicoContainer(classLoader,factory);
+            defaultScriptedContainer = new DefaultScriptedPicoContainer(classLoader,factory);
         }
         ClassName className = new ClassName(builderClass);
-        MutablePicoContainer mutablePicoContainer = defaultNanoContainer.addComponent(className, className);
+        MutablePicoContainer mutablePicoContainer = defaultScriptedContainer.addComponent(className, className);
         ComponentAdapter componentAdapter = mutablePicoContainer.getComponentAdapter(className);
-        containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultNanoContainer);
+        containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultScriptedContainer);
     }
 
     private static File fileExists(final File file) throws FileNotFoundException {

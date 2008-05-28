@@ -31,24 +31,24 @@ import org.picocontainer.script.testmodel.WebServerImpl;
 public class OldDefaultScriptedPicoContainerTestCase {
 
     @Test public void testBasic() throws PicoCompositionException {
-        ScriptedPicoContainer nanoContainer = new DefaultScriptedPicoContainer();
-        nanoContainer.addComponent(new ClassName("org.picocontainer.script.testmodel.DefaultWebServerConfig"));
-        nanoContainer.addComponent("org.picocontainer.script.testmodel.WebServer", new ClassName("org.picocontainer.script.testmodel.WebServerImpl"));
+        ScriptedPicoContainer container = new DefaultScriptedPicoContainer();
+        container.addComponent(new ClassName("org.picocontainer.script.testmodel.DefaultWebServerConfig"));
+        container.addComponent("org.picocontainer.script.testmodel.WebServer", new ClassName("org.picocontainer.script.testmodel.WebServerImpl"));
     }
 
     @Test public void testProvision() throws PicoException {
-        ScriptedPicoContainer nanoContainer = new DefaultScriptedPicoContainer();
-        nanoContainer.addComponent(new ClassName("org.picocontainer.script.testmodel.DefaultWebServerConfig"));
-        nanoContainer.addComponent(new ClassName("org.picocontainer.script.testmodel.WebServerImpl"));
+        ScriptedPicoContainer container = new DefaultScriptedPicoContainer();
+        container.addComponent(new ClassName("org.picocontainer.script.testmodel.DefaultWebServerConfig"));
+        container.addComponent(new ClassName("org.picocontainer.script.testmodel.WebServerImpl"));
 
-        assertNotNull("WebServerImpl should exist", nanoContainer.getComponent(WebServerImpl.class));
-        assertTrue("WebServerImpl should exist", nanoContainer.getComponent(WebServerImpl.class) != null);
+        assertNotNull("WebServerImpl should exist", container.getComponent(WebServerImpl.class));
+        assertTrue("WebServerImpl should exist", container.getComponent(WebServerImpl.class) != null);
     }
 
     @Test public void testNoGenerationRegistration() throws PicoCompositionException {
-        ScriptedPicoContainer nanoContainer = new DefaultScriptedPicoContainer();
+        ScriptedPicoContainer container = new DefaultScriptedPicoContainer();
         try {
-            nanoContainer.addComponent(new ClassName("Ping"));
+            container.addComponent(new ClassName("Ping"));
             fail("should have failed");
         } catch (PicoClassNotFoundException e) {
             // expected
@@ -159,9 +159,7 @@ public class OldDefaultScriptedPicoContainerTestCase {
         ScriptedPicoContainer parentContainer = new DefaultScriptedPicoContainer();
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
-        // Paul's path to TestComp. PLEASE do not take out.
-        //testcompJarFileName = "D:/OSS/PN/java/nanocontainer/src/test-comp/TestComp.jar";
-        assertNotNull("The testcomp.jar system property should point to nano/reflection/src/test-comp/TestComp.jar", testcompJarFileName);
+        assertNotNull("The testcomp.jar system property does not exist", testcompJarFileName);
         File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());
 

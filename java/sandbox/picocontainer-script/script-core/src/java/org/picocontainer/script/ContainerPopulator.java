@@ -15,10 +15,6 @@ import org.picocontainer.MutablePicoContainer;
  * Interface for populating a container.  The concern here is only on the
  * container to populate and not on the composition or the building.
  * </p>
- * <p>
- * An example of its use can be found in <a href="http://nanocontainer.org/nanowar">NanoWar</a>
- * for container population from multiple web scopes.
- * </p>
  * 
  * @author Mauro Talevi
  */

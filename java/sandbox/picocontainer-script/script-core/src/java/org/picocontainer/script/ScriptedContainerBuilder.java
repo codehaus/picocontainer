@@ -100,7 +100,6 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         return new InputStreamReader(scriptURL.openStream());
     }
     
-    // TODO: This should really return NanoContainer using a nano variable in the script. --Aslak
     protected abstract PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope);
 
     protected void composeContainer(MutablePicoContainer container, Object assemblyScope) {

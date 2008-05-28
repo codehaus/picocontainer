@@ -315,9 +315,9 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                 componentFactory = (ComponentFactory) componentFactoryClass.newInstance();
             }
             MutablePicoContainer picoContainer = new DefaultPicoContainer(componentFactory);
-            DefaultScriptedPicoContainer nano = new DefaultScriptedPicoContainer(getClassLoader(), picoContainer);
-            populateContainer(nano);
-            return nano;
+            DefaultScriptedPicoContainer scripted = new DefaultScriptedPicoContainer(getClassLoader(), picoContainer);
+            populateContainer(scripted);
+            return scripted;
         } catch (ClassNotFoundException e) {
             throw new NanoContainerMarkupException(e);
         } catch (InstantiationException e) {

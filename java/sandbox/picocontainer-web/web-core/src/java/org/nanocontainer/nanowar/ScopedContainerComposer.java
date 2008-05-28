@@ -19,21 +19,19 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.nanocontainer.ClassName;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.integrationkit.ContainerComposer;
-import org.nanocontainer.integrationkit.ContainerPopulator;
-import org.nanocontainer.integrationkit.ContainerRecorder;
-import org.nanocontainer.reflection.DefaultContainerRecorder;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.references.SimpleReference;
 import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.references.SimpleReference;
+import org.picocontainer.script.ClassName;
+import org.picocontainer.script.ContainerBuilder;
+import org.picocontainer.script.ContainerComposer;
+import org.picocontainer.script.ContainerPopulator;
+import org.picocontainer.script.DefaultScriptedPicoContainer;
+import org.picocontainer.script.ScriptedPicoContainer;
 
 /**
  * <p>
@@ -136,17 +134,17 @@ public final class ScopedContainerComposer implements ContainerComposer {
 	}
 	
 	private ContainerPopulator createContainerPopulator(Reader reader, MutablePicoContainer parent) {
-        NanoContainer nano = new DefaultNanoContainer(getClassLoader());
+        ScriptedPicoContainer scripted = new DefaultScriptedPicoContainer(getClassLoader());
         Parameter[] parameters = new Parameter[] {
                 new ConstantParameter(reader),
                 new ConstantParameter(getClassLoader()) };
-        nano.addComponent(containerBuilderClassName,
+        scripted.addComponent(containerBuilderClassName,
                 new ClassName(containerBuilderClassName), parameters);
-        ContainerBuilder containerBuilder = (ContainerBuilder) nano
+        ContainerBuilder containerBuilder = (ContainerBuilder) scripted
                 .getComponent(containerBuilderClassName);
         ObjectReference<PicoContainer> parentRef = new SimpleReference<PicoContainer>();
         parentRef.set(parent);
-        containerBuilder.buildContainer(new SimpleReference<PicoContainer>(), parentRef, null, false);
+        containerBuilder.buildContainer(parent, null, false);
         return (ContainerPopulator) containerBuilder;
     }
 

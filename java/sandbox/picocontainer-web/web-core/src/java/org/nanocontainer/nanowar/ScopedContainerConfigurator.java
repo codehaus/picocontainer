@@ -19,7 +19,7 @@ public final class ScopedContainerConfigurator {
 	public final static String SESSION_CONFIG_KEY = "sessionConfig";   
 	public final static String REQUEST_CONFIG_KEY = "requestConfig";   
 
-	public final static String DEFAULT_CONTAINER_BUILDER = "org.nanocontainer.script.xml.XMLContainerBuilder";   
+	public final static String DEFAULT_CONTAINER_BUILDER = "org.picocontainer.script.xml.XMLContainerBuilder";   
     public final static String DEFAULT_APPLICATION_CONFIG = "nanowar-application.xml";
     public final static String DEFAULT_SESSION_CONFIG = "nanowar-session.xml";
     public final static String DEFAULT_REQUEST_CONFIG = "nanowar-request.xml";

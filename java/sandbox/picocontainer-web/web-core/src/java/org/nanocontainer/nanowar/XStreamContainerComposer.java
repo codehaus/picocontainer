@@ -9,17 +9,16 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.nanocontainer.integrationkit.ContainerComposer;
-import org.nanocontainer.integrationkit.ContainerRecorder;
-import org.nanocontainer.reflection.DefaultContainerRecorder;
-import org.nanocontainer.script.xml.XStreamContainerBuilder;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.DefaultPicoContainer;
+import java.io.InputStreamReader;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.InputStreamReader;
+
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.script.ContainerComposer;
+import org.picocontainer.script.xml.XStreamContainerBuilder;
 
 /**
  * container composer reading from xml files via xstream. it pulls configuration from

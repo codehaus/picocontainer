@@ -11,12 +11,16 @@
   <name>PicoContainer Web Core</name>
   <dependencies>
     <dependency>
-      <groupId>org.nanocontainer</groupId>
-      <artifactId>nanocontainer</artifactId>
+      <groupId>org.picocontainer.script</groupId>
+      <artifactId>picocontainer-script-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.nanocontainer</groupId>
-      <artifactId>nanocontainer-groovy</artifactId>
+      <groupId>org.picocontainer.script</groupId>
+      <artifactId>picocontainer-script-testmodel</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.picocontainer.script</groupId>
+      <artifactId>picocontainer-script-groovy</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -23,15 +23,13 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.nanocontainer.script.ScriptedContainerBuilder;
-import org.nanocontainer.script.ScriptedContainerBuilderFactory;
-import org.nanocontainer.script.groovy.GroovyContainerBuilder;
-import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.references.SimpleReference;
+import org.picocontainer.script.ScriptedContainerBuilder;
+import org.picocontainer.script.ScriptedContainerBuilderFactory;
+import org.picocontainer.script.groovy.GroovyContainerBuilder;
+import org.picocontainer.script.xml.XMLContainerBuilder;
 
 /**
  * @author Mauro Talevi
@@ -57,7 +55,7 @@ public class ScopedContainerComposerTestCase {
         String xmlConfig = 
             "<container>" +
             "<component-implementation class='org.nanocontainer.nanowar.ScopedContainerConfigurator'>"+
-            "      <parameter><string>org.nanocontainer.script.xml.XMLContainerBuilder</string></parameter>"+
+            "      <parameter><string>org.picocontainer.script.xml.XMLContainerBuilder</string></parameter>"+
             "      <parameter><string>nanowar-application.xml</string></parameter> "+
             "      <parameter><string>nanowar-session.xml</string></parameter>        "+
             "      <parameter><string>nanowar-request.xml</string></parameter> "+
@@ -71,7 +69,7 @@ public class ScopedContainerComposerTestCase {
         String groovyConfig =
             "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
             "   addComponent(class:'org.nanocontainer.nanowar.ScopedContainerConfigurator', \n"+
-            "             parameters:['org.nanocontainer.script.groovy.GroovyContainerBuilder', " +
+            "             parameters:['org.picocontainer.script.groovy.GroovyContainerBuilder', " +
             "                         'nanowar-application.groovy', " +
             "                         'nanowar-session.groovy', " +
             "                         'nanowar-request.groovy' ])\n" +
@@ -111,9 +109,7 @@ public class ScopedContainerComposerTestCase {
     }
     
     private PicoContainer buildContainer(ScriptedContainerBuilder builder) {
-        ObjectReference containerRef = new SimpleReference();
-        builder.buildContainer(containerRef, new SimpleReference(), new SimpleReference(), false);
-        return (PicoContainer) containerRef.get();
+        return builder.buildContainer(null, "SCOPE", false);
     }
         
 }

@@ -8,7 +8,7 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.nanocontainer.integrationkit.ContainerComposer;
+import org.picocontainer.script.ContainerComposer;
 
 /**
  * Attribute keys used to store containers in various webapp scopes.

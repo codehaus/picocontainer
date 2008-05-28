@@ -20,18 +20,18 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.ClassName;
-import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.integrationkit.ContainerPopulator;
-import org.nanocontainer.integrationkit.ContainerRecorder;
-import org.nanocontainer.reflection.DefaultContainerRecorder;
+import org.nanocontainer.nanowar.ContainerRecorder;
+import org.nanocontainer.nanowar.DefaultContainerRecorder;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.script.ClassName;
+import org.picocontainer.script.ContainerBuilder;
+import org.picocontainer.script.ContainerPopulator;
+import org.picocontainer.script.DefaultScriptedPicoContainer;
+import org.picocontainer.script.ScriptedPicoContainer;
 
 /**
  * <p>
@@ -130,13 +130,13 @@ public final class ServletChainBuilder {
      * @return An instance of ContainerPopulator
      */
     private ContainerPopulator createContainerPopulator(String containerBuilderClassName, Reader reader, ClassLoader classLoader) {
-        NanoContainer nano = new DefaultNanoContainer(classLoader);
+        ScriptedPicoContainer scripted = new DefaultScriptedPicoContainer(classLoader);
         Parameter[] parameters = new Parameter[] {
                 new ConstantParameter(reader),
                 new ConstantParameter(classLoader) };
-        nano.addComponent(containerBuilderClassName,
+        scripted.addComponent(containerBuilderClassName,
                 new ClassName(containerBuilderClassName), parameters);
-        ContainerBuilder containerBuilder = (ContainerBuilder) nano
+        ContainerBuilder containerBuilder = (ContainerBuilder) scripted
                 .getComponent(containerBuilderClassName);
         //containerBuilder.buildContainer(new SimpleReference(), null, null,
         //        false);

@@ -6,8 +6,6 @@
 
     <bean type="com.opensymphony.xwork2.ObjectFactory" name="default" class="org.nanocontainer.nanowar.struts2.PicoObjectFactory" />
 
-    <include file="struts-default.xml"/>
-
     <package name="default" extends="struts-default">
 
         <action name="cheeses" class="org.nanocontainer.nanowar.sample.struts2.CheeseInventory">

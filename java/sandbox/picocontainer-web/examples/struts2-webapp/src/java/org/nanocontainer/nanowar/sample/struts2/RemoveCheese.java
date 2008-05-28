@@ -17,8 +17,8 @@ public class RemoveCheese extends ActionSupport {
         return cheese;
     }
 
-
     public String execute() throws Exception {
+        System.out.println("Removing cheese "+cheese);
         cheeseService.remove(cheese);
         return SUCCESS;
     }

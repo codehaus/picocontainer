@@ -17,8 +17,8 @@ public class AddCheese extends ActionSupport {
         return cheese;
     }
 
-
     public String execute() throws Exception {
+        System.out.println("Adding cheese "+cheese);
         cheeseService.save(cheese);
         return SUCCESS;
     }

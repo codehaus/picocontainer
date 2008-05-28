@@ -29,8 +29,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <includes>
-            <include>org/nanocontainer/script/TestHelper.java</include>
-            <include>org/nanocontainer/script/AbstractScriptedContainerBuilderTestCase.java</include>
+            <include>org/picocontainer/script/TestHelper.java</include>
+            <include>org/picocontainer/script/AbstractScriptedContainerBuilderTestCase.java</include>
           </includes>
           <source>1.5</source>
           <target>1.5</target>

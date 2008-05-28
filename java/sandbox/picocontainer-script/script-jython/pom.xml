@@ -43,7 +43,7 @@
         <configuration>
           <!-- FIXME:  works when run in IDE but not via mvn -->
           <excludes>
-            <exclude>org/nanocontainer/script/jython/JythonContainerBuilderTestCase.java</exclude>
+            <exclude>org/picocontainer/script/jython/JythonContainerBuilderTestCase.java</exclude>
           </excludes>
         </configuration>
       </plugin>

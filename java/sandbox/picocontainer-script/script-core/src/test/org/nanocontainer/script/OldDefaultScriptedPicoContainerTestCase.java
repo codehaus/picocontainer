@@ -23,23 +23,23 @@ import org.junit.Test;
 import org.nanocontainer.script.ClassName;
 import org.nanocontainer.script.DefaultScriptedPicoContainer;
 import org.nanocontainer.script.ScriptedPicoContainer;
-import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoException;
+import org.picocontainer.script.testmodel.WebServerImpl;
 
 public class OldDefaultScriptedPicoContainerTestCase {
 
     @Test public void testBasic() throws PicoCompositionException {
         ScriptedPicoContainer nanoContainer = new DefaultScriptedPicoContainer();
-        nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
-        nanoContainer.addComponent("org.nanocontainer.testmodel.WebServer", new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
+        nanoContainer.addComponent(new ClassName("org.picocontainer.script.testmodel.DefaultWebServerConfig"));
+        nanoContainer.addComponent("org.picocontainer.script.testmodel.WebServer", new ClassName("org.picocontainer.script.testmodel.WebServerImpl"));
     }
 
     @Test public void testProvision() throws PicoException {
         ScriptedPicoContainer nanoContainer = new DefaultScriptedPicoContainer();
-        nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
-        nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
+        nanoContainer.addComponent(new ClassName("org.picocontainer.script.testmodel.DefaultWebServerConfig"));
+        nanoContainer.addComponent(new ClassName("org.picocontainer.script.testmodel.WebServerImpl"));
 
         assertNotNull("WebServerImpl should exist", nanoContainer.getComponent(WebServerImpl.class));
         assertTrue("WebServerImpl should exist", nanoContainer.getComponent(WebServerImpl.class) != null);
@@ -125,10 +125,10 @@ public class OldDefaultScriptedPicoContainerTestCase {
 
         File testCompJar = TestHelper.getTestCompJarFile();
 
-        parentContainer.addComponent("foo", new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
+        parentContainer.addComponent("foo", new ClassName("org.picocontainer.script.testmodel.DefaultWebServerConfig"));
 
         Object fooWebServerConfig = parentContainer.getComponent("foo");
-        assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
+        assertEquals("org.picocontainer.script.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
         ScriptedPicoContainer childContainer = new DefaultScriptedPicoContainer(parentContainer);
         childContainer.addClassLoaderURL(testCompJar.toURL());
@@ -165,17 +165,17 @@ public class OldDefaultScriptedPicoContainerTestCase {
         File testCompJar = new File(testcompJarFileName);
         assertTrue(testCompJar.isFile());
 
-        parentContainer.addComponent("foo", new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
+        parentContainer.addComponent("foo", new ClassName("org.picocontainer.script.testmodel.DefaultWebServerConfig"));
 
         Object fooWebServerConfig = parentContainer.getComponent("foo");
-        assertEquals("org.nanocontainer.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
+        assertEquals("org.picocontainer.script.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass().getName());
 
         ScriptedPicoContainer childContainer = new DefaultScriptedPicoContainer(parentContainer);
         childContainer.addClassLoaderURL(testCompJar.toURL());
         //TODO childContainer.setPermission(some permission list, that includes the preventing of general file access);
         // Or shoud this be done in the ctor for DRCA ?
         // or should it a parameter in the addClassLoaderURL(..) method
-        childContainer.addComponent("bar", new ClassName("org.nanocontainer.testmodel.FileSystemUsing"));
+        childContainer.addComponent("bar", new ClassName("org.picocontainer.script.testmodel.FileSystemUsing"));
 
         try {
             parentContainer.getComponent("bar");

@@ -29,7 +29,7 @@ public class ScriptedContainerBuilderFactoryTestCase {
 
     @Test public void testBuildWithReader() throws ClassNotFoundException {
         Reader script = new StringReader("" +
-            "import org.nanocontainer.testmodel.*\n" +
+            "import org.picocontainer.script.testmodel.*\n" +
             "X.reset()\n" +
             "builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +
             "nano = builder.container {\n" +

@@ -15,15 +15,15 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Test;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
-import org.nanocontainer.testmodel.FredImpl;
-import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
-import org.nanocontainer.testmodel.Wilma;
-import org.nanocontainer.testmodel.WilmaImpl;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
 import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.script.testmodel.FredImpl;
+import org.picocontainer.script.testmodel.ThingThatTakesParamsInConstructor;
+import org.picocontainer.script.testmodel.Wilma;
+import org.picocontainer.script.testmodel.WilmaImpl;
 
 /**
  * Test case to prove that the DefaultContainerRecorder can be replaced by use of Storing behaviours.

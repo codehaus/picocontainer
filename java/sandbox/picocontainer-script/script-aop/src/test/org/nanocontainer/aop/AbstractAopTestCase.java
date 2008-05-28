@@ -9,8 +9,8 @@
  *****************************************************************************/
 package org.nanocontainer.aop;
 
-import org.nanocontainer.testmodel.Dao;
-import org.nanocontainer.testmodel.Identifiable;
+import org.picocontainer.script.testmodel.Dao;
+import org.picocontainer.script.testmodel.Identifiable;
 
 import static org.junit.Assert.*;
 

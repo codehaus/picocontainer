@@ -18,9 +18,9 @@ import java.io.StringReader;
 
 import org.junit.Test;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.testmodel.DefaultWebServerConfig;
-import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
-import org.nanocontainer.testmodel.WebServerImpl;
+import org.picocontainer.script.testmodel.DefaultWebServerConfig;
+import org.picocontainer.script.testmodel.ThingThatTakesParamsInConstructor;
+import org.picocontainer.script.testmodel.WebServerImpl;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
@@ -40,14 +40,14 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
                 "    	<int>239</int>" +
                 "    </instance>" +
                 "    <instance>" +
-                "    	<org.nanocontainer.testmodel.DefaultWebServerConfig>" +
+                "    	<org.picocontainer.script.testmodel.DefaultWebServerConfig>" +
                 " 			<port>555</port>" +
-                "    	</org.nanocontainer.testmodel.DefaultWebServerConfig>" +
+                "    	</org.picocontainer.script.testmodel.DefaultWebServerConfig>" +
                 "    </instance>" +
-                "	 <implementation class='org.nanocontainer.testmodel.WebServerImpl'>" +
-                "		<dependency class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                "	 <implementation class='org.picocontainer.script.testmodel.WebServerImpl'>" +
+                "		<dependency class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
                 "	 </implementation>" +
-                "	 <implementation key='konstantin needs beer' class='org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor'>" +
+                "	 <implementation key='konstantin needs beer' class='org.picocontainer.script.testmodel.ThingThatTakesParamsInConstructor'>" +
                 "		<constant>" +
                 "			<string>it's really late</string>" +
                 "		</constant>" +

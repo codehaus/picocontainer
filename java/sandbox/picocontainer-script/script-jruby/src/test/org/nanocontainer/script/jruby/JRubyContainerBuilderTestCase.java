@@ -47,12 +47,6 @@ import org.nanocontainer.script.LifecycleMode;
 import org.nanocontainer.script.ScriptedPicoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.TestHelper;
-import org.nanocontainer.testmodel.A;
-import org.nanocontainer.testmodel.B;
-import org.nanocontainer.testmodel.HasParams;
-import org.nanocontainer.testmodel.ParentAssemblyScope;
-import org.nanocontainer.testmodel.SomeAssemblyScope;
-import org.nanocontainer.testmodel.X;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
@@ -68,6 +62,12 @@ import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.script.testmodel.A;
+import org.picocontainer.script.testmodel.B;
+import org.picocontainer.script.testmodel.HasParams;
+import org.picocontainer.script.testmodel.ParentAssemblyScope;
+import org.picocontainer.script.testmodel.SomeAssemblyScope;
+import org.picocontainer.script.testmodel.X;
 
 /**
  * @author Nick Sieger
@@ -99,7 +99,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     @Test public void testContainerCanBeBuiltWithComponentImplementation() {
         X.reset();
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
                                          "container {\n" +
                                          "    component(A)\n" +
                                          "}");
@@ -129,7 +129,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          +
                                          "DefaultPicoContainer = org.picocontainer.DefaultPicoContainer\n" +
                                          "pico = DefaultPicoContainer.new($parent)\n" +
-                                         "pico.addAdapter(Java::JavaClass.for_name('org.nanocontainer.testmodel.A'))\n"
+                                         "pico.addAdapter(Java::JavaClass.for_name('org.picocontainer.script.testmodel.A'))\n"
                                          +
                                          "pico");
 
@@ -173,7 +173,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     @Test public void testAcceptsConstantParametersForComponent() {
         Reader script = new StringReader(
-                                         "HasParams = org.nanocontainer.testmodel.HasParams\n" +
+                                         "HasParams = org.picocontainer.script.testmodel.HasParams\n" +
                                          "container {\n" +
                                          "    component(:key => 'byClass', :class => HasParams, :parameters => [ 'a', 'b', constant('c')])\n"
                                          +
@@ -187,7 +187,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     @Test public void testAcceptsComponentClassNameAsString() {
         Reader script = new StringReader(
                                          "container {\n" +
-                                         "    component(:key => 'byClassString', :class => 'org.nanocontainer.testmodel.HasParams', :parameters => [ 'c', 'a', 't' ])\n"
+                                         "    component(:key => 'byClassString', :class => 'org.picocontainer.script.testmodel.HasParams', :parameters => [ 'c', 'a', 't' ])\n"
                                          +
                                          "}");
 
@@ -198,8 +198,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     @Test public void testAcceptsComponentParametersForComponent() {
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
-                                         "B = org.nanocontainer.testmodel.B\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
+                                         "B = org.picocontainer.script.testmodel.B\n" +
                                          "container {\n" +
                                          "    component(:key => 'a1', :class => A)\n" +
                                          "    component(:key => 'a2', :class => A)\n" +
@@ -226,8 +226,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     @Test public void testAcceptsComponentParameterWithClassNameKey() {
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
-                                         "B = org.nanocontainer.testmodel.B\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
+                                         "B = org.picocontainer.script.testmodel.B\n" +
                                          "container {\n" +
                                          "    component(:class => A)\n" +
                                          "    component(:key => B, :class => B, :parameters => key(A))\n" +
@@ -245,7 +245,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     @Test public void testInstantiateBasicComponentInDeeperTree() {
         X.reset();
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
                                          "container {\n" +
                                          "  container {\n" +
                                          "    component(A)\n" +
@@ -259,7 +259,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     @Test public void testCustomComponentFactoryCanBeSpecified() {
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
                                          "container(:component_adapter_factory => $assembly_scope) {\n" +
                                          "    component(A)\n" +
                                          "}");
@@ -278,7 +278,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     @Test public void testCustomComponentMonitorCanBeSpecified() {
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
                                          "writer = StringWriter.new\n" +
@@ -297,7 +297,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     @Test public void testCustomComponentMonitorCanBeSpecifiedWhenCAFIsSpecified() {
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
                                          "Caching = org.picocontainer.behaviors.Caching\n" +
@@ -317,7 +317,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     @Test public void testCustomComponentMonitorCanBeSpecifiedWhenParentIsSpecified() {
         DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
                                          "writer = StringWriter.new\n" +
@@ -335,7 +335,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     @Test public void testCustomComponentMonitorCanBeSpecifiedWhenParentAndCAFAreSpecified() {
         DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
                                          "Caching = org.picocontainer.behaviors.Caching\n" +
@@ -356,9 +356,9 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     @Test public void testInstantiateWithImpossibleComponentDependenciesConsideringTheHierarchy() {
         X.reset();
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
-                                         "B = org.nanocontainer.testmodel.B\n" +
-                                         "C = org.nanocontainer.testmodel.C\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
+                                         "B = org.picocontainer.script.testmodel.B\n" +
+                                         "C = org.picocontainer.script.testmodel.C\n" +
                                          "container {\n" +
                                          "    component(B)\n" +
                                          "    container() {\n" +
@@ -377,9 +377,9 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     @Test public void testInstantiateWithChildContainerAndStartStopAndDisposeOrderIsCorrect() {
         X.reset();
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
-                                         "B = org.nanocontainer.testmodel.B\n" +
-                                         "C = org.nanocontainer.testmodel.C\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
+                                         "B = org.picocontainer.script.testmodel.B\n" +
+                                         "C = org.picocontainer.script.testmodel.C\n" +
                                          "container {\n" +
                                          "    component(A)\n" +
                                          "    container() {\n" +
@@ -401,7 +401,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         parent.addComponent("hello", "world");
 
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
                                          "container(:parent => $parent) {\n" +
                                          "    component(A)\n" +
                                          "}\n");
@@ -416,8 +416,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         parent.addComponent("a", A.class);
 
         String source =
-                        "B = org.nanocontainer.testmodel.B\n" +
-                        "SomeAssemblyScope = org.nanocontainer.testmodel.SomeAssemblyScope\n" +
+                        "B = org.picocontainer.script.testmodel.B\n" +
+                        "SomeAssemblyScope = org.picocontainer.script.testmodel.SomeAssemblyScope\n" +
                         "container(:parent => $parent) {\n" +
                         "  if $assembly_scope.kind_of?(SomeAssemblyScope)\n " +
                         "    component(B)\n" +
@@ -436,10 +436,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     @Test public void testBuildContainerWithParentAndChildAssemblyScopes() throws IOException {
         String scriptValue =
-                             "A = org.nanocontainer.testmodel.A\n" +
-                             "B = org.nanocontainer.testmodel.B\n" +
-                             "ParentAssemblyScope = org.nanocontainer.testmodel.ParentAssemblyScope\n" +
-                             "SomeAssemblyScope = org.nanocontainer.testmodel.SomeAssemblyScope\n" +
+                             "A = org.picocontainer.script.testmodel.A\n" +
+                             "B = org.picocontainer.script.testmodel.B\n" +
+                             "ParentAssemblyScope = org.picocontainer.script.testmodel.ParentAssemblyScope\n" +
+                             "SomeAssemblyScope = org.picocontainer.script.testmodel.SomeAssemblyScope\n" +
                              "container(:parent => $parent) {\n" +
                              "  puts 'assembly_scope:'+$assembly_scope.inspect\n " +
                              "  case $assembly_scope\n" +
@@ -467,7 +467,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 	@Test public void testAutoStartingContainerBuilderStarts() {
         A.reset();
         Reader script = new StringReader("" +
-                "A = org.nanocontainer.testmodel.A\n" +
+                "A = org.picocontainer.script.testmodel.A\n" +
                 "container(:parent => $parent) {\n" +
                 "       component(A)\n" +
                 "}\n");
@@ -482,7 +482,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     @Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
         A.reset();
         Reader script = new StringReader("" +
-                "A = org.nanocontainer.testmodel.A\n" +
+                "A = org.picocontainer.script.testmodel.A\n" +
                 "container(:parent => $parent) {\n" +
                 "       component(A)\n" +
                 "}\n");
@@ -510,8 +510,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
         DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjection());
         Reader script = new StringReader(
-                                         "A = org.nanocontainer.testmodel.A\n" +
-                                         "B = org.nanocontainer.testmodel.B\n" +
+                                         "A = org.picocontainer.script.testmodel.A\n" +
+                                         "B = org.picocontainer.script.testmodel.B\n" +
                                          "container() {\n" +
                                          "    component(A)\n" +
                                          "    container(:parent => $parent) {\n" +
@@ -644,7 +644,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 //    @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
 //        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjectionComponentFactory() );
 //        Reader script = new StringReader("" +
-//                "package org.nanocontainer.testmodel\n" +
+//                "package org.picocontainer.script.testmodel\n" +
 //                "nano = new GroovyNodeBuilder().container() {\n" +
 //                "    addComponent(A)\n" +
 //                "    container(parent:parent) {\n" +

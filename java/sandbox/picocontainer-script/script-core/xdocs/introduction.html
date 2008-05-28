@@ -22,8 +22,8 @@ container<br>
   <li>StringRegistrationNanoContainerImpl.Default - no args</li>
 </ul>
 <pre>&nbsp;&nbsp;&nbsp; StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();</pre>
-<pre>&nbsp;&nbsp;&nbsp; nc.registerComponent("org.org.nanocontainer.testmodel.DefaultWebServerConfig");</pre>
-<pre>&nbsp;&nbsp;&nbsp; nc.registerComponent("org.org.nanocontainer.testmodel.WebServer", "org.org.nanocontainer.testmodel.WebServerImpl");</pre>
+<pre>&nbsp;&nbsp;&nbsp; nc.registerComponent("org.org.picocontainer.script.testmodel.DefaultWebServerConfig");</pre>
+<pre>&nbsp;&nbsp;&nbsp; nc.registerComponent("org.org.picocontainer.script.testmodel.WebServer", "org.org.picocontainer.script.testmodel.WebServerImpl");</pre>
 <pre>&nbsp;&nbsp;&nbsp; nc.start();</pre>
 <h2>InputSourceRegistrationNanoContainer </h2>
 This container takes a single InputSource (from the SAX API) .&nbsp;
@@ -48,8 +48,8 @@ builder</li>
 <pre>&nbsp;&nbsp;&nbsp; InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();</pre>
 <pre>&nbsp;&nbsp;&nbsp; nc.registerComponents(new InputSource(new StringReader(</pre>
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "&lt;components&gt;" +</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;component class=\"org.org.nanocontainer.testmodel.DefaultWebServerConfig\"/&gt;" +</pre>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;component type=\"org.org.nanocontainer.testmodel.WebServer\" class=\"org.org.nanocontainer.testmodel.WebServerImpl\"/&gt;" +</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;component class=\"org.org.picocontainer.script.testmodel.DefaultWebServerConfig\"/&gt;" +</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;component type=\"org.org.picocontainer.script.testmodel.WebServer\" class=\"org.org.picocontainer.script.testmodel.WebServerImpl\"/&gt;" +</pre>
 <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "&lt;/components&gt;")));</pre>
 <pre>&nbsp;&nbsp;&nbsp; nc.start();</pre>
 <h2>AggregatingNanoContainer<br>

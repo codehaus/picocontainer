@@ -22,7 +22,7 @@ import org.nanocontainer.aop.ClassPointcut;
 import org.nanocontainer.aop.ComponentPointcut;
 import org.nanocontainer.aop.MethodPointcut;
 import org.nanocontainer.aop.PointcutsFactory;
-import org.nanocontainer.testmodel.Dao;
+import org.picocontainer.script.testmodel.Dao;
 
 import dynaop.util.NestedException;
 
@@ -81,7 +81,7 @@ public final class DynaopPointcutsFactoryTestCase {
         ClassPointcut cut = cuts.packageName("org.nanocontainer.aop.dynaop");
         assertTrue(cut.picks(Foo.class));
         assertTrue(cut.picks(Bar.class));
-        assertFalse(cut.picks(org.nanocontainer.testmodel.Dao.class));
+        assertFalse(cut.picks(org.picocontainer.script.testmodel.Dao.class));
     }
 
     @Test public void testClassPointcutIntersection() {

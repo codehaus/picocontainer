@@ -7,28 +7,15 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.aop.dynaop;
+package org.picocontainer.script.testmodel;
 
-import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.script.testmodel.IdentifiableMixin;
-
-import dynaop.MixinFactory;
 
 /**
  * @author Stephen Molitor
  */
-public final class ContainerSuppliedMixinFactoryTestCase {
+public interface OrderEntity extends Entity {
 
-    private final MutablePicoContainer pico = new DefaultPicoContainer();
-    private final MixinFactory mixinFactory = new ContainerSuppliedMixinFactory(pico, IdentifiableMixin.class);
-
-    @Test public void testCreate() {
-        Object mixin = mixinFactory.create(null);
-        assertTrue(mixin instanceof IdentifiableMixin);
-    }
+    void saveMeToo();
 
 }

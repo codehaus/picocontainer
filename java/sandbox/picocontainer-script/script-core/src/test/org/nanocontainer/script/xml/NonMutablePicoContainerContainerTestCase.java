@@ -26,7 +26,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Test;
 import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.testmodel.DefaultWebServerConfig;
+import org.picocontainer.script.testmodel.DefaultWebServerConfig;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.NameBinding;
@@ -116,8 +116,8 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
     {
         Reader script = new StringReader("" +
                                          "<container>" +
-                                         "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-                                         "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                                         "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
+                                         "  <component-implementation key='org.picocontainer.script.testmodel.WebServer' class='org.picocontainer.script.testmodel.WebServerImpl'/>" +
                                          "</container>");
 
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()),
@@ -132,8 +132,8 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
     {
         Reader script = new StringReader("" +
                                          "<container>" +
-                                         "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-                                         "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                                         "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
+                                         "  <component-implementation key='org.picocontainer.script.testmodel.WebServer' class='org.picocontainer.script.testmodel.WebServerImpl'/>" +
                                          "</container>");
 
         PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()),

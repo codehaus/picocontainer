@@ -34,8 +34,8 @@ import java.util.Map;
  * <code><pre>
  * builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()
  * pico = builder.container(parent:parent) {
- * &nbsp;&nbsp;component(class:org.nanocontainer.testmodel.DefaultWebServerConfig)
- * &nbsp;&nbsp;component(class:org.nanocontainer.testmodel.WebServerImpl)
+ * &nbsp;&nbsp;component(class:org.picocontainer.script.testmodel.DefaultWebServerConfig)
+ * &nbsp;&nbsp;component(class:org.picocontainer.script.testmodel.WebServerImpl)
  * }
  * </pre></code>
  * </p>

@@ -7,28 +7,31 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.nanocontainer.aop.dynaop;
+package org.picocontainer.script.testmodel;
 
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.script.testmodel.IdentifiableMixin;
-
-import dynaop.MixinFactory;
+import java.io.Serializable;
 
 /**
  * @author Stephen Molitor
  */
-public final class ContainerSuppliedMixinFactoryTestCase {
+public class IdentifiableMixin implements Identifiable, AnotherInterface {
 
-    private final MutablePicoContainer pico = new DefaultPicoContainer();
-    private final MixinFactory mixinFactory = new ContainerSuppliedMixinFactory(pico, IdentifiableMixin.class);
+    private Serializable id;
 
-    @Test public void testCreate() {
-        Object mixin = mixinFactory.create(null);
-        assertTrue(mixin instanceof IdentifiableMixin);
+    public IdentifiableMixin(IdGenerator generator) {
+        this.id = generator.nextId();
+    }
+
+    public IdentifiableMixin() {
+        this(new IdGeneratorImpl());
+    }
+
+    public Serializable getId() {
+        return id;
+    }
+
+    public void setId(Serializable id) {
+        this.id = id;
     }
 
 }

@@ -16,9 +16,9 @@ import java.io.StringReader;
 
 import org.junit.Test;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.testmodel.Dao;
-import org.nanocontainer.testmodel.Identifiable;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.script.testmodel.Dao;
+import org.picocontainer.script.testmodel.Identifiable;
 
 /**
  * @author Stephen Molitor
@@ -31,7 +31,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
     @Test public void testContainerScopedInterceptor() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
-                "import org.nanocontainer.testmodel.*\n" +
+                "import org.picocontainer.script.testmodel.*\n" +
                 "import org.nanocontainer.aop.dynaop.*\n" +
                 "" +
                 "log = new StringBuffer()\n" +
@@ -54,7 +54,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
     @Test public void testContainerScopedPointcutWithNestedAdvices() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
-                "import org.nanocontainer.testmodel.*\n" +
+                "import org.picocontainer.script.testmodel.*\n" +
                 "import org.nanocontainer.aop.dynaop.*\n" +
                 "" +
                 "log = new StringBuffer()\n" +
@@ -79,7 +79,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
     @Test public void testContainerScopedContainerSuppliedInterceptor() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
-                "import org.nanocontainer.testmodel.*\n" +
+                "import org.picocontainer.script.testmodel.*\n" +
                 "import org.nanocontainer.aop.dynaop.*\n" +
                 "cuts = new DynaopPointcutsFactory()\n" +
                 "builder = new DynaopGroovyNodeBuilder()\n" +
@@ -99,7 +99,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
     @Test public void testComponentScopedInterceptor() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
-                "import org.nanocontainer.testmodel.*\n" +
+                "import org.picocontainer.script.testmodel.*\n" +
                 "import org.nanocontainer.aop.dynaop.*\n" +
                 "log = new StringBuffer()\n" +
                 "logger = new LoggingInterceptor(log)\n" +
@@ -126,7 +126,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
     @Test public void testContainerScopedMixin() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
-                "import org.nanocontainer.testmodel.*\n" +
+                "import org.picocontainer.script.testmodel.*\n" +
                 "import org.nanocontainer.aop.dynaop.*\n" +
                 "cuts = new DynaopPointcutsFactory()\n" +
                 "builder = new DynaopGroovyNodeBuilder()\n" +
@@ -143,7 +143,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
     @Test public void testExplicitAspectsManagerAndDecorationDelegate() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
-                "import org.nanocontainer.testmodel.*\n" +
+                "import org.picocontainer.script.testmodel.*\n" +
                 "import org.nanocontainer.aop.dynaop.*\n" +
                 "aspectsManager = new org.nanocontainer.aop.dynaop.DynaopAspectsManager()\n" +
                 "cuts = aspectsManager.getPointcutsFactory()\n" +
@@ -162,7 +162,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
     @Test public void testCustomComponentFactory() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
-                "import org.nanocontainer.testmodel.*\n" +
+                "import org.picocontainer.script.testmodel.*\n" +
                 "import org.nanocontainer.aop.dynaop.*\n" +
                 "intLog = new StringBuffer()\n" +
                 "logger = new LoggingInterceptor(intLog)\n" +

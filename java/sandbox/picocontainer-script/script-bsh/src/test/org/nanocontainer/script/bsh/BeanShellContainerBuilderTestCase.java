@@ -28,10 +28,10 @@ import org.junit.Test;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.LifecycleMode;
 import org.nanocontainer.script.TestHelper;
-import org.nanocontainer.testmodel.A;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
+import org.picocontainer.script.testmodel.A;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -105,7 +105,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         Reader script = new StringReader("" +
         		"import org.nanocontainer.script.*;\n" +
                 "pico = new NanoBuilder(parent).withLifecycle().withCaching().build();\n" +
-                "pico.addComponent(org.nanocontainer.testmodel.A.class);\n" +
+                "pico.addComponent(org.picocontainer.script.testmodel.A.class);\n" +
                 "");
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
@@ -120,7 +120,7 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         Reader script = new StringReader("" +
         		"import org.nanocontainer.script.*;\n" +
                 "pico = new NanoBuilder(parent).withLifecycle().withCaching().build();\n" +
-                "pico.addComponent(org.nanocontainer.testmodel.A.class);\n" +
+                "pico.addComponent(org.picocontainer.script.testmodel.A.class);\n" +
                 "");
         PicoContainer parent = new DefaultPicoContainer();
         BeanShellContainerBuilder containerBuilder = new BeanShellContainerBuilder(script, getClass().getClassLoader(), LifecycleMode.NO_LIFECYCLE);

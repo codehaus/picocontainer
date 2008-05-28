@@ -16,7 +16,7 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.nanocontainer.aop.ComponentPointcut;
 import org.nanocontainer.aop.MalformedRegularExpressionException;
-import org.nanocontainer.testmodel.Dao;
+import org.picocontainer.script.testmodel.Dao;
 
 /**
  * @author Stephen Molitor

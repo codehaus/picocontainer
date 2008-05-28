@@ -22,13 +22,13 @@ import org.junit.Test;
 import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.LifecycleMode;
-import org.nanocontainer.testmodel.A;
-import org.nanocontainer.testmodel.WebServer;
-import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.script.testmodel.A;
+import org.picocontainer.script.testmodel.WebServer;
+import org.picocontainer.script.testmodel.WebServerImpl;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -36,7 +36,7 @@ import org.picocontainer.injectors.AbstractInjector;
 public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
     @Test public void testSimpleConfigurationIsPossible() {
-        Reader script = new StringReader("from org.nanocontainer.testmodel import *\n" +
+        Reader script = new StringReader("from org.picocontainer.script.testmodel import *\n" +
                 "pico = DefaultScriptedPicoContainer()\n" +
                 "pico.addComponent(WebServerImpl)\n" +
                 "pico.addComponent(DefaultWebServerConfig)\n");
@@ -48,7 +48,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
     @Test public void testDependenciesAreUnsatisfiableByChildContainers() throws IOException, ClassNotFoundException, PicoCompositionException {
         try {
             Reader script = new StringReader("" +
-                    "from org.nanocontainer.testmodel import *\n" +
+                    "from org.picocontainer.script.testmodel import *\n" +
                     "pico = DefaultScriptedPicoContainer()\n" +
                     "pico.addComponent(WebServerImpl)\n" +
                     "childContainer = DefaultScriptedPicoContainer(pico)\n" +
@@ -63,7 +63,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     @Test public void testDependenciesAreSatisfiableByParentContainer() throws IOException, ClassNotFoundException, PicoCompositionException {
         Reader script = new StringReader("" +
-                "from org.nanocontainer.testmodel import *\n" +
+                "from org.picocontainer.script.testmodel import *\n" +
                 "from org.picocontainer import Parameter\n"+
                 "pico = DefaultScriptedPicoContainer()\n" +
                 "pico.addComponent(DefaultWebServerConfig)\n" +
@@ -87,7 +87,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 	@Test public void testAutoStartingContainerBuilderStarts() {
         A.reset();
         Reader script = new StringReader("" +
-                "from org.nanocontainer.testmodel import *\n" +
+                "from org.picocontainer.script.testmodel import *\n" +
                 "pico = parent.makeChildContainer() \n" +
                 "pico.addComponent(A)\n" +
                 "");
@@ -102,7 +102,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 	@Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
         A.reset();
         Reader script = new StringReader("" +
-                "from org.nanocontainer.testmodel import *\n" +
+                "from org.picocontainer.script.testmodel import *\n" +
                 "pico = parent.makeChildContainer() \n" +
                 "pico.addComponent(A)\n" +
                 "");

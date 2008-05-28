@@ -20,10 +20,10 @@ import java.io.StringReader;
 import org.junit.Test;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.LifecycleMode;
-import org.nanocontainer.testmodel.A;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.script.testmodel.A;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -96,7 +96,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
         Reader script = new StringReader("" +
                 "parent.addComponent('foo', java.lang.String)\n"  +
                 "pico = new org.picocontainer.DefaultPicoContainer(parent)\n" +
-                "pico.addComponent(org.nanocontainer.testmodel.A)\n" +
+                "pico.addComponent(org.picocontainer.script.testmodel.A)\n" +
                 "");
 
         PicoContainer parent = new DefaultPicoContainer();
@@ -112,7 +112,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
     @Test public void testBuildingWithPicoSyntaxAndNullParent() {
         Reader script = new StringReader("" +
                 "pico = new org.picocontainer.DefaultPicoContainer(parent)\n" +
-                "pico.addComponent(org.nanocontainer.testmodel.A)\n" +
+                "pico.addComponent(org.picocontainer.script.testmodel.A)\n" +
                 "");
 
         PicoContainer parent = null;
@@ -142,7 +142,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
         A.reset();
         Reader script = new StringReader("" +
                 "pico = builder.container(parent:parent) { \n" +
-                "  component(org.nanocontainer.testmodel.A)\n" +
+                "  component(org.picocontainer.script.testmodel.A)\n" +
                 "}");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
         PicoContainer pico = buildContainer(new GroovyContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
@@ -155,7 +155,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
     @Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
         A.reset();
         Reader script = new StringReader("" +
-        		"import org.nanocontainer.testmodel.A\n" +
+        		"import org.picocontainer.script.testmodel.A\n" +
                 "pico = builder.container(parent:parent) { \n" +
                 "  component(A)\n" +
                 "}");

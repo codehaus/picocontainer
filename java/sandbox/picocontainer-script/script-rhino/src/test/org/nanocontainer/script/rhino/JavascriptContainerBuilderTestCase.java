@@ -26,13 +26,13 @@ import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.LifecycleMode;
 import org.nanocontainer.script.TestHelper;
-import org.nanocontainer.testmodel.A;
-import org.nanocontainer.testmodel.WebServer;
-import org.nanocontainer.testmodel.WebServerConfig;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
+import org.picocontainer.script.testmodel.A;
+import org.picocontainer.script.testmodel.WebServer;
+import org.picocontainer.script.testmodel.WebServerConfig;
 
 public class JavascriptContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
@@ -41,7 +41,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         Reader script = new StringReader("" +
         		"importPackage(Packages.org.nanocontainer.script) \n" +
                 "var pico = new DefaultScriptedPicoContainer()\n" +
-                "pico.addComponent(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n");
+                "pico.addComponent(Packages.org.picocontainer.script.testmodel.DefaultWebServerConfig)\n");
 
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 
@@ -54,8 +54,8 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         		"importPackage(Packages.org.nanocontainer.script) \n" +
         		"importPackage(Packages.org.picocontainer.injectors) \n" +
                 "var pico = new DefaultScriptedPicoContainer(new ConstructorInjection())\n" +
-                "pico.addComponent(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n" +
-                "pico.addComponent(Packages.org.nanocontainer.testmodel.WebServerImpl)\n");
+                "pico.addComponent(Packages.org.picocontainer.script.testmodel.DefaultWebServerConfig)\n" +
+                "pico.addComponent(Packages.org.picocontainer.script.testmodel.WebServerImpl)\n");
 
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
 
@@ -145,7 +145,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         A.reset();
         Reader script = new StringReader("" +
                 "var pico = parent.makeChildContainer() \n" +
-                "pico.addComponent(Packages.org.nanocontainer.testmodel.A)\n" +
+                "pico.addComponent(Packages.org.picocontainer.script.testmodel.A)\n" +
                 "");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
@@ -159,7 +159,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         A.reset();
         Reader script = new StringReader("" +
                 "var pico = parent.makeChildContainer() \n" +
-                "pico.addComponent(Packages.org.nanocontainer.testmodel.A)\n" +
+                "pico.addComponent(Packages.org.picocontainer.script.testmodel.A)\n" +
                 "");
         PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
         JavascriptContainerBuilder containerBuilder = new JavascriptContainerBuilder(script, getClass().getClassLoader(), LifecycleMode.NO_LIFECYCLE);

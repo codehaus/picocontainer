@@ -4,11 +4,11 @@ import org.picocontainer.defaults.ComponentParameter
 import org.picocontainer.defaults.UnsatisfiableDependenciesException
 
 import org.nanocontainer.script.groovy.NanoContainerBuilder
-import org.nanocontainer.testmodel.DefaultWebServerConfig
-import org.nanocontainer.testmodel.WebServer
-import org.nanocontainer.testmodel.WebServerConfig
-import org.nanocontainer.testmodel.WebServerConfigBean
-import org.nanocontainer.testmodel.WebServerImpl
+import org.picocontainer.script.testmodel.DefaultWebServerConfig
+import org.picocontainer.script.testmodel.WebServer
+import org.picocontainer.script.testmodel.WebServerConfig
+import org.picocontainer.script.testmodel.WebServerConfigBean
+import org.picocontainer.script.testmodel.WebServerImpl
 import java.io.File
 
 class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {

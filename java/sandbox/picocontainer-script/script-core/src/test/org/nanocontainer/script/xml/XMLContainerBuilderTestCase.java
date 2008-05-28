@@ -34,14 +34,6 @@ import org.junit.Test;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.TestHelper;
-import org.nanocontainer.testmodel.CustomerEntityImpl;
-import org.nanocontainer.testmodel.DefaultWebServerConfig;
-import org.nanocontainer.testmodel.Entity;
-import org.nanocontainer.testmodel.ListSupport;
-import org.nanocontainer.testmodel.MapSupport;
-import org.nanocontainer.testmodel.OrderEntityImpl;
-import org.nanocontainer.testmodel.WebServerConfig;
-import org.nanocontainer.testmodel.WebServerConfigComp;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
@@ -56,6 +48,14 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
+import org.picocontainer.script.testmodel.CustomerEntityImpl;
+import org.picocontainer.script.testmodel.DefaultWebServerConfig;
+import org.picocontainer.script.testmodel.Entity;
+import org.picocontainer.script.testmodel.ListSupport;
+import org.picocontainer.script.testmodel.MapSupport;
+import org.picocontainer.script.testmodel.OrderEntityImpl;
+import org.picocontainer.script.testmodel.WebServerConfig;
+import org.picocontainer.script.testmodel.WebServerConfigComp;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.w3c.dom.Element;
@@ -78,24 +78,24 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation class='java.lang.StringBuffer'/>" +
-                "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-                "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
+                "  <component-implementation key='org.picocontainer.script.testmodel.WebServer' class='org.picocontainer.script.testmodel.WebServerImpl'/>" +
                 "</container>");
 
         PicoContainer pico = buildContainer(script);
         assertEquals(3, pico.getComponents().size());
         assertNotNull(pico.getComponent(StringBuffer.class));
         assertNotNull(pico.getComponent(DefaultWebServerConfig.class));
-        assertNotNull(pico.getComponent("org.nanocontainer.testmodel.WebServer"));
+        assertNotNull(pico.getComponent("org.picocontainer.script.testmodel.WebServer"));
     }
 
     @Test public void testCreateSimpleContainerWithExplicitKeysAndParameters() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation key='aBuffer' class='java.lang.StringBuffer'/>" +
-                "  <component-implementation key='org.nanocontainer.testmodel.WebServerConfig' class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-                "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'>" +
-                " 		<parameter key='org.nanocontainer.testmodel.WebServerConfig'/>" +
+                "  <component-implementation key='org.picocontainer.script.testmodel.WebServerConfig' class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
+                "  <component-implementation key='org.picocontainer.script.testmodel.WebServer' class='org.picocontainer.script.testmodel.WebServerImpl'>" +
+                " 		<parameter key='org.picocontainer.script.testmodel.WebServerConfig'/>" +
                 " 		<parameter key='aBuffer'/>" +
                 "  </component-implementation>" +
                 "</container>");
@@ -103,16 +103,16 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         PicoContainer pico = buildContainer(script);
         assertEquals(3, pico.getComponents().size());
         assertNotNull(pico.getComponent("aBuffer"));
-        assertNotNull(pico.getComponent("org.nanocontainer.testmodel.WebServerConfig"));
-        assertNotNull(pico.getComponent("org.nanocontainer.testmodel.WebServer"));
+        assertNotNull(pico.getComponent("org.picocontainer.script.testmodel.WebServerConfig"));
+        assertNotNull(pico.getComponent("org.picocontainer.script.testmodel.WebServer"));
     }
 
     @Test public void testCreateSimpleContainerWithExplicitKeysAndImplicitParameter() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation key='aBuffer' class='java.lang.StringBuffer'/>" +
-                "  <component-implementation key='org.nanocontainer.testmodel.WebServerConfig' class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-                "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'>" +
+                "  <component-implementation key='org.picocontainer.script.testmodel.WebServerConfig' class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
+                "  <component-implementation key='org.picocontainer.script.testmodel.WebServer' class='org.picocontainer.script.testmodel.WebServerImpl'>" +
                 "       <parameter/>" +
                 "       <parameter key='aBuffer'/>" +
                 "  </component-implementation>" +
@@ -121,17 +121,17 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         PicoContainer pico = buildContainer(script);
         assertEquals(3, pico.getComponents().size());
         assertNotNull(pico.getComponent("aBuffer"));
-        assertNotNull(pico.getComponent("org.nanocontainer.testmodel.WebServerConfig"));
-        assertNotNull(pico.getComponent("org.nanocontainer.testmodel.WebServer"));
+        assertNotNull(pico.getComponent("org.picocontainer.script.testmodel.WebServerConfig"));
+        assertNotNull(pico.getComponent("org.picocontainer.script.testmodel.WebServer"));
     }
 
     @Test public void testNonParameterElementsAreIgnoredInComponentImplementation() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation key='aBuffer' class='java.lang.StringBuffer'/>" +
-                "  <component-implementation key='org.nanocontainer.testmodel.WebServerConfig' class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
-                "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'>" +
-                " 		<parameter key='org.nanocontainer.testmodel.WebServerConfig'/>" +
+                "  <component-implementation key='org.picocontainer.script.testmodel.WebServerConfig' class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
+                "  <component-implementation key='org.picocontainer.script.testmodel.WebServer' class='org.picocontainer.script.testmodel.WebServerImpl'>" +
+                " 		<parameter key='org.picocontainer.script.testmodel.WebServerConfig'/>" +
                 " 		<parameter key='aBuffer'/>" +
                 " 		<any-old-stuff/>" +
                 "  </component-implementation>" +
@@ -140,17 +140,17 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         PicoContainer pico = buildContainer(script);
         assertEquals(3, pico.getComponents().size());
         assertNotNull(pico.getComponent("aBuffer"));
-        assertNotNull(pico.getComponent("org.nanocontainer.testmodel.WebServerConfig"));
-        assertNotNull(pico.getComponent("org.nanocontainer.testmodel.WebServer"));
+        assertNotNull(pico.getComponent("org.picocontainer.script.testmodel.WebServerConfig"));
+        assertNotNull(pico.getComponent("org.picocontainer.script.testmodel.WebServer"));
     }
 
     @Test public void testContainerCanHostAChild() {
         Reader script = new StringReader("" +
                 "<container>" +
-                "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
                 "  <component-implementation class='java.lang.StringBuffer'/>" +
                 "  <container>" +
-                "    <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                "    <component-implementation key='org.picocontainer.script.testmodel.WebServer' class='org.picocontainer.script.testmodel.WebServerImpl'/>" +
                 "  </container>" +
                 "</container>");
 
@@ -247,7 +247,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     @Test public void testCreateContainerFromScriptThrowsSAXException() {
         Reader script = new StringReader("" +
                 "<container component-adapter-factory='" + ConstructorInjection.class.getName() + "'>" +
-                "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
                 "<container>"); // open instead of close
         try {
             buildContainer(script);
@@ -268,7 +268,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     @Test public void testShouldThrowExceptionForNonExistantCafClass() {
         Reader script = new StringReader("" +
                 "<container component-adapter-factory='org.nanocontainer.SomeInexistantFactory'>" +
-                "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");
         try {
             buildContainer(script);
@@ -468,11 +468,11 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     @Test public void testInstantiationOfComponentsWithParams() {
         Reader script = new StringReader("" +
                 "<container>" +
-                "  <component-implementation class='org.nanocontainer.testmodel.WebServerConfigComp'>" +
+                "  <component-implementation class='org.picocontainer.script.testmodel.WebServerConfigComp'>" +
                 "    <parameter><string>localhost</string></parameter>" +
                 "    <parameter><int>8080</int></parameter>" +
                 "  </component-implementation>" +
-                "  <component-implementation key='org.nanocontainer.testmodel.WebServer' class='org.nanocontainer.testmodel.WebServerImpl'/>" +
+                "  <component-implementation key='org.picocontainer.script.testmodel.WebServer' class='org.picocontainer.script.testmodel.WebServerImpl'/>" +
                 "</container>");
         PicoContainer pico = buildContainer(script);
         assertNotNull(pico.getComponent(WebServerConfigComp.class));
@@ -641,7 +641,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     @Test public void testCachingCanBeUnsetAtContainerLevel() {
         Reader script = new StringReader("" +
                 "<container caching='false'>" +
-                "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");
 
         PicoContainer pico = buildContainer(script);
@@ -654,7 +654,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     @Test public void testCachingCanBeSetRedunadantlyAtContainerLevel() {
         Reader script = new StringReader("" +
                 "<container caching='true'>" +
-                "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");
 
         PicoContainer pico = buildContainer(script);
@@ -684,7 +684,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     @Test public void testComponentMonitorCanBeSpecified() {
         Reader script = new StringReader("" +
                 "<container component-monitor='" + StaticWriterComponentMonitor.class.getName() + "'>" +
-                "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");
 
         PicoContainer pico = buildContainer(script);
@@ -696,7 +696,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         Reader script = new StringReader("" +
                 "<container component-adapter-factory='" + AdaptingInjection.class.getName() +
                 "' component-monitor='" + StaticWriterComponentMonitor.class.getName() + "'>" +
-                "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
+                "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");
 
         PicoContainer pico = buildContainer(script);
@@ -708,7 +708,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter-factory class='org.picocontainer.injectors.ConstructorInjection' key='factory'/>" +
-                "  <component-adapter class='org.nanocontainer.testmodel.DefaultWebServerConfig' factory='factory'/>" +
+                "  <component-adapter class='org.picocontainer.script.testmodel.DefaultWebServerConfig' factory='factory'/>" +
                 "</container>");
         PicoContainer pico = buildContainer(script);
         WebServerConfig cfg1 = pico.getComponent(WebServerConfig.class);
@@ -783,7 +783,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "  <component-adapter-factory class='org.picocontainer.behaviors.ImplementationHiding' key='factory'>" +
                 "    <component-adapter-factory class='"+ MyComponentFactory.class.getName()+"'/>" +
                 "  </component-adapter-factory>" +
-                "  <component-adapter class-name-key='org.nanocontainer.testmodel.WebServerConfig' class='org.nanocontainer.testmodel.DefaultWebServerConfig' factory='factory'/>" +
+                "  <component-adapter class-name-key='org.picocontainer.script.testmodel.WebServerConfig' class='org.picocontainer.script.testmodel.DefaultWebServerConfig' factory='factory'/>" +
                 "</container>");
         PicoContainer pico = buildContainer(script);
         WebServerConfig cfg1 = pico.getComponent(WebServerConfig.class);

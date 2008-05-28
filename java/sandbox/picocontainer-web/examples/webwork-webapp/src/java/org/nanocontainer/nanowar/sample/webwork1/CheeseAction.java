@@ -8,6 +8,8 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.sample.webwork1;
 
+import java.util.Collection;
+
 import org.nanocontainer.nanowar.sample.model.Cheese;
 import org.nanocontainer.nanowar.sample.service.CheeseService;
 
@@ -32,6 +34,10 @@ public final class CheeseAction extends ActionSupport implements CommandDriven {
         return cheese;
     }
     
+    public Collection getCheeses() {
+        return cheeseService.getCheeses();
+    }
+        
     public String doSave() {
         try {
             cheeseService.save(cheese);

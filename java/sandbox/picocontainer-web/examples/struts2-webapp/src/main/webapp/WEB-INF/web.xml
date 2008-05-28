@@ -1,42 +1,36 @@
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-    <display-name>NanoWar Struts 2 Demo</display-name>
+  <display-name>NanoWar Struts 2 Demo</display-name>
 
-    <!--<context-param>-->
-        <!--<param-name>org.nanocontainer.integrationkit.ContainerComposer</param-name>-->
-        <!--<param-value>org.nanocontainer.nanowar.ScopedContainerComposer</param-value>-->
-    <!--</context-param>-->
+  <filter>
+    <filter-name>picoFilter</filter-name>
+    <filter-class>org.nanocontainer.nanowar.PicoServletContainerFilter</filter-class>
+  </filter>
 
-    <filter>
-        <filter-name>picoFilter</filter-name>
-        <filter-class>org.nanocontainer.nanowar.PicoServletContainerFilter</filter-class>
-    </filter>
+  <filter>
+    <filter-name>actionFilter</filter-name>
+    <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+  </filter>
 
-    <filter>
-        <filter-name>action</filter-name>
-        <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
-    </filter>
+  <filter-mapping>
+    <filter-name>picoFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
-    <filter-mapping>
-        <filter-name>picoFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+  <filter-mapping>
+    <filter-name>actionFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
-    <filter-mapping>
-        <filter-name>action</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+  <listener>
+    <listener-class>org.nanocontainer.nanowar.sample.struts2.ExampleStuts2PicoServletContainerListener</listener-class>
+  </listener>
 
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
 
-    <listener>
-        <listener-class>org.nanocontainer.nanowar.sample.struts2.ExampleStuts2PicoServletContainerListener</listener-class>
-    </listener>
-
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
-`
 </web-app>
 
 

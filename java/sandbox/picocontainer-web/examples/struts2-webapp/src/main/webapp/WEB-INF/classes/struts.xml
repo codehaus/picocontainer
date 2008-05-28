@@ -4,7 +4,6 @@
         
 <struts>
 
-    <bean type="com.opensymphony.xwork2.ActionProxyFactory" name="default" class="org.nanocontainer.nanowar.struts2.PicoActionProxyFactory" />
     <bean type="com.opensymphony.xwork2.ObjectFactory" name="default" class="org.nanocontainer.nanowar.struts2.PicoObjectFactory" />
 
     <include file="struts-default.xml"/>
@@ -25,19 +24,6 @@
             <result name="success" type="redirect">cheeses.action</result>
         </action>
         
-        <!--
-        <action name="cheese" class="org.nanocontainer.nanowar.sample.webwork2.CheeseAction">
-	        <result name="input" type="dispatcher">
-		        <param name="location">/index.jsp</param>
-	        </result>
-            <result name="success" type="dispatcher">
-                <param name="location">/index.jsp</param>
-            </result>
-	        <interceptor-ref name="defaultStack"/>
-            <interceptor-ref name="validation"/>
-        </action>
-        -->
-
     </package>
 
 </struts>

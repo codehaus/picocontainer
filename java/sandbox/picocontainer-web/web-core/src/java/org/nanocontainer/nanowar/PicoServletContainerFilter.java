@@ -56,7 +56,7 @@ public class PicoServletContainerFilter implements Filter, Serializable {
                 .getName());
         RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(RequestContainerHolder.class
                 .getName());
-
+        
         Storing sessionStoring = sch.getStoring();
         Storing requestStoring = rch.getStoring();
 

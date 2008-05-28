@@ -21,6 +21,7 @@ public class PicoServletContainerFilter implements Filter, Serializable {
 
     public void init(FilterConfig filterConfig) throws ServletException {
     }
+
     public void destroy() {
     }
 
@@ -36,23 +37,25 @@ public class PicoServletContainerFilter implements Filter, Serializable {
         return currentSessionContainer.get();
     }
 
-
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
 
     public static MutablePicoContainer getApplicationContainerForThread() {
         return currentAppContainer.get();
     }
 
-
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException,
+            ServletException {
 
         HttpServletRequest httpReq = (HttpServletRequest) req;
         HttpSession session = httpReq.getSession();
         ServletContext context = session.getServletContext();
 
-        ApplicationContainerHolder ach = (ApplicationContainerHolder) context.getAttribute(ApplicationContainerHolder.class.getName());
-        SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SessionContainerHolder.class.getName());
-        RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(RequestContainerHolder.class.getName());
+        ApplicationContainerHolder ach = (ApplicationContainerHolder) context
+                .getAttribute(ApplicationContainerHolder.class.getName());
+        SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SessionContainerHolder.class
+                .getName());
+        RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(RequestContainerHolder.class
+                .getName());
 
         Storing sessionStoring = sch.getStoring();
         Storing requestStoring = rch.getStoring();
@@ -67,7 +70,7 @@ public class PicoServletContainerFilter implements Filter, Serializable {
         currentSessionContainer.set(sch.getContainer());
         currentRequestContainer.set(rch.getContainer());
 
-          filterChain.doFilter(req, resp);
+        filterChain.doFilter(req, resp);
 
         currentAppContainer.set(null);
         currentSessionContainer.set(null);

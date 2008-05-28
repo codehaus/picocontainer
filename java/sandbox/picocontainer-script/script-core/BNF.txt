@@ -1,5 +1,5 @@
 
-NanoContainer BNF syntax
+Scripted PicoContainer BNF syntax
 
 Terminology:
     <S> ::= D  	Symbol S uniquely defined by the content of definition D 
@@ -17,11 +17,11 @@ Syntax:
 
 <container> ::= <container-class> <container-parent> <assembly-scope>
 
-<container-class> ::= <nano-container>
+<container-class> ::= <scripted-container>
 
-<container-parent> ::= { <nano-container> | <null> }
+<container-parent> ::= { <scripted-container> | <null> }
 
-<nano-container> ::= org.nanocontainer.NanoContainer reference
+<scripted-container> ::= org.picocontainer.script.ScriptedPicoContainer reference
 
 <null> ::= Null reference
 

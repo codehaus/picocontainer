@@ -145,7 +145,7 @@ public class GroovyNodeBuilderAopScriptedTestCase extends GroovyTestCase {
             component(key:OrderEntity, class:OrderEntityImpl)
 
             aspect(classCut:cuts.instancesOf(Entity), mixinClass:IdentifiableMixin)
-            aspect(classCut:cuts.packageName('org.nanocontainer.aop'), methodCut:cuts.signature('save*'), interceptor:logger)
+            aspect(classCut:cuts.packageName('org.picocontainer.aop'), methodCut:cuts.signature('save*'), interceptor:logger)
         }
 
         def dao = scripted.pico.getComponentInstance(Dao)

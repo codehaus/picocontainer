@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ContainerElementHelper {
-    public static ScriptedPicoContainer makePicoContainer(ComponentFactory componentFactory, PicoContainer parent, ClassLoader classLoader) {
+    public static ScriptedPicoContainer makeScriptedPicoContainer(ComponentFactory componentFactory, PicoContainer parent, ClassLoader classLoader) {
         if (parent == null) {
             parent = new EmptyPicoContainer();
         }

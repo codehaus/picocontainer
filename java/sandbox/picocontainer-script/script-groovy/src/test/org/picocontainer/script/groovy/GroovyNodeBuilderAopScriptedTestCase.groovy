@@ -20,25 +20,25 @@ public class GroovyNodeBuilderAopScriptedTestCase extends GroovyTestCase {
     def cuts = new DynaopPointcutsFactory()
 
     public void testComponentScopedMixin() {
-        def nano = builder.container() {
+        def scripted = builder.container() {
             component(key:Dao, class:DaoImpl) {
                 aspect(mixinClass:IdentifiableMixin)
             }
         }
-        def dao = nano.pico.getComponentInstance(Dao)
+        def dao = scripted.pico.getComponentInstance(Dao)
         verifyMixin(dao)
     }
 
     public void testContainerSuppliedMixin() {
-        def nano = builder.container() {
+        def scripted = builder.container() {
             component(key:'order1', class:OrderEntityImpl)
             component(key:'order2', class:OrderEntityImpl)
             component(key:IdGenerator, class:IdGeneratorImpl)
             aspect(classCut:cuts.instancesOf(OrderEntity), mixinClass:IdentifiableMixin)
         }
 
-        def order1 = nano.pico.getComponentInstance('order1')
-        def order2 = nano.pico.getComponentInstance('order2')
+        def order1 = scripted.pico.getComponentInstance('order1')
+        def order2 = scripted.pico.getComponentInstance('order2')
 
         assertTrue(order1 instanceof Identifiable)
         assertTrue(order2 instanceof Identifiable)
@@ -51,22 +51,22 @@ public class GroovyNodeBuilderAopScriptedTestCase extends GroovyTestCase {
     }
 
     public void testContainerScopedMixinExplicitInterfaces() {
-        def nano = builder.container() {
+        def scripted = builder.container() {
             component(key:Dao, class:DaoImpl)
             aspect(classCut:cuts.instancesOf(Dao), mixinInterfaces:[ Identifiable ], mixinClass:IdentifiableMixin)
         }
-        def dao = nano.pico.getComponentInstance(Dao)
+        def dao = scripted.pico.getComponentInstance(Dao)
         verifyMixin(dao)
         assertFalse(dao instanceof AnotherInterface)
     }
 
     public void testComponentScopedMixinExplicitInterfaces() {
-        def nano = builder.container() {
+        def scripted = builder.container() {
             component(key:Dao, class:DaoImpl) {
                 aspect(mixinClass:IdentifiableMixin, mixinInterfaces:[ Identifiable ])
             }
         }
-        def dao = nano.pico.getComponentInstance(Dao)
+        def dao = scripted.pico.getComponentInstance(Dao)
         verifyMixin(dao)
         assertFalse(dao instanceof AnotherInterface)
     }
@@ -113,18 +113,18 @@ public class GroovyNodeBuilderAopScriptedTestCase extends GroovyTestCase {
 
     public void testComponentInstance() {
         // Note:  aspecting of instances is not supported, but we just want to make sure we didn't mess anything up.
-        def nano = builder.container() {
+        def scripted = builder.container() {
             component(key:'foo', instance:'bar')
         }
-        assertEquals('bar', nano.pico.getComponentInstance('foo'))
+        assertEquals('bar', scripted.pico.getComponentInstance('foo'))
     }
 
     public void testBean() {
         // Note:  aspecting of beanClass instantiated beans isn't supported either, but again we just want to make sure we didn't mess anything up.
-        def nano = builder.container() {
+        def scripted = builder.container() {
             bean(beanClass:StringBean, firstName:'tom', lastName:'jones')
         }
-        def stringBean = nano.pico.getComponentInstance(StringBean)
+        def stringBean = scripted.pico.getComponentInstance(StringBean)
         assertNotNull(stringBean)
         assertEquals('tom', stringBean.firstName)
         assertEquals('jones', stringBean.lastName)
@@ -137,7 +137,7 @@ public class GroovyNodeBuilderAopScriptedTestCase extends GroovyTestCase {
         def builder = new DynaopGroovyNodeBuilder()
         def cuts = new DynaopPointcutsFactory()
 
-        def nano = builder.container() {
+        def scripted = builder.container() {
             component(key:Dao, class:DaoImpl) {
                 aspect(methodCut:cuts.allMethods(), interceptor:logger)
             }
@@ -148,9 +148,9 @@ public class GroovyNodeBuilderAopScriptedTestCase extends GroovyTestCase {
             aspect(classCut:cuts.packageName('org.nanocontainer.aop'), methodCut:cuts.signature('save*'), interceptor:logger)
         }
 
-        def dao = nano.pico.getComponentInstance(Dao)
-        def customer = nano.pico.getComponentInstance(CustomerEntity)
-        def order = nano.pico.getComponentInstance(OrderEntity)
+        def dao = scripted.pico.getComponentInstance(Dao)
+        def customer = scripted.pico.getComponentInstance(CustomerEntity)
+        def order = scripted.pico.getComponentInstance(OrderEntity)
         // END SNIPPET: example
 
         verifyIntercepted(dao, log)

@@ -169,7 +169,7 @@ module Scripted
       if @parent && !@componentFactory && !@impl
         container = @parent.makeChildContainer
       else
-        container = ContainerElementHelper.makePicoContainer(@componentFactory, @parent, classloader)
+        container = ContainerElementHelper.makeScriptedPicoContainer(@componentFactory, @parent, classloader)
         @parent.addChildContainer(container) if @parent
       end
       container.changeMonitor(@monitor) if @monitor && container.respond_to?(:changeMonitor)

@@ -30,14 +30,14 @@ import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.behaviors.Caching;
 
 /**
- * The script uses the {@code nanocontainer.rb} script to create an instance of
+ * The script uses the {@code scriptedcontainer.rb} script to create an instance of
  * {@link PicoContainer}. There are implicit variables named "$parent" and
  * "$assembly_scope".
  * 
  * @author Nick Sieger
  */
 public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
-	public static final String MARKUP_EXCEPTION_PREFIX = "nanobuilder: ";
+	public static final String MARKUP_EXCEPTION_PREFIX = "scriptedbuilder: ";
 
 	private final String script;
 

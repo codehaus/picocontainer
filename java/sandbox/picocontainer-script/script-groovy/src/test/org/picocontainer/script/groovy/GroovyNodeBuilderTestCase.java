@@ -68,7 +68,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "import org.picocontainer.script.testmodel.*\n" +
                 "X.reset()\n" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(A)\n" +
                 "}");
 
@@ -84,7 +84,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     @Test public void testComponentInstances() throws PicoCompositionException {
         Reader script = new StringReader("" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(key:'a', instance:'apple')\n" +
                 "    component(key:'b', instance:'banana')\n" +
                 "    component(instance:'noKeySpecified')\n" +
@@ -98,7 +98,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
     @Test public void testShouldFailWhenNeitherClassNorInstanceIsSpecifiedForComponent() {
         Reader script = new StringReader("" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(key:'a')\n" +
                 "}");
 
@@ -115,7 +115,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.picocontainer.parameters.ConstantParameter\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
                 "" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(key:'byClass', class:HasParams, parameters:[ 'a', 'b', new ConstantParameter('c') ])\n" +
                 "    component(key:'byClassString', class:'org.picocontainer.script.testmodel.HasParams', parameters:[ 'c', 'a', 't' ])\n" +
                 "}");
@@ -132,7 +132,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "import org.picocontainer.parameters.ComponentParameter\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(key:'a1', class:A)\n" +
                 "    component(key:'a2', class:A)\n" +
                 "    component(key:'b1', class:B, parameters:[ new ComponentParameter('a1') ])\n" +
@@ -161,7 +161,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.picocontainer.parameters.ComponentParameter\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
                 "" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(class:A)\n" +
                 "    component(key:B, class:B, parameters:[ new ComponentParameter(A) ])\n" +
                 "}");
@@ -178,7 +178,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     @Test public void testShouldAcceptComponentParameterWithClassNameKey() throws PicoCompositionException {
         Reader script = new StringReader("" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(classNameKey:'org.picocontainer.script.testmodel.A', class:A)\n" +
                 "    component(key:B, class:B)\n" +
                 "}");
@@ -196,7 +196,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "import org.picocontainer.parameters.ComponentParameter\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(classNameKey:'org.picocontainer.script.testmodel.A', class:A)\n" +
                 "    component(key:B, class:B, parameters:[ new ComponentParameter(A) ])\n" +
                 "}");
@@ -235,7 +235,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     public void canHandleZeroParameterArguments() {
         Reader script = new StringReader("" +
         		"import org.picocontainer.*\n\n" + 
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(instance:'This is a test')\n" + 
                 "    component(key: 'ConstructedAuto', class: org.picocontainer.script.groovy.GroovyNodeBuilderTestCase.ParameterTestingObject)\n" +
                 "    component(key: 'ZeroParameter', class: org.picocontainer.script.groovy.GroovyNodeBuilderTestCase.ParameterTestingObject, parameters: Parameter.ZERO)\n" +
@@ -257,7 +257,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         //org.objectweb.asm.ClassReader cr = new org.objectweb.asm.ClassReader("java.lang.String");
 
         Reader script = new StringReader("" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    config(key:'foo', value:'one')\n" +
                 "    config(key:'bar', value:'two')\n" +
                 "    component(class:'"+NeedsString.class.getName()+"', properties:[ org.picocontainer.Characteristics.USE_NAMES ])\n" +
@@ -277,7 +277,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.parameters.ComponentParameter\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(key:'a', class:A)\n" +
                 "    component(key:'b', class:B, parameters:[ new ComponentParameter('a') ])\n" +
                 "}");
@@ -293,7 +293,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
                 "builder.registerBuilder(name:'foo', class:'org.picocontainer.script.groovy.TestingChildBuilder')\n" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(key:'a', class:A)\n" +
                 "    foo {\n" +
                 "      component(key:'b', class:B)\n" +
@@ -312,7 +312,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(key:'a', class:A)\n" +
                 "    newBuilder(class:'org.picocontainer.script.groovy.TestingChildBuilder') {\n" +
                 "      component(key:'b', class:B)\n" +
@@ -333,7 +333,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    container() {\n" +
                 "        component(A)\n" +
                 "    }\n" +
@@ -348,7 +348,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container(componentFactory:assemblyScope) {\n" +
+                "scripted = builder.container(componentFactory:assemblyScope) {\n" +
                 "    component(A)\n" +
                 "}");
 
@@ -370,7 +370,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.picocontainer.script.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(componentMonitor: monitor) {\n" +
+                "scripted = builder.container(componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -393,7 +393,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.picocontainer.script.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(componentFactory: new Caching().wrap(new ConstructorInjection()), componentMonitor: monitor) {\n" +
+                "scripted = builder.container(componentFactory: new Caching().wrap(new ConstructorInjection()), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -413,7 +413,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.picocontainer.script.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(parent:parent, componentMonitor: monitor) {\n" +
+                "scripted = builder.container(parent:parent, componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -435,7 +435,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "import org.picocontainer.script.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(parent:parent, componentFactory: new Caching().wrap(new ConstructorInjection()), componentMonitor: monitor) {\n" +
+                "scripted = builder.container(parent:parent, componentFactory: new Caching().wrap(new ConstructorInjection()), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -451,7 +451,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(B)\n" +
                 "    container() {\n" +
                 "        component(A)\n" +
@@ -471,7 +471,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    component(A)\n" +
                 "    container() {\n" +
                 "         component(B)\n" +
@@ -495,7 +495,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container(parent:parent) {\n" +
+                "scripted = builder.container(parent:parent) {\n" +
                 "    component(A)\n" +
                 "}\n");
 
@@ -512,7 +512,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container(parent:parent) {\n" +
+                "scripted = builder.container(parent:parent) {\n" +
                 "  if ( assemblyScope instanceof SomeAssemblyScope ){\n "+
                 "    component(B)\n" +
                 "  }\n "+
@@ -526,7 +526,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         String scriptValue = ("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container(parent:parent) {\n" +
+                "scripted = builder.container(parent:parent) {\n" +
                 "  System.out.println('assemblyScope:'+assemblyScope)\n " +
                 "  if ( assemblyScope instanceof ParentAssemblyScope ){\n "+
                 "    System.out.println('parent scope')\n " +
@@ -559,7 +559,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container(parent:parent) {\n" +
+                "scripted = builder.container(parent:parent) {\n" +
                 "  if ( assemblyScope instanceof SomeAssemblyScope ){\n "+
                 "    component(B)\n" +
                 "  }\n "+
@@ -576,7 +576,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     @Test public void testBuildContainerWithParentAttributesPropagatesComponentFactory() {
         DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjection() );
         Reader script = new StringReader("" +
-                "nano = builder.container(parent:parent) {\n" +
+                "scripted = builder.container(parent:parent) {\n" +
                 "}\n");
 
         MutablePicoContainer pico = (MutablePicoContainer)buildContainer(script, parent, ASSEMBLY_SCOPE);
@@ -592,7 +592,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container() {\n" +
+                "scripted = builder.container() {\n" +
                 "    component(A)\n" +
                 "    container(parent:parent) {\n" +
                 "         component(B)\n" +
@@ -614,7 +614,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
-                "nano = builder.container(jim:'Jam', foo:'bar') {\n" +
+                "scripted = builder.container(jim:'Jam', foo:'bar') {\n" +
 
                 "}\n");
             try {
@@ -761,7 +761,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
             "import org.picocontainer.script.groovy.GroovyNodeBuilder\n" +
             "import org.picocontainer.script.testmodel.*\n" +
             "builder = new GroovyNodeBuilder(new NullNodeBuilderDecorationDelegate(), GroovyNodeBuilder.PERFORM_ATTRIBUTE_VALIDATION)\n" +
-            "nano = builder.container {\n" +
+            "scripted = builder.container {\n" +
             "    component(key:'a', instance:'apple', badAttribute:'foo')\n" +
             "}");
 
@@ -783,7 +783,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
             "import org.picocontainer.script.groovy.GroovyNodeBuilder\n" +
             "import org.picocontainer.script.testmodel.*\n" +
             "builder = new GroovyNodeBuilder(new NullNodeBuilderDecorationDelegate(), GroovyNodeBuilder.SKIP_ATTRIBUTE_VALIDATION)\n" +
-            "nano = builder.container {\n" +
+            "scripted = builder.container {\n" +
             "    component(key:'a', instance:'apple', badAttribute:'foo')\n" +
             "}");
 
@@ -804,7 +804,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "import org.picocontainer.script.testmodel.*\n" +
                 "X.reset()\n" +
-                "nano = builder.container {\n" +
+                "scripted = builder.container {\n" +
                 "    ca = component(java.lang.Object).getComponentAdapter(java.lang.Object) \n" +
                 "    component(instance:ca.getClass().getName())\n" +
                 "}");

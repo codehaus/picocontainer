@@ -40,7 +40,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "\n" +
                 "cuts = new DynaopPointcutsFactory()\n" +
                 "builder = new DynaopGroovyNodeBuilder()\n" +
-                "nano = builder.container() {\n" +
+                "scripted = builder.container() {\n" +
                 "    aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)\n" +
                 "    component(key:Dao, class:DaoImpl)\n" +
                 "    component(key:StringBuffer, instance:log)\n" +
@@ -63,7 +63,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "\n" +
                 "cuts = new DynaopPointcutsFactory()\n" +
                 "builder = new DynaopGroovyNodeBuilder()\n" +
-                "nano = builder.container() {\n" +
+                "scripted = builder.container() {\n" +
                 "    pointcut(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods()) {\n" +
                 "        aspect(interceptor:logger)\n" +
                 "    }\n" +
@@ -84,7 +84,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "import org.picocontainer.aop.dynaop.*\n" +
                 "cuts = new DynaopPointcutsFactory()\n" +
                 "builder = new DynaopGroovyNodeBuilder()\n" +
-                "nano = builder.container() {\n" +
+                "scripted = builder.container() {\n" +
                 "    aspect(classCut:cuts.instancesOf(Dao), methodCut:cuts.allMethods(), interceptorKey:LoggingInterceptor)\n" +
                 "    component(key:'log', class:StringBuffer)\n" +
                 "    component(LoggingInterceptor)\n" +
@@ -107,7 +107,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "\n" +
                 "cuts = new DynaopPointcutsFactory()\n" +
                 "builder = new DynaopGroovyNodeBuilder()\n" +
-                "nano = builder.container() {\n" +
+                "scripted = builder.container() {\n" +
                 "    component(key:'intercepted', class:DaoImpl) {\n" +
                 "        aspect(methodCut:cuts.allMethods(), interceptor:logger)\n" +
                 "    }\n" +
@@ -131,7 +131,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "import org.picocontainer.aop.dynaop.*\n" +
                 "cuts = new DynaopPointcutsFactory()\n" +
                 "builder = new DynaopGroovyNodeBuilder()\n" +
-                "nano = builder.container() {\n" +
+                "scripted = builder.container() {\n" +
                 "    component(key:Dao, class:DaoImpl) \n" +
                 "    aspect(classCut:cuts.instancesOf(Dao), mixinClass:IdentifiableMixin)\n" +
                 "}";
@@ -150,7 +150,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "cuts = aspectsManager.getPointcutsFactory()\n" +
                 "decorator = new org.picocontainer.aop.defaults.AopNodeBuilderDecorationDelegate(aspectsManager)\n" +
                 "builder = new GroovyNodeBuilder(decorator) \n" +
-                "nano = builder.container() {\n" +
+                "scripted = builder.container() {\n" +
                 "    component(key:Dao, class:DaoImpl) \n" +
                 "    aspect(classCut:cuts.instancesOf(Dao), mixinClass:IdentifiableMixin)\n" +
                 "}";
@@ -171,7 +171,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "componentFactory = new TestInjection(componentFactoryLog)\n" +
                 "cuts = new DynaopPointcutsFactory()\n" +
                 "builder = new DynaopGroovyNodeBuilder()\n" +
-                "nano = builder.container(componentFactory:componentFactory) {\n" +
+                "scripted = builder.container(componentFactory:componentFactory) {\n" +
                 "    aspect(classCut:cuts.instancesOf(Dao.class), methodCut:cuts.allMethods(), interceptor:logger)\n" +
                 "    component(key:Dao, class:DaoImpl)\n" +
                 "    component(key:'intLog', instance:intLog)\n" +

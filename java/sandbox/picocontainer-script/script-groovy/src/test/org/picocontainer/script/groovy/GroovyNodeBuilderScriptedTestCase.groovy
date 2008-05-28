@@ -18,11 +18,11 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
         A.reset()
 
         def builder = new GroovyNodeBuilder()
-        def nano = builder.container() {
+        def scripted = builder.container() {
             component(A)
         }
 
-        startAndDispose(nano)
+        startAndDispose(scripted)
 
         assertEquals("Should match the expression", "<A!A", A.componentRecorder)
     }
@@ -32,13 +32,13 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
         A.reset()
 
         def builder = new GroovyNodeBuilder()
-        def nano = builder.container {
+        def scripted = builder.container {
             container() {
                 component(A)
             }
         }
 
-        startAndDispose(nano)
+        startAndDispose(scripted)
 
         assertEquals("Should match the expression", "<A!A", A.componentRecorder)
     }
@@ -49,7 +49,7 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
 
         try {
             def builder = new GroovyNodeBuilder()
-            def nano = builder.container {
+            def scripted = builder.container {
                 component(B)
                 container() {
                     component(A)
@@ -57,7 +57,7 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
                 component(C)
             }
 
-            startAndDispose(nano)
+            startAndDispose(scripted)
 
             fail("Should not have been able to instansiate component tree due to visibility/parent reasons.")
         }
@@ -71,12 +71,12 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
 
         def builder = new GroovyNodeBuilder()
         def componentFactory = new TestComponentAdapterFactory(sb)
-        def nano = builder.container(componentFactory:componentFactory) {
+        def scripted = builder.container(componentFactory:componentFactory) {
             component(key:WebServerConfig, class:DefaultWebServerConfig)
             component(key:WebServer, class:WebServerImpl)
         }
 
-        startAndDispose(nano)
+        startAndDispose(scripted)
 
         assertTrue(sb.toString().indexOf("called") != -1)
     }
@@ -84,16 +84,16 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
     void testInstantiateWithInlineConfiguration() {
 
         def builder = new GroovyNodeBuilder()
-        def nano = builder.container {
+        def scripted = builder.container {
             bean(beanClass:WebServerConfigBean, host:'foobar.com', port:4321)
             component(key:WebServer, class:WebServerImpl)
         }
 
-        startAndDispose(nano)
+        startAndDispose(scripted)
 
-        assertTrue("WebServerConfigBean and WebServerImpl expected", nano.pico.getComponentInstances().size() == 2)
+        assertTrue("WebServerConfigBean and WebServerImpl expected", scripted.pico.getComponentInstances().size() == 2)
 
-        def wsc = nano.pico.getComponentInstanceOfType(WebServerConfig)
+        def wsc = scripted.pico.getComponentInstanceOfType(WebServerConfig)
         assertEquals("foobar.com", wsc.getHost())
         assertTrue(wsc.getPort() == 4321)
     }
@@ -135,13 +135,13 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
         A.reset()
 
         def builder = new GroovyNodeBuilder()
-        def nano = builder.container(class:TestContainer) {
+        def scripted = builder.container(class:TestContainer) {
             component(A)
         }
 
-        startAndDispose(nano)
+        startAndDispose(scripted)
         assertEquals("Should match the expression", "<A!A", A.componentRecorder)
-        assertEquals("org.picocontainer.script.groovy.TestContainer",nano.getClass().getName())
+        assertEquals("org.picocontainer.script.groovy.TestContainer",scripted.getClass().getName())
     }
 
     void testInstantiateBasicComponentWithDeepTree() {
@@ -149,7 +149,7 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
         A.reset()
 
         def builder = new GroovyNodeBuilder()
-        def nano = builder.container {
+        def scripted = builder.container {
             container() {
                 container() {
                     component(A)
@@ -158,7 +158,7 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
             component(HashMap.class)
         }
 
-        startAndDispose(nano)
+        startAndDispose(scripted)
 
         assertEquals("Should match the expression", "<A!A", A.componentRecorder)
     }
@@ -168,7 +168,7 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
         A.reset()
 
         def builder = new GroovyNodeBuilder()
-        def nano = builder.container {
+        def scripted = builder.container {
             container(name:"huey") {
                 container(name:"duey") {
                     component(key:"Luis", class:A)
@@ -177,35 +177,35 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
             component(HashMap.class)
         }
 
-        startAndDispose(nano)
+        startAndDispose(scripted)
 
         assertEquals("Should match the expression", "<A!A", A.componentRecorder)
-        Object o = nano.pico.getComponentInstance("huey/duey/Luis")
+        Object o = scripted.pico.getComponentInstance("huey/duey/Luis")
         assertNotNull(o)
     }
 
     public void testComponentInstances() {
 
         def builder = new GroovyNodeBuilder()
-        def nano = builder.container {
+        def scripted = builder.container {
             component(key:"Louis", instance:"Armstrong")
             component(key:"Duke", instance: "Ellington")
         }
 
-        assertEquals("Armstrong", nano.pico.getComponentInstance("Louis"))
-        assertEquals("Ellington", nano.pico.getComponentInstance("Duke"))
+        assertEquals("Armstrong", scripted.pico.getComponentInstance("Louis"))
+        assertEquals("Ellington", scripted.pico.getComponentInstance("Duke"))
     }
 
     public void testConstantParameters() {
 
         def builder = new GroovyNodeBuilder()
-        def nano = builder.container {
+        def scripted = builder.container {
             component(key:"cat", class:HasParams, parameters:[ "c", "a", "t" ])
             component(key:"dog", class:HasParams, parameters:[ "d", "o", "g" ])
         }
 
-        def cat = nano.pico.getComponentInstance("cat");
-        def dog = nano.pico.getComponentInstance("dog");
+        def cat = scripted.pico.getComponentInstance("cat");
+        def dog = scripted.pico.getComponentInstance("dog");
         assertEquals("cat", cat.getParams());
         assertEquals("dog", dog.getParams());
     }
@@ -213,19 +213,19 @@ class GroovyNodeBuilderScriptedTestCase extends GroovyTestCase {
     public void testComponentParameters() {
 
         def builder = new GroovyNodeBuilder()
-        def nano = builder.container {
+        def scripted = builder.container {
             component(key:"a", class:A)
             component(key:"b", class:B, parameters:[ new ComponentParameter("a") ])
         }
 
-        def a = nano.pico.getComponentInstance("a");
-        def b = nano.pico.getComponentInstance("b");
+        def a = scripted.pico.getComponentInstance("a");
+        def b = scripted.pico.getComponentInstance("b");
         assertSame(a, b.getA())
     }
 
-    protected void startAndDispose(nano) {
-        nano.pico.start()
-        nano.pico.dispose()
+    protected void startAndDispose(scripted) {
+        scripted.pico.start()
+        scripted.pico.dispose()
     }
 
 }

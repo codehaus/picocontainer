@@ -33,7 +33,7 @@ public class ScriptedContainerBuilderFactoryTestCase {
             "import org.picocontainer.script.testmodel.*\n" +
             "X.reset()\n" +
             "builder = new org.picocontainer.script.groovy.GroovyNodeBuilder()\n" +
-            "nano = builder.container {\n" +
+            "scripted = builder.container {\n" +
             "    component(A)\n" +
             "}");
 

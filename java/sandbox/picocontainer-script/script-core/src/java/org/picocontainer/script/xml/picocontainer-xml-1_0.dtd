@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-    NanoContainer XML DTD
+    PicoContainer XML DTD
     Authors: Mauro Talevi
 
     The doctype for XML documents conforming to this DTD is
 
-    <!DOCTYPE container PUBLIC "-//NanoContainer//DTD NanoContainer XML 1.0//EN"
-                                 "http://nanocontainer.org/dtd/nanocontainer-xml-1_0.dtd">
+    <!DOCTYPE container PUBLIC "-//PicoContainer//DTD PicoContainer XML 1.0//EN"
+                                 "http://picocontainer.org/script/dtd/picocontainer-xml-1_0.dtd">
 -->
 
 <!--
@@ -153,7 +153,7 @@
 
 <!--
     Defines the parameter for component implementations and instances.
-    The parameter element may contain other elements - which are used by the NanoContainer
+    The parameter element may contain other elements - which are used by the ScriptedPicoContainer
     default org.picocontainer.script.xml.XMLComponentInstanceFactory.
 -->
 <!ELEMENT parameter (
@@ -173,29 +173,26 @@
 <!ATTLIST parameter key CDATA #IMPLIED>
 
 <!--
-    Parameters may specify whether empty-collections are allowed or not.  This is used, for example, in this constructor:
-    http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/ComponentParameter.html#ComponentParameter(boolean)
+    Parameters may specify whether empty-collections are allowed or not.  This is used, for example, in the constructor ComponentParameter(boolean)
 -->
 <!ATTLIST parameter empty-collection CDATA #IMPLIED>
 
 <!--
-    Parameters may specify the component's type.  This is used, for example, in this constructor:
-    http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/ComponentParameter.html#ComponentParameter(java.lang.Class,%20boolean)
+    Parameters may specify the component's type.  This is used, for example, in the constructor ComponentParameter(java.lang.Class, boolean)
     
     If this is specified, the empty-collection attribute must also be specified.
 -->
 <!ATTLIST parameter component-value-type CDATA #IMPLIED>
 
 <!--
-    Parameters may specify the component adapter's key type.  This is used in this constructor:
-    http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/ComponentParameter.html#ComponentParameter(java.lang.Class,%20java.lang.Class,%20boolean)
+    Parameters may specify the component adapter's key type.  This is used in the constructor ComponentParameter(java.lang.Class, java.lang.Class, boolean)
     
     If this is specified, both empty-collection and component-value-type attributes must also be specified.
 -->
 <!ATTLIST parameter component-key-type CDATA #IMPLIED>
 
 <!--
-    Defines the parameter element used by the NanoContainer
+    Defines the parameter element used by the ScriptedPicoContainer
     default org.picocontainer.script.xml.XMLComponentInstanceFactory.
 -->
 <!ELEMENT boolean (#PCDATA)>

@@ -12,21 +12,29 @@ package org.picocontainer.script.groovy;
 import groovy.lang.Closure;
 import groovy.lang.GroovyObject;
 import groovy.util.BuilderSupport;
-import org.codehaus.groovy.runtime.InvokerHelper;
-import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.script.groovy.buildernodes.*;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.script.ClassName;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
-import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.NodeBuilderDecorationDelegate;
-import org.picocontainer.script.NullNodeBuilderDecorationDelegate;
-import org.picocontainer.script.ScriptedPicoContainer;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.codehaus.groovy.runtime.InvokerHelper;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.script.DefaultScriptedPicoContainer;
+import org.picocontainer.script.NodeBuilderDecorationDelegate;
+import org.picocontainer.script.NullNodeBuilderDecorationDelegate;
+import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
+import org.picocontainer.script.groovy.buildernodes.AppendContainerNode;
+import org.picocontainer.script.groovy.buildernodes.BeanNode;
+import org.picocontainer.script.groovy.buildernodes.ChildContainerNode;
+import org.picocontainer.script.groovy.buildernodes.ClassLoaderNode;
+import org.picocontainer.script.groovy.buildernodes.ClasspathNode;
+import org.picocontainer.script.groovy.buildernodes.ComponentNode;
+import org.picocontainer.script.groovy.buildernodes.ConfigNode;
+import org.picocontainer.script.groovy.buildernodes.DoCallNode;
+import org.picocontainer.script.groovy.buildernodes.GrantNode;
+import org.picocontainer.script.groovy.buildernodes.NewBuilderNode;
 
 /**
  * Builds node trees of PicoContainers and Pico components using GroovyMarkup.
@@ -118,13 +126,6 @@ public class GroovyNodeBuilder extends BuilderSupport {
                 .setNode(new ClassLoaderNode())
                 .setNode(new GrantNode())
                 .setNode(new AppendContainerNode());
-        DefaultScriptedPicoContainer factory = new DefaultScriptedPicoContainer();
-        try {
-            factory.addComponent("wc",  new ClassName("org.nanocontainer.webcontainer.groovy.WebContainerBuilder"));
-            setNode((BuilderNode) factory.getComponent("wc"));
-        } catch (PicoClassNotFoundException e) {
-            //do nothing.
-        }
 
     }
 

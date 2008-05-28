@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
 
@@ -25,42 +26,29 @@ import org.picocontainer.behaviors.Storing;
  * instantiates, assembles, starts, stores and disposes the appropriate pico
  * containers when applications/sessions start/stop.
  * <p>
- * To use, simply add as a listener to web.xml the listener-class
- * <code>org.nanocontainer.nanowar.ServletContainerListener</code>.
+ * To use, simply add as a listener to the web.xml the listener-class
+ * 
+ * <pre>
+ * &lt;listener&gt;
+ *  &lt;listener-class&gt;org.nanocontainer.nanowar.PicoServletContainerListener&lt;/listener-class&gt;
+ * &lt;/listener&gt; 
+ * </pre>
+ * 
  * </p>
  * <p>
- * The containers are configured via context-params in web.xml, in two ways:
- * <ol>
- * <li>A NanoContainer script via a parameter whose name is nanocontainer.<language>,
- * where <language> is one of the supported scripting languages, see
- * {@link org.nanocontainer.script.ScriptedContainerBuilderFactory ScriptedContainerBuilderFactory}.
- * The parameter value can be either an inlined script (enclosed in
- * <![CDATA[]>), or a resource path for the script (relative to the webapp
- * context). </li>
- * <li>A ContainerComposer class via the parameter name
- * {@link KeyConstants#CONTAINER_COMPOSER CONTAINER_COMPOSER}, which can be
- * configured via an optional parameter
- * {@link KeyConstants#CONTAINER_COMPOSER_CONFIGURATION CONTAINER_COMPOSER_CONFIGURATION}.
- * </li>
- * </ol>
- * </p>
- * <p>
- * To allow external configurability of application (which is quite usefull in
- * and often required in big environments) you can add 2 containers to hierarchy
- * <dl>
- * <dt>SystemPropertiesContainer</dt>
- * <dd> System properties container exposes system properties obtainable through
- * <code>System.getProperties()</code> to components in lower level containers
- * so they have possibility to depend on them this allowing external
- * configuration. To activate system properties you have to pass any value to
- * {@link KeyConstants#SYSTEM_PROPERTIES_CONTAINER SYSTEM_PROPERTIES_CONTAINER}
- * </dd>
- * </dl>
- * </p>
- * <p>
- * The application-level listeners can also be configured separately in web.xml
- * if one is interested in application-scoped components only or has issues with
- * session-scoped components (serialization, clustering, etc).
+ * The listener also requires a the class name of the
+ * {@link org.nanocontainer.nanowar.WebappComposer} as a context-param in
+ * web.xml:
+ * 
+ * <pre>
+ *  &lt;context-param&gt;
+ *   &lt;param-name&gt;webapp-composer-class&lt;/param-name&gt;
+ *   &lt;param-value&gt;com.company.MyWebappComposer&lt;/param-value&gt;
+ *  &lt;/context-param&gt;
+ * </pre>
+ * 
+ * The composer will be used to compose the components for the different webapp
+ * scopes after the context has been initialised.
  * </p>
  * 
  * @author Joe Walnes
@@ -74,9 +62,10 @@ import org.picocontainer.behaviors.Storing;
 public class PicoServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants,
         Serializable {
 
-    protected DefaultPicoContainer appContainer;
-    protected DefaultPicoContainer sessionContainer;
-    protected DefaultPicoContainer requestContainer;
+    public static final String WEBAPP_COMPOSER_CLASS = "webapp-composer-class";
+    private DefaultPicoContainer appContainer;
+    private DefaultPicoContainer sessionContainer;
+    private DefaultPicoContainer requestContainer;
     private Storing sessionStoring;
     private Storing requestStoring;
 
@@ -86,10 +75,6 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         appContainer = new DefaultPicoContainer(new Caching());
         appContainer.setName("application");
 
-        // TODO - real resources
-        // String builderClassName = context.getInitParameter("container-builder-class");
-        // populateContainer("appResources", appContainer, null,
-        // builderClassName);
         context.setAttribute(ApplicationContainerHolder.class.getName(), new ApplicationContainerHolder(appContainer));
 
         sessionStoring = new Storing();
@@ -98,9 +83,6 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         ThreadLocalLifecycleState sessionStateModel = new ThreadLocalLifecycleState();
         sessionContainer.setLifecycleState(sessionStateModel);
 
-        // TODO - real resources
-        // populateContainer("sessionResources", sessionContainer, appContainer,
-        // builderClassName);
         context.setAttribute(SessionContainerHolder.class.getName(), new SessionContainerHolder(sessionContainer,
                 sessionStoring, sessionStateModel));
 
@@ -110,13 +92,28 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         ThreadLocalLifecycleState requestStateModel = new ThreadLocalLifecycleState();
         requestContainer.setLifecycleState(requestStateModel);
 
-        // TODO - real resources
-        // populateContainer("requestResources", requestContainer,
-        // sessionContainer, builderClassName);
         context.setAttribute(RequestContainerHolder.class.getName(), new RequestContainerHolder(requestContainer,
                 requestStoring, requestStateModel));
 
+        compose(loadComposer(context));
         appContainer.start();
+    }
+
+    protected WebappComposer loadComposer(ServletContext context) {
+        String composerClassName = context.getInitParameter(WEBAPP_COMPOSER_CLASS);
+        try {
+            return (WebappComposer) Thread.currentThread().getContextClassLoader().loadClass(composerClassName)
+                    .newInstance();
+        } catch (Exception e) {
+            throw new PicoCompositionException("Failed to load webapp composer class " + composerClassName
+                    + ": ensure the context-param '" + WEBAPP_COMPOSER_CLASS + "' is configured in the web.xml.", e);
+        }
+    }
+
+    protected void compose(WebappComposer composer) {
+        composer.application(appContainer);
+        composer.session(sessionContainer);
+        composer.request(requestContainer);
     }
 
     public void contextDestroyed(ServletContextEvent event) {

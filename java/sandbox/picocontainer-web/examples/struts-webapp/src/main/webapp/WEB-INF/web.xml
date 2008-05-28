@@ -1,44 +1,49 @@
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-    <display-name>NanoWar Struts Demo</display-name>
+  <display-name>NanoWar Struts Demo</display-name>
 
-    <filter>
-        <filter-name>picoFilter</filter-name>
-        <filter-class>org.nanocontainer.nanowar.PicoServletContainerFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>picoFilter</filter-name>
-        <url-pattern>*.do</url-pattern>
-    </filter-mapping>
-
-    <listener>
-        <listener-class>org.nanocontainer.nanowar.sample.struts.StrutsPicoServletContainerListener</listener-class>
-    </listener>
-
-    <!-- Action Servlet Configuration -->
-    <servlet>
-      <servlet-name>action</servlet-name>
-      <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
-      <init-param>
-        <param-name>config</param-name>
-        <param-value>/WEB-INF/struts-config.xml</param-value>
-      </init-param>
-      <load-on-startup>2</load-on-startup>
-    </servlet>
+  <context-param>
+    <param-name>webapp-composer-class</param-name>
+    <param-value>org.nanocontainer.nanowar.sample.ExampleWebappComposer</param-value>
+  </context-param>
   
-    <!-- Action Servlet Mapping -->
-    <servlet-mapping>
-      <servlet-name>action</servlet-name>
-      <url-pattern>*.do</url-pattern>
-    </servlet-mapping>
+  <filter>
+    <filter-name>picoFilter</filter-name>
+    <filter-class>org.nanocontainer.nanowar.PicoServletContainerFilter</filter-class>
+  </filter>
 
-    <!-- Welcome File -->
-    <welcome-file-list>
-      <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
-     
+  <filter-mapping>
+    <filter-name>picoFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+
+  <listener>
+    <listener-class>org.nanocontainer.nanowar.PicoServletContainerListener</listener-class>
+  </listener>
+
+  <!-- Action Servlet Configuration -->
+  <servlet>
+    <servlet-name>action</servlet-name>
+    <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+    <init-param>
+      <param-name>config</param-name>
+      <param-value>/WEB-INF/struts-config.xml</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+
+  <!-- Action Servlet Mapping -->
+  <servlet-mapping>
+    <servlet-name>action</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+
+  <!-- Welcome File -->
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
 </web-app>
 
 

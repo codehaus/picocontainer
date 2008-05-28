@@ -3,6 +3,11 @@
 <web-app>
   <display-name>NanoWar Struts 2 Demo</display-name>
 
+  <context-param>
+    <param-name>webapp-composer-class</param-name>
+    <param-value>org.nanocontainer.nanowar.sample.ExampleWebappComposer</param-value>
+  </context-param>
+
   <filter>
     <filter-name>picoFilter</filter-name>
     <filter-class>org.nanocontainer.nanowar.PicoServletContainerFilter</filter-class>
@@ -24,7 +29,7 @@
   </filter-mapping>
 
   <listener>
-    <listener-class>org.nanocontainer.nanowar.sample.struts2.ExampleStuts2PicoServletContainerListener</listener-class>
+    <listener-class>org.nanocontainer.nanowar.PicoServletContainerListener</listener-class>
   </listener>
 
   <welcome-file-list>

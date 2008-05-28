@@ -4,10 +4,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>NanoWAR-JSF Integration Demo</display-name>
-	<!--  Tell NanoWAR where to find its configuration script. -->
+  
 	<context-param>
-	  <param-name>nanocontainer.groovy</param-name>
-	  <param-value>/WEB-INF/nanocontainer.groovy</param-value>
+	  <param-name>webapp-composer-class</param-name>
+	  <param-value>org.nanocontainer.nanowar.samples.jsf.JsfWebappComposer</param-value>
 	</context-param>	
 	
 	<!--  
@@ -24,7 +24,7 @@
 	</filter-mapping>
   
     <listener>
-        <listener-class>org.nanocontainer.nanowar.samples.jsf.JsfPicoServletContainerListener</listener-class>
+        <listener-class>org.nanocontainer.nanowar.PicoServletContainerListener</listener-class>
     </listener>	
     
     <!-- 

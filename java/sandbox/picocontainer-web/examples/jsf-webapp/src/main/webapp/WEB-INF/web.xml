@@ -7,7 +7,7 @@
   
 	<context-param>
 	  <param-name>webapp-composer-class</param-name>
-	  <param-value>org.nanocontainer.nanowar.samples.jsf.JsfWebappComposer</param-value>
+	  <param-value>org.picocontainer.web.samples.jsf.JsfWebappComposer</param-value>
 	</context-param>	
 	
 	<!--  
@@ -15,7 +15,7 @@
 	 -->
    <filter>
         <filter-name>picoFilter</filter-name>
-        <filter-class>org.nanocontainer.nanowar.PicoServletContainerFilter</filter-class>
+        <filter-class>org.picocontainer.web.PicoServletContainerFilter</filter-class>
     </filter>
 
   	<filter-mapping>
@@ -24,7 +24,7 @@
 	</filter-mapping>
   
     <listener>
-        <listener-class>org.nanocontainer.nanowar.PicoServletContainerListener</listener-class>
+        <listener-class>org.picocontainer.web.PicoServletContainerListener</listener-class>
     </listener>	
     
     <!-- 

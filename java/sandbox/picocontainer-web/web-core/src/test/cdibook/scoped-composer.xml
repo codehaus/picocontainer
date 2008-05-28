@@ -5,7 +5,7 @@
 <!-- START SNIPPET: xml -->
     <context-param>
         <param-name>org.nanocontainer.integrationkit.ContainerComposer</param-name>
-        <param-value>org.nanocontainer.nanowar.ScopedContainerComposer</param-value>
+        <param-value>org.picocontainer.web.ScopedContainerComposer</param-value>
     </context-param>
 
     <context-param>

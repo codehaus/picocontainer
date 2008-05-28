@@ -6,14 +6,14 @@
 <faces-config>
 	<application>
 		<variable-resolver>
-			org.nanocontainer.nanowar.jsf.NanoWarDelegatingVariableResolver
+			org.picocontainer.web.jsf.NanoWarDelegatingVariableResolver
 		</variable-resolver>
 	</application>
 	<managed-bean>
 		<description>CDI Injected Bean</description>
 		<managed-bean-name>cheeseBean</managed-bean-name>
 		<managed-bean-class>
-			org.nanocontainer.nanowar.samples.jsf.CheeseController
+			org.picocontainer.web.samples.jsf.CheeseController
 		</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
@@ -21,7 +21,7 @@
 		<description>Adds Cheeses</description>
 		<managed-bean-name>addCheeseBean</managed-bean-name>
 		<managed-bean-class>
-			org.nanocontainer.nanowar.samples.jsf.AddCheeseController
+			org.picocontainer.web.samples.jsf.AddCheeseController
 		</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>

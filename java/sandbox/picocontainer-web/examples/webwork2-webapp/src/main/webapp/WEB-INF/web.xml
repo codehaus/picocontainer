@@ -5,12 +5,12 @@
 
   <context-param>
     <param-name>webapp-composer-class</param-name>
-    <param-value>org.nanocontainer.nanowar.sample.ExampleWebappComposer</param-value>
+    <param-value>org.picocontainer.web.sample.ExampleWebappComposer</param-value>
   </context-param>
 
   <filter>
     <filter-name>picoFilter</filter-name>
-    <filter-class>org.nanocontainer.nanowar.PicoServletContainerFilter</filter-class>
+    <filter-class>org.picocontainer.web.PicoServletContainerFilter</filter-class>
   </filter>
 
   <filter-mapping>
@@ -19,12 +19,12 @@
   </filter-mapping>
 
   <listener>
-    <listener-class>org.nanocontainer.nanowar.webwork2.WebWork2PicoServletContainerListener</listener-class>
+    <listener-class>org.picocontainer.web.webwork2.WebWork2PicoServletContainerListener</listener-class>
   </listener>
 
   <servlet>
     <servlet-name>action</servlet-name>
-    <servlet-class>org.nanocontainer.nanowar.webwork2.PicoWebWork2ServletDispatcher</servlet-class>
+    <servlet-class>org.picocontainer.web.webwork2.PicoWebWork2ServletDispatcher</servlet-class>
   </servlet>
 
   <servlet-mapping>

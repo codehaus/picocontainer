@@ -2,5 +2,5 @@
     <instance key="applicationScopedInstance">
         <string>foo bar</string>
     </instance>
-    <implementation class="org.nanocontainer.nanowar.Foo" key="testFoo" />
+    <implementation class="org.picocontainer.web.Foo" key="testFoo" />
 </container>

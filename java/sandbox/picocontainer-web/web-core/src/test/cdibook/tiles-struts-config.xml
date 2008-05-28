@@ -7,7 +7,7 @@
 <struts-config>
 
 <!-- START SNIPPET: xml -->
-  <controller processorClass="org.nanocontainer.nanowar.struts.PicoTilesRequestProcessor"/>
+  <controller processorClass="org.picocontainer.web.struts.PicoTilesRequestProcessor"/>
 <!-- END SNIPPET: xml -->
 
 </struts-config>

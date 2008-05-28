@@ -16,25 +16,25 @@
                     component(class:java.util.Random)
                 } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
                     println("**** Request-level pico components registered by Groovy")
-                    component(class:org.nanocontainer.nanowar.sample.nanoweb.NumberToGuess)
+                    component(class:org.picocontainer.web.sample.nanoweb.NumberToGuess)
                 }
             }
         ]]></param-value>
     </context-param>
 
     <listener>
-        <listener-class>org.nanocontainer.nanowar.PicoServletContainerListener</listener-class>
+        <listener-class>org.picocontainer.web.PicoServletContainerListener</listener-class>
     </listener>
 
     <servlet>
         <servlet-name>NanoWeb</servlet-name>
-        <servlet-class>org.nanocontainer.nanowar.nanoweb.NanoWebServlet</servlet-class>
+        <servlet-class>org.picocontainer.web.nanoweb.NanoWebServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>NanoVelocity</servlet-name>
-        <servlet-class>org.nanocontainer.nanowar.nanoweb.NanoWebVelocityServlet</servlet-class>
+        <servlet-class>org.picocontainer.web.nanoweb.NanoWebVelocityServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 

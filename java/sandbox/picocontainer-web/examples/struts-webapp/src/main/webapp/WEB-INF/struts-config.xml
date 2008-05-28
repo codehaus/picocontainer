@@ -8,19 +8,19 @@
 
   <form-beans>
     <form-bean name="cheeseForm"
-               type="org.nanocontainer.nanowar.sample.struts.CheeseForm">
+               type="org.picocontainer.web.sample.struts.CheeseForm">
     </form-bean>
   </form-beans>
 
   <action-mappings>
     <action path="/cheese"
-            type="org.nanocontainer.nanowar.sample.struts.CheeseAction"
+            type="org.picocontainer.web.sample.struts.CheeseAction"
             name="cheeseForm"
             scope="request">
       <forward name="next" path="/index.jsp"/>
     </action>
   </action-mappings>
 
-  <controller processorClass="org.nanocontainer.nanowar.struts.PicoRequestProcessor"/>
+  <controller processorClass="org.picocontainer.web.struts.PicoRequestProcessor"/>
 
 </struts-config>

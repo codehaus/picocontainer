@@ -62,9 +62,9 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         }
     }
 
-    protected final PicoContainer createContainer(PicoContainer parentContainer, Object compositionScope) {
+    protected final PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         try {
-            return createContainerFromScript(parentContainer, compositionScope);
+            return createContainerFromScript(parentContainer, assemblyScope);
         } finally {
             try {
                 Reader reader = getScriptReader();

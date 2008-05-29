@@ -62,8 +62,8 @@ public class LifecycleContainerBuilderTestCase {
         }
 
         @Override
-        protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object compositionScope) {
-            MutablePicoContainer container = (MutablePicoContainer) super.createContainer(parentContainer, compositionScope);
+        protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+            MutablePicoContainer container = (MutablePicoContainer) super.createContainer(parentContainer, assemblyScope);
             container.addComponent(childStartable);
             return container;
         }

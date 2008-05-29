@@ -12,7 +12,7 @@ import org.picocontainer.PicoContainer;
 /**
  * The responsibility of a ContainerBuilder is to build containers. Composition
  * of containers is generally a separate reponsibility, although the some
- * builders may use the composition scope.
+ * builders may make use of the assembly scope.
  * 
  * @author Joe Walnes
  * @author Mauro Talevi
@@ -23,13 +23,13 @@ public interface ContainerBuilder {
      * Builds a new container
      * 
      * @param parentContainer the parent PicoContainer (may be <code>null</code>).
-     * @param compositionScope a hint about the scope for composition (may be
+     * @param assemblyScope a hint about the assembly scope (may be
      *            <code>null</code>)
      * @param addChildToParent boolean flag, <code>true</code> if the child is
      *            to be added to the parent
      * @return A PicoContainer
      */
-    PicoContainer buildContainer(PicoContainer parentContainer, Object compositionScope, boolean addChildToParent);
+    PicoContainer buildContainer(PicoContainer parentContainer, Object assemblyScope, boolean addChildToParent);
 
     /**
      * Destroys a container.

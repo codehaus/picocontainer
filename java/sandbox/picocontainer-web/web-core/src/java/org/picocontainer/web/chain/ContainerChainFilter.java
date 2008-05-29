@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.web.KeyConstants;
 
 /**
  * <p>

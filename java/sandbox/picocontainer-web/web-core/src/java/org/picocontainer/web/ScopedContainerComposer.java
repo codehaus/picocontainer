@@ -36,22 +36,21 @@ import org.picocontainer.script.ScriptedPicoContainer;
 /**
  * <p>
  * ScopedContainerComposer is a 
- * {@link org.nanocontainer.integrationkit.ContainerComposer ContainerComposer} 
+ * {@link org.picocontainer.script.ContainerComposer ContainerComposer} 
  * which can build PicoContainers for different web context scopes: 
  * application, session and request. 
  * </p>
  * <p>
- * The configuration for each scope is contained in one of more 
- * NanoContainer scripts.
- * The {@link org.nanocontainer.integrationkit.ContainerBuilder ContainerBuilder} 
+ * The configuration for each scope is contained in one of more scripts.
+ * The {@link org.picocontainer.script.ContainerBuilder ContainerBuilder} 
  * used to build the PicoContainer and the names of scoped script files are configurable 
  * via a ScopedContainerConfigurator.
  * </p>
  * <p>
  * <b>Note:</b> ScopedContainerComposer requires ContainerBuilders that also implement
- * {@link org.nanocontainer.integrationkit.ContainerPopulator ContainerPopulator},
+ * {@link org.picocontainer.webContainerPopulator ContainerPopulator},
  * as this is used by the 
- * {@link org.nanocontainer.integrationkit.ContainerRecorder ContainerRecorder} proxy.
+ * {@link org.picocontainer.web.ContainerRecorder ContainerRecorder} proxy.
  * </p>
  * 
  * @author Mauro Talevi

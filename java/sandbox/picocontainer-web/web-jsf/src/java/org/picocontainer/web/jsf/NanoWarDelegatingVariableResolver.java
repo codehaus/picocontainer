@@ -16,7 +16,6 @@ import javax.faces.el.EvaluationException;
 import javax.faces.el.VariableResolver;
 
 import org.picocontainer.PicoContainer;
-import org.picocontainer.web.KeyConstants;
 import org.picocontainer.web.PicoServletContainerFilter;
 
 /**

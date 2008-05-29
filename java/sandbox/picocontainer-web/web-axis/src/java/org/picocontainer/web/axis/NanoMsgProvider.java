@@ -8,17 +8,15 @@
  *****************************************************************************/
 package org.picocontainer.web.axis;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.axis.MessageContext;
 import org.apache.axis.providers.java.MsgProvider;
 import org.apache.axis.transport.http.HTTPConstants;
 import org.apache.axis.utils.cache.ClassCache;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ObjectReference;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.web.KeyConstants;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.PicoServletContainerFilter;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Axis provider for message-style services that uses the servlet container
@@ -26,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author <a href="mailto:evan@bottch.com">Evan Bottcher</a>
  */
-public class NanoMsgProvider extends MsgProvider implements KeyConstants {
+public class NanoMsgProvider extends MsgProvider {
 
     protected Object makeNewServiceObject(MessageContext msgContext,
                                           String clsName)

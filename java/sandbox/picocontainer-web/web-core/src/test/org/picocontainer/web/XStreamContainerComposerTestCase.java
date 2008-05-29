@@ -24,8 +24,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.web.KeyConstants;
-import org.picocontainer.web.XStreamContainerComposer;
 
 
 /**
@@ -35,7 +33,7 @@ import org.picocontainer.web.XStreamContainerComposer;
  * @author Mauro Talevi
  */
 @RunWith(JMock.class)
-public class XStreamContainerComposerTestCase implements KeyConstants {
+public class XStreamContainerComposerTestCase {
 
 	private Mockery mockery = mockeryWithCountingNamingScheme();
 	

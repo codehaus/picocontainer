@@ -15,7 +15,6 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.web.KeyConstants;
 import org.picocontainer.web.PicoServletContainerFilter;
 
 import webwork.action.ServletActionContext;
@@ -30,7 +29,7 @@ import webwork.view.velocity.WebWorkUtil;
  * servlet does 
  * @author Konstantin Pribluda
  */ 
-public final class WebWorkVelocityServlet extends VelocityViewServlet implements KeyConstants {
+public final class WebWorkVelocityServlet extends VelocityViewServlet {
 	
     static final String WEBWORK_UTIL = "webwork";
 	// those have to be removed once dependency problem is solved.

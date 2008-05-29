@@ -1,18 +1,5 @@
 package org.picocontainer.web.nanoweb;
 
-import ognl.Ognl;
-import ognl.OgnlException;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ObjectReference;
-import org.picocontainer.web.KeyConstants;
-import org.picocontainer.web.PicoServletContainerFilter;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -20,6 +7,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Enumeration;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ognl.Ognl;
+import ognl.OgnlException;
+
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.web.PicoServletContainerFilter;
 
 /**
  * Dispatcher servlet for NanoWeb.
@@ -44,7 +44,7 @@ import java.util.Enumeration;
  * @author Kouhei Mori
  * @version $Revision:4445 $
  */
-public class NanoWebServlet extends HttpServlet implements KeyConstants {
+public class NanoWebServlet extends HttpServlet {
 
     private Dispatcher dispatcher;
     // TODO make this configurable from web.xml

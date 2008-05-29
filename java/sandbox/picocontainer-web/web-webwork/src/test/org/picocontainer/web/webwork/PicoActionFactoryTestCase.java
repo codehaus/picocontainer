@@ -8,27 +8,17 @@
  *****************************************************************************/
 package org.picocontainer.web.webwork;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.web.KeyConstants;
-import org.picocontainer.web.webwork.PicoActionFactory;
-
-import webwork.action.ServletActionContext;
 
 /**
  * @author Konstantin Pribluda

@@ -29,7 +29,7 @@ import org.picocontainer.script.DefaultContainerBuilder;
  * @author Konstantin Pribluda
  * @version $Revision$
  */
-public class ContainerComposerMocker implements KeyConstants {
+public class ContainerComposerMocker {
 
 	private Mockery mockery = new Mockery();
 	

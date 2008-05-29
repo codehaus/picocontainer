@@ -8,17 +8,11 @@
  *****************************************************************************/
 package org.picocontainer.web.webwork2;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Before;
@@ -26,12 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.web.KeyConstants;
-import org.picocontainer.web.webwork2.PicoObjectFactory;
 
 /**
  * @author Mauro Talevi

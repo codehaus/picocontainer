@@ -37,8 +37,7 @@ import org.picocontainer.behaviors.Storing;
  * </p>
  * <p>
  * The listener also requires a the class name of the
- * {@link org.picocontainer.web.WebappComposer} as a context-param in
- * web.xml:
+ * {@link org.picocontainer.web.WebappComposer} as a context-param in web.xml:
  * 
  * <pre>
  *  &lt;context-param&gt;
@@ -59,8 +58,7 @@ import org.picocontainer.behaviors.Storing;
  * @author Konstantin Pribluda
  */
 @SuppressWarnings("serial")
-public class PicoServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants,
-        Serializable {
+public class PicoServletContainerListener implements ServletContextListener, HttpSessionListener, Serializable {
 
     public static final String WEBAPP_COMPOSER_CLASS = "webapp-composer-class";
     private DefaultPicoContainer applicationContainer;
@@ -91,7 +89,9 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
      * @param sessionStoring the session storing behaviour
      * @param requestStoring the request storing behaviour
      */
-    public PicoServletContainerListener(DefaultPicoContainer applicationContainer, DefaultPicoContainer sessionContainer, DefaultPicoContainer requestContainer, Storing sessionStoring, Storing requestStoring) {
+    public PicoServletContainerListener(DefaultPicoContainer applicationContainer,
+            DefaultPicoContainer sessionContainer, DefaultPicoContainer requestContainer, Storing sessionStoring,
+            Storing requestStoring) {
         this.applicationContainer = applicationContainer;
         this.sessionContainer = sessionContainer;
         this.requestContainer = requestContainer;
@@ -105,7 +105,8 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         ServletContext context = event.getServletContext();
         applicationContainer.setName("application");
 
-        context.setAttribute(ApplicationContainerHolder.class.getName(), new ApplicationContainerHolder(applicationContainer));
+        context.setAttribute(ApplicationContainerHolder.class.getName(), new ApplicationContainerHolder(
+                applicationContainer));
 
         sessionContainer.setName("session");
         ThreadLocalLifecycleState sessionStateModel = new ThreadLocalLifecycleState();

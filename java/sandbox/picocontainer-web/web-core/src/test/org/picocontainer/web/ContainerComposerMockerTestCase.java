@@ -14,9 +14,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
-import org.picocontainer.web.ContainerComposerMocker;
-import org.picocontainer.web.KeyConstants;
-import org.picocontainer.web.XStreamContainerComposer;
 
 /**
  * TestCase for ContainerComposerMocker
@@ -24,7 +21,7 @@ import org.picocontainer.web.XStreamContainerComposer;
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
  * @version $Revision$
  */
-public class ContainerComposerMockerTestCase implements KeyConstants {
+public class ContainerComposerMockerTestCase {
 
     // FIXME @Test 
 	// Hmmm, a stop() is being called on DPC, when it already disposed.

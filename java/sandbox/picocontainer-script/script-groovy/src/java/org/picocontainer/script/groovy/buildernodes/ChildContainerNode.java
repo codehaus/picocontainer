@@ -1,13 +1,10 @@
-/*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Original code by James Strachan                                           *
- *****************************************************************************/
-
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.script.groovy.buildernodes;
 
 import java.util.Map;
@@ -24,13 +21,14 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.NodeBuilderDecorationDelegate;
+import org.picocontainer.script.NodeBuilderDecorator;
 import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.ComponentMonitorStrategy;
 
 /**
- * Creates a new PicoContainer node.  There may or may not be a parent
- * container involved.
+ * Creates a new PicoContainer node. There may or may not be a parent container
+ * involved.
+ * 
  * @author James Strachan
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -45,91 +43,88 @@ public class ChildContainerNode extends AbstractBuilderNode {
     public static final String NODE_NAME = "container";
 
     /**
-     * Supported Attribute: 'class'  Reference to a classname of the container
-     * to use.
+     * Supported Attribute: 'class' Reference to a classname of the container to
+     * use.
      */
     private static final String CLASS = "class";
 
     /**
-     * The node decoration delegate.
+     * The node decorator.
      */
-    private final NodeBuilderDecorationDelegate decorationDelegate;
+    private final NodeBuilderDecorator decorator;
 
     /**
-     * Attribute: 'componentFactory' a reference to an instance of a
-     * component factory.
+     * Attribute: 'componentFactory' a reference to an instance of a component
+     * factory.
      */
     private static final String COMPONENT_ADAPTER_FACTORY = "componentFactory";
 
     /**
-     * Attribute: 'componentMonitor' a reference to an instance of a component monitor.
+     * Attribute: 'componentMonitor' a reference to an instance of a component
+     * monitor.
      */
     private static final String COMPONENT_MONITOR = "componentMonitor";
 
-
     /**
      * Attribute that exists in test cases, but not necessarily used?
-     *
      */
     private static final String SCOPE = "scope";
 
-
     /**
-     * Attribute: 'parent'  a reference to the parent for this new container.
+     * Attribute: 'parent' a reference to the parent for this new container.
      */
     private static final String PARENT = "parent";
 
-
     /**
-     * Constructs a child container node.  It requires a <tt>NodeBuilderDecorationDelegate</tt>
-     * for construction.
-     * @param delegate NodeBuilderDecorationDelegate
+     * Constructs a child container node with a given decorator
+     * 
+     * @param decorator NodeBuilderDecorator
      */
-    public ChildContainerNode(NodeBuilderDecorationDelegate delegate) {
+    public ChildContainerNode(NodeBuilderDecorator decorator) {
         super(NODE_NAME);
-        decorationDelegate = delegate;
+        this.decorator = decorator;
 
-        this.addAttribute(CLASS)
-            .addAttribute(COMPONENT_ADAPTER_FACTORY)
-            .addAttribute(COMPONENT_MONITOR)
-            .addAttribute(PARENT)
-            .addAttribute(SCOPE);
-
+        this.addAttribute(CLASS).addAttribute(COMPONENT_ADAPTER_FACTORY).addAttribute(COMPONENT_MONITOR).addAttribute(
+                PARENT).addAttribute(SCOPE);
 
     }
 
     /**
-     * Creates a new container.  There may or may not be a parent to this container.
-     * Supported attributes are
-     * <p>{@inheritDoc}</p>
+     * Creates a new container. There may or may not be a parent to this
+     * container. Supported attributes are
+     * <p>
+     * {@inheritDoc}
+     * </p>
+     * 
      * @param current PicoContainer
      * @param attributes Map
      * @return Object
      * @throws ScriptedPicoContainerMarkupException
      */
-    public Object createNewNode(Object current, Map attributes) throws
-        ScriptedPicoContainerMarkupException {
+    public Object createNewNode(Object current, Map attributes) throws ScriptedPicoContainerMarkupException {
 
-        return createChildContainer(attributes,(ScriptedPicoContainer) current);
+        return createChildContainer(attributes, (ScriptedPicoContainer) current);
     }
 
     /**
-     * Retrieve the decoration delegate.
-     * @return NodeBuilderDecorationDelegate
+     * Returns the decorator
+     * 
+     * @return A NodeBuilderDecorator
      */
-    private NodeBuilderDecorationDelegate getDecorationDelegate() {
-        return decorationDelegate;
+    private NodeBuilderDecorator getDecorator() {
+        return decorator;
     }
 
-
-
     /**
-     * Creates a new container.  There may or may not be a parent to this container.
-     * Supported attributes are:
+     * Creates a new container. There may or may not be a parent to this
+     * container. Supported attributes are:
      * <ul>
-     *  <li><tt>componentFactory</tt>: The ComponentFactory used for new container</li>
-     *  <li><tt>componentMonitor</tt>: The ComponentMonitor used for new container</li>
+     * <li><tt>componentFactory</tt>: The ComponentFactory used for new
+     * container</li>
+     * <li><tt>componentMonitor</tt>: The ComponentMonitor used for new
+     * container</li>
      * </ul>
+     * 
      * @param attributes Map Attributes defined by the builder in the script.
      * @param parent The parent container
      * @return The PicoContainer
@@ -140,17 +135,18 @@ public class ChildContainerNode extends AbstractBuilderNode {
         MutablePicoContainer childContainer;
         if (parent != null) {
             parentClassLoader = parent.getComponentClassLoader();
-            if ( isAttribute(attributes, COMPONENT_ADAPTER_FACTORY) ) {
+            if (isAttribute(attributes, COMPONENT_ADAPTER_FACTORY)) {
                 ComponentFactory componentFactory = createComponentFactory(attributes);
-                childContainer = new DefaultPicoContainer(
-                        getDecorationDelegate().decorate(componentFactory, attributes), parent);
-                if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
+                childContainer = new DefaultPicoContainer(getDecorator()
+                        .decorate(componentFactory, attributes), parent);
+                if (isAttribute(attributes, COMPONENT_MONITOR)) {
                     changeComponentMonitor(childContainer, createComponentMonitor(attributes));
                 }
                 parent.addChildContainer(childContainer);
-            } else if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
+            } else if (isAttribute(attributes, COMPONENT_MONITOR)) {
                 ComponentFactory componentFactory = new Caching();
-                childContainer = new DefaultPicoContainer(getDecorationDelegate().decorate(componentFactory, attributes), parent);
+                childContainer = new DefaultPicoContainer(getDecorator()
+                        .decorate(componentFactory, attributes), parent);
                 changeComponentMonitor(childContainer, createComponentMonitor(attributes));
             } else {
                 childContainer = parent.makeChildContainer();
@@ -162,15 +158,14 @@ public class ChildContainerNode extends AbstractBuilderNode {
                 }
             });
             ComponentFactory componentFactory = createComponentFactory(attributes);
-            childContainer = new DefaultPicoContainer(
-                    getDecorationDelegate().decorate(componentFactory, attributes));
-            if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
+            childContainer = new DefaultPicoContainer(getDecorator().decorate(componentFactory, attributes));
+            if (isAttribute(attributes, COMPONENT_MONITOR)) {
                 changeComponentMonitor(childContainer, createComponentMonitor(attributes));
             }
         }
 
-        MutablePicoContainer decoratedPico = getDecorationDelegate().decorate(childContainer);
-        if ( isAttribute(attributes, CLASS) )  {
+        MutablePicoContainer decoratedPico = getDecorator().decorate(childContainer);
+        if (isAttribute(attributes, CLASS)) {
             Class clazz = (Class) attributes.get(CLASS);
             return createPicoContainer(clazz, decoratedPico, parentClassLoader);
         } else {
@@ -179,12 +174,13 @@ public class ChildContainerNode extends AbstractBuilderNode {
     }
 
     private void changeComponentMonitor(MutablePicoContainer childContainer, ComponentMonitor monitor) {
-        if ( childContainer instanceof ComponentMonitorStrategy ){
-            ((ComponentMonitorStrategy)childContainer).changeMonitor(monitor);
+        if (childContainer instanceof ComponentMonitorStrategy) {
+            ((ComponentMonitorStrategy) childContainer).changeMonitor(monitor);
         }
     }
 
-    private ScriptedPicoContainer createPicoContainer(Class clazz, MutablePicoContainer decoratedPico, ClassLoader parentClassLoader) {
+    private ScriptedPicoContainer createPicoContainer(Class clazz, MutablePicoContainer decoratedPico,
+            ClassLoader parentClassLoader) {
         DefaultPicoContainer instantiatingContainer = new DefaultPicoContainer();
         instantiatingContainer.addComponent(ClassLoader.class, parentClassLoader);
         instantiatingContainer.addComponent(MutablePicoContainer.class, decoratedPico);
@@ -195,7 +191,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
 
     private ComponentFactory createComponentFactory(Map attributes) {
         final ComponentFactory factory = (ComponentFactory) attributes.remove(COMPONENT_ADAPTER_FACTORY);
-        if ( factory == null ){
+        if (factory == null) {
             return new Caching();
         }
         return factory;
@@ -203,11 +199,10 @@ public class ChildContainerNode extends AbstractBuilderNode {
 
     private ComponentMonitor createComponentMonitor(Map attributes) {
         final ComponentMonitor monitor = (ComponentMonitor) attributes.remove(COMPONENT_MONITOR);
-        if ( monitor == null ){
+        if (monitor == null) {
             return new AbstractComponentMonitor();
         }
         return monitor;
     }
-
 
 }

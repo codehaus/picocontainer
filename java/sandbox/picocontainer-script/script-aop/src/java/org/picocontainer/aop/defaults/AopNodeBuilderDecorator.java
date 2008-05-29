@@ -1,13 +1,10 @@
-/*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Original code by James Strachan                                           *
- *****************************************************************************/
-
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved. 
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file. 
+ ******************************************************************************/
 package org.picocontainer.aop.defaults;
 
 import dynaop.Aspects;
@@ -25,16 +22,18 @@ import org.picocontainer.aop.ComponentPointcut;
 import org.picocontainer.aop.MethodPointcut;
 import org.picocontainer.aop.dynaop.InstanceMixinFactory;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.NodeBuilderDecorationDelegate;
+import org.picocontainer.script.NodeBuilderDecorator;
 
 import java.util.List;
 import java.util.Map;
 
 /**
+ * AOP-based NodeBuilderDecorator
+ * 
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  */
-public class AopNodeBuilderDecorationDelegate implements NodeBuilderDecorationDelegate {
+public class AopNodeBuilderDecorator implements NodeBuilderDecorator {
 
     private final AspectsManager aspectsManager;
     private Object currentKey;
@@ -42,7 +41,7 @@ public class AopNodeBuilderDecorationDelegate implements NodeBuilderDecorationDe
     private ClassPointcut currentClassCut;
     private MethodPointcut currentMethodCut;
 
-    public AopNodeBuilderDecorationDelegate(AspectsManager aspectsManager) {
+    public AopNodeBuilderDecorator(AspectsManager aspectsManager) {
         this.aspectsManager = aspectsManager;
     }
 

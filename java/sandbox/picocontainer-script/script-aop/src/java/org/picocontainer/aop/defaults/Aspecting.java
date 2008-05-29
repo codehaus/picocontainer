@@ -1,12 +1,10 @@
-/*****************************************************************************
- * Copyright (c) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Idea by Rachel Davies, Original code by various                           *
- *****************************************************************************/
+/*******************************************************************************
+ * Copyright (c) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.aop.defaults;
 
 import org.picocontainer.ComponentAdapter;
@@ -21,7 +19,7 @@ import java.util.Properties;
 
 /**
  * Produces component adapters that apply aspects to components.
- *
+ * 
  * @author Stephen Molitor
  */
 public class Aspecting extends AbstractBehaviorFactory {
@@ -29,22 +27,21 @@ public class Aspecting extends AbstractBehaviorFactory {
     private final AspectsApplicator aspectsApplicator;
 
     /**
-     * Creates a new <code>Aspecting</code>. The factory
-     * will produce <code>Aspected</code> objects that will use
-     * <code>aspectsApplicator</code> to apply aspects to components produced
-     * by <code>delegate</code>.
-     *
+     * Creates a new <code>Aspecting</code>. The factory will produce
+     * <code>Aspected</code> objects that will use
+     * <code>aspectsApplicator</code> to apply aspects to components.
+     * 
      * @param aspectsApplicator used to apply the aspects.
      */
     public Aspecting(AspectsApplicator aspectsApplicator) {
         this.aspectsApplicator = aspectsApplicator;
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation,
-                                                   Parameter... parameters) throws PicoCompositionException {
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
+            LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
+            Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
         return new Aspected(aspectsApplicator, super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                                   componentProperties, componentKey,
-                componentImplementation, parameters));
+                componentProperties, componentKey, componentImplementation, parameters));
     }
 
 }

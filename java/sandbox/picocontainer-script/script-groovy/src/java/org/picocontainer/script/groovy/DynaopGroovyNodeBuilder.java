@@ -9,11 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.script.groovy;
 
-import org.picocontainer.aop.defaults.AopNodeBuilderDecorationDelegate;
+import org.picocontainer.aop.defaults.AopNodeBuilderDecorator;
 import org.picocontainer.aop.dynaop.DynaopAspectsManager;
 
 /**
- * A {@link org.picocontainer.script.groovy.GroovyNodeBuilder} that supports
+ * A {@link org.picocontainer.script.groovy.GroovyNodeBuilder GroovyNodeBuilder} that supports
  * scripting of aspects via dynaop.
  *
  * @author Stephen Molitor
@@ -21,11 +21,11 @@ import org.picocontainer.aop.dynaop.DynaopAspectsManager;
 public class DynaopGroovyNodeBuilder extends GroovyNodeBuilder {
 
     /**
-     * Creates a new <code>DynaopGroovyNodeBuilder</code> that will use
-     * the default @{link DynaopAspectsManager} to apply aspects.
+     * Creates a new DynaopGroovyNodeBuilder that will use
+     * a {@link DynaopAspectsManager} to apply aspects.
      */
     public DynaopGroovyNodeBuilder() {
-        super(new AopNodeBuilderDecorationDelegate(new DynaopAspectsManager()), GroovyNodeBuilder.SKIP_ATTRIBUTE_VALIDATION);
+        super(new AopNodeBuilderDecorator(new DynaopAspectsManager()), GroovyNodeBuilder.SKIP_ATTRIBUTE_VALIDATION);
     }
 
 

@@ -141,14 +141,14 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
         verifyMixin(dao);
     }
 
-    @Test public void testExplicitAspectsManagerAndDecorationDelegate() {
+    @Test public void testExplicitAspectsManagerAndDecorator() {
         String script = "" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
                 "import org.picocontainer.aop.dynaop.*\n" +
                 "aspectsManager = new org.picocontainer.aop.dynaop.DynaopAspectsManager()\n" +
                 "cuts = aspectsManager.getPointcutsFactory()\n" +
-                "decorator = new org.picocontainer.aop.defaults.AopNodeBuilderDecorationDelegate(aspectsManager)\n" +
+                "decorator = new org.picocontainer.aop.defaults.AopNodeBuilderDecorator(aspectsManager)\n" +
                 "builder = new GroovyNodeBuilder(decorator) \n" +
                 "scripted = builder.container() {\n" +
                 "    component(key:Dao, class:DaoImpl) \n" +

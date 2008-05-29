@@ -751,10 +751,10 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     @Test public void testValidationTurnedOnThrowsExceptionForUnknownAttributes() {
         DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         Reader script = new StringReader(
-            "import org.picocontainer.script.NullNodeBuilderDecorationDelegate\n" +
+            "import org.picocontainer.script.NullNodeBuilderDecorator\n" +
             "import org.picocontainer.script.groovy.GroovyNodeBuilder\n" +
             "import org.picocontainer.script.testmodel.*\n" +
-            "builder = new GroovyNodeBuilder(new NullNodeBuilderDecorationDelegate(), GroovyNodeBuilder.PERFORM_ATTRIBUTE_VALIDATION)\n" +
+            "builder = new GroovyNodeBuilder(new NullNodeBuilderDecorator(), GroovyNodeBuilder.PERFORM_ATTRIBUTE_VALIDATION)\n" +
             "scripted = builder.container {\n" +
             "    component(key:'a', instance:'apple', badAttribute:'foo')\n" +
             "}");
@@ -773,10 +773,10 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     @Test public void testValidationTurnedOffDoesntThrowExceptionForUnknownAttributes() {
         DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
         Reader script = new StringReader(
-            "import org.picocontainer.script.NullNodeBuilderDecorationDelegate\n" +
+            "import org.picocontainer.script.NullNodeBuilderDecorator\n" +
             "import org.picocontainer.script.groovy.GroovyNodeBuilder\n" +
             "import org.picocontainer.script.testmodel.*\n" +
-            "builder = new GroovyNodeBuilder(new NullNodeBuilderDecorationDelegate(), GroovyNodeBuilder.SKIP_ATTRIBUTE_VALIDATION)\n" +
+            "builder = new GroovyNodeBuilder(new NullNodeBuilderDecorator(), GroovyNodeBuilder.SKIP_ATTRIBUTE_VALIDATION)\n" +
             "scripted = builder.container {\n" +
             "    component(key:'a', instance:'apple', badAttribute:'foo')\n" +
             "}");

@@ -13,12 +13,12 @@ import org.picocontainer.ComponentFactory;
 import java.util.Map;
 
 /**
- * Null-object implementation of NodeBuilderDecorationDelegate
+ * Null-object implementation of NodeBuilderDecorator
  * 
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  */
-public class NullNodeBuilderDecorationDelegate implements NodeBuilderDecorationDelegate {
+public class NullNodeBuilderDecorator implements NodeBuilderDecorator {
     public ComponentFactory decorate(ComponentFactory componentFactory, Map attributes) {
         return componentFactory;
     }

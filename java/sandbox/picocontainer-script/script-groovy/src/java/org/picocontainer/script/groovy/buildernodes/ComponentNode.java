@@ -18,7 +18,7 @@ import java.util.Properties;
 import org.picocontainer.Parameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.script.ComponentElementHelper;
-import org.picocontainer.script.NodeBuilderDecorationDelegate;
+import org.picocontainer.script.NodeBuilderDecorator;
 import org.picocontainer.script.ScriptedPicoContainer;
 
 /**
@@ -60,9 +60,9 @@ public class ComponentNode extends AbstractBuilderNode {
 
     private static final String PROPERTIES = "properties";
 
-    private final NodeBuilderDecorationDelegate delegate;
+    private final NodeBuilderDecorator delegate;
 
-    public ComponentNode(NodeBuilderDecorationDelegate builderDelegate) {
+    public ComponentNode(NodeBuilderDecorator builderDelegate) {
         super(NODE_NAME);
 
         this.delegate = builderDelegate;

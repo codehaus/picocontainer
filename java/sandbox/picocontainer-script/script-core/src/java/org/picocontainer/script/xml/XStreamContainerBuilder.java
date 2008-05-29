@@ -17,21 +17,19 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentFactory;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.script.ContainerPopulator;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
 import org.picocontainer.script.LifecycleMode;
-import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.ConstructorInjection;
-
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -50,7 +48,7 @@ import com.thoughtworks.xstream.io.xml.DomReader;
  * 
  * @author Konstantin Pribluda
  */
-public class XStreamContainerBuilder extends ScriptedContainerBuilder implements ContainerPopulator {
+public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
     private final Element rootElement;
 
     private final static String IMPLEMENTATION = "implementation";

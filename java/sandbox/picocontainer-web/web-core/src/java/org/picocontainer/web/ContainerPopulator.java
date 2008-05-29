@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picocontainer.script;
+package org.picocontainer.web;
 
 import org.picocontainer.MutablePicoContainer;
 
@@ -17,6 +17,7 @@ import org.picocontainer.MutablePicoContainer;
  * </p>
  * 
  * @author Mauro Talevi
+ * @deprecated Use ContainerBuilder and populate container via MutablePicoContainer API
  */
 public interface ContainerPopulator {
     

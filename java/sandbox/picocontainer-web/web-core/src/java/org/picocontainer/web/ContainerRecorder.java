@@ -17,6 +17,7 @@ import org.picocontainer.MutablePicoContainer;
  * @author Konstantin Pribluda ( konstantin.pribluda(at)infodesire.com )
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
+ * @deprecated without replacement - no longer required by WebappComposer
  */
 public interface ContainerRecorder {
 

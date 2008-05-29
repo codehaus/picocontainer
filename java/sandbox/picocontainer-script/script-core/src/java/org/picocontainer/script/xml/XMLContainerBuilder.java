@@ -22,23 +22,28 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoClassNotFoundException;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.*;
-import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.script.ClassName;
 import org.picocontainer.script.ClassPathElement;
-import org.picocontainer.script.ContainerPopulator;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
 import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedBuilder;
-import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainer;
-import org.picocontainer.behaviors.Caching;
-
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
@@ -53,7 +58,7 @@ import org.xml.sax.SAXException;
  * @author Jeppe Cramon
  * @author Mauro Talevi
  */
-public class XMLContainerBuilder extends ScriptedContainerBuilder implements ContainerPopulator {
+public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
     private final static String DEFAULT_COMPONENT_INSTANCE_FACTORY = BeanComponentInstanceFactory.class.getName();
 

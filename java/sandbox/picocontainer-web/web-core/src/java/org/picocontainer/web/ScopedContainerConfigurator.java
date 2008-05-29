@@ -12,6 +12,7 @@ package org.picocontainer.web;
 /**
  * Configurator for the ScopedContainer
  * @author Mauro Talevi
+ * @deprecated Use ScriptedWebappComposer
  */
 public final class ScopedContainerConfigurator {
 	public final static String CONTAINER_BUILDER_KEY = "containerBuilder";   

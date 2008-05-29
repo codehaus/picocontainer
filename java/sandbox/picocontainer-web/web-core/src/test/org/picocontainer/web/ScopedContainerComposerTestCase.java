@@ -52,7 +52,7 @@ public class ScopedContainerComposerTestCase {
         assertComposedHierarchy(new ScopedContainerComposer());
     }
     
-    @Test public void testComposedHierarchyWithCustomMXLConfiguration() {
+    @Test public void testComposedHierarchyWithCustomXMLConfiguration() {
         String xmlConfig = 
             "<container>" +
             "<component-implementation class='org.picocontainer.web.ScopedContainerConfigurator'>"+
@@ -65,11 +65,10 @@ public class ScopedContainerComposerTestCase {
         assertComposedHierarchy(new ScopedContainerComposer(createConfigurationContainer(xmlConfig, XMLContainerBuilder.class)));
     }
     
-    //requires GroovyContainerBuilder to implement ContainerPopulator
-    public void TODO_testComposedHierarchyWithCustomGroovyConfiguration() {
+    @Test public void testComposedHierarchyWithCustomGroovyConfiguration() {
         String groovyConfig =
             "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
-            "   addComponent(class:'org.picocontainer.web.ScopedContainerConfigurator', \n"+
+            "   component(class:'org.picocontainer.web.ScopedContainerConfigurator', \n"+
             "             parameters:['org.picocontainer.script.groovy.GroovyContainerBuilder', " +
             "                         'pico-application.groovy', " +
             "                         'pico-session.groovy', " +

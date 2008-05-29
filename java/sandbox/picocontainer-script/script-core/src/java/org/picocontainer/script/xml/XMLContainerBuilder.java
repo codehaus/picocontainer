@@ -1,13 +1,10 @@
-/*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Original code by Aslak Hellesoy and Paul Hammant                          *
- *****************************************************************************/
-
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved. 
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.script.xml;
 
 import java.io.File;
@@ -315,7 +312,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         }
 
         Parameter[] parameters = createChildParameters(container, element);
-        Class clazz = container.getComponentClassLoader().loadClass(className);
+        Class<?> clazz = container.getComponentClassLoader().loadClass(className);
         Object key = element.getAttribute(KEY);
         String classKey = element.getAttribute(CLASS_NAME_KEY);
         if (notSet(key)) {
@@ -507,7 +504,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         if (notSet(className)) {
             throw new ScriptedPicoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
         }
-        Class implementationClass = getClassLoader().loadClass(className);
+        Class<?> implementationClass = getClassLoader().loadClass(className);
         Object key = element.getAttribute(KEY);
         String classKey = element.getAttribute(CLASS_NAME_KEY);
         if (notSet(key)) {

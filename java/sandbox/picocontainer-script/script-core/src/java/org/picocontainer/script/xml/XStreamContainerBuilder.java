@@ -1,13 +1,10 @@
-/*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- *                                                                           *
- *****************************************************************************/
-
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.script.xml;
 
 import java.io.IOException;
@@ -48,8 +45,9 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.DomReader;
 
 /**
- * This class builds up a hierarchy of PicoContainers from an XML configuration file.
- *
+ * This class builds up a hierarchy of PicoContainers from an XML configuration
+ * file.
+ * 
  * @author Konstantin Pribluda
  */
 public class XStreamContainerBuilder extends ScriptedContainerBuilder implements ContainerPopulator {
@@ -67,15 +65,17 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     private final HierarchicalStreamDriver xsdriver;
 
     /**
-    * construct with just reader, use context classloader
+     * construct with just reader, use context classloader
+     * 
      * @param script
      */
     public XStreamContainerBuilder(Reader script) {
-        this(script,Thread.currentThread().getContextClassLoader());
+        this(script, Thread.currentThread().getContextClassLoader());
     }
-    
+
     /**
      * construct with given script and specified classloader
+     * 
      * @param classLoader
      * @param script
      */
@@ -83,16 +83,18 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         this(script, classLoader, new DomDriver());
     }
 
-    public XStreamContainerBuilder(Reader script, ClassLoader classLoader,  HierarchicalStreamDriver driver) {
-    	this(script,classLoader, driver, LifecycleMode.AUTO_LIFECYCLE);
+    public XStreamContainerBuilder(Reader script, ClassLoader classLoader, HierarchicalStreamDriver driver) {
+        this(script, classLoader, driver, LifecycleMode.AUTO_LIFECYCLE);
     }
-        
-    public XStreamContainerBuilder(Reader script, ClassLoader classLoader, HierarchicalStreamDriver driver, LifecycleMode lifecycleMode) {
+
+    public XStreamContainerBuilder(Reader script, ClassLoader classLoader, HierarchicalStreamDriver driver,
+            LifecycleMode lifecycleMode) {
         super(script, classLoader, lifecycleMode);
         xsdriver = driver;
         InputSource inputSource = new InputSource(script);
         try {
-            rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource).getDocumentElement();
+            rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource)
+                    .getDocumentElement();
         } catch (SAXException e) {
             throw new ScriptedPicoContainerMarkupException(e);
         } catch (IOException e) {
@@ -103,15 +105,17 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     }
 
     public XStreamContainerBuilder(URL script, ClassLoader classLoader, HierarchicalStreamDriver driver) {
-    	this(script,classLoader, driver,LifecycleMode.AUTO_LIFECYCLE);
+        this(script, classLoader, driver, LifecycleMode.AUTO_LIFECYCLE);
     }
-    
-    public XStreamContainerBuilder(URL script, ClassLoader classLoader, HierarchicalStreamDriver driver, LifecycleMode lifecycleMode) {
-        super(script, classLoader,lifecycleMode);
+
+    public XStreamContainerBuilder(URL script, ClassLoader classLoader, HierarchicalStreamDriver driver,
+            LifecycleMode lifecycleMode) {
+        super(script, classLoader, lifecycleMode);
         xsdriver = driver;
         try {
             InputSource inputSource = new InputSource(getScriptReader());
-            rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource).getDocumentElement();
+            rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource)
+                    .getDocumentElement();
         } catch (SAXException e) {
             throw new ScriptedPicoContainerMarkupException(e);
         } catch (IOException e) {
@@ -128,6 +132,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     /**
      * just a convenience method, so we can work recursively with subcontainers
      * for whatever puproses we see cool.
+     * 
      * @param container
      * @param rootElement
      */
@@ -162,9 +167,11 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 
     /**
      * process adapter node
+     * 
      * @param container
      * @param rootElement
      */
+    @SuppressWarnings("unchecked")
     protected void insertAdapter(MutablePicoContainer container, Element rootElement) {
         String key = rootElement.getAttribute(KEY);
         String klass = rootElement.getAttribute(CLASS);
@@ -188,21 +195,24 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 
     /**
      * process implementation node
+     * 
      * @param container
      * @param rootElement
      * @throws ClassNotFoundException
      */
-    protected void insertImplementation(MutablePicoContainer container, Element rootElement) throws ClassNotFoundException {
+    protected void insertImplementation(MutablePicoContainer container, Element rootElement)
+            throws ClassNotFoundException {
         String key = rootElement.getAttribute(KEY);
         String klass = rootElement.getAttribute(CLASS);
         String constructor = rootElement.getAttribute(CONSTRUCTOR);
         if (klass == null || "".equals(klass)) {
-            throw new ScriptedPicoContainerMarkupException("class specification is required for component implementation");
+            throw new ScriptedPicoContainerMarkupException(
+                    "class specification is required for component implementation");
         }
 
-        Class clazz = getClassLoader().loadClass(klass);
+        Class<?> clazz = getClassLoader().loadClass(klass);
 
-        List parameters = new ArrayList();
+        List<Parameter> parameters = new ArrayList<Parameter>();
 
         NodeList children = rootElement.getChildNodes();
         Node child;
@@ -230,7 +240,8 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                     if (dependencyKey == null || "".equals(dependencyKey)) {
                         dependencyClass = ((Element) child).getAttribute(CLASS);
                         if (dependencyClass == null || "".equals(dependencyClass)) {
-                            throw new ScriptedPicoContainerMarkupException("either key or class must be present for dependency");
+                            throw new ScriptedPicoContainerMarkupException(
+                                    "either key or class must be present for dependency");
                         } else {
                             parameters.add(new ComponentParameter(getClassLoader().loadClass(dependencyClass)));
                         }
@@ -248,7 +259,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
                 parameterArray = Parameter.ZERO;
             }
             if (key == null || "".equals(key)) {
-                // without  key. clazz is our key
+                // without key. clazz is our key
                 container.addComponent(clazz, clazz, parameterArray);
             } else {
                 // with key
@@ -256,7 +267,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             }
         } else {
             if (key == null || "".equals(key)) {
-                // without  key. clazz is our key
+                // without key. clazz is our key
                 container.addComponent(clazz, clazz);
             } else {
                 // with key
@@ -267,8 +278,9 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     }
 
     /**
-     * process instance node. we get key from atributes ( if any ) and leave content
-     * to xstream. we allow only one child node inside. ( first  one wins )
+     * process instance node. we get key from atributes ( if any ) and leave
+     * content to xstream. we allow only one child node inside. ( first one wins )
+     * 
      * @param container
      * @param rootElement
      */
@@ -289,6 +301,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
 
     /**
      * parse element child with xstream and provide object
+     * 
      * @return
      * @param rootElement
      */
@@ -311,7 +324,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             if ("".equals(componentFactoryName) || componentFactoryName == null) {
                 componentFactory = new Caching().wrap(new ConstructorInjection());
             } else {
-                Class componentFactoryClass = getClassLoader().loadClass(componentFactoryName);
+                Class<?> componentFactoryClass = getClassLoader().loadClass(componentFactoryName);
                 componentFactory = (ComponentFactory) componentFactoryClass.newInstance();
             }
             MutablePicoContainer picoContainer = new DefaultPicoContainer(componentFactory);

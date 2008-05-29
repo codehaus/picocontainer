@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved. 
- * --------------------------------------------------------------------------- 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
- * LICENSE.txt file. 
+ * LICENSE.txt file.
  ******************************************************************************/
 package org.picocontainer.script.groovy.nodes;
 
@@ -37,7 +37,7 @@ public abstract class AbstractBuilderNode implements BuilderNode, Serializable {
     /**
      * A set of all possible supported attribute names.
      */
-    private final Set supportedAttributes = new HashSet();
+    private final Set<String> supportedAttributes = new HashSet<String>();
 
     /**
      * Constructs a custom node builder. In derived classes you would typically
@@ -66,12 +66,12 @@ public abstract class AbstractBuilderNode implements BuilderNode, Serializable {
         return nodeName;
     }
 
-    public Set getSupportedAttributes() {
+    public Set<String> getSupportedAttributeNames() {
         return Collections.unmodifiableSet(supportedAttributes);
     }
 
     public String toString() {
-        return "Nanocontainer Builder Node: " + this.getClass().getName() + " (\"" + getNodeName() + "\")";
+        return "BuilderNode: " + this.getClass().getName() + " (\"" + getNodeName() + "\")";
     }
 
     /**
@@ -82,7 +82,7 @@ public abstract class AbstractBuilderNode implements BuilderNode, Serializable {
      * @param key String the attribute key we're looking for.
      * @return boolean true if the attribute exists for the current node.
      */
-    protected boolean isAttribute(final Map attributes, final String key) {
+    protected boolean isAttribute(final Map<String, Object> attributes, final String key) {
         return attributes.containsKey(key) && attributes.get(key) != null;
     }
 
@@ -99,22 +99,23 @@ public abstract class AbstractBuilderNode implements BuilderNode, Serializable {
      * @throws ScriptedPicoContainerMarkupException if an attribute is specified
      *             that is not recognized.
      */
-    public void validateScriptedAttributes(final Map specifiedAttributes) throws ScriptedPicoContainerMarkupException {
-        Set specifiedAttributeNames = specifiedAttributes.keySet();
-        if (this.getSupportedAttributes().containsAll(specifiedAttributeNames)) {
+    public void validateScriptedAttributes(final Map<String, Object> specifiedAttributes)
+            throws ScriptedPicoContainerMarkupException {
+        Set<String> specifiedAttributeNames = specifiedAttributes.keySet();
+        if (this.getSupportedAttributeNames().containsAll(specifiedAttributeNames)) {
             return;
         }
 
-        Set unknownAttributes = new HashSet(specifiedAttributeNames);
-        unknownAttributes.removeAll(this.getSupportedAttributes());
+        Set<String> unknownAttributeNames = new HashSet<String>(specifiedAttributeNames);
+        unknownAttributeNames.removeAll(this.getSupportedAttributeNames());
 
         StringBuffer errorMessage = new StringBuffer();
         errorMessage.append("Found one or more unknown attributes for builder node '");
         errorMessage.append(this.getNodeName());
         errorMessage.append("': ");
-        errorMessage.append(convertSetToCommaDelimitedString(unknownAttributes));
+        errorMessage.append(toCSV(unknownAttributeNames));
         errorMessage.append(".  Recognized Attributes For this node are [");
-        errorMessage.append(convertSetToCommaDelimitedString(this.getSupportedAttributes()));
+        errorMessage.append(toCSV(this.getSupportedAttributeNames()));
         errorMessage.append("].");
 
         throw new ScriptedPicoContainerMarkupException(errorMessage.toString());
@@ -128,12 +129,11 @@ public abstract class AbstractBuilderNode implements BuilderNode, Serializable {
      *            toString() is called.
      * @return String
      */
-    private String convertSetToCommaDelimitedString(final Set set) {
+    private String toCSV(final Set<String> set) {
 
         StringBuffer result = new StringBuffer();
-
         boolean needComma = false;
-        for (Object element : set) {
+        for (String element : set) {
             if (needComma) {
                 result.append(",");
             } else {

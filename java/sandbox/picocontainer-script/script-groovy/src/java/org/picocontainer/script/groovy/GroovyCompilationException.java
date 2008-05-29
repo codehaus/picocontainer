@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.script.groovy;
 
 import java.util.Collections;
@@ -10,8 +17,11 @@ import org.codehaus.groovy.control.messages.ExceptionMessage;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 /**
+ * Thrown when a groovy compilation error occurs
+ * 
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public final class GroovyCompilationException extends ScriptedPicoContainerMarkupException {
     private final CompilationFailedException compilationFailedException;
 

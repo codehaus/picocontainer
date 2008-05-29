@@ -1,13 +1,10 @@
-/*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Original code by James Strachan                                           *
- *****************************************************************************/
-
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.script.groovy.nodes;
 
 import java.util.Map;
@@ -19,6 +16,7 @@ import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 /**
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public class GrantNode extends AbstractBuilderNode {
 
     public static final String NODE_NAME = "grant";
@@ -27,19 +25,16 @@ public class GrantNode extends AbstractBuilderNode {
         super(NODE_NAME);
     }
 
+    public Object createNewNode(Object current, Map<String, Object> attributes) {
 
-
-    public Object createNewNode(Object current, Map attributes) {
-
-        Permission perm = (Permission) attributes.remove("class");
-
+        Permission permission = (Permission) attributes.remove("class");
         if (!(current instanceof ClassPathElement)) {
-            throw new ScriptedPicoContainerMarkupException("Don't know how to create a 'grant' child of a '" + current.getClass() + "' parent");
+            throw new ScriptedPicoContainerMarkupException("Don't know how to create a 'grant' child of a '"
+                    + current.getClass() + "' parent");
         }
 
         ClassPathElement cpe = (ClassPathElement) current;
-
-        return cpe.grantPermission(perm);
+        return cpe.grantPermission(permission);
     }
 
 }

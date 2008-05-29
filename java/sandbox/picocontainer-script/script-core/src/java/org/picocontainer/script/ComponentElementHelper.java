@@ -14,7 +14,7 @@ import java.util.Properties;
 
 public class ComponentElementHelper {
 
-    public static Object makeComponent(Object classNamekey, Object key, Parameter[] parameters, Object componentClass, ScriptedPicoContainer current, Object instance, Properties[] properties) {
+    public static Object makeComponent(Object classNamekey, Object key, Parameter[] parameters, Object classValue, ScriptedPicoContainer current, Object instance, Properties[] properties) {
         ScriptedPicoContainer container = current;
         if (properties.length != 0) {
             container = (ScriptedPicoContainer) current.as(properties);
@@ -23,12 +23,12 @@ public class ComponentElementHelper {
             key = new ClassName((String)classNamekey);
         }
 
-        if (componentClass instanceof Class) {
-            Class clazz = (Class) componentClass;
+        if (classValue instanceof Class) {
+            Class<?> clazz = (Class<?>) classValue;
             key = key == null ? clazz : key;
             return container.addComponent(key, clazz, parameters);
-        } else if (componentClass instanceof String) {
-            String className = (String) componentClass;
+        } else if (classValue instanceof String) {
+            String className = (String) classValue;
             key = key == null ? className : key;
             return container.addComponent(key, new ClassName(className), parameters);
         } else if (instance != null) {
@@ -39,11 +39,11 @@ public class ComponentElementHelper {
         }
     }
 
-    public static Object makeComponent(Object cnkey,
+    public static Object makeComponent(Object classNameKey,
                                        Object key,
                                        Parameter[] parameters,
                                        Object classValue,
                                        ScriptedPicoContainer container, Object instance) {
-        return makeComponent(cnkey, key, parameters, classValue, container, instance, new Properties[0]);
+        return makeComponent(classNameKey, key, parameters, classValue, container, instance, new Properties[0]);
     }
 }

@@ -277,7 +277,7 @@ public class GroovyNodeBuilder extends BuilderSupport {
      * Returns an appropriate node handler for a given node and
      * 
      * @param tagName String
-     * @return CustomGroovyNode the appropriate node builder for the given tag
+     * @return BuilderNode the appropriate node builder for the given tag
      *         name, or null if no handler exists. (In which case, the Delegate
      *         receives the createChildContainer() call)
      */

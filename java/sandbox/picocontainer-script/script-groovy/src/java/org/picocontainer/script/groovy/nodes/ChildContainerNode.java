@@ -129,7 +129,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
      * @param parent The parent container
      * @return The PicoContainer
      */
-    protected ScriptedPicoContainer createChildContainer(Map attributes, ScriptedPicoContainer parent) {
+    protected ScriptedPicoContainer createChildContainer(Map<String,Object> attributes, ScriptedPicoContainer parent) {
 
         ClassLoader parentClassLoader;
         MutablePicoContainer childContainer;
@@ -166,7 +166,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
 
         MutablePicoContainer decoratedPico = getDecorator().decorate(childContainer);
         if (isAttribute(attributes, CLASS)) {
-            Class clazz = (Class) attributes.get(CLASS);
+            Class<?> clazz = (Class<?>) attributes.get(CLASS);
             return createPicoContainer(clazz, decoratedPico, parentClassLoader);
         } else {
             return new DefaultScriptedPicoContainer(parentClassLoader, decoratedPico);
@@ -179,7 +179,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
         }
     }
 
-    private ScriptedPicoContainer createPicoContainer(Class clazz, MutablePicoContainer decoratedPico,
+    private ScriptedPicoContainer createPicoContainer(Class<?> clazz, MutablePicoContainer decoratedPico,
             ClassLoader parentClassLoader) {
         DefaultPicoContainer instantiatingContainer = new DefaultPicoContainer();
         instantiatingContainer.addComponent(ClassLoader.class, parentClassLoader);
@@ -189,7 +189,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
         return (ScriptedPicoContainer) componentInstance;
     }
 
-    private ComponentFactory createComponentFactory(Map attributes) {
+    private ComponentFactory createComponentFactory(Map<String,Object> attributes) {
         final ComponentFactory factory = (ComponentFactory) attributes.remove(COMPONENT_ADAPTER_FACTORY);
         if (factory == null) {
             return new Caching();
@@ -197,7 +197,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
         return factory;
     }
 
-    private ComponentMonitor createComponentMonitor(Map attributes) {
+    private ComponentMonitor createComponentMonitor(Map<String,Object> attributes) {
         final ComponentMonitor monitor = (ComponentMonitor) attributes.remove(COMPONENT_MONITOR);
         if (monitor == null) {
             return new AbstractComponentMonitor();

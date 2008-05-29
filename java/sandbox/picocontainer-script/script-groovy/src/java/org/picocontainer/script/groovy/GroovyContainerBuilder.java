@@ -1,12 +1,10 @@
-/*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Original code by                                                          *
- *****************************************************************************/
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.script.groovy;
 
 import groovy.lang.Binding;
@@ -37,8 +35,7 @@ import org.picocontainer.DefaultPicoContainer;
  * {@inheritDoc}
  * The groovy script has to return an instance of {@link ScriptedPicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
- * container. It is recommended to use this as a constructor argument to the instantiated
- * NanoPicoContainer.
+ * container. 
  *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -72,7 +69,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
             parentContainer = new DefaultScriptedPicoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(), new EmptyPicoContainer()));
         }
         binding.setVariable("parent", parentContainer);
-        binding.setVariable("builder", createGroovyNodeBuilder());
+        binding.setVariable("builder", createNodeBuilder());
         binding.setVariable("assemblyScope", assemblyScope);
         handleBinding(binding);
         return runGroovyScript(binding);
@@ -82,7 +79,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
      * Allows customization of the groovy node builder in descendants.
      * @return GroovyNodeBuilder
      */
-    protected GroovyObject createGroovyNodeBuilder() {
+    protected GroovyObject createNodeBuilder() {
         return new GroovyNodeBuilder();
     }
 

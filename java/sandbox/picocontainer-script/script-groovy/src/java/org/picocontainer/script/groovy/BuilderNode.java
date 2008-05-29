@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.script.groovy;
 
 import java.util.Map;
@@ -6,46 +13,49 @@ import java.util.Set;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 /**
- * In a groovy node builder environment, there is often one class per
- * node that is possible in a builder.  This interface provides the necessary
- * validation and interaction methods for the mediator (The GroovyNodeBuilder
- * object) to figure out who should handle what.
+ * In a node builder environment, there is often one class per node that is
+ * possible in a builder. This interface provides the necessary validation and
+ * interaction methods for the mediator node builder to figure out who should
+ * handle what.
+ * 
  * @author Michael Rimov
  */
 public interface BuilderNode {
 
     /**
-     * Retrieve the name of the node.  Examples could be 'container' or 'component'.
-     * @return String
+     * Returns the name of the node, eg 'container' or 'component'.
+     * 
+     * @return The node name
      */
     String getNodeName();
 
     /**
-     * Retrieve a map of supported attribute names.
-     * <p><strong>note:</strong>Supported attributes are currently unverified by the
-     * GroovyNodeBuilder as this would result in a change of behavior.</p>
-     * @return Set of Strings.
+     * Returns the supported attribute names.
+     * 
+     * @return The Set of supported attribute names.
      */
-    Set getSupportedAttributes();
-
+    Set<String> getSupportedAttributeNames();
 
     /**
-     * Validates a given map of attributes as supplied by the GroovyNodeBuilder
-     * against the node's supported attributes.
-     * @param specifiedAttributes Map
+     * Validates a the attributes as supplied by the node builder against the
+     * node's supported attributes.
+     * 
+     * @param attributes the Map of scripted attributes
      * @throws ScriptedPicoContainerMarkupException
      */
-    void validateScriptedAttributes(Map specifiedAttributes) throws ScriptedPicoContainerMarkupException;
+    void validateScriptedAttributes(Map<String, Object> attributes) throws ScriptedPicoContainerMarkupException;
 
     /**
-     * Execute the handler for the given node builder.
-     * @param current the current object.  May be null
-     * for no parent container.
-     * @param attributes Map attributes specified in the groovy script
-     * for the builder node.
-     * in for consistency with the Groovy Builder API.  Normally set to null.
-     * @return Object
-     * @throws ScriptedPicoContainerMarkupException upon Nanocontainer error.
+     * Creates a new node .
+     * 
+     * @param current the current Object - may be <code>null</code> for no
+     *            parent container.
+     * @param attributes the Map of scripted attributes for the builder node -
+     *            may be <code>null</code>
+     * @return The newly created node
+     * @throws ScriptedPicoContainerMarkupException upon script failure to
+     *             create new node.
      */
-    Object createNewNode(Object current, Map attributes) throws ScriptedPicoContainerMarkupException;
+    Object createNewNode(Object current, Map<String, Object> attributes) throws ScriptedPicoContainerMarkupException;
+
 }

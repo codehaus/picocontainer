@@ -7,24 +7,20 @@
  ******************************************************************************/
 package org.picocontainer.script;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Characteristics;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
 
+/**
+ * Default builder creates an empty caching DefaultPicoContainer 
+ */
 public class DefaultContainerBuilder extends AbstractContainerBuilder {
-    private final ContainerComposer composer;
 
-    public DefaultContainerBuilder(ContainerComposer composer) {
-        this.composer = composer;
-    }
-
-    protected void composeContainer(MutablePicoContainer container, Object assemblyScope) {
-        composer.composeContainer(container, assemblyScope);
+    public DefaultContainerBuilder() {
     }
 
     // TODO better solution to activate default caching
-    protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+    protected PicoContainer createContainer(PicoContainer parentContainer, Object compositionScope) {
         return (new DefaultPicoContainer(parentContainer)).change(Characteristics.CACHE);
     }
 }

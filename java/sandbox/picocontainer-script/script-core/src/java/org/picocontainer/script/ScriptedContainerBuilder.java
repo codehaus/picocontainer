@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 
 /**
@@ -63,9 +62,9 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         }
     }
 
-    protected final PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
+    protected final PicoContainer createContainer(PicoContainer parentContainer, Object compositionScope) {
         try {
-            return createContainerFromScript(parentContainer, assemblyScope);
+            return createContainerFromScript(parentContainer, compositionScope);
         } finally {
             try {
                 Reader reader = getScriptReader();
@@ -102,7 +101,4 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
     
     protected abstract PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope);
 
-    protected void composeContainer(MutablePicoContainer container, Object assemblyScope) {
-        // do nothing. assume that this is done in createContainer().
-    }
 }

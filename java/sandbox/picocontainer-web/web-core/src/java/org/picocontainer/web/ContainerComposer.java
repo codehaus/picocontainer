@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picocontainer.script;
+package org.picocontainer.web;
 
 import org.picocontainer.MutablePicoContainer;
 

@@ -18,7 +18,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.script.ContainerBuilder;
-import org.picocontainer.script.ContainerComposer;
 import org.picocontainer.script.DefaultContainerBuilder;
 
 /**
@@ -32,7 +31,7 @@ public class ContainerComposerMocker {
 
 	private Mockery mockery = new Mockery();
 	
-    private final ContainerBuilder containerKiller = new DefaultContainerBuilder(null);
+    private final ContainerBuilder containerKiller = new DefaultContainerBuilder();
     /**
      * application level container
      */
@@ -50,7 +49,7 @@ public class ContainerComposerMocker {
 
     public ContainerComposerMocker(Class<?> containerComposerClass) {
         try {
-            containerBuilder = new DefaultContainerBuilder((ContainerComposer) containerComposerClass.newInstance());
+            containerBuilder = new DefaultContainerBuilder();
         } catch (Exception ex) {
             throw new PicoCompositionException(ex);
         }

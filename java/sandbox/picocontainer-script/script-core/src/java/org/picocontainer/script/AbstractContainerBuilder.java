@@ -31,9 +31,9 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
         this.startMode = startMode;
     }
 
-    public final PicoContainer buildContainer(PicoContainer parentContainer, Object assemblyScope,
+    public final PicoContainer buildContainer(PicoContainer parentContainer, Object compositionScope,
             boolean addChildToParent) {
-        PicoContainer container = createContainer(parentContainer, assemblyScope);
+        PicoContainer container = createContainer(parentContainer, compositionScope);
 
         if (parentContainer != null && parentContainer instanceof MutablePicoContainer) {
             MutablePicoContainer mutableParentContainer = (MutablePicoContainer) parentContainer;
@@ -49,9 +49,6 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
             }
         }
 
-        if (container instanceof MutablePicoContainer) {
-            composeContainer((MutablePicoContainer) container, assemblyScope);
-        }
         autoStart(container);
 
         return container;
@@ -90,7 +87,5 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
         }
     }
 
-    protected abstract void composeContainer(MutablePicoContainer container, Object assemblyScope);
-
-    protected abstract PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope);
+    protected abstract PicoContainer createContainer(PicoContainer parentContainer, Object compositionScope);
 }

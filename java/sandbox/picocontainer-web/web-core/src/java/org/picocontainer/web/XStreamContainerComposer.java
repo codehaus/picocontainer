@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.script.ContainerComposer;
 import org.picocontainer.script.xml.XStreamContainerBuilder;
 
 /**

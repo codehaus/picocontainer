@@ -18,9 +18,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.script.AbstractContainerBuilder;
-import org.picocontainer.script.ContainerComposer;
-import org.picocontainer.script.DefaultContainerBuilder;
 import org.picocontainer.tck.MockFactory;
 
 /**
@@ -30,21 +27,19 @@ import org.picocontainer.tck.MockFactory;
 @RunWith(JMock.class)
 public class LifecycleContainerBuilderTestCase {
 
-	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
-	
-    @Test public void testBuildContainerCreatesANewChildContainerAndStartsItButNotTheParent() {
+    private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+
+    @Test
+    public void testBuildContainerCreatesANewChildContainerAndStartsItButNotTheParent() {
         final Startable childStartable = mockery.mock(Startable.class);
-        mockery.checking(new Expectations(){{
-        	one(childStartable).start();
-        	one(childStartable).stop();
-        }});
-        
-        ContainerComposer containerComposer = new ContainerComposer() {
-            public void composeContainer(MutablePicoContainer container, Object assemblyScope) {
-                container.addComponent(childStartable);
+        mockery.checking(new Expectations() {
+            {
+                one(childStartable).start();
+                one(childStartable).stop();
             }
-        };
-        AbstractContainerBuilder builder = new DefaultContainerBuilder(containerComposer);
+        });
+
+        AbstractContainerBuilder builder = new LifecycleContainerBuilder(childStartable);
 
         MutablePicoContainer parent = new DefaultPicoContainer();
 
@@ -52,10 +47,26 @@ public class LifecycleContainerBuilderTestCase {
         parent.addComponent(parentStartable);
 
         PicoContainer childContainer = builder.buildContainer(parent, null, true);
-        //PicoContainer.getParent() is now ImmutablePicoContainer
+        // PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, childContainer.getParent());
 
         builder.killContainer(childContainer);
     }
 
+    static class LifecycleContainerBuilder extends DefaultContainerBuilder {
+
+        private final Startable childStartable;
+
+        public LifecycleContainerBuilder(Startable childStartable) {
+            this.childStartable = childStartable;
+        }
+
+        @Override
+        protected MutablePicoContainer createContainer(PicoContainer parentContainer, Object compositionScope) {
+            MutablePicoContainer container = (MutablePicoContainer) super.createContainer(parentContainer, compositionScope);
+            container.addComponent(childStartable);
+            return container;
+        }
+        
+    }
 }

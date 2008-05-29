@@ -10,8 +10,9 @@ package org.picocontainer.script;
 import org.picocontainer.PicoContainer;
 
 /**
- * The responsibility of a ContainerBuilder is to <em>instantiate</em> and
- * <em>compose</em> containers.
+ * The responsibility of a ContainerBuilder is to build containers. Composition
+ * of containers is generally a separate reponsibility, although the some
+ * builders may use the composition scope.
  * 
  * @author Joe Walnes
  * @author Mauro Talevi
@@ -19,17 +20,19 @@ import org.picocontainer.PicoContainer;
 public interface ContainerBuilder {
 
     /**
-     * Builds and composes a new container
+     * Builds a new container
      * 
-     * @param parentContainer the parent PicoContainer (may be null).
-     * @param compositionScope Hint about the scope for composition.
-     * @param addChildToParent Add the child to the parent
+     * @param parentContainer the parent PicoContainer (may be <code>null</code>).
+     * @param compositionScope a hint about the scope for composition (may be
+     *            <code>null</code>)
+     * @param addChildToParent boolean flag, <code>true</code> if the child is
+     *            to be added to the parent
      * @return A PicoContainer
      */
     PicoContainer buildContainer(PicoContainer parentContainer, Object compositionScope, boolean addChildToParent);
 
     /**
-     * Stops, destroys and removed a container.
+     * Destroys a container.
      * 
      * @param container the PicoContainer to be killed
      */

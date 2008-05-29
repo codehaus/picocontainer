@@ -28,7 +28,6 @@ import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.references.SimpleReference;
 import org.picocontainer.script.ClassName;
 import org.picocontainer.script.ContainerBuilder;
-import org.picocontainer.script.ContainerComposer;
 import org.picocontainer.script.ContainerPopulator;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainer;
@@ -36,7 +35,7 @@ import org.picocontainer.script.ScriptedPicoContainer;
 /**
  * <p>
  * ScopedContainerComposer is a 
- * {@link org.picocontainer.script.ContainerComposer ContainerComposer} 
+ * {@link org.picocontainer.web.ContainerComposer ContainerComposer} 
  * which can build PicoContainers for different web context scopes: 
  * application, session and request. 
  * </p>

@@ -48,7 +48,7 @@ import org.picocontainer.script.ScriptedPicoContainer;
  * </p>
  * <p>
  * <b>Note:</b> ScopedContainerComposer requires ContainerBuilders that also implement
- * {@link org.picocontainer.webContainerPopulator ContainerPopulator},
+ * {@link org.picocontainer.script.ContainerPopulator ContainerPopulator},
  * as this is used by the 
  * {@link org.picocontainer.web.ContainerRecorder ContainerRecorder} proxy.
  * </p>

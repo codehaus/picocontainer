@@ -16,7 +16,6 @@ import java.util.Map;
  *
  * @author Aslak Helles&oslash;y
  * @author Kouhei Mori
- * @version $Revision:4445 $
  */
 public class CachingScriptClassLoader {
     private final Map scriptLoadTimestamps = Collections.synchronizedMap(new HashMap());

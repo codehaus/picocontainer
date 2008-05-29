@@ -19,7 +19,6 @@ import org.junit.Test;
  * TestCase for ContainerComposerMocker
  *
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
- * @version $Revision$
  */
 public class ContainerComposerMockerTestCase {
 

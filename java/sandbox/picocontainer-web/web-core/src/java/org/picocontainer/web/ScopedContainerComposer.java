@@ -55,7 +55,6 @@ import org.picocontainer.script.ScriptedPicoContainer;
  * 
  * @author Mauro Talevi
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
- * @version $Revision$
  */
 public final class ScopedContainerComposer implements ContainerComposer {
 

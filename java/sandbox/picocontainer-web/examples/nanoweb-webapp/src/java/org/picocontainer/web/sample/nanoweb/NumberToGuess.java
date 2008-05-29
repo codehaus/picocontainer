@@ -5,7 +5,6 @@ import java.util.Random;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision:4445 $
  */
 public final class NumberToGuess implements Serializable {
     private final Random random;

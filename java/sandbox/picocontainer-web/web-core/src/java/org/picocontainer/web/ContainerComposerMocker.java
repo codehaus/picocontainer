@@ -27,7 +27,6 @@ import org.picocontainer.script.DefaultContainerBuilder;
  * a PicoCompositionException will be thrown.
  *
  * @author Konstantin Pribluda
- * @version $Revision$
  */
 public class ContainerComposerMocker {
 

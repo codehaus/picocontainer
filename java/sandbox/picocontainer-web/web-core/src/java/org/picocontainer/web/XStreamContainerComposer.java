@@ -26,7 +26,6 @@ import org.picocontainer.script.xml.XStreamContainerBuilder;
  * nano-application.xml , nano-session.xml and nano-request.xml
  *
  * @author Konstantin Pribluda ( konstantin[at]infodesire.com )
- * @version $Revision$
  */
 public final class XStreamContainerComposer implements ContainerComposer {
 

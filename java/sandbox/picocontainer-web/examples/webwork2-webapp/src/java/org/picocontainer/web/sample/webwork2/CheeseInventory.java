@@ -19,7 +19,6 @@ import java.util.ArrayList;
  * Example of a XWork action that relies on constructor injection.
  * 
  * @author Paul Hammant
- * @version $Revision: 2099 $
  */
 public class CheeseInventory implements Action {
 

@@ -4,7 +4,6 @@ import java.net.URL;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision:4445 $
  */
 public class ScriptException extends Exception {
     private final URL scriptURL;

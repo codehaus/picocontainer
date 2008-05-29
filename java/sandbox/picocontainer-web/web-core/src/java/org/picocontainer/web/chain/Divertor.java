@@ -3,7 +3,6 @@ package org.picocontainer.web.chain;
 /**
  * generates diversion URL for given cause
  * @author k.pribluda
- * @version $Revision:$
  */
 public interface Divertor {
 	/**

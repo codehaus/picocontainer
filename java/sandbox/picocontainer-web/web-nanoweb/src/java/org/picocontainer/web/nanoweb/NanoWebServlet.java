@@ -42,7 +42,6 @@ import org.picocontainer.web.PicoServletContainerFilter;
  *
  * @author Aslak Helles&oslash;y
  * @author Kouhei Mori
- * @version $Revision:4445 $
  */
 public class NanoWebServlet extends HttpServlet {
 

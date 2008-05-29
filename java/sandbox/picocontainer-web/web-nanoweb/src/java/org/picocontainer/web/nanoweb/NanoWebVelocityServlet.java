@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision:4445 $
  */
 public class NanoWebVelocityServlet extends VelocityViewServlet {
     protected Template handleRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Context context) throws Exception {

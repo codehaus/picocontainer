@@ -2,7 +2,6 @@ package org.picocontainer.web.nanoweb;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision:4445 $
  */
 public class MyAction {
     private int year;

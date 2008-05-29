@@ -11,7 +11,6 @@ import java.util.Arrays;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision:4445 $
  */
 public class ChainingDispatcher implements Dispatcher {
     private final String extension;

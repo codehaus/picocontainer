@@ -9,7 +9,6 @@ import org.picocontainer.web.chain.Divertor;
  * divertor based on maps. uses FQCN as key, values shall be strings
  * 
  * @author k.pribluda
- * @version $Revision:$
  */
 public class MapDivertor implements Divertor {
 

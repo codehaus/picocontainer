@@ -57,9 +57,9 @@ public class ScopedContainerComposerTestCase {
             "<container>" +
             "<component-implementation class='org.picocontainer.web.ScopedContainerConfigurator'>"+
             "      <parameter><string>org.picocontainer.script.xml.XMLContainerBuilder</string></parameter>"+
-            "      <parameter><string>nanowar-application.xml</string></parameter> "+
-            "      <parameter><string>nanowar-session.xml</string></parameter>        "+
-            "      <parameter><string>nanowar-request.xml</string></parameter> "+
+            "      <parameter><string>pico-application.xml</string></parameter> "+
+            "      <parameter><string>pico-session.xml</string></parameter>        "+
+            "      <parameter><string>pico-request.xml</string></parameter> "+
             "</component-implementation>" +
             "</container>";
         assertComposedHierarchy(new ScopedContainerComposer(createConfigurationContainer(xmlConfig, XMLContainerBuilder.class)));
@@ -71,9 +71,9 @@ public class ScopedContainerComposerTestCase {
             "pico = builder.container(parent:parent, scope:assemblyScope) {\n" +
             "   addComponent(class:'org.picocontainer.web.ScopedContainerConfigurator', \n"+
             "             parameters:['org.picocontainer.script.groovy.GroovyContainerBuilder', " +
-            "                         'nanowar-application.groovy', " +
-            "                         'nanowar-session.groovy', " +
-            "                         'nanowar-request.groovy' ])\n" +
+            "                         'pico-application.groovy', " +
+            "                         'pico-session.groovy', " +
+            "                         'pico-request.groovy' ])\n" +
             "}";
         assertComposedHierarchy(new ScopedContainerComposer(createConfigurationContainer(groovyConfig, GroovyContainerBuilder.class)));        
     }
@@ -103,7 +103,7 @@ public class ScopedContainerComposerTestCase {
     }
     
 
-    private PicoContainer createConfigurationContainer(String script, Class containerBuilder) {
+    private PicoContainer createConfigurationContainer(String script, Class<?> containerBuilder) {
         ScriptedContainerBuilderFactory scriptedContainerBuilderFactory = new ScriptedContainerBuilderFactory(
                 new StringReader(script), containerBuilder.getName(), Thread.currentThread().getContextClassLoader());
         return buildContainer(scriptedContainerBuilderFactory.getContainerBuilder());        

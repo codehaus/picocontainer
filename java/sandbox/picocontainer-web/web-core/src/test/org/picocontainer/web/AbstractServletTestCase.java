@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
+import org.picocontainer.MutablePicoContainer;
 import org.xml.sax.SAXException;
 
 import com.meterware.httpunit.GetMethodWebRequest;
@@ -36,6 +37,7 @@ import com.meterware.servletunit.ServletUnitClient;
 /**
  * 
  * @author Gr&eacute;gory Joseph
+ * @author Mauro Talevi
  */
 public class AbstractServletTestCase {
     private ServletRunner sr;
@@ -75,30 +77,19 @@ public class AbstractServletTestCase {
                 "    xsi:schemaLocation=\"http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd\">\n" +
                 "\n" +
                 "<context-param>\n" +
-                "  <param-name>nanocontainer.groovy</param-name>\n" +
-                "  <param-value>" + //<![CDATA[\n" +
-                "    componentFactory = new org.picocontainer.injectors.AdaptingInjection()\n" +
-                "    pico = new org.picocontainer.DefaultPicoContainer(componentFactory, parent)\n" +
-                "    if(assemblyScope instanceof javax.servlet.ServletContext) {\n" +
-                ctxScope +
-                "    } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {\n" +
-                sesScope +
-                "    } else if(assemblyScope instanceof javax.servlet.ServletRequest) {\n" +
-                reqScope +
-                "    }\n" +
-                //"  ]]>" +
-                "</param-value>\n" +
+                "  <param-name>webapp-composer-class</param-name>\n" +
+                "  <param-value>"+MockWebappComposer.class.getName()+"</param-value>\n" +
                 "</context-param>" +
                 "    <listener>\n" +
-                "        <listener-class>org.picocontainer.web.ServletContainerListener</listener-class>\n" +
+                "        <listener-class>org.picocontainer.web.PicoServletContainerListener</listener-class>\n" +
                 "    </listener>\n" +
                 "\n" +
                 "    <filter>\n" +
-                "        <filter-name>NanoWar</filter-name>\n" +
-                "        <filter-class>org.picocontainer.web.ServletRequestContainerFilter</filter-class>\n" +
+                "        <filter-name>picoFilter</filter-name>\n" +
+                "        <filter-class>org.picocontainer.web.PicoServletContainerFilter</filter-class>\n" +
                 "    </filter>" +
                 "    <filter-mapping>\n" +
-                "        <filter-name>NanoWar</filter-name>\n" +
+                "        <filter-name>picoFilter</filter-name>\n" +
                 "        <url-pattern>/*</url-pattern>\n" +
                 "    </filter-mapping>";
         for (FilterDef filter : filters) {
@@ -108,15 +99,27 @@ public class AbstractServletTestCase {
         return new ByteArrayInputStream(xml.getBytes());
     }
 
+    static final class MockWebappComposer implements WebappComposer {
+
+        public void composeApplication(MutablePicoContainer applicationContainer) {
+        }
+
+        public void composeRequest(MutablePicoContainer requestContainer) {
+        }
+
+        public void composeSession(MutablePicoContainer sessionContainer) {
+        }
+    }
+    
     static final class FilterDef {
         private final String filterName;
-        private final Class filterClass;
-        private final Class delegateClass;
+        private final Class<?> filterClass;
+        private final Class<?> delegateClass;
         private final String delegateKey;
         private final String initType;
         private final boolean lookupOnlyOnce;
 
-        public FilterDef(String filterName, Class filterClass, Class delegateClass, String delegateKey, String initType, boolean lookupOnlyOnce) {
+        public FilterDef(String filterName, Class<?> filterClass, Class<?> delegateClass, String delegateKey, String initType, boolean lookupOnlyOnce) {
             this.filterName = filterName;
             this.filterClass = filterClass;
             this.delegateClass = delegateClass;
@@ -163,6 +166,7 @@ public class AbstractServletTestCase {
         }
     }
 
+    @SuppressWarnings("serial")
     public static class EmptyServlet extends HttpServlet {
         protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
             res.getWriter().write("-empty-");

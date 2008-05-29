@@ -68,17 +68,33 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
     private DefaultPicoContainer requestContainer;
     private Storing sessionStoring;
     private Storing requestStoring;
+    private boolean useCompositionClass;
+
+    public PicoServletContainerListener(DefaultPicoContainer appContainer, DefaultPicoContainer sessionContainer, DefaultPicoContainer requestContainer, Storing sessionStoring, Storing requestStoring) {
+        this.appContainer = appContainer;
+        this.sessionContainer = sessionContainer;
+        this.requestContainer = requestContainer;
+        this.sessionStoring = sessionStoring;
+        this.requestStoring = requestStoring;
+        useCompositionClass = false;
+    }
+
+    public PicoServletContainerListener() {
+        appContainer = new DefaultPicoContainer(new Caching());
+        sessionContainer = new DefaultPicoContainer(sessionStoring, appContainer);
+        sessionStoring = new Storing();
+        requestStoring = new Storing();
+        requestContainer = new DefaultPicoContainer(requestStoring, sessionContainer);
+        useCompositionClass = true;
+    }
 
     public void contextInitialized(final ServletContextEvent event) {
 
         ServletContext context = event.getServletContext();
-        appContainer = new DefaultPicoContainer(new Caching());
         appContainer.setName("application");
 
         context.setAttribute(ApplicationContainerHolder.class.getName(), new ApplicationContainerHolder(appContainer));
 
-        sessionStoring = new Storing();
-        sessionContainer = new DefaultPicoContainer(sessionStoring, appContainer);
         sessionContainer.setName("session");
         ThreadLocalLifecycleState sessionStateModel = new ThreadLocalLifecycleState();
         sessionContainer.setLifecycleState(sessionStateModel);
@@ -86,8 +102,6 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         context.setAttribute(SessionContainerHolder.class.getName(), new SessionContainerHolder(sessionContainer,
                 sessionStoring, sessionStateModel));
 
-        requestStoring = new Storing();
-        requestContainer = new DefaultPicoContainer(requestStoring, sessionContainer);
         requestContainer.setName("request");
         ThreadLocalLifecycleState requestStateModel = new ThreadLocalLifecycleState();
         requestContainer.setLifecycleState(requestStateModel);
@@ -95,7 +109,9 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         context.setAttribute(RequestContainerHolder.class.getName(), new RequestContainerHolder(requestContainer,
                 requestStoring, requestStateModel));
 
-        compose(loadComposer(context));
+        if (useCompositionClass) {
+            compose(loadComposer(context));
+        }
         appContainer.start();
     }
 
@@ -111,9 +127,9 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
     }
 
     protected void compose(WebappComposer composer) {
-        composer.application(appContainer);
-        composer.session(sessionContainer);
-        composer.request(requestContainer);
+        composer.composeApplication(appContainer);
+        composer.composeSession(sessionContainer);
+        composer.composeRequest(requestContainer);
     }
 
     public void contextDestroyed(ServletContextEvent event) {

@@ -8,14 +8,14 @@ import org.picocontainer.web.sample.service.defaults.DefaultCheeseService;
 
 public class StrutsWebappComposer implements WebappComposer {
 
-    public void application(MutablePicoContainer applicationContainer) {
+    public void composeApplication(MutablePicoContainer applicationContainer) {
         applicationContainer.addComponent(CheeseDao.class, MemoryCheeseDao.class);
     }
 
-    public void session(MutablePicoContainer sessionContainer) {
+    public void composeSession(MutablePicoContainer sessionContainer) {
         sessionContainer.addComponent(DefaultCheeseService.class);
     }
 
-    public void request(MutablePicoContainer requestContainer) {
+    public void composeRequest(MutablePicoContainer requestContainer) {
     }
 }

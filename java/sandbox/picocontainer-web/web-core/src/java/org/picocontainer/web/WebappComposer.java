@@ -20,10 +20,10 @@ import org.picocontainer.MutablePicoContainer;
  */
 public interface WebappComposer {
 
-    void application(MutablePicoContainer applicationContainer);
+    void composeApplication(MutablePicoContainer applicationContainer);
 
-    void session(MutablePicoContainer sessionContainer);
+    void composeSession(MutablePicoContainer sessionContainer);
 
-    void request(MutablePicoContainer requestContainer);
+    void composeRequest(MutablePicoContainer requestContainer);
 
 }

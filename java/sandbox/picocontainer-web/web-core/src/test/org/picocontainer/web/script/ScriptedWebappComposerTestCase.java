@@ -14,6 +14,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.script.groovy.GroovyContainerBuilder;
+import org.picocontainer.script.xml.XStreamContainerBuilder;
 
 /**
  * @author Mauro Talevi
@@ -21,12 +22,18 @@ import org.picocontainer.script.groovy.GroovyContainerBuilder;
 public class ScriptedWebappComposerTestCase {
 
     @Test
-    public void canComposedHierarchyWithDefaultConfiguration() {
+    public void canComposedHierarchyWithDefaultXMLBuilder() {
         assertComposedHierarchy(new ScriptedWebappComposer());
+    }
+    
+    @Test
+    public void canComposedHierarchyWithXStreamBuilder() {
+        assertComposedHierarchy(new ScriptedWebappComposer(XStreamContainerBuilder.class.getName(),
+                "nano-application.xml", "nano-session.xml", "nano-request.xml"));
     }
 
     @Test
-    public void canComposedHierarchyWithCustomConfiguration() {
+    public void canComposedHierarchyWithGroovyBuilder() {
         assertComposedHierarchy(new ScriptedWebappComposer(GroovyContainerBuilder.class.getName(),
                 "pico-application.groovy", "pico-session.groovy", "pico-request.groovy"));
     }

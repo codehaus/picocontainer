@@ -1,4 +1,4 @@
-package org.picocontainer.script.groovy.buildernodes;
+package org.picocontainer.script.groovy.nodes;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;

@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved. *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD * style
- * license a copy of which has been included with this distribution in * the
- * LICENSE.txt file. * * Original code by James Strachan *
+ * Copyright (C) PicoContainer Organization. All rights reserved. 
+ * --------------------------------------------------------------------------- 
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file. 
  ******************************************************************************/
 package org.picocontainer.script.groovy;
 
@@ -23,27 +23,28 @@ import org.picocontainer.script.NodeBuilderDecorator;
 import org.picocontainer.script.NullNodeBuilderDecorator;
 import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.groovy.buildernodes.AppendContainerNode;
-import org.picocontainer.script.groovy.buildernodes.BeanNode;
-import org.picocontainer.script.groovy.buildernodes.ChildContainerNode;
-import org.picocontainer.script.groovy.buildernodes.ClassLoaderNode;
-import org.picocontainer.script.groovy.buildernodes.ClasspathNode;
-import org.picocontainer.script.groovy.buildernodes.ComponentNode;
-import org.picocontainer.script.groovy.buildernodes.ConfigNode;
-import org.picocontainer.script.groovy.buildernodes.DoCallNode;
-import org.picocontainer.script.groovy.buildernodes.GrantNode;
-import org.picocontainer.script.groovy.buildernodes.NewBuilderNode;
+import org.picocontainer.script.groovy.nodes.AppendContainerNode;
+import org.picocontainer.script.groovy.nodes.BeanNode;
+import org.picocontainer.script.groovy.nodes.ChildContainerNode;
+import org.picocontainer.script.groovy.nodes.ClassLoaderNode;
+import org.picocontainer.script.groovy.nodes.ClasspathNode;
+import org.picocontainer.script.groovy.nodes.ComponentNode;
+import org.picocontainer.script.groovy.nodes.ConfigNode;
+import org.picocontainer.script.groovy.nodes.DoCallNode;
+import org.picocontainer.script.groovy.nodes.GrantNode;
+import org.picocontainer.script.groovy.nodes.NewBuilderNode;
 
 /**
  * Builds node trees of PicoContainers and Pico components using GroovyMarkup.
  * <p>
- * Simple example usage in your groovy script: <code><pre>
+ * Simple example usage in your groovy script: 
+ * <pre>
  * builder = new org.picocontainer.script.groovy.GroovyNodeBuilder()
  * pico = builder.container(parent:parent) {
  *   component(class:org.picocontainer.script.testmodel.DefaultWebServerConfig)
  *   component(class:org.picocontainer.script.testmodel.WebServerImpl)
  * }
- * </pre></code>
+ * </pre>
  * </p>
  * <h4>Extending/Enhancing GroovyNodeBuilder</h4>
  * <p>
@@ -107,7 +108,6 @@ public class GroovyNodeBuilder extends BuilderSupport {
      * @param decorator NodeBuilderDecorator
      * @param performAttributeValidation should be set to
      *            PERFORM_ATTRIBUTE_VALIDATION or SKIP_ATTRIBUTE_VALIDATION
-     * @see org.picocontainer.aop.defaults.AopNodeBuilderDecorator
      */
     public GroovyNodeBuilder(NodeBuilderDecorator decorator, boolean performAttributeValidation) {
         this.decorator = decorator;

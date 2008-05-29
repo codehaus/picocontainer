@@ -1,4 +1,4 @@
-package org.picocontainer.script.groovy.buildernodes;
+package org.picocontainer.script.groovy.nodes;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.groovy.buildernodes.ConfigNode;
+import org.picocontainer.script.groovy.nodes.ConfigNode;
 
 /**
  * test capabilities of config node

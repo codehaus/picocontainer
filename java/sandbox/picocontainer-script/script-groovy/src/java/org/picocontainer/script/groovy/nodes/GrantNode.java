@@ -8,7 +8,7 @@
  * Original code by James Strachan                                           *
  *****************************************************************************/
 
-package org.picocontainer.script.groovy.buildernodes;
+package org.picocontainer.script.groovy.nodes;
 
 import java.util.Map;
 import java.security.Permission;

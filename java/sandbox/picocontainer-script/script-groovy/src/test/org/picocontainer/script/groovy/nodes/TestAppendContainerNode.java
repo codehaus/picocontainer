@@ -8,7 +8,7 @@
  * Original code by Michael Rimov                                            *
  *****************************************************************************/
 
-package org.picocontainer.script.groovy.buildernodes;
+package org.picocontainer.script.groovy.nodes;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.picocontainer.script.DefaultScriptedPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedPicoContainer;
-import org.picocontainer.script.groovy.buildernodes.AppendContainerNode;
+import org.picocontainer.script.groovy.nodes.AppendContainerNode;
 
 /**
  * Tests node marking and exceptions

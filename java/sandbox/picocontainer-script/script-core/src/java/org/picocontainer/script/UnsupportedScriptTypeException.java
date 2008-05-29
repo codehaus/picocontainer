@@ -1,12 +1,21 @@
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.script;
 
 import org.picocontainer.PicoException;
 
 /**
- * Indicates that a given file extension has no corresponding builder.  The
+ * Indicates that a given file extension has no corresponding builder. The
  * message will also indicate all supported builders.
+ * 
  * @author Michael Rimov
  */
+@SuppressWarnings("serial")
 public class UnsupportedScriptTypeException extends PicoException {
 
     private final String specifiedFileExtension;
@@ -19,13 +28,12 @@ public class UnsupportedScriptTypeException extends PicoException {
         this.allSupportedFileExtensions = allSupportedFileExtensions;
     }
 
-
-
     /**
-     * Transforms the constructor arguments into a real exption
-     * @return String
+     * Builds the exception message from the fields
+     * 
+     * @return The exception message
      */
-    private  String buildExceptionMessage() {
+    private String buildExceptionMessage() {
         StringBuffer message = new StringBuffer(48);
         message.append("Unsupported file extension '");
         message.append(specifiedFileExtension);

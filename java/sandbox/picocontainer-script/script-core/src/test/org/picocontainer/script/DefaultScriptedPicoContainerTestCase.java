@@ -35,12 +35,10 @@ public class DefaultScriptedPicoContainerTestCase extends AbstractPicoContainerT
         return new DefaultScriptedPicoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new Caching(), parent));
     }
 
-
     protected Properties[] getProperties() {
         return new Properties[] { Characteristics.NONE};
     }
 
-    // TODO - go to a Nano TCK?
     @Test public void testNamedChildContainerIsAccessible()  {
         StringBuffer sb = new StringBuffer();
         final ScriptedPicoContainer parent = (ScriptedPicoContainer) createPicoContainer(null);
@@ -51,7 +49,6 @@ public class DefaultScriptedPicoContainerTestCase extends AbstractPicoContainerT
         assertNotNull(o);
     }
 
-    // TODO - go to a Nano TCK?
     @Test public void testNamedChildContainerIsAccessibleForStringKeys() {
         StringBuffer sb = new StringBuffer();
         final ScriptedPicoContainer parent = (ScriptedPicoContainer) createPicoContainer(null);
@@ -63,7 +60,6 @@ public class DefaultScriptedPicoContainerTestCase extends AbstractPicoContainerT
         assertTrue(sb.toString().indexOf("-instantiated") != -1);
     }
 
-    // TODO - go to a Nano TCK?
     @Test public void testNamedChildContainerIsAccessibleForClassKeys() {
         StringBuffer sb = new StringBuffer();
         final ScriptedPicoContainer parent = (ScriptedPicoContainer) createPicoContainer(null);
@@ -86,8 +82,6 @@ public class DefaultScriptedPicoContainerTestCase extends AbstractPicoContainerT
     }
 
     // test methods inherited. This container is otherwise fully compliant.
-
-
     @Test public void testAcceptImplementsBreadthFirstStrategy() {
         super.testAcceptImplementsBreadthFirstStrategy();
     }

@@ -5,15 +5,10 @@ import static org.junit.Assert.fail;
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implementationHiding;
 import static org.picocontainer.injectors.Injectors.SDI;
-import org.picocontainer.injectors.AdaptingInjection;
-import org.picocontainer.injectors.SetterInjection;
-import org.picocontainer.injectors.AnnotatedMethodInjection;
-import org.picocontainer.injectors.ConstructorInjection;
 
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
@@ -21,18 +16,19 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
-import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.behaviors.Synchronizing;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.injectors.AnnotatedMethodInjection;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
-import org.picocontainer.script.ScriptedBuilder;
-import org.picocontainer.script.ScriptedPicoContainer;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -171,7 +167,6 @@ public class ScriptedBuilderTestCase {
 
     @Test public void testWithCustomScriptedContainer() throws IOException {
         ScriptedPicoContainer nc = new ScriptedBuilder().implementedBy(TestScriptedContainer.class).build();
-        ComponentMonitor cm = new NullComponentMonitor();
         ScriptedPicoContainer expected = new TestScriptedContainer(null,new DefaultPicoContainer(new AdaptingInjection(),new NullLifecycleStrategy(), new EmptyPicoContainer()));
         assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
@@ -186,7 +181,6 @@ public class ScriptedBuilderTestCase {
 
     @Test public void testWithCustomScriptedAndPicoContainer() throws IOException {
         ScriptedPicoContainer nc = new ScriptedBuilder().implementedBy(TestScriptedContainer.class).picoImplementedBy(TestPicoContainer.class).build();
-        ComponentMonitor cm = new NullComponentMonitor();
         ScriptedPicoContainer expected = new TestScriptedContainer(null, new TestPicoContainer(new AdaptingInjection(), new NullComponentMonitor(), new NullLifecycleStrategy(), new EmptyPicoContainer()));
         assertEquals(xs.toXML(expected),xs.toXML(nc));
     }

@@ -37,7 +37,6 @@ public class StoringContainerTestCase {
     @Test public void testInvocationsCanBeRecordedAndReplayedOnADifferentContainerInstance() throws Exception {
 
         // This test case is not testing Storing. Its just testing that a Caching parent does so.
-
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         parent.addComponent("fruit", "apple");
         parent.addComponent("int", 239);
@@ -92,8 +91,7 @@ public class StoringContainerTestCase {
 
         MutablePicoContainer parent = new DefaultPicoContainer(new Caching());
 
-        // parent has nothing populated in it.
-
+        // parent has nothing populated in it
         DefaultPicoContainer child = new DefaultPicoContainer(new Storing(), parent);
 
         new XMLContainerBuilder(new StringReader(""

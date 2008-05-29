@@ -24,7 +24,9 @@ import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.web.WebappComposer;
 
 /**
- * Script-based webapp composer
+ * Script-based webapp composer. Allows to build containers for each webapp
+ * scope from picocontainer scripts, using configurable builder and script
+ * resources, which default to XML scripts.
  * 
  * @author Mauro Talevi
  */
@@ -87,8 +89,8 @@ public class ScriptedWebappComposer implements WebappComposer {
     private Reader getResource(String resource) {
         ClassLoader classLoader = getClassLoader();
         InputStream stream = classLoader.getResourceAsStream(resource);
-        if ( stream == null ){
-            throw new PicoCompositionException("Resource "+resource+" not found in classloader "+classLoader);
+        if (stream == null) {
+            throw new PicoCompositionException("Resource " + resource + " not found in classloader " + classLoader);
         }
         return new InputStreamReader(stream);
     }

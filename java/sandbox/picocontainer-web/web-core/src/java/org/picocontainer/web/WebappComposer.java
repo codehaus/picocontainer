@@ -11,9 +11,12 @@ import org.picocontainer.MutablePicoContainer;
 
 /**
  * Allows to compose containers for different webapp scopes. The composer is
- * used by the {@link org.picocontainer.web.PicoServletContainerListener}
- * after the webapp context is initialised. Users can either register the
- * components for each scope directly or load them from a script.
+ * used by the
+ * {@link org.picocontainer.web.PicoServletContainerListener PicoServletContainerListener}
+ * after the webapp context is initialised. Users can either implement their
+ * composer and register components for each scope directly or load them from a
+ * picocontainer script, using the
+ * {@link org.picocontainer.web.script.ScriptedWebappComposer ScriptedWebappComposer}.
  * 
  * @author Paul Hammant
  * @author Mauro Talevi

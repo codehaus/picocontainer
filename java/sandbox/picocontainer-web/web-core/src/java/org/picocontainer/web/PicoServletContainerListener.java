@@ -63,15 +63,36 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         Serializable {
 
     public static final String WEBAPP_COMPOSER_CLASS = "webapp-composer-class";
-    private DefaultPicoContainer appContainer;
+    private DefaultPicoContainer applicationContainer;
     private DefaultPicoContainer sessionContainer;
     private DefaultPicoContainer requestContainer;
     private Storing sessionStoring;
     private Storing requestStoring;
     private boolean useCompositionClass;
 
-    public PicoServletContainerListener(DefaultPicoContainer appContainer, DefaultPicoContainer sessionContainer, DefaultPicoContainer requestContainer, Storing sessionStoring, Storing requestStoring) {
-        this.appContainer = appContainer;
+    /**
+     * Default constructor used in webapp containers
+     */
+    public PicoServletContainerListener() {
+        applicationContainer = new DefaultPicoContainer(new Caching());
+        sessionStoring = new Storing();
+        sessionContainer = new DefaultPicoContainer(sessionStoring, applicationContainer);
+        requestStoring = new Storing();
+        requestContainer = new DefaultPicoContainer(requestStoring, sessionContainer);
+        useCompositionClass = true;
+    }
+
+    /**
+     * Creates a PicoServletContainerListener with dependencies injected
+     * 
+     * @param applicationContainer the application-scoped container
+     * @param sessionContainer the session-scoped container
+     * @param requestContainer the request-scoped container
+     * @param sessionStoring the session storing behaviour
+     * @param requestStoring the request storing behaviour
+     */
+    public PicoServletContainerListener(DefaultPicoContainer applicationContainer, DefaultPicoContainer sessionContainer, DefaultPicoContainer requestContainer, Storing sessionStoring, Storing requestStoring) {
+        this.applicationContainer = applicationContainer;
         this.sessionContainer = sessionContainer;
         this.requestContainer = requestContainer;
         this.sessionStoring = sessionStoring;
@@ -79,21 +100,12 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         useCompositionClass = false;
     }
 
-    public PicoServletContainerListener() {
-        appContainer = new DefaultPicoContainer(new Caching());
-        sessionContainer = new DefaultPicoContainer(sessionStoring, appContainer);
-        sessionStoring = new Storing();
-        requestStoring = new Storing();
-        requestContainer = new DefaultPicoContainer(requestStoring, sessionContainer);
-        useCompositionClass = true;
-    }
-
     public void contextInitialized(final ServletContextEvent event) {
 
         ServletContext context = event.getServletContext();
-        appContainer.setName("application");
+        applicationContainer.setName("application");
 
-        context.setAttribute(ApplicationContainerHolder.class.getName(), new ApplicationContainerHolder(appContainer));
+        context.setAttribute(ApplicationContainerHolder.class.getName(), new ApplicationContainerHolder(applicationContainer));
 
         sessionContainer.setName("session");
         ThreadLocalLifecycleState sessionStateModel = new ThreadLocalLifecycleState();
@@ -112,7 +124,7 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         if (useCompositionClass) {
             compose(loadComposer(context));
         }
-        appContainer.start();
+        applicationContainer.start();
     }
 
     protected WebappComposer loadComposer(ServletContext context) {
@@ -127,14 +139,14 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
     }
 
     protected void compose(WebappComposer composer) {
-        composer.composeApplication(appContainer);
+        composer.composeApplication(applicationContainer);
         composer.composeSession(sessionContainer);
         composer.composeRequest(requestContainer);
     }
 
     public void contextDestroyed(ServletContextEvent event) {
-        appContainer.stop();
-        appContainer.dispose();
+        applicationContainer.stop();
+        applicationContainer.dispose();
     }
 
     public void sessionCreated(HttpSessionEvent event) {

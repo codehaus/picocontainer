@@ -1,10 +1,9 @@
 package org.picocontainer.persistence;
 
 /**
- * Indicates that a transaction could not be begun, committed or rolled back.
- * 
- * @version $Revision: $
+ * Indicates that a transaction could not be started, committed or rolled back.
  */
+@SuppressWarnings("serial")
 public class TransactionException extends PersistenceException {
 
 	public TransactionException(Throwable cause) {

@@ -3,8 +3,6 @@ package org.picocontainer.persistence;
 
 /**
  * Default factory for the persistence exceptions 
- * 
- * @version $Revision: $
  */
 public class DefaultExceptionFactory implements ExceptionFactory {
 

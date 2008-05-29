@@ -4,34 +4,18 @@
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
 
 package org.picocontainer.persistence.hibernate.annotations;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
-import org.picocontainer.persistence.hibernate.annotations.ConstructableConfiguration;
 
-/**
- */
 public class ConstructableConfigurationTestCase {
-
-	//FIME @Test
-    public void testDefaultConstruction() {
-        ConstructableConfiguration config = new ConstructableConfiguration();
-        //assertNotNull(config);
-		//Because of melding hibernate and hibernate-jpa, we're skipping this write for the hibernate-annotations
-		//stuff since the configuration file is designed for annotation configurations.
-		//attemptWrite(config);
-    }
 
     @Test public void testResourceConstruction() throws Exception {
         ConstructableConfiguration config = new ConstructableConfiguration("/hibernate3.cfg.xml");
@@ -39,9 +23,9 @@ public class ConstructableConfigurationTestCase {
 		attemptWrite(config);
     }
 	
- /**
+    /**
      * Works Hibernate's configuration by attempting a write to the 'database'.  With the latest
-     * hiberanates, the configuration isn't really built until the session factory is built, and even
+     * hiberanate, the configuration isn't really built until the session factory is built, and even
      * then, some of the data doesn't exist until a write occurs.
      * @param config
      */

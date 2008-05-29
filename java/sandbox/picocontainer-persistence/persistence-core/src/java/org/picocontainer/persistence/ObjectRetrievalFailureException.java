@@ -2,9 +2,8 @@ package org.picocontainer.persistence;
 
 /**
  * Thrown when an object retrieval failure occurs.
- * 
- * @version $Revision: $
  */
+@SuppressWarnings("serial")
 public final class ObjectRetrievalFailureException extends PersistenceException implements EntityInfo {
 
 	private final String entityName;

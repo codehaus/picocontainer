@@ -4,8 +4,6 @@
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
  * the license.html file.                                                    *
- *                                                                           *
- * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
 package org.picocontainer.persistence.hibernate;
@@ -13,7 +11,6 @@ package org.picocontainer.persistence.hibernate;
 import java.io.File;
 import java.net.URL;
 
-import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.w3c.dom.Document;
 
@@ -21,10 +18,10 @@ import org.w3c.dom.Document;
  * Constructable Hibernate configuration. Just a wrapper around various
  * configure() methods. See respective {@link org.hibernate.cfg.Configuration configure methods}.
  * 
- * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
- * @version $Revision: 2043 $
+ * @author Jose Peleteiro
  * @see org.hibernate.cfg.Configuration
  */
+@SuppressWarnings("serial")
 public class ConstructableConfiguration extends Configuration {
 
     public ConstructableConfiguration() {

@@ -4,24 +4,17 @@
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
 
 package org.picocontainer.persistence.hibernate;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
-import org.picocontainer.persistence.hibernate.ConstructableConfiguration;
 
-/**
- * @version $Revision: 2043 $
- */
 public class ConstructableConfigurationTestCase {
 
     @Test public void testDefaultConstruction() throws Exception {

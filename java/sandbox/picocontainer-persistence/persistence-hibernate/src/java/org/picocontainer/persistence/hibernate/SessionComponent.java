@@ -1,10 +1,9 @@
 /*******************************************************************************
- * Copyright (c) PicoContainer Organization. All rights reserved. *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD * style
- * license a copy of which has been included with this distribution in * the
- * license.html file. * * Idea by Rachel Davies, Original code by Aslak Hellesoy
- * and Paul Hammant *
+ * Copyright (c) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * license.html file.
  ******************************************************************************/
 package org.picocontainer.persistence.hibernate;
 
@@ -35,8 +34,8 @@ import org.picocontainer.persistence.ExceptionHandler;
  * is done lazily.
  * 
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
- * @version $Id: SessionComponent.java 2510 2005-09-22 10:11:19Z mauro $
  */
+@SuppressWarnings("serial")
 public final class SessionComponent implements Session, Startable {
 
     private Session session = null;
@@ -438,7 +437,7 @@ public final class SessionComponent implements Session, Startable {
             throw handleException(ex);
         }
     }
-    
+
     public Transaction getTransaction() {
         try {
             return getDelegatedSession().getTransaction();

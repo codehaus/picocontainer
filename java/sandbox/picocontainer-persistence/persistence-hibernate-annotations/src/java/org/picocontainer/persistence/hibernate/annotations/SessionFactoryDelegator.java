@@ -4,8 +4,6 @@
  * The software in this package is published under the terms of the BSD      *
  * style license a copy of which has been included with this distribution in *
  * the license.html file.                                                    *
- *                                                                           *
- * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
 
 package org.picocontainer.persistence.hibernate.annotations;
@@ -33,9 +31,8 @@ import org.picocontainer.PicoCompositionException;
 /**
  * Delegates everything to session factory obtained from confiuration. this class is necessary
  * because component adapters are really ugly when it comes to scripting.
- * 
- * @version $Id: SessionFactoryDelegator.java 2158 2005-07-08 02:13:36Z juze $
  */
+@SuppressWarnings("serial")
 public final class SessionFactoryDelegator implements SessionFactory {
 
     private final SessionFactory sessionFactory;

@@ -1,10 +1,9 @@
-/*******************************************************************************
- * Copyright (c) PicoContainer Organization. All rights reserved. *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD * style
- * license a copy of which has been included with this distribution in * the
- * license.html file. * * Idea by Rachel Davies, Original code by Aslak Hellesoy
- * and Paul Hammant *
+/******************************************************************************
+ * Copyright (c) PicoContainer Organization. All rights reserved. 
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * license.html file. 
  ******************************************************************************/
 
 package org.picocontainer.persistence.hibernate;
@@ -31,8 +30,6 @@ import org.picocontainer.persistence.ExceptionHandler;
  * Abstract base class for session delegators. delegates all calls to session
  * obtained by implementing class. error handling is also there. All methods are
  * just delegations to hibernate session.
- * 
- * @version $Id: SessionDelegator.java 2835 2005-12-23 00:50:13Z juze $
  */
 public abstract class SessionDelegator implements Session {
 

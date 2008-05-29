@@ -2,8 +2,6 @@ package org.picocontainer.persistence;
 
 /**
  * Factory component used by ExceptionHandler in order to create exceptions.
- * 
- * @version $Revision: $
  */
 public interface ExceptionFactory {
 

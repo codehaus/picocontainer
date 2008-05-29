@@ -9,11 +9,9 @@ import org.picocontainer.persistence.ExceptionFactory;
 import org.picocontainer.persistence.ExceptionHandler;
 
 /**
- * Default Hibernate 3 ExceptionHandler.
+ * Default Hibernate ExceptionHandler.
  * 
  * @see org.picocontainer.persistence.ExceptionHandler
- * 
- * @version $Id: DefaultHibernateExceptionHandler.java 2510 2005-09-22 10:11:19Z mauro $
  */
 public final class DefaultHibernateExceptionHandler implements ExceptionHandler {
 

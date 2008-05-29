@@ -4,9 +4,8 @@ import org.picocontainer.PicoException;
 
 /**
  * Base for all persistence related exceptions.
- * 
- * @version $Revision: $
  */
+@SuppressWarnings("serial")
 public class PersistenceException extends PicoException {
 
 	public PersistenceException(Throwable cause) {

@@ -74,7 +74,6 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, null, ASSEMBLY_SCOPE);
         // LifecyleContainerBuilder starts the container
-
         //Stop should be called by dispose since start is running.
         pico.dispose();
 
@@ -251,11 +250,8 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         assertNull(testObject.constructedString);
     }
 
-    //FIXME @Test Fails under JUnit4
-    public void testCanActOnConfigAndParameterNameToResolveAmbiguity() throws PicoCompositionException, IOException {
-
-        //org.objectweb.asm.ClassReader cr = new org.objectweb.asm.ClassReader("java.lang.String");
-
+    @Test
+    public void canActOnConfigAndParameterNameToResolveAmbiguity() throws PicoCompositionException, IOException {
         Reader script = new StringReader("" +
                 "scripted = builder.container {\n" +
                 "    config(key:'foo', value:'one')\n" +
@@ -269,8 +265,6 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         assertNotNull(needsString);
         assertEquals("one", needsString.foo);
     }
-
-
 
     @Test public void testComponentParametersScript() {
         Reader script = new StringReader("" +

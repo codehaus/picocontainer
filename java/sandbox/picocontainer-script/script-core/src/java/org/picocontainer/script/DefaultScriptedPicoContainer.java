@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved. *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD * style
- * license a copy of which has been included with this distribution in * the
- * LICENSE.txt file. * * Original code by Paul Hammant *
+ * Copyright (C) PicoContainer Organization. All rights reserved. 
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file. 
  ******************************************************************************/
-
 package org.picocontainer.script;
 
 import org.picocontainer.ComponentAdapter;
@@ -42,12 +41,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * This is a MutablePicoContainer that also supports soft composition. i.e.
- * assembly by class name rather that class reference.
- * <p>
- * In terms of implementation it adopts the behaviour of DefaultPicoContainer
- * and DefaultScriptedPicoContainer.
- * </p>
+ * Default implementation of ScriptedPicoContainer.
  * 
  * @author Paul Hammant
  * @author Mauro Talevi

@@ -1,16 +1,15 @@
-/*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *****************************************************************************/
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved. 
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file. 
+ ******************************************************************************/
 package org.picocontainer.script;
 
 import java.io.Serializable;
 import java.net.URL;
 import java.security.Permission;
-import java.security.PermissionCollection;
 import java.security.Permissions;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ import java.util.List;
  * 
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public class ClassPathElement implements Serializable {
 
     private final URL url;

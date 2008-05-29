@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.script;
 
 import org.picocontainer.ComponentFactory;
@@ -10,8 +17,15 @@ import java.util.Set;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Helper for ScriptedPicoContainer
+ * 
+ * @author Paul Hammant
+ */
 public class ContainerElementHelper {
-    public static ScriptedPicoContainer makeScriptedPicoContainer(ComponentFactory componentFactory, PicoContainer parent, ClassLoader classLoader) {
+
+    public static ScriptedPicoContainer makeScriptedPicoContainer(ComponentFactory componentFactory,
+            PicoContainer parent, ClassLoader classLoader) {
         if (parent == null) {
             parent = new EmptyPicoContainer();
         }

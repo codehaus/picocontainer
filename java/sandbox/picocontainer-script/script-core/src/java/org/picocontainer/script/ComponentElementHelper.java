@@ -1,12 +1,10 @@
-/*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- *****************************************************************************/
-
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved. 
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file. 
+ ******************************************************************************/
 package org.picocontainer.script;
 
 import org.picocontainer.Parameter;
@@ -16,21 +14,21 @@ import java.util.Properties;
 
 public class ComponentElementHelper {
 
-    public static Object makeComponent(Object cnkey, Object key, Parameter[] parameters, Object klass, ScriptedPicoContainer current, Object instance, Properties[] properties) {
+    public static Object makeComponent(Object classNamekey, Object key, Parameter[] parameters, Object componentClass, ScriptedPicoContainer current, Object instance, Properties[] properties) {
         ScriptedPicoContainer container = current;
         if (properties.length != 0) {
             container = (ScriptedPicoContainer) current.as(properties);
         }
-        if (cnkey != null)  {
-            key = new ClassName((String)cnkey);
+        if (classNamekey != null)  {
+            key = new ClassName((String)classNamekey);
         }
 
-        if (klass instanceof Class) {
-            Class clazz = (Class) klass;
+        if (componentClass instanceof Class) {
+            Class clazz = (Class) componentClass;
             key = key == null ? clazz : key;
             return container.addComponent(key, clazz, parameters);
-        } else if (klass instanceof String) {
-            String className = (String) klass;
+        } else if (componentClass instanceof String) {
+            String className = (String) componentClass;
             key = key == null ? className : key;
             return container.addComponent(key, new ClassName(className), parameters);
         } else if (instance != null) {

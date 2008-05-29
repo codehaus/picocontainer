@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.script;
 
 import org.picocontainer.BehaviorFactory;
@@ -11,13 +18,16 @@ import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.InjectionFactory;
 import org.picocontainer.containers.TransientPicoContainer;
 
-
+/**
+ * Facade to build ScriptedScriptedPicoContainer
+ *
+ * @author Paul Hammant
+ */
 public final class ScriptedBuilder {
 
     private Class<? extends ScriptedPicoContainer> scriptClass = DefaultScriptedPicoContainer.class;
     private final PicoBuilder picoBuilder;
     private ClassLoader classLoader = DefaultScriptedPicoContainer.class.getClassLoader();
-    private boolean cfs;
 
     public ScriptedBuilder(PicoContainer parentcontainer, InjectionFactory injectionType) {
         picoBuilder = new PicoBuilder(parentcontainer, injectionType);
@@ -36,12 +46,11 @@ public final class ScriptedBuilder {
     }
 
     public ScriptedPicoContainer build() {
-        DefaultPicoContainer temp = new TransientPicoContainer();
-        temp.addComponent(ClassLoader.class, classLoader);
-        temp.addComponent("sc", scriptClass);
-        temp.addComponent(MutablePicoContainer.class, buildPico());
-        ScriptedPicoContainer nc = (ScriptedPicoContainer)temp.getComponent("sc");
-        return nc;
+        DefaultPicoContainer tpc = new TransientPicoContainer();
+        tpc.addComponent(ClassLoader.class, classLoader);
+        tpc.addComponent("sc", scriptClass);
+        tpc.addComponent(MutablePicoContainer.class, buildPico());
+        return (ScriptedPicoContainer)tpc.getComponent("sc");
     }
 
     public MutablePicoContainer buildPico() {
@@ -74,13 +83,11 @@ public final class ScriptedBuilder {
     }
 
     public ScriptedBuilder withComponentFactory(ComponentFactory componentFactory) {
-        cfs = true;
         picoBuilder.withComponentFactory(componentFactory);
         return this;
     }
 
     public ScriptedBuilder withComponentAdapterFactories(BehaviorFactory... factories) {
-        cfs = true;
         picoBuilder.withBehaviors(factories);
         return this;
     }

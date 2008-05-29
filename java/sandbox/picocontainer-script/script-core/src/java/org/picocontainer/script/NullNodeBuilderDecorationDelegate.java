@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.script;
 
 import org.picocontainer.MutablePicoContainer;
@@ -6,6 +13,8 @@ import org.picocontainer.ComponentFactory;
 import java.util.Map;
 
 /**
+ * Null-object implementation of NodeBuilderDecorationDelegate
+ * 
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  */
@@ -19,7 +28,8 @@ public class NullNodeBuilderDecorationDelegate implements NodeBuilderDecorationD
     }
 
     public Object createNode(Object name, Map attributes, Object parentElement) {
-        throw new ScriptedPicoContainerMarkupException("Don't know how to create a '" + name + "' child of a '" + ((parentElement == null) ? "null" : parentElement.toString()) + "' element");
+        throw new ScriptedPicoContainerMarkupException("Don't know how to create a '" + name + "' child of a '"
+                + ((parentElement == null) ? "null" : parentElement.toString()) + "' element");
     }
 
     public void rememberComponentKey(Map attributes) {

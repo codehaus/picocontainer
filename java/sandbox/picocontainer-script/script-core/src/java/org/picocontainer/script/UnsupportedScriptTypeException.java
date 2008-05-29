@@ -10,7 +10,7 @@ package org.picocontainer.script;
 import org.picocontainer.PicoException;
 
 /**
- * Indicates that a given file extension has no corresponding builder. The
+ * Thrown when a given script type extension has no corresponding builder. The
  * message will also indicate all supported builders.
  * 
  * @author Michael Rimov

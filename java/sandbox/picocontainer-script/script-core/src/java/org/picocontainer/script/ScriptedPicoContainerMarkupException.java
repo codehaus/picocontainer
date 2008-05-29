@@ -13,11 +13,12 @@ package org.picocontainer.script;
 import org.picocontainer.PicoException;
 
 /**
- * Exception thrown due to invalid markup when assembling {@link org.picocontainer.script.ScriptedPicoContainer}s.
+ * Exception thrown when invalid markup is encountered when assembling {@link org.picocontainer.script.ScriptedPicoContainer ScriptedPicoContainer}s.
  *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  * @author Aslak Helles&oslash;y
  */
+@SuppressWarnings("serial")
 public class ScriptedPicoContainerMarkupException extends PicoException {
 
     public ScriptedPicoContainerMarkupException(String message) {

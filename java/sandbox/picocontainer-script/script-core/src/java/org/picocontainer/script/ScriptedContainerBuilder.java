@@ -17,13 +17,14 @@ import java.net.URL;
 import org.picocontainer.PicoContainer;
 
 /**
- * Base abstract class for script-based container builders based.
+ * Abstract class for script-based container builders
  *
  * @author Aslak Helles&oslash;y
  * @author Obie Fernandez
  * @author Mauro Talevi
  */
 public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder {
+    
     private final Reader scriptReader;
     private final URL scriptURL;
     private final ClassLoader classLoader;

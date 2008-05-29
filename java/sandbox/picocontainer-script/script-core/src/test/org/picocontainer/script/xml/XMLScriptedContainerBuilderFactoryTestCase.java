@@ -1,9 +1,10 @@
-package org.picocontainer.script.groovy;
+package org.picocontainer.script.xml;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -12,11 +13,10 @@ import java.net.URL;
 import org.junit.Test;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedContainerBuilderFactory;
-import org.picocontainer.script.groovy.GroovyContainerBuilder;
 
-public class ScriptedContainerBuilderFactoryTestCase {
+public class XMLScriptedContainerBuilderFactoryTestCase {
 
-    private static final String TEST_SCRIPT_PATH = "/org/picocontainer/script/groovy/picocontainer.groovy";
+    private static final String TEST_SCRIPT_PATH = "/org/picocontainer/script/xml/picocontainer.xml";
 
     @Test public void testScriptedContainerBuilderFactoryWithUrl() throws ClassNotFoundException {
         URL resource = getClass().getResource(TEST_SCRIPT_PATH);
@@ -25,34 +25,39 @@ public class ScriptedContainerBuilderFactoryTestCase {
         ScriptedContainerBuilderFactory result = new ScriptedContainerBuilderFactory(resource);
         ScriptedContainerBuilder builder = result.getContainerBuilder();
         assertNotNull(builder);
-        assertEquals(GroovyContainerBuilder.class.getName(), builder.getClass().getName());
+        assertEquals(XMLContainerBuilder.class.getName(), builder.getClass().getName());
     }
 
     @Test public void testBuildWithReader() throws ClassNotFoundException {
         Reader script = new StringReader("" +
-            "import org.picocontainer.script.testmodel.*\n" +
-            "X.reset()\n" +
-            "builder = new org.picocontainer.script.groovy.GroovyNodeBuilder()\n" +
-            "scripted = builder.container {\n" +
-            "    component(A)\n" +
-            "}");
+            "<?xml version='1.0'?>"+
+            "<container>"+
+            " <container> " +
+            "  <component class='java.util.ArrayList' />"+
+            " </container> "+
+            "</container>" +
+            "");
 
         ScriptedContainerBuilderFactory result = new ScriptedContainerBuilderFactory(script,
-            GroovyContainerBuilder.class.getName());
+                XMLContainerBuilder.class.getName());
         ScriptedContainerBuilder builder = result.getContainerBuilder();
         assertNotNull(builder);
-        assertEquals(GroovyContainerBuilder.class.getName(), builder.getClass().getName());
+        assertEquals(XMLContainerBuilder.class.getName(), builder.getClass().getName());
     }
 
-    // must use xml script
-    public void FIXMEtestBuildWithFile() throws IOException {
-        File resource = new File("src/test/org/picocontainer/script/xml/picocontainer.xml");
+    @Test
+    public void testBuildWithFile() throws IOException {
+        File resource = File.createTempFile("picocontainer", ".xml");
+        FileWriter writer = new FileWriter(resource);
+        writer.write("<?xml version='1.0'?>\n"+
+                     "<container/>");
+        writer.close();
         assertNotNull("Could not find script resource '+ TEST_SCRIPT_PATH + '.", resource);
 
         ScriptedContainerBuilderFactory result = new ScriptedContainerBuilderFactory(resource);
         ScriptedContainerBuilder builder = result.getContainerBuilder();
         assertNotNull(builder);
-        assertEquals(GroovyContainerBuilder.class.getName(), builder.getClass().getName());
+        assertEquals(XMLContainerBuilder.class.getName(), builder.getClass().getName());
 
     }
 

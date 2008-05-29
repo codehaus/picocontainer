@@ -56,11 +56,8 @@ public class ScriptBuilderResolverTestCase {
     }
 
     @Test public void testGetBuilderClassNameForResource() {
-        final String resourceName = "/org/picocontainer/script/picocontainer.xml";
+        final String resourceName = "/org/picocontainer/script/xml/picocontainer.xml";
         URL compositionURL = this.getClass().getResource(resourceName);
-        if (compositionURL == null) {
-            fail("This test depended on resource '"+ resourceName + "' which appears to have been moved");
-        }
         String expected = ScriptBuilderResolver.DEFAULT_XML_BUILDER;
         String actual = scriptBuilderResolver.getBuilderClassName(compositionURL);
         assertEquals("return value", expected, actual);

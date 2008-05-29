@@ -6,43 +6,43 @@
  * the LICENSE.txt file.                                                     *
  *****************************************************************************/
 
-package org.picocontainer.persistence.hibernate;
+package org.picocontainer.persistence.hibernate.annotations;
 
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
+import org.hibernate.Session;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Test;
 import org.picocontainer.persistence.PersistenceException;
-import org.picocontainer.persistence.hibernate.SessionFactoryLifecycle;
 
 /**
  * Test that lifecycle closes session factory
  */
-public class SessionFactoryLifecycleTestCase {
+public class SessionLifecycleTestCase {
 
 	private Mockery mockery = mockeryWithCountingNamingScheme();
 	
     @Test 
-    public void canCloseSessionFactoryOnStop() throws Exception {
-    	final SessionFactory sessionFactory = mockery.mock(SessionFactory.class);
+    public void canCloseSessionOnStop() throws Exception {
+    	final Session session = mockery.mock(Session.class);
     	mockery.checking(new Expectations(){{
-    		one(sessionFactory).close();
+            one(session).flush();
+    		one(session).close();
     	}});
-        SessionFactoryLifecycle lifecycle = new SessionFactoryLifecycle(sessionFactory);
+        SessionLifecycle lifecycle = new SessionLifecycle(session);
         lifecycle.stop();
     }
     
     @Test(expected=PersistenceException.class)
-    public void cannotCloseSessionFactoryOnStop() throws Exception {
-        final SessionFactory sessionFactory = mockery.mock(SessionFactory.class);
+    public void cannotCloseSessionOnStop() throws Exception {
+        final Session session = mockery.mock(Session.class);
         mockery.checking(new Expectations(){{
-            one(sessionFactory).close();
+            one(session).flush();
             will(throwException(new HibernateException("mock")));
         }});
-        SessionFactoryLifecycle lifecycle = new SessionFactoryLifecycle(sessionFactory);
+        SessionLifecycle lifecycle = new SessionLifecycle(session);
         lifecycle.stop();
     }
 

@@ -41,7 +41,7 @@ public class FailoverSessionDelegatorTestCase {
         try {
             assertNotNull(delegator.save(new Pojo()));
             fail("did not bombed on hibernate error");
-        } catch (HibernateException ex) {
+        } catch (HibernateException e) {
             // that's ok
         }
 

@@ -11,6 +11,7 @@ package org.picocontainer.persistence.hibernate.annotations;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.picocontainer.Startable;
+import org.picocontainer.persistence.PersistenceException;
 
 /**
  * Component organising lifecycle for session factory.
@@ -32,8 +33,8 @@ public final class SessionFactoryLifecycle implements Startable {
     public void stop() {
         try {
             sessionFactory.close();
-        } catch (HibernateException ex) {
-            // swallow it? not sure what to do with it...
+        } catch (HibernateException e) {
+            throw new PersistenceException(e);
         }
     }
 }

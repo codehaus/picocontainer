@@ -16,28 +16,27 @@ import static org.junit.Assert.fail;
 import java.io.File;
 
 import org.junit.Test;
-import org.picocontainer.script.StringConversions;
 
 public final class StringConversionsTestCase {
     private final StringConversions converter = new StringConversions();
 
-    @Test public void testConvertsToString() {
+    @Test public void testConversionToString() {
         assertEquals("hello", converter.convertTo(String.class, "hello"));
         assertEquals("", converter.convertTo(String.class, ""));
     }
 
-    @Test public void testConvertsToInts() {
+    @Test public void testConversionToInts() {
         assertEquals(22, converter.convertTo(Integer.class, "22"));
         assertEquals(-9, converter.convertTo(Integer.class, "-9"));
     }
 
-    @Test public void testConvertsToLong() {
+    @Test public void testConversionToLong() {
         assertEquals(123456789012L, converter.convertTo(Long.class, "123456789012"));
         assertEquals(-123456789012L, converter.convertTo(Long.class, "-123456789012"));
         assertEquals((long)0, converter.convertTo(Long.class, "0"));
     }
 
-    @Test public void testConvertsToBooleanUsingBestGuess() {
+    @Test public void testConversionToBooleanUsingBestGuess() {
         assertEquals(Boolean.TRUE, converter.convertTo(Boolean.class, "t"));
         assertEquals(Boolean.TRUE, converter.convertTo(Boolean.class, "true"));
         assertEquals(Boolean.TRUE, converter.convertTo(Boolean.class, "T"));

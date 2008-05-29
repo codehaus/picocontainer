@@ -13,14 +13,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ScriptBuilderResolver handles the task of resolving a file name to a builder
+ * ScriptedBuilderNameResolver handles the task of resolving a file name to a builder
  * name. Typical default resolution is for Groovy, BeanShell, JavaScript,
  * Jython, and XML script names. However, you can register/replace your own
  * builder implementations by using the registerBuilder() function.
  * 
  * @author Michael Rimov
  */
-public class ScriptBuilderResolver {
+public class ScriptedBuilderNameResolver {
 
     public static final String GROOVY = ".groovy";
     public static final String BEANSHELL = ".bsh";
@@ -36,7 +36,7 @@ public class ScriptBuilderResolver {
 
     private final Map<String, String> extensionToBuilders = new HashMap<String, String>();
 
-    public ScriptBuilderResolver() {
+    public ScriptedBuilderNameResolver() {
         resetBuilders();
     }
 
@@ -64,19 +64,19 @@ public class ScriptBuilderResolver {
 
     /**
      * Retrieve the classname of the builder to use given the provided
-     * extension. Example: <code><pre>
+     * extension.  Example: 
+     * <pre>
      * ScriptedContainerBuilderFactory factory = new ScriptedContainerBuilderFactory(.....);
      * String groovyBuilderName = factory.getBuilderClassName(&quot;.groovy&quot;);
      * assert &quot;org.picocontainer.script.groovy.GroovyContainerBuilder&quot;.equals(groovyBuilderName);
-     * </pre></code>
+     * </pre>
      * 
-     * @param extension String
-     * @return String
+     * @param extension the extension 
+     * @return The builder class name
      * @throws UnsupportedScriptTypeException
      */
     public synchronized String getBuilderClassName(final String extension) throws UnsupportedScriptTypeException {
-        String resultingBuilderClassName;
-        resultingBuilderClassName = extensionToBuilders.get(extension);
+        String resultingBuilderClassName = extensionToBuilders.get(extension);
         if (resultingBuilderClassName == null) {
             throw new UnsupportedScriptTypeException(extension, this.getAllSupportedExtensions());
         }
@@ -104,12 +104,13 @@ public class ScriptBuilderResolver {
     /**
      * Registers/replaces a new handler for a given extension. Allows for
      * customizable behavior in the various builders or the possibility to
-     * dynamically add handlers for new file types. Example: <code><pre>
+     * dynamically add handlers for new file types. Example: 
+     * <pre>
      * ScriptedContainerBuilderFactory factory = new ScriptedContainerBuilderFactory(...)
      * factory.registerBuilder(&quot;.groovy&quot;, &quot;org.picocontainer.script.groovy.GroovyContainerBuilder&quot;);
      * ScriptedContainerBuilder builder = factory.getContainerBuilder();
      * assertNotNull(builder);
-     * </pre></code>
+     * </pre>
      * <p>
      * The internal code now requires synchronization of the builder extension
      * map since who knows what is using it when a new builder is registered.
@@ -123,20 +124,14 @@ public class ScriptBuilderResolver {
     }
 
     /**
-     * Retrieve a list of all supported extensions.
+     * Returns a list of all supported extensions.
      * 
-     * @return String[] of extensions including the period in the name.
+     * @return A String[] of extensions including the period in the name.
      */
     public synchronized String[] getAllSupportedExtensions() {
         return extensionToBuilders.keySet().toArray(new String[extensionToBuilders.size()]);
     }
 
-    /**
-     * Retrieve the extension of the file name.
-     * 
-     * @param fileName String
-     * @return String
-     */
     private String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
     }

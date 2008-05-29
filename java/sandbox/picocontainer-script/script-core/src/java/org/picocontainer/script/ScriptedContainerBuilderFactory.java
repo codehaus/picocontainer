@@ -46,7 +46,7 @@ public class ScriptedContainerBuilderFactory {
      * @param compositionFile File The script file.
      * @param classLoader ClassLoader for class resolution once we resolve what
      *            the name of the builder should be.
-     * @param scriptedBuilderResolver ScriptBuilderResolver the resolver of
+     * @param scriptedBuilderResolver ScriptedBuilderNameResolver the resolver of
      *            container builder class names from file names.
      * @throws IOException upon File name resolution error
      * @throws UnsupportedScriptTypeException if the extension of the file does
@@ -54,7 +54,7 @@ public class ScriptedContainerBuilderFactory {
      * @throws FileNotFoundException if composition file is not found
      */
     public ScriptedContainerBuilderFactory(File compositionFile, ClassLoader classLoader,
-            ScriptBuilderResolver scriptedBuilderResolver) throws UnsupportedScriptTypeException, FileNotFoundException {
+            ScriptedBuilderNameResolver scriptedBuilderResolver) throws UnsupportedScriptTypeException, FileNotFoundException {
         this(new FileReader(fileExists(compositionFile)), scriptedBuilderResolver.getBuilderClassName(compositionFile),
                 classLoader);
     }
@@ -67,10 +67,10 @@ public class ScriptedContainerBuilderFactory {
      * @param classLoader ClassLoader for class resolution once we resolve what
      *            the name of the builder should be.
      * @see ScriptedContainerBuilderFactory#ScriptedContainerBuilderFactory(File,
-     *      ClassLoader, ScriptBuilderResolver)
+     *      ClassLoader, ScriptedBuilderNameResolver)
      */
     public ScriptedContainerBuilderFactory(File compositionFile, ClassLoader classLoader) throws IOException {
-        this(compositionFile, classLoader, new ScriptBuilderResolver());
+        this(compositionFile, classLoader, new ScriptedBuilderNameResolver());
     }
 
     /**
@@ -79,7 +79,7 @@ public class ScriptedContainerBuilderFactory {
      * 
      * @param compositionFile File The script file.
      * @see ScriptedContainerBuilderFactory#ScriptedContainerBuilderFactory(File,
-     *      ClassLoader, ScriptBuilderResolver)
+     *      ClassLoader, ScriptedBuilderNameResolver)
      */
     public ScriptedContainerBuilderFactory(File compositionFile) throws IOException {
         this(compositionFile, Thread.currentThread().getContextClassLoader());
@@ -94,14 +94,14 @@ public class ScriptedContainerBuilderFactory {
      *             not match that of any known script.
      */
     public ScriptedContainerBuilderFactory(URL compositionURL) {
-        this(compositionURL, Thread.currentThread().getContextClassLoader(), new ScriptBuilderResolver());
+        this(compositionURL, Thread.currentThread().getContextClassLoader(), new ScriptedBuilderNameResolver());
     }
 
     /**
      * Creates a ScriptedContainerBuilderFactory
      * 
      * @param compositionURL The script URL.
-     * @param builderClassResolver ScriptBuilderResolver the resolver for
+     * @param builderClassResolver ScriptedBuilderNameResolver the resolver for
      *            figuring out file names to container builder class names.
      * @param classLoader ClassLoader for class resolution once we resolve what
      *            the name of the builder should be.. the specified builder
@@ -110,7 +110,7 @@ public class ScriptedContainerBuilderFactory {
      *             not match that of any known script.
      */
     public ScriptedContainerBuilderFactory(URL compositionURL, ClassLoader classLoader,
-            ScriptBuilderResolver builderClassResolver) throws UnsupportedScriptTypeException {
+            ScriptedBuilderNameResolver builderClassResolver) throws UnsupportedScriptTypeException {
         this(compositionURL, builderClassResolver.getBuilderClassName(compositionURL), classLoader);
     }
 

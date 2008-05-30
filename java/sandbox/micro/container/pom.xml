@@ -3,15 +3,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.microcontainer</groupId>
-		<artifactId>microcontainer-parent</artifactId>
+		<artifactId>microcontainer</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>miorcontainer</artifactId>
+	<artifactId>microcontainer-core</artifactId>
 	<name>MicroContainer Core</name>
 	<scm>
-		<connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/microcontainer/trunk/container</connection>
-		<developerConnection>svn+ssh://svn.picocontainer.codehaus.org/scm/picocontainer/java/microcontainer/trunk/container</developerConnection>
-		<url>https://svn.picocontainer.codehaus.org/picocontainer/java/microcontainer/trunk/container</url>
+		<connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/sandbox/micro</connection>
+		<developerConnection>svn+ssh://svn.picocontainer.codehaus.org/scm/picocontainer/java/sandbox/micro</developerConnection>
+		<url>https://svn.picocontainer.codehaus.org/picocontainer/java/sandbox/micro</url>
 	</scm>
 	<dependencies>
 		<dependency>
@@ -21,10 +21,6 @@
 		<dependency>
 			<groupId>org.nanocontainer</groupId>
 			<artifactId>nanocontainer-remoting</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>groovy</groupId>
-			<artifactId>groovy-all-1.0-jsr</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-cli</groupId>

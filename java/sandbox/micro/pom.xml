@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.microcontainer</groupId>
-    <artifactId>microcontainer-parent</artifactId>
-    <name>MicroContainer Parent</name>
+    <artifactId>microcontainer</artifactId>
+    <name>MicroContainer</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <url>http://www.microcontainer.org</url>
@@ -29,26 +29,24 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/microcontainer/trunk</connection>
-        <developerConnection>
-            svn+ssh://svn.picocontainer.codehaus.org/scm/picocontainer/java/microcontainer/trunk</developerConnection>
-        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/picocontainer/trunk</url>
+        <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/sandbox/micro</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/sandbox/micro</developerConnection>
+        <url>https://svn.codehaus.org/picocontainer/java/sandbox/micro</url>
     </scm>
     <distributionManagement>
         <repository>
-            <id>codehaus-microcontainer-repository</id>
-            <name>Codehaus MicroContainer Repository</name>
-            <url>scp://beaver.codehaus.org/home/projects/microcontainer/repository</url>
+            <id>codehaus.org</id>
+            <name>Codehaus Repository</name>
+            <url>dav:https://dav.codehaus.org/repository/picocontainer/</url>
         </repository>
         <snapshotRepository>
-            <id>codehaus-microcontainer-snapshot-repository</id>
-            <name>Codehaus MicroContainer Snapshot Repository</name>
-            <url>scp://beaver.codehaus.org/home/projects/microcontainer/repository-snapshot</url>
+            <id>codehaus.org</id>
+            <name>Codehaus Snapshot Repository</name>
+            <url>dav:https://dav.codehaus.org/snapshots.repository/picocontainer/</url>
         </snapshotRepository>
     </distributionManagement>
     <dependencyManagement>
         <dependencies>
-
             <dependency>
                 <groupId>org.nanocontainer</groupId>
                 <artifactId>nanocontainer</artifactId>

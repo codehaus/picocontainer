@@ -1,0 +1,67 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+
+<!DOCTYPE project [
+    <!ENTITY eacute "&#233;">
+    <!ENTITY oslash "&#248;">
+]>
+
+<project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
+    <extend>${basedir}/../project.xml</extend>
+    <id>microcontainer</id>
+    <name>microcontainer</name>
+
+    <dependencies>
+    
+       <dependency>
+            <id>groovy</id>
+            <version>1.0-jsr-04</version>
+        </dependency>
+
+        <dependency>
+            <id>antlr</id>
+            <version>2.7.5</version>
+        </dependency>
+        
+        <dependency>
+            <id>asm</id>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm-util</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0.4</version>
+            <url>http://jakarta.apache.org/commons/logging.html</url>
+        </dependency>
+
+        <dependency>
+            <groupId>mx4j</groupId>
+            <artifactId>mx4j-jmx</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mx4j</groupId>
+            <artifactId>mx4j-impl</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+        <dependency>
+            <id>bsh</id>
+            <version>2.0b1</version>
+        </dependency>
+
+        <dependency>
+            <id>commons-cli</id>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
+</project>
+
+

@@ -1,0 +1,1 @@
+these classes (bar subpackages) go to a jar of their own in MCA-INF/components/

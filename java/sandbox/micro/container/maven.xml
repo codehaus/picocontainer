@@ -1,0 +1,120 @@
+<project default="jar:install"
+	xmlns:ant="jelly:ant"
+	xmlns:j="jelly:core"
+	xmlns:u="jelly:util" >
+
+    <preGoal name="test:test" >
+        <echo>Building test.mca file for use with unit tests </echo>
+        <attainGoal name="build-test.mca"/>
+    </preGoal>
+
+    <goal name="build-test.mca" >
+        <attainGoal name="compile-testcomp"/>
+        <attainGoal name="test-promoted.jar"/>
+        <attainGoal name="test-components.jar"/>
+        <attainGoal name="test-hidden.jar"/>
+        <delete file="test.mca"/>
+        <zip destfile="test.mca">
+            <fileset dir="src/testcomp/" includes="*.groovy"/>
+            <zipfileset dir="${maven.build.dir}" includes="promoted.jar" prefix="MCA-INF/promoted"/>
+            <zipfileset dir="${maven.build.dir}" includes="components.jar" prefix="MCA-INF/components"/>
+            <zipfileset dir="${maven.build.dir}" includes="hidden.jar" prefix="MCA-INF/hidden"/>
+        </zip>
+    </goal>
+
+    <goal name="test-promoted.jar">
+        <delete file="${maven.build.dir}/promoted.jar"/>
+          <jar destfile="${maven.build.dir}/promoted.jar"
+              basedir="src/testcomp/target/classes"
+              includes="org/microcontainer/testapi/TestPromotable.class"/>
+      </goal>
+
+    <goal name="test-components.jar">
+        <delete file="${maven.build.dir}/components.jar"/>
+          <jar destfile="${maven.build.dir}/components.jar"
+              basedir="src/testcomp/target/classes"
+              includes="org/microcontainer/test/TestComp.class"/>
+      </goal>
+
+    <goal name="test-hidden.jar">
+        <delete file="${maven.build.dir}/hidden.jar"/>
+        <jar destfile="${maven.build.dir}/hidden.jar"
+              basedir="src/testcomp/target/classes"
+              includes="org/microcontainer/test/hopefullyhidden/*.class"/>
+    </goal>
+	
+    <goal name="compile-testcomp">
+        <mkdir dir="src/testcomp/target/classes"/>
+        <javac srcdir="src/testcomp"
+             destdir="src/testcomp/target/classes"
+             includes="**/*"
+             debug="on">
+            <classpath refid="maven.dependency.classpath"/>
+        </javac>
+    </goal>
+
+
+     <goal name="jars" prereqs="test">
+        <ant:delete file="${maven.build.dir}/${pom.artifactId}-api-${pom.currentVersion}.jar"/>
+        <ant:jar destfile="${maven.build.dir}/${pom.artifactId}-api-${pom.currentVersion}.jar"
+              basedir="${maven.build.dest}"
+              includes="org/microcontainer/*.class,org/microcontainer/jmx/*.class"/>
+        <ant:delete file="${maven.build.dir}/${pom.artifactId}-impl-${pom.currentVersion}.jar"/>
+        <ant:jar destfile="${maven.build.dir}/${pom.artifactId}-impl-${pom.currentVersion}.jar"
+              basedir="${maven.build.dest}"
+              includes="org/microcontainer/impl/**.class"/>
+      </goal>
+      
+      <goal name="zip" prereqs="jars">
+        <ant:zip destfile="${maven.build.dir}/${pom.artifactId}.zip">
+            <!-- Add boostrap scripts -->
+            <ant:fileset dir="${maven.src.dir}/bootstrap">
+                <ant:include name="*.bat"/>
+                <ant:include name="*.groovy"/>
+            </ant:fileset>        
+            <!-- Add build artifacts -->
+            <ant:zipfileset dir="${maven.build.dir}" prefix="lib">
+                <ant:include name="${pom.artifactId}-api-${pom.currentVersion}.jar"/>
+            </ant:zipfileset>
+            <ant:zipfileset dir="${maven.build.dir}" prefix="lib/hidden">
+                <ant:include name="${pom.artifactId}-impl-${pom.currentVersion}.jar"/>
+            </ant:zipfileset>
+            <!-- Add dependency artifacts -->
+            <j:forEach var="artifact" items="${pom.artifacts}">
+                <j:set var="dependency" value="${artifact.dependency}"/>
+                <j:if test="${dependency.artifactId.indexOf('container') != '-1'}">
+                    <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
+                        <ant:include name="${dependency.artifact}"/>
+                    </ant:zipfileset>
+                </j:if>
+                <j:if test="${dependency.artifactId.indexOf('asm') != '-1'}">
+                    <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
+                        <ant:include name="${dependency.artifact}"/>
+                    </ant:zipfileset>
+                </j:if>
+                <j:if test="${dependency.artifactId.indexOf('groovy') != '-1'}">
+                    <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
+                        <ant:include name="${dependency.artifact}"/>
+                    </ant:zipfileset>
+                </j:if>
+                <j:if test="${dependency.artifactId.indexOf('bsh') != '-1'}">
+                    <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
+                        <ant:include name="${dependency.artifact}"/>
+                    </ant:zipfileset>
+                </j:if>
+				<j:if test="${dependency.artifactId.indexOf('commons-cli') != '-1'}">
+                    <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
+                        <ant:include name="${dependency.artifact}"/>
+                    </ant:zipfileset>
+                </j:if>
+				<j:if test="${dependency.artifactId.indexOf('mx4j') != '-1'}">
+                    <ant:zipfileset dir="${maven.repo.local}/${dependency.artifactDirectory}/jars/" prefix="lib">
+                        <ant:include name="${dependency.artifact}"/>
+                    </ant:zipfileset>
+                </j:if>
+
+            </j:forEach>
+        </ant:zip>
+    </goal>
+    
+</project>

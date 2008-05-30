@@ -1,0 +1,140 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+
+<!DOCTYPE project [
+    <!ENTITY eacute "&#233;">
+    <!ENTITY oslash "&#248;">
+]>
+
+<project xmlns:j="jelly:core" xmlns:ant="jelly:ant">
+    <pomVersion>3</pomVersion>
+    <currentVersion>${microcontainer.version}</currentVersion>
+    <name>MicroContainer</name>
+    <id>microcontainer</id>
+    <url>http://www.picocontainer.org/</url>
+    <organization>
+        <name>Codehaus</name>
+        <url>http://codehaus.org/</url>
+        <logo>http://codehaus.org/codehaus-small.gif</logo>
+    </organization>
+    <inceptionYear>2004</inceptionYear>
+    <package>org.microcontainer</package>
+    <shortDescription>MicroContainer</shortDescription>
+
+    <!-- issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=TODO</issueTrackingUrl -->
+
+    <siteAddress>beaver.codehaus.org</siteAddress>
+    <siteDirectory>/home/projects/microcontainer/public_html/${pom.groupId}/${pom.currentVersion}/${pom.artifactId}</siteDirectory>
+
+    <distributionSite>beaver.codehaus.org</distributionSite>
+    <distributionDirectory>/dist</distributionDirectory>
+
+    <repository>
+        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/microcontainer/trunk</connection>
+        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/microcontainer/trunk</developerConnection>
+        <url>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer/trunk</url>
+    </repository>
+
+
+    <developers>
+        <developer>
+            <name>Paul Hammant</name>
+            <id>paul</id>
+            <email>paul_hammant@yahoo.com</email>
+            <organization></organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Mike Ward</name>
+            <id>mward</id>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencies>
+
+        <dependency>
+            <id>picocontainer</id>
+            <version>${picocontainer.version}</version>
+        </dependency>
+
+        <dependency>
+            <id>nanocontainer</id>
+            <version>${nanocontainer.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-remoting</artifactId>
+            <version>${remoting.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-testmodel</artifactId>
+            <version>${nanocontainer.version}</version>
+        </dependency>
+
+        <!-- Maven plugins -->
+        <!--  1.5.2. is latest stable release compatible with maven 1.0.2 -->
+        <dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-artifact-plugin</artifactId>
+            <version>1.5.2</version>
+            <type>plugin</type>
+        </dependency>	
+        
+        <!-- required for JDK 1.5 -->
+		<dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-clover-plugin</artifactId>
+            <version>1.10</version>
+            <type>plugin</type>
+        </dependency>		
+
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+        		<properties>
+        			<scope>test</scope>
+        		</properties>
+        </dependency>
+
+        <dependency>
+            <id>jmock</id>
+            <version>1.0.1</version>
+        		<properties>
+        			<scope>test</scope>
+        		</properties>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+    		<defaultGoal>multiproject:install</defaultGoal>
+        <sourceDirectory>${basedir}/src/java</sourceDirectory>
+        <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+        <unitTest>
+            <includes>
+                <include>**/*TestCase.java</include>
+            </includes>
+            <excludes>
+                <exclude>**/Abstract*</exclude>
+            </excludes>
+        </unitTest>
+    </build>
+
+
+    <reports>
+        <report>maven-license-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-clover-plugin</report>
+    </reports>
+
+
+</project>
+
+

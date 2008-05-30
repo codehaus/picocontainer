@@ -1,0 +1,19 @@
+<project>
+
+    <goal name="micro:install">
+        <attainGoal name="multiproject:install"/>
+    </goal>
+
+    <goal name="micro:deploy">
+        <attainGoal name="multiproject:deploy"/>
+    </goal>
+
+    <goal name="micro:clean">
+        <attainGoal name="multiproject:clean"/>
+    </goal>
+
+    <preGoal name="dist:build-src">
+        <attainGoal name="scm:checkout"/>
+    </preGoal>
+
+</project>

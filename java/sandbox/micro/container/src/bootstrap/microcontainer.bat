@@ -1,0 +1,1 @@
+%JAVA_HOME%\bin\java.exe -cp lib/microcontainer-api-0.1-SNAPSHOT.jar;lib/nanocontainer-1.0-SNAPSHOT.jar;lib/picocontainer-1.1-SNAPSHOT.jar;lib/nanocontainer-jmx-1.0-SNAPSHOT.jar;lib/mx4j-2.0.1.jar;lib/groovy-1.0-beta-7.jar;lib/asm-util-1.4.3.jar;lib/asm-1.4.3.jar;lib/bsh-2.0b1.jar;lib/commons-cli-1.0.jar org.nanocontainer.Standalone -q -n -c microcontainerboot.groovy

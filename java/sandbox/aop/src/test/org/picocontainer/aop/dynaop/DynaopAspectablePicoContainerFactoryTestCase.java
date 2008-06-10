@@ -136,7 +136,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
 
     @Test public void testContainerSuppliedComponentMixin() {
         pico.addComponent(IdGenerator.class, IdGeneratorImpl.class);
-        pico.registerMixin(cuts.componentName("hasMixin*"), new Class[]{Identifiable.class}, IdentifiableMixin.class);
+        pico.registerMixin(cuts.componentName("hasMixin.*"), new Class[]{Identifiable.class}, IdentifiableMixin.class);
         pico.addComponent("hasMixin1", OrderEntityImpl.class);
         pico.addComponent("hasMixin2", OrderEntityImpl.class);
         pico.addComponent("noMixin", OrderEntityImpl.class);

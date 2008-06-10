@@ -235,7 +235,7 @@ public final class DynaopPointcutsFactoryTestCase {
     }
 
     @Test public void testComponentName() {
-        ComponentPointcut cut = cuts.componentName("foo*");
+        ComponentPointcut cut = cuts.componentName("foo.*");
         assertTrue(cut.picks("foo"));
         assertTrue(cut.picks("foobar"));
         assertFalse(cut.picks("bar"));

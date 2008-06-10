@@ -9,15 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.aop.dynaop;
 
-import dynaop.Pointcuts;
-import dynaop.util.NestedException;
-import org.apache.oro.text.regex.MalformedPatternException;
+import java.lang.reflect.Method;
+
 import org.picocontainer.aop.ClassPointcut;
-import org.picocontainer.aop.MalformedRegularExpressionException;
 import org.picocontainer.aop.MethodPointcut;
 import org.picocontainer.aop.defaults.AbstractPointcutsFactory;
 
-import java.lang.reflect.Method;
+import dynaop.Pointcuts;
 
 /**
  * Implements the <code>org.picocontainer.aop.PointcutsFactory</code>

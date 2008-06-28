@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.aop.AbstractAopTestCase;
+import org.picocontainer.aop.AbstractAopTest;
 import org.picocontainer.aop.AspectablePicoContainer;
 import org.picocontainer.aop.AspectablePicoContainerFactory;
 import org.picocontainer.aop.LoggingInterceptor;
@@ -38,7 +38,7 @@ import org.picocontainer.testmodel.SimpleTouchable;
 /**
  * @author Stephen Molitor
  */
-public final class DynaopAspectablePicoContainerFactoryTestCase extends AbstractAopTestCase {
+public final class DynaopAspectablePicoContainerFactoryTestCase extends AbstractAopTest {
 
     private final AspectablePicoContainerFactory containerFactory = new DynaopAspectablePicoContainerFactory();
     private final AspectablePicoContainer pico = containerFactory.createContainer();

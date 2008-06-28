@@ -26,14 +26,14 @@
   </issueManagement>
   <licenses>
     <license>
-      <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/aop/LICENSE.txt</url>
+      <url>https://svn.codehaus.org/picocontainer/java/sandbox/aop/LICENSE.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/aop</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/aop</developerConnection>
-    <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/aop</url>
+    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/sandbox/aop</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/sandbox/aop</developerConnection>
+    <url>https://svn.codehaus.org/picocontainer/java/sandbox/aop</url>
   </scm>
   <distributionManagement>
     <repository>

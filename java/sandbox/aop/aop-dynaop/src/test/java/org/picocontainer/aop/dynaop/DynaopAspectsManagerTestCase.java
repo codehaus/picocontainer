@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.aop.AbstractAopTestCase;
+import org.picocontainer.aop.AbstractAopTest;
 import org.picocontainer.aop.AspectsManager;
 import org.picocontainer.aop.ClassPointcut;
 import org.picocontainer.aop.ComponentPointcut;
@@ -43,7 +43,7 @@ import org.picocontainer.script.testmodel.OrderEntityImpl;
 /**
  * @author Stephen Molitor
  */
-public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
+public final class DynaopAspectsManagerTestCase extends AbstractAopTest {
 
     private final AspectsManager aspects = new DynaopAspectsManager();
     private final ComponentFactory componentFactory = new Caching().wrap(new Aspecting(aspects).wrap(new ConstructorInjection()));

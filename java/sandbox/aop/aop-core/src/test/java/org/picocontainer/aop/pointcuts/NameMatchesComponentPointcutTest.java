@@ -20,7 +20,7 @@ import org.picocontainer.script.testmodel.Dao;
 /**
  * @author Stephen Molitor
  */
-public class NameMatchesComponentPointcutTestCase {
+public class NameMatchesComponentPointcutTest {
 
     @Test
     public void testPicks() throws Exception {

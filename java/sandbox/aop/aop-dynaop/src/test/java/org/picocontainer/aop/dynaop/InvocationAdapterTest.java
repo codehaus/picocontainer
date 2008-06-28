@@ -32,7 +32,7 @@ import dynaop.ProxyContext;
  * @author Mauro Talevi
  */
 @RunWith(JMock.class)
-public final class InvocationAdapterTestCase {
+public class InvocationAdapterTest {
 
 	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
 	

@@ -7,41 +7,22 @@
  *****************************************************************************/
 package org.picocontainer.aop.dynaop;
 
-public class Foo {
+import static org.junit.Assert.assertSame;
 
-    public void apple() {
-    }
+import org.junit.Test;
+import org.picocontainer.aop.dynaop.InstanceMixinFactory;
 
-    public void apricot() {
-    }
+import dynaop.MixinFactory;
 
-    public void banana() {
-    }
+/**
+ * @author Stephen Molitor
+ */
+public class InstanceMixinFactoryTest {
 
-    public String getA() {
-        return "a";
-    }
-
-    public String getA(String a) {
-        return "a";
-    }
-
-    public boolean isA() {
-        return false;
-    }
-
-    public String getB() {
-        return "b";
-    }
-
-    public boolean isB() {
-        return false;
-    }
-
-    public void setA(String a) {
-    }
-
-    public void setB(String b) {
+    @Test public void testCreate() {
+        Object instance = "foo";
+        MixinFactory factory = new InstanceMixinFactory(instance);
+        assertSame(instance, factory.create(null));
     }
 
 }

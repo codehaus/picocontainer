@@ -30,7 +30,7 @@ import dynaop.util.NestedException;
 /**
  * @author Stephen Molitor
  */
-public final class DynaopPointcutsFactoryTestCase {
+public final class DynaopPointcutsFactoryTest {
 
     private final PointcutsFactory cuts = new DynaopPointcutsFactory();
     private Method apple;

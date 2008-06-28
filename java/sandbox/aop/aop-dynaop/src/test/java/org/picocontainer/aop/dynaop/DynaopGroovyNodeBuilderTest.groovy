@@ -10,9 +10,9 @@ package org.picocontainer.script.groovy
 import org.picocontainer.aop.*
 import org.picocontainer.aop.dynaop.*
 import org.picocontainer.script.groovy.*
-import org.picocontainer.script.NanoContainerMarkupException
+import org.picocontainer.script.ScriptedPicoContainerMarkupException
 
-public class GroovyNodeBuilderAopScriptedTestCase extends GroovyTestCase {
+public class DynaopGroovyNodeBuilderTest extends GroovyTestCase {
 
     def builder = new DynaopGroovyNodeBuilder()
     def cuts = new DynaopPointcutsFactory()
@@ -70,7 +70,7 @@ public class GroovyNodeBuilderAopScriptedTestCase extends GroovyTestCase {
     }
 
     public void testMissingRequiredComponentArguments() {
-        shouldFail(NanoContainerMarkupException, {
+        shouldFail(ScriptedPicoContainerMarkupException, {
             builder.container() {
                 component(value:'whoops')
             }
@@ -78,7 +78,7 @@ public class GroovyNodeBuilderAopScriptedTestCase extends GroovyTestCase {
     }
 
     public void testClassCutOrComponentCutRequiredForInterceptor() {
-        shouldFail(NanoContainerMarkupException, {
+        shouldFail(ScriptedPicoContainerMarkupException, {
             builder.container() {
                 aspect(interceptorKey:'whoops')
             }
@@ -86,7 +86,7 @@ public class GroovyNodeBuilderAopScriptedTestCase extends GroovyTestCase {
     }
 
     public void testMethodCutRequiredForInterceptor() {
-        shouldFail(NanoContainerMarkupException, {
+        shouldFail(ScriptedPicoContainerMarkupException, {
             builder.container() {
                 aspect(classCut:cuts.instancesOf(Dao), interceptorKey:'whoops')
             }
@@ -94,7 +94,7 @@ public class GroovyNodeBuilderAopScriptedTestCase extends GroovyTestCase {
     }
 
     public void testClassCutOrComponentCutRequiredForMixin() {
-        shouldFail(NanoContainerMarkupException, {
+        shouldFail(ScriptedPicoContainerMarkupException, {
             builder.container() {
                 aspect(mixinClass:Dao)
             }
@@ -102,7 +102,7 @@ public class GroovyNodeBuilderAopScriptedTestCase extends GroovyTestCase {
     }
 
     public void testNoAdviceSpecifiedInAspect() {
-        shouldFail(NanoContainerMarkupException, {
+        shouldFail(ScriptedPicoContainerMarkupException, {
             builder.container() {
                 aspect(classCut:cuts.instancesOf(Dao))
             }

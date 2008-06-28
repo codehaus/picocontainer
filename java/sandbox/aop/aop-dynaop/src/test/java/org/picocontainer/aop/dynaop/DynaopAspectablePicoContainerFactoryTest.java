@@ -1,11 +1,9 @@
 /*****************************************************************************
- * Copyright (c) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Idea by Rachel Davies, Original code by various                           *
+ * Copyright (c) PicoContainer Organization. All rights reserved.
+ * --------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
  *****************************************************************************/
 package org.picocontainer.aop.dynaop;
 
@@ -38,7 +36,7 @@ import org.picocontainer.testmodel.SimpleTouchable;
 /**
  * @author Stephen Molitor
  */
-public final class DynaopAspectablePicoContainerFactoryTestCase extends AbstractAopTest {
+public final class DynaopAspectablePicoContainerFactoryTest extends AbstractAopTest {
 
     private final AspectablePicoContainerFactory containerFactory = new DynaopAspectablePicoContainerFactory();
     private final AspectablePicoContainer pico = containerFactory.createContainer();

@@ -20,6 +20,7 @@ import org.picocontainer.aop.AspectsManager;
 import org.picocontainer.aop.ClassPointcut;
 import org.picocontainer.aop.ComponentPointcut;
 import org.picocontainer.aop.MethodPointcut;
+import org.picocontainer.aop.behaviours.Aspecting;
 import org.picocontainer.aop.dynaop.InstanceMixinFactory;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.NodeBuilderDecorator;

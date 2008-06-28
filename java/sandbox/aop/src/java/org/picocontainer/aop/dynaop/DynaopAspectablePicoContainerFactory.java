@@ -21,7 +21,7 @@ import org.picocontainer.aop.AspectablePicoContainer;
 import org.picocontainer.aop.AspectablePicoContainerFactory;
 import org.picocontainer.aop.AspectsContainer;
 import org.picocontainer.aop.AspectsManager;
-import org.picocontainer.aop.defaults.Aspecting;
+import org.picocontainer.aop.behaviours.Aspecting;
 import org.picocontainer.behaviors.Caching;
 
 /**

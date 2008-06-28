@@ -26,7 +26,7 @@ import org.picocontainer.aop.ComponentPointcut;
 import org.picocontainer.aop.LoggingInterceptor;
 import org.picocontainer.aop.MethodPointcut;
 import org.picocontainer.aop.PointcutsFactory;
-import org.picocontainer.aop.defaults.Aspecting;
+import org.picocontainer.aop.behaviours.Aspecting;
 import org.picocontainer.aop.dynaop.DynaopAspectsManager;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.ConstructorInjection;

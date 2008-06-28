@@ -7,7 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.picocontainer.aop.defaults;
+package org.picocontainer.aop.behaviours;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,7 +20,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.aop.AspectsApplicator;
-import org.picocontainer.aop.defaults.Aspected;
+import org.picocontainer.aop.behaviours.Aspected;
 import org.picocontainer.tck.MockFactory;
 
 /**

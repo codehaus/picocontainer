@@ -5,7 +5,7 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file. 
  ******************************************************************************/
-package org.picocontainer.aop.pointcuts;
+package org.picocontainer.aop.dynaop;
 
 import dynaop.Aspects;
 import dynaop.Pointcuts;
@@ -21,7 +21,6 @@ import org.picocontainer.aop.ClassPointcut;
 import org.picocontainer.aop.ComponentPointcut;
 import org.picocontainer.aop.MethodPointcut;
 import org.picocontainer.aop.behaviours.Aspecting;
-import org.picocontainer.aop.dynaop.InstanceMixinFactory;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.NodeBuilderDecorator;
 

@@ -8,6 +8,7 @@
   <url>http://www.picocontainer.org/aop</url>
   <modules>
     <module>aop-core</module>
+    <module>aop-tck</module>
     <module>aop-dynaop</module>
   </modules>
   <organization>

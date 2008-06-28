@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.aop.dynaop;
 
-import org.picocontainer.aop.pointcuts.AopNodeBuilderDecorator;
 import org.picocontainer.script.groovy.GroovyNodeBuilder;
 
 /**

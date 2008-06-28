@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 
 import org.picocontainer.aop.ClassPointcut;
 import org.picocontainer.aop.MethodPointcut;
-import org.picocontainer.aop.defaults.AbstractPointcutsFactory;
+import org.picocontainer.aop.pointcuts.AbstractPointcutsFactory;
 
 import dynaop.Pointcuts;
 

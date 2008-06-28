@@ -5,7 +5,7 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  ******************************************************************************/
-package org.picocontainer.aop.defaults;
+package org.picocontainer.aop.pointcuts;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;

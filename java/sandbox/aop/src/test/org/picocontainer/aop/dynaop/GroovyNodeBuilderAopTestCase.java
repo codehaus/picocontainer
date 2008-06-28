@@ -148,7 +148,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "import org.picocontainer.aop.dynaop.*\n" +
                 "aspectsManager = new org.picocontainer.aop.dynaop.DynaopAspectsManager()\n" +
                 "cuts = aspectsManager.getPointcutsFactory()\n" +
-                "decorator = new org.picocontainer.aop.defaults.AopNodeBuilderDecorator(aspectsManager)\n" +
+                "decorator = new org.picocontainer.aop.pointcuts.AopNodeBuilderDecorator(aspectsManager)\n" +
                 "builder = new GroovyNodeBuilder(decorator) \n" +
                 "scripted = builder.container() {\n" +
                 "    component(key:Dao, class:DaoImpl) \n" +

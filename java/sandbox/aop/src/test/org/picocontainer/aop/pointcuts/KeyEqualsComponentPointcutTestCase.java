@@ -7,7 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.picocontainer.aop.defaults;
+package org.picocontainer.aop.pointcuts;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -15,7 +15,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.picocontainer.aop.ComponentPointcut;
-import org.picocontainer.aop.defaults.KeyEqualsComponentPointcut;
+import org.picocontainer.aop.pointcuts.KeyEqualsComponentPointcut;
 
 /**
  * @author Stephen Molitor

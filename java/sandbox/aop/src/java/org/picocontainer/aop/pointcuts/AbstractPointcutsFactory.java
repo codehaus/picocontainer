@@ -7,7 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.picocontainer.aop.defaults;
+package org.picocontainer.aop.pointcuts;
 
 import org.picocontainer.aop.ComponentPointcut;
 import org.picocontainer.aop.PointcutsFactory;

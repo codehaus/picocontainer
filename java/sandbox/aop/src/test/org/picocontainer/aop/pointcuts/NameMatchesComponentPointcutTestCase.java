@@ -5,7 +5,7 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  ******************************************************************************/
-package org.picocontainer.aop.defaults;
+package org.picocontainer.aop.pointcuts;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -14,6 +14,7 @@ import java.util.regex.PatternSyntaxException;
 
 import org.junit.Test;
 import org.picocontainer.aop.ComponentPointcut;
+import org.picocontainer.aop.pointcuts.NameMatchesComponentPointcut;
 import org.picocontainer.script.testmodel.Dao;
 
 /**

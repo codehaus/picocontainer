@@ -5,35 +5,27 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file. 
  ******************************************************************************/
-package org.picocontainer.aop.dynaop;
+package org.picocontainer.aop;
 
-import dynaop.Aspects;
-import dynaop.Pointcuts;
-import dynaop.ProxyFactory;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.aop.AspectablePicoContainer;
-import org.picocontainer.aop.AspectsApplicator;
-import org.picocontainer.aop.AspectsContainer;
-import org.picocontainer.aop.AspectsManager;
-import org.picocontainer.aop.ClassPointcut;
-import org.picocontainer.aop.ComponentPointcut;
-import org.picocontainer.aop.MethodPointcut;
-import org.picocontainer.aop.behaviours.Aspecting;
-import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.NodeBuilderDecorator;
 
 import java.util.List;
 import java.util.Map;
+
+import org.aopalliance.intercept.MethodInterceptor;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.aop.behaviours.Aspecting;
+import org.picocontainer.script.NodeBuilderDecorator;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 /**
  * AOP-based NodeBuilderDecorator
  * 
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
+ * @author Mauro Talevi
  */
-public class AopNodeBuilderDecorator implements NodeBuilderDecorator {
+public abstract class AspectableNodeBuilderDecorator implements NodeBuilderDecorator {
 
     private final AspectsManager aspectsManager;
     private Object currentKey;
@@ -41,7 +33,7 @@ public class AopNodeBuilderDecorator implements NodeBuilderDecorator {
     private ClassPointcut currentClassCut;
     private MethodPointcut currentMethodCut;
 
-    public AopNodeBuilderDecorator(AspectsManager aspectsManager) {
+    public AspectableNodeBuilderDecorator(AspectsManager aspectsManager) {
         this.aspectsManager = aspectsManager;
     }
 
@@ -111,13 +103,8 @@ public class AopNodeBuilderDecorator implements NodeBuilderDecorator {
         }
     }
 
-    private AspectablePicoContainer mixinAspectablePicoContainer(AspectsManager aspectsManager,
-                                                                 MutablePicoContainer pico) {
-        Aspects aspects = new Aspects();
-        aspects.mixin(Pointcuts.ALL_CLASSES, new Class[]{AspectsContainer.class}, new InstanceMixinFactory(aspectsManager));
-        aspects.interfaces(Pointcuts.ALL_CLASSES, new Class[]{AspectablePicoContainer.class});
-        return (AspectablePicoContainer) new ProxyFactory(aspects).wrap(pico);
-    }
+    protected abstract AspectablePicoContainer mixinAspectablePicoContainer(AspectsManager aspectsManager,
+                                                                 MutablePicoContainer pico);
 
     private void registerInterceptor(AspectablePicoContainer pico, ClassPointcut classCut,
                                      ComponentPointcut componentCut, MethodPointcut methodCut, MethodInterceptor interceptor,

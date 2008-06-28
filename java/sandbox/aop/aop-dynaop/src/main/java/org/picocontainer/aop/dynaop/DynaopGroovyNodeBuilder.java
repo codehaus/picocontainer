@@ -24,7 +24,7 @@ public class DynaopGroovyNodeBuilder extends GroovyNodeBuilder {
      * a {@link DynaopAspectsManager} to apply aspects.
      */
     public DynaopGroovyNodeBuilder() {
-        super(new AopNodeBuilderDecorator(new DynaopAspectsManager()), GroovyNodeBuilder.SKIP_ATTRIBUTE_VALIDATION);
+        super(new DynaopAspectableNodeBuilderDecorator(new DynaopAspectsManager()), GroovyNodeBuilder.SKIP_ATTRIBUTE_VALIDATION);
     }
 
 

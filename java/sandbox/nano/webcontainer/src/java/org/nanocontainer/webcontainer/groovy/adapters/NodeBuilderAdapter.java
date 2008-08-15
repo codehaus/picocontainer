@@ -4,11 +4,10 @@ import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
-import org.nanocontainer.ClassName;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.NanoContainer;
 import org.nanocontainer.webcontainer.PicoContext;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.classname.ClassName;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 
 public class NodeBuilderAdapter {
     
@@ -25,7 +24,7 @@ public class NodeBuilderAdapter {
     }
     
     public NodeBuilder getNodeBuilder() {
-        NanoContainer factory = new DefaultNanoContainer();
+        DefaultClassLoadingPicoContainer factory = new DefaultClassLoadingPicoContainer();
         factory.addComponent(PicoContext.class, context);
         factory.addComponent(MutablePicoContainer.class, parentContainer);
         factory.addComponent(Map.class, attributes);

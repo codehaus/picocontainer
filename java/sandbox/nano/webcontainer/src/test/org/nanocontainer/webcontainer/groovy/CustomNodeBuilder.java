@@ -4,9 +4,9 @@ import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
-import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.webcontainer.PicoContext;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoCompositionException;
 
 public class CustomNodeBuilder extends NodeBuilder {
 
@@ -15,10 +15,10 @@ public class CustomNodeBuilder extends NodeBuilder {
         PicoContext context1 = context;
     }
 
-    public Object createNode(Object name, Map attributes) throws NanoContainerMarkupException {        
+    public Object createNode(Object name, Map attributes) {
         String value = (String) attributes.get("name");
         if ( value == null || !value.equals("value") ){
-            throw new NanoContainerMarkupException("Attribute 'name' should have value 'value'");
+            throw new PicoCompositionException("Attribute 'name' should have value 'value'");
         }
         return value;
     }

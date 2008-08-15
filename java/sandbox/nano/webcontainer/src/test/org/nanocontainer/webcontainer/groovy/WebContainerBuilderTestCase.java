@@ -24,11 +24,11 @@ import java.net.URL;
 import org.junit.After;
 import org.junit.Test;
 import org.mortbay.util.IO;
-import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.webcontainer.TestHelper;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.script.groovy.GroovyContainerBuilder;
 import org.picocontainer.references.SimpleReference;
 
 public final class WebContainerBuilderTestCase {

@@ -11,9 +11,8 @@
 package org.nanocontainer.webcontainer.groovy;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.script.groovy.nodes.AbstractBuilderNode;
 import org.nanocontainer.webcontainer.PicoJettyServer;
-import org.nanocontainer.script.groovy.buildernodes.AbstractBuilderNode;
-import org.nanocontainer.NanoContainer;
 
 import java.util.Map;
 
@@ -36,7 +35,7 @@ public class WebContainerBuilder extends AbstractBuilderNode {
             host = "localhost";
         }
 
-        MutablePicoContainer parentContainer = (NanoContainer) current;
+        MutablePicoContainer parentContainer = (MutablePicoContainer) current;
 
         PicoJettyServer server;
         if (port != 0) {

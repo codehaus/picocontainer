@@ -33,8 +33,7 @@ import org.picocontainer.references.SimpleReference;
 
 public final class WebContainerBuilderTestCase {
 
-    private final ObjectReference containerRef = new SimpleReference();
-    private final ObjectReference parentContainerRef = new SimpleReference();
+//    private final ObjectReference containerRef = new SimpleReference();
 
     private MutablePicoContainer pico;
 
@@ -47,8 +46,9 @@ public final class WebContainerBuilderTestCase {
 
     @Test public void testCanComposeWebContainerContextAndFilter() throws InterruptedException, IOException {
         Reader script = new StringReader("" +
-                "package org.nanocontainer.script.groovy\n" +
+                "package org.picocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
+                "builder.setNode(new "+WebContainerBuilder.class.getName()+"())\n" +
                 "nano = builder.container {\n" +
                 "    component(instance:'Fred')\n" +
                 "    component(instance:new Integer(5))\n" +
@@ -71,8 +71,9 @@ public final class WebContainerBuilderTestCase {
 
     @Test public void testCanComposeWebContainerContextAndServlet() throws InterruptedException, IOException {
         Reader script = new StringReader("" +
-                "package org.nanocontainer.script.groovy\n" +
+                "package org.picocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
+                "builder.setNode(new "+WebContainerBuilder.class.getName()+"())\n" +
                 "nano = builder.container {\n" +
                 "    component(instance:'Fred')\n" +
                 // declare the web container
@@ -91,8 +92,9 @@ public final class WebContainerBuilderTestCase {
 
     @Test public void testCanComposeWebContainerContextAndServletInstance() throws InterruptedException, IOException {
         Reader script = new StringReader("" +
-                "package org.nanocontainer.script.groovy\n" +
+                "package org.picocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
+                "builder.setNode(new "+WebContainerBuilder.class.getName()+"())\n" +
                 "nano = builder.container {\n" +
                 // declare the web container
                 "    webContainer(port:8080) {\n" +
@@ -111,8 +113,9 @@ public final class WebContainerBuilderTestCase {
     
     @Test public void testCanComposeWebContainerContextWithExplicitConnector() throws InterruptedException, IOException {
         Reader script = new StringReader("" +
-                "package org.nanocontainer.script.groovy\n" +
+                "package org.picocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
+                "builder.setNode(new "+WebContainerBuilder.class.getName()+"())\n" +
                 "nano = builder.container {\n" +
                 "    component(instance:'Fred')\n" +
                 // declare the web container
@@ -133,8 +136,9 @@ public final class WebContainerBuilderTestCase {
         File testWar = TestHelper.getTestWarFile();
 
         Reader script = new StringReader("" +
-                "package org.nanocontainer.script.groovy\n" +
+                "package org.picocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
+                "builder.setNode(new "+WebContainerBuilder.class.getName()+"())\n" +
                 "nano = builder.container {\n" +
                 "    component(instance:'Fred')\n" +
                 "    component(instance:new Integer(5))\n" +
@@ -154,8 +158,9 @@ public final class WebContainerBuilderTestCase {
     @Test public void testCanComposeWebContainerContextAndListener() throws InterruptedException, IOException {
 
         Reader script = new StringReader("" +
-                "package org.nanocontainer.script.groovy\n" +
+                "package org.picocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
+                "builder.setNode(new "+WebContainerBuilder.class.getName()+"())\n" +
                 "nano = builder.container {\n" +
                 "    component(class:StringBuffer.class)\n" +
                 // declare the web container
@@ -188,8 +193,9 @@ public final class WebContainerBuilderTestCase {
 		absolutePath = absolutePath.replace('\\', '/');
         
         Reader script = new StringReader("" +
-                "package org.nanocontainer.script.groovy\n" +
+                "package org.picocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
+                "builder.setNode(new "+WebContainerBuilder.class.getName()+"())\n" +
                 "nano = builder.container {\n" +
                 // declare the web container
                 "    webContainer(port:8080) {\n" +
@@ -222,8 +228,9 @@ public final class WebContainerBuilderTestCase {
         absolutePath = absolutePath.replace('\\', '/');
         
         Reader script = new StringReader("" +
-                "package org.nanocontainer.script.groovy\n" +
+                "package org.picocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
+                "builder.setNode(new "+WebContainerBuilder.class.getName()+"())\n" +
                 "nano = builder.container {\n" +
                 // declare the web container
                 "    webContainer(port:8080) {\n" +
@@ -265,8 +272,6 @@ public final class WebContainerBuilderTestCase {
     }
 
     private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
-        parentContainerRef.set(parent);
-        new GroovyContainerBuilder(script, getClass().getClassLoader()).buildContainer(containerRef, parentContainerRef, scope, true);
-        return (PicoContainer) containerRef.get();
+        return new GroovyContainerBuilder(script, getClass().getClassLoader()).buildContainer(parent, scope, true);
     }
 }

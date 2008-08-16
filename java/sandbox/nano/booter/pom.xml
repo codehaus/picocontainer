@@ -1,17 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.nanocontainer</groupId>
-        <artifactId>nanocontainer-parent</artifactId>
-        <version>2.0-SNAPSHOT</version>
-    </parent>
-    <artifactId>nanocontainer-booter</artifactId>
-    <name>NanoContainer Booter</name>
+    <groupId>org.picocontainer</groupId>
+    <artifactId>picocontainer-booter</artifactId>
+    <version>2.0-SNAPSHOT</version>
+    <name>PicoContainer Booter</name>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer</artifactId>
+            <groupId>org.picocontainer</groupId>
+            <artifactId>picocontainer</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.picocontainer.script</groupId>
+            <artifactId>picocontainer-script-core</artifactId>
+            <version>2.0</version>
         </dependency>
         <dependency>
             <groupId>commons-cli</groupId>
@@ -19,8 +22,9 @@
             <version>1.0</version>
         </dependency>
         <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanocontainer-groovy</artifactId>
+            <groupId>org.picocontainer.script</groupId>
+            <artifactId>picocontainer-script-groovy</artifactId>
+            <version>2.0</version>
             <scope>integration-test</scope>
         </dependency>
         <dependency>
@@ -55,7 +59,7 @@
                     <archive>
                         <manifest>
                             <mainClass>
-                                org.nanocontainer.booter.NanoContainerBooter
+                                org.picocontainer.booter.PicoContainerBooter
                             </mainClass>
                         </manifest>
                     </archive>
@@ -100,12 +104,12 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer</artifactId>
+                                    <groupId>org.picocontainer.script</groupId>
+                                    <artifactId>picocontainer-script-core</artifactId>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>${pom.groupId}</groupId>
-                                    <artifactId>nanocontainer-groovy</artifactId>
+                                    <groupId>org.picocontainer.script</groupId>
+                                    <artifactId>picocontainer-script-groovy</artifactId>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>groovy</groupId>
@@ -159,7 +163,7 @@
                                 <copy todir="${project.build.directory}/booter">
                                     <fileset dir="src/bin">
                                         <include name="booter.policy" />
-                                        <include name="nanocontainer.*" />
+                                        <include name="picocontainer.*" />
                                     </fileset>
                                     <fileset dir="src/test">
                                         <include name="composition.*" />

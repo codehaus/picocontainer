@@ -1,5 +1,5 @@
-REM NanoContainer Booter script v @VER@
-REM www.nanocontainer.org
+REM PicoContainer Booter script v @VER@
+REM www.picocontainer.org/booter
 
-java -Djava.security.manager -Djava.security.policy=file:booter.policy -jar lib\nanocontainer-booter-@VER@.jar $@
+java -Djava.security.manager -Djava.security.policy=file:booter.policy -jar lib\picocontainer-booter-@VER@.jar $@
 

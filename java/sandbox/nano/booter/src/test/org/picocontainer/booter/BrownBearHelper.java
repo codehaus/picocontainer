@@ -1,15 +1,17 @@
-package org.nanocontainer.booter;
+package org.picocontainer.booter;
 
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.ClassName;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.classname.ClassName;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 
 import java.util.Map;
 
 public class BrownBearHelper {
 
     public BrownBearHelper() {
-       DefaultNanoContainer nano = new DefaultNanoContainer();
-        nano.addComponent(Map.class, new ClassName("java.util.HashMap"));
+       ClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        pico.addComponent(Map.class, new ClassName("java.util.HashMap"));
     }
 
 }

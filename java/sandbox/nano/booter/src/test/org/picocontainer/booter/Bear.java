@@ -1,3 +1,3 @@
-package org.nanocontainer.booter;
+package org.picocontainer.booter;
 public interface Bear {
 }

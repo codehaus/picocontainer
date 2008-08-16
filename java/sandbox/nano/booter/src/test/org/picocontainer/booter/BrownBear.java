@@ -1,4 +1,4 @@
-package org.nanocontainer.booter;
+package org.picocontainer.booter;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -55,7 +55,7 @@ public class BrownBear implements Startable {
         System.out.println("BrownBear: I have eaten " + honey.eatSome() + " calories of Honey (of unknown type)");
         Class clazz = null;
         try {
-            clazz = this.getClass().getClassLoader().loadClass("org.nanocontainer.boot.BeeHiveHoney");
+            clazz = this.getClass().getClassLoader().loadClass("org.picocontainer.boot.BeeHiveHoney");
         } catch (ClassNotFoundException cnfe) {
         }
         System.out.println("BrownBear: Can see class for BeeHiveHoney ? - " + (clazz != null));
@@ -97,9 +97,9 @@ public class BrownBear implements Startable {
 
         try {
             new BrownBearHelper();
-            System.out.println("BrownBear: Can instantiate new DefaultNanoContainer (sub-container) - wrong, DefaultNanoContainer should not be in the classpath");
+            System.out.println("BrownBear: Can instantiate new DefaultPicoContainer (sub-container) - wrong, DefaultPicoContainer should not be in the classpath");
         } catch (NoClassDefFoundError e) {
-            System.out.println("BrownBear: Cannot instantiate new DefaultNanoContainer (sub-container) - correct, DefaultNanoContainer is not in the classpath");
+            System.out.println("BrownBear: Cannot instantiate new DefaultPicoContainer (sub-container) - correct, DefaultPicoContainer is not in the classpath");
         }
 
         String qdox = "http://www.ibiblio.org/maven/qdox/jars/qdox-1.5.jar";

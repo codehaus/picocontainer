@@ -87,9 +87,13 @@ public class PicoContainerBooter {
      * @throws InvocationTargetException
      */
     private void newStandalone(URLClassLoader classLoader, String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        Class picoStandalone = classLoader.loadClass("org.picocontainer.Standalone");
-        Constructor constructor = picoStandalone.getConstructors()[0];
-        constructor.newInstance(args);
+        Class picoStandalone = classLoader.loadClass("org.picocontainer.script.Standalone");
+        try {
+            Constructor constructor = picoStandalone.getConstructor(new Class[] {String[].class});
+            constructor.newInstance(new Object[] {args});
+        } catch (NoSuchMethodException nsme) {
+            // not expected.
+        }
     }
 
     /**
